@@ -1,2 +1,5 @@
 # xbb-helper-xpack
-A source xPack with scripts and other files to support XBB builds
+
+This project does not use the `master` branch, please
+switch to the `xpack` branch to get the project files.
+
