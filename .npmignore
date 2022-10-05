@@ -16,11 +16,6 @@ example/
 .cmake-format
 CONTRIBUTING**
 
-patches/
-pkgconfig/
-scripts/
-tests/
-
 README-*
 LICENSE-*
 

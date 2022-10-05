@@ -1,0 +1,466 @@
+#!/usr/bin/env bash
+# -----------------------------------------------------------------------------
+# This file is part of the xPack distribution.
+#   (https://xpack.github.io)
+# Copyright (c) 2022 Liviu Ionescu.
+#
+# Permission to use, copy, modify, and/or distribute this software
+# for any purpose is hereby granted, under the terms of the MIT license.
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+
+function xbb_set_env()
+{
+  REQUESTED_TARGET_PLATFORM="${HOST_NODE_PLATFORM}"
+  REQUESTED_TARGET_ARCH="${HOST_NODE_ARCH}"
+  REQUESTED_TARGET_BITS="${HOST_BITS}"
+  REQUESTED_TARGET_MACHINE="${HOST_MACHINE}"
+
+  TARGET_PLATFORM="${REQUESTED_TARGET_PLATFORM}"
+  TARGET_ARCH="${REQUESTED_TARGET_ARCH}"
+  TARGET_BITS="${REQUESTED_TARGET_BITS}"
+  TARGET_MACHINE="${REQUESTED_TARGET_MACHINE}"
+
+  DOT_EXE=""
+  DASH_V=""
+  if [ "${IS_DEVELOP}" == "y" ]
+  then
+    DASH_V="-v"
+  fi
+
+  # Compute the BUILD/HOST/TARGET for configure.
+  XBB_CROSS_COMPILE_PREFIX=""
+  if [ "${REQUESTED_TARGET_PLATFORM}" == "win32" ]
+  then
+
+    # Disable tests when cross compiling for Windows.
+    WITH_TESTS="n"
+
+    # Use the 64-bit mingw-w64 gcc to compile Windows binaries.
+    XBB_CROSS_COMPILE_PREFIX="x86_64-w64-mingw32"
+
+    xbb_config_guess
+
+    DOT_EXE=".exe"
+
+    XBB_HOST="${XBB_CROSS_COMPILE_PREFIX}"
+    XBB_TARGET="${XBB_HOST}"
+
+  elif [ "${REQUESTED_TARGET_PLATFORM}" == "darwin" -o "${TARGET_PLATFORM}" == "linux" ]
+  then
+
+    xbb_config_guess
+
+    XBB_HOST="${XBB_BUILD}"
+    XBB_TARGET="${XBB_HOST}"
+
+  else
+    echo "Oops! Unsupported REQUESTED_TARGET_PLATFORM=${REQUESTED_TARGET_PLATFORM}."
+    exit 1
+  fi
+
+  export XBB_BUILD
+  export XBB_HOST
+  export XBB_TARGET
+
+  # ---------------------------------------------------------------------------
+
+  RELEASE_VERSION="${RELEASE_VERSION:-$(xbb_get_current_version)}"
+
+  TARGET_FOLDER_NAME="${TARGET_PLATFORM}-${TARGET_ARCH}"
+
+
+  # If the work folder is defined in the environent, use it ("${HOME}/Work"),
+  # otherwise define it locally in the project.
+  if [ -z ${WORK_FOLDER_PATH+x} ]
+  then
+    WORK_FOLDER_PATH="${project_folder_path}/build"
+    PROJECT_WORK_FOLDER_PATH="${WORK_FOLDER_PATH}"
+  else
+    PROJECT_WORK_FOLDER_PATH="${WORK_FOLDER_PATH}/${APP_LC_NAME}-${RELEASE_VERSION}"
+  fi
+  BUILD_GIT_PATH="${project_folder_path}"
+
+  DOWNLOAD_FOLDER_PATH="${DOWNLOAD_FOLDER_PATH:-"${HOME}/Work/cache"}"
+
+  SOURCES_FOLDER_NAME="${SOURCES_FOLDER_NAME:-sources}"
+  SOURCES_FOLDER_PATH="${PROJECT_WORK_FOLDER_PATH}/${TARGET_FOLDER_NAME}/${SOURCES_FOLDER_NAME}"
+  mkdir -pv "${SOURCES_FOLDER_PATH}"
+
+  BUILD_FOLDER_NAME="${BUILD_FOLDER_NAME-build}"
+  BUILD_FOLDER_PATH="${PROJECT_WORK_FOLDER_PATH}/${TARGET_FOLDER_NAME}/${BUILD_FOLDER_NAME}"
+  mkdir -pv "${BUILD_FOLDER_PATH}"
+
+  INSTALL_FOLDER_NAME="${INSTALL_FOLDER_NAME:-install}"
+  INSTALL_FOLDER_PATH="${PROJECT_WORK_FOLDER_PATH}/${TARGET_FOLDER_NAME}/${INSTALL_FOLDER_NAME}"
+
+  DEPENDENCIES_INSTALL_FOLDER_PATH="${INSTALL_FOLDER_PATH}/dependencies"
+  mkdir -pv "${DEPENDENCIES_INSTALL_FOLDER_PATH}"
+  APPLICATION_INSTALL_FOLDER_PATH="${INSTALL_FOLDER_PATH}/${APP_LC_NAME}"
+  mkdir -pv "${APPLICATION_INSTALL_FOLDER_PATH}"
+
+  APPLICATION_DOC_INSTALL_FOLDER_PATH="${INSTALL_FOLDER_PATH}/${APP_LC_NAME}/share/doc"
+
+  # Deprecated!
+  # APP_PREFIX="${INSTALL_FOLDER_PATH}/${APP_LC_NAME}"
+  # The documentation location is now the same on all platforms.
+  # APP_PREFIX_DOC="${APP_PREFIX}/share/doc"
+
+  STAMPS_FOLDER_NAME="${STAMPS_FOLDER_NAME:-stamps}"
+  STAMPS_FOLDER_PATH="${PROJECT_WORK_FOLDER_PATH}/${TARGET_FOLDER_NAME}/${STAMPS_FOLDER_NAME}"
+  mkdir -pv "${STAMPS_FOLDER_PATH}"
+
+  LOGS_FOLDER_NAME="${LOGS_FOLDER_NAME:-logs}"
+  LOGS_FOLDER_PATH="${PROJECT_WORK_FOLDER_PATH}/${TARGET_FOLDER_NAME}/${LOGS_FOLDER_NAME}"
+  mkdir -pv "${LOGS_FOLDER_PATH}"
+
+  DEPLOY_FOLDER_NAME="${DEPLOY_FOLDER_NAME:-deploy}"
+  DEPLOY_FOLDER_PATH="${PROJECT_WORK_FOLDER_PATH}/${DEPLOY_FOLDER_NAME}"
+  mkdir -pv "${DEPLOY_FOLDER_PATH}"
+
+  TESTS_FOLDER_NAME="${TESTS_FOLDER_NAME:-tests}"
+  TESTS_FOLDER_PATH="${PROJECT_WORK_FOLDER_PATH}/${TARGET_FOLDER_NAME}/${TESTS_FOLDER_NAME}"
+  # Created if needed.
+
+  DISTRO_INFO_NAME=${DISTRO_INFO_NAME:-"distro-info"}
+
+  # libtool fails with the old Ubuntu /bin/sh.
+  # export SHELL="/bin/bash"
+  # export CONFIG_SHELL="/bin/bash"
+
+  export PROJECT_WORK_FOLDER_PATH
+  export DOWNLOAD_FOLDER_PATH
+  export SOURCES_FOLDER_PATH
+  export BUILD_FOLDER_PATH
+  export INSTALL_FOLDER_PATH
+  export DEPENDENCIES_INSTALL_FOLDER_PATH
+  export APPLICATION_INSTALL_FOLDER_PATH
+  export STAMPS_FOLDER_PATH
+  export DEPLOY_FOLDER_PATH
+  export TESTS_FOLDER_PATH
+
+  export BUILD_GIT_PATH
+  export DISTRO_INFO_NAME
+
+  # ---------------------------------------------------------------------------
+
+  # echo "PATH=${PATH}"
+
+  echo
+  env | sort
+}
+
+function xbb_config_guess()
+{
+  XBB_BUILD="$(bash ${helper_folder_path}/config/config.guess)"
+}
+
+function xbb_get_current_version()
+{
+  local version_file_path="${scripts_folder_path}/VERSION"
+  if [ $# -ge 1 ]
+  then
+    version_file_path="$1"
+  fi
+
+  # Extract only the first line
+  cat "${version_file_path}" | sed -e '2,$d'
+}
+
+function xbb_set_compiler_env()
+{
+  if [ "${TARGET_PLATFORM}" == "darwin" ]
+  then
+    xbb_prepare_clang_env
+  else
+    xbb_prepare_gcc_env
+  fi
+
+  if [ "${TARGET_PLATFORM}" == "win32" ]
+  then
+    export NATIVE_CC="${CC}"
+    export NATIVE_CXX="${CXX}"
+  fi
+
+  echo
+
+  which ${CC}
+  ${CC} --version
+
+  which make
+  make --version
+}
+
+function xbb_unset_compiler_env()
+{
+  unset CC
+  unset CXX
+  unset AR
+  unset AS
+  unset DLLTOOL
+  unset LD
+  unset NM
+  unset OBJCOPY
+  unset OBJDUMP
+  unset RANLIB
+  unset READELF
+  unset SIZE
+  unset STRIP
+  unset WINDRES
+  unset WINDMC
+  unset RC
+
+  unset XBB_CPPFLAGS
+
+  unset XBB_CFLAGS
+  unset XBB_CXXFLAGS
+
+  unset XBB_CFLAGS_NO_W
+  unset XBB_CXXFLAGS_NO_W
+
+  unset XBB_LDFLAGS
+  unset XBB_LDFLAGS_LIB
+  unset XBB_LDFLAGS_APP
+  unset XBB_LDFLAGS_APP_STATIC_GCC
+}
+
+function xbb_prepare_gcc_env()
+{
+  local prefix="${1:-}"
+  local suffix="${2:-}"
+
+  xbb_unset_compiler_env
+
+  export CC="${prefix}gcc${suffix}"
+  export CXX="${prefix}g++${suffix}"
+
+  # These are the special GCC versions, not the binutils ones.
+  export AR="${prefix}gcc-ar${suffix}"
+  export NM="${prefix}gcc-nm${suffix}"
+  export RANLIB="${prefix}gcc-ranlib${suffix}"
+
+  # From binutils.
+  export AS="${prefix}as"
+  export DLLTOOL="${prefix}dlltool"
+  export LD="${prefix}ld"
+  export OBJCOPY="${prefix}objcopy"
+  export OBJDUMP="${prefix}objdump"
+  export READELF="${prefix}readelf"
+  export SIZE="${prefix}size"
+  export STRIP="${prefix}strip"
+  export WINDRES="${prefix}windres"
+  export WINDMC="${prefix}windmc"
+  export RC="${prefix}windres"
+
+  xbb_set_extras
+}
+
+function xbb_prepare_clang_env()
+{
+  local prefix="${1:-}"
+  local suffix="${2:-}"
+
+  xbb_unset_compiler_env
+
+  export CC="${prefix}clang${suffix}"
+  export CXX="${prefix}clang++${suffix}"
+
+  export AR="${prefix}ar"
+  export AS="${prefix}as"
+  # export DLLTOOL="${prefix}dlltool"
+  export LD="${prefix}ld"
+  export NM="${prefix}nm"
+  # export OBJCOPY="${prefix}objcopy"
+  export OBJDUMP="${prefix}objdump"
+  export RANLIB="${prefix}ranlib"
+  # export READELF="${prefix}readelf"
+  export SIZE="${prefix}size"
+  export STRIP="${prefix}strip"
+  # export WINDRES="${prefix}windres"
+  # export WINDMC="${prefix}windmc"
+  # export RC="${prefix}windres"
+
+  xbb_set_extras
+}
+
+function xbb_set_extras()
+{
+  XBB_CPPFLAGS=""
+
+  XBB_CFLAGS="-ffunction-sections -fdata-sections -pipe"
+  XBB_CXXFLAGS="-ffunction-sections -fdata-sections -pipe"
+
+  if [ "${TARGET_ARCH}" == "x64" -o "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
+  then
+    XBB_CFLAGS+=" -m${TARGET_BITS}"
+    XBB_CXXFLAGS+=" -m${TARGET_BITS}"
+  fi
+
+  XBB_LDFLAGS=""
+
+  if [ "${IS_DEBUG}" == "y" ]
+  then
+    XBB_CFLAGS+=" -g -O0"
+    XBB_CXXFLAGS+=" -g -O0"
+    XBB_LDFLAGS+=" -g -O0"
+  else
+    XBB_CFLAGS+=" -O2"
+    XBB_CXXFLAGS+=" -O2"
+    XBB_LDFLAGS+=" -O2"
+  fi
+
+  if [ "${IS_DEVELOP}" == "y" ]
+  then
+    XBB_LDFLAGS+=" -v"
+  fi
+
+  if [ "${TARGET_PLATFORM}" == "linux" ]
+  then
+    SHLIB_EXT="so"
+
+    # Do not add -static here, it fails.
+    # Do not try to link pthread statically, it must match the system glibc.
+    XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
+    XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
+    XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
+  elif [ "${TARGET_PLATFORM}" == "darwin" ]
+  then
+    SHLIB_EXT="dylib"
+
+    if [ "${TARGET_ARCH}" == "x64" ]
+    then
+      export MACOSX_DEPLOYMENT_TARGET="10.13"
+    elif [ "${TARGET_ARCH}" == "arm64" ]
+    then
+      export MACOSX_DEPLOYMENT_TARGET="11.0"
+    else
+      echo "Unknown TARGET_ARCH ${TARGET_ARCH}"
+      exit 1
+    fi
+
+    if [[ ${CC} =~ .*clang.* ]]
+    then
+      XBB_CFLAGS+=" -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+      XBB_CXXFLAGS+=" -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+    fi
+
+    # Note: macOS linker ignores -static-libstdc++, so
+    # libstdc++.6.dylib should be handled.
+    XBB_LDFLAGS+=" -Wl,-macosx_version_min,${MACOSX_DEPLOYMENT_TARGET}"
+
+    # With GCC 11.2 path are longer, and post-processing may fail:
+    # error: /Library/Developer/CommandLineTools/usr/bin/install_name_tool: changing install names or rpaths can't be redone for: /Users/ilg/Work/gcc-11.2.0-2/darwin-x64/install/gcc/libexec/gcc/x86_64-apple-darwin17.7.0/11.2.0/g++-mapper-server (for architecture x86_64) because larger updated load commands do not fit (the program must be relinked, and you may need to use -headerpad or -headerpad_max_install_names)
+    XBB_LDFLAGS+=" -Wl,-headerpad_max_install_names"
+
+    XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
+    XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,-dead_strip"
+    XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libstdc++"
+    if [[ ${CC} =~ .*gcc.* ]]
+    then
+      XBB_LDFLAGS_APP_STATIC_GCC+=" -static-libgcc"
+    fi
+  elif [ "${TARGET_PLATFORM}" == "win32" ]
+  then
+    SHLIB_EXT="dll"
+
+    # Note: use this explcitly in the application.
+    # prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
+
+    # To make `access()` not fail when passing a non-zero mode.
+    # https://sourceforge.net/p/mingw-w64/mailman/message/37372220/
+    # Do not add it to XBB_CPPFLAGS, since the current macro
+    # crashes C++ code, like in `llvm/lib/Support/LockFileManager.cpp`:
+    # `if (sys::fs::access(LockFileName.c_str(), sys::fs::AccessMode::Exist) ==`
+    XBB_CFLAGS+=" -D__USE_MINGW_ACCESS"
+
+    # llvm fails. Enable it only when needed.
+    if false
+    then
+      # To prevent "too many sections", "File too big" etc.
+      # Unfortunately some builds fail, so it must be used explictly.
+      # TODO: check if the RISC-V toolchain no longer fails.
+      XBB_CFLAGS+=" -Wa,-mbig-obj"
+      XBB_CXXFLAGS+=" -Wa,-mbig-obj"
+    fi
+
+    # CRT_glob is from Arm script
+    # -static avoids libwinpthread-1.dll
+    # -static-libgcc avoids libgcc_s_sjlj-1.dll
+    XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
+    XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
+    XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
+  else
+    echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+    exit 1
+  fi
+
+  XBB_CFLAGS_NO_W="${XBB_CFLAGS} -w"
+  XBB_CXXFLAGS_NO_W="${XBB_CXXFLAGS} -w"
+
+  if [ ! -z "$(which pkg-config-verbose)" ]
+  then
+    PKG_CONFIG="$(which pkg-config-verbose)"
+  elif [ ! -z "$(which pkg-config)" ]
+  then
+    PKG_CONFIG="$(which pkg-config)"
+  fi
+
+  # Hopefully defining it empty would be enough...
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-""}
+
+  # Prevent pkg-config to search the system folders (configured in the
+  # pkg-config at build time).
+  PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-""}
+
+  set +u
+  echo
+  echo "CC=${CC}"
+  echo "CXX=${CXX}"
+  echo "XBB_CPPFLAGS=${XBB_CPPFLAGS}"
+  echo "XBB_CFLAGS=${XBB_CFLAGS}"
+  echo "XBB_CXXFLAGS=${XBB_CXXFLAGS}"
+
+  echo "XBB_LDFLAGS_LIB=${XBB_LDFLAGS_LIB}"
+  echo "XBB_LDFLAGS_APP=${XBB_LDFLAGS_APP}"
+  echo "XBB_LDFLAGS_APP_STATIC_GCC=${XBB_LDFLAGS_APP_STATIC_GCC}"
+
+  echo "PKG_CONFIG=${PKG_CONFIG:-}"
+  echo "PKG_CONFIG_PATH=${PKG_CONFIG_PATH}"
+  echo "PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR}"
+  set -u
+
+  # ---------------------------------------------------------------------------
+
+  export SHLIB_EXT
+
+  # CC & co were exported by prepare_gcc_env.
+  export XBB_CPPFLAGS
+
+  export XBB_CFLAGS
+  export XBB_CXXFLAGS
+
+  export XBB_CFLAGS_NO_W
+  export XBB_CXXFLAGS_NO_W
+
+  export XBB_LDFLAGS
+  export XBB_LDFLAGS_LIB
+  export XBB_LDFLAGS_APP
+  export XBB_LDFLAGS_APP_STATIC_GCC
+
+  export PKG_CONFIG
+  export PKG_CONFIG_PATH
+  export PKG_CONFIG_LIBDIR
+}
+
+function xbb_set_binaries_install()
+{
+  export BINARIES_INSTALL_FOLDER_PATH="$1"
+}
+
+function xbb_set_libraries_install()
+{
+  export LIBRARIES_INSTALL_FOLDER_PATH="$1"
+}
+
+# -----------------------------------------------------------------------------
