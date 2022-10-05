@@ -470,4 +470,96 @@ function xbb_set_libraries_install()
   export LIBRARIES_INSTALL_FOLDER_PATH="$1"
 }
 
+# Add the freshly built binaries.
+function xbb_activate_installed_bin()
+{
+  echo "xbb_activate_installed_bin"
+
+  # Add the XBB bin to the PATH.
+  if [ ! -z ${DEPENDENCIES_INSTALL_FOLDER_PATH+x} ]
+  then
+    # When invoked from tests, the libs are not available.
+    PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
+  fi
+
+  if [ ! -z ${APPLICATION_INSTALL_FOLDER_PATH+x} ]
+  then
+    PATH="${APPLICATION_INSTALL_FOLDER_PATH}/bin:${APPLICATION_INSTALL_FOLDER_PATH}/usr/bin:${PATH}"
+  fi
+
+  if [ ! -z ${TEST_BIN_PATH+x} ]
+  then
+    PATH="${TEST_BIN_PATH}:${PATH}"
+  fi
+
+  export PATH
+}
+
+# Add the freshly built headers and libraries.
+function xbb_activate_installed_dev()
+{
+  local name_suffix=${1-''}
+
+  echo "xbb_activate_installed_dev${name_suffix}"
+
+  # Add XBB include in front of XBB_CPPFLAGS.
+  XBB_CPPFLAGS="-I${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/include ${XBB_CPPFLAGS}"
+
+  if [ -d "${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib" ]
+  then
+    # Add XBB lib in front of XBB_LDFLAGS.
+    XBB_LDFLAGS="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS}"
+    XBB_LDFLAGS_LIB="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS_LIB}"
+    XBB_LDFLAGS_APP="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS_APP}"
+    XBB_LDFLAGS_APP_STATIC_GCC="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS_APP_STATIC_GCC}"
+
+    # Add XBB lib in front of PKG_CONFIG_PATH.
+    PKG_CONFIG_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+
+    # Needed by internal binaries, like the bootstrap compiler, which do not
+    # have a rpath.
+    if [ -z "${LD_LIBRARY_PATH}" ]
+    then
+      LD_LIBRARY_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
+    else
+      LD_LIBRARY_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${LD_LIBRARY_PATH}"
+    fi
+  fi
+
+  # Used by libffi, for example.
+  if [ -d "${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64" ]
+  then
+    # For 64-bit systems, add XBB lib64 in front of paths.
+    XBB_LDFLAGS="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_LIB}"
+    XBB_LDFLAGS_LIB="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_LIB}"
+    XBB_LDFLAGS_APP="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_APP}"
+    XBB_LDFLAGS_APP_STATIC_GCC="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_APP_STATIC_GCC}"
+
+    PKG_CONFIG_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
+
+    if [ -z "${LD_LIBRARY_PATH}" ]
+    then
+      LD_LIBRARY_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
+    else
+      LD_LIBRARY_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${LD_LIBRARY_PATH}"
+    fi
+  fi
+
+  export XBB_CPPFLAGS
+
+  export XBB_LDFLAGS
+  export XBB_LDFLAGS_LIB
+  export XBB_LDFLAGS_APP
+  export XBB_LDFLAGS_APP_STATIC_GCC
+
+  export PKG_CONFIG_PATH
+  export LD_LIBRARY_PATH
+
+  if [ "${IS_DEVELOP}" == "y" ]
+  then
+    echo
+    env | sort
+  fi
+}
+
 # -----------------------------------------------------------------------------
