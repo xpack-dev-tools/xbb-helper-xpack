@@ -96,6 +96,20 @@ function run_app()
   fi
 }
 
+function run_verbose_develop()
+{
+  # Does not include the .exe extension.
+  local app_path=$1
+  shift
+
+  if [ "${IS_DEVELOP}" == "y" ]
+  then
+    echo
+    echo "[${app_path} $@]"
+  fi
+  "${app_path}" "$@" 2>&1
+}
+
 # run_app_silent
 # run_app_exit
 # test_expect
