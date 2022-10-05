@@ -12,6 +12,13 @@
 
 function xbb_set_env()
 {
+  # Defaults, to ensure the variables are defined.
+  PATH="${PATH:-""}"
+  LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
+
+  export PATH
+  export LD_LIBRARY_PATH
+
   REQUESTED_TARGET_PLATFORM="${HOST_NODE_PLATFORM}"
   REQUESTED_TARGET_ARCH="${HOST_NODE_ARCH}"
   REQUESTED_TARGET_BITS="${HOST_BITS}"
