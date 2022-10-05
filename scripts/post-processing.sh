@@ -1136,6 +1136,47 @@ function is_darwin_allowed_sys_dylib()
   return 1 # False
 }
 
+function is_linux_allowed_sys_so()
+{
+  local lib_name="$1"
+
+  # Do not add these two, they are present if the toolchain is installed,
+  # but this is not guaranteed, so better copy them from the xbb toolchain.
+  # libstdc++.so.6
+  # libgcc_s.so.1
+
+  # Shared libraries that are expected to be present on any Linux.
+  # Note the X11 libraries.
+  # libnsl.so.1 - not available on RedHat
+  local sys_lib_names=(\
+    librt.so.1 \
+    libm.so.6 \
+    libc.so.6 \
+    libutil.so.1 \
+    libpthread.so.0 \
+    libdl.so.2 \
+    ld-linux.so.2 \
+    ld-linux.so.3 \
+    ld-linux-x86-64.so.2 \
+    ld-linux-armhf.so.3 \
+    ld-linux-arm64.so.1 \
+    ld-linux-aarch64.so.1 \
+    libX11.so.6 \
+    libXau.so.6 \
+    libxcb.so.1 \
+  )
+
+  local sys_lib_name
+  for sys_lib_name in "${sys_lib_names[@]}"
+  do
+    if [ "${lib_name}" == "${sys_lib_name}" ]
+    then
+      return 0 # True
+    fi
+  done
+  return 1 # False
+}
+
 function is_win_sys_dll()
 {
   local dll_name="$(echo "$1" | tr "[:upper:]" "[:lower:]")"
