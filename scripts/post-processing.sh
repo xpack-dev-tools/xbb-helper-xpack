@@ -1136,6 +1136,83 @@ function is_darwin_allowed_sys_dylib()
   return 1 # False
 }
 
+function is_win_sys_dll()
+{
+  local dll_name="$(echo "$1" | tr "[:upper:]" "[:lower:]")"
+
+  # DLLs that are expected to be present on any Windows.
+  # Be sure all names are lower case!
+  local sys_dlls=( \
+    advapi32.dll \
+    bcrypt.dll \
+    cabinet.dll \
+    cfgmgr32.dll \
+    comctl32.dll
+    crypt32.dll \
+    dbghelp.dll \
+    dnsapi.dll \
+    gdi32.dll \
+    imm32.dll \
+    imm32.dll \
+    iphlpapi.dll \
+    iphlpapi.dll \
+    kernel32.dll \
+    msi.dll \
+    msvcr71.dll \
+    msvcr80.dll \
+    msvcr90.dll \
+    msvcrt.dll \
+    ole32.dll \
+    oleaut32.dll \
+    psapi.dll \
+    rpcrt4.dll \
+    setupapi.dll \
+    shell32.dll \
+    shlwapi.dll \
+    user32.dll \
+    userenv.dll \
+    vcruntime140.dll \
+    version.dll \
+    winmm.dll \
+    winmm.dll \
+    ws2_32.dll \
+    \
+    api-ms-win-core-path-l1-1-0.dll \
+    api-ms-win-crt-conio-l1-1-0.dll \
+    api-ms-win-crt-convert-l1-1-0.dll \
+    api-ms-win-crt-environment-l1-1-0.dll \
+    api-ms-win-crt-filesystem-l1-1-0.dll \
+    api-ms-win-crt-heap-l1-1-0.dll \
+    api-ms-win-crt-locale-l1-1-0.dll \
+    api-ms-win-crt-math-l1-1-0.dll \
+    api-ms-win-crt-multibyte-l1-1-0.dll \
+    api-ms-win-crt-private-l1-1-0.dll \
+    api-ms-win-crt-process-l1-1-0.dll \
+    api-ms-win-crt-runtime-l1-1-0.dll \
+    api-ms-win-crt-string-l1-1-0.dll \
+    api-ms-win-crt-stdio-l1-1-0.dll \
+    api-ms-win-crt-time-l1-1-0.dll \
+    api-ms-win-crt-utility-l1-1-0.dll \
+  )
+
+  # The Python DLL were a permanent source of trouble.
+  # python27.dll \
+  # The latest Python 2.7.18 has no DLL at all, so it cannot be skipped.
+  # python37.dll \
+  # The Python 3 seems better, allow to copy it in the archive,
+  # to be sure it matches the version used during build.
+
+  local dll
+  for dll in "${sys_dlls[@]}"
+  do
+    if [ "${dll}" == "${dll_name}" ]
+    then
+      return 0 # True
+    fi
+  done
+  return 1 # False
+}
+
 function is_ar()
 {
   if [ $# -lt 1 ]
