@@ -834,6 +834,21 @@ function copy_dependencies_recursive()
   )
 }
 
+function install_elf()
+{
+  local source_file_path="$1"
+  local destination_file_path="$2"
+
+  if [ ! -f "${destination_file_path}" ]
+  then
+    if [ ! -d "$(dirname "${destination_file_path}")" ]
+    then
+      run_verbose install -d -m 755 "$(dirname "${destination_file_path}")"
+    fi
+    run_verbose install -c -m 755 "${source_file_path}" "${destination_file_path}"
+  fi
+}
+
 # Output the result of a filtered otool.
 function get_darwin_lc_rpaths()
 {
@@ -2246,8 +2261,6 @@ function check_binary_for_libraries()
     fi
   )
 }
-
-
 
 # -----------------------------------------------------------------------------
 
