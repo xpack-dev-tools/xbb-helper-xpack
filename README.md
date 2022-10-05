@@ -1,6 +1,6 @@
 [![license](https://img.shields.io/github/license/xpack-dev-tools/xbb-helper-xpack)](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/LICENSE)
 
-# A source library xPack with files to help XBB builds
+# A source library xPack with helper files for the XBB builds
 
 This project provides files to be included during builds.
 
@@ -30,7 +30,7 @@ For details please follow the instructions in the
 
 ### xpm
 
-hTis package is available as
+This package is available as
 [`@xpack-dev-tools/xbb-helper`](https://www.npmjs.com/package/@xpack-dev-tools/xbb-helper)
 from the `npmjs.com` registry:
 
