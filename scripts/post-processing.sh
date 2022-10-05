@@ -436,7 +436,7 @@ function copy_dependencies_recursive()
         if [ -z "${linux_rpaths_line}" ]
         then
           echo ">>> \"${actual_destination_file_path}\" has no rpath, patchelf may damage it!"
-          linux_rpaths_line="${LIBS_INSTALL_FOLDER_PATH}/lib"
+          linux_rpaths_line="${DEPENDENCIES_INSTALL_FOLDER_PATH}/lib"
         fi
 
         for rpath in $(echo "${linux_rpaths_line}" | tr ":" "\n")
@@ -615,9 +615,9 @@ function copy_dependencies_recursive()
             if [ -z "${found_absolute_lib_path}" ]
             then
               # Not found in LC_RPATH, but is may be in LIBS_INSTALL.
-              if [ -f "${LIBS_INSTALL_FOLDER_PATH}/lib/${file_relative_path}" ]
+              if [ -f "${DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${file_relative_path}" ]
               then
-                found_absolute_lib_path="${LIBS_INSTALL_FOLDER_PATH}/lib/${file_relative_path}"
+                found_absolute_lib_path="${DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${file_relative_path}"
               fi
             fi
             if [ ! -z "${found_absolute_lib_path}" ]
@@ -654,11 +654,11 @@ function copy_dependencies_recursive()
         else
           ## Relative path.
           echo_develop "${lib_path} is a relative path"
-          if [ -f "${LIBS_INSTALL_FOLDER_PATH}/lib/${lib_path}" ]
+          if [ -f "${DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${lib_path}" ]
           then
             # Make the from_path absolute.
-            from_path="${LIBS_INSTALL_FOLDER_PATH}/lib/${lib_path}"
-            echo_develop "using LIBS_INSTALL_FOLDER_PATH ${from_path}"
+            from_path="${DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${lib_path}"
+            echo_develop "using DEPENDENCIES_INSTALL_FOLDER_PATH ${from_path}"
           else
             echo ">>> Relative path ${lib_path} not found in libs/lib"
             exit 1
@@ -797,11 +797,11 @@ function copy_dependencies_recursive()
             copy_dependencies_recursive \
               "${APPLICATION_INSTALL_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/bin/${lib_name}" \
               "${destination_folder_path}"
-          elif [ -f "${LIBS_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
+          elif [ -f "${DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
           then
             # These scripts leave libraries in install/libs/bin.
             copy_dependencies_recursive \
-              "${LIBS_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
+              "${DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
               "${destination_folder_path}"
           elif [ "${DO_COPY_XBB_LIBS}" == "y" -a -f "${XBB_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/bin/${lib_name}" ]
           then
