@@ -27,10 +27,11 @@ function common_build()
 
   (
     echo
+    xbb_set_compiler_env
+
+    echo
     echo "Here we go..."
     echo
-
-    xbb_set_compiler_env
 
     build_versioned_components
 
