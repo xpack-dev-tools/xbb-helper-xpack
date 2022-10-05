@@ -237,6 +237,8 @@ function xbb_prepare_gcc_env()
   local prefix="${1:-}"
   local suffix="${2:-}"
 
+  echo_develop "[xbb_prepare_gcc_env]"
+
   xbb_unset_compiler_env
 
   export CC="${prefix}gcc${suffix}"
@@ -267,6 +269,8 @@ function xbb_prepare_clang_env()
 {
   local prefix="${1:-}"
   local suffix="${2:-}"
+
+  echo_develop "[xbb_prepare_clang_env]"
 
   xbb_unset_compiler_env
 
