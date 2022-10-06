@@ -569,4 +569,32 @@ function xbb_activate_installed_dev()
   fi
 }
 
+function xbb_activate_cxx_rpath()
+{
+  local cxx_lib_path=""
+
+  if [[ ${CC} =~ .*gcc.* ]]
+  then
+    cxx_lib_path="$(realpath $(dirname $(${CXX} -print-file-name=libstdc++.so.6)))"
+    if [ "${cxx_lib_path}" == "libstdc++.so.6" ]
+    then
+      return
+    fi
+  fi
+
+  if [ -z "${cxx_lib_path}" ]
+  then
+    return
+  fi
+
+  if [ -z "${LD_LIBRARY_PATH}" ]
+  then
+    LD_LIBRARY_PATH="${cxx_lib_path}"
+  else
+    LD_LIBRARY_PATH="${cxx_lib_path}:${LD_LIBRARY_PATH}"
+  fi
+
+  export LD_LIBRARY_PATH
+}
+
 # -----------------------------------------------------------------------------
