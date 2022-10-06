@@ -52,8 +52,6 @@ function tests_prime_wine()
   if [  "${TARGET_PLATFORM}" == "win32" ]
   then
     (
-      xbb_activate
-
       echo
       winecfg &>/dev/null
       echo "wine primed, testing..."
