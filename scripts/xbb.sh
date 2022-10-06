@@ -47,18 +47,14 @@ function xbb_set_env()
     # Use the 64-bit mingw-w64 gcc to compile Windows binaries.
     XBB_CROSS_COMPILE_PREFIX="x86_64-w64-mingw32"
 
-    xbb_config_guess
-
-    DOT_EXE=".exe"
-
+    XBB_BUILD=$(xbb_config_guess)
     XBB_HOST="${XBB_CROSS_COMPILE_PREFIX}"
     XBB_TARGET="${XBB_HOST}"
 
   elif [ "${REQUESTED_TARGET_PLATFORM}" == "darwin" -o "${TARGET_PLATFORM}" == "linux" ]
   then
 
-    xbb_config_guess
-
+    XBB_BUILD=$(xbb_config_guess)
     XBB_HOST="${XBB_BUILD}"
     XBB_TARGET="${XBB_HOST}"
 
@@ -160,7 +156,7 @@ function xbb_set_env()
 
 function xbb_config_guess()
 {
-  XBB_BUILD="$(bash ${helper_folder_path}/config/config.guess)"
+  echo "$(bash ${helper_folder_path}/config/config.guess)"
 }
 
 function xbb_get_current_version()
