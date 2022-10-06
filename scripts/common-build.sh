@@ -54,7 +54,7 @@ function common_build()
         check_binaries
 
         create_archive
-      )
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/post-process-output-$(ndate).txt"
     fi
   )
 
