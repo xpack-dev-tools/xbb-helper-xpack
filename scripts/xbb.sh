@@ -173,20 +173,30 @@ function xbb_set_compiler_env()
   if [ "${TARGET_PLATFORM}" == "darwin" ]
   then
     xbb_prepare_clang_env
-  else
-    xbb_prepare_gcc_env
-  fi
-
-  if [ "${TARGET_PLATFORM}" == "win32" ]
+  elif [ "${TARGET_PLATFORM}" == "linux" ]
   then
-    export NATIVE_CC="${CC}"
-    export NATIVE_CXX="${CXX}"
+    xbb_prepare_gcc_env
+  elif [ "${TARGET_PLATFORM}" == "win32" ]
+  then
+    export NATIVE_CC="gcc"
+    export NATIVE_CXX="g++"
+
+    xbb_prepare_gcc_env "${XBB_CROSS_COMPILE_PREFIX}-"
+  else
+    echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+    exit 1
   fi
 
   echo
 
-  which ${CC}
-  ${CC} --version
+  if [ "${TARGET_PLATFORM}" == "win32" ]
+  then
+    which ${NATIVE_CXX}
+    ${NATIVE_CXX} --version
+  fi
+
+  which ${CXX}
+  ${CXX} --version
 
   which make
   make --version
