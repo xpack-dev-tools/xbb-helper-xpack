@@ -109,7 +109,7 @@ function host_parse_options()
 
   ACTION=""
 
-  DO_BUILD_WIN="n"
+  DO_BUILD_WINDOWS="n"
   IS_DEBUG="n"
   IS_DEVELOP=""
   WITH_STRIP="y"
@@ -138,7 +138,7 @@ function host_parse_options()
     case "$1" in
 
       --win|--windows)
-        DO_BUILD_WIN="y"
+        DO_BUILD_WINDOWS="y"
         shift
         ;;
 
@@ -201,16 +201,29 @@ function host_parse_options()
     WITH_STRIP="n"
   fi
 
-  if [ "${DO_BUILD_WIN}" == "y" ]
+  REQUESTED_TARGET_PLATFORM="${HOST_NODE_PLATFORM}"
+  REQUESTED_TARGET_ARCH="${HOST_NODE_ARCH}"
+  REQUESTED_TARGET_BITS="${HOST_BITS}"
+  REQUESTED_TARGET_MACHINE="${HOST_MACHINE}"
+
+  if [ "${DO_BUILD_WINDOWS}" == "y" ]
   then
     if [ "${HOST_NODE_PLATFORM}" == "linux" ] && [ "${HOST_NODE_ARCH}" == "x64" ]
     then
-      TARGET_PLATFORM="win32"
+      REQUESTED_TARGET_PLATFORM="win32"
+      REQUESTED_TARGET_ARCH="x64"
+      REQUESTED_TARGET_BITS="64"
+      REQUESTED_TARGET_MACHINE="x86_64"
     else
       echo "Windows cross builds are available only on Intel GNU/Linux."
       exit 1
     fi
   fi
+
+  export REQUESTED_TARGET_PLATFORM
+  export REQUESTED_TARGET_ARCH
+  export REQUESTED_TARGET_BITS
+  export REQUESTED_TARGET_MACHINE
 }
 
 # -----------------------------------------------------------------------------
