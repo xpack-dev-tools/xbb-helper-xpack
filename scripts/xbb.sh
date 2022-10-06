@@ -24,13 +24,13 @@ function xbb_set_env()
   TARGET_BITS="${REQUESTED_TARGET_BITS}"
   TARGET_MACHINE="${REQUESTED_TARGET_MACHINE}"
 
-  DOT_EXE=""
   DASH_V=""
   if [ "${IS_DEVELOP}" == "y" ]
   then
     DASH_V="-v"
   fi
 
+  DOT_EXE=""
   # Compute the BUILD/HOST/TARGET for configure.
   XBB_CROSS_COMPILE_PREFIX=""
   if [ "${REQUESTED_TARGET_PLATFORM}" == "win32" ]
@@ -38,6 +38,8 @@ function xbb_set_env()
 
     # Disable tests when cross compiling for Windows.
     WITH_TESTS="n"
+
+    DOT_EXE=".exe"
 
     # Use the 64-bit mingw-w64 gcc to compile Windows binaries.
     XBB_CROSS_COMPILE_PREFIX="x86_64-w64-mingw32"
