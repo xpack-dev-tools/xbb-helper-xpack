@@ -803,11 +803,6 @@ function copy_dependencies_recursive()
             copy_dependencies_recursive \
               "${DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
               "${destination_folder_path}"
-          elif [ "${DO_COPY_XBB_LIBS}" == "y" -a -f "${XBB_FOLDER_PATH}/${XBB_CROSS_COMPILE_PREFIX}/bin/${lib_name}" ]
-          then
-            copy_dependencies_recursive \
-              "${XBB_FOLDER_PATH}/${XBB_CROSS_COMPILE_PREFIX}/bin/${lib_name}" \
-              "${destination_folder_path}"
           elif [ "${DO_COPY_GCC_LIBS}" == "y" -a "${full_path}" != "${lib_name}" ]
           then
             # -print-file-name outputs back the requested name if not found.
