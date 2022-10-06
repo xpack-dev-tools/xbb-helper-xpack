@@ -405,7 +405,7 @@ function xbb_set_extras()
   XBB_CFLAGS_NO_W="${XBB_CFLAGS} -w"
   XBB_CXXFLAGS_NO_W="${XBB_CXXFLAGS} -w"
 
-  if [ ! -z "$(which pkg-config-verbose)" ]
+  if [ ! -z "$(which pkg-config-verbose)" -a "${IS_DEVELOP}" == "y" ]
   then
     PKG_CONFIG="$(which pkg-config-verbose)"
   elif [ ! -z "$(which pkg-config)" ]
