@@ -809,7 +809,7 @@ function copy_dependencies_recursive()
             copy_dependencies_recursive \
               "${full_path}" \
               "${destination_folder_path}"
-          elif [ "${DO_COPY_GCC_LIBS}" == "y" -a "${lib_name}" == "libwinpthread-1.dll" -a -f "${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" ]
+          elif false # [ "${DO_COPY_GCC_LIBS}" == "y" -a "${lib_name}" == "libwinpthread-1.dll" -a -f "${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" ]
           then
             copy_dependencies_recursive \
               "${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" \
