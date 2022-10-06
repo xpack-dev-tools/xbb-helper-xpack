@@ -44,7 +44,7 @@ function tests_run()
 
     echo
     echo "Final tests completed successfuly."
-  ) 2>&1 | tee "${LOGS_FOLDER_PATH}/tests-output-$(date -u +%Y%m%d-%H%M).txt"
+  )
 }
 
 function tests_prime_wine()
