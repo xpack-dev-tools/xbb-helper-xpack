@@ -134,7 +134,7 @@ function show_libs()
             run_verbose file "${app_path}"
           fi
           echo
-          echo "[${CROSS_COMPILE_PREFIX}-objdump -x ${app_path}]"
+          echo "[${XBB_CROSS_COMPILE_PREFIX}-objdump -x ${app_path}]"
           ${XBB_CROSS_COMPILE_PREFIX}-objdump -x ${app_path} | grep -i 'DLL Name' || true
         elif [ -f "${app_path}.exe" ]
         then
@@ -708,7 +708,7 @@ function copy_dependencies_recursive()
 
       echo
       echo "${actual_destination_file_path}:"
-      ${CROSS_COMPILE_PREFIX}-objdump -x "${source_file_path}" \
+      ${XBB_CROSS_COMPILE_PREFIX}-objdump -x "${source_file_path}" \
             | grep -i 'DLL Name' || true
 
       local source_file_name="$(basename "${source_file_path}")"
@@ -769,7 +769,7 @@ function copy_dependencies_recursive()
 
       # echo "II. Processing ${source_file_path} dependencies..."
 
-      local libs=$(${CROSS_COMPILE_PREFIX}-objdump -x "${destination_folder_path}/${source_file_name}" \
+      local libs=$(${XBB_CROSS_COMPILE_PREFIX}-objdump -x "${destination_folder_path}/${source_file_name}" \
             | grep -i 'DLL Name' \
             | sed -e 's/.*DLL Name: \(.*\)/\1/' \
           )
@@ -783,7 +783,7 @@ function copy_dependencies_recursive()
         then
           : # System DLL, no need to copy it.
         else
-          local full_path=$(${CROSS_COMPILE_PREFIX}-gcc -print-file-name=${lib_name})
+          local full_path=$(${XBB_CROSS_COMPILE_PREFIX}-gcc -print-file-name=${lib_name})
 
           if [ -f "${APPLICATION_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
           then
@@ -791,11 +791,11 @@ function copy_dependencies_recursive()
             copy_dependencies_recursive \
               "${APPLICATION_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
               "${destination_folder_path}"
-          elif [ -f "${APPLICATION_INSTALL_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/bin/${lib_name}" ]
+          elif [ -f "${APPLICATION_INSTALL_FOLDER_PATH}/${XBB_CROSS_COMPILE_PREFIX}/bin/${lib_name}" ]
           then
             # ... or in x86_64-w64-mingw32/bin
             copy_dependencies_recursive \
-              "${APPLICATION_INSTALL_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/bin/${lib_name}" \
+              "${APPLICATION_INSTALL_FOLDER_PATH}/${XBB_CROSS_COMPILE_PREFIX}/bin/${lib_name}" \
               "${destination_folder_path}"
           elif [ -f "${DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
           then
@@ -803,10 +803,10 @@ function copy_dependencies_recursive()
             copy_dependencies_recursive \
               "${DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
               "${destination_folder_path}"
-          elif [ "${DO_COPY_XBB_LIBS}" == "y" -a -f "${XBB_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/bin/${lib_name}" ]
+          elif [ "${DO_COPY_XBB_LIBS}" == "y" -a -f "${XBB_FOLDER_PATH}/${XBB_CROSS_COMPILE_PREFIX}/bin/${lib_name}" ]
           then
             copy_dependencies_recursive \
-              "${XBB_FOLDER_PATH}/${CROSS_COMPILE_PREFIX}/bin/${lib_name}" \
+              "${XBB_FOLDER_PATH}/${XBB_CROSS_COMPILE_PREFIX}/bin/${lib_name}" \
               "${destination_folder_path}"
           elif [ "${DO_COPY_GCC_LIBS}" == "y" -a "${full_path}" != "${lib_name}" ]
           then
@@ -814,10 +814,10 @@ function copy_dependencies_recursive()
             copy_dependencies_recursive \
               "${full_path}" \
               "${destination_folder_path}"
-          elif [ "${DO_COPY_GCC_LIBS}" == "y" -a "${lib_name}" == "libwinpthread-1.dll" -a -f "${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" ]
+          elif [ "${DO_COPY_GCC_LIBS}" == "y" -a "${lib_name}" == "libwinpthread-1.dll" -a -f "${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" ]
           then
             copy_dependencies_recursive \
-              "${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" \
+              "${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" \
               "${destination_folder_path}"
           else
             echo "${lib_name} required by ${source_file_name}, not found"
@@ -1870,7 +1870,7 @@ function strip_binary()
   then
     if [ -z "${strip}" ]
     then
-      strip="${CROSS_COMPILE_PREFIX}-strip"
+      strip="${XBB_CROSS_COMPILE_PREFIX}-strip"
     fi
     if [[ "${file_path}" != *.exe ]] && [[ "${file_path}" != *.dll ]] && [[ "${file_path}" != *.pyd ]]
     then
@@ -2048,9 +2048,9 @@ function check_binary_for_libraries()
       echo
       echo "${file_name}: (${file_path})"
       set +e
-      ${CROSS_COMPILE_PREFIX}-objdump -x "${file_path}" | grep -i 'DLL Name'
+      ${XBB_CROSS_COMPILE_PREFIX}-objdump -x "${file_path}" | grep -i 'DLL Name'
 
-      local dll_names=$(${CROSS_COMPILE_PREFIX}-objdump -x "${file_path}" \
+      local dll_names=$(${XBB_CROSS_COMPILE_PREFIX}-objdump -x "${file_path}" \
         | grep -i 'DLL Name' \
         | sed -e 's/.*DLL Name: \(.*\)/\1/' \
       )
