@@ -15,8 +15,6 @@ function common_build()
   # Must be after host_parse_options, for a simple --help.
   timer_start
 
-  host_detect
-
   xbb_set_env
 
   tests_initialize
