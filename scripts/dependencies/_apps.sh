@@ -2742,7 +2742,7 @@ function copy_cross_linux_libs()
     local linux_path="${LINUX_INSTALL_RELATIVE_PATH}/${APP_LC_NAME}"
 
     (
-      cd "${WORK_FOLDER_PATH}"
+      cd "${TARGET_WORK_FOLDER_PATH}"
 
       copy_dir "${linux_path}/${GCC_TARGET}/lib" "${APP_PREFIX}/${GCC_TARGET}/lib"
       copy_dir "${linux_path}/${GCC_TARGET}/include" "${APP_PREFIX}/${GCC_TARGET}/include"
@@ -2769,9 +2769,9 @@ function copy_cross_linux_libs()
 function add_cross_linux_install_path()
 {
   # Verify that the compiler is there.
-  "${WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/${APP_LC_NAME}/bin/${GCC_TARGET}-gcc" --version
+  "${TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/${APP_LC_NAME}/bin/${GCC_TARGET}-gcc" --version
 
-  export PATH="${WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/${APP_LC_NAME}/bin:${PATH}"
+  export PATH="${TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/${APP_LC_NAME}/bin:${PATH}"
   echo ${PATH}
 }
 
@@ -3665,7 +3665,7 @@ function strip_libs()
       echo
       echo "Stripping libraries..."
 
-      cd "${WORK_FOLDER_PATH}"
+      cd "${TARGET_WORK_FOLDER_PATH}"
 
       # which "${GCC_TARGET}-objcopy"
 

@@ -189,7 +189,7 @@ function make_standalone()
     echo "# Preparing ${folder_path} libraries..."
 
     # Otherwise `find` may fail.
-    cd "${WORK_FOLDER_PATH}"
+    cd "${TARGET_WORK_FOLDER_PATH}"
 
     local binaries
     if [ "${TARGET_PLATFORM}" == "win32" ]
@@ -1797,7 +1797,7 @@ function strip_binaries()
       echo "# Stripping binaries..."
 
       # Otherwise `find` may fail.
-      cd "${WORK_FOLDER_PATH}"
+      cd "${TARGET_WORK_FOLDER_PATH}"
 
       local binaries
       if [ "${TARGET_PLATFORM}" == "win32" ]
@@ -1971,7 +1971,7 @@ function check_binaries()
     echo "# Checking binaries for unwanted libraries..."
 
     # Otherwise `find` may fail.
-    cd "${WORK_FOLDER_PATH}"
+    cd "${TARGET_WORK_FOLDER_PATH}"
 
     local binaries
     if [ "${TARGET_PLATFORM}" == "win32" ]

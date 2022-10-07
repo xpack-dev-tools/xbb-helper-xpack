@@ -4513,7 +4513,7 @@ function add_python3_syslibs()
         echo "Compiling all python sources..."
         if [ "${TARGET_PLATFORM}" == "win32" ]
         then
-          run_verbose "${WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/libs/bin/python3.${PYTHON3_VERSION_MINOR}" \
+          run_verbose "${TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/libs/bin/python3.${PYTHON3_VERSION_MINOR}" \
             -m compileall \
             -j "${JOBS}" \
             -f "${APP_PREFIX}/lib/${python_with_version}/" \
