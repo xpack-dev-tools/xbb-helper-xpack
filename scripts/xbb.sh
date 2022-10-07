@@ -198,7 +198,7 @@ function xbb_set_compiler_env()
   if [ "${TARGET_PLATFORM}" == "win32" ]
   then
     (
-      set +u
+      set +e
       which ${NATIVE_CXX}
       ${NATIVE_CXX} --version
     )
