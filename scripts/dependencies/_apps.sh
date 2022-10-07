@@ -815,7 +815,7 @@ function build_mingw_crt()
             config_options+=("--enable-lib32")
             config_options+=("--disable-lib64")
           else
-            echo "Oops! Unsupported TARGET_ARCH=${TARGET_ARCH}."
+            echo "Unsupported TARGET_ARCH=${TARGET_ARCH}."
             exit 1
           fi
 
@@ -1721,7 +1721,7 @@ function build_native_binutils()
               echo "binutils not supported on macOS"
               exit 1
             else
-              echo "Oops! Unsupported ${TARGET_PLATFORM}."
+              echo "Unsupported ${TARGET_PLATFORM}."
               exit 1
             fi
 

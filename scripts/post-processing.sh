@@ -151,7 +151,7 @@ function show_libs()
         fi
       fi
     else
-      echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+      echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
       exit 1
     fi
   )
@@ -260,7 +260,7 @@ function make_standalone()
       done
 
     else
-      echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+      echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
       exit 1
     fi
   )
@@ -289,7 +289,7 @@ function find_binaries()
   then
     find "${folder_path}" -name \* -type f ! -iname "*.cmake" ! -iname "*.txt" ! -iname "*.rst" ! -iname "*.html" ! -iname "*.json" ! -iname "*.py" ! -iname "*.pyc" ! -iname "*.h" ! -iname "*.xml" ! -iname "*.a" ! -iname "*.la" ! -iname "*.spec" ! -iname "*.specs" ! -iname "*.decTest" ! -iname "*.exe" ! -iname "*.c" ! -iname "*.cxx" ! -iname "*.cpp" ! -iname "*.f" ! -iname "*.f90" ! -iname "*.png" ! -iname "*.sh" ! -iname "*.bat" ! -iname "*.tcl" ! -iname "*.cfg" ! -iname "*.md" ! -iname "*.in" ! -iname "*.pl" ! -iname "*.pm" ! -iname "*.pod" ! -iname "*.enc" ! -iname "*.msg" ! -iname "*.def" ! -iname "*.dll" ! -iname "*.m4" ! -iname "*.am" ! -iname "*.awk" ! -iname "*.scm" ! -iname "*.nls" ! -iname "*.info" ! -iname "*.ld" ! -iname "*.gif" ! -iname "*.pem" ! -iname "*.zip" ! -iname "*.tpl" ! -iname "*.tlib" | grep -v "/ldscripts/" | grep -v "/doc/" | grep -v "/locale/" | grep -v "/include/" | grep -v "/distro-info/" | sort
   else
-    echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+    echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
     exit 1
   fi
 }
@@ -380,7 +380,7 @@ function copy_dependencies_recursive()
       else
 
         file "${source_file_path}"
-        echo "Oops! ${source_file_path} not a symlink and not an elf"
+        echo "${source_file_path} not a symlink and not an elf"
         exit 1
 
       fi
@@ -821,7 +821,7 @@ function copy_dependencies_recursive()
         fi
       done
     else
-      echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+      echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
       exit 1
     fi
 
@@ -1490,7 +1490,7 @@ function clean_rpaths()
         "${new_rpath}"
 
   else
-    echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM} in clean_rpaths."
+    echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM} in clean_rpaths."
     exit 1
   fi
 }
@@ -2012,7 +2012,7 @@ function check_binaries()
       done
 
     else
-      echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+      echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
       exit 1
     fi
   ) 2>&1 | tee "${LOGS_FOLDER_PATH}/check-binaries-output-$(ndate).txt"
@@ -2251,7 +2251,7 @@ function check_binary_for_libraries()
       done
       set -e
     else
-      echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+      echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
       exit 1
     fi
   )

@@ -91,7 +91,7 @@ function run_app()
     )
 
   else
-    echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+    echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
     exit 1
   fi
 }

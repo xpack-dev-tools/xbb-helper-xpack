@@ -56,7 +56,7 @@ function xbb_set_env()
     XBB_TARGET="${XBB_HOST}"
 
   else
-    echo "Oops! Unsupported REQUESTED_TARGET_PLATFORM=${REQUESTED_TARGET_PLATFORM}."
+    echo "Unsupported REQUESTED_TARGET_PLATFORM=${REQUESTED_TARGET_PLATFORM}."
     exit 1
   fi
 
@@ -189,7 +189,7 @@ function xbb_set_compiler_env()
 
     xbb_prepare_gcc_env "${XBB_CROSS_COMPILE_PREFIX}-"
   else
-    echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+    echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
     exit 1
   fi
 
@@ -411,7 +411,7 @@ function xbb_set_extras()
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
     XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
   else
-    echo "Oops! Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+    echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
     exit 1
   fi
 
