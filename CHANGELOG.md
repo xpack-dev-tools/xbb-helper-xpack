@@ -2,6 +2,10 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2022-10-07
+
+* v0.4.0 released
+
 ## 2022-10-06
 
 * v0.3.0 released
