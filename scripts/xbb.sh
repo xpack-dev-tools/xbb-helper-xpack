@@ -199,8 +199,8 @@ function xbb_set_compiler_env()
   then
     (
       set +e
-      which ${NATIVE_CXX}
-      ${NATIVE_CXX} --version
+      which ${NATIVE_CXX} || true
+      ${NATIVE_CXX} --version || true
     )
   fi
 
