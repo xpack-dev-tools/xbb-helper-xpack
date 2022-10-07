@@ -218,7 +218,7 @@ function host_parse_options()
     WITH_STRIP="n"
   fi
 
-  # Default case, the target is the same as the host.
+  # The default case, when the target is the same as the host.
   REQUESTED_TARGET_PLATFORM="${HOST_NODE_PLATFORM}"
   REQUESTED_TARGET_ARCH="${HOST_NODE_ARCH}"
   REQUESTED_TARGET_BITS="${HOST_BITS}"
@@ -277,12 +277,12 @@ function host_parse_options()
 
   if [ "${REQUESTED_TARGET_PLATFORM}" != "${HOST_NODE_PLATFORM}" -o "${REQUESTED_TARGET_ARCH}" != "${HOST_NODE_ARCH}" ]
   then
-    # TODO: allow armv7l to run on armv8l, but with warning.
+    # TODO: allow armv7l to run on armv8l, but with a warning.
     echo "Cannot cross build --target ${REQUESTED_TARGET}"
     exit 1
   fi
 
-  # Windows is a special case, built on Linux x64.
+  # Windows is a special case, the built runs on Linux x64.
   if [ "${request_build_windows}" == "y" ]
   then
     if [ "${HOST_NODE_PLATFORM}" == "linux" ] && [ "${HOST_NODE_ARCH}" == "x64" ]
