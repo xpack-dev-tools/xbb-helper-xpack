@@ -1,23 +1,24 @@
 [![license](https://img.shields.io/github/license/xpack-dev-tools/xbb-helper-xpack)](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/LICENSE)
 
-# A source library xPack with helper files for the XBB builds
+# A source xPack with helper files for the XBB builds
 
-This project provides files to be included during builds.
+This project provides common scripts and other files useful during
+**xPack Build Box (XBB)** builds.
 
 The project is hosted on GitHub as
 [xpack-dev-tools/xbb-helper-xpack](https://github.com/xpack-dev-tools/xbb-helper-xpack).
 
 ## Maintainer info
 
-This page is addressed to developers who plan to include this source
-library into their own projects.
+This page is addressed to developers who plan to include this package into their own projects.
 
-For maintainer info, please see the
-[README-MAINTAINER](README-MAINTAINER.md) file.
+For maintainer info, please see:
+
+- [How to publish](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/README-RELEASE.md)
 
 ## Install
 
-As a source library xPack, the easiest way to add it to a project is via
+As a source xPack, the easiest way to add it to a project is via
 **xpm**, but it can also be used as any Git project, for example as a submodule.
 
 ### Prerequisites
@@ -38,7 +39,7 @@ from the `npmjs.com` registry:
 cd my-project
 xpm init # Unless a package.json is already present
 
-xpm install @xpack-dev-tools/xbb-helper@latest
+xpm install --save-dev @xpack-dev-tools/xbb-helper@latest
 
 ls -l xpacks/xpack-dev-tools-xbb-helper
 ```
@@ -75,7 +76,7 @@ into `xpack`.
 ### Overview
 
 This project includes several bash scripts with functions that can be
-used in application builds for common jobs.
+used for common jobs in application builds.
 
 ### Integration info
 
@@ -173,7 +174,12 @@ backwards incompatible changes are introduced to the public API.
 The incompatible changes, in reverse chronological order,
 are:
 
-- v1.x: initial version
+- v0.x: pre-release versions
+
+## Support
+
+For support, please use GitHub
+[Discussions](https://github.com/xpack-dev-tools/xbb-helper-xpack/discussions/).
 
 ## License
 
