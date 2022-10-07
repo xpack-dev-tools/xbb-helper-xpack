@@ -53,7 +53,8 @@ function tests_prime_wine()
   then
     (
       echo
-      winecfg &>/dev/null
+      # winecfg &>/dev/null
+      winecfg 
       echo "wine primed, testing..."
     )
   fi
