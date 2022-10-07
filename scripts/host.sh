@@ -92,7 +92,7 @@ function host_detect()
   fi
 
   echo
-  echo "Running on ${HOST_DISTRO_NAME} ${HOST_NODE_ARCH} (${HOST_BITS}-bit)."
+  echo "Running on ${HOST_DISTRO_NAME} ${HOST_NODE_ARCH} (${HOST_BITS}-bit)..."
   uname -a
 
   USER_ID=$(id -u)
@@ -107,18 +107,19 @@ function host_parse_options()
   local help_message="$1"
   shift
 
-  ACTION=""
+  local request_build_windows="n"
 
-  DO_BUILD_WINDOWS="n"
   IS_DEBUG="n"
   IS_DEVELOP=""
   WITH_STRIP="y"
   WITH_PDF="n"
   WITH_HTML="n"
   WITH_TESTS="n"
-  IS_NATIVE="y"
   WITHOUT_MULTILIB="n"
   TEST_ONLY="n"
+
+  REQUESTED_TARGET=""
+  REQUESTED_BUILD_RELATIVE_FOLDER=""
 
   if [ "$(uname)" == "Linux" ]
   then
@@ -138,7 +139,7 @@ function host_parse_options()
     case "$1" in
 
       --win|--windows)
-        DO_BUILD_WINDOWS="y"
+        request_build_windows="y"
         shift
         ;;
 
@@ -178,9 +179,25 @@ function host_parse_options()
         shift
         ;;
 
+      --target)
+        shift
+        REQUESTED_TARGET="$1"
+        shift
+        ;;
+
+      --build-folder)
+        shift
+        if [ "${1:0:1}" == "/" ]
+        then
+          echo "Only relative paths are accepted for --build-folder"
+          exit 1
+        fi
+        REQUESTED_BUILD_RELATIVE_FOLDER="$1"
+        shift
+        ;;
+
       --help)
         echo "Usage:"
-        # Some of the options are processed by the container script.
         echo "${help_message}"
         echo
         exit 0
@@ -201,12 +218,72 @@ function host_parse_options()
     WITH_STRIP="n"
   fi
 
+  # Default case, the target is the same as the host.
   REQUESTED_TARGET_PLATFORM="${HOST_NODE_PLATFORM}"
   REQUESTED_TARGET_ARCH="${HOST_NODE_ARCH}"
   REQUESTED_TARGET_BITS="${HOST_BITS}"
   REQUESTED_TARGET_MACHINE="${HOST_MACHINE}"
 
-  if [ "${DO_BUILD_WINDOWS}" == "y" ]
+  case "${REQUESTED_TARGET}" in
+    linux-x64)
+      REQUESTED_TARGET_PLATFORM="linux"
+      REQUESTED_TARGET_ARCH="x64"
+      REQUESTED_TARGET_BITS="64"
+      REQUESTED_TARGET_MACHINE="x86_64"
+      ;;
+
+    linux-arm64)
+      REQUESTED_TARGET_PLATFORM="linux"
+      REQUESTED_TARGET_ARCH="arm64"
+      REQUESTED_TARGET_BITS="64"
+      REQUESTED_TARGET_MACHINE="aarch64"
+      ;;
+
+    linux-arm)
+      REQUESTED_TARGET_PLATFORM="linux"
+      REQUESTED_TARGET_ARCH="arm"
+      REQUESTED_TARGET_BITS="32"
+      REQUESTED_TARGET_MACHINE="armv7l"
+      ;;
+
+    darwin-x64)
+      REQUESTED_TARGET_PLATFORM="darwin"
+      REQUESTED_TARGET_ARCH="x64"
+      REQUESTED_TARGET_BITS="64"
+      REQUESTED_TARGET_MACHINE="x86_64"
+      ;;
+
+    darwin-arm64)
+      REQUESTED_TARGET_PLATFORM="darwin"
+      REQUESTED_TARGET_ARCH="arm64"
+      REQUESTED_TARGET_BITS="64"
+      REQUESTED_TARGET_MACHINE="arm64"
+      ;;
+
+    win32-x64)
+      request_build_windows="y"
+      ;;
+
+    "")
+      # Keep the defaults.
+      ;;
+
+    *)
+      echo "Unknown --target $1"
+      exit 1
+      ;;
+
+  esac
+
+  if [ "${REQUESTED_TARGET_PLATFORM}" != "${HOST_NODE_PLATFORM}" -o "${REQUESTED_TARGET_ARCH}" != "${HOST_NODE_ARCH}" ]
+  then
+    # TODO: allow armv7l to run on armv8l, but with warning.
+    echo "Cannot cross build --target ${REQUESTED_TARGET}"
+    exit 1
+  fi
+
+  # Windows is a special case, built on Linux x64.
+  if [ "${request_build_windows}" == "y" ]
   then
     if [ "${HOST_NODE_PLATFORM}" == "linux" ] && [ "${HOST_NODE_ARCH}" == "x64" ]
     then
@@ -215,15 +292,26 @@ function host_parse_options()
       REQUESTED_TARGET_BITS="64"
       REQUESTED_TARGET_MACHINE="x86_64"
     else
-      echo "Windows cross builds are available only on Intel GNU/Linux."
+      echo "Windows cross builds are available only on Intel GNU/Linux"
       exit 1
     fi
   fi
+
+  export IS_DEBUG
+  export IS_DEVELOP
+  export WITH_STRIP
+  export WITH_PDF
+  export WITH_HTML
+  export WITH_TESTS
+  export WITHOUT_MULTILIB
+  export TEST_ONLY
 
   export REQUESTED_TARGET_PLATFORM
   export REQUESTED_TARGET_ARCH
   export REQUESTED_TARGET_BITS
   export REQUESTED_TARGET_MACHINE
+
+  export REQUESTED_BUILD_RELATIVE_FOLDER
 }
 
 # -----------------------------------------------------------------------------
