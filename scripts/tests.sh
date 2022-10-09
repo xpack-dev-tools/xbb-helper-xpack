@@ -50,7 +50,10 @@ function tests_parse_options()
         ;;
 
       --version )
-        RELEASE_VERSION="$2"
+        if [ "$2" != "current" ]
+        then
+          RELEASE_VERSION="$2"
+        fi
         shift 2
         ;;
 
