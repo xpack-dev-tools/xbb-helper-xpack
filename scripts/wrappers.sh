@@ -115,3 +115,107 @@ function run_verbose_develop()
 # test_expect
 
 # -----------------------------------------------------------------------------
+
+function is_pe()
+{
+  if [ $# -lt 1 ]
+  then
+    warning "is_pe: Missing arguments"
+    exit 1
+  fi
+
+  local bin_path="$1"
+
+  # Symlinks do not match.
+  if [ -L "${bin_path}" ]
+  then
+    return 1
+  fi
+
+  if [ -f "${bin_path}" ]
+  then
+    if [ "${TARGET_PLATFORM}" == "win32" ]
+    then
+      file ${bin_path} | egrep -q "( PE )|( PE32 )|( PE32\+ )"
+    else
+      return 1
+    fi
+  else
+    return 1
+  fi
+}
+
+function is_elf()
+{
+  if [ $# -lt 1 ]
+  then
+    warning "is_elf: Missing arguments"
+    exit 1
+  fi
+
+  local bin_path="$1"
+
+  # Symlinks do not match.
+  if [ -L "${bin_path}" ]
+  then
+    return 1
+  fi
+
+  if [ -f "${bin_path}" ]
+  then
+    # Return 0 (true) if found.
+    if [ "${TARGET_PLATFORM}" == "linux" ]
+    then
+      file ${bin_path} | egrep -q "( ELF )"
+    elif [ "${TARGET_PLATFORM}" == "darwin" ]
+    then
+      # This proved to be very tricky.
+      file ${bin_path} | egrep -q "x86_64:Mach-O|arm64e:Mach-O|Mach-O.*x86_64|Mach-O.*arm64"
+    else
+      return 1
+    fi
+  else
+    return 1
+  fi
+}
+
+function is_elf_dynamic()
+{
+  if [ $# -lt 1 ]
+  then
+    warning "is_elf_dynamic: Missing arguments"
+    exit 1
+  fi
+
+  local bin_path="$1"
+
+  if is_elf "${bin_path}"
+  then
+    # Return 0 (true) if found.
+    file ${bin_path} | egrep -q "dynamically"
+  else
+    return 1
+  fi
+
+}
+
+function is_dynamic()
+{
+  if [ $# -lt 1 ]
+  then
+    warning "is_dynamic: Missing arguments"
+    exit 1
+  fi
+
+  local bin_path="$1"
+
+  if [ -f "${bin_path}" ]
+  then
+    # Return 0 (true) if found.
+    file ${bin_path} | egrep -q "dynamically"
+  else
+    return 1
+  fi
+}
+
+# -----------------------------------------------------------------------------
