@@ -126,3 +126,8 @@ When the release is considered stable, promote it as `latest`:
 - `npm dist-tag ls @xpack-dev-tools/xbb-helper`
 - `npm dist-tag add @xpack-dev-tools/xbb-helper@0.5.5 latest`
 - `npm dist-tag ls @xpack-dev-tools/xbb-helper`
+
+If necessary, unpublish previous releases:
+
+- `npm unpublish @xpack-dev-tools/xbb-helper@X.Y.Z`
+
