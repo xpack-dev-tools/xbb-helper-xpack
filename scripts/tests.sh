@@ -118,6 +118,11 @@ function tests_set_target()
   REQUESTED_TARGET_BITS="${HOST_BITS}"
   REQUESTED_TARGET_MACHINE="${HOST_MACHINE}"
 
+  TARGET_PLATFORM="${REQUESTED_TARGET_PLATFORM}"
+  TARGET_ARCH="${REQUESTED_TARGET_ARCH}"
+  TARGET_BITS="${REQUESTED_TARGET_BITS}"
+  TARGET_MACHINE="${REQUESTED_TARGET_MACHINE}"
+
   if [ "${FORCE_32_BIT}" == "y" ]
   then
     if [ "${REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
@@ -127,16 +132,15 @@ function tests_set_target()
       TARGET_ARCH="arm"
       TARGET_BITS="32"
       TARGET_MACHINE="armv8l"
+    elif [ "${REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
+       [ "${REQUESTED_TARGET_ARCH}" == "arm" ]
+    then
+      echo "Already a 32-bit platform, --32 ineffective"
     else
       echo "Cannot run 32-bit tests on ${TARGET_MACHINE}"
       exit 1
     fi
   fi
-
-  TARGET_PLATFORM="${REQUESTED_TARGET_PLATFORM}"
-  TARGET_ARCH="${REQUESTED_TARGET_ARCH}"
-  TARGET_BITS="${REQUESTED_TARGET_BITS}"
-  TARGET_MACHINE="${REQUESTED_TARGET_MACHINE}"
 
   export REQUESTED_TARGET_PLATFORM
   export REQUESTED_TARGET_ARCH
