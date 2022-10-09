@@ -10,18 +10,6 @@
 
 # -----------------------------------------------------------------------------
 
-function get_current_version()
-{
-  local version_file_path="${scripts_folder_path}/VERSION"
-  if [ $# -ge 1 ]
-  then
-    version_file_path="$1"
-  fi
-
-  # Extract only the first line
-  cat "${version_file_path}" | sed -e '2,$d'
-}
-
 function trigger_github_workflow()
 {
   local github_org="$1"
