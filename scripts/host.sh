@@ -124,10 +124,18 @@ function host_detect()
   echo "Running on ${HOST_DISTRO_NAME} ${HOST_NODE_ARCH} (${HOST_BITS}-bit)..."
   uname -a
 
-  USER_ID=$(id -u)
-  USER_NAME="$(id -u -n)"
-  GROUP_ID=$(id -g)
-  GROUP_NAME="$(id -g -n)"
+  if false # Not available on Windows.
+  then
+    USER_ID=$(id -u)
+    USER_NAME="$(id -u -n)"
+    GROUP_ID=$(id -g)
+    GROUP_NAME="$(id -g -n)"
+
+    export USER_ID
+    export USER_NAME
+    export GROUP_ID
+    export GROUP_NAME
+  fi
 
   export HOST_UNAME # uname
   export HOST_MACHINE # lower case uname -m, x86_64|i386|i686|aarch64|armv7l|armv8l
@@ -136,10 +144,6 @@ function host_detect()
   export HOST_NODE_PLATFORM # darwin|linux|win32
   export HOST_NODE_ARCH # ia32|x64|arm|arm64
   export HOST_BITS # 64|32
-  export USER_ID
-  export USER_NAME
-  export GROUP_ID
-  export GROUP_NAME
 }
 
 # -----------------------------------------------------------------------------
