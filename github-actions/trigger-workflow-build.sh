@@ -72,22 +72,22 @@ while [ $# -gt 0 ]
 do
   case "$1" in
 
-    --branch)
+    --branch )
       branch="$2"
       shift 2
       ;;
 
-    --version)
+    --version )
       version="$2"
       shift 2
       ;;
 
-    --machine)
+    --machine )
       workflow_id="build-${2}.yml"
       shift 2
       ;;
 
-    --*)
+    --* )
       echo "Unsupported option $1."
       exit 1
       ;;
