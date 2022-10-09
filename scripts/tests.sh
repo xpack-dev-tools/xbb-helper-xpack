@@ -215,7 +215,6 @@ function tests_install_archive()
     run_verbose tar xf "${tests_folder_path}/${archive_name}"
   fi
 
-  run_verbose echo ls -lL "${ARCHIVE_INSTALL_FOLDER_PATH}"
   run_verbose ls -lL "${ARCHIVE_INSTALL_FOLDER_PATH}"
 }
 
