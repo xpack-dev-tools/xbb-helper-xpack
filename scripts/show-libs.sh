@@ -71,7 +71,7 @@ function show_libs()
         ldd -v "${app_path}" || true
         set -e
       else
-        if [ -f "${app_path}" ]
+        if false # [ -f "${app_path}" ]
         then
           run_verbose ls -l "${app_path}"
           if [ "${IS_DEVELOP}" == "y" ]
