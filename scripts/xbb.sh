@@ -87,7 +87,7 @@ function xbb_set_env()
     # (usually something like "${HOME}/Work")
     # group all targets below a versioned application folder.
     TARGET_WORK_FOLDER_PATH="${WORK_FOLDER_PATH}/${APP_LC_NAME}-${RELEASE_VERSION}/${TARGET_FOLDER_NAME}"
-  elif [ ! -z "${REQUESTED_BUILD_RELATIVE_FOLDER}" ]
+  elif [ ! -z "${REQUESTED_BUILD_RELATIVE_FOLDER:-}" ]
   then
     # If the user provides an explicit relative folder, use it.
     TARGET_WORK_FOLDER_PATH="${project_folder_path}/${REQUESTED_BUILD_RELATIVE_FOLDER}"
