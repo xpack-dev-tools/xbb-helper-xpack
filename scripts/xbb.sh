@@ -16,9 +16,8 @@ function xbb_set_env()
   PATH="${PATH:-""}"
   LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
 
-  export PATH
-  export LD_LIBRARY_PATH
-
+  # Set the actual to the requested. This is useful in case the target was
+  # temporarily changed for native builds.
   TARGET_PLATFORM="${REQUESTED_TARGET_PLATFORM}"
   TARGET_ARCH="${REQUESTED_TARGET_ARCH}"
   TARGET_BITS="${REQUESTED_TARGET_BITS}"
@@ -29,6 +28,8 @@ function xbb_set_env()
   then
     DASH_V="-v"
   fi
+
+  CI="false"
 
   DOT_EXE=""
   # Compute the BUILD/HOST/TARGET for configure.
@@ -41,6 +42,8 @@ function xbb_set_env()
 
     DOT_EXE=".exe"
 
+    SHLIB_EXT="dll"
+
     # Use the 64-bit mingw-w64 gcc to compile Windows binaries.
     XBB_CROSS_COMPILE_PREFIX="x86_64-w64-mingw32"
 
@@ -48,8 +51,19 @@ function xbb_set_env()
     XBB_HOST="${XBB_CROSS_COMPILE_PREFIX}"
     XBB_TARGET="${XBB_HOST}"
 
-  elif [ "${REQUESTED_TARGET_PLATFORM}" == "darwin" -o "${TARGET_PLATFORM}" == "linux" ]
+  elif [ "${REQUESTED_TARGET_PLATFORM}" == "linux" ]
   then
+
+    SHLIB_EXT="so"
+
+    XBB_BUILD=$(xbb_config_guess)
+    XBB_HOST="${XBB_BUILD}"
+    XBB_TARGET="${XBB_HOST}"
+
+  elif [ "${REQUESTED_TARGET_PLATFORM}" == "darwin" ]
+  then
+
+    SHLIB_EXT="dylib"
 
     XBB_BUILD=$(xbb_config_guess)
     XBB_HOST="${XBB_BUILD}"
@@ -59,10 +73,6 @@ function xbb_set_env()
     echo "Unsupported REQUESTED_TARGET_PLATFORM=${REQUESTED_TARGET_PLATFORM}."
     exit 1
   fi
-
-  export XBB_BUILD
-  export XBB_HOST
-  export XBB_TARGET
 
   # ---------------------------------------------------------------------------
 
@@ -131,9 +141,41 @@ function xbb_set_env()
 
   DISTRO_INFO_NAME=${DISTRO_INFO_NAME:-"distro-info"}
 
+  if [ ! -z "$(which pkg-config-verbose)" -a "${IS_DEVELOP}" == "y" ]
+  then
+    PKG_CONFIG="$(which pkg-config-verbose)"
+  elif [ ! -z "$(which pkg-config)" ]
+  then
+    PKG_CONFIG="$(which pkg-config)"
+  fi
+
+  # Hopefully defining it empty would be enough...
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-""}
+
+  # Prevent pkg-config to search the system folders (configured in the
+  # pkg-config at build time).
+  PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-""}
+
   # libtool fails with the old Ubuntu /bin/sh.
   # export SHELL="/bin/bash"
   # export CONFIG_SHELL="/bin/bash"
+
+  export PATH
+  export LD_LIBRARY_PATH
+
+  export CI
+  export DOT_V
+  export DOT_EXE
+  export SHLIB_EXT
+
+  export TARGET_PLATFORM
+  export TARGET_ARCH
+  export TARGET_BITS
+  export TARGET_MACHINE
+
+  export XBB_BUILD
+  export XBB_HOST
+  export XBB_TARGET
 
   export TARGET_WORK_FOLDER_PATH
   export DOWNLOAD_FOLDER_PATH
@@ -149,11 +191,14 @@ function xbb_set_env()
   export BUILD_GIT_PATH
   export DISTRO_INFO_NAME
 
+  export PKG_CONFIG
+  export PKG_CONFIG_PATH
+  export PKG_CONFIG_LIBDIR
+
   # ---------------------------------------------------------------------------
 
-  # echo "PATH=${PATH}"
-
   echo
+  echo "XBB environment..."
   env | sort
 }
 
@@ -274,7 +319,7 @@ function xbb_prepare_gcc_env()
   export WINDMC="${prefix}windmc"
   export RC="${prefix}windres"
 
-  xbb_set_extras
+  xbb_set_compiler_flags
 }
 
 function xbb_prepare_clang_env()
@@ -304,10 +349,10 @@ function xbb_prepare_clang_env()
   # export WINDMC="${prefix}windmc"
   # export RC="${prefix}windres"
 
-  xbb_set_extras
+  xbb_set_compiler_flags
 }
 
-function xbb_set_extras()
+function xbb_set_compiler_flags()
 {
   XBB_CPPFLAGS=""
 
@@ -340,8 +385,6 @@ function xbb_set_extras()
 
   if [ "${TARGET_PLATFORM}" == "linux" ]
   then
-    SHLIB_EXT="so"
-
     # Do not add -static here, it fails.
     # Do not try to link pthread statically, it must match the system glibc.
     XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
@@ -349,8 +392,6 @@ function xbb_set_extras()
     XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
   elif [ "${TARGET_PLATFORM}" == "darwin" ]
   then
-    SHLIB_EXT="dylib"
-
     if [ "${TARGET_ARCH}" == "x64" ]
     then
       export MACOSX_DEPLOYMENT_TARGET="10.13"
@@ -385,7 +426,6 @@ function xbb_set_extras()
     fi
   elif [ "${TARGET_PLATFORM}" == "win32" ]
   then
-    SHLIB_EXT="dll"
 
     # Note: use this explcitly in the application.
     # prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
@@ -421,21 +461,6 @@ function xbb_set_extras()
   XBB_CFLAGS_NO_W="${XBB_CFLAGS} -w"
   XBB_CXXFLAGS_NO_W="${XBB_CXXFLAGS} -w"
 
-  if [ ! -z "$(which pkg-config-verbose)" -a "${IS_DEVELOP}" == "y" ]
-  then
-    PKG_CONFIG="$(which pkg-config-verbose)"
-  elif [ ! -z "$(which pkg-config)" ]
-  then
-    PKG_CONFIG="$(which pkg-config)"
-  fi
-
-  # Hopefully defining it empty would be enough...
-  PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-""}
-
-  # Prevent pkg-config to search the system folders (configured in the
-  # pkg-config at build time).
-  PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-""}
-
   set +u
   echo
   echo "CC=${CC}"
@@ -447,15 +472,9 @@ function xbb_set_extras()
   echo "XBB_LDFLAGS_LIB=${XBB_LDFLAGS_LIB}"
   echo "XBB_LDFLAGS_APP=${XBB_LDFLAGS_APP}"
   echo "XBB_LDFLAGS_APP_STATIC_GCC=${XBB_LDFLAGS_APP_STATIC_GCC}"
-
-  echo "PKG_CONFIG=${PKG_CONFIG:-}"
-  echo "PKG_CONFIG_PATH=${PKG_CONFIG_PATH}"
-  echo "PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR}"
   set -u
 
   # ---------------------------------------------------------------------------
-
-  export SHLIB_EXT
 
   # CC & co were exported by prepare_gcc_env.
   export XBB_CPPFLAGS
@@ -470,10 +489,6 @@ function xbb_set_extras()
   export XBB_LDFLAGS_LIB
   export XBB_LDFLAGS_APP
   export XBB_LDFLAGS_APP_STATIC_GCC
-
-  export PKG_CONFIG
-  export PKG_CONFIG_PATH
-  export PKG_CONFIG_LIBDIR
 }
 
 function xbb_set_binaries_install()
