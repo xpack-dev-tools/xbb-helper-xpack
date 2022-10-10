@@ -52,7 +52,6 @@ source "${scripts_folder_path}/definitions.sh"
 
 # Helper functions
 source "${helper_folder_path}/github-actions/common.sh"
-source "${helper_folder_path}/scripts/xbb.sh"
 
 # -----------------------------------------------------------------------------
 
