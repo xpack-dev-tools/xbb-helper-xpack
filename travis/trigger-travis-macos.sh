@@ -52,6 +52,7 @@ source "${scripts_folder_path}/definitions.sh"
 
 # Helper functions
 source "${helper_folder_path}/travis/common.sh"
+source "${helper_folder_path}/scripts/xbb.sh"
 
 # -----------------------------------------------------------------------------
 
