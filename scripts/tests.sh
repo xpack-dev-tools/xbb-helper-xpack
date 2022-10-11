@@ -282,6 +282,16 @@ function tests_perform_common()
 
   if [ -f "/.dockerenv" ]
   then
+    # Inside a Docker container.
+    if [ -n "${IMAGE_NAME}" ]
+    then
+      (
+        # When running in a Docker container, the system may be minimal; update it.
+        export LANG="C"
+        tests_update_system "${IMAGE_NAME}"
+      )
+    fi
+
     # The Debian npm docker images have nvm installed in the /root folder;
     # import the nvm settings into the environment to get access to node/npm.
     if [ -d "/root/.nvm" ]
@@ -291,6 +301,16 @@ function tests_perform_common()
       [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
       hash -r
+    fi
+  else
+    # Not inside a Docker; perhaps a GitHub Actions VM.
+    if [ "${GITHUB_ACTIONS:-""}" == "true" -a "${RUNNER_OS:-""}" == "Linux" ]
+    then
+      (
+        # Currently "ubuntu20".
+        export LANG="C"
+        tests_update_system "github-actions-${ImageOS}"
+      )
     fi
   fi
 
