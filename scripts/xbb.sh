@@ -14,25 +14,28 @@ function xbb_make_writable()
 {
   if [ -f "/.dockerenv" ]
   then
-    echo
-    echo "Make build folder writable by all..."
+    (
+      set +e
 
-    echo "${project_folder_path}/build"
-    if [ -d "${project_folder_path}/build" ]
-    then
-      # Be a nice citizen and allow the created folders to be removed by users.
-      run_verbose chmod -Rv a+w "${project_folder_path}/build"
-    fi
+      echo
+      echo "Make build folder writable by all..."
 
-    echo
-    echo "Make xpacks folder writable by all..."
+      if [ -d "${project_folder_path}/build" ]
+      then
+        # Be a nice citizen and allow the created folders to be removed by users.
+        run_verbose chmod -R a+w "${project_folder_path}/build"
+        # For unknown reasons, it returns 2, thus the set -e.
+      fi
 
-    if [ -d "${project_folder_path}/xpacks" ]
-    then
-      # chmod ignores symbolic links encountered during recursive directory traversals
-      run_verbose chmod -R a+w "${project_folder_path}/xpacks"
-    fi
+      echo
+      echo "Make xpacks folder writable by all..."
 
+      if [ -d "${project_folder_path}/xpacks" ]
+      then
+        # chmod ignores symbolic links encountered during recursive directory traversals
+        run_verbose chmod -R a+w "${project_folder_path}/xpacks"
+      fi
+    )
   fi
 }
 
