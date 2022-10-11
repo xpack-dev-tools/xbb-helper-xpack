@@ -17,10 +17,11 @@ function xbb_make_writable()
     echo
     echo "Make build folder writable by all..."
 
+    echo "${project_folder_path}/build"
     if [ -d "${project_folder_path}/build" ]
     then
       # Be a nice citizen and allow the created folders to be removed by users.
-      chmod -R a+w "${project_folder_path}/build"
+      run_verbose chmod -Rv a+w "${project_folder_path}/build"
     fi
 
     echo
@@ -29,7 +30,7 @@ function xbb_make_writable()
     if [ -d "${project_folder_path}/xpacks" ]
     then
       # chmod ignores symbolic links encountered during recursive directory traversals
-      chmod -R a+w "${project_folder_path}/xpacks"
+      run_verbose chmod -R a+w "${project_folder_path}/xpacks"
     fi
 
   fi
