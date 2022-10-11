@@ -276,8 +276,6 @@ function tests_install_via_xpm()
 
 function tests_perform_common()
 {
-  host_detect
-
   # ---------------------------------------------------------------------------
 
   if [ -f "/.dockerenv" ]
@@ -315,6 +313,8 @@ function tests_perform_common()
   fi
 
   # ---------------------------------------------------------------------------
+
+  host_detect
 
   tests_set_target
 
