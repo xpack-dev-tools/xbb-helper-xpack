@@ -24,7 +24,6 @@ function xbb_make_writable()
       then
         # Be a nice citizen and allow the created folders to be removed by users.
         run_verbose chmod -R a+w "${project_folder_path}/build"
-        # For unknown reasons, it returns 2, thus the set -e.
       fi
 
       echo
@@ -32,8 +31,11 @@ function xbb_make_writable()
 
       if [ -d "${project_folder_path}/xpacks" ]
       then
-        # chmod ignores symbolic links encountered during recursive directory traversals
-        run_verbose chmod -R a+w "${project_folder_path}/xpacks"
+        run_verbose chmod a+w "${project_folder_path}/xpacks"
+      fi
+      if [ -d "${project_folder_path}/xpacks/.bin" ]
+      then
+        run_verbose chmod a+w "${project_folder_path}/xpacks/.bin"
       fi
     )
   fi
