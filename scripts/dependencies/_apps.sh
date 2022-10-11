@@ -50,6 +50,7 @@ function build_patchelf()
   if [ ! -f "${patchelf_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${patchelf_url}" "${patchelf_archive}" \
@@ -165,6 +166,7 @@ function build_patchelf()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${patchelf_stamp_file_path}"
 
   else
@@ -231,6 +233,7 @@ function build_automake()
   if [ ! -f "${automake_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${automake_url}" "${automake_archive}" \
@@ -330,6 +333,7 @@ function build_automake()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${automake_stamp_file_path}"
 
   else
@@ -376,6 +380,7 @@ function build_findutils()
   if [ ! -f "${findutils_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${findutils_url}" "${findutils_archive}" \
@@ -475,6 +480,7 @@ function build_findutils()
       test_findutils
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${findutils_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${findutils_stamp_file_path}"
 
   else
@@ -725,6 +731,7 @@ function build_mingw_headers()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${mingw_headers_stamp_file_path}"
 
   else
@@ -842,6 +849,7 @@ function build_mingw_crt()
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-crt-output-$(ndate).txt"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${mingw_crt_stamp_file_path}"
 
   else
@@ -933,6 +941,7 @@ function build_mingw_winpthreads()
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-winpthreads-output-$(ndate).txt"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${mingw_winpthreads_stamp_file_path}"
 
   else
@@ -1013,6 +1022,7 @@ function build_mingw_winstorecompat()
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-winstorecompat-output-$(ndate).txt"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${mingw_winstorecompat_stamp_file_path}"
 
   else
@@ -1093,6 +1103,7 @@ function build_mingw_libmangle()
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-libmangle-output-$(ndate).txt"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${mingw_libmangle_stamp_file_path}"
 
   else
@@ -1174,6 +1185,7 @@ function build_mingw_gendef()
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-gendef-output-$(ndate).txt"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${mingw_gendef_stamp_file_path}"
 
   else
@@ -1260,6 +1272,7 @@ function build_mingw_widl()
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-widl-output-$(ndate).txt"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${mingw_widl_stamp_file_path}"
 
   else
@@ -1302,6 +1315,7 @@ function build_qemu()
   if [ ! -f "${qemu_stamp_file_path}" ] || [ "${IS_DEBUG}" == "y" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     if [ ! -d "${SOURCES_FOLDER_PATH}/${qemu_src_folder_name}" ]
@@ -1485,7 +1499,9 @@ function build_qemu()
         "qemu-${QEMU_VERSION}"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${qemu_stamp_file_path}"
+
   else
     echo "Component qemu ${qemu_target} already installed."
   fi
@@ -1545,6 +1561,7 @@ function build_native_binutils()
   if [ ! -f "${binutils_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${binutils_url}" "${binutils_archive}" \
@@ -1564,7 +1581,9 @@ function build_native_binutils()
 
         rm -rf gcc
 
+        mkdir -pv "${STAMPS_FOLDER_PATH}"
         touch "${binutils_prerequisites_download_stamp_file_path}"
+
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${binutils_folder_name}/prerequisites-download-output-$(ndate).txt"
     fi
 
@@ -1833,7 +1852,9 @@ function build_native_binutils()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${binutils_stamp_file_path}"
+
   else
     echo "Component binutils${name_suffix} already installed."
   fi
@@ -1931,6 +1952,7 @@ function build_cross_binutils()
   then
 
     # Download binutils.
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
     download_and_extract "${BINUTILS_ARCHIVE_URL}" "${BINUTILS_ARCHIVE_NAME}" \
         "${BINUTILS_SRC_FOLDER_NAME}" "${binutils_patch}"
@@ -2096,6 +2118,7 @@ function build_cross_binutils()
         "${binutils_folder_name}"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${binutils_stamp_file_path}"
 
   else
@@ -2188,7 +2211,8 @@ function download_cross_gcc()
   if [ ! -d "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}" ]
   then
     (
-      cd "${SOURCES_FOLDER_PATH}"
+      mkdir -pv "${SOURCES_FOLDER_PATH}"
+    cd "${SOURCES_FOLDER_PATH}"
 
       download_and_extract "${GCC_ARCHIVE_URL}" \
         "${GCC_ARCHIVE_NAME}" "${GCC_SRC_FOLDER_NAME}" \
@@ -2217,6 +2241,7 @@ function build_cross_gcc_first()
   if [ ! -f "${gcc_first_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_cross_gcc
@@ -2394,6 +2419,7 @@ function build_cross_gcc_first()
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_first_folder_name}/make-output-$(ndate).txt"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${gcc_first_stamp_file_path}"
 
   else
@@ -2425,6 +2451,7 @@ function build_cross_newlib()
   if [ ! -f "${newlib_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     if [ ! -d "${NEWLIB_SRC_FOLDER_NAME}" ]
@@ -2665,7 +2692,9 @@ function build_cross_newlib()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${newlib_stamp_file_path}"
+
   else
     echo "Component cross newlib$1 already installed."
   fi
@@ -2735,7 +2764,7 @@ function copy_cross_multi_libs()
 
 function copy_cross_linux_libs()
 {
-  local copy_linux_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-copy-linux-completed"
+  local copy_linux_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-copy-linux-completed"
   if [ ! -f "${copy_linux_stamp_file_path}" ]
   then
 
@@ -2757,6 +2786,8 @@ function copy_cross_linux_libs()
         -perm /111 -and ! -type d \
         -exec rm '{}' ';'
     )
+
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${copy_linux_stamp_file_path}"
 
   else
@@ -2796,6 +2827,7 @@ function build_cross_gcc_final()
   if [ ! -f "${gcc_final_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_cross_gcc
@@ -3141,6 +3173,7 @@ function build_cross_gcc_final()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${gcc_final_stamp_file_path}"
 
   else
@@ -3290,7 +3323,8 @@ function build_cross_gdb()
     # Download gdb
     if [ ! -d "${SOURCES_FOLDER_PATH}/${GDB_SRC_FOLDER_NAME}" ]
     then
-      cd "${SOURCES_FOLDER_PATH}"
+      mkdir -pv "${SOURCES_FOLDER_PATH}"
+    cd "${SOURCES_FOLDER_PATH}"
 
       download_and_extract "${GDB_ARCHIVE_URL}" "${GDB_ARCHIVE_NAME}" \
           "${GDB_SRC_FOLDER_NAME}" "${GDB_PATCH_FILE_NAME}"
@@ -3566,7 +3600,9 @@ function build_cross_gdb()
       fi
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${gdb_stamp_file_path}"
+    
   else
     echo "Component cross gdb${name_suffix} already installed."
   fi

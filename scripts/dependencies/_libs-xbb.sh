@@ -44,6 +44,7 @@ function build_libtasn1()
   if [ ! -f "${libtasn1_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libtasn1_url}" "${libtasn1_archive}" \
@@ -142,6 +143,7 @@ function build_libtasn1()
         "${libtasn1_folder_name}"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libtasn1_stamp_file_path}"
 
   else
@@ -177,6 +179,7 @@ function build_libunistring()
   if [ ! -f "${libunistring_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libunistring_url}" "${libunistring_archive}" \
@@ -277,6 +280,7 @@ function build_libunistring()
         "${libunistring_folder_name}"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libunistring_stamp_file_path}"
 
   else
@@ -321,6 +325,7 @@ function build_gc()
   if [ ! -f "${gc_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gc_url}" "${gc_archive}" \
@@ -449,6 +454,7 @@ function build_gc()
       test_gc_libs
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gc_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${gc_stamp_file_path}"
 
   else
@@ -505,6 +511,7 @@ function build_gnutls()
   if [ ! -f "${gnutls_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gnutls_url}" "${gnutls_archive}" \
@@ -653,6 +660,7 @@ function build_gnutls()
       test_gnutls "${BINS_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gnutls_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${gnutls_stamp_file_path}"
 
   else
@@ -718,6 +726,7 @@ function build_xorg_util_macros()
   if [ ! -f "${xorg_util_macros_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${xorg_util_macros_url}" "${xorg_util_macros_archive}" \
@@ -812,6 +821,7 @@ function build_xorg_util_macros()
         "${xorg_util_macros_folder_name}"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${xorg_util_macros_stamp_file_path}"
 
   else
@@ -848,6 +858,7 @@ function build_xorg_xproto()
   if [ ! -f "${xorg_xproto_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${xorg_xproto_url}" "${xorg_xproto_archive}" \
@@ -948,6 +959,7 @@ function build_xorg_xproto()
         "${xorg_xproto_folder_name}"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${xorg_xproto_stamp_file_path}"
 
   else

@@ -170,6 +170,7 @@ function build_zlib()
       test_zlib_libs "${name_suffix}"
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${zlib_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${zlib_stamp_file_path}"
 
   else
@@ -230,6 +231,7 @@ function build_gmp()
   if [ ! -f "${gmp_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gmp_url}" "${gmp_archive}" \
@@ -410,6 +412,7 @@ function build_gmp()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${gmp_stamp_file_path}"
 
   else
@@ -451,6 +454,7 @@ function build_mpfr()
   if [ ! -f "${mpfr_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${mpfr_url}" "${mpfr_archive}" \
@@ -581,6 +585,8 @@ function build_mpfr()
       fi
 
     )
+
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${mpfr_stamp_file_path}"
 
   else
@@ -626,6 +632,7 @@ function build_mpc()
   if [ ! -f "${mpc_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${mpc_url}" "${mpc_archive}" \
@@ -745,6 +752,8 @@ function build_mpc()
       fi
 
     )
+
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${mpc_stamp_file_path}"
 
   else
@@ -794,6 +803,7 @@ function build_isl()
   if [ ! -f "${isl_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${isl_url}" "${isl_archive}" \
@@ -930,6 +940,8 @@ function build_isl()
       fi
 
     )
+
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${isl_stamp_file_path}"
 
   else
@@ -974,6 +986,7 @@ function build_zstd()
   if [ ! -f "${zstd_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${zstd_github_url}" "${zstd_archive}" \
@@ -1085,6 +1098,8 @@ function build_zstd()
       )
 
     )
+
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${zstd_stamp_file_path}"
 
   else
@@ -1125,6 +1140,7 @@ function build_libiconv()
   if [ ! -f "${libiconv_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libiconv_url}" "${libiconv_archive}" \
@@ -1240,6 +1256,7 @@ function build_libiconv()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libiconv_stamp_file_path}"
 
   else
@@ -1300,6 +1317,7 @@ function build_ncurses()
   if [ ! -f "${ncurses_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${ncurses_url}" "${ncurses_archive}" \
@@ -1506,6 +1524,7 @@ function build_ncurses()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${ncurses_stamp_file_path}"
 
   else
@@ -1551,6 +1570,7 @@ function build_libffi()
   if [ ! -f "${libffi_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libffi_github_url}" "${libffi_archive}" \
@@ -1658,6 +1678,7 @@ function build_libffi()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libffi_stamp_file_path}"
 
   else
@@ -1698,6 +1719,7 @@ function build_gettext()
   if [ ! -f "${gettext_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gettext_url}" "${gettext_archive}" \
@@ -1844,6 +1866,7 @@ function build_gettext()
       test_gettext "${BINS_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gettext_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${gettext_stamp_file_path}"
 
   else
@@ -1904,6 +1927,7 @@ function build_libelf()
   if [ ! -f "${libelf_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libelf_url}" "${libelf_archive}" \
@@ -1994,6 +2018,7 @@ function build_libelf()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libelf_stamp_file_path}"
 
   else
@@ -2042,6 +2067,7 @@ function build_expat()
   if [ ! -f "${expat_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${expat_url}" "${expat_archive}" \
@@ -2129,6 +2155,7 @@ function build_expat()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${expat_stamp_file_path}"
 
   else
@@ -2168,6 +2195,7 @@ function build_xz()
   if [ ! -f "${xz_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${xz_url}" "${xz_archive}" \
@@ -2268,6 +2296,7 @@ function build_xz()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${xz_stamp_file_path}"
 
   else
@@ -2436,6 +2465,7 @@ function build_gpm()
         "${gpm_folder_name}"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${gpm_stamp_file_path}"
 
   else
@@ -2581,6 +2611,7 @@ function build_mpdecimal()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${mpdecimal_stamp_file_path}"
 
   else
@@ -2629,6 +2660,7 @@ function build_libxcrypt()
   if [ ! -f "${libxcrypt_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     set +e
@@ -2765,6 +2797,7 @@ function build_libxcrypt()
       test_libxcrypt
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libxcrypt_stamp_file_path}"
 
   else
@@ -3116,6 +3149,7 @@ function build_openssl()
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${openssl_folder_name}/test-output-$(ndate).txt"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${openssl_stamp_file_path}"
 
   else
@@ -3228,6 +3262,7 @@ function build_sqlite()
   if [ ! -f "${sqlite_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${sqlite_url}" "${sqlite_archive}" \
@@ -3349,6 +3384,7 @@ function build_sqlite()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${sqlite_stamp_file_path}"
 
   else
@@ -3398,6 +3434,7 @@ function build_readline()
   if [ ! -f "${readline_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${readline_url}" "${readline_archive}" \
@@ -3483,6 +3520,7 @@ function build_readline()
       test_readline
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${readline_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${readline_stamp_file_path}"
 
   else
@@ -3743,6 +3781,7 @@ function build_bzip2()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${bzip2_stamp_file_path}"
 
   else
@@ -3800,6 +3839,7 @@ function build_lzo()
   if [ ! -f "${lzo_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${lzo_url}" "${lzo_archive}" \
@@ -3891,6 +3931,7 @@ function build_lzo()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${lzo_stamp_file_path}"
 
   else
@@ -3933,6 +3974,7 @@ function build_python2()
   if [ ! -f "${python2_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${python2_url}" "${python2_archive}" \
@@ -4052,6 +4094,7 @@ function build_python2()
       "${SOURCES_FOLDER_PATH}/${PYTHON2_SRC_FOLDER_NAME}" \
       "${python2_folder_name}"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${python2_stamp_file_path}"
 
   else
@@ -4119,7 +4162,8 @@ function download_python2_win()
   (
     if [ ! -d "${PYTHON2_WIN_SRC_FOLDER_NAME}" ]
     then
-      cd "${SOURCES_FOLDER_PATH}"
+      mkdir -pv "${SOURCES_FOLDER_PATH}"
+    cd "${SOURCES_FOLDER_PATH}"
 
       # Include only the headers and the python library and executable.
       local tmp_path="/tmp/included$$"
@@ -4211,6 +4255,7 @@ function build_python3()
   if [ ! -f "${python3_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${python3_url}" "${python3_archive}" \
@@ -4362,6 +4407,7 @@ function build_python3()
       "${SOURCES_FOLDER_PATH}/${python3_src_folder_name}" \
       "${python3_folder_name}"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${python3_stamp_file_path}"
 
   else
@@ -4463,6 +4509,7 @@ function download_python3_win()
   # The full source is needed for the headers.
   if [ ! -d "${SOURCES_FOLDER_PATH}/${PYTHON3_SRC_FOLDER_NAME}" ]
   then
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${python3_url}" "${python3_archive}" \
@@ -4641,6 +4688,7 @@ function build_libpng()
   if [ ! -f "${libpng_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libpng_url}" "${libpng_archive}" \
@@ -4728,6 +4776,7 @@ function build_libpng()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libpng_stamp_file_path}"
 
   else
@@ -4768,6 +4817,7 @@ function build_jpeg()
   if [ ! -f "${jpeg_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${jpeg_url}" "${jpeg_archive}" \
@@ -4852,6 +4902,7 @@ function build_jpeg()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${jpeg_stamp_file_path}"
 
   else
@@ -4891,6 +4942,7 @@ function build_pixman()
   if [ ! -f "${pixman_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${pixman_url}" "${pixman_archive}" \
@@ -4999,6 +5051,7 @@ function build_pixman()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${pixman_stamp_file_path}"
 
   else
@@ -5053,6 +5106,7 @@ function build_glib2()
   if [ ! -f "${glib_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${glib_url}" "${glib_archive}" \
@@ -5227,6 +5281,7 @@ function build_glib2()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${glib_stamp_file_path}"
 
   else
@@ -5281,6 +5336,7 @@ function build_libxml2()
   if [ ! -f "${libxml2_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libxml2_url}" "${libxml2_archive}" \
@@ -5397,6 +5453,7 @@ function build_libxml2()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libxml2_stamp_file_path}"
 
   else
@@ -5433,6 +5490,7 @@ function build_libedit()
   if [ ! -f "${libedit_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libedit_url}" "${libedit_archive}" \
@@ -5534,6 +5592,7 @@ function build_libedit()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libedit_stamp_file_path}"
 
   else
@@ -5677,6 +5736,7 @@ function build_xar()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${xar_stamp_file_path}"
 
   else
@@ -5714,6 +5774,7 @@ function build_libgpg_error()
   if [ ! -f "${libgpg_error_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libgpg_error_url}" "${libgpg_error_archive}" \
@@ -5818,6 +5879,7 @@ function build_libgpg_error()
       test_libgpg_error_libs
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libgpg_error_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libgpg_error_stamp_file_path}"
 
   else
@@ -5865,6 +5927,7 @@ function build_libgcrypt()
   if [ ! -f "${libgcrypt_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libgcrypt_url}" "${libgcrypt_archive}" \
@@ -5995,6 +6058,7 @@ function build_libgcrypt()
       test_libgcrypt "${BINS_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libgcrypt_stamp_file_path}"
 
   else
@@ -6080,6 +6144,7 @@ function build_libassuan()
   if [ ! -f "${libassuan_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libassuan_url}" "${libassuan_archive}" \
@@ -6185,6 +6250,7 @@ function build_libassuan()
 
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libassuan_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libassuan_stamp_file_path}"
 
   else
@@ -6247,6 +6313,7 @@ function build_libksba()
   if [ ! -f "${libksba_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libksba_url}" "${libksba_archive}" \
@@ -6351,6 +6418,7 @@ function build_libksba()
       test_libksba "${BINS_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libksba_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libksba_stamp_file_path}"
 
   else
@@ -6409,6 +6477,7 @@ function build_npth()
   if [ ! -f "${npth_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${npth_url}" "${npth_archive}" \
@@ -6516,6 +6585,7 @@ function build_npth()
       test_npth "${BINS_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${npth_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${npth_stamp_file_path}"
 
   else
@@ -6581,6 +6651,7 @@ function build_nettle()
   if [ ! -f "${nettle_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${nettle_url}" "${nettle_archive}" \
@@ -6694,6 +6765,7 @@ function build_nettle()
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${nettle_folder_name}/make-output-$(ndate).txt"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${nettle_stamp_file_path}"
 
   else
@@ -6732,6 +6804,7 @@ function build_libusb()
   if [ ! -f "${libusb_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libusb_url}" "${libusb_archive}" \
@@ -6833,6 +6906,7 @@ function build_libusb()
         "${libusb_folder_name}"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libusb_stamp_file_path}"
 
   else
@@ -6960,6 +7034,7 @@ function build_libusb_w32()
         "${libusb_w32_folder_name}"
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libusb_w32_stamp_file_path}"
 
   else
@@ -6999,6 +7074,7 @@ function build_vde()
   if [ ! -f "${vde_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${vde_url}" "${vde_archive}" \
@@ -7100,6 +7176,7 @@ function build_vde()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${vde_stamp_file_path}"
 
   else
@@ -7137,6 +7214,7 @@ function build_libpcap()
   if [ ! -f "${libpcap_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libpcap_url}" "${libpcap_archive}" \
@@ -7218,6 +7296,7 @@ function build_libpcap()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libpcap_stamp_file_path}"
 
   else
@@ -7260,6 +7339,7 @@ function build_libssh()
   if [ ! -f "${libssh_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libssh_url}" "${libssh_archive}" \
@@ -7353,6 +7433,7 @@ function build_libssh()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libssh_stamp_file_path}"
 
   else
@@ -7395,6 +7476,7 @@ function build_sdl2()
   if [ ! -f "${sdl2_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${sdl2_url}" "${sdl2_archive}" \
@@ -7503,6 +7585,7 @@ function build_sdl2()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${sdl2_stamp_file_path}"
 
   else
@@ -7542,6 +7625,7 @@ function build_sdl2_image()
   if [ ! -f "${sdl2_image_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${sdl2_image_url}" "${sdl2_image_archive}" \
@@ -7670,6 +7754,7 @@ function build_sdl2_image()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${sdl2_image_stamp_file_path}"
 
   else
@@ -7706,6 +7791,7 @@ function build_pcre2()
   if [ ! -f "${pcre2_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${pcre2_url}" "${pcre2_archive}" \
@@ -7801,6 +7887,7 @@ function build_pcre2()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${pcre2_stamp_file_path}"
 
   else
@@ -7836,6 +7923,7 @@ function build_termcap()
   if [ ! -f "${termcap_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     if [ ! -d "${termcap_src_folder_name}" ]
@@ -7926,6 +8014,7 @@ function build_termcap()
 
     )
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${termcap_stamp_file_path}"
 
   else

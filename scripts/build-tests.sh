@@ -15,6 +15,7 @@ function tests_initialize()
 {
   export TEST_COMMANDS_FILE_PATH="${INSTALL_FOLDER_PATH}/test-commands"
   rm -rf "${TEST_COMMANDS_FILE_PATH}"
+  mkdir -pv "${INSTALL_FOLDER_PATH}"
   touch "${TEST_COMMANDS_FILE_PATH}"
 }
 

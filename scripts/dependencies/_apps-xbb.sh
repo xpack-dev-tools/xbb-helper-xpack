@@ -97,6 +97,7 @@ function build_realpath()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${realpath_stamp_file_path}"
 
   else
@@ -223,6 +224,7 @@ function build_scons()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${scons_stamp_file_path}"
 
   else
@@ -274,6 +276,7 @@ function build_pkg_config()
   if [ ! -f "${pkg_config_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${pkg_config_url}" "${pkg_config_archive}" \
@@ -394,6 +397,7 @@ function build_pkg_config()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${pkg_config_stamp_file_path}"
 
   else
@@ -459,6 +463,7 @@ function build_curl()
   if [ ! -f "${curl_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${curl_url}" "${curl_archive}" \
@@ -616,6 +621,7 @@ function build_curl()
       test_curl "${BINS_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${curl_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${curl_stamp_file_path}"
 
   else
@@ -821,6 +827,7 @@ function build_tar()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${tar_stamp_file_path}"
 
   else
@@ -914,6 +921,7 @@ function build_libtool()
   if [ ! -f "${libtool_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libtool_url}" "${libtool_archive}" \
@@ -1040,6 +1048,7 @@ function build_libtool()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${libtool_stamp_file_path}"
 
   else
@@ -1107,6 +1116,7 @@ function build_guile()
   if [ ! -f "${guile_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${guile_url}" "${guile_archive}" \
@@ -1234,6 +1244,7 @@ function build_guile()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${guile_stamp_file_path}"
 
   else
@@ -1298,6 +1309,7 @@ function build_autogen()
   if [ ! -f "${autogen_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${autogen_url}" "${autogen_archive}" \
@@ -1428,6 +1440,7 @@ function build_autogen()
       test_autogen "${BINS_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${autogen_folder_name}/test-output-$(ndate).txt"
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${autogen_stamp_file_path}"
 
   else
@@ -1502,6 +1515,7 @@ function build_coreutils()
   if [ ! -f "${coreutils_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${coreutils_url}" "${coreutils_archive}" \
@@ -1641,6 +1655,7 @@ function build_coreutils()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${coreutils_stamp_file_path}"
 
   else
@@ -1734,6 +1749,7 @@ function build_m4()
   if [ ! -f "${m4_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${m4_url}" "${m4_archive}" \
@@ -1862,6 +1878,7 @@ function build_m4()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${m4_stamp_file_path}"
 
   else
@@ -1927,6 +1944,7 @@ function build_gawk()
   if [ ! -f "${gawk_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gawk_url}" "${gawk_archive}" \
@@ -2058,6 +2076,7 @@ function build_gawk()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${gawk_stamp_file_path}"
 
   else
@@ -2118,6 +2137,7 @@ function build_sed()
   if [ ! -f "${sed_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${sed_url}" "${sed_archive}" \
@@ -2257,6 +2277,7 @@ function build_sed()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${sed_stamp_file_path}"
 
   else
@@ -2317,6 +2338,7 @@ function build_autoconf()
   if [ ! -f "${autoconf_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${autoconf_url}" "${autoconf_archive}" \
@@ -2418,6 +2440,7 @@ function build_autoconf()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${autoconf_stamp_file_path}"
 
   else
@@ -2477,6 +2500,7 @@ function build_patch()
   if [ ! -f "${patch_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${patch_url}" "${patch_archive}" \
@@ -2580,6 +2604,7 @@ function build_patch()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${patch_stamp_file_path}"
 
   else
@@ -2636,6 +2661,7 @@ function build_diffutils()
   if [ ! -f "${diffutils_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${diffutils_url}" "${diffutils_archive}" \
@@ -2758,6 +2784,7 @@ function build_diffutils()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${diffutils_stamp_file_path}"
 
   else
@@ -2823,6 +2850,7 @@ function build_bison()
   if [ ! -f "${bison_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${bison_url}" "${bison_archive}" \
@@ -2942,6 +2970,7 @@ function build_bison()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${bison_stamp_file_path}"
 
   else
@@ -3041,6 +3070,7 @@ function build_make()
   if [ ! -f "${make_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${make_url}" "${make_archive}" \
@@ -3160,6 +3190,7 @@ function build_make()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${make_stamp_file_path}"
 
   else
@@ -3217,6 +3248,7 @@ function build_bash()
   if [ ! -f "${bash_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${bash_url}" "${bash_archive}" \
@@ -3321,6 +3353,7 @@ function build_bash()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${bash_stamp_file_path}"
 
   else
@@ -3389,6 +3422,7 @@ function build_wget()
   if [ ! -f "${wget_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${wget_url}" "${wget_archive}" \
@@ -3509,6 +3543,7 @@ function build_wget()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${wget_stamp_file_path}"
 
   else
@@ -3574,6 +3609,7 @@ function build_texinfo()
   if [ ! -f "${texinfo_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${texinfo_url}" "${texinfo_archive}" \
@@ -3689,6 +3725,7 @@ function build_texinfo()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${texinfo_stamp_file_path}"
 
   else
@@ -3825,6 +3862,7 @@ function build_dos2unix()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${dos2unix_stamp_file_path}"
 
   else
@@ -3896,6 +3934,7 @@ function build_flex()
   if [ ! -f "${flex_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${flex_url}" "${flex_archive}" \
@@ -4030,6 +4069,7 @@ function build_flex()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${flex_stamp_file_path}"
 
   else
@@ -4277,6 +4317,7 @@ function build_perl()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${perl_stamp_file_path}"
 
   else
@@ -4354,6 +4395,7 @@ function build_tcl()
   if [ ! -f "${tcl_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${tcl_url}" "${tcl_archive}" \
@@ -4484,6 +4526,7 @@ function build_tcl()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${tcl_stamp_file_path}"
 
   else
@@ -4686,6 +4729,7 @@ function build_git()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${git_stamp_file_path}"
 
   else
@@ -4848,6 +4892,7 @@ function build_p7zip()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${p7zip_stamp_file_path}"
 
   else
@@ -5020,6 +5065,7 @@ function build_rhash()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${rhash_stamp_file_path}"
 
   else
@@ -5216,6 +5262,7 @@ function build_re2c()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${re2c_stamp_file_path}"
 
   else
@@ -5297,6 +5344,7 @@ function build_gnupg()
   if [ ! -f "${gnupg_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gnupg_url}" "${gnupg_archive}" \
@@ -5428,6 +5476,7 @@ function build_gnupg()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${gnupg_stamp_file_path}"
 
   else
@@ -5504,6 +5553,7 @@ function build_makedepend()
   if [ ! -f "${makedepend_stamp_file_path}" ]
   then
 
+    mkdir -pv "${SOURCES_FOLDER_PATH}"
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${makedepend_url}" "${makedepend_archive}" \
@@ -5610,6 +5660,7 @@ function build_makedepend()
 
     hash -r
 
+    mkdir -pv "${STAMPS_FOLDER_PATH}"
     touch "${makedepend_stamp_file_path}"
 
   else
