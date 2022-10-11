@@ -15,6 +15,7 @@ function xbb_set_env()
   # Defaults, to ensure the variables are defined.
   PATH="${PATH:-""}"
   LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
+  LANG="${LANG:-"C"}"
 
   # Set the actual to the requested. This is useful in case the target was
   # temporarily changed for native builds.
@@ -162,6 +163,7 @@ function xbb_set_env()
 
   export PATH
   export LD_LIBRARY_PATH
+  export LANG
 
   export CI
   export DOT_V
