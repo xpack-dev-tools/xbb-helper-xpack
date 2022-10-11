@@ -12,7 +12,7 @@
 
 function xbb_make_writable()
 {
-  if [ -f ".dockerenv" ]
+  if [ -f "/.dockerenv" ]
   then
     echo
     echo "Make build folder writable by all..."
