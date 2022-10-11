@@ -12,16 +12,26 @@
 
 function xbb_make_writable()
 {
-  if [ -f ".dockerenv" ] && [ $(id -u) -eq 0 ]
+  if [ -f ".dockerenv" ]
   then
     echo
-    echo "Make work folder writable by all..."
+    echo "Make build folder writable by all..."
 
-    if [ ! -z ${TARGET_WORK_FOLDER_PATH+x} ] && [ -d "${TARGET_WORK_FOLDER_PATH}" ]
+    if [ -d "${project_folder_path}/build" ]
     then
       # Be a nice citizen and allow the created folders to be removed by users.
-      chmod -R a+w "${TARGET_WORK_FOLDER_PATH}"
+      chmod -R a+w "${project_folder_path}/build"
     fi
+
+    echo
+    echo "Make xpacks folder writable by all..."
+
+    if [ -d "${project_folder_path}/xpacks" ]
+    then
+      # chmod ignores symbolic links encountered during recursive directory traversals
+      chmod -R a+w "${project_folder_path}/xpacks"
+    fi
+
   fi
 }
 
