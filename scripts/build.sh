@@ -255,6 +255,9 @@ function build_perform_common()
 
   xbb_set_env
 
+  # Avoid leaving files that cannot be removed by users.
+  trap xbb_make_writable EXIT
+
   tests_initialize
 
   copy_build_files
@@ -328,6 +331,7 @@ function build_perform_common()
       )
     ) 2>&1 | tee "${LOGS_FOLDER_PATH}/post-lists-output-$(ndate).txt"
   fi
+
 
   # ---------------------------------------------------------------------------
 

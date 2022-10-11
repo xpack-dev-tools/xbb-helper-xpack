@@ -10,6 +10,21 @@
 
 # -----------------------------------------------------------------------------
 
+function xbb_make_writable()
+{
+  if [ -f ".dockerenv" ] && [ $(id -u) -eq 0 ]
+  then
+    echo
+    echo "Make work folder writable by all..."
+
+    if [ ! -z ${TARGET_WORK_FOLDER_PATH+x} ] && [ -d "${TARGET_WORK_FOLDER_PATH}" ]
+    then
+      # Be a nice citizen and allow the created folders to be removed by users.
+      chmod -R a+w "${TARGET_WORK_FOLDER_PATH}"
+    fi
+  fi
+}
+
 function xbb_set_env()
 {
   # Defaults, to ensure the variables are defined.
@@ -203,6 +218,7 @@ function xbb_set_env()
   echo "XBB environment..."
   env | sort
 }
+
 
 function xbb_config_guess()
 {
