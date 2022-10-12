@@ -320,6 +320,9 @@ function tests_perform_common()
 
   xbb_set_env
 
+  # Avoid leaving files that cannot be removed by users.
+  trap xbb_make_writable EXIT
+
   if [ "${DO_TEST_VIA_XPM}" == "y" ]
   then
     tests_install_via_xpm "${TESTS_FOLDER_PATH}"
