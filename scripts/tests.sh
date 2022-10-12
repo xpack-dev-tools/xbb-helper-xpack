@@ -169,6 +169,10 @@ function tests_install_archive()
 {
   local tests_folder_path="$1"
 
+  local archive_folder_name="${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${RELEASE_VERSION}"
+
+  export ARCHIVE_INSTALL_FOLDER_PATH="${tests_folder_path}/${archive_folder_name}"
+
   (
     local archive_extension
     local archive_architecture="${HOST_NODE_ARCH}"
@@ -183,7 +187,6 @@ function tests_install_archive()
       archive_extension="tar.gz"
     fi
     local archive_name="${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${RELEASE_VERSION}-${HOST_NODE_PLATFORM}-${archive_architecture}.${archive_extension}"
-    local archive_folder_name="${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${RELEASE_VERSION}"
 
     run_verbose rm -rf "${tests_folder_path}"
 
@@ -207,7 +210,6 @@ function tests_install_archive()
 
     echo
 
-    ARCHIVE_INSTALL_FOLDER_PATH="${tests_folder_path}/${archive_folder_name}"
 
     run_verbose cd "${tests_folder_path}"
 
