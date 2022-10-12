@@ -63,6 +63,7 @@ message="Test ${APP_DESCRIPTION} on macOS platforms"
 branch="xpack-develop"
 base_url="pre-release"
 version="${RELEASE_VERSION:-$(xbb_get_current_version)}"
+helper_git_ref="v$(xbb_get_current_helper_version)"
 
 while [ $# -gt 0 ]
 do
@@ -83,6 +84,11 @@ do
       shift 2
       ;;
 
+    --helper-git-ref )
+      helper_git_ref="$2"
+      shift 2
+      ;;
+
     --* )
       echo "Unsupported option $1."
       exit 1
@@ -99,6 +105,7 @@ create_macos_data_file \
   "${message}" \
   "${branch}" \
   "${base_url}" \
+  "${helper_git_ref}" \
   "${data_file_path}"
 
 # https://docs.travis-ci.com/user/triggering-builds/

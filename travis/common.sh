@@ -41,7 +41,8 @@ function create_macos_data_file()
   local message="$1"
   local branch="$2"
   local base_url="$3"
-  local data_file_path="$4"
+  local helper_git_ref="$4"
+  local data_file_path="$5"
 
 rm -rf "${data_file_path}"
 
@@ -67,67 +68,10 @@ cat <<__EOF__ > "${data_file_path}"
           "script": [
             "env | sort",
             "pwd",
-            "DEBUG=${DEBUG} bash scripts/helper/tests/native-test.sh --base-url ${base_url}"
-          ]
-        },
-        {
-          "name": "x64 macOS 12.1",
-          "os": "osx",
-          "arch": "amd64",
-          "osx_image": "xcode13.2",
-          "language": "minimal",
-          "script": [
-            "env | sort",
-            "pwd",
-            "DEBUG=${DEBUG} bash scripts/helper/tests/native-test.sh --base-url ${base_url}"
-          ]
-        },
-        {
-          "name": "x64 macOS 11.6",
-          "os": "osx",
-          "arch": "amd64",
-          "osx_image": "xcode13.1",
-          "language": "minimal",
-          "script": [
-            "env | sort",
-            "pwd",
-            "DEBUG=${DEBUG} bash scripts/helper/tests/native-test.sh --base-url ${base_url}"
-          ]
-        },
-        {
-          "name": "x64 macOS 11.1",
-          "os": "osx",
-          "arch": "amd64",
-          "osx_image": "xcode12.3",
-          "language": "minimal",
-          "script": [
-            "env | sort",
-            "pwd",
-            "DEBUG=${DEBUG} bash scripts/helper/tests/native-test.sh --base-url ${base_url}"
-          ]
-        },
-        {
-          "name": "x64 macOS 10.15.7",
-          "os": "osx",
-          "arch": "amd64",
-          "osx_image": "xcode12.2",
-          "language": "minimal",
-          "script": [
-            "env | sort",
-            "pwd",
-            "DEBUG=${DEBUG} bash scripts/helper/tests/native-test.sh --base-url ${base_url}"
-          ]
-        },
-        {
-          "name": "x64 macOS 10.13",
-          "os": "osx",
-          "arch": "amd64",
-          "osx_image": "xcode10.1",
-          "language": "minimal",
-          "script": [
-            "env | sort",
-            "pwd",
-            "DEBUG=${DEBUG} bash scripts/helper/tests/native-test.sh --base-url ${base_url}"
+            "mkdir -p xpacks"
+            "git clone https://github.com/xpack-dev-tools/xbb-helper-xpack xpacks/xpack-dev-tools-xbb-helper",
+            "git clone checkout ${helper_git_ref} -b xpack-develop"
+            "DEBUG=${DEBUG} bash scripts/test.sh --base-url ${base_url}"
           ]
         }
       ],
