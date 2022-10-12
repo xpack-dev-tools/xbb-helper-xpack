@@ -129,4 +129,4 @@ When the release is considered stable, promote it as `latest`:
 
 If necessary, unpublish previous releases:
 
-- `npm unpublish @xpack-dev-tools/xbb-helper@X.Y.Z`
+- `npm unpublish @xpack-dev-tools/xbb-helper@0.5.27`
