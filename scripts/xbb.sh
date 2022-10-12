@@ -10,6 +10,8 @@
 
 # -----------------------------------------------------------------------------
 
+# Be a nice citizen and allow the created folders to be removed by users.
+# Otherwise subsequent runs will fail to remove the folders (owned by root).
 function xbb_make_writable()
 {
   if [ -f "/.dockerenv" ]
@@ -17,25 +19,27 @@ function xbb_make_writable()
     (
       set +e
 
-      echo
-      echo "Make build folder writable by all..."
-
       if [ -d "${project_folder_path}/build" ]
       then
-        # Be a nice citizen and allow the created folders to be removed by users.
+        echo
+        echo "Make build folder writable by all..."
+
         run_verbose chmod -R a+w "${project_folder_path}/build"
       fi
 
-      echo
-      echo "Make xpacks folder writable by all..."
 
       if [ -d "${project_folder_path}/xpacks" ]
       then
+        echo
+        echo "Make xpacks folder writable by all..."
+
+        # Non-recursive! (Recursive fails with exit code 2)
         run_verbose chmod a+w "${project_folder_path}/xpacks"
-      fi
-      if [ -d "${project_folder_path}/xpacks/.bin" ]
-      then
-        run_verbose chmod a+w "${project_folder_path}/xpacks/.bin"
+
+        if [ -d "${project_folder_path}/xpacks/.bin" ]
+        then
+          run_verbose chmod a+w "${project_folder_path}/xpacks/.bin"
+        fi
       fi
     )
   fi
