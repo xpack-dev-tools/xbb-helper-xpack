@@ -252,7 +252,7 @@ function tests_install_via_xpm()
 {
   local tests_folder_path="$1"
 
-  XPACK_FOLDER_PATH="${tests_folder_path}/${APP_LC_NAME}-xpack"
+  export XPACK_FOLDER_PATH="${tests_folder_path}/${APP_LC_NAME}-xpack"
 
   rm -rf "${tests_folder_path}"
   mkdir -p "${XPACK_FOLDER_PATH}"
