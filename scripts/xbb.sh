@@ -659,4 +659,20 @@ function xbb_activate_cxx_rpath()
   export LD_LIBRARY_PATH
 }
 
+function xbb_get_current_package_version()
+{
+  local package_file_path="${1:-"${project_folder_path}/package.json"}"
+
+  # Extract only the first line
+  grep '"version":' "${package_file_path}" | sed -e 's|.*"version": "\(.*\)".*|\1|'
+}
+
+function xbb_get_current_helper_version()
+{
+  local package_file_path="${1:-"${project_folder_path}/package.json"}"
+
+  # Extract the semver.
+  grep '"@xpack-dev-tools/xbb-helper": "' "${package_file_path}" | sed -e 's|.*"\^\([0-9.]*\).*|\1|'
+}
+
 # -----------------------------------------------------------------------------
