@@ -70,9 +70,8 @@ cat <<__EOF__ > "${data_file_path}"
             "pwd",
             "ls -lLA",
             "env | sort",
-            "mkdir -p xpacks",
-            "git clone https://github.com/xpack-dev-tools/xbb-helper-xpack xpacks/xpack-dev-tools-xbb-helper",
-            "git checkout ${helper_git_ref} -b xpack-develop",
+            "git clone -b xpack-develop https://github.com/xpack-dev-tools/xbb-helper-xpack xpacks/xpack-dev-tools-xbb-helper",
+            "(cd xpacks/xpack-dev-tools-xbb-helper; git checkout ${helper_git_ref})",
             "DEBUG=${DEBUG} bash scripts/test.sh --base-url ${base_url}"
           ]
         }
