@@ -169,83 +169,87 @@ function tests_install_archive()
 {
   local tests_folder_path="$1"
 
-  local archive_extension
-  local archive_architecture="${HOST_NODE_ARCH}"
-  if [ "${HOST_NODE_PLATFORM}" == "win32" ]
-  then
-    archive_extension="zip"
-    if [ "${FORCE_32_BIT}" == "y" ]
+  (
+    local archive_extension
+    local archive_architecture="${HOST_NODE_ARCH}"
+    if [ "${HOST_NODE_PLATFORM}" == "win32" ]
     then
-      archive_architecture="ia32"
+      archive_extension="zip"
+      if [ "${FORCE_32_BIT}" == "y" ]
+      then
+        archive_architecture="ia32"
+      fi
+    else
+      archive_extension="tar.gz"
     fi
-  else
-    archive_extension="tar.gz"
-  fi
-  local archive_name="${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${RELEASE_VERSION}-${HOST_NODE_PLATFORM}-${archive_architecture}.${archive_extension}"
-  local archive_folder_name="${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${RELEASE_VERSION}"
+    local archive_name="${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${RELEASE_VERSION}-${HOST_NODE_PLATFORM}-${archive_architecture}.${archive_extension}"
+    local archive_folder_name="${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${RELEASE_VERSION}"
 
-  run_verbose rm -rf "${tests_folder_path}"
+    run_verbose rm -rf "${tests_folder_path}"
 
-  run_verbose mkdir -pv "${tests_folder_path}"
+    run_verbose mkdir -pv "${tests_folder_path}"
 
-  if [ "${BASE_URL}" == "pre-release" ]
-  then
-    BASE_URL=https://github.com/xpack-dev-tools/pre-releases/releases/download/test
-  elif [ "${BASE_URL}" == "release" ]
-  then
-    BASE_URL=https://github.com/xpack-dev-tools/${APP_LC_NAME}-xpack/releases/download/${RELEASE_VERSION}
-  fi
+    if [ "${BASE_URL}" == "pre-release" ]
+    then
+      BASE_URL=https://github.com/xpack-dev-tools/pre-releases/releases/download/test
+    elif [ "${BASE_URL}" == "release" ]
+    then
+      BASE_URL=https://github.com/xpack-dev-tools/${APP_LC_NAME}-xpack/releases/download/${RELEASE_VERSION}
+    fi
 
-  echo
-  echo "Downloading ${archive_name}..."
-  run_verbose curl \
-    --fail \
-    --location \
-    --output "${tests_folder_path}/${archive_name}" \
-    "${BASE_URL}/${archive_name}"
+    echo
+    echo "Downloading ${archive_name}..."
+    run_verbose curl \
+      --fail \
+      --location \
+      --output "${tests_folder_path}/${archive_name}" \
+      "${BASE_URL}/${archive_name}"
 
-  echo
+    echo
 
-  ARCHIVE_INSTALL_FOLDER_PATH="${tests_folder_path}/${archive_folder_name}"
+    ARCHIVE_INSTALL_FOLDER_PATH="${tests_folder_path}/${archive_folder_name}"
 
-  run_verbose cd "${tests_folder_path}"
+    run_verbose cd "${tests_folder_path}"
 
-  echo
-  echo "Extracting ${archive_name}..."
-  if [[ "${archive_name}" == *.zip ]]
-  then
-    run_verbose unzip -q "${tests_folder_path}/${archive_name}"
-  else
-    run_verbose tar xf "${tests_folder_path}/${archive_name}"
-  fi
+    echo
+    echo "Extracting ${archive_name}..."
+    if [[ "${archive_name}" == *.zip ]]
+    then
+      run_verbose unzip -q "${tests_folder_path}/${archive_name}"
+    else
+      run_verbose tar xf "${tests_folder_path}/${archive_name}"
+    fi
 
-  run_verbose ls -lL "${ARCHIVE_INSTALL_FOLDER_PATH}"
+    run_verbose ls -lL "${ARCHIVE_INSTALL_FOLDER_PATH}"
+  )
 }
 
 function tests_good_bye()
 {
-  echo
-  echo "All ${APP_LC_NAME} ${RELEASE_VERSION} tests completed successfully."
-
-  run_verbose uname -a
-  if [ "${HOST_NODE_PLATFORM}" == "linux" ]
-  then
-    # On opensuse/tumbleweed:latest it fails:
-    # /usr/bin/lsb_release: line 122: getopt: command not found
-    # install gnu-getopt.
-    run_verbose lsb_release -a
-    run_verbose ldd --version
-  elif [ "${HOST_NODE_PLATFORM}" == "darwin" ]
-  then
-    run_verbose sw_vers
-  fi
-
-  if false # [ ! -f "/.dockerenv" -a "${CI:-""}" != "true" ]
-  then
+  (
     echo
-    echo "To remove the temporary folders, use: ' rm -rf ${tests_xpacks_folder_path} '."
-    echo "This test also leaves a folder in ~/Downloads and an archive in ${cache_folder_path}."
-  fi
+    echo "All ${APP_LC_NAME} ${RELEASE_VERSION} tests completed successfully."
+
+    run_verbose uname -a
+    if [ "${HOST_NODE_PLATFORM}" == "linux" ]
+    then
+      # On opensuse/tumbleweed:latest it fails:
+      # /usr/bin/lsb_release: line 122: getopt: command not found
+      # install gnu-getopt.
+      run_verbose lsb_release -a
+      run_verbose ldd --version
+    elif [ "${HOST_NODE_PLATFORM}" == "darwin" ]
+    then
+      run_verbose sw_vers
+    fi
+
+    if false # [ ! -f "/.dockerenv" -a "${CI:-""}" != "true" ]
+    then
+      echo
+      echo "To remove the temporary folders, use: ' rm -rf ${tests_xpacks_folder_path} '."
+      echo "This test also leaves a folder in ~/Downloads and an archive in ${cache_folder_path}."
+    fi
+  )
 }
 
 function tests_install_via_xpm()
@@ -254,22 +258,23 @@ function tests_install_via_xpm()
 
   export XPACK_FOLDER_PATH="${tests_folder_path}/${APP_LC_NAME}-xpack"
 
-  rm -rf "${tests_folder_path}"
-  mkdir -p "${XPACK_FOLDER_PATH}"
-  cd "${XPACK_FOLDER_PATH}"
-  run_verbose pwd
+  (
+    rm -rf "${tests_folder_path}"
+    mkdir -p "${XPACK_FOLDER_PATH}"
+    cd "${XPACK_FOLDER_PATH}"
+    run_verbose pwd
 
-  run_verbose npm install --location=global xpm@latest
+    run_verbose npm install --location=global xpm@latest
 
-  run_verbose xpm init
-  if [ "${FORCE_32_BIT}" == "y" ]
-  then
-    # `NPM_PACKAGE` comes from `definitions.sh`.
-    run_verbose xpm install ${NPM_PACKAGE} --force-32bit
-  else
-    run_verbose xpm install ${NPM_PACKAGE}
-  fi
-
+    run_verbose xpm init
+    if [ "${FORCE_32_BIT}" == "y" ]
+    then
+      # `NPM_PACKAGE` comes from `definitions.sh`.
+      run_verbose xpm install ${NPM_PACKAGE} --force-32bit
+    else
+      run_verbose xpm install ${NPM_PACKAGE}
+    fi
+  )
 }
 
 # =============================================================================
