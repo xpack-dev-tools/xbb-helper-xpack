@@ -67,7 +67,7 @@ branch="xpack-develop"
 base_url="pre-release"
 version="${RELEASE_VERSION:-$(xbb_get_current_version)}"
 workflow_id="test-prime.yml"
-helper_git_ref="$(xbb_get_current_helper_version)"
+helper_git_ref="v$(xbb_get_current_helper_version)"
 
 while [ $# -gt 0 ]
 do
