@@ -67,6 +67,7 @@ branch="xpack-develop"
 base_url="pre-release"
 version="${RELEASE_VERSION:-$(xbb_get_current_version)}"
 workflow_id="test-docker-linux-arm.yml"
+helper_git_ref="xpack-develop"
 
 while [ $# -gt 0 ]
 do
@@ -84,6 +85,11 @@ do
 
     --base-url )
       base_url="$2"
+      shift 2
+      ;;
+
+    --helper-git-ref )
+      helper_git_ref="$2"
       shift 2
       ;;
 
@@ -106,7 +112,8 @@ cat <<__EOF__ > "${data_file_path}"
   "ref": "${branch}",
   "inputs": {
     "version": "${version}",
-    "base_url": "${base_url}"
+    "base_url": "${base_url}",
+    "helper-git-ref": "${helper_git_ref}"
   }
 }
 __EOF__
