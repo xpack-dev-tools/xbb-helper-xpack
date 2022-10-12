@@ -66,6 +66,92 @@ cat <<__EOF__ > "${data_file_path}"
           "osx_image": "xcode13.4.1",
           "language": "minimal",
           "script": [
+            "uname -a",
+            "sw_vers",
+            "pwd",
+            "ls -lLA",
+            "env | sort",
+            "git clone -b xpack-develop https://github.com/xpack-dev-tools/xbb-helper-xpack xpacks/xpack-dev-tools-xbb-helper",
+            "(cd xpacks/xpack-dev-tools-xbb-helper; git checkout ${helper_git_ref})",
+            "DEBUG=${DEBUG} bash scripts/test.sh --base-url ${base_url}"
+          ]
+        },
+        {
+          "name": "x64 macOS 12.1",
+          "os": "osx",
+          "arch": "amd64",
+          "osx_image": "xcode13.2",
+          "language": "minimal",
+          "script": [
+            "uname -a",
+            "sw_vers",
+            "pwd",
+            "ls -lLA",
+            "env | sort",
+            "git clone -b xpack-develop https://github.com/xpack-dev-tools/xbb-helper-xpack xpacks/xpack-dev-tools-xbb-helper",
+            "(cd xpacks/xpack-dev-tools-xbb-helper; git checkout ${helper_git_ref})",
+            "DEBUG=${DEBUG} bash scripts/test.sh --base-url ${base_url}"
+          ]
+        },
+        {
+          "name": "x64 macOS 11.6",
+          "os": "osx",
+          "arch": "amd64",
+          "osx_image": "xcode13.1",
+          "language": "minimal",
+          "script": [
+            "uname -a",
+            "sw_vers",
+            "pwd",
+            "ls -lLA",
+            "env | sort",
+            "git clone -b xpack-develop https://github.com/xpack-dev-tools/xbb-helper-xpack xpacks/xpack-dev-tools-xbb-helper",
+            "(cd xpacks/xpack-dev-tools-xbb-helper; git checkout ${helper_git_ref})",
+            "DEBUG=${DEBUG} bash scripts/test.sh --base-url ${base_url}"
+          ]
+        },
+        {
+          "name": "x64 macOS 11.1",
+          "os": "osx",
+          "arch": "amd64",
+          "osx_image": "xcode12.3",
+          "language": "minimal",
+          "script": [
+            "uname -a",
+            "sw_vers",
+            "pwd",
+            "ls -lLA",
+            "env | sort",
+            "git clone -b xpack-develop https://github.com/xpack-dev-tools/xbb-helper-xpack xpacks/xpack-dev-tools-xbb-helper",
+            "(cd xpacks/xpack-dev-tools-xbb-helper; git checkout ${helper_git_ref})",
+            "DEBUG=${DEBUG} bash scripts/test.sh --base-url ${base_url}"
+          ]
+        },
+        {
+          "name": "x64 macOS 10.15.7",
+          "os": "osx",
+          "arch": "amd64",
+          "osx_image": "xcode12.2",
+          "language": "minimal",
+          "script": [
+            "uname -a",
+            "sw_vers",
+            "pwd",
+            "ls -lLA",
+            "env | sort",
+            "git clone -b xpack-develop https://github.com/xpack-dev-tools/xbb-helper-xpack xpacks/xpack-dev-tools-xbb-helper",
+            "(cd xpacks/xpack-dev-tools-xbb-helper; git checkout ${helper_git_ref})",
+            "DEBUG=${DEBUG} bash scripts/test.sh --base-url ${base_url}"
+          ]
+        },
+        {
+          "name": "x64 macOS 10.13",
+          "os": "osx",
+          "arch": "amd64",
+          "osx_image": "xcode10.1",
+          "language": "minimal",
+          "script": [
+            "uname -a",
             "sw_vers",
             "pwd",
             "ls -lLA",
