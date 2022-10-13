@@ -67,9 +67,12 @@ echo "Download the ${APP_DESCRIPTION} binaries..."
 version=${RELEASE_VERSION:-"$(xbb_get_current_version)"}
 
 rm -rf ~/Downloads/xpack-binaries/${APP_LC_NAME}-bak
-mv ~/Downloads/xpack-binaries/${APP_LC_NAME} ~/Downloads/xpack-binaries/${APP_LC_NAME}-bak
+if [ -d ~/Downloads/xpack-binaries/${APP_LC_NAME} ]
+then
+  mv ~/Downloads/xpack-binaries/${APP_LC_NAME} ~/Downloads/xpack-binaries/${APP_LC_NAME}-bak
+fi
 
-mkdir -p ~/Downloads/xpack-binaries/${APP_LC_NAME}
+mkdir -pv ~/Downloads/xpack-binaries/${APP_LC_NAME}
 cd ~/Downloads/xpack-binaries/${APP_LC_NAME}
 
 package_file_path="${1:-"${project_folder_path}/package.json"}"
