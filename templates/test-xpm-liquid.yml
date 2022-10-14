@@ -27,6 +27,7 @@ jobs:
   linux-x64:
     name: 'Linux Intel 64-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: ubuntu-latest
+
     steps:
       - name: 'Environment'
         run: |
@@ -209,6 +210,7 @@ jobs:
         shell: bash # for --
 
     steps:
+      - name: 'Environment'
         run: |
           uname -a
           systeminfo # lsb_release -sd
