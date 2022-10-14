@@ -64,7 +64,7 @@ source "${helper_folder_path}/scripts/xbb.sh"
 message="Test ${APP_DESCRIPTION} with xpm install"
 
 branch="xpack-develop"
-version="$(get_current_package_version)"
+version="$(xbb_get_current_package_version)"
 workflow_id="test-xpm.yml"
 helper_git_ref="v$(xbb_get_current_helper_version)"
 
