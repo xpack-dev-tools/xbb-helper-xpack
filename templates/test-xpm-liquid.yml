@@ -15,6 +15,10 @@ on:
         description: 'The semver of the npm release'
         required: false
         default: 'latest'
+      helper-git-ref:
+        description: 'The helper branch, tag or SHA to checkout'
+        required: false
+        default: 'xpack-develop'
 
 jobs:
 {% for platform in platforms -%}
@@ -24,130 +28,211 @@ jobs:
     name: 'Linux Intel 64-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: ubuntu-latest
     steps:
-      - name: 'Machine'
-        run: uname -a
+      - name: 'Environment'
+        run: |
+          uname -a
+          lsb_release -sd
+          whoami
+          pwd
+          ls -lLA
+          env
 
       - name: 'Checkout project'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
+      - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
+        uses: actions/checkout@v3
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/xpack-dev-tools-xbb-helper
+          ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
+          fetch-depth: 1
+
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test'
         uses: docker://ilegeul/debian:amd64-10-npm-v1
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/xpacks/xpack-dev-tools-xbb-helper/tests/xpm-test.sh --image debian:buster --version {% raw %}${{ github.event.inputs.version }}{% endraw %}
-  {% when "linux-ia32" %}
-  linux-ia32:
-    name: 'Linux Intel 32-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Machine'
-        run: uname -a
-
-      - name: 'Checkout project'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test on Debian 10 i386'
-        uses: docker://ilegeul/debian:i386-10-npm-v1
-        with:
-          entrypoint: /usr/bin/linux32
-          args: /bin/bash xpacks/xpack-dev-tools-xbb-helper/tests/xpm-test.sh --image ilegeul/debian:i386-10-npm-v1 --version {% raw %}${{ github.event.inputs.version }}{% endraw %}
+          args: /github/workspace/scripts/test.sh --image debian:buster --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
   {% when "linux-arm64" %}
   linux-arm64:
     name: 'Linux Arm 64-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    runs-on: [self-hosted, linux, arm64, xbbla]
-    steps:
-      - name: 'Machine'
-        run: uname -a
+    # runs-on: [self-hosted, linux, arm64, xbbla]
+    runs-on: [self-hosted, linux, arm64, xbbla64]
 
+    steps:
+      - name: 'Environment'
+        run: |
+          uname -a
+          lsb_release -sd
+          whoami
+          pwd
+          ls -lLA
+          env
+
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
+        run: rm -rf * .git*
+
+      # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test on Debian 10 aarch64'
+      - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
+        uses: actions/checkout@v3
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/xpack-dev-tools-xbb-helper
+          ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
+          fetch-depth: 1
+
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test'
         uses: docker://ilegeul/debian:arm64v8-10-npm-v1
         with:
           entrypoint: /bin/bash
-          args: xpacks/xpack-dev-tools-xbb-helper/tests/xpm-test.sh --image ilegeul/debian:arm64v8-10-npm-v1 --version {% raw %}${{ github.event.inputs.version }}{% endraw %}
+          args: /github/workspace/scripts/test.sh --image ilegeul/debian:arm64v8-10-npm-v1 --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
   {% when "linux-arm" %}
   linux-arm32:
     name: 'Linux Arm 32-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    runs-on: [self-hosted, linux, arm64, xbbla]
-    steps:
-      - name: 'Machine'
-        run: uname -a
+    # runs-on: [self-hosted, linux, arm64, xbbla]
+    runs-on: [self-hosted, linux, arm, xbbla32]
 
+    steps:
+      - name: 'Environment'
+        run: |
+          uname -a
+          lsb_release -sd
+          whoami
+          pwd
+          ls -lLA
+          env
+
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
+        run: rm -rf * .git*
+
+      # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 1
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test on Debian 10 armhf'
+
+      - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
+        uses: actions/checkout@v3
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/xpack-dev-tools-xbb-helper
+          ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
+          fetch-depth: 1
+
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test'
         uses: docker://ilegeul/debian:arm32v7-10-npm-v1
         with:
-          entrypoint: /usr/bin/linux32
-          args: /bin/bash xpacks/xpack-dev-tools-xbb-helper/tests/xpm-test.sh --image ilegeul/debian:arm32v7-10-npm-v1 --version {% raw %}${{ github.event.inputs.version }}{% endraw %}
+          entrypoint: /bin/bash # /usr/bin/linux32
+          args: /github/workspace/scripts/test.sh --image ilegeul/debian:arm32v7-10-npm-v1 --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
   {% when "darwin-x64" %}
   macos-x64:
     name: 'macOS Intel 64-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: macos-latest
-    steps:
-      - name: 'Machine'
-        run: uname -a
 
+    steps:
+      - name: 'Environment'
+        run: |
+          uname -a
+          sw_vers # lsb_release -sd
+          whoami
+          pwd
+          ls -lLA
+          env
+
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
+        run: rm -rf * .git*
+
+      # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
+      - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
+        uses: actions/checkout@v3
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/xpack-dev-tools-xbb-helper
+          ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
+          fetch-depth: 1
+
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
-        run: bash xpacks/xpack-dev-tools-xbb-helper/tests/xpm-test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %}
+        run: bash scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
   {% when "darwin-arm64" %}
   macos-arm64:
     name: 'macOS Arm 64-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: [self-hosted, macos, apple]
 
     steps:
-      - name: 'Machine'
-        run: uname -a
+      - name: 'Environment'
+        run: |
+          uname -a
+          sw_vers # lsb_release -sd
+          whoami
+          pwd
+          ls -lLA
+          env
 
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
+        run: rm -rf * .git*
+
+      # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
+      - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
+        uses: actions/checkout@v3
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/xpack-dev-tools-xbb-helper
+          ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
+          fetch-depth: 1
+
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
-        run: bash xpacks/xpack-dev-tools-xbb-helper/tests/xpm-test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %}
+        run: bash scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
   {% when "win32-x64" %}
   windows-x64:
     name: 'Windows 64-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: windows-latest
-    steps:
-      - name: 'Machine'
-        run: uname -a
+    defaults:
+      run:
+        # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
+        shell: bash # for --
 
+    steps:
+        run: |
+          uname -a
+          systeminfo # lsb_release -sd
+          whoami
+          pwd
+          ls -lLA
+          env
+
+      # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 1
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
-        run: bash xpacks/xpack-dev-tools-xbb-helper/tests/xpm-test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %}
-  {% when "win32-ia32" %}
-  windows-ia32:
-    name: 'Windows 32-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    runs-on: windows-latest
-    steps:
-      - name: 'Checkout project'
-        uses: actions/checkout@v2
+      - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
+        uses: actions/checkout@v3
         with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/xpack-dev-tools-xbb-helper
+          ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 1
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
-        run: bash xpacks/xpack-dev-tools-xbb-helper/tests/xpm-test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --32
+        run: bash scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
   {% endcase -%}
 {% endfor %}
 # -----------------------------------------------------------------------------
