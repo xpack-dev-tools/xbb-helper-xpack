@@ -90,11 +90,11 @@ jobs:
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 1
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
-        uses: docker://debian:buster
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} docker test'
+        uses: docker://ubuntu:latest
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/scripts/test.sh --image debian:buster --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+          args: /github/workspace/scripts/test.sh --image ubuntu:latest --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
   {% when "linux-arm" %}
   linux-arm32:
     name: 'Linux arm32 {{ APP_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
