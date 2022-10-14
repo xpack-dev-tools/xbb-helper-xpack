@@ -10,9 +10,9 @@
 
 # Environment variables:
 #
-# - DOWNLOAD_FOLDER_PATH
-# - WITH_UPDATE_CONFIG_SUB
-# - BUILD_GIT_PATH
+# - XBB_DOWNLOAD_FOLDER_PATH
+# - XBB_WITH_UPDATE_CONFIG_SUB
+# - XBB_BUILD_GIT_PATH
 # - DEBUG
 
 # -----------------------------------------------------------------------------
@@ -46,14 +46,14 @@ function download_and_extract()
   download "${url}" "${archive_name}"
   if [ $# -ge 4 ]
   then
-    extract "${DOWNLOAD_FOLDER_PATH}/${archive_name}" "${folder_name}" "$4"
+    extract "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}" "${folder_name}" "$4"
   else
-    extract "${DOWNLOAD_FOLDER_PATH}/${archive_name}" "${folder_name}"
+    extract "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}" "${folder_name}"
   fi
 
   chmod -R +w "${folder_name}" || true
 
-  local with_update_config_sub=${WITH_UPDATE_CONFIG_SUB:-""}
+  local with_update_config_sub=${XBB_WITH_UPDATE_CONFIG_SUB:-""}
   if [ "${with_update_config_sub}" == "y" ]
   then
     update_config_sub "${folder_name}"
@@ -65,18 +65,18 @@ function download()
   local url="$1"
   local archive_name="$2"
 
-  if [ ! -f "${DOWNLOAD_FOLDER_PATH}/${archive_name}" ]
+  if [ ! -f "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}" ]
   then
     (
       echo
       echo "Downloading \"${archive_name}\" from \"${url}\"..."
-      rm -f "${DOWNLOAD_FOLDER_PATH}/${archive_name}.download"
-      mkdir -pv "${DOWNLOAD_FOLDER_PATH}"
-      run_verbose curl --insecure --fail --location --output "${DOWNLOAD_FOLDER_PATH}/${archive_name}.download" "${url}"
-      mv "${DOWNLOAD_FOLDER_PATH}/${archive_name}.download" "${DOWNLOAD_FOLDER_PATH}/${archive_name}"
+      rm -f "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.download"
+      mkdir -pv "${XBB_DOWNLOAD_FOLDER_PATH}"
+      run_verbose curl --insecure --fail --location --output "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.download" "${url}"
+      mv "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.download" "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}"
     )
   else
-    echo "File \"${DOWNLOAD_FOLDER_PATH}/${archive_name}\" already downloaded."
+    echo "File \"${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}\" already downloaded."
   fi
 }
 
@@ -122,7 +122,7 @@ function _do_patch()
   if [ ! -z "$1" ]
   then
     local patch_file_name="$1"
-    local patch_path="${BUILD_GIT_PATH}/patches/${patch_file_name}"
+    local patch_path="${XBB_BUILD_GIT_PATH}/patches/${patch_file_name}"
     if [ ! -f "${patch_path}" ]
     then
       # If not local in the project, try in the common helper.

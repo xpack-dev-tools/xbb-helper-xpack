@@ -21,14 +21,14 @@ source "${helper_folder_path}/scripts/show-libs.sh"
 
 function tests_parse_options()
 {
-  IS_DEBUG="n"
-  IS_DEVELOP="n"
+  XBB_IS_DEBUG="n"
+  XBB_IS_DEVELOP="n"
 
-  FORCE_32_BIT="n"
-  IMAGE_NAME=""
-  RELEASE_VERSION="${RELEASE_VERSION:-$(xbb_get_current_version)}"
-  BASE_URL="${BASE_URL:-}"
-  DO_TEST_VIA_XPM="n"
+  XBB_FORCE_32_BIT="n"
+  XBB_IMAGE_NAME=""
+  XBB_RELEASE_VERSION="${XBB_RELEASE_VERSION:-$(xbb_get_current_version)}"
+  XBB_BASE_URL="${XBB_BASE_URL:-}"
+  XBB_DO_TEST_VIA_XPM="n"
 
   while [ $# -gt 0 ]
   do
@@ -40,30 +40,30 @@ function tests_parse_options()
         ;;
 
       --32 )
-        FORCE_32_BIT="y"
+        XBB_FORCE_32_BIT="y"
         shift
         ;;
 
       --image )
-        IMAGE_NAME="$2"
+        XBB_IMAGE_NAME="$2"
         shift 2
         ;;
 
       --version )
         if [ "$2" != "current" ]
         then
-          RELEASE_VERSION="$2"
+          XBB_RELEASE_VERSION="$2"
         fi
         shift 2
         ;;
 
       --base-url )
-        BASE_URL="$2"
+        XBB_BASE_URL="$2"
         shift 2
         ;;
 
       --xpm )
-        DO_TEST_VIA_XPM="y"
+        XBB_DO_TEST_VIA_XPM="y"
         shift
         ;;
 
@@ -80,23 +80,23 @@ function tests_parse_options()
     esac
   done
 
-  export IS_DEBUG
-  export IS_DEVELOP
+  export XBB_IS_DEBUG
+  export XBB_IS_DEVELOP
 
-  export RELEASE_VERSION
-  export BASE_URL
-  export IMAGE_NAME
-  export FORCE_32_BIT
-  export DO_TEST_VIA_XPM
+  export XBB_RELEASE_VERSION
+  export XBB_BASE_URL
+  export XBB_IMAGE_NAME
+  export XBB_FORCE_32_BIT
+  export XBB_DO_TEST_VIA_XPM
 
   if false
   then
     echo
-    echo "RELEASE_VERSION=${RELEASE_VERSION}"
-    echo "BASE_URL=${BASE_URL}"
-    echo "FORCE_32_BIT=${FORCE_32_BIT}"
-    echo "IMAGE_NAME=${IMAGE_NAME}"
-    echo "DO_TEST_VIA_XPM=${DO_TEST_VIA_XPM}"
+    echo "XBB_RELEASE_VERSION=${XBB_RELEASE_VERSION}"
+    echo "XBB_BASE_URL=${XBB_BASE_URL}"
+    echo "XBB_FORCE_32_BIT=${XBB_FORCE_32_BIT}"
+    echo "XBB_IMAGE_NAME=${XBB_IMAGE_NAME}"
+    echo "XBB_DO_TEST_VIA_XPM=${XBB_DO_TEST_VIA_XPM}"
   fi
 }
 
@@ -104,100 +104,100 @@ function tests_parse_options()
 #
 # Sets the following variables:
 #
-# - TARGET_PLATFORM=node_platform={win32,linux,darwin}
-# - TARGET_ARCH=node_architecture={x64,ia32,arm64,arm}
-# - TARGET_BITS={32,64}
+# - XBB_TARGET_PLATFORM=node_platform={win32,linux,darwin}
+# - XBB_TARGET_ARCH=node_architecture={x64,ia32,arm64,arm}
+# - XBB_TARGET_BITS={32,64}
 #
 # It requires the host identity.
 
 function tests_set_target()
 {
   # The default case, when the target is the same as the host.
-  REQUESTED_TARGET_PLATFORM="${HOST_NODE_PLATFORM}"
-  REQUESTED_TARGET_ARCH="${HOST_NODE_ARCH}"
-  REQUESTED_TARGET_BITS="${HOST_BITS}"
-  REQUESTED_TARGET_MACHINE="${HOST_MACHINE}"
+  XBB_REQUESTED_TARGET_PLATFORM="${XBB_HOST_NODE_PLATFORM}"
+  XBB_REQUESTED_TARGET_ARCH="${XBB_HOST_NODE_ARCH}"
+  XBB_REQUESTED_TARGET_BITS="${XBB_HOST_BITS}"
+  XBB_REQUESTED_TARGET_MACHINE="${XBB_HOST_MACHINE}"
 
-  TARGET_PLATFORM="${REQUESTED_TARGET_PLATFORM}"
-  TARGET_ARCH="${REQUESTED_TARGET_ARCH}"
-  TARGET_BITS="${REQUESTED_TARGET_BITS}"
-  TARGET_MACHINE="${REQUESTED_TARGET_MACHINE}"
+  XBB_TARGET_PLATFORM="${XBB_REQUESTED_TARGET_PLATFORM}"
+  XBB_TARGET_ARCH="${XBB_REQUESTED_TARGET_ARCH}"
+  XBB_TARGET_BITS="${XBB_REQUESTED_TARGET_BITS}"
+  XBB_TARGET_MACHINE="${XBB_REQUESTED_TARGET_MACHINE}"
 
-  if [ "${FORCE_32_BIT}" == "y" ]
+  if [ "${XBB_FORCE_32_BIT}" == "y" ]
   then
-    if [ "${REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
-       [ "${REQUESTED_TARGET_ARCH}" == "arm64" ]
+    if [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
+       [ "${XBB_REQUESTED_TARGET_ARCH}" == "arm64" ]
     then
       # Pretend to be a 32-bit platform.
-      TARGET_ARCH="arm"
-      TARGET_BITS="32"
-      TARGET_MACHINE="armv8l"
-    elif [ "${REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
-       [ "${REQUESTED_TARGET_ARCH}" == "arm" ]
+      XBB_TARGET_ARCH="arm"
+      XBB_TARGET_BITS="32"
+      XBB_TARGET_MACHINE="armv8l"
+    elif [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
+       [ "${XBB_REQUESTED_TARGET_ARCH}" == "arm" ]
     then
       echo "Already a 32-bit platform, --32 ineffective"
     else
-      echo "Cannot run 32-bit tests on ${TARGET_MACHINE}"
+      echo "Cannot run 32-bit tests on ${XBB_TARGET_MACHINE}"
       exit 1
     fi
   fi
 
-  export REQUESTED_TARGET_PLATFORM
-  export REQUESTED_TARGET_ARCH
-  export REQUESTED_TARGET_BITS
-  export REQUESTED_TARGET_MACHINE
+  export XBB_REQUESTED_TARGET_PLATFORM
+  export XBB_REQUESTED_TARGET_ARCH
+  export XBB_REQUESTED_TARGET_BITS
+  export XBB_REQUESTED_TARGET_MACHINE
 
-  export TARGET_PLATFORM
-  export TARGET_ARCH
-  export TARGET_BITS
-  export TARGET_MACHINE
+  export XBB_TARGET_PLATFORM
+  export XBB_TARGET_ARCH
+  export XBB_TARGET_BITS
+  export XBB_TARGET_MACHINE
 
   if false
   then
     echo
-    echo "TARGET_PLATFORM=${TARGET_PLATFORM}"
-    echo "TARGET_ARCH=${TARGET_ARCH}"
-    echo "TARGET_BITS=${TARGET_BITS}"
-    echo "TARGET_MACHINE=${TARGET_MACHINE}"
+    echo "XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}"
+    echo "XBB_TARGET_ARCH=${XBB_TARGET_ARCH}"
+    echo "XBB_TARGET_BITS=${XBB_TARGET_BITS}"
+    echo "XBB_TARGET_MACHINE=${XBB_TARGET_MACHINE}"
   fi
 }
 
 # -----------------------------------------------------------------------------
 
-# Requires BASE_URL and lots of other variables.
+# Requires XBB_BASE_URL and lots of other variables.
 function tests_install_archive()
 {
   local tests_folder_path="$1"
 
-  local archive_folder_name="${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${RELEASE_VERSION}"
+  local archive_folder_name="${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}"
 
-  export ARCHIVE_INSTALL_FOLDER_PATH="${tests_folder_path}/${archive_folder_name}"
+  export XBB_ARCHIVE_INSTALL_FOLDER_PATH="${tests_folder_path}/${archive_folder_name}"
 
   (
     local archive_extension
-    local archive_architecture="${HOST_NODE_ARCH}"
-    if [ "${HOST_NODE_PLATFORM}" == "win32" ]
+    local archive_architecture="${XBB_HOST_NODE_ARCH}"
+    if [ "${XBB_HOST_NODE_PLATFORM}" == "win32" ]
     then
       archive_extension="zip"
-      if [ "${FORCE_32_BIT}" == "y" ]
+      if [ "${XBB_FORCE_32_BIT}" == "y" ]
       then
         archive_architecture="ia32"
       fi
     else
       archive_extension="tar.gz"
     fi
-    local archive_name="${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${RELEASE_VERSION}-${HOST_NODE_PLATFORM}-${archive_architecture}.${archive_extension}"
+    local archive_name="${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}-${XBB_HOST_NODE_PLATFORM}-${archive_architecture}.${archive_extension}"
 
     run_verbose rm -rf "${tests_folder_path}"
 
     run_verbose mkdir -pv "${tests_folder_path}"
 
-    if [ "${BASE_URL}" == "pre-release" ]
+    if [ "${XBB_BASE_URL}" == "pre-release" ]
     then
-      BASE_URL=https://github.com/xpack-dev-tools/pre-releases/releases/download/test
-    elif [ "${BASE_URL}" == "release" ]
+      XBB_BASE_URL=https://github.com/xpack-dev-tools/pre-releases/releases/download/test
+    elif [ "${XBB_BASE_URL}" == "release" ]
     then
-      BASE_URL=https://github.com/xpack-dev-tools/${APP_LC_NAME}-xpack/releases/download/${RELEASE_VERSION}
+      XBB_BASE_URL=https://github.com/xpack-dev-tools/${XBB_APPLICATION_LOWER_CASE_NAME}-xpack/releases/download/${XBB_RELEASE_VERSION}
     fi
 
     echo
@@ -206,10 +206,9 @@ function tests_install_archive()
       --fail \
       --location \
       --output "${tests_folder_path}/${archive_name}" \
-      "${BASE_URL}/${archive_name}"
+      "${XBB_BASE_URL}/${archive_name}"
 
     echo
-
 
     run_verbose cd "${tests_folder_path}"
 
@@ -222,7 +221,7 @@ function tests_install_archive()
       run_verbose tar xf "${tests_folder_path}/${archive_name}"
     fi
 
-    run_verbose ls -lL "${ARCHIVE_INSTALL_FOLDER_PATH}"
+    run_verbose ls -lL "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}"
   )
 }
 
@@ -230,17 +229,17 @@ function tests_good_bye()
 {
   (
     echo
-    echo "All ${APP_LC_NAME} ${RELEASE_VERSION} tests completed successfully."
+    echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} tests completed successfully."
 
     run_verbose uname -a
-    if [ "${HOST_NODE_PLATFORM}" == "linux" ]
+    if [ "${XBB_HOST_NODE_PLATFORM}" == "linux" ]
     then
       # On opensuse/tumbleweed:latest it fails:
       # /usr/bin/lsb_release: line 122: getopt: command not found
       # install gnu-getopt.
       run_verbose lsb_release -a
       run_verbose ldd --version
-    elif [ "${HOST_NODE_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_HOST_NODE_PLATFORM}" == "darwin" ]
     then
       run_verbose sw_vers
     fi
@@ -258,23 +257,23 @@ function tests_install_via_xpm()
 {
   local tests_folder_path="$1"
 
-  export XPACK_FOLDER_PATH="${tests_folder_path}/${APP_LC_NAME}-xpack"
+  export XBB_XPACK_FOLDER_PATH="${tests_folder_path}/${XBB_APPLICATION_LOWER_CASE_NAME}-xpack"
 
   (
     rm -rf "${tests_folder_path}"
-    mkdir -p "${XPACK_FOLDER_PATH}"
-    cd "${XPACK_FOLDER_PATH}"
+    mkdir -p "${XBB_XPACK_FOLDER_PATH}"
+    cd "${XBB_XPACK_FOLDER_PATH}"
     run_verbose pwd
 
     run_verbose npm install --location=global xpm@latest
 
     run_verbose xpm init
-    if [ "${FORCE_32_BIT}" == "y" ]
+    if [ "${XBB_FORCE_32_BIT}" == "y" ]
     then
-      # `NPM_PACKAGE` comes from `definitions.sh`.
-      run_verbose xpm install ${NPM_PACKAGE} --force-32bit
+      # `XBB_NPM_PACKAGE` comes from `definitions.sh`.
+      run_verbose xpm install ${XBB_NPM_PACKAGE} --force-32bit
     else
-      run_verbose xpm install ${NPM_PACKAGE}
+      run_verbose xpm install ${XBB_NPM_PACKAGE}
     fi
   )
 }
@@ -288,17 +287,18 @@ function tests_perform_common()
   if [ -f "/.dockerenv" ]
   then
     # Inside a Docker container.
-    if [ -n "${IMAGE_NAME}" ]
+    if [ -n "${XBB_IMAGE_NAME}" ]
     then
       (
         # When running in a Docker container, the system may be minimal; update it.
         export LANG="C"
-        tests_update_system "${IMAGE_NAME}"
+        tests_update_system "${XBB_IMAGE_NAME}"
       )
     fi
 
-    # The Debian npm docker images have nvm installed in the /root folder;
-    # import the nvm settings into the environment to get access to node/npm.
+    # The XBB docker images have nvm installed in the /root folder;
+    # import the nvm settings into the current user environment to
+    # get access to node/npm.
     if [ -d "/root/.nvm" ]
     then
       export NVM_DIR="/root/.nvm"
@@ -330,18 +330,18 @@ function tests_perform_common()
   # Avoid leaving files that cannot be removed by users.
   trap xbb_make_writable EXIT
 
-  if [ "${DO_TEST_VIA_XPM}" == "y" ]
+  if [ "${XBB_DO_TEST_VIA_XPM}" == "y" ]
   then
-    tests_install_via_xpm "${TESTS_FOLDER_PATH}"
-    tests_run_all "${XPACK_FOLDER_PATH}/xpacks/.bin"
-  elif [ ! -z "${BASE_URL}" ]
+    tests_install_via_xpm "${XBB_TESTS_FOLDER_PATH}"
+    tests_run_all "${XBB_XPACK_FOLDER_PATH}/xpacks/.bin"
+  elif [ ! -z "${XBB_BASE_URL}" ]
   then
     # Download archive and test its binaries.
-    tests_install_archive "${TESTS_FOLDER_PATH}"
-    tests_run_all "${ARCHIVE_INSTALL_FOLDER_PATH}/bin"
+    tests_install_archive "${XBB_TESTS_FOLDER_PATH}"
+    tests_run_all "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}/bin"
   else
     # Test the locally built binaries.
-    tests_run_all "${APPLICATION_INSTALL_FOLDER_PATH}/bin"
+    tests_run_all "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
   fi
 
   tests_good_bye

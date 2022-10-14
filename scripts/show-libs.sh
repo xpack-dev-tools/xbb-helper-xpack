@@ -17,10 +17,10 @@ function show_libs()
   shift
 
   (
-    if [ "${TARGET_PLATFORM}" == "linux" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
     then
       run_verbose ls -l "${app_path}"
-      if [ "${IS_DEVELOP}" == "y" ]
+      if [ "${XBB_IS_DEVELOP}" == "y" ]
       then
         run_verbose file -L "${app_path}"
       fi
@@ -33,10 +33,10 @@ function show_libs()
       echo "[ldd -v ${app_path}]"
       ldd -v "${app_path}" || true
       set -e
-    elif [ "${TARGET_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
     then
       run_verbose ls -l "${app_path}"
-      if [ "${IS_DEVELOP}" == "y" ]
+      if [ "${XBB_IS_DEVELOP}" == "y" ]
       then
         run_verbose file -L "${app_path}"
       fi
@@ -52,12 +52,12 @@ function show_libs()
         echo "${app_path}:"
       fi
       otool -L "${app_path}" | sed -e '1d'
-    elif [ "${TARGET_PLATFORM}" == "win32" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
       if is_elf "${app_path}"
       then
         run_verbose ls -l "${app_path}"
-        if [ "${IS_DEVELOP}" == "y" ]
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
           run_verbose file "${app_path}"
         fi
@@ -74,7 +74,7 @@ function show_libs()
         if false # [ -f "${app_path}" ]
         then
           run_verbose ls -l "${app_path}"
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             run_verbose file "${app_path}"
           fi
@@ -84,7 +84,7 @@ function show_libs()
         elif [ -f "${app_path}.exe" ]
         then
           run_verbose ls -l "${app_path}.exe"
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             run_verbose file "${app_path}.exe"
           fi
@@ -96,7 +96,7 @@ function show_libs()
         fi
       fi
     else
-      echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+      echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
       exit 1
     fi
   )

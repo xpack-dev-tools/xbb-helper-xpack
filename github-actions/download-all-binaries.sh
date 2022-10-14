@@ -60,11 +60,11 @@ source "${helper_folder_path}/scripts/wrappers.sh"
 # -----------------------------------------------------------------------------
 
 echo
-echo "Download the ${APP_DESCRIPTION} binaries..."
+echo "Download the ${XBB_APPLICATION_DESCRIPTION} binaries..."
 
 # -----------------------------------------------------------------------------
 
-destination_folder_path="${HOME}/Downloads/xpack-binaries/${APP_LC_NAME}"
+destination_folder_path="${HOME}/Downloads/xpack-binaries/${XBB_APPLICATION_LOWER_CASE_NAME}"
 
 download_binaries "${destination_folder_path}"
 

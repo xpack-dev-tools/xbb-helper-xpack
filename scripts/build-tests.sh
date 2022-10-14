@@ -13,15 +13,15 @@
 
 function tests_initialize()
 {
-  export TEST_COMMANDS_FILE_PATH="${INSTALL_FOLDER_PATH}/test-commands"
-  rm -rf "${TEST_COMMANDS_FILE_PATH}"
-  mkdir -pv "${INSTALL_FOLDER_PATH}"
-  touch "${TEST_COMMANDS_FILE_PATH}"
+  export XBB_TEST_COMMANDS_FILE_PATH="${XBB_INSTALL_FOLDER_PATH}/test-commands"
+  rm -rf "${XBB_TEST_COMMANDS_FILE_PATH}"
+  mkdir -pv "${XBB_INSTALL_FOLDER_PATH}"
+  touch "${XBB_TEST_COMMANDS_FILE_PATH}"
 }
 
 function tests_add()
 {
-  echo "$@" >> "${TEST_COMMANDS_FILE_PATH}"
+  echo "$@" >> "${XBB_TEST_COMMANDS_FILE_PATH}"
 }
 
 function tests_run_final()
@@ -30,7 +30,7 @@ function tests_run_final()
     echo
     echo "# Running final tests..."
 
-    for line in $(cat ${TEST_COMMANDS_FILE_PATH})
+    for line in $(cat ${XBB_TEST_COMMANDS_FILE_PATH})
     do
       if [ "${line}" != "" ]
       then
@@ -51,7 +51,7 @@ function tests_run_final()
 
 function tests_prime_wine()
 {
-  if [  "${TARGET_PLATFORM}" == "win32" ]
+  if [  "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
     (
       echo

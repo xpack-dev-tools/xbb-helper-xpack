@@ -54,31 +54,31 @@ function xbb_set_env()
 
   # Set the actual to the requested. This is useful in case the target was
   # temporarily changed for native builds.
-  TARGET_PLATFORM="${REQUESTED_TARGET_PLATFORM}"
-  TARGET_ARCH="${REQUESTED_TARGET_ARCH}"
-  TARGET_BITS="${REQUESTED_TARGET_BITS}"
-  TARGET_MACHINE="${REQUESTED_TARGET_MACHINE}"
+  XBB_TARGET_PLATFORM="${XBB_REQUESTED_TARGET_PLATFORM}"
+  XBB_TARGET_ARCH="${XBB_REQUESTED_TARGET_ARCH}"
+  XBB_TARGET_BITS="${XBB_REQUESTED_TARGET_BITS}"
+  XBB_TARGET_MACHINE="${XBB_REQUESTED_TARGET_MACHINE}"
 
-  DASH_V=""
-  if [ "${IS_DEVELOP}" == "y" ]
+  XBB_DASH_V=""
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
-    DASH_V="-v"
+    XBB_DASH_V="-v"
   fi
 
   CI="false"
 
-  DOT_EXE=""
-  # Compute the BUILD/HOST/TARGET for configure.
+  XBB_DOT_EXE=""
+  # Compute the XBB_BUILD/XBB_HOST/XBB_TARGET for configure.
   XBB_CROSS_COMPILE_PREFIX=""
-  if [ "${REQUESTED_TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "win32" ]
   then
 
     # Disable tests when cross compiling for Windows.
-    WITH_TESTS="n"
+    XBB_WITH_TESTS="n"
 
-    DOT_EXE=".exe"
+    XBB_DOT_EXE=".exe"
 
-    SHLIB_EXT="dll"
+    XBB_SHLIB_EXT="dll"
 
     # Use the 64-bit mingw-w64 gcc to compile Windows binaries.
     XBB_CROSS_COMPILE_PREFIX="x86_64-w64-mingw32"
@@ -87,34 +87,34 @@ function xbb_set_env()
     XBB_HOST="${XBB_CROSS_COMPILE_PREFIX}"
     XBB_TARGET="${XBB_HOST}"
 
-  elif [ "${REQUESTED_TARGET_PLATFORM}" == "linux" ]
+  elif [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "linux" ]
   then
 
-    SHLIB_EXT="so"
+    XBB_SHLIB_EXT="so"
 
     XBB_BUILD=$(xbb_config_guess)
     XBB_HOST="${XBB_BUILD}"
     XBB_TARGET="${XBB_HOST}"
 
-  elif [ "${REQUESTED_TARGET_PLATFORM}" == "darwin" ]
+  elif [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "darwin" ]
   then
 
-    SHLIB_EXT="dylib"
+    XBB_SHLIB_EXT="dylib"
 
     XBB_BUILD=$(xbb_config_guess)
     XBB_HOST="${XBB_BUILD}"
     XBB_TARGET="${XBB_HOST}"
 
   else
-    echo "Unsupported REQUESTED_TARGET_PLATFORM=${REQUESTED_TARGET_PLATFORM}."
+    echo "Unsupported XBB_REQUESTED_TARGET_PLATFORM=${XBB_REQUESTED_TARGET_PLATFORM}."
     exit 1
   fi
 
   # ---------------------------------------------------------------------------
 
-  RELEASE_VERSION="${RELEASE_VERSION:-$(xbb_get_current_version)}"
+  XBB_RELEASE_VERSION="${XBB_RELEASE_VERSION:-$(xbb_get_current_version)}"
 
-  TARGET_FOLDER_NAME="${TARGET_PLATFORM}-${TARGET_ARCH}"
+  XBB_TARGET_FOLDER_NAME="${XBB_TARGET_PLATFORM}-${XBB_TARGET_ARCH}"
 
   # Decide where to run the build for the requested target.
   if [ ! -z ${WORK_FOLDER_PATH+x} ]
@@ -122,62 +122,61 @@ function xbb_set_env()
     # If the work folder is defined in the environent
     # (usually something like "${HOME}/Work")
     # group all targets below a versioned application folder.
-    TARGET_WORK_FOLDER_PATH="${WORK_FOLDER_PATH}/${APP_LC_NAME}-${RELEASE_VERSION}/${TARGET_FOLDER_NAME}"
-  elif [ ! -z "${REQUESTED_BUILD_RELATIVE_FOLDER:-}" ]
+    XBB_TARGET_WORK_FOLDER_PATH="${WORK_FOLDER_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}/${XBB_TARGET_FOLDER_NAME}"
+  elif [ ! -z "${XBB_REQUESTED_BUILD_RELATIVE_FOLDER:-}" ]
   then
     # If the user provides an explicit relative folder, use it.
-    TARGET_WORK_FOLDER_PATH="${project_folder_path}/${REQUESTED_BUILD_RELATIVE_FOLDER}"
+    XBB_TARGET_WORK_FOLDER_PATH="${project_folder_path}/${XBB_REQUESTED_BUILD_RELATIVE_FOLDER}"
   else
     # The default is inside the project build folder.
-    TARGET_WORK_FOLDER_PATH="${project_folder_path}/build/${TARGET_FOLDER_NAME}"
+    XBB_TARGET_WORK_FOLDER_PATH="${project_folder_path}/build/${XBB_TARGET_FOLDER_NAME}"
   fi
-  BUILD_GIT_PATH="${project_folder_path}"
+  XBB_BUILD_GIT_PATH="${project_folder_path}"
 
-  DOWNLOAD_FOLDER_PATH="${DOWNLOAD_FOLDER_PATH:-"${HOME}/Work/cache"}"
+  XBB_DOWNLOAD_FOLDER_PATH="${XBB_DOWNLOAD_FOLDER_PATH:-"${HOME}/Work/cache"}"
 
-  SOURCES_FOLDER_NAME="${SOURCES_FOLDER_NAME:-sources}"
-  SOURCES_FOLDER_PATH="${TARGET_WORK_FOLDER_PATH}/${SOURCES_FOLDER_NAME}"
-  # mkdir -pv "${SOURCES_FOLDER_PATH}"
+  XBB_SOURCES_FOLDER_NAME="${XBB_SOURCES_FOLDER_NAME:-sources}"
+  XBB_SOURCES_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_SOURCES_FOLDER_NAME}"
+  # mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
 
-  BUILD_FOLDER_NAME="${BUILD_FOLDER_NAME-build}"
-  BUILD_FOLDER_PATH="${TARGET_WORK_FOLDER_PATH}/${BUILD_FOLDER_NAME}"
-  # mkdir -pv "${BUILD_FOLDER_PATH}"
+  XBB_BUILD_FOLDER_NAME="${XBB_BUILD_FOLDER_NAME-build}"
+  XBB_BUILD_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_BUILD_FOLDER_NAME}"
+  # mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
 
-  INSTALL_FOLDER_NAME="${INSTALL_FOLDER_NAME:-install}"
-  INSTALL_FOLDER_PATH="${TARGET_WORK_FOLDER_PATH}/${INSTALL_FOLDER_NAME}"
+  XBB_INSTALL_FOLDER_NAME="${XBB_INSTALL_FOLDER_NAME:-install}"
+  XBB_INSTALL_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
 
-  DEPENDENCIES_INSTALL_FOLDER_PATH="${INSTALL_FOLDER_PATH}/dependencies"
-  # mkdir -pv "${DEPENDENCIES_INSTALL_FOLDER_PATH}"
-  APPLICATION_INSTALL_FOLDER_PATH="${INSTALL_FOLDER_PATH}/${APP_LC_NAME}"
-  # mkdir -pv "${APPLICATION_INSTALL_FOLDER_PATH}"
+  XBB_DEPENDENCIES_INSTALL_FOLDER_PATH="${XBB_INSTALL_FOLDER_PATH}/dependencies"
+  # mkdir -pv "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
+  XBB_APPLICATION_INSTALL_FOLDER_PATH="${XBB_INSTALL_FOLDER_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}"
+  # mkdir -pv "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
 
-  APPLICATION_DOC_INSTALL_FOLDER_PATH="${INSTALL_FOLDER_PATH}/${APP_LC_NAME}/share/doc"
+  XBB_APPLICATION_DOC_INSTALL_FOLDER_PATH="${XBB_INSTALL_FOLDER_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}/share/doc"
 
   # Deprecated!
-  # APP_PREFIX="${INSTALL_FOLDER_PATH}/${APP_LC_NAME}"
+  # APP_PREFIX="${XBB_INSTALL_FOLDER_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}"
   # The documentation location is now the same on all platforms.
   # APP_PREFIX_DOC="${APP_PREFIX}/share/doc"
 
-  STAMPS_FOLDER_NAME="${STAMPS_FOLDER_NAME:-stamps}"
-  STAMPS_FOLDER_PATH="${TARGET_WORK_FOLDER_PATH}/${STAMPS_FOLDER_NAME}"
-  # mkdir -pv "${STAMPS_FOLDER_PATH}"
+  XBB_STAMPS_FOLDER_NAME="${XBB_STAMPS_FOLDER_NAME:-stamps}"
+  XBB_STAMPS_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_STAMPS_FOLDER_NAME}"
+  # mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
 
-  LOGS_FOLDER_NAME="${LOGS_FOLDER_NAME:-logs}"
-  LOGS_FOLDER_PATH="${TARGET_WORK_FOLDER_PATH}/${LOGS_FOLDER_NAME}"
-  # mkdir -pv "${LOGS_FOLDER_PATH}"
+  XBB_LOGS_FOLDER_NAME="${XBB_LOGS_FOLDER_NAME:-logs}"
+  XBB_LOGS_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_LOGS_FOLDER_NAME}"
+  # mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
 
-  DEPLOY_FOLDER_NAME="${DEPLOY_FOLDER_NAME:-deploy}"
-  # DEPLOY_FOLDER_PATH="${PROJECT_WORK_FOLDER_PATH}/${DEPLOY_FOLDER_NAME}"
-  DEPLOY_FOLDER_PATH="${TARGET_WORK_FOLDER_PATH}/${DEPLOY_FOLDER_NAME}"
-  # mkdir -pv "${DEPLOY_FOLDER_PATH}"
+  XBB_DEPLOY_FOLDER_NAME="${XBB_DEPLOY_FOLDER_NAME:-deploy}"
+  XBB_DEPLOY_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_DEPLOY_FOLDER_NAME}"
+  # mkdir -pv "${XBB_DEPLOY_FOLDER_PATH}"
 
-  TESTS_FOLDER_NAME="${TESTS_FOLDER_NAME:-tests}"
-  TESTS_FOLDER_PATH="${TARGET_WORK_FOLDER_PATH}/${TESTS_FOLDER_NAME}"
+  XBB_TESTS_FOLDER_NAME="${XBB_TESTS_FOLDER_NAME:-tests}"
+  XBB_TESTS_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_TESTS_FOLDER_NAME}"
   # Created if needed.
 
-  DISTRO_INFO_NAME=${DISTRO_INFO_NAME:-"distro-info"}
+  XBB_DISTRO_INFO_NAME=${XBB_DISTRO_INFO_NAME:-"distro-info"}
 
-  if [ ! -z "$(which pkg-config-verbose)" -a "${IS_DEVELOP}" == "y" ]
+  if [ ! -z "$(which pkg-config-verbose)" -a "${XBB_IS_DEVELOP}" == "y" ]
   then
     PKG_CONFIG="$(which pkg-config-verbose)"
   elif [ ! -z "$(which pkg-config)" ]
@@ -201,32 +200,32 @@ function xbb_set_env()
   export LANG
 
   export CI
-  export DOT_V
-  export DOT_EXE
-  export SHLIB_EXT
+  export XBB_DASH_V
+  export XBB_DOT_EXE
+  export XBB_SHLIB_EXT
 
-  export TARGET_PLATFORM
-  export TARGET_ARCH
-  export TARGET_BITS
-  export TARGET_MACHINE
+  export XBB_TARGET_PLATFORM
+  export XBB_TARGET_ARCH
+  export XBB_TARGET_BITS
+  export XBB_TARGET_MACHINE
 
   export XBB_BUILD
   export XBB_HOST
   export XBB_TARGET
 
-  export TARGET_WORK_FOLDER_PATH
-  export DOWNLOAD_FOLDER_PATH
-  export SOURCES_FOLDER_PATH
-  export BUILD_FOLDER_PATH
-  export INSTALL_FOLDER_PATH
-  export DEPENDENCIES_INSTALL_FOLDER_PATH
-  export APPLICATION_INSTALL_FOLDER_PATH
-  export STAMPS_FOLDER_PATH
-  export DEPLOY_FOLDER_PATH
-  export TESTS_FOLDER_PATH
+  export XBB_TARGET_WORK_FOLDER_PATH
+  export XBB_DOWNLOAD_FOLDER_PATH
+  export XBB_SOURCES_FOLDER_PATH
+  export XBB_BUILD_FOLDER_PATH
+  export XBB_INSTALL_FOLDER_PATH
+  export XBB_DEPENDENCIES_INSTALL_FOLDER_PATH
+  export XBB_APPLICATION_INSTALL_FOLDER_PATH
+  export XBB_STAMPS_FOLDER_PATH
+  export XBB_DEPLOY_FOLDER_PATH
+  export XBB_TESTS_FOLDER_PATH
 
-  export BUILD_GIT_PATH
-  export DISTRO_INFO_NAME
+  export XBB_BUILD_GIT_PATH
+  export XBB_DISTRO_INFO_NAME
 
   export PKG_CONFIG
   export PKG_CONFIG_PATH
@@ -259,31 +258,31 @@ function xbb_get_current_version()
 
 function xbb_set_compiler_env()
 {
-  if [ "${TARGET_PLATFORM}" == "darwin" ]
+  if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
   then
     xbb_prepare_clang_env
-  elif [ "${TARGET_PLATFORM}" == "linux" ]
+  elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
   then
     xbb_prepare_gcc_env
-  elif [ "${TARGET_PLATFORM}" == "win32" ]
+  elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
-    export NATIVE_CC="gcc"
-    export NATIVE_CXX="g++"
+    export XBB_NATIVE_CC="gcc"
+    export XBB_NATIVE_CXX="g++"
 
     xbb_prepare_gcc_env "${XBB_CROSS_COMPILE_PREFIX}-"
   else
-    echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
     exit 1
   fi
 
   echo
 
-  if [ "${TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
     (
       set +e
-      which ${NATIVE_CXX} || true
-      ${NATIVE_CXX} --version || true
+      which ${XBB_NATIVE_CXX} || true
+      ${XBB_NATIVE_CXX} --version || true
     )
   fi
 
@@ -397,15 +396,15 @@ function xbb_set_compiler_flags()
   XBB_CFLAGS="-ffunction-sections -fdata-sections -pipe"
   XBB_CXXFLAGS="-ffunction-sections -fdata-sections -pipe"
 
-  if [ "${TARGET_ARCH}" == "x64" -o "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
+  if [ "${XBB_TARGET_ARCH}" == "x64" -o "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
   then
-    XBB_CFLAGS+=" -m${TARGET_BITS}"
-    XBB_CXXFLAGS+=" -m${TARGET_BITS}"
+    XBB_CFLAGS+=" -m${XBB_TARGET_BITS}"
+    XBB_CXXFLAGS+=" -m${XBB_TARGET_BITS}"
   fi
 
   XBB_LDFLAGS=""
 
-  if [ "${IS_DEBUG}" == "y" ]
+  if [ "${XBB_IS_DEBUG}" == "y" ]
   then
     XBB_CFLAGS+=" -g -O0"
     XBB_CXXFLAGS+=" -g -O0"
@@ -416,40 +415,40 @@ function xbb_set_compiler_flags()
     XBB_LDFLAGS+=" -O2"
   fi
 
-  if [ "${IS_DEVELOP}" == "y" ]
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
     XBB_LDFLAGS+=" -v"
   fi
 
-  if [ "${TARGET_PLATFORM}" == "linux" ]
+  if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
   then
     # Do not add -static here, it fails.
     # Do not try to link pthread statically, it must match the system glibc.
     XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
     XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
-  elif [ "${TARGET_PLATFORM}" == "darwin" ]
+  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
   then
-    if [ "${TARGET_ARCH}" == "x64" ]
+    if [ "${XBB_TARGET_ARCH}" == "x64" ]
     then
-      export MACOSX_DEPLOYMENT_TARGET="10.13"
-    elif [ "${TARGET_ARCH}" == "arm64" ]
+      export XBB_MACOSX_DEPLOYMENT_TARGET="10.13"
+    elif [ "${XBB_TARGET_ARCH}" == "arm64" ]
     then
-      export MACOSX_DEPLOYMENT_TARGET="11.0"
+      export XBB_MACOSX_DEPLOYMENT_TARGET="11.0"
     else
-      echo "Unknown TARGET_ARCH ${TARGET_ARCH}"
+      echo "Unknown XBB_TARGET_ARCH ${XBB_TARGET_ARCH}"
       exit 1
     fi
 
     if [[ ${CC} =~ .*clang.* ]]
     then
-      XBB_CFLAGS+=" -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
-      XBB_CXXFLAGS+=" -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+      XBB_CFLAGS+=" -mmacosx-version-min=${XBB_MACOSX_DEPLOYMENT_TARGET}"
+      XBB_CXXFLAGS+=" -mmacosx-version-min=${XBB_MACOSX_DEPLOYMENT_TARGET}"
     fi
 
     # Note: macOS linker ignores -static-libstdc++, so
     # libstdc++.6.dylib should be handled.
-    XBB_LDFLAGS+=" -Wl,-macosx_version_min,${MACOSX_DEPLOYMENT_TARGET}"
+    XBB_LDFLAGS+=" -Wl,-macosx_version_min,${XBB_MACOSX_DEPLOYMENT_TARGET}"
 
     # With GCC 11.2 path are longer, and post-processing may fail:
     # error: /Library/Developer/CommandLineTools/usr/bin/install_name_tool: changing install names or rpaths can't be redone for: /Users/ilg/Work/gcc-11.2.0-2/darwin-x64/install/gcc/libexec/gcc/x86_64-apple-darwin17.7.0/11.2.0/g++-mapper-server (for architecture x86_64) because larger updated load commands do not fit (the program must be relinked, and you may need to use -headerpad or -headerpad_max_install_names)
@@ -462,11 +461,11 @@ function xbb_set_compiler_flags()
     then
       XBB_LDFLAGS_APP_STATIC_GCC+=" -static-libgcc"
     fi
-  elif [ "${TARGET_PLATFORM}" == "win32" ]
+  elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
 
     # Note: use this explcitly in the application.
-    # prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
+    # prepare_gcc_env "${XBB_CROSS_COMPILE_PREFIX}-"
 
     # To make `access()` not fail when passing a non-zero mode.
     # https://sourceforge.net/p/mingw-w64/mailman/message/37372220/
@@ -492,7 +491,7 @@ function xbb_set_compiler_flags()
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
     XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
   else
-    echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
     exit 1
   fi
 
@@ -531,12 +530,12 @@ function xbb_set_compiler_flags()
 
 function xbb_set_binaries_install()
 {
-  export BINARIES_INSTALL_FOLDER_PATH="$1"
+  export XBB_BINARIES_INSTALL_FOLDER_PATH="$1"
 }
 
 function xbb_set_libraries_install()
 {
-  export LIBRARIES_INSTALL_FOLDER_PATH="$1"
+  export XBB_LIBRARIES_INSTALL_FOLDER_PATH="$1"
 }
 
 # Add the freshly built binaries.
@@ -545,20 +544,20 @@ function xbb_activate_installed_bin()
   echo "xbb_activate_installed_bin"
 
   # Add the XBB bin to the PATH.
-  if [ ! -z ${DEPENDENCIES_INSTALL_FOLDER_PATH+x} ]
+  if [ ! -z ${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH+x} ]
   then
     # When invoked from tests, the libs are not available.
-    PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
+    PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
   fi
 
-  if [ ! -z ${APPLICATION_INSTALL_FOLDER_PATH+x} ]
+  if [ ! -z ${XBB_APPLICATION_INSTALL_FOLDER_PATH+x} ]
   then
-    PATH="${APPLICATION_INSTALL_FOLDER_PATH}/bin:${APPLICATION_INSTALL_FOLDER_PATH}/usr/bin:${PATH}"
+    PATH="${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin:${XBB_APPLICATION_INSTALL_FOLDER_PATH}/usr/bin:${PATH}"
   fi
 
-  if [ ! -z ${TEST_BIN_PATH+x} ]
+  if [ ! -z ${XBB_TEST_BIN_PATH+x} ]
   then
-    PATH="${TEST_BIN_PATH}:${PATH}"
+    PATH="${XBB_TEST_BIN_PATH}:${PATH}"
   fi
 
   export PATH
@@ -572,45 +571,45 @@ function xbb_activate_installed_dev()
   echo "xbb_activate_installed_dev${name_suffix}"
 
   # Add XBB include in front of XBB_CPPFLAGS.
-  XBB_CPPFLAGS="-I${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/include ${XBB_CPPFLAGS}"
+  XBB_CPPFLAGS="-I${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/include ${XBB_CPPFLAGS}"
 
-  if [ -d "${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib" ]
+  if [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib" ]
   then
     # Add XBB lib in front of XBB_LDFLAGS.
-    XBB_LDFLAGS="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS}"
-    XBB_LDFLAGS_LIB="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS_LIB}"
-    XBB_LDFLAGS_APP="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS_APP}"
-    XBB_LDFLAGS_APP_STATIC_GCC="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS_APP_STATIC_GCC}"
+    XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS}"
+    XBB_LDFLAGS_LIB="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS_LIB}"
+    XBB_LDFLAGS_APP="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS_APP}"
+    XBB_LDFLAGS_APP_STATIC_GCC="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib ${XBB_LDFLAGS_APP_STATIC_GCC}"
 
     # Add XBB lib in front of PKG_CONFIG_PATH.
-    PKG_CONFIG_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+    PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
     # Needed by internal binaries, like the bootstrap compiler, which do not
     # have a rpath.
     if [ -z "${LD_LIBRARY_PATH}" ]
     then
-      LD_LIBRARY_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
+      LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
     else
-      LD_LIBRARY_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${LD_LIBRARY_PATH}"
+      LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${LD_LIBRARY_PATH}"
     fi
   fi
 
   # Used by libffi, for example.
-  if [ -d "${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64" ]
+  if [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64" ]
   then
     # For 64-bit systems, add XBB lib64 in front of paths.
-    XBB_LDFLAGS="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_LIB}"
-    XBB_LDFLAGS_LIB="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_LIB}"
-    XBB_LDFLAGS_APP="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_APP}"
-    XBB_LDFLAGS_APP_STATIC_GCC="-L${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_APP_STATIC_GCC}"
+    XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_LIB}"
+    XBB_LDFLAGS_LIB="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_LIB}"
+    XBB_LDFLAGS_APP="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_APP}"
+    XBB_LDFLAGS_APP_STATIC_GCC="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64 ${XBB_LDFLAGS_APP_STATIC_GCC}"
 
-    PKG_CONFIG_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
+    PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
 
     if [ -z "${LD_LIBRARY_PATH}" ]
     then
-      LD_LIBRARY_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
+      LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
     else
-      LD_LIBRARY_PATH="${DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${LD_LIBRARY_PATH}"
+      LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${LD_LIBRARY_PATH}"
     fi
   fi
 
@@ -624,7 +623,7 @@ function xbb_activate_installed_dev()
   export PKG_CONFIG_PATH
   export LD_LIBRARY_PATH
 
-  if [ "${IS_DEVELOP}" == "y" ]
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
     echo
     env | sort

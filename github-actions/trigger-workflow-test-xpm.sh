@@ -61,7 +61,7 @@ source "${helper_folder_path}/scripts/xbb.sh"
 
 # GITHUB_API_DISPATCH_TOKEN must be present in the environment.
 
-message="Test ${APP_DESCRIPTION} with xpm install"
+message="Test ${XBB_APPLICATION_DESCRIPTION} with xpm install"
 
 branch="xpack-develop"
 version="$(xbb_get_current_package_version)"
@@ -111,8 +111,8 @@ cat <<__EOF__ > "${data_file_path}"
 __EOF__
 
 trigger_github_workflow \
-  "${GITHUB_ORG}" \
-  "${GITHUB_REPO}" \
+  "${XBB_GITHUB_ORG}" \
+  "${XBB_GITHUB_REPO}" \
   "${workflow_id}" \
   "${data_file_path}" \
   "${GITHUB_API_DISPATCH_TOKEN}"

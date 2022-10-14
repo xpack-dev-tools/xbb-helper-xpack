@@ -35,9 +35,9 @@ function copy_license()
         if [[ $f =~ AUTHORS.*|NEWS.*|COPYING.*|README.*|LICENSE.*|Copyright.*|COPYRIGHT.*|FAQ.*|DEPENDENCIES.*|THANKS.*|CHANGES.* ]]
         then
           install -d -m 0755 \
-            "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/licenses/$2"
+            "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2"
           install -v -c -m 644 "$f" \
-            "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/licenses/$2"
+            "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2"
         fi
       elif [ -d "$f" ] && [[ $f =~ [Ll][Ii][Cc][Ee][Nn][Ss][Ee]* ]]
       then
@@ -47,17 +47,17 @@ function copy_license()
           for file in ${files}
           do
             install -d -m 0755 \
-              "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
+              "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
             install -v -c -m 644 "$file" \
-              "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
+              "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
           done
         )
       fi
     done
 
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
-      find "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/licenses" \
+      find "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses" \
         -type f \
         -exec unix2dos '{}' ';'
     fi
@@ -68,10 +68,10 @@ function copy_license()
 
 # Process all elf files in a folder (executables and shared libraries).
 
-# $1 = folder path (default ${APPLICATION_INSTALL_FOLDER_PATH})
+# $1 = folder path (default ${XBB_APPLICATION_INSTALL_FOLDER_PATH})
 function make_standalone()
 {
-  local folder_path="${APPLICATION_INSTALL_FOLDER_PATH}"
+  local folder_path="${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
   if [ $# -ge 1 ]
   then
     folder_path="$1"
@@ -82,10 +82,10 @@ function make_standalone()
     echo "# Preparing ${folder_path} libraries..."
 
     # Otherwise `find` may fail.
-    cd "${TARGET_WORK_FOLDER_PATH}"
+    cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
     local binaries
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -97,7 +97,7 @@ function make_standalone()
         copy_dependencies_recursive "${bin}" "$(dirname "${bin}")"
       done
 
-    elif [ "${TARGET_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -123,7 +123,7 @@ function make_standalone()
         fi
       done
 
-    elif [ "${TARGET_PLATFORM}" == "linux" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -153,7 +153,7 @@ function make_standalone()
       done
 
     else
-      echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+      echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
       exit 1
     fi
   )
@@ -169,20 +169,20 @@ function find_binaries()
   then
     folder_path="$1"
   else
-    folder_path="${APPLICATION_INSTALL_FOLDER_PATH}"
+    folder_path="${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
   fi
 
-  if [ "${TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
     find "${folder_path}" \( -name \*.exe -o -name \*.dll -o -name \*.pyd \) | sort
-  elif [ "${TARGET_PLATFORM}" == "darwin" ]
+  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
   then
     find "${folder_path}" -name \* -type f ! -iname "*.cmake" ! -iname "*.txt" ! -iname "*.rst" ! -iname "*.html" ! -iname "*.json" ! -iname "*.py" ! -iname "*.pyc" ! -iname "*.h" ! -iname "*.xml" ! -iname "*.a" ! -iname "*.la" ! -iname "*.spec" ! -iname "*.specs" ! -iname "*.decTest" ! -iname "*.exe" ! -iname "*.c" ! -iname "*.cxx" ! -iname "*.cpp" ! -iname "*.f" ! -iname "*.f90" ! -iname "*.png" ! -iname "*.sh" ! -iname "*.bat" ! -iname "*.tcl" ! -iname "*.cfg" ! -iname "*.md" ! -iname "*.in" ! -iname "*.pl" ! -iname "*.pm" ! -iname "*.pod" ! -iname "*.enc" ! -iname "*.msg" ! -iname "*.def" ! -iname "*.dll" ! -iname "*.m4" ! -iname "*.am" ! -iname "*.awk" ! -iname "*.scm" ! -iname "*.nls" ! -iname "*.info" ! -iname "*.ld" ! -iname "*.gif" ! -iname "*.pem" ! -iname "*.zip" ! -iname "*.tpl" ! -iname "*.tlib" | grep -v "/ldscripts/" | grep -v "/doc/" | grep -v "/locale/" | grep -v "/include/" | grep -v 'MacOSX.*\.sdk' | grep -v 'macOS.*\.sdk' | grep -v "/distro-info/" | sort
-  elif [ "${TARGET_PLATFORM}" == "linux" ]
+  elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
   then
     find "${folder_path}" -name \* -type f ! -iname "*.cmake" ! -iname "*.txt" ! -iname "*.rst" ! -iname "*.html" ! -iname "*.json" ! -iname "*.py" ! -iname "*.pyc" ! -iname "*.h" ! -iname "*.xml" ! -iname "*.a" ! -iname "*.la" ! -iname "*.spec" ! -iname "*.specs" ! -iname "*.decTest" ! -iname "*.exe" ! -iname "*.c" ! -iname "*.cxx" ! -iname "*.cpp" ! -iname "*.f" ! -iname "*.f90" ! -iname "*.png" ! -iname "*.sh" ! -iname "*.bat" ! -iname "*.tcl" ! -iname "*.cfg" ! -iname "*.md" ! -iname "*.in" ! -iname "*.pl" ! -iname "*.pm" ! -iname "*.pod" ! -iname "*.enc" ! -iname "*.msg" ! -iname "*.def" ! -iname "*.dll" ! -iname "*.m4" ! -iname "*.am" ! -iname "*.awk" ! -iname "*.scm" ! -iname "*.nls" ! -iname "*.info" ! -iname "*.ld" ! -iname "*.gif" ! -iname "*.pem" ! -iname "*.zip" ! -iname "*.tpl" ! -iname "*.tlib" | grep -v "/ldscripts/" | grep -v "/doc/" | grep -v "/locale/" | grep -v "/include/" | grep -v "/distro-info/" | sort
   else
-    echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
     exit 1
   fi
 }
@@ -217,8 +217,8 @@ function copy_dependencies_recursive()
     local source_file_path="$1"
     local destination_folder_path="$2"
 
-    DO_COPY_XBB_LIBS=${DO_COPY_XBB_LIBS:-'n'}
-    DO_COPY_GCC_LIBS=${DO_COPY_GCC_LIBS:-'n'}
+    XBB_DO_COPY_XBB_LIBS=${XBB_DO_COPY_XBB_LIBS:-'n'}
+    XBB_DO_COPY_GCC_LIBS=${XBB_DO_COPY_GCC_LIBS:-'n'}
 
     local source_file_name="$(basename "${source_file_path}")"
     local source_folder_path="$(dirname "${source_file_path}")"
@@ -284,14 +284,14 @@ function copy_dependencies_recursive()
 
     # replace_loader_path "${actual_source_file_path}" "${actual_destination_file_path}"
 
-    if [ "${WITH_STRIP}" == "y" -a ! -L "${actual_destination_file_path}" ]
+    if [ "${XBB_WITH_STRIP}" == "y" -a ! -L "${actual_destination_file_path}" ]
     then
       strip_binary "${actual_destination_file_path}"
     fi
 
     local actual_destination_folder_path="$(dirname "${actual_destination_file_path}")"
 
-    if [ "${TARGET_PLATFORM}" == "linux" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
     then
 
       echo
@@ -329,7 +329,7 @@ function copy_dependencies_recursive()
         if [ -z "${linux_rpaths_line}" ]
         then
           echo ">>> \"${actual_destination_file_path}\" has no rpath, patchelf may damage it!"
-          linux_rpaths_line="${DEPENDENCIES_INSTALL_FOLDER_PATH}/lib"
+          linux_rpaths_line="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib"
         fi
 
         for rpath in $(echo "${linux_rpaths_line}" | tr ":" "\n")
@@ -344,16 +344,16 @@ function copy_dependencies_recursive()
               echo_develop "${lib_name} found in ${rpath}"
               # Library present in the absolute path
 
-              # If outside APPLICATION_INSTALL_FOLDER_PATH, copy it to libexec,
+              # If outside XBB_APPLICATION_INSTALL_FOLDER_PATH, copy it to libexec,
               # otherwise leave it in place and add a new $ORIGIN.
-              local rpath_relative_to_app_prefix="$(realpath --relative-to="${APPLICATION_INSTALL_FOLDER_PATH}" "${rpath}")"
-              echo_develop "relative to APPLICATION_INSTALL_FOLDER_PATH ${rpath_relative_to_app_prefix}"
+              local rpath_relative_to_app_prefix="$(realpath --relative-to="${XBB_APPLICATION_INSTALL_FOLDER_PATH}" "${rpath}")"
+              echo_develop "relative to XBB_APPLICATION_INSTALL_FOLDER_PATH ${rpath_relative_to_app_prefix}"
               # If the relative path starts with `..`, it is outside.
               if [ "${rpath_relative_to_app_prefix:0:2}" == ".." ]
               then
                 copy_dependencies_recursive \
                   "${rpath}/${lib_name}" \
-                  "${APPLICATION_INSTALL_FOLDER_PATH}/libexec"
+                  "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec"
 
                 must_add_origin="$(compute_origin_relative_to_libexec "${actual_destination_folder_path}")"
               else
@@ -395,7 +395,7 @@ function copy_dependencies_recursive()
             echo_develop "${lib_name} found as ${CC} compiler file \"${full_path}\""
             copy_dependencies_recursive \
               "${full_path}" \
-              "${APPLICATION_INSTALL_FOLDER_PATH}/libexec"
+              "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec"
 
             must_add_origin="$(compute_origin_relative_to_libexec "${actual_destination_folder_path}")"
           else
@@ -417,7 +417,7 @@ function copy_dependencies_recursive()
       readelf_shared_libs "${actual_destination_file_path}"
 
       # echo "iterate ${destination_folder_path}/${source_file_name} done"
-    elif [ "${TARGET_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
     then
 
       # echo "II. Processing ${source_file_path} dependencies..."
@@ -508,9 +508,9 @@ function copy_dependencies_recursive()
             if [ -z "${found_absolute_lib_path}" ]
             then
               # Not found in LC_RPATH, but is may be in LIBS_INSTALL.
-              if [ -f "${DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${file_relative_path}" ]
+              if [ -f "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${file_relative_path}" ]
               then
-                found_absolute_lib_path="${DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${file_relative_path}"
+                found_absolute_lib_path="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${file_relative_path}"
               fi
             fi
             if [ ! -z "${found_absolute_lib_path}" ]
@@ -547,21 +547,21 @@ function copy_dependencies_recursive()
         else
           ## Relative path.
           echo_develop "${lib_path} is a relative path"
-          if [ -f "${DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${lib_path}" ]
+          if [ -f "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${lib_path}" ]
           then
             # Make the from_path absolute.
-            from_path="${DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${lib_path}"
-            echo_develop "using DEPENDENCIES_INSTALL_FOLDER_PATH ${from_path}"
+            from_path="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/${lib_path}"
+            echo_develop "using XBB_DEPENDENCIES_INSTALL_FOLDER_PATH ${from_path}"
           else
             echo ">>> Relative path ${lib_path} not found in libs/lib"
             exit 1
           fi
         fi
 
-        # TODO check if relative to APPLICATION_INSTALL_FOLDER_PATH, to avoid copying to libexec.
+        # TODO check if relative to XBB_APPLICATION_INSTALL_FOLDER_PATH, to avoid copying to libexec.
 
         # For consistency reasons, update rpath first, before dependencies.
-        local relative_folder_path="$(realpath --relative-to="${actual_destination_folder_path}" "${APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
+        local relative_folder_path="$(realpath --relative-to="${actual_destination_folder_path}" "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
         patch_macos_elf_add_rpath \
           "${actual_destination_file_path}" \
           "${loader_prefix}${relative_folder_path}"
@@ -577,7 +577,7 @@ function copy_dependencies_recursive()
 
         copy_dependencies_recursive \
           "${from_path}" \
-          "${APPLICATION_INSTALL_FOLDER_PATH}/libexec"
+          "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec"
 
       done
 
@@ -596,7 +596,7 @@ function copy_dependencies_recursive()
         fi
       )
 
-    elif [ "${TARGET_PLATFORM}" == "win32" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
 
       echo
@@ -641,7 +641,7 @@ function copy_dependencies_recursive()
         actual_source_file_path="${source_file_path}"
       fi
 
-      if [ "${WITH_STRIP}" == "y" -a ! -L "${copied_file_path}" ]
+      if [ "${XBB_WITH_STRIP}" == "y" -a ! -L "${copied_file_path}" ]
       then
         strip_binary "${copied_file_path}"
       fi
@@ -678,31 +678,31 @@ function copy_dependencies_recursive()
         else
           local full_path=$(${XBB_CROSS_COMPILE_PREFIX}-gcc -print-file-name=${lib_name})
 
-          if [ -f "${APPLICATION_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
+          if [ -f "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
           then
             # GCC leaves some .DLLs in bin.
             copy_dependencies_recursive \
-              "${APPLICATION_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
+              "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
               "${destination_folder_path}"
-          elif [ -f "${APPLICATION_INSTALL_FOLDER_PATH}/${XBB_CROSS_COMPILE_PREFIX}/bin/${lib_name}" ]
+          elif [ -f "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_CROSS_COMPILE_PREFIX}/bin/${lib_name}" ]
           then
             # ... or in x86_64-w64-mingw32/bin
             copy_dependencies_recursive \
-              "${APPLICATION_INSTALL_FOLDER_PATH}/${XBB_CROSS_COMPILE_PREFIX}/bin/${lib_name}" \
+              "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_CROSS_COMPILE_PREFIX}/bin/${lib_name}" \
               "${destination_folder_path}"
-          elif [ -f "${DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
+          elif [ -f "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
           then
             # These scripts leave libraries in install/libs/bin.
             copy_dependencies_recursive \
-              "${DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
+              "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
               "${destination_folder_path}"
-          elif [ "${DO_COPY_GCC_LIBS}" == "y" -a "${full_path}" != "${lib_name}" ]
+          elif [ "${XBB_DO_COPY_GCC_LIBS}" == "y" -a "${full_path}" != "${lib_name}" ]
           then
             # -print-file-name outputs back the requested name if not found.
             copy_dependencies_recursive \
               "${full_path}" \
               "${destination_folder_path}"
-          elif false # [ "${DO_COPY_GCC_LIBS}" == "y" -a "${lib_name}" == "libwinpthread-1.dll" -a -f "${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" ]
+          elif false # [ "${XBB_DO_COPY_GCC_LIBS}" == "y" -a "${lib_name}" == "libwinpthread-1.dll" -a -f "${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" ]
           then
             copy_dependencies_recursive \
               "${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/bin/libwinpthread-1.dll" \
@@ -714,7 +714,7 @@ function copy_dependencies_recursive()
         fi
       done
     else
-      echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+      echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
       exit 1
     fi
 
@@ -794,28 +794,28 @@ function is_target()
   if [ -f "${bin_path}" ]
   then
     # Return 0 (true) if found.
-    if [ "${TARGET_PLATFORM}" == "linux" -a "${TARGET_ARCH}" == "x64" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "linux" -a "${XBB_TARGET_ARCH}" == "x64" ]
     then
       file ${bin_path} | egrep -q ", x86-64, "
-    elif [ "${TARGET_PLATFORM}" == "linux" -a \( "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" \) ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "linux" -a \( "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" \) ]
     then
       file ${bin_path} | egrep -q ", Intel 80386, "
-    elif [ "${TARGET_PLATFORM}" == "linux" -a "${TARGET_ARCH}" == "arm64" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "linux" -a "${XBB_TARGET_ARCH}" == "arm64" ]
     then
       file ${bin_path} | egrep -q ", ARM aarch64, "
-    elif [ "${TARGET_PLATFORM}" == "linux" -a "${TARGET_ARCH}" == "arm" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "linux" -a "${XBB_TARGET_ARCH}" == "arm" ]
     then
       file ${bin_path} | egrep -q ", ARM, "
-    elif [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "x64" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "x64" ]
     then
       file ${bin_path} | egrep -q "x86_64"
-    elif [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" ]
     then
       file ${bin_path} | egrep -q "arm64"
-    elif [ "${TARGET_PLATFORM}" == "win32" -a "${TARGET_ARCH}" == "x64" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "win32" -a "${XBB_TARGET_ARCH}" == "x64" ]
     then
       file ${bin_path} | egrep -q " x86-64 "
-    elif [ "${TARGET_PLATFORM}" == "win32" -a \( "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" \) ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "win32" -a \( "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" \) ]
     then
       file ${bin_path} | egrep -q " Intel 80386"
     else
@@ -1089,7 +1089,7 @@ function has_origin()
   fi
 
   local elf="$1"
-  if [ "${TARGET_PLATFORM}" == "linux" ]
+  if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
   then
     local origin=$(readelf -d ${elf} | egrep '(RUNPATH|RPATH)' | egrep '\$ORIGIN')
     if [ ! -z "${origin}" ]
@@ -1109,7 +1109,7 @@ function has_rpath_origin()
   fi
 
   local elf="$1"
-  if [ "${TARGET_PLATFORM}" == "linux" ]
+  if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
   then
     local origin=$(readelf -d ${elf} | grep 'Library rpath: \[' | grep '\$ORIGIN')
     if [ ! -z "${origin}" ]
@@ -1130,7 +1130,7 @@ function has_rpath()
   fi
 
   local elf="$1"
-  if [ "${TARGET_PLATFORM}" == "linux" ]
+  if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
   then
 
     local rpath=$(readelf -d ${elf} | egrep '(RUNPATH|RPATH)')
@@ -1198,7 +1198,7 @@ function clean_rpaths()
 {
   local file_path="$1"
 
-  if [ "${TARGET_PLATFORM}" == "darwin" ]
+  if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
   then
     (
       local lc_rpaths=$(get_darwin_lc_rpaths "${file_path}")
@@ -1246,7 +1246,7 @@ function clean_rpaths()
         fi
       done
     )
-  elif [ "${TARGET_PLATFORM}" == "linux" ]
+  elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
   then
 
       local origin_prefix="\$ORIGIN"
@@ -1281,7 +1281,7 @@ function clean_rpaths()
         "${new_rpath}"
 
   else
-    echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM} in clean_rpaths."
+    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM} in clean_rpaths."
     exit 1
   fi
 }
@@ -1305,14 +1305,14 @@ function patch_linux_elf_origin()
     libexec_path="$(dirname "${file_path}")"
   fi
 
-  local do_require_rpath="${DO_REQUIRE_RPATH:-"y"}"
+  local do_require_rpath="${XBB_DO_REQUIRE_RPATH:-"y"}"
 
   local patchelf=${PATCHELF:-$(which patchelf)}
   # run_verbose "${patchelf}" --version
   # run_verbose "${patchelf}" --help
 
   local patchelf_has_output=""
-  local use_copy_hack="${USE_COPY_HACK:-"n"}"
+  local use_copy_hack="${XBB_USE_COPY_HACK:-"n"}"
   if [ "${use_copy_hack}" == "y" ]
   then
     local tmp_path=$(mktemp)
@@ -1352,7 +1352,7 @@ function patch_linux_elf_origin()
       fi
     fi
 
-    if [ "${IS_DEVELOP}" == "y" ]
+    if [ "${XBB_IS_DEVELOP}" == "y" ]
     then
       readelf -d "${tmp_path}" | egrep '(RUNPATH|RPATH)'
       ldd "${tmp_path}"
@@ -1382,7 +1382,7 @@ function patch_linux_elf_set_rpath()
     new_rpath=${new_rpath:0:${remaining}}
   fi
 
-  local do_require_rpath="${DO_REQUIRE_RPATH:-"y"}"
+  local do_require_rpath="${XBB_DO_REQUIRE_RPATH:-"y"}"
 
   if file "${file_path}" | grep statically
   then
@@ -1393,7 +1393,7 @@ function patch_linux_elf_set_rpath()
     # run_verbose "${patchelf}" --help
 
     local patchelf_has_output=""
-    local use_copy_hack="${USE_COPY_HACK:-"n"}"
+    local use_copy_hack="${XBB_USE_COPY_HACK:-"n"}"
     if [ "${use_copy_hack}" == "y" ]
     then
       local tmp_path=$(mktemp)
@@ -1429,7 +1429,7 @@ function patch_linux_elf_set_rpath()
       fi
     fi
 
-    if [ "${IS_DEVELOP}" == "y" ]
+    if [ "${XBB_IS_DEVELOP}" == "y" ]
     then
       readelf -d "${tmp_path}" | egrep '(RUNPATH|RPATH)'
       ldd "${tmp_path}"
@@ -1459,7 +1459,7 @@ function patch_linux_elf_add_rpath()
     new_rpath=${new_rpath:0:${remaining}}
   fi
 
-  local do_require_rpath="${DO_REQUIRE_RPATH:-"y"}"
+  local do_require_rpath="${XBB_DO_REQUIRE_RPATH:-"y"}"
 
   if file "${file_path}" | grep statically
   then
@@ -1498,7 +1498,7 @@ function patch_linux_elf_add_rpath()
     # run_verbose "${patchelf}" --help
 
     local patchelf_has_output=""
-    local use_copy_hack="${USE_COPY_HACK:-"n"}"
+    local use_copy_hack="${XBB_USE_COPY_HACK:-"n"}"
     if [ "${use_copy_hack}" == "y" ]
     then
       local tmp_path=$(mktemp)
@@ -1525,7 +1525,7 @@ function patch_linux_elf_add_rpath()
       fi
     fi
 
-    if [ "${IS_DEVELOP}" == "y" ]
+    if [ "${XBB_IS_DEVELOP}" == "y" ]
     then
       readelf -d "${tmp_path}" | egrep '(RUNPATH|RPATH)'
       ldd "${tmp_path}"
@@ -1549,7 +1549,7 @@ function compute_origin_relative_to_libexec()
 
   local folder_path="$1"
 
-  local relative_folder_path="$(realpath --relative-to="${folder_path}" "${APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
+  local relative_folder_path="$(realpath --relative-to="${folder_path}" "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
 
   echo "\$ORIGIN/${relative_folder_path}"
 }
@@ -1575,23 +1575,23 @@ function compute_origin_relative_to_path()
 
 function strip_binaries()
 {
-  local folder_path="${APPLICATION_INSTALL_FOLDER_PATH}"
+  local folder_path="${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
   if [ $# -ge 1 ]
   then
     folder_path="$1"
   fi
 
-  if [ "${WITH_STRIP}" == "y" ]
+  if [ "${XBB_WITH_STRIP}" == "y" ]
   then
     (
       echo
       echo "# Stripping binaries..."
 
       # Otherwise `find` may fail.
-      cd "${TARGET_WORK_FOLDER_PATH}"
+      cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
       local binaries
-      if [ "${TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
 
         binaries=$(find "${folder_path}" \( -name \*.exe -o -name \*.dll -o -name \*.pyd \))
@@ -1600,7 +1600,7 @@ function strip_binaries()
           strip_binary "${bin}"
         done
 
-      elif [ "${TARGET_PLATFORM}" == "darwin" ]
+      elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
 
         binaries=$(find "${folder_path}" -name \* -perm +111 -type f ! -type l | grep -v 'MacOSX.*\.sdk' | grep -v 'macOS.*\.sdk' )
@@ -1617,7 +1617,7 @@ function strip_binaries()
           fi
         done
 
-      elif [ "${TARGET_PLATFORM}" == "linux" ]
+      elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
 
         binaries=$(find "${folder_path}" -name \* -type f ! -type l)
@@ -1652,7 +1652,7 @@ function strip_binary()
   local strip
   set +u
   strip="${STRIP}"
-  if [ "${TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
     if [ -z "${strip}" ]
     then
@@ -1701,15 +1701,15 @@ function copy_distro_files()
 {
   (
     echo
-    mkdir -pv "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}"
+    mkdir -pv "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"
 
     echo
     echo "# Copying xPack files..."
 
-    cd "${BUILD_GIT_PATH}"
-    README_OUT_FILE_NAME="${README_OUT_FILE_NAME:-README-OUT.md}"
-    install -v -c -m 644 "scripts/${README_OUT_FILE_NAME}" \
-      "${APPLICATION_INSTALL_FOLDER_PATH}/README.md"
+    cd "${XBB_BUILD_GIT_PATH}"
+    local readme_out_file_name="${readme_out_file_name:-README-OUT.md}"
+    install -v -c -m 644 "scripts/${readme_out_file_name}" \
+      "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/README.md"
   )
 }
 
@@ -1733,7 +1733,7 @@ function copy_dir()
 
   (
     cd "${from_path}"
-    if [ "${TARGET_PLATFORM}" == "darwin" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
     then
       find . -xdev -print0 | cpio -oa0 | (cd "${to_path}" && cpio -im)
     else
@@ -1748,10 +1748,10 @@ function copy_dir()
 
 # Check all executables and shared libraries in the given folder.
 
-# $1 = folder path (default ${APPLICATION_INSTALL_FOLDER_PATH})
+# $1 = folder path (default ${XBB_APPLICATION_INSTALL_FOLDER_PATH})
 function check_binaries()
 {
-  local folder_path="${APPLICATION_INSTALL_FOLDER_PATH}"
+  local folder_path="${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
   if [ $# -ge 1 ]
   then
     folder_path="$1"
@@ -1762,10 +1762,10 @@ function check_binaries()
     echo "# Checking binaries for unwanted libraries..."
 
     # Otherwise `find` may fail.
-    cd "${TARGET_WORK_FOLDER_PATH}"
+    cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
     local binaries
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -1774,7 +1774,7 @@ function check_binaries()
         check_binary "${bin}"
       done
 
-    elif [ "${TARGET_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -1788,7 +1788,7 @@ function check_binaries()
         fi
       done
 
-    elif [ "${TARGET_PLATFORM}" == "linux" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -1803,10 +1803,10 @@ function check_binaries()
       done
 
     else
-      echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+      echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
       exit 1
     fi
-  ) 2>&1 | tee "${LOGS_FOLDER_PATH}/check-binaries-output-$(ndate).txt"
+  ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/check-binaries-output-$(ndate).txt"
 }
 
 function check_binary()
@@ -1829,7 +1829,7 @@ function check_binary_for_libraries()
   local folder_path="$(dirname ${file_path})"
 
   (
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
       echo
       echo "${file_name}: (${file_path})"
@@ -1849,7 +1849,7 @@ function check_binary_for_libraries()
           if is_win_sys_dll "${n}"
           then
             :
-          elif [ "${n}${HAS_WINPTHREAD}" == "libwinpthread-1.dlly" ]
+          elif [ "${n}${XBB_HAS_WINPTHREAD}" == "libwinpthread-1.dlly" ]
           then
             :
           else
@@ -1859,7 +1859,7 @@ function check_binary_for_libraries()
         fi
       done
       set -e
-    elif [ "${TARGET_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
     then
       local lc_rpaths=$(get_darwin_lc_rpaths "${file_path}")
 
@@ -1989,7 +1989,7 @@ function check_binary_for_libraries()
         fi
         set -e
       )
-    elif [ "${TARGET_PLATFORM}" == "linux" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
     then
       echo
       echo "${file_name}: (${file_path})"
@@ -2042,7 +2042,7 @@ function check_binary_for_libraries()
       done
       set -e
     else
-      echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+      echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
       exit 1
     fi
   )
@@ -2053,22 +2053,22 @@ function check_binary_for_libraries()
 function create_archive()
 {
   (
-    local distribution_file_version="${RELEASE_VERSION}"
+    local distribution_file_version="${XBB_RELEASE_VERSION}"
 
-    local target_folder_name=${TARGET_FOLDER_NAME}
+    local target_folder_name=${XBB_TARGET_FOLDER_NAME}
 
-    local distribution_file="${DEPLOY_FOLDER_PATH}/${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${distribution_file_version}-${target_folder_name}"
+    local distribution_file="${XBB_DEPLOY_FOLDER_PATH}/${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${distribution_file_version}-${target_folder_name}"
 
     local archive_version_path
-    archive_version_path="${INSTALL_FOLDER_PATH}/archive/${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${distribution_file_version}"
+    archive_version_path="${XBB_INSTALL_FOLDER_PATH}/archive/${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${distribution_file_version}"
 
-    cd "${APPLICATION_INSTALL_FOLDER_PATH}"
+    cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
     find . -name '.DS_Store' -exec rm '{}' ';'
 
     echo
     echo "# Creating distribution..."
 
-    mkdir -pv "${DEPLOY_FOLDER_PATH}"
+    mkdir -pv "${XBB_DEPLOY_FOLDER_PATH}"
 
     # The folder is temprarily moved into a versioned folder like
     # xpack-<app-name>-<version>, or, in previous versions,
@@ -2077,7 +2077,7 @@ function create_archive()
     # After the archive is created, the folders are moved back.
     # The atempt to transform the tar path fails, since symlinks were
     # also transformed, which is bad.
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
 
       local distribution_file="${distribution_file}.zip"
@@ -2085,15 +2085,15 @@ function create_archive()
       echo
       echo "ZIP file: \"${distribution_file}\"."
 
-      rm -rf "${INSTALL_FOLDER_PATH}/archive"
+      rm -rf "${XBB_INSTALL_FOLDER_PATH}/archive"
       mkdir -pv "${archive_version_path}"
-      mv "${APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
+      mv "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
 
-      cd "${INSTALL_FOLDER_PATH}/archive"
+      cd "${XBB_INSTALL_FOLDER_PATH}/archive"
       zip -r9 -q "${distribution_file}" *
 
       # Put everything back.
-      mv "${archive_version_path}"/* "${APPLICATION_INSTALL_FOLDER_PATH}"
+      mv "${archive_version_path}"/* "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
 
     else
 
@@ -2106,13 +2106,13 @@ function create_archive()
 
       echo "Compressed tarball: \"${distribution_file}\"."
 
-      rm -rf "${INSTALL_FOLDER_PATH}/archive"
+      rm -rf "${XBB_INSTALL_FOLDER_PATH}/archive"
       mkdir -pv "${archive_version_path}"
-      mv -v "${APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
+      mv -v "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
 
       # Without --hard-dereference the hard links may be turned into
       # broken soft links on macOS.
-      cd "${INSTALL_FOLDER_PATH}"/archive
+      cd "${XBB_INSTALL_FOLDER_PATH}"/archive
       # -J uses xz for compression; best compression ratio.
       # -j uses bz2 for compression; good compression ratio.
       # -z uses gzip for compression; fair compression ratio.
@@ -2124,11 +2124,11 @@ function create_archive()
         *
 
       # Put folders back.
-      mv -v "${archive_version_path}"/* "${APPLICATION_INSTALL_FOLDER_PATH}"
+      mv -v "${archive_version_path}"/* "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
 
     fi
 
-    cd "${DEPLOY_FOLDER_PATH}"
+    cd "${XBB_DEPLOY_FOLDER_PATH}"
     compute_sha sha256sum "$(basename ${distribution_file})"
   )
 }

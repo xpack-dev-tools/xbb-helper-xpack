@@ -5,7 +5,7 @@
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
-name: 'Build xPack {{ APP_NAME }} xbbmi'
+name: 'Build xPack {{ XBB_APPLICATION_NAME }} xbbmi'
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ jobs:
 {% for platform in platforms -%}
 {% if platform == "darwin-x64" %}
   macos-x64:
-    name: 'macOS Intel - {{ APP_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+    name: 'macOS Intel - {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
     timeout-minutes: 2880 # 2 days
 {% if MACOS_INTEL_VERSION %}
     runs-on: [self-hosted, macos, intel, {{ MACOS_INTEL_VERSION }}]

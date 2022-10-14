@@ -12,7 +12,7 @@
 
 function timer_start()
 {
-  SCRIPT_BEGIN_SECOND=$(date +%s)
+  export XBB_SCRIPT_BEGIN_SECOND=$(date +%s)
   echo
   echo "Script \"$0\" started at $(date)."
 }
@@ -22,7 +22,7 @@ function timer_stop()
   local script_end_second=$(date +%s)
   echo
   echo "Script \"$0\" completed at $(date)."
-  local delta_seconds=$((script_end_second-SCRIPT_BEGIN_SECOND))
+  local delta_seconds=$((script_end_second-XBB_SCRIPT_BEGIN_SECOND))
   if [ ${delta_seconds} -lt 100 ]
   then
     echo "Duration: ${delta_seconds} second(s)."

@@ -39,18 +39,18 @@ function build_zlib()
   # The folder name for build, licenses, etc.
   local zlib_folder_name="${zlib_src_folder_name}${name_suffix}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${zlib_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${zlib_folder_name}"
 
-  local zlib_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${zlib_folder_name}-installed"
+  local zlib_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${zlib_folder_name}-installed"
   if [ ! -f "${zlib_stamp_file_path}" ]
   then
 
     echo
     echo "zlib${name_suffix} in-source building"
 
-    if [ ! -d "${LIBS_BUILD_FOLDER_PATH}/${zlib_folder_name}" ]
+    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${zlib_folder_name}" ]
     then
-      cd "${LIBS_BUILD_FOLDER_PATH}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
       download_and_extract "${zlib_url}" "${zlib_archive}" \
         "${zlib_src_folder_name}"
@@ -62,14 +62,14 @@ function build_zlib()
     fi
 
     (
-      cd "${LIBS_BUILD_FOLDER_PATH}/${zlib_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${zlib_folder_name}"
 
       xbb_activate_installed_dev
 
-      if [ "${TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -80,16 +80,16 @@ function build_zlib()
           # Build.
           run_verbose make -f win32/Makefile.gcc \
             PREFIX=${CROSS_COMPILE_PREFIX}- \
-            prefix="${LIBS_INSTALL_FOLDER_PATH}${name_suffix}" \
+            prefix="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}" \
             CFLAGS="${XBB_CFLAGS_NO_W} -Wp,-D_FORTIFY_SOURCE=2 -fexceptions --param=ssp-buffer-size=4"
 
           run_verbose make -f win32/Makefile.gcc install \
-            DESTDIR="${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/" \
+            DESTDIR="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/" \
             INCLUDE_PATH="include" \
             LIBRARY_PATH="lib" \
             BINARY_PATH="bin"
 
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${zlib_folder_name}/make-output-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${zlib_folder_name}/make-output-$(ndate).txt"
       else
 
         CPPFLAGS="${XBB_CPPFLAGS}"
@@ -97,7 +97,7 @@ function build_zlib()
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
         LDFLAGS="${XBB_LDFLAGS_LIB}"
-        if [ "${TARGET_PLATFORM}" == "linux" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         fi
@@ -111,7 +111,7 @@ function build_zlib()
         if [ ! -f "libz.a" ]
         then
           (
-            if [ "${IS_DEVELOP}" == "y" ]
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
             then
               env | sort
             fi
@@ -119,7 +119,7 @@ function build_zlib()
             echo
             echo "Running zlib configure..."
 
-            if [ "${IS_DEVELOP}" == "y" ]
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
             then
               run_verbose bash "configure" --help
             fi
@@ -129,16 +129,16 @@ function build_zlib()
 
             config_options=()
 
-            config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}${name_suffix}")
-            config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/lib")
-            config_options+=("--sharedlibdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/lib")
-            config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/include")
+            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
+            config_options+=("--sharedlibdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
+            config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
 
             run_verbose bash ${DEBUG} "configure" \
               "${config_options[@]}"
 
-            cp "configure.log" "${LOGS_FOLDER_PATH}/${zlib_folder_name}/configure-log-$(ndate).txt"
-          ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${zlib_folder_name}/configure-output-$(ndate).txt"
+            cp "configure.log" "${XBB_LOGS_FOLDER_PATH}/${zlib_folder_name}/configure-log-$(ndate).txt"
+          ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${zlib_folder_name}/configure-output-$(ndate).txt"
         fi
 
         (
@@ -146,31 +146,31 @@ function build_zlib()
           echo "Running zlib${name_suffix} make..."
 
           # Build.
-          run_verbose make -j ${JOBS}
+          run_verbose make -j ${XBB_JOBS}
 
-          if [ "${WITH_TESTS}" == "y" ]
+          if [ "${XBB_WITH_TESTS}" == "y" ]
           then
             run_verbose make -j1 test
           fi
 
           run_verbose make install
 
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${zlib_folder_name}/make-output-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${zlib_folder_name}/make-output-$(ndate).txt"
       fi
 
       if [ -z "${name_suffix}" ]
       then
         copy_license \
-          "${LIBS_BUILD_FOLDER_PATH}/${zlib_folder_name}" \
+          "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${zlib_folder_name}" \
           "${zlib_folder_name}"
       fi
     )
 
     (
       test_zlib_libs "${name_suffix}"
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${zlib_folder_name}/test-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${zlib_folder_name}/test-output-$(ndate).txt"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${zlib_stamp_file_path}"
 
   else
@@ -183,7 +183,7 @@ function test_zlib_libs()
   local name_suffix=${1-''}
 
   (
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
       echo
       echo "No checking for the zlib${name_suffix} shared libraries..."
@@ -191,7 +191,7 @@ function test_zlib_libs()
       echo
       echo "Checking the zlib${name_suffix} shared libraries..."
 
-      show_libs "${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/lib/libz.${SHLIB_EXT}"
+      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib/libz.${XBB_SHLIB_EXT}"
     fi
   )
 }
@@ -225,21 +225,21 @@ function build_gmp()
   # The folder name for build, licenses, etc.
   local gmp_folder_name="${gmp_src_folder_name}${name_suffix}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${gmp_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gmp_folder_name}"
 
-  local gmp_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${gmp_folder_name}-installed"
+  local gmp_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${gmp_folder_name}-installed"
   if [ ! -f "${gmp_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gmp_url}" "${gmp_archive}" \
       "${gmp_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${gmp_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${gmp_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gmp_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gmp_folder_name}"
 
       if [ "${name_suffix}" == "-bootstrap" ]
       then
@@ -261,14 +261,14 @@ function build_gmp()
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
         LDFLAGS="${XBB_LDFLAGS_LIB}"
-        if [ "${TARGET_PLATFORM}" == "linux" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         fi
 
-        if [ "${TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
         then
-          export CC_FOR_BUILD="${NATIVE_CC}"
+          export CC_FOR_BUILD="${XBB_NATIVE_CC}"
         fi
 
       fi
@@ -280,15 +280,15 @@ function build_gmp()
 
       # ABI is mandatory, otherwise configure fails on 32-bit.
       # (see https://gmplib.org/manual/ABI-and-ISA.html)
-      if [ "${TARGET_ARCH}" == "x64" -o "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
+      if [ "${XBB_TARGET_ARCH}" == "x64" -o "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
       then
-        export ABI="${TARGET_BITS}"
+        export ABI="${XBB_TARGET_BITS}"
       fi
 
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -299,31 +299,31 @@ function build_gmp()
           # ABI is mandatory, otherwise configure fails on 32-bit.
           # (see https://gmplib.org/manual/ABI-and-ISA.html)
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
           if [ "${name_suffix}" == "-bootstrap" ]
           then
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${BUILD}")
-            config_options+=("--target=${BUILD}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_BUILD}")
+            config_options+=("--target=${XBB_BUILD}")
 
           else
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
 
             config_options+=("--enable-cxx")
             config_options+=("--enable-fat") # Arch
@@ -331,29 +331,29 @@ function build_gmp()
             # From Arm.
             config_options+=("--enable-fft")
 
-            if [ "${TARGET_PLATFORM}" == "win32" ]
+            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
             then
               # mpfr asks for this explicitly during configure.
               # (although the message is confusing)
               config_options+=("--enable-shared")
               config_options+=("--disable-static")
-            elif [ "${TARGET_PLATFORM}" == "darwin" ]
+            elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
             then
               # Enable --with-pic to avoid linking issues with the static library
               config_options+=("--with-pic") # HB
             fi
 
-            if [ "${TARGET_ARCH}" == "ia32" -o "${TARGET_ARCH}" == "arm" ]
+            if [ "${XBB_TARGET_ARCH}" == "ia32" -o "${XBB_TARGET_ARCH}" == "arm" ]
             then
               config_options+=("ABI=32")
             fi
 
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          if false # [ "${TARGET_PLATFORM}" == "darwin" ] # and clang
+          if false # [ "${XBB_TARGET_PLATFORM}" == "darwin" ] # and clang
           then
             # Disable failing `t-sqrlo` test.
             run_verbose sed -i.bak \
@@ -361,8 +361,8 @@ function build_gmp()
               "tests/mpn/Makefile"
           fi
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${gmp_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gmp_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${gmp_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gmp_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -370,11 +370,11 @@ function build_gmp()
         echo "Running gmp${name_suffix} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${TARGET_PLATFORM}" == "darwin" -a "${TARGET_ARCH}" == "arm64" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" ]
           then
             # FAIL: t-rand
             :
@@ -383,36 +383,36 @@ function build_gmp()
           fi
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-        if [ "${LIBS_INSTALL_FOLDER_PATH}" != "${BINS_INSTALL_FOLDER_PATH}" ]
+        if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_BINARIES_INSTALL_FOLDER_PATH}" ]
         then
-          if [ -f "${BINS_INSTALL_FOLDER_PATH}/include/gmp.h" ]
+          if [ -f "${XBB_BINARIES_INSTALL_FOLDER_PATH}/include/gmp.h" ]
           then
             # For unknow reasons, this file is stored in the wrong location.
-            mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/include"
-            mv -fv "${BINS_INSTALL_FOLDER_PATH}/include/gmp.h" \
-              "${LIBS_INSTALL_FOLDER_PATH}/include"
+            mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include"
+            mv -fv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/include/gmp.h" \
+              "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include"
           fi
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gmp_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gmp_folder_name}/make-output-$(ndate).txt"
 
       if [ -z "${name_suffix}" ]
       then
         copy_license \
-          "${SOURCES_FOLDER_PATH}/${gmp_src_folder_name}" \
+          "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}" \
           "${gmp_folder_name}"
       fi
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gmp_stamp_file_path}"
 
   else
@@ -448,21 +448,21 @@ function build_mpfr()
   # The folder name for build, licenses, etc.
   local mpfr_folder_name="${mpfr_src_folder_name}${name_suffix}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${mpfr_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${mpfr_folder_name}"
 
-  local mpfr_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mpfr_folder_name}-installed"
+  local mpfr_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mpfr_folder_name}-installed"
   if [ ! -f "${mpfr_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${mpfr_url}" "${mpfr_archive}" \
       "${mpfr_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${mpfr_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${mpfr_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${mpfr_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${mpfr_folder_name}"
 
       if [ "${name_suffix}" == "-bootstrap" ]
       then
@@ -482,7 +482,7 @@ function build_mpfr()
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
         LDFLAGS="${XBB_LDFLAGS_LIB}"
-        if [ "${TARGET_PLATFORM}" == "linux" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         fi
@@ -497,7 +497,7 @@ function build_mpfr()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -505,35 +505,35 @@ function build_mpfr()
           echo
           echo "Running mpfr${name_suffix} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${mpfr_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${mpfr_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
           if [ "${name_suffix}" == "-bootstrap" ]
           then
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${BUILD}")
-            config_options+=("--target=${BUILD}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_BUILD}")
+            config_options+=("--target=${XBB_BUILD}")
 
           else
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
 
           fi
 
-          config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
 
           config_options+=("--enable-shared") # Arch
           config_options+=("--enable-thread-safe") # Arch
@@ -543,16 +543,16 @@ function build_mpfr()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${mpfr_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${mpfr_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${mpfr_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${mpfr_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${mpfr_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mpfr_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -560,33 +560,33 @@ function build_mpfr()
         echo "Running mpfr${name_suffix} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
           run_verbose make -j1 check-exported-symbols
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${mpfr_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mpfr_folder_name}/make-output-$(ndate).txt"
 
       if [ -z "${name_suffix}" ]
       then
         copy_license \
-          "${SOURCES_FOLDER_PATH}/${mpfr_src_folder_name}" \
+          "${XBB_SOURCES_FOLDER_PATH}/${mpfr_src_folder_name}" \
           "${mpfr_folder_name}"
       fi
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${mpfr_stamp_file_path}"
 
   else
@@ -626,21 +626,21 @@ function build_mpc()
   # The folder name for build, licenses, etc.
   local mpc_folder_name="${mpc_src_folder_name}${name_suffix}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${mpc_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${mpc_folder_name}"
 
-  local mpc_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mpc_folder_name}-installed"
+  local mpc_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mpc_folder_name}-installed"
   if [ ! -f "${mpc_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${mpc_url}" "${mpc_archive}" \
       "${mpc_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${mpc_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${mpc_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${mpc_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${mpc_folder_name}"
 
       if [ "${name_suffix}" == "-bootstrap" ]
       then
@@ -660,7 +660,7 @@ function build_mpc()
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
         LDFLAGS="${XBB_LDFLAGS_LIB}"
-        if [ "${TARGET_PLATFORM}" == "linux" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         fi
@@ -675,7 +675,7 @@ function build_mpc()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -683,44 +683,44 @@ function build_mpc()
           echo
           echo "Running mpc${name_suffix} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${mpc_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${mpc_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
           if [ "${name_suffix}" == "-bootstrap" ]
           then
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${BUILD}")
-            config_options+=("--target=${BUILD}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_BUILD}")
+            config_options+=("--target=${XBB_BUILD}")
 
           else
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
 
           fi
 
           config_options+=("--disable-maintainer-mode")
 
-          config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--with-mpfr=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${mpc_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${mpc_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${mpc_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${mpc_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${mpc_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mpc_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -728,32 +728,32 @@ function build_mpc()
         echo "Running mpc${name_suffix} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${mpc_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mpc_folder_name}/make-output-$(ndate).txt"
 
       if [ -z "${name_suffix}" ]
       then
         copy_license \
-          "${SOURCES_FOLDER_PATH}/${mpc_src_folder_name}" \
+          "${XBB_SOURCES_FOLDER_PATH}/${mpc_src_folder_name}" \
           "${mpc_folder_name}"
       fi
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${mpc_stamp_file_path}"
 
   else
@@ -797,27 +797,27 @@ function build_isl()
   # The folder name for build, licenses, etc.
   local isl_folder_name="${isl_src_folder_name}${name_suffix}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${isl_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${isl_folder_name}"
 
-  local isl_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${isl_folder_name}-installed"
+  local isl_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${isl_folder_name}-installed"
   if [ ! -f "${isl_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${isl_url}" "${isl_archive}" \
       "${isl_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${isl_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${isl_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${isl_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${isl_folder_name}"
 
       if [ "${name_suffix}" == "-bootstrap" ]
       then
 
         # Otherwise `configure: error: gmp.h header not found`.`
-        CPPFLAGS="${XBB_CPPFLAGS} -I${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/include"
+        CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include"
         CFLAGS="${XBB_CFLAGS_NO_W}"
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
@@ -832,7 +832,7 @@ function build_isl()
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
         LDFLAGS="${XBB_LDFLAGS_LIB}"
-        if [ "${TARGET_PLATFORM}" == "linux" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         fi
@@ -847,7 +847,7 @@ function build_isl()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -855,48 +855,48 @@ function build_isl()
           echo
           echo "Running isl${name_suffix} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${isl_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
           if [ "${name_suffix}" == "-bootstrap" ]
           then
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${BUILD}")
-            config_options+=("--target=${BUILD}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_BUILD}")
+            config_options+=("--target=${XBB_BUILD}")
 
           else
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
 
           fi
 
-          config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${isl_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${isl_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${isl_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${isl_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${isl_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -904,11 +904,11 @@ function build_isl()
         echo "Running isl${name_suffix} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
           then
             # /Host/Users/ilg/Work/gcc-8.4.0-1/linux-x64/build/libs/isl-0.22/.libs/lt-isl_test_cpp: relocation error: /Host/Users/ilg/Work/gcc-8.4.0-1/linux-x64/build/libs/isl-0.22/.libs/lt-isl_test_cpp: symbol _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERmm, version GLIBCXX_3.4.21 not defined in file libstdc++.so.6 with link time reference
             # FAIL isl_test_cpp (exit status: 127)
@@ -923,25 +923,25 @@ function build_isl()
           fi
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${isl_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${isl_folder_name}/make-output-$(ndate).txt"
 
       if [ -z "${name_suffix}" ]
       then
         copy_license \
-          "${SOURCES_FOLDER_PATH}/${isl_src_folder_name}" \
+          "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}" \
           "${isl_folder_name}"
       fi
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${isl_stamp_file_path}"
 
   else
@@ -980,21 +980,21 @@ function build_zstd()
   # The folder name for build, licenses, etc.
   local zstd_folder_name="${zstd_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${zstd_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${zstd_folder_name}"
 
-  local zstd_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${zstd_folder_name}-installed"
+  local zstd_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${zstd_folder_name}-installed"
   if [ ! -f "${zstd_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${zstd_github_url}" "${zstd_archive}" \
       "${zstd_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${zstd_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${zstd_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${zstd_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${zstd_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1003,7 +1003,7 @@ function build_zstd()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -1014,7 +1014,7 @@ function build_zstd()
       export LDFLAGS
 
       local build_type
-      if [ "${IS_DEBUG}" == "y" ]
+      if [ "${XBB_IS_DEBUG}" == "y" ]
       then
         build_type=Debug
       else
@@ -1024,7 +1024,7 @@ function build_zstd()
       if [ ! -f "CMakeCache.txt" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -1037,10 +1037,10 @@ function build_zstd()
           config_options+=("-LH")
           config_options+=("-G" "Ninja")
 
-          config_options+=("-DCMAKE_INSTALL_PREFIX=${LIBS_INSTALL_FOLDER_PATH}")
+          config_options+=("-DCMAKE_INSTALL_PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("-DZSTD_BUILD_PROGRAMS=OFF")
 
-          if [ "${WITH_TESTS}" == "y" ]
+          if [ "${XBB_WITH_TESTS}" == "y" ]
           then
             config_options+=("-DZSTD_BUILD_TESTS=ON")
           fi
@@ -1048,9 +1048,9 @@ function build_zstd()
           run_verbose cmake \
             "${config_options[@]}" \
             \
-            "${SOURCES_FOLDER_PATH}/${zstd_src_folder_name}/build/cmake"
+            "${XBB_SOURCES_FOLDER_PATH}/${zstd_src_folder_name}/build/cmake"
 
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${zstd_folder_name}/cmake-output-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${zstd_folder_name}/cmake-output-$(ndate).txt"
       fi
 
       (
@@ -1059,11 +1059,11 @@ function build_zstd()
 
         run_verbose cmake \
           --build . \
-          --parallel ${JOBS} \
+          --parallel ${XBB_JOBS} \
           --config "${build_type}" \
 
         # It takes too long.
-        if false # [ "${WITH_TESTS}" == "y" ]
+        if false # [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose ctest \
             -V \
@@ -1085,21 +1085,21 @@ function build_zstd()
             install
 
         )
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${zstd_folder_name}/build-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${zstd_folder_name}/build-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${zstd_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${zstd_src_folder_name}" \
         "${zstd_folder_name}"
 
       (
-        cd "${LIBS_BUILD_FOLDER_PATH}"
+        cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
         copy_cmake_logs "${zstd_folder_name}"
       )
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${zstd_stamp_file_path}"
 
   else
@@ -1134,21 +1134,21 @@ function build_libiconv()
 
   local libiconv_folder_name="${libiconv_src_folder_name}${name_suffix}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libiconv_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libiconv_folder_name}"
 
-  local libiconv_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${libiconv_folder_name}-installed"
+  local libiconv_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libiconv_folder_name}-installed"
   if [ ! -f "${libiconv_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libiconv_url}" "${libiconv_archive}" \
       "${libiconv_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libiconv_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libiconv_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libiconv_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libiconv_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1159,7 +1159,7 @@ function build_libiconv()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -1172,7 +1172,7 @@ function build_libiconv()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -1180,32 +1180,32 @@ function build_libiconv()
           echo
           echo "Running libiconv${name_suffix} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libiconv_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libiconv_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
-          config_options+=("--build=${BUILD}")
+          config_options+=("--build=${XBB_BUILD}")
           if [ "${name_suffix}" == "-bootstrap" ]
           then
             # The bootstrap binaries will run on the build machine.
-            config_options+=("--host=${BUILD}")
+            config_options+=("--host=${XBB_BUILD}")
           else
-            config_options+=("--host=${HOST}")
+            config_options+=("--host=${XBB_HOST}")
           fi
-          config_options+=("--target=${TARGET}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -1219,11 +1219,11 @@ function build_libiconv()
           # /bin/bash: /Users/ilg/Work/xbb-bootstrap-4.0.0/darwin-arm64/sources/libiconv-1.16/libcharset/build-aux/libtool-reloc: No such file or directory
           # config_options+=("--enable-relocatable")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libiconv_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libiconv_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libiconv_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libiconv_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libiconv_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libiconv_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -1231,32 +1231,32 @@ function build_libiconv()
         echo "Running libiconv${name_suffix} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libiconv_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libiconv_folder_name}/make-output-$(ndate).txt"
 
       if [ -z "${name_suffix}" ]
       then
         copy_license \
-          "${SOURCES_FOLDER_PATH}/${libiconv_src_folder_name}" \
+          "${XBB_SOURCES_FOLDER_PATH}/${libiconv_src_folder_name}" \
           "${libiconv_folder_name}"
       fi
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libiconv_stamp_file_path}"
 
   else
@@ -1311,21 +1311,21 @@ function build_ncurses()
   # The folder name  for build, licenses, etc.
   local ncurses_folder_name="${ncurses_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${ncurses_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${ncurses_folder_name}"
 
-  local ncurses_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${ncurses_folder_name}-installed"
+  local ncurses_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${ncurses_folder_name}-installed"
   if [ ! -f "${ncurses_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${ncurses_url}" "${ncurses_archive}" \
       "${ncurses_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${ncurses_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${ncurses_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${ncurses_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${ncurses_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1334,7 +1334,7 @@ function build_ncurses()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -1351,7 +1351,7 @@ function build_ncurses()
           # configure: error: expected a pathname, not ""
           export PKG_CONFIG_LIBDIR="no"
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -1359,25 +1359,25 @@ function build_ncurses()
           echo
           echo "Running ncurses configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${ncurses_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${ncurses_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # Not yet functional on windows.
-          if [ "${TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
 
             # The build passes, but generally it is not expected to be
@@ -1391,7 +1391,7 @@ function build_ncurses()
             # Without --with-pkg-config-libdir= it'll try to write the .pc files in the
             # xbb folder, probbaly by using the dirname of pkg-config.
 
-            config_options+=("--with-build-cc=${NATIVE_CC}")
+            config_options+=("--with-build-cc=${XBB_NATIVE_CC}")
             config_options+=("--with-build-cflags=${CFLAGS}")
             config_options+=("--with-build-cppflags=${CPPFLAGS}")
             config_options+=("--with-build-ldflags=${LDFLAGS}")
@@ -1430,7 +1430,7 @@ function build_ncurses()
           config_options+=("--with-cxx")
           config_options+=("--with-cxx-binding") # Arch
           config_options+=("--with-cxx-shared") # HB
-          config_options+=("--with-pkg-config-libdir=${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig")
+          config_options+=("--with-pkg-config-libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig")
 
           # Fails on Linux, with missing _nc_cur_term, which is there.
           config_options+=("--without-pthread")
@@ -1451,9 +1451,9 @@ function build_ncurses()
 
           # config_options+=("--disable-overwrite")
 
-          NCURSES_DISABLE_WIDEC=${NCURSES_DISABLE_WIDEC:-""}
+          XBB_NCURSES_DISABLE_WIDEC=${XBB_NCURSES_DISABLE_WIDEC:-""}
 
-          if [ "${NCURSES_DISABLE_WIDEC}" == "y" ]
+          if [ "${XBB_NCURSES_DISABLE_WIDEC}" == "y" ]
           then
             config_options+=("--disable-widec")
           else
@@ -1462,11 +1462,11 @@ function build_ncurses()
 
           config_options+=("--program-prefix=")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${ncurses_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${ncurses_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${ncurses_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${ncurses_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${ncurses_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${ncurses_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -1474,7 +1474,7 @@ function build_ncurses()
         echo "Running ncurses make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         # The test-programs are interactive
 
@@ -1482,49 +1482,49 @@ function build_ncurses()
         run_verbose make install
 
         # Expose the library to pkg_config also as `curses`.
-        if [ -f "${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig/ncurses.pc" ]
+        if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/ncurses.pc" ]
         then
-          cat "${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig/ncurses.pc" | \
+          cat "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/ncurses.pc" | \
             sed -e 's|Name: ncurses|Name: curses|' \
-            > "${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig/curses.pc"
+            > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/curses.pc"
         fi
 
-        if [ -f "${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig/ncurses++.pc" ]
+        if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/ncurses++.pc" ]
         then
-          cat "${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig/ncurses++.pc" | \
+          cat "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/ncurses++.pc" | \
             sed -e 's|Name: ncurses++|Name: curses++|' \
-            > "${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig/curses++.pc"
+            > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/curses++.pc"
         fi
 
-        if [ -f "${LIBS_INSTALL_FOLDER_PATH}/lib/libncurses.${SHLIB_EXT}" ]
+        if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libncurses.${XBB_SHLIB_EXT}" ]
         then
-          ln -sfv libncurses.${SHLIB_EXT} "${LIBS_INSTALL_FOLDER_PATH}/lib/libcurses.${SHLIB_EXT}"
+          ln -sfv libncurses.${XBB_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcurses.${XBB_SHLIB_EXT}"
         fi
 
-        if [ -f "${LIBS_INSTALL_FOLDER_PATH}/lib/libncurses.a" ]
+        if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libncurses.a" ]
         then
-          ln -sfv libncurses.a "${LIBS_INSTALL_FOLDER_PATH}/lib/libcurses.a"
+          ln -sfv libncurses.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcurses.a"
         fi
 
-        if [ -f "${LIBS_INSTALL_FOLDER_PATH}/lib/libncurses++.${SHLIB_EXT}" ]
+        if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libncurses++.${XBB_SHLIB_EXT}" ]
         then
-          ln -sfv libncurses++.${SHLIB_EXT} "${LIBS_INSTALL_FOLDER_PATH}/lib/libcurses++.${SHLIB_EXT}"
+          ln -sfv libncurses++.${XBB_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcurses++.${XBB_SHLIB_EXT}"
         fi
 
-        if [ -f "${LIBS_INSTALL_FOLDER_PATH}/lib/libncurses++.a" ]
+        if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libncurses++.a" ]
         then
-          ln -sfv libncurses++.a "${LIBS_INSTALL_FOLDER_PATH}/lib/libcurses++.a"
+          ln -sfv libncurses++.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcurses++.a"
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${ncurses_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${ncurses_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${ncurses_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${ncurses_src_folder_name}" \
         "${ncurses_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${ncurses_stamp_file_path}"
 
   else
@@ -1564,34 +1564,34 @@ function build_libffi()
 
   local libffi_folder_name="${libffi_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libffi_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libffi_folder_name}"
 
-  local libffi_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${libffi_folder_name}-installed"
+  local libffi_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${libffi_folder_name}-installed"
   if [ ! -f "${libffi_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libffi_github_url}" "${libffi_archive}" \
       "${libffi_src_folder_name}"
 
     (
-      if [ ! -x "${SOURCES_FOLDER_PATH}/${libffi_src_folder_name}/configure" ]
+      if [ ! -x "${XBB_SOURCES_FOLDER_PATH}/${libffi_src_folder_name}/configure" ]
       then
 
-        cd "${SOURCES_FOLDER_PATH}/${libffi_src_folder_name}"
+        cd "${XBB_SOURCES_FOLDER_PATH}/${libffi_src_folder_name}"
 
         xbb_activate_installed_dev
 
         run_verbose bash ${DEBUG} "autogen.sh"
 
       fi
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libffi_folder_name}/autogen-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libffi_folder_name}/autogen-output-$(ndate).txt"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libffi_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libffi_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libffi_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libffi_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1600,7 +1600,7 @@ function build_libffi()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -1613,7 +1613,7 @@ function build_libffi()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -1621,22 +1621,22 @@ function build_libffi()
           echo
           echo "Running libffi configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libffi_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libffi_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--enable-pax_emutramp") # Arch
 
@@ -1644,11 +1644,11 @@ function build_libffi()
           config_options+=("--disable-multi-os-directory") # Arch
           config_options+=("--disable-exec-static-tramp") # Arch
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libffi_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libffi_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libffi_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libffi_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libffi_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libffi_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -1656,29 +1656,29 @@ function build_libffi()
         echo "Running libffi make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libffi_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libffi_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libffi_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libffi_src_folder_name}" \
         "${libffi_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libffi_stamp_file_path}"
 
   else
@@ -1713,21 +1713,21 @@ function build_gettext()
 
   local gettext_folder_name="${gettext_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${gettext_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gettext_folder_name}"
 
-  local gettext_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${gettext_folder_name}-installed"
+  local gettext_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${gettext_folder_name}-installed"
   if [ ! -f "${gettext_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gettext_url}" "${gettext_archive}" \
       "${gettext_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${gettext_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${gettext_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gettext_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gettext_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1736,7 +1736,7 @@ function build_gettext()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -1749,7 +1749,7 @@ function build_gettext()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -1757,34 +1757,34 @@ function build_gettext()
           echo
           echo "Running gettext configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/gettext-runtime/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/gettext-runtime/configure" --help
           fi
 
           # Build only the /gettext-runtime folder, attempts to build
           # the full package fail with a CXX='no' problem.
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
-          if [ "${TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
             config_options+=("--enable-threads=windows")
             config_options+=("--with-gnu-ld")
-          elif [ "${TARGET_PLATFORM}" == "linux" ]
+          elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
           then
             config_options+=("--enable-threads=posix")
             config_options+=("--with-gnu-ld")
-          elif [ "${TARGET_PLATFORM}" == "darwin" ]
+          elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
             config_options+=("--enable-threads=posix")
           fi
@@ -1804,7 +1804,7 @@ function build_gettext()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -1828,11 +1828,11 @@ function build_gettext()
           # config_options+=("--enable-relocatable")
 
           #  --enable-nls needed to include libintl
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/gettext-runtime/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/gettext-runtime/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${gettext_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gettext_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${gettext_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gettext_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -1840,40 +1840,40 @@ function build_gettext()
         echo "Running gettext make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           make -j1 check # || true
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gettext_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gettext_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${gettext_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}" \
         "${gettext_folder_name}"
 
     )
 
     (
-      test_gettext "${BINS_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gettext_folder_name}/test-output-$(ndate).txt"
+      test_gettext "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gettext_folder_name}/test-output-$(ndate).txt"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gettext_stamp_file_path}"
 
   else
     echo "Library gettext already installed."
   fi
 
-  tests_add "test_gettext" "${BINS_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_gettext" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_gettext()
@@ -1921,21 +1921,21 @@ function build_libelf()
 
   local libelf_folder_name="${libelf_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libelf_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libelf_folder_name}"
 
-  local libelf_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${libelf_folder_name}-installed"
+  local libelf_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${libelf_folder_name}-installed"
   if [ ! -f "${libelf_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libelf_url}" "${libelf_archive}" \
       "${libelf_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libelf_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libelf_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libelf_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libelf_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1944,7 +1944,7 @@ function build_libelf()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -1957,7 +1957,7 @@ function build_libelf()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -1965,30 +1965,30 @@ function build_libelf()
           echo
           echo "Running libelf configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libelf_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libelf_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # config_options+=("--disable-nls")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libelf_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libelf_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libelf_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libelf_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libelf_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libelf_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -1996,29 +1996,29 @@ function build_libelf()
         echo "Running libelf make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libelf_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libelf_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libelf_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libelf_src_folder_name}" \
         "${libelf_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libelf_stamp_file_path}"
 
   else
@@ -2061,21 +2061,21 @@ function build_expat()
 
   local expat_folder_name="${expat_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${expat_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${expat_folder_name}"
 
-  local expat_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${expat_folder_name}-installed"
+  local expat_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${expat_folder_name}-installed"
   if [ ! -f "${expat_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${expat_url}" "${expat_archive}" \
       "${expat_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${expat_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${expat_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${expat_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${expat_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -2084,7 +2084,7 @@ function build_expat()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -2097,7 +2097,7 @@ function build_expat()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -2105,31 +2105,31 @@ function build_expat()
           echo
           echo "Running expat configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${expat_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${expat_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--without-docbook")
           config_options+=("--without-xmlwf")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${expat_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${expat_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${expat_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${expat_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${expat_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${expat_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -2137,9 +2137,9 @@ function build_expat()
         echo "Running expat make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
@@ -2147,15 +2147,15 @@ function build_expat()
         # Has no install-strip
         run_verbose make install
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${expat_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${expat_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${expat_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${expat_src_folder_name}" \
         "${expat_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${expat_stamp_file_path}"
 
   else
@@ -2189,21 +2189,21 @@ function build_xz()
 
   local xz_folder_name="${xz_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${xz_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${xz_folder_name}"
 
-  local xz_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${xz_folder_name}-installed"
+  local xz_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${xz_folder_name}-installed"
   if [ ! -f "${xz_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${xz_url}" "${xz_archive}" \
       "${xz_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${xz_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${xz_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${xz_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${xz_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -2212,7 +2212,7 @@ function build_xz()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -2225,7 +2225,7 @@ function build_xz()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -2233,26 +2233,26 @@ function build_xz()
           echo
           echo "Running xz configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${xz_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${xz_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -2262,11 +2262,11 @@ function build_xz()
           # config_options+=("--enable-werror") # Arch
           config_options+=("--disable-werror")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${xz_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${xz_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${xz_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${xz_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${xz_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${xz_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -2274,29 +2274,29 @@ function build_xz()
         echo "Running xz make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${xz_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${xz_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${xz_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${xz_src_folder_name}" \
         "${xz_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${xz_stamp_file_path}"
 
   else
@@ -2333,20 +2333,20 @@ function build_gpm()
 
   local gpm_folder_name="${gpm_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${gpm_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gpm_folder_name}"
 
-  local gpm_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${gpm_folder_name}-installed"
+  local gpm_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${gpm_folder_name}-installed"
   if [ ! -f "${gpm_stamp_file_path}" ]
   then
 
     echo
     echo "gmp in-source building"
 
-    cd "${LIBS_BUILD_FOLDER_PATH}"
+    cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
-    if [ ! -d "${LIBS_BUILD_FOLDER_PATH}/${gpm_folder_name}" ]
+    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gpm_folder_name}" ]
     then
-      cd "${LIBS_BUILD_FOLDER_PATH}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
       download_and_extract "${gpm_github_url}" "${gpm_archive}" \
         "${gpm_src_folder_name}"
@@ -2358,7 +2358,7 @@ function build_gpm()
     fi
 
     (
-      cd "${LIBS_BUILD_FOLDER_PATH}/${gpm_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gpm_folder_name}"
       if [ ! -f "stamp-autogen" ]
       then
 
@@ -2366,19 +2366,19 @@ function build_gpm()
 
         touch "stamp-autogen"
       fi
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gpm_folder_name}/autogen-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gpm_folder_name}/autogen-output-$(ndate).txt"
 
     (
-      cd "${LIBS_BUILD_FOLDER_PATH}/${gpm_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gpm_folder_name}"
 
       xbb_activate_installed_dev
 
-      CPPFLAGS="${XBB_CPPFLAGS} -I${LIBS_BUILD_FOLDER_PATH}/${gpm_folder_name}/src/headers"
+      CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gpm_folder_name}/src/headers"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         LDFLAGS+=" -Wl,--allow-multiple-definition"
@@ -2392,7 +2392,7 @@ function build_gpm()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -2400,30 +2400,30 @@ function build_gpm()
           echo
           echo "Running gpm configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             run_verbose bash "configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # config_options+=("--with-pic")
 
           run_verbose bash ${DEBUG} "configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${gpm_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gpm_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${gpm_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gpm_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -2431,41 +2431,41 @@ function build_gpm()
         echo "Running gpm make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-        if [ "${TARGET_PLATFORM}" == "linux" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
           (
-            mkdir -pv "${APP_PREFIX}/bin"
-            cd "${APP_PREFIX}/bin"
+            mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+            cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 
             # Manual copy, since it is not refered in the elf.
-            cp -v "${LIBS_INSTALL_FOLDER_PATH}/lib/libgpm.so.2.1.0" .
+            cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgpm.so.2.1.0" .
             rm -f "libgpm.so.2"
             ln -s -v "libgpm.so.2.1.0" "libgpm.so.2"
           )
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gpm_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gpm_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${LIBS_BUILD_FOLDER_PATH}/${gpm_folder_name}" \
+        "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gpm_folder_name}" \
         "${gpm_folder_name}"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gpm_stamp_file_path}"
 
   else
@@ -2499,18 +2499,18 @@ function build_mpdecimal()
 
   local mpdecimal_folder_name="${mpdecimal_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${mpdecimal_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${mpdecimal_folder_name}"
 
-  local mpdecimal_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mpdecimal_folder_name}-installed"
+  local mpdecimal_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mpdecimal_folder_name}-installed"
   if [ ! -f "${mpdecimal_stamp_file_path}" ]
   then
 
     echo
     echo "mpdecimal in-source building"
 
-    if [ ! -d "${LIBS_BUILD_FOLDER_PATH}/${mpdecimal_folder_name}" ]
+    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${mpdecimal_folder_name}" ]
     then
-      cd "${LIBS_BUILD_FOLDER_PATH}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
       download_and_extract "${mpdecimal_url}" "${mpdecimal_archive}" \
         "${mpdecimal_src_folder_name}"
@@ -2522,7 +2522,7 @@ function build_mpdecimal()
     fi
 
     (
-      cd "${LIBS_BUILD_FOLDER_PATH}/${mpdecimal_src_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${mpdecimal_src_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -2531,7 +2531,7 @@ function build_mpdecimal()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -2547,7 +2547,7 @@ function build_mpdecimal()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -2555,22 +2555,22 @@ function build_mpdecimal()
           echo
           echo "Running mpdecimal configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             run_verbose bash "configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # C++ tests fail on Linux.
           # config_options+=("--enable-cxx")
@@ -2579,8 +2579,8 @@ function build_mpdecimal()
           run_verbose bash ${DEBUG} "configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${mpdecimal_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${mpdecimal_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${mpdecimal_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mpdecimal_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -2588,14 +2588,14 @@ function build_mpdecimal()
         echo "Running mpdecimal make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         # Has no install-strip
         run_verbose make install
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
           then
             # TODO
             # Fails shared on darwin
@@ -2603,15 +2603,15 @@ function build_mpdecimal()
           fi
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${mpdecimal_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mpdecimal_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${LIBS_BUILD_FOLDER_PATH}/${mpdecimal_folder_name}" \
+        "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${mpdecimal_folder_name}" \
         "${mpdecimal_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${mpdecimal_stamp_file_path}"
 
   else
@@ -2653,25 +2653,25 @@ function build_libxcrypt()
 
   local libxcrypt_folder_name="${libxcrypt_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libxcrypt_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libxcrypt_folder_name}"
 
   local libxcrypt_patch_file_path="${libxcrypt_folder_name}.patch"
-  local libxcrypt_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${libxcrypt_folder_name}-installed"
+  local libxcrypt_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libxcrypt_folder_name}-installed"
   if [ ! -f "${libxcrypt_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     set +e
     download_and_extract "${libxcrypt_github_url}" "${libxcrypt_archive}" \
       "${libxcrypt_src_folder_name}" "${libxcrypt_patch_file_path}"
     set -e
 
-    if [ ! -x "${SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}/configure" ]
+    if [ ! -x "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}/configure" ]
     then
       (
-        cd "${SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}"
+        cd "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}"
 
         xbb_activate_installed_dev
 
@@ -2686,13 +2686,13 @@ function build_libxcrypt()
           run_verbose autoreconf -fiv
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/autogen-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/autogen-output-$(ndate).txt"
 
     fi
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libxcrypt_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libxcrypt_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxcrypt_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxcrypt_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -2701,7 +2701,7 @@ function build_libxcrypt()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -2714,7 +2714,7 @@ function build_libxcrypt()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -2722,22 +2722,22 @@ function build_libxcrypt()
           echo
           echo "Running libxcrypt configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # config_options+=("--enable-obsolete-api=glibc") # Arch
           config_options+=("--disable-obsolete-api") # HB
@@ -2749,13 +2749,13 @@ function build_libxcrypt()
 
           config_options+=("--enable-hashes=strong,glibc") # Arch
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}/configure" \
             "${config_options[@]}"
 
           # patch_all_libtool_rpath
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -2763,24 +2763,24 @@ function build_libxcrypt()
         echo "Running libxcrypt make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         # install is not able to rewrite them.
-        rm -rfv "${LIBS_INSTALL_FOLDER_PATH}"/lib*/libxcrypt.*
-        rm -rfv "${LIBS_INSTALL_FOLDER_PATH}"/lib*/libowcrypt.*
-        rm -rfv "${LIBS_INSTALL_FOLDER_PATH}"/lib/pkgconfig/libcrypt.pc
+        rm -rfv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"/lib*/libxcrypt.*
+        rm -rfv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"/lib*/libowcrypt.*
+        rm -rfv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"/lib/pkgconfig/libcrypt.pc
 
         # make install-strip
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
             # macOS FAIL: test/symbols-static.sh
             # macOS FAIL: test/symbols-renames.sh
@@ -2790,14 +2790,14 @@ function build_libxcrypt()
           fi
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/make-output-$(ndate).txt"
     )
 
     (
       test_libxcrypt
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/test-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/test-output-$(ndate).txt"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libxcrypt_stamp_file_path}"
 
   else
@@ -2811,7 +2811,7 @@ function test_libxcrypt()
     echo
     echo "Checking the libxcrypt shared libraries..."
 
-    show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib/libcrypt.${SHLIB_EXT}"
+    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcrypt.${XBB_SHLIB_EXT}"
   )
 }
 
@@ -2860,18 +2860,18 @@ function build_openssl()
 
   local openssl_folder_name="${openssl_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${openssl_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${openssl_folder_name}"
 
-  local openssl_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${openssl_folder_name}-installed"
+  local openssl_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${openssl_folder_name}-installed"
   if [ ! -f "${openssl_stamp_file_path}" ]
   then
 
     echo
     echo "openssl in-source building"
 
-    if [ ! -d "${LIBS_BUILD_FOLDER_PATH}/${openssl_folder_name}" ]
+    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${openssl_folder_name}" ]
     then
-      cd "${LIBS_BUILD_FOLDER_PATH}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
       download_and_extract "${openssl_url}" "${openssl_archive}" \
         "${openssl_src_folder_name}"
@@ -2883,15 +2883,15 @@ function build_openssl()
     fi
 
     (
-      cd "${LIBS_BUILD_FOLDER_PATH}/${openssl_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${openssl_folder_name}"
 
       xbb_activate_installed_dev
 
       #  -Wno-unused-command-line-argument
 
-      # export CPPFLAGS="${XBB_CPPFLAGS} -I${LIBS_BUILD_FOLDER_PATH}/${openssl_folder_name}/include"
+      # export CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${openssl_folder_name}/include"
       CPPFLAGS="${XBB_CPPFLAGS}"
-      if [ "${TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         # /usr/include/CommonCrypto/CommonRandom.h:35:9: error: unknown type name 'CCCryptorStatus'
         # typedef CCCryptorStatus CCRNGStatus;
@@ -2901,7 +2901,7 @@ function build_openssl()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -2914,7 +2914,7 @@ function build_openssl()
       if [ ! -f config.stamp ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -2923,7 +2923,7 @@ function build_openssl()
           echo "Running openssl configure..."
 
           echo
-          if [ "${TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
 
             # Older versions do not support the KERNEL_BITS trick and require
@@ -2934,15 +2934,15 @@ function build_openssl()
 
               # This config does not use the standard GNU environment definitions.
               # `Configure` is a Perl script.
-              if [ "${IS_DEVELOP}" == "y" ]
+              if [ "${XBB_IS_DEVELOP}" == "y" ]
               then
                 run_verbose "./Configure" --help || true
               fi
 
               run_verbose "./Configure" "darwin64-x86_64-cc" \
-                --prefix="${LIBS_INSTALL_FOLDER_PATH}" \
+                --prefix="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" \
                 \
-                --openssldir="${BINS_INSTALL_FOLDER_PATH}/openssl" \
+                --openssldir="${XBB_BINARIES_INSTALL_FOLDER_PATH}/openssl" \
                 shared \
                 enable-md2 \
                 enable-rc5 \
@@ -2957,7 +2957,7 @@ function build_openssl()
 
             else
 
-              if [ "${IS_DEVELOP}" == "y" ]
+              if [ "${XBB_IS_DEVELOP}" == "y" ]
               then
                 run_verbose "./config" --help
               fi
@@ -2970,10 +2970,10 @@ function build_openssl()
 
               config_options=()
 
-              config_options+=("--prefix=${LIBS_INSTALL_FOLDER_PATH}")
+              config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
               # DO NOT USE --libdir
 
-              config_options+=("--openssldir=${BINS_INSTALL_FOLDER_PATH}/openssl")
+              config_options+=("--openssldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/openssl")
               config_options+=("shared")
               config_options+=("enable-md2")
               config_options+=("enable-rc5")
@@ -2994,15 +2994,15 @@ function build_openssl()
 
             fi
 
-          elif [ "${TARGET_PLATFORM}" == "linux" ]
+          elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
           then
 
             config_options=()
 
-            config_options+=("--prefix=${LIBS_INSTALL_FOLDER_PATH}")
+            config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
             # DO NOT USE --libdir
 
-            config_options+=("--openssldir=${BINS_INSTALL_FOLDER_PATH}/openssl")
+            config_options+=("--openssldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/openssl")
             config_options+=("shared")
             config_options+=("enable-md2")
             config_options+=("enable-rc5")
@@ -3014,10 +3014,10 @@ function build_openssl()
             config_options+=("no-ssl3-method")
             config_options+=("no-zlib")
 
-            if [ "${TARGET_ARCH}" == "x64" ]
+            if [ "${XBB_TARGET_ARCH}" == "x64" ]
             then
               config_options+=("enable-ec_nistp_64_gcc_128")
-            elif [ "${TARGET_ARCH}" == "arm64" ]
+            elif [ "${XBB_TARGET_ARCH}" == "arm64" ]
             then
               config_options+=("no-afalgeng")
             fi
@@ -3044,31 +3044,31 @@ function build_openssl()
               run_verbose make depend
             fi
 
-          elif [ "${TARGET_PLATFORM}" == "win32" ]
+          elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
 
             run_verbose "./Configure" --help || true
 
             config_options=()
 
-            if [ "${TARGET_ARCH}" == "x64" ]
+            if [ "${XBB_TARGET_ARCH}" == "x64" ]
             then
               config_options+=("mingw64")
-            elif [ "${TARGET_ARCH}" == "ia32" ]
+            elif [ "${XBB_TARGET_ARCH}" == "ia32" ]
             then
               config_options+=("mingw")
             else
-              echo "Unsupported TARGET_ARCH ${TARGET_ARCH}"
+              echo "Unsupported XBB_TARGET_ARCH ${XBB_TARGET_ARCH}"
               exit 1
             fi
 
-            config_options+=("--prefix=${LIBS_INSTALL_FOLDER_PATH}")
+            config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
             # DO NOT USE --libdir
 
             # Not needed, the CC/CXX macros already define the target.
-            # config_options+=("--cross-compile-prefix=${TARGET}")
+            # config_options+=("--cross-compile-prefix=${XBB_TARGET}")
 
-            config_options+=("--openssldir=${BINS_INSTALL_FOLDER_PATH}/openssl")
+            config_options+=("--openssldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/openssl")
 
             config_options+=("shared")
             config_options+=("zlib-dynamic")
@@ -3087,17 +3087,17 @@ function build_openssl()
             run_verbose "./Configure" \
               "${config_options[@]}"
 
-            run_verbose make -j ${JOBS}
+            run_verbose make -j ${XBB_JOBS}
 
           else
-            echo "Unsupported TARGET_PLATFORM ${TARGET_PLATFORM}"
+            echo "Unsupported XBB_TARGET_PLATFORM ${XBB_TARGET_PLATFORM}"
             exit 1
           fi
 
           touch config.stamp
 
-          # cp "configure.log" "${LOGS_FOLDER_PATH}/configure-openssl-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${openssl_folder_name}/configure-output-$(ndate).txt"
+          # cp "configure.log" "${XBB_LOGS_FOLDER_PATH}/configure-openssl-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${openssl_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -3105,58 +3105,58 @@ function build_openssl()
         echo "Running openssl make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         run_verbose make install_sw
 
         # Copy openssl to APP_INSTALL
-        if [ "${LIBS_INSTALL_FOLDER_PATH}" != "${BINS_INSTALL_FOLDER_PATH}" ]
+        if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_BINARIES_INSTALL_FOLDER_PATH}" ]
         then
-          mkdir -pv "${BINS_INSTALL_FOLDER_PATH}/bin"
-          cp -v "${LIBS_INSTALL_FOLDER_PATH}/bin/openssl" \
-            "${BINS_INSTALL_FOLDER_PATH}/bin"
-          cp -v "${LIBS_INSTALL_FOLDER_PATH}/bin/c_rehash" \
-            "${BINS_INSTALL_FOLDER_PATH}/bin"
+          mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+          cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/openssl" \
+            "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+          cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/c_rehash" \
+            "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
         fi
 
         if false
         then
-          mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/openssl"
+          mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
 
           if [ -f "${XBB_FOLDER_PATH}/openssl/cert.pem" ]
           then
-            install -v -c -m 644 "${XBB_FOLDER_PATH}/openssl/ca-bundle.crt" "${LIBS_INSTALL_FOLDER_PATH}/openssl"
-            install -v -c -m 644 "${XBB_FOLDER_PATH}/openssl/cert.pem" "${LIBS_INSTALL_FOLDER_PATH}/openssl"
+            install -v -c -m 644 "${XBB_FOLDER_PATH}/openssl/ca-bundle.crt" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
+            install -v -c -m 644 "${XBB_FOLDER_PATH}/openssl/cert.pem" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
           elif [ -f "/private/etc/ssl/cert.pem" ]
           then
-            install -v -c -m 644 "/private/etc/ssl/cert.pem" "${LIBS_INSTALL_FOLDER_PATH}/openssl"
+            install -v -c -m 644 "/private/etc/ssl/cert.pem" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
           fi
 
           curl --location http://curl.haxx.se/ca/cacert.pem -o cacert.pem
-          install -v -c -m 644 cacert.pem "${LIBS_INSTALL_FOLDER_PATH}/openssl"
+          install -v -c -m 644 cacert.pem "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
         fi
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 test
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${openssl_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${openssl_folder_name}/make-output-$(ndate).txt"
 
       (
         test_openssl_libs
-        test_openssl "${BINS_INSTALL_FOLDER_PATH}/bin"
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${openssl_folder_name}/test-output-$(ndate).txt"
+        test_openssl "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${openssl_folder_name}/test-output-$(ndate).txt"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${openssl_stamp_file_path}"
 
   else
     echo "Component openssl already installed."
   fi
 
-  tests_add test_openssl "${BINS_INSTALL_FOLDER_PATH}/bin"
+  tests_add test_openssl "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_openssl_libs()
@@ -3165,20 +3165,20 @@ function test_openssl_libs()
     echo
     echo "Checking the openssl shared libraries..."
 
-    show_libs "${BINS_INSTALL_FOLDER_PATH}/bin/openssl"
+    show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/openssl"
 
-    if [ -f "${LIBS_INSTALL_FOLDER_PATH}/lib64/libcrypto.${SHLIB_EXT}" ]
+    if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libcrypto.${XBB_SHLIB_EXT}" ]
     then
-      show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib64/libcrypto.${SHLIB_EXT}"
+      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libcrypto.${XBB_SHLIB_EXT}"
     else
-      show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib/libcrypto.${SHLIB_EXT}"
+      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcrypto.${XBB_SHLIB_EXT}"
     fi
 
-    if [ -f "${LIBS_INSTALL_FOLDER_PATH}/lib64/libssl.${SHLIB_EXT}" ]
+    if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libssl.${XBB_SHLIB_EXT}" ]
     then
-      show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib64/libssl.${SHLIB_EXT}"
+      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libssl.${XBB_SHLIB_EXT}"
     else
-      show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib/libssl.${SHLIB_EXT}"
+      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libssl.${XBB_SHLIB_EXT}"
     fi
   )
 }
@@ -3193,8 +3193,8 @@ function test_openssl()
 
     run_app "${test_bin_folder_path}/openssl" version
 
-    rm -rf "${TESTS_FOLDER_PATH}/openssl"
-    mkdir -pv "${TESTS_FOLDER_PATH}/openssl"; cd "${TESTS_FOLDER_PATH}/openssl"
+    rm -rf "${XBB_TESTS_FOLDER_PATH}/openssl"
+    mkdir -pv "${XBB_TESTS_FOLDER_PATH}/openssl"; cd "${XBB_TESTS_FOLDER_PATH}/openssl"
 
     echo "This is a test file" >testfile.txt
     test_expect "SHA256(testfile.txt)= c87e2ca771bab6024c269b933389d2a92d4941c848c52f155b9b84e1f109fe35" "${test_bin_folder_path}/openssl" dgst -sha256 testfile.txt
@@ -3256,30 +3256,30 @@ function build_sqlite()
 
   local sqlite_folder_name="sqlite-${sqlite_version}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${sqlite_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${sqlite_folder_name}"
 
-  local sqlite_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${sqlite_folder_name}-installed"
+  local sqlite_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${sqlite_folder_name}-installed"
   if [ ! -f "${sqlite_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${sqlite_url}" "${sqlite_archive}" \
       "${sqlite_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${sqlite_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${sqlite_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${sqlite_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${sqlite_folder_name}"
 
       xbb_activate_installed_dev
 
-      CPPFLAGS="${XBB_CPPFLAGS} -I${LIBS_INSTALL_FOLDER_PATH}/include/readline"
+      CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/readline"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -3292,7 +3292,7 @@ function build_sqlite()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -3300,26 +3300,26 @@ function build_sqlite()
           echo
           echo "Running sqlite configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${sqlite_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${sqlite_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -3346,11 +3346,11 @@ function build_sqlite()
           # config_options+=("--disable-readline")
           # config_options+=("--disable-amalgamation")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${sqlite_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${sqlite_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${sqlite_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${sqlite_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${sqlite_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sqlite_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -3358,12 +3358,12 @@ function build_sqlite()
         echo "Running sqlite make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         # Fails on Linux. And takes way too long.
         # 2 errors out of 249249 tests on docker Linux 64-bit little-endian
         # !Failures on these tests: oserror-1.4.1 oserror-1.4.2
-        if false # [ "${WITH_TESTS}" == "y" ]
+        if false # [ "${XBB_WITH_TESTS}" == "y" ]
         then
           (
             # To access the /opt/xbb/lib/libtcl8.6.so
@@ -3376,15 +3376,15 @@ function build_sqlite()
         # Has no install-strip
         run_verbose make install
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${sqlite_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sqlite_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${sqlite_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${sqlite_src_folder_name}" \
         "${sqlite_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${sqlite_stamp_file_path}"
 
   else
@@ -3428,21 +3428,21 @@ function build_readline()
 
   local readline_patch_file_path="${readline_folder_name}.patch"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${readline_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${readline_folder_name}"
 
-  local readline_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${readline_folder_name}-installed"
+  local readline_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${readline_folder_name}-installed"
   if [ ! -f "${readline_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${readline_url}" "${readline_archive}" \
       "${readline_src_folder_name}" "${readline_patch_file_path}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${readline_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${readline_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${readline_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${readline_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -3451,7 +3451,7 @@ function build_readline()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -3464,7 +3464,7 @@ function build_readline()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -3472,30 +3472,30 @@ function build_readline()
           echo
           echo "Running readline configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${readline_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${readline_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--with-curses")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${readline_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${readline_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${readline_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${readline_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${readline_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${readline_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -3503,24 +3503,24 @@ function build_readline()
         echo "Running readline make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         # Has no install-strip
         run_verbose make install
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${readline_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${readline_folder_name}/make-output-$(ndate).txt"
     )
 
     (
       test_readline
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${readline_folder_name}/test-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${readline_folder_name}/test-output-$(ndate).txt"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${readline_stamp_file_path}"
 
   else
@@ -3536,8 +3536,8 @@ function test_readline()
     echo
     echo "Checking the readline shared libraries..."
 
-    show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib/libreadline.${SHLIB_EXT}"
-    show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib/libhistory.${SHLIB_EXT}"
+    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libreadline.${XBB_SHLIB_EXT}"
+    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libhistory.${XBB_SHLIB_EXT}"
   )
 }
 
@@ -3568,18 +3568,18 @@ function build_bzip2()
 
   local bzip2_folder_name="${bzip2_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${bzip2_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${bzip2_folder_name}"
 
-  local bzip2_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${bzip2_folder_name}-installed"
+  local bzip2_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${bzip2_folder_name}-installed"
   if [ ! -f "${bzip2_stamp_file_path}" ]
   then
 
     echo
     echo "bzip2 in-source building"
 
-    if [ ! -d "${LIBS_BUILD_FOLDER_PATH}/${bzip2_folder_name}" ]
+    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${bzip2_folder_name}" ]
     then
-      cd "${LIBS_BUILD_FOLDER_PATH}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
       download_and_extract "${bzip2_url}" "${bzip2_archive}" \
         "${bzip2_src_folder_name}"
@@ -3591,7 +3591,7 @@ function build_bzip2()
     fi
 
     (
-      cd "${LIBS_BUILD_FOLDER_PATH}/${bzip2_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${bzip2_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -3601,7 +3601,7 @@ function build_bzip2()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -3612,7 +3612,7 @@ function build_bzip2()
       export LDFLAGS
 
       (
-        if [ "${IS_DEVELOP}" == "y" ]
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
           env | sort
         fi
@@ -3620,26 +3620,26 @@ function build_bzip2()
         echo
         echo "Running bzip2 make..."
 
-        if [ "${TARGET_PLATFORM}" == "linux" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
           # Build.
-          run_verbose make all -j ${JOBS} \
-            PREFIX=${LIBS_INSTALL_FOLDER_PATH} \
+          run_verbose make all -j ${XBB_JOBS} \
+            PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH} \
             CC="${CC} ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}" \
             AR=${AR} \
             RANLIB=${RANLIB} \
             LDFLAGS=${LDFLAGS} \
 
-          run_verbose make install PREFIX="${LIBS_INSTALL_FOLDER_PATH}"
+          run_verbose make install PREFIX="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
-          if [ "${LIBS_INSTALL_FOLDER_PATH}" != "${BINS_INSTALL_FOLDER_PATH}" ]
+          if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_BINARIES_INSTALL_FOLDER_PATH}" ]
           then
-            run_verbose make install PREFIX="${BINS_INSTALL_FOLDER_PATH}"
-            rm -rfv "${BINS_INSTALL_FOLDER_PATH}/lib/libbz2.a"
-            rm -rfv "${BINS_INSTALL_FOLDER_PATH}/include/bzlib.h"
+            run_verbose make install PREFIX="${XBB_BINARIES_INSTALL_FOLDER_PATH}"
+            rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/libbz2.a"
+            rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/include/bzlib.h"
           fi
 
-          if [ "${WITH_TESTS}" == "y" ]
+          if [ "${XBB_WITH_TESTS}" == "y" ]
           then
             run_verbose make test
           fi
@@ -3648,18 +3648,18 @@ function build_bzip2()
           run_verbose make clean
 
           # Build the shared library.
-          run_verbose make all -f Makefile-libbz2_so -j ${JOBS} \
-            PREFIX=${LIBS_INSTALL_FOLDER_PATH} \
+          run_verbose make all -f Makefile-libbz2_so -j ${XBB_JOBS} \
+            PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH} \
             CC="${CC} ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}" \
             AR=${AR} \
             RANLIB=${RANLIB} \
             LDFLAGS=${LDFLAGS} \
 
-          mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/lib/"
-          install -v -c -m 644 "libbz2.so.${bzip2_version}" "${LIBS_INSTALL_FOLDER_PATH}/lib/"
+          mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
+          install -v -c -m 644 "libbz2.so.${bzip2_version}" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
           (
-            cd "${LIBS_INSTALL_FOLDER_PATH}/lib/"
+            cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
             rm -rfv libbz2.so*
             ln -sv "libbz2.so.${bzip2_version}" libbz2.so.1.0
@@ -3669,27 +3669,27 @@ function build_bzip2()
 
           create_bzip2_pc
 
-        elif [ "${TARGET_PLATFORM}" == "darwin" ]
+        elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
         then
 
           # Build.
-          run_verbose make all -j ${JOBS} \
-            PREFIX=${LIBS_INSTALL_FOLDER_PATH} \
+          run_verbose make all -j ${XBB_JOBS} \
+            PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH} \
             CC="${CC} ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}" \
             AR=${AR} \
             RANLIB=${RANLIB} \
             LDFLAGS=${LDFLAGS} \
 
-          run_verbose make install PREFIX="${LIBS_INSTALL_FOLDER_PATH}"
+          run_verbose make install PREFIX="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
-          if [ "${LIBS_INSTALL_FOLDER_PATH}" != "${BINS_INSTALL_FOLDER_PATH}" ]
+          if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_BINARIES_INSTALL_FOLDER_PATH}" ]
           then
-            run_verbose make install PREFIX="${BINS_INSTALL_FOLDER_PATH}"
-            rm -rfv "${BINS_INSTALL_FOLDER_PATH}/lib/libbz2.a"
-            rm -rfv "${BINS_INSTALL_FOLDER_PATH}/include/bzlib.h"
+            run_verbose make install PREFIX="${XBB_BINARIES_INSTALL_FOLDER_PATH}"
+            rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/libbz2.a"
+            rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/include/bzlib.h"
           fi
 
-          if [ "${WITH_TESTS}" == "y" ]
+          if [ "${XBB_WITH_TESTS}" == "y" ]
           then
             run_verbose make test
           fi
@@ -3699,18 +3699,18 @@ function build_bzip2()
 
           # Build the shared library.
           cp "${helper_folder_path}/extras/Makefile-libbz2_dylib" .
-          run_verbose make all -f Makefile-libbz2_dylib -j ${JOBS} \
-            PREFIX=${LIBS_INSTALL_FOLDER_PATH} \
+          run_verbose make all -f Makefile-libbz2_dylib -j ${XBB_JOBS} \
+            PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH} \
             CC="${CC} ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}" \
             AR=${AR} \
             RANLIB=${RANLIB} \
             LDFLAGS=${LDFLAGS} \
 
-          mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/lib/"
-          install -v -c -m 644 "libbz2.${bzip2_version}.dylib" "${LIBS_INSTALL_FOLDER_PATH}/lib/"
+          mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
+          install -v -c -m 644 "libbz2.${bzip2_version}.dylib" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
           (
-            cd "${LIBS_INSTALL_FOLDER_PATH}/lib/"
+            cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
             rm -rfv libbz2.dylib libbz2.1.dylib libbz2.1.0.dylib
             ln -sv "libbz2.${bzip2_version}.dylib" libbz2.1.0.dylib
@@ -3720,30 +3720,30 @@ function build_bzip2()
 
           create_bzip2_pc
 
-        elif [ "${TARGET_PLATFORM}" == "win32" ]
+        elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
         then
 
-          run_verbose make libbz2.a bzip2 bzip2recover -j ${JOBS} \
-            PREFIX=${LIBS_INSTALL_FOLDER_PATH} \
+          run_verbose make libbz2.a bzip2 bzip2recover -j ${XBB_JOBS} \
+            PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH} \
             CC="${CC} ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}" \
             AR=${AR} \
             RANLIB=${RANLIB} \
             LDFLAGS=${LDFLAGS} \
 
-          mkdir -p "${LIBS_INSTALL_FOLDER_PATH}/include"
-          run_verbose cp bzlib.h "${LIBS_INSTALL_FOLDER_PATH}/include"
-          mkdir -p "${LIBS_INSTALL_FOLDER_PATH}/lib"
-          run_verbose cp libbz2.a "${LIBS_INSTALL_FOLDER_PATH}/lib"
-          mkdir -p "${LIBS_INSTALL_FOLDER_PATH}/bin"
-          run_verbose cp bzip2.exe "${LIBS_INSTALL_FOLDER_PATH}/bin"
-          run_verbose cp bzip2recover.exe "${LIBS_INSTALL_FOLDER_PATH}/bin"
+          mkdir -p "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include"
+          run_verbose cp bzlib.h "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include"
+          mkdir -p "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+          run_verbose cp libbz2.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+          mkdir -p "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin"
+          run_verbose cp bzip2.exe "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin"
+          run_verbose cp bzip2recover.exe "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin"
 
         fi
 
-        if [ "${LIBS_INSTALL_FOLDER_PATH}" != "${BINS_INSTALL_FOLDER_PATH}" ]
+        if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_BINARIES_INSTALL_FOLDER_PATH}" ]
         then
           (
-            cd "${BINS_INSTALL_FOLDER_PATH}/bin"
+            cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 
             # For unknown reasons, the original links are absolute.
             # Make them relative to the current folder.
@@ -3773,15 +3773,15 @@ function build_bzip2()
           )
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${bzip2_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${bzip2_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${LIBS_BUILD_FOLDER_PATH}/${bzip2_folder_name}" \
+        "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${bzip2_folder_name}" \
         "${bzip2_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${bzip2_stamp_file_path}"
 
   else
@@ -3791,11 +3791,11 @@ function build_bzip2()
 
 function create_bzip2_pc()
 {
-  mkdir -p "${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig"
+  mkdir -p "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig"
   # Note: __EOF__ is NOT quoted to allow substitutions.
-  cat <<__EOF__ >"${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig/bzip2.pc"
-prefix=${LIBS_INSTALL_FOLDER_PATH}
-exec_prefix=${LIBS_INSTALL_FOLDER_PATH}
+  cat <<__EOF__ >"${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/bzip2.pc"
+prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}
+exec_prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}
 bindir=\${exec_prefix}/bin
 libdir=\${exec_prefix}/lib
 includedir=\${prefix}/include
@@ -3807,7 +3807,7 @@ Libs: -L\${libdir} -lbz2
 Cflags: -I\${includedir}
 __EOF__
 
-  run_verbose cat "${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig/bzip2.pc"
+  run_verbose cat "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/bzip2.pc"
 }
 
 # -----------------------------------------------------------------------------
@@ -3833,21 +3833,21 @@ function build_lzo()
 
   local lzo_folder_name="${lzo_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${lzo_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${lzo_folder_name}"
 
-  local lzo_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${lzo_folder_name}-installed"
+  local lzo_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${lzo_folder_name}-installed"
   if [ ! -f "${lzo_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${lzo_url}" "${lzo_archive}" \
       "${lzo_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${lzo_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${lzo_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${lzo_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${lzo_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -3856,7 +3856,7 @@ function build_lzo()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -3869,7 +3869,7 @@ function build_lzo()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -3877,31 +3877,31 @@ function build_lzo()
           echo
           echo "Running lzo configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${lzo_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${lzo_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--disable-dependency-tracking")
           config_options+=("--enable-shared")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${lzo_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${lzo_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${lzo_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${lzo_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${lzo_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${lzo_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -3909,29 +3909,29 @@ function build_lzo()
         echo "Running lzo make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${lzo_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${lzo_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${lzo_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${lzo_src_folder_name}" \
         "${lzo_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${lzo_stamp_file_path}"
 
   else
@@ -3956,43 +3956,43 @@ function build_python2()
 
   local python2_version="$1"
 
-  export PYTHON2_VERSION_MAJOR=$(echo ${python2_version} | sed -e 's|\([0-9]\)\..*|\1|')
-  export PYTHON2_VERSION_MINOR=$(echo ${python2_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
-  export PYTHON2_VERSION_MAJOR_MINOR=${PYTHON2_VERSION_MAJOR}${PYTHON2_VERSION_MINOR}
+  export XBB_PYTHON2_VERSION_MAJOR=$(echo ${python2_version} | sed -e 's|\([0-9]\)\..*|\1|')
+  export XBB_PYTHON2_VERSION_MINOR=$(echo ${python2_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
+  export XBB_PYTHON2_VERSION_MAJOR_MINOR=${XBB_PYTHON2_VERSION_MAJOR}${XBB_PYTHON2_VERSION_MINOR}
 
   # Used in python27-config.sh.
-  export PYTHON2_SRC_FOLDER_NAME="Python-${python2_version}"
+  export XBB_PYTHON2_SRC_FOLDER_NAME="Python-${python2_version}"
 
-  local python2_archive="${PYTHON2_SRC_FOLDER_NAME}.tar.xz"
+  local python2_archive="${XBB_PYTHON2_SRC_FOLDER_NAME}.tar.xz"
   local python2_url="https://www.python.org/ftp/python/${python2_version}/${python2_archive}"
 
   local python2_folder_name="python-${python2_version}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${python2_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${python2_folder_name}"
 
-  local python2_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${python2_folder_name}-installed"
+  local python2_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${python2_folder_name}-installed"
   if [ ! -f "${python2_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${python2_url}" "${python2_archive}" \
-      "${PYTHON2_SRC_FOLDER_NAME}"
+      "${XBB_PYTHON2_SRC_FOLDER_NAME}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${python2_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${python2_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${python2_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${python2_folder_name}"
 
       # To pick the new libraries
       xbb_activate_installed_dev
 
-      CPPFLAGS="${XBB_CPPFLAGS} -I${LIBS_INSTALL_FOLDER_PATH}/include/ncurses"
+      CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -4013,7 +4013,7 @@ function build_python2()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -4021,9 +4021,9 @@ function build_python2()
           echo
           echo "Running python2 configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${PYTHON2_SRC_FOLDER_NAME}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON2_SRC_FOLDER_NAME}/configure" --help
           fi
 
           # Fail on macOS:
@@ -4037,11 +4037,11 @@ function build_python2()
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--with-dbmliborder=gdbm:ndbm")
 
@@ -4051,50 +4051,50 @@ function build_python2()
           # Create the PythonX.Y.so.
           config_options+=("--enable-shared")
 
-          if [ "${TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
             config_options+=("--enable-unicode=ucs2")
           else
             config_options+=("--enable-unicode=ucs4")
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${PYTHON2_SRC_FOLDER_NAME}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON2_SRC_FOLDER_NAME}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${python2_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${python2_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${python2_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${python2_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
         echo
         echo "Running python2 make..."
 
-        # export LD_RUN_PATH="${LIBS_INSTALL_FOLDER_PATH}/lib"
+        # export LD_RUN_PATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
 
         # Build.
-        run_verbose make -j ${JOBS} # build_all
+        run_verbose make -j ${XBB_JOBS} # build_all
 
         run_verbose make altinstall
 
         # Hundreds of tests, take a lot of time.
         # Many failures.
-        if false # [ "${WITH_TESTS}" == "y" ]
+        if false # [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 quicktest
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${python2_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${python2_folder_name}/make-output-$(ndate).txt"
     )
 
     (
       test_python2
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${python2_folder_name}/test-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${python2_folder_name}/test-output-$(ndate).txt"
 
     copy_license \
-      "${SOURCES_FOLDER_PATH}/${PYTHON2_SRC_FOLDER_NAME}" \
+      "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON2_SRC_FOLDER_NAME}" \
       "${python2_folder_name}"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${python2_stamp_file_path}"
 
   else
@@ -4109,17 +4109,17 @@ function test_python2()
     echo
     echo "Checking the python2 binary shared libraries..."
 
-    show_libs "${LIBS_INSTALL_FOLDER_PATH}/bin/python2.${PYTHON2_VERSION_MINOR}"
-    show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib/libpython${PYTHON2_VERSION_MAJOR}.${PYTHON2_VERSION_MINOR}.${SHLIB_EXT}"
+    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}"
+    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libpython${XBB_PYTHON2_VERSION_MAJOR}.${XBB_PYTHON2_VERSION_MINOR}.${XBB_SHLIB_EXT}"
 
     echo
     echo "Testing if the python2 binary starts properly..."
 
-    export LD_LIBRARY_PATH="${LIBS_INSTALL_FOLDER_PATH}/lib"
-    run_app "${LIBS_INSTALL_FOLDER_PATH}/bin/python2.${PYTHON2_VERSION_MINOR}" --version
+    export LD_LIBRARY_PATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+    run_app "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}" --version
 
-    run_app "${LIBS_INSTALL_FOLDER_PATH}/bin/python2.${PYTHON2_VERSION_MINOR}" -c 'import sys; print(sys.path)'
-    run_app "${LIBS_INSTALL_FOLDER_PATH}/bin/python2.${PYTHON2_VERSION_MINOR}" -c 'import sys; print(sys.prefix)'
+    run_app "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}" -c 'import sys; print(sys.path)'
+    run_app "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}" -c 'import sys; print(sys.prefix)'
   )
 }
 
@@ -4135,65 +4135,65 @@ function download_python2_win()
 
   local python2_win_version="$1"
 
-  export PYTHON2_VERSION_MAJOR=$(echo ${python2_win_version} | sed -e 's|\([0-9]\)\..*|\1|')
-  export PYTHON2_VERSION_MINOR=$(echo ${python2_win_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
-  export PYTHON2_VERSION_MAJOR_MINOR=${PYTHON2_VERSION_MAJOR}${PYTHON2_VERSION_MINOR}
+  export XBB_PYTHON2_VERSION_MAJOR=$(echo ${python2_win_version} | sed -e 's|\([0-9]\)\..*|\1|')
+  export XBB_PYTHON2_VERSION_MINOR=$(echo ${python2_win_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
+  export XBB_PYTHON2_VERSION_MAJOR_MINOR=${XBB_PYTHON2_VERSION_MAJOR}${XBB_PYTHON2_VERSION_MINOR}
 
   local python2_win_pack
 
-  if [ "${TARGET_BITS}" == "32" ]
+  if [ "${XBB_TARGET_BITS}" == "32" ]
   then
-    PYTHON2_WIN_SRC_FOLDER_NAME="python-${python2_win_version}-embed-win32"
+    XBB_PYTHON2_WIN_SRC_FOLDER_NAME="python-${python2_win_version}-embed-win32"
     python2_win_pack="python-${python2_win_version}.msi"
   else
-    PYTHON2_WIN_SRC_FOLDER_NAME="python-${python2_win_version}-embed-amd64"
+    XBB_PYTHON2_WIN_SRC_FOLDER_NAME="python-${python2_win_version}-embed-amd64"
     python2_win_pack="python-${python2_win_version}.amd64.msi"
   fi
 
   # Used in python27-config.sh.
-  export PYTHON2_WIN_SRC_FOLDER_NAME
+  export XBB_PYTHON2_WIN_SRC_FOLDER_NAME
 
   local python2_win_url="https://www.python.org/ftp/python/${python2_win_version}/${python2_win_pack}"
 
-  cd "${SOURCES_FOLDER_PATH}"
+  cd "${XBB_SOURCES_FOLDER_PATH}"
 
   download "${python2_win_url}" "${python2_win_pack}"
 
   (
-    if [ ! -d "${PYTHON2_WIN_SRC_FOLDER_NAME}" ]
+    if [ ! -d "${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}" ]
     then
-      mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+      mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
       # Include only the headers and the python library and executable.
       local tmp_path="/tmp/included$$"
       echo '*.h' >"${tmp_path}"
       echo 'python*.dll' >>"${tmp_path}"
       echo 'python*.lib' >>"${tmp_path}"
-      7za x -o"${PYTHON2_WIN_SRC_FOLDER_NAME}" "${DOWNLOAD_FOLDER_PATH}/${python2_win_pack}" -i@"${tmp_path}"
+      7za x -o"${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}" "${XBB_DOWNLOAD_FOLDER_PATH}/${python2_win_pack}" -i@"${tmp_path}"
 
       # Patch to disable the macro that renames hypot.
-      local patch_path="${PYTHON2_WIN_SRC_FOLDER_NAME}.patch"
+      local patch_path="${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}.patch"
       if [ -f "${patch_path}" ]
       then
         (
-          cd "${PYTHON2_WIN_SRC_FOLDER_NAME}"
+          cd "${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}"
           patch -p0 <"${patch_path}"
         )
       fi
     else
-      echo "Folder ${PYTHON2_WIN_SRC_FOLDER_NAME} already present."
+      echo "Folder ${XBB_PYTHON2_WIN_SRC_FOLDER_NAME} already present."
     fi
 
-    echo "Copying python${PYTHON2_VERSION_MAJOR_MINOR}.dll..."
+    echo "Copying python${XBB_PYTHON2_VERSION_MAJOR_MINOR}.dll..."
     # From here it'll be copied as dependency.
-    mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/bin/"
-    install -v -c -m 644 "${PYTHON2_WIN_SRC_FOLDER_NAME}/python${PYTHON2_VERSION_MAJOR_MINOR}.dll" \
-      "${LIBS_INSTALL_FOLDER_PATH}/bin/"
+    mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
+    install -v -c -m 644 "${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}/python${XBB_PYTHON2_VERSION_MAJOR_MINOR}.dll" \
+      "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
 
-    mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/lib/"
-    install -v -c -m 644 "${PYTHON2_WIN_SRC_FOLDER_NAME}/python${PYTHON2_VERSION_MAJOR_MINOR}.lib" \
-      "${LIBS_INSTALL_FOLDER_PATH}/lib/"
+    mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
+    install -v -c -m 644 "${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}/python${XBB_PYTHON2_VERSION_MAJOR_MINOR}.lib" \
+      "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
   )
 }
 
@@ -4235,37 +4235,37 @@ function build_python3()
   local python3_version_major=$(echo ${python3_version} | sed -e 's|\([0-9]\)\..*|\1|')
   local python3_version_minor=$(echo ${python3_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
 
-  PYTHON3_VERSION_MAJOR=$(echo ${python3_version} | sed -e 's|\([0-9]\)\..*|\1|')
-  PYTHON3_VERSION_MINOR=$(echo ${python3_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
-  export PYTHON3_VERSION_MAJOR_MINOR=${PYTHON3_VERSION_MAJOR}${PYTHON3_VERSION_MINOR}
+  XBB_PYTHON3_VERSION_MAJOR=$(echo ${python3_version} | sed -e 's|\([0-9]\)\..*|\1|')
+  XBB_PYTHON3_VERSION_MINOR=$(echo ${python3_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
+  export XBB_PYTHON3_VERSION_MAJOR_MINOR=${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}
 
   local python3_src_folder_name="Python-${python3_version}"
 
   # Used in add_python3_syslibs()
-  PYTHON3_SRC_FOLDER_NAME=${python3_src_folder_name}
+  XBB_PYTHON3_SRC_FOLDER_NAME=${python3_src_folder_name}
 
   local python3_archive="${python3_src_folder_name}.tar.xz"
   local python3_url="https://www.python.org/ftp/python/${python3_version}/${python3_archive}"
 
   local python3_folder_name="python-${python3_version}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${python3_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${python3_folder_name}"
 
-  local python3_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${python3_folder_name}-installed"
+  local python3_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${python3_folder_name}-installed"
   if [ ! -f "${python3_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${python3_url}" "${python3_archive}" \
       "${python3_src_folder_name}"
 
     (
-      mkdir -pv "${BUILD_FOLDER_PATH}/${python3_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${python3_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${python3_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${python3_folder_name}"
 
-      if [ "${TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
       then
         # HACK! GCC chokes on dynamic sizes:
         # error: variably modified ‘bytes’ at file scope
@@ -4277,15 +4277,15 @@ function build_python3()
       # To pick the new libraries
       xbb_activate_installed_dev
 
-      CPPFLAGS="${XBB_CPPFLAGS} -I${LIBS_INSTALL_FOLDER_PATH}/include/ncurses"
+      CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}:${BINS_INSTALL_FOLDER_PATH}/lib"
+        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}:${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib"
       fi
 
       if [[ ${CC} =~ .*gcc.* ]]
@@ -4304,7 +4304,7 @@ function build_python3()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -4312,9 +4312,9 @@ function build_python3()
           echo
           echo "Running python3 configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${python3_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${python3_src_folder_name}/configure" --help
           fi
 
           # Fail on macOS:
@@ -4328,20 +4328,20 @@ function build_python3()
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
           # Exception: use BINS_INSTALL_*.
-          config_options+=("--libdir=${BINS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--libdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--without-ensurepip") # HB, Arch
 
-          config_options+=("--with-universal-archs=${TARGET_BITS}-bit")
+          config_options+=("--with-universal-archs=${XBB_TARGET_BITS}-bit")
           config_options+=("--with-computed-gotos") # Arch
           config_options+=("--with-dbmliborder=gdbm:ndbm") # HB, Arch
 
@@ -4353,7 +4353,7 @@ function build_python3()
 
           # config_options+=("--with-dtrace") # HB
 
-          # config_options+=("--with-openssl=${INSTALL_FOLDER_PATH}")
+          # config_options+=("--with-openssl=${XBB_INSTALL_FOLDER_PATH}")
 
           # Create the PythonX.Y.so.
           config_options+=("--enable-shared") # HB, Arch
@@ -4365,56 +4365,56 @@ function build_python3()
           # config_options+=("--enable-loadable-sqlite-extensions") # HB, Arch
           config_options+=("--disable-loadable-sqlite-extensions")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${python3_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${python3_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${python3_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${python3_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${python3_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${python3_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
         echo
         echo "Running python3 make..."
 
-        # export LD_RUN_PATH="${LIBS_INSTALL_FOLDER_PATH}/lib"
+        # export LD_RUN_PATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
 
         # Build.
-        run_verbose make -j ${JOBS} # build_all
+        run_verbose make -j ${XBB_JOBS} # build_all
 
         run_verbose make altinstall
 
         (
-          cd "${BINS_INSTALL_FOLDER_PATH}/bin"
-          run_verbose ln -svf "python${PYTHON3_VERSION_MAJOR}.${PYTHON3_VERSION_MINOR}" \
-            "python${PYTHON3_VERSION_MAJOR}"
+          cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+          run_verbose ln -svf "python${XBB_PYTHON3_VERSION_MAJOR}.${XBB_PYTHON3_VERSION_MINOR}" \
+            "python${XBB_PYTHON3_VERSION_MAJOR}"
         )
 
         # Hundreds of tests, take a lot of time.
         # Many failures.
-        if false # [ "${WITH_TESTS}" == "y" ]
+        if false # [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 quicktest
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${python3_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${python3_folder_name}/make-output-$(ndate).txt"
     )
 
     (
-      test_python3 "${BINS_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${python3_folder_name}/test-output-$(ndate).txt"
+      test_python3 "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${python3_folder_name}/test-output-$(ndate).txt"
 
     copy_license \
-      "${SOURCES_FOLDER_PATH}/${python3_src_folder_name}" \
+      "${XBB_SOURCES_FOLDER_PATH}/${python3_src_folder_name}" \
       "${python3_folder_name}"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${python3_stamp_file_path}"
 
   else
     echo "Component python3 already installed."
   fi
 
-  tests_add "test_python3" "${BINS_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_python3" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_python3()
@@ -4427,13 +4427,13 @@ function test_python3()
 
     (
       xbb_activate_installed_bin
-      show_libs "$(dirname $(realpath ${test_bin_folder_path}/python3))/../lib/libpython3"*."${SHLIB_EXT}"
+      show_libs "$(dirname $(realpath ${test_bin_folder_path}/python3))/../lib/libpython3"*."${XBB_SHLIB_EXT}"
     )
 
     echo
     echo "Testing if the python3 binary starts properly..."
 
-    # export LD_LIBRARY_PATH="${LIBS_INSTALL_FOLDER_PATH}/lib"
+    # export LD_LIBRARY_PATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
 
     run_app "${test_bin_folder_path}/python3" --version
 
@@ -4460,60 +4460,60 @@ function download_python3_win()
 
   local python3_win_version="$1"
 
-  PYTHON3_VERSION_MAJOR=$(echo ${python3_win_version} | sed -e 's|\([0-9]\)\..*|\1|')
-  PYTHON3_VERSION_MINOR=$(echo ${python3_win_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
-  export PYTHON3_VERSION_MAJOR_MINOR=${PYTHON3_VERSION_MAJOR}${PYTHON3_VERSION_MINOR}
+  XBB_PYTHON3_VERSION_MAJOR=$(echo ${python3_win_version} | sed -e 's|\([0-9]\)\..*|\1|')
+  XBB_PYTHON3_VERSION_MINOR=$(echo ${python3_win_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
+  export XBB_PYTHON3_VERSION_MAJOR_MINOR=${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}
 
   # Version 3.7.2 uses a longer name, like python-3.7.2.post1-embed-amd64.zip.
-  if [ "${TARGET_BITS}" == "32" ]
+  if [ "${XBB_TARGET_BITS}" == "32" ]
   then
-    PYTHON3_WIN_SRC_FOLDER_NAME="python-${python3_win_version}-embed-win32"
+    XBB_PYTHON3_WIN_SRC_FOLDER_NAME="python-${python3_win_version}-embed-win32"
   else
-    PYTHON3_WIN_SRC_FOLDER_NAME="python-${python3_win_version}-embed-amd64"
+    XBB_PYTHON3_WIN_SRC_FOLDER_NAME="python-${python3_win_version}-embed-amd64"
   fi
 
   # Used in python3-config.sh
-  export PYTHON3_WIN_SRC_FOLDER_NAME
+  export XBB_PYTHON3_WIN_SRC_FOLDER_NAME
 
-  local python3_win_embed_pack="${PYTHON3_WIN_SRC_FOLDER_NAME}.zip"
+  local python3_win_embed_pack="${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}.zip"
   local python3_win_embed_url="https://www.python.org/ftp/python/${python3_win_version}/${python3_win_embed_pack}"
 
   (
-    if [ ! -d "${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}" ]
+    if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}" ]
     then
       download "${python3_win_embed_url}" "${python3_win_embed_pack}"
 
       # The archive has no folders, so extract it manually.
-      mkdir -p "${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}"
-      cd "${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}"
-      run_verbose_develop unzip "${DOWNLOAD_FOLDER_PATH}/${python3_win_embed_pack}"
+      mkdir -p "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
+      cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
+      run_verbose_develop unzip "${XBB_DOWNLOAD_FOLDER_PATH}/${python3_win_embed_pack}"
     else
-      echo "Folder ${PYTHON3_WIN_SRC_FOLDER_NAME} already present."
+      echo "Folder ${XBB_PYTHON3_WIN_SRC_FOLDER_NAME} already present."
     fi
 
-    cd "${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}"
-    echo "Copying python${PYTHON3_VERSION_MAJOR}${PYTHON3_VERSION_MINOR}.dll..."
+    cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
+    echo "Copying python${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}.dll..."
     # From here it'll be copied as dependency.
-    mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/bin/"
-    install -v -c -m 644 "python${PYTHON3_VERSION_MAJOR}.dll" \
-      "${LIBS_INSTALL_FOLDER_PATH}/bin/"
-    install -v -c -m 644 "python${PYTHON3_VERSION_MAJOR}${PYTHON3_VERSION_MINOR}.dll" \
-      "${LIBS_INSTALL_FOLDER_PATH}/bin/"
+    mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
+    install -v -c -m 644 "python${XBB_PYTHON3_VERSION_MAJOR}.dll" \
+      "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
+    install -v -c -m 644 "python${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}.dll" \
+      "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
   )
 
-  export PYTHON3_SRC_FOLDER_NAME="Python-${python3_win_version}"
+  export XBB_PYTHON3_SRC_FOLDER_NAME="Python-${python3_win_version}"
 
-  local python3_archive="${PYTHON3_SRC_FOLDER_NAME}.tar.xz"
+  local python3_archive="${XBB_PYTHON3_SRC_FOLDER_NAME}.tar.xz"
   local python3_url="https://www.python.org/ftp/python/${python3_win_version}/${python3_archive}"
 
   # The full source is needed for the headers.
-  if [ ! -d "${SOURCES_FOLDER_PATH}/${PYTHON3_SRC_FOLDER_NAME}" ]
+  if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_SRC_FOLDER_NAME}" ]
   then
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${python3_url}" "${python3_archive}" \
-      "${PYTHON3_SRC_FOLDER_NAME}"
+      "${XBB_PYTHON3_SRC_FOLDER_NAME}"
   fi
 }
 
@@ -4523,19 +4523,19 @@ function download_python3_win()
 # from POSIX.
 function add_python3_win_syslibs()
 {
-  if [ "${TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
     echo
     echo "Copying .pyd & .dll files from the embedded Python distribution..."
-    mkdir -pv "${APP_PREFIX}/bin"
-    cp -v "${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}/python${PYTHON3_VERSION_MAJOR_MINOR}.zip"\
-      "${APP_PREFIX}/bin"
+    mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}/python${XBB_PYTHON3_VERSION_MAJOR_MINOR}.zip"\
+      "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 
-    mkdir -pv "${APP_PREFIX}/bin/DLLs"
-    cp -v "${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}"/*.pyd \
-      "${APP_PREFIX}/bin/DLLs"
-    cp -v "${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}"/*.dll \
-      "${APP_PREFIX}/bin/DLLs"
+    mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/DLLs"
+    cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"/*.pyd \
+      "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/DLLs"
+    cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"/*.dll \
+      "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/DLLs"
   fi
 }
 
@@ -4543,64 +4543,64 @@ function add_python3_win_syslibs()
 # control over path (like meson) on all platforms.
 function add_python3_syslibs()
 {
-  local python_with_version="python${PYTHON3_VERSION_MAJOR}.${PYTHON3_VERSION_MINOR}"
-  if [ ! -d "${APP_PREFIX}/lib/${python_with_version}/" ]
+  local python_with_version="python${XBB_PYTHON3_VERSION_MAJOR}.${XBB_PYTHON3_VERSION_MINOR}"
+  if [ ! -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" ]
   then
     (
-      mkdir -pv "${APP_PREFIX}/lib/${python_with_version}/"
+      mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/"
 
       (
         echo
         echo "Copying .py files from the standard Python library..."
 
         # Copy all .py from the original source package.
-        cp -r "${SOURCES_FOLDER_PATH}/${PYTHON3_SRC_FOLDER_NAME}"/Lib/* \
-          "${APP_PREFIX}/lib/${python_with_version}/"
+        cp -r "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_SRC_FOLDER_NAME}"/Lib/* \
+          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/"
 
         echo "Compiling all python sources..."
-        if [ "${TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
         then
-          run_verbose "${TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/libs/bin/python3.${PYTHON3_VERSION_MINOR}" \
+          run_verbose "${XBB_TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/libs/bin/python3.${XBB_PYTHON3_VERSION_MINOR}" \
             -m compileall \
-            -j "${JOBS}" \
-            -f "${APP_PREFIX}/lib/${python_with_version}/" \
+            -j "${XBB_JOBS}" \
+            -f "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
             || true
         else
           # Compiling tests fails, ignore the errors.
-          run_verbose "${LIBS_INSTALL_FOLDER_PATH}/bin/python3.${PYTHON3_VERSION_MINOR}" \
+          run_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python3.${XBB_PYTHON3_VERSION_MINOR}" \
             -m compileall \
-            -j "${JOBS}" \
-            -f "${APP_PREFIX}/lib/${python_with_version}/" \
+            -j "${XBB_JOBS}" \
+            -f "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
             || true
         fi
 
         # For just in case.
-        find "${APP_PREFIX}/lib/${python_with_version}/" \
+        find "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
           \( -name '*.opt-1.pyc' -o -name '*.opt-2.pyc' \) \
           -exec rm -v {} \;
       )
 
       echo "Replacing .py files with .pyc files..."
-      move_pyc "${APP_PREFIX}/lib/${python_with_version}"
+      move_pyc "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}"
 
-      mkdir -pv "${APP_PREFIX}/lib/${python_with_version}/lib-dynload/"
+      mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
 
       echo
       echo "Copying Python shared libraries..."
 
-      if [ "${TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         # Copy the Windows specific DLLs (.pyd) to the separate folder;
         # they are dynamically loaded by Python.
-        cp -v "${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}"/*.pyd \
-          "${APP_PREFIX}/lib/${python_with_version}/lib-dynload/"
+        cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"/*.pyd \
+          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
         # Copy the usual DLLs too; the python*.dll are used, do not remove them.
-        cp -v "${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}"/*.dll \
-          "${APP_PREFIX}/lib/${python_with_version}/lib-dynload/"
+        cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"/*.dll \
+          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
       else
         # Copy dynamically loaded modules and rename folder.
-        cp -rv "${LIBS_INSTALL_FOLDER_PATH}/lib/python${PYTHON3_VERSION_MAJOR}.${PYTHON3_VERSION_MINOR}"/lib-dynload/* \
-          "${APP_PREFIX}/lib/${python_with_version}/lib-dynload/"
+        cp -rv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/python${XBB_PYTHON3_VERSION_MAJOR}.${XBB_PYTHON3_VERSION_MINOR}"/lib-dynload/* \
+          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
       fi
     )
   fi
@@ -4682,21 +4682,21 @@ function build_libpng()
 
   local libpng_folder_name="${libpng_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libpng_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libpng_folder_name}"
 
-  local libpng_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-libpng-${libpng_version}-installed"
+  local libpng_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-libpng-${libpng_version}-installed"
   if [ ! -f "${libpng_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libpng_url}" "${libpng_archive}" \
       "${libpng_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libpng_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libpng_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libpng_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libpng_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -4705,7 +4705,7 @@ function build_libpng()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -4718,7 +4718,7 @@ function build_libpng()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -4726,32 +4726,32 @@ function build_libpng()
           echo
           echo "Running libpng configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libpng_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libpng_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # config_options+=("--disable-static")
           # From Arm Arch.
           config_options+=("--enable-arm-neon=no")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libpng_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libpng_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libpng_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libpng_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libpng_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libpng_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -4759,24 +4759,24 @@ function build_libpng()
         echo "Running libpng make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libpng_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libpng_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libpng_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libpng_src_folder_name}" \
         "${libpng_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libpng_stamp_file_path}"
 
   else
@@ -4811,21 +4811,21 @@ function build_jpeg()
 
   local jpeg_folder_name="${jpeg_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${jpeg_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${jpeg_folder_name}"
 
-  local jpeg_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-jpeg-${jpeg_version}-installed"
+  local jpeg_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-jpeg-${jpeg_version}-installed"
   if [ ! -f "${jpeg_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${jpeg_url}" "${jpeg_archive}" \
         "${jpeg_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${jpeg_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${jpeg_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${jpeg_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${jpeg_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -4834,7 +4834,7 @@ function build_jpeg()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -4847,7 +4847,7 @@ function build_jpeg()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -4855,29 +4855,29 @@ function build_jpeg()
           echo
           echo "Running jpeg configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${jpeg_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${jpeg_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # --enable-shared needed by sdl2_image on CentOS 64-bit and Ubuntu.
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${jpeg_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${jpeg_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${jpeg_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${jpeg_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${jpeg_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${jpeg_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -4885,24 +4885,24 @@ function build_jpeg()
         echo "Running jpeg make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${jpeg_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${jpeg_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${jpeg_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${jpeg_src_folder_name}" \
         "${jpeg_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${jpeg_stamp_file_path}"
 
   else
@@ -4936,26 +4936,26 @@ function build_pixman()
 
   local pixman_folder_name="${pixman_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${pixman_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${pixman_folder_name}"
 
-  local pixman_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-pixman-${pixman_version}-installed"
+  local pixman_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-pixman-${pixman_version}-installed"
   if [ ! -f "${pixman_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${pixman_url}" "${pixman_archive}" \
       "${pixman_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${pixman_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${pixman_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${pixman_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${pixman_folder_name}"
 
       # Windows libtool chaks for it.
       mkdir -pv test/lib
 
-      if [ "${TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
       then
         # TODO: check again on Apple Silicon.
         prepare_clang_env ""
@@ -4968,7 +4968,7 @@ function build_pixman()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -4981,7 +4981,7 @@ function build_pixman()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -4989,22 +4989,22 @@ function build_pixman()
           echo
           echo "Running pixman configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${pixman_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${pixman_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # config_options+=("--with-gnu-ld")
 
@@ -5022,11 +5022,11 @@ function build_pixman()
           config_options+=("--disable-mips-dspr2")
           config_options+=("--disable-gtk")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${pixman_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${pixman_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${pixman_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${pixman_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${pixman_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${pixman_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -5034,24 +5034,24 @@ function build_pixman()
         echo "Running pixman make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${pixman_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${pixman_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${pixman_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${pixman_src_folder_name}" \
         "${pixman_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${pixman_stamp_file_path}"
 
   else
@@ -5100,24 +5100,24 @@ function build_glib2()
 
   local glib_folder_name="${glib_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${glib_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${glib_folder_name}"
 
-  local glib_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-glib-${glib_version}-installed"
+  local glib_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-glib-${glib_version}-installed"
   if [ ! -f "${glib_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${glib_url}" "${glib_archive}" \
       "${glib_src_folder_name}"
 
     (
       # Hack, /gio/lib added because libtool needs it on Win32.
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${glib_folder_name}"/gio/lib
-      cd "${LIBS_BUILD_FOLDER_PATH}/${glib_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}"/gio/lib
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}"
 
-      if [ "${TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
       then
         # GCC fails with
         # error: unknown type name ‘dispatch_block_t
@@ -5132,11 +5132,11 @@ function build_glib2()
       LIBS=""
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH} -liconv"
         # LIBS="-liconv"
-      elif [ "${TARGET_PLATFORM}" == "win32" ]
+      elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         LDFLAGS+=" -Wl,--allow-multiple-definition"
       fi
@@ -5153,7 +5153,7 @@ function build_glib2()
         if [ ! -f "config.status" ]
         then
           (
-            if [ "${IS_DEVELOP}" == "y" ]
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
             then
               env | sort
             fi
@@ -5161,22 +5161,22 @@ function build_glib2()
             echo
             echo "Running glib configure..."
 
-            if [ "${IS_DEVELOP}" == "y" ]
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
             then
-              run_verbose bash "${SOURCES_FOLDER_PATH}/${glib_src_folder_name}/configure" --help
+              run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${glib_src_folder_name}/configure" --help
             fi
 
             config_options=()
 
-            config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-            config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-            config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-            # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-            config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+            config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+            config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+            # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+            config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
 
             # --with-libiconv=gnu required on Linux
             config_options+=("--with-libiconv=gnu")
@@ -5196,7 +5196,7 @@ function build_glib2()
             config_options+=("--disable-installed-tests")
             config_options+=("--disable-always-build-tests")
 
-            run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${glib_src_folder_name}/configure" \
+            run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${glib_src_folder_name}/configure" \
               "${config_options[@]}"
 
             # Disable SPLICE, it fails on CentOS.
@@ -5208,8 +5208,8 @@ function build_glib2()
               run_verbose sed -i -e '/#define HAVE_SPLICE 1/d' config.h
             fi
 
-            cp "config.log" "${LOGS_FOLDER_PATH}/${glib_folder_name}/config-log-$(ndate).txt"
-          ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${glib_folder_name}/configure-output-$(ndate).txt"
+            cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${glib_folder_name}/config-log-$(ndate).txt"
+          ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${glib_folder_name}/configure-output-$(ndate).txt"
         fi
 
         (
@@ -5217,21 +5217,21 @@ function build_glib2()
           echo "Running glib make..."
 
           # Build.
-          run_verbose make -j ${JOBS}
+          run_verbose make -j ${XBB_JOBS}
 
-          if [ "${WITH_STRIP}" == "y" ]
+          if [ "${XBB_WITH_STRIP}" == "y" ]
           then
             run_verbose make install-strip
           else
             run_verbose make install
           fi
 
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${glib_folder_name}/make-output-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${glib_folder_name}/make-output-$(ndate).txt"
       else
-        if [ ! -f "${LIBS_BUILD_FOLDER_PATH}/${glib_folder_name}/build.ninja" ]
+        if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}/build.ninja" ]
         then
           (
-            if [ "${IS_DEVELOP}" == "y" ]
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
             then
               env | sort
             fi
@@ -5239,26 +5239,26 @@ function build_glib2()
             echo
             echo "Running glib meson setup..."
 
-            cd "${SOURCES_FOLDER_PATH}/${glib_src_folder_name}"
+            cd "${XBB_SOURCES_FOLDER_PATH}/${glib_src_folder_name}"
 
             # https://mesonbuild.com/Commands.html#setup
             config_options=()
 
-            config_options+=("--prefix" "${BINS_INSTALL_FOLDER_PATH}")
-            config_options+=("--includedir" "${LIBS_INSTALL_FOLDER_PATH}/include")
-            config_options+=("--libdir" "${LIBS_INSTALL_FOLDER_PATH}/lib")
+            config_options+=("--prefix" "${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+            config_options+=("--includedir" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+            config_options+=("--libdir" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
             config_options+=("--backend" "ninja")
 
-            if [ "${TARGET_PLATFORM}" == "win32" ]
+            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
             then
               config_options+=("--cross" "${helper_folder_path}/extras/meson/mingw-w64-gcc.ini")
             fi
 
             run_verbose meson setup \
               "${config_options[@]}" \
-              "${LIBS_BUILD_FOLDER_PATH}/${glib_folder_name}"
+              "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}"
 
-          ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${glib_folder_name}/meson-setup-output-$(ndate).txt"
+          ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${glib_folder_name}/meson-setup-output-$(ndate).txt"
         fi
 
         (
@@ -5266,22 +5266,22 @@ function build_glib2()
           echo "Running glib meson compile..."
 
           # Build.
-          run_verbose meson compile -C "${LIBS_BUILD_FOLDER_PATH}/${glib_folder_name}"
+          run_verbose meson compile -C "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}"
 
-          run_verbose meson install -C "${LIBS_BUILD_FOLDER_PATH}/${glib_folder_name}"
+          run_verbose meson install -C "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}"
 
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${glib_folder_name}/meson-compile-output-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${glib_folder_name}/meson-compile-output-$(ndate).txt"
 
         # exit 1
       fi
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${glib_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${glib_src_folder_name}" \
         "${glib_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${glib_stamp_file_path}"
 
   else
@@ -5330,26 +5330,26 @@ function build_libxml2()
 
   local libxml2_folder_name="${libxml2_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libxml2_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libxml2_folder_name}"
 
-  local libxml2_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-libxml2-${libxml2_version}-installed"
+  local libxml2_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-libxml2-${libxml2_version}-installed"
   if [ ! -f "${libxml2_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libxml2_url}" "${libxml2_archive}" \
       "${libxml2_src_folder_name}"
 
     # Fails if not built in place.
-    if [ ! -d "${LIBS_BUILD_FOLDER_PATH}/${libxml2_folder_name}" ]
+    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxml2_folder_name}" ]
     then
       (
         cp -r "${libxml2_src_folder_name}" \
-          "${LIBS_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
+          "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxml2_folder_name}"
 
-        cd "${LIBS_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
+        cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxml2_folder_name}"
 
         xbb_activate_installed_dev
 
@@ -5359,8 +5359,8 @@ function build_libxml2()
 
     (
       # /lib added due to wrong -Llib used during make.
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libxml2_folder_name}/lib"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxml2_folder_name}/lib"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxml2_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -5369,7 +5369,7 @@ function build_libxml2()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -5382,7 +5382,7 @@ function build_libxml2()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -5390,22 +5390,22 @@ function build_libxml2()
           echo
           echo "Running libxml2 configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             run_verbose bash "configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--without-python") # HB
           # config_options+=("--with-python=/usr/bin/python") # Arch
@@ -5417,7 +5417,7 @@ function build_libxml2()
 
           # config_options+=("--disable-static") # Arch
 
-          if [ "${TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
             config_options+=("--with-threads=win32")
             config_options+=("--without-catalog")
@@ -5427,8 +5427,8 @@ function build_libxml2()
           run_verbose bash ${DEBUG} "configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libxml2_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libxml2_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libxml2_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libxml2_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -5436,24 +5436,24 @@ function build_libxml2()
         echo "Running libxml2 make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libxml2_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libxml2_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libxml2_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libxml2_src_folder_name}" \
         "${libxml2_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libxml2_stamp_file_path}"
 
   else
@@ -5484,21 +5484,21 @@ function build_libedit()
 
   local libedit_folder_name="libedit-${libedit_version_short}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libedit_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libedit_folder_name}"
 
-  local libedit_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${libedit_folder_name}-installed"
+  local libedit_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${libedit_folder_name}-installed"
   if [ ! -f "${libedit_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libedit_url}" "${libedit_archive}" \
       "${libedit_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libedit_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libedit_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libedit_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libedit_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -5507,14 +5507,14 @@ function build_libedit()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
-        if [ -d "${LIBS_INSTALL_FOLDER_PATH}/include/ncursesw" ]
+        if [ -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw" ]
         then
-          CPPFLAGS+=" -I${LIBS_INSTALL_FOLDER_PATH}/include/ncursesw"
-        elif [ -d "${LIBS_INSTALL_FOLDER_PATH}/include/ncurses" ]
+          CPPFLAGS+=" -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw"
+        elif [ -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses" ]
         then
-          CPPFLAGS+=" -I${LIBS_INSTALL_FOLDER_PATH}/include/ncurses"
+          CPPFLAGS+=" -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
         else
           echo "No include/ncurses folder."
           exit 1
@@ -5530,7 +5530,7 @@ function build_libedit()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -5538,31 +5538,31 @@ function build_libedit()
           echo
           echo "Running libedit configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libedit_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libedit_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # config_options+=("--disable-nls")
           # config_options+=("--disable-shared")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libedit_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libedit_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libedit_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libedit_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libedit_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libedit_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -5570,29 +5570,29 @@ function build_libedit()
         echo "Running libedit make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libedit_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libedit_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libedit_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libedit_src_folder_name}" \
         "${libedit_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libedit_stamp_file_path}"
 
   else
@@ -5621,20 +5621,20 @@ function build_xar()
 
   local xar_folder_name="xar-${xar_version}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${xar_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${xar_folder_name}"
 
-  local xar_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${xar_folder_name}-installed"
+  local xar_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${xar_folder_name}-installed"
   if [ ! -f "${xar_stamp_file_path}" ]
   then
 
     echo
     echo "xar in-source building"
 
-    cd "${LIBS_BUILD_FOLDER_PATH}"
+    cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
-    if [ ! -d "${LIBS_BUILD_FOLDER_PATH}/${xar_folder_name}" ]
+    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${xar_folder_name}" ]
     then
-      cd "${LIBS_BUILD_FOLDER_PATH}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
       download_and_extract "${xar_github_url}" "${xar_archive}" \
         "${xar_src_folder_name}"
@@ -5646,7 +5646,7 @@ function build_xar()
     fi
 
     (
-      cd "${LIBS_BUILD_FOLDER_PATH}/${xar_folder_name}/xar/"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${xar_folder_name}/xar/"
 
       xbb_activate_installed_dev
 
@@ -5655,7 +5655,7 @@ function build_xar()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -5677,7 +5677,7 @@ function build_xar()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -5685,28 +5685,28 @@ function build_xar()
           echo
           echo "Running xar configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             run_verbose bash "./configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           run_verbose bash ${DEBUG} "./configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${xar_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${xar_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${xar_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${xar_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -5714,29 +5714,29 @@ function build_xar()
         echo "Running xar make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${xar_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${xar_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${xar_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${xar_src_folder_name}" \
         "${xar_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${xar_stamp_file_path}"
 
   else
@@ -5768,21 +5768,21 @@ function build_libgpg_error()
 
   local libgpg_error_folder_name="${libgpg_error_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libgpg_error_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libgpg_error_folder_name}"
 
-  local libgpg_error_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${libgpg_error_folder_name}-installed"
+  local libgpg_error_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libgpg_error_folder_name}-installed"
   if [ ! -f "${libgpg_error_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libgpg_error_url}" "${libgpg_error_archive}" \
       "${libgpg_error_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libgpg_error_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libgpg_error_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libgpg_error_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libgpg_error_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -5791,7 +5791,7 @@ function build_libgpg_error()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -5804,7 +5804,7 @@ function build_libgpg_error()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -5812,27 +5812,27 @@ function build_libgpg_error()
           echo
           echo "Running libgpg-error configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libgpg_error_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libgpg_error_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
           # Exception: use LIBS_INSTALL_*.
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -5841,11 +5841,11 @@ function build_libgpg_error()
 
           config_options+=("--enable-static") # HB
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libgpg_error_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libgpg_error_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libgpg_error_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libgpg_error_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libgpg_error_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libgpg_error_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -5853,33 +5853,33 @@ function build_libgpg_error()
         echo "Running libgpg-error make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           # WARN-TEST
           run_verbose make -j1 check
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libgpg_error_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libgpg_error_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libgpg_error_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libgpg_error_src_folder_name}" \
         "${libgpg_error_folder_name}"
     )
 
     (
       test_libgpg_error_libs
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libgpg_error_folder_name}/test-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libgpg_error_folder_name}/test-output-$(ndate).txt"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libgpg_error_stamp_file_path}"
 
   else
@@ -5892,7 +5892,7 @@ function test_libgpg_error_libs()
   echo
   echo "Checking the libpng_error shared libraries..."
 
-  show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib/libgpg-error.${SHLIB_EXT}"
+  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgpg-error.${XBB_SHLIB_EXT}"
 }
 
 # -----------------------------------------------------------------------------
@@ -5921,21 +5921,21 @@ function build_libgcrypt()
 
   local libgcrypt_folder_name="${libgcrypt_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libgcrypt_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libgcrypt_folder_name}"
 
-  local libgcrypt_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${libgcrypt_folder_name}-installed"
+  local libgcrypt_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libgcrypt_folder_name}-installed"
   if [ ! -f "${libgcrypt_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libgcrypt_url}" "${libgcrypt_archive}" \
       "${libgcrypt_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libgcrypt_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libgcrypt_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libgcrypt_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libgcrypt_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -5944,7 +5944,7 @@ function build_libgcrypt()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -5957,7 +5957,7 @@ function build_libgcrypt()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -5965,25 +5965,25 @@ function build_libgcrypt()
           echo
           echo "Running libgcrypt configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libgcrypt_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libgcrypt_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
           # Exception: use LIBS_INSTALL_*.
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
-          config_options+=("--with-libgpg-error-prefix=${LIBS_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-libgpg-error-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           config_options+=("--disable-doc")
           config_options+=("--disable-large-data-tests")
@@ -5994,7 +5994,7 @@ function build_libgcrypt()
 
           config_options+=("--disable-padlock-support") # Arch
 
-          if [ "${HOST_MACHINE}" != "aarch64" ]
+          if [ "${XBB_HOST_MACHINE}" != "aarch64" ]
           then
             config_options+=("--disable-neon-support")
             config_options+=("--disable-arm-crypto-support")
@@ -6002,25 +6002,25 @@ function build_libgcrypt()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
 
           config_options+=("--enable-static") # HB
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libgcrypt_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libgcrypt_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          if false # [ "${HOST_MACHINE}" != "aarch64" ]
+          if false # [ "${XBB_HOST_MACHINE}" != "aarch64" ]
           then
             # fix screwed up capability detection
             sed -i.bak -e '/HAVE_GCC_INLINE_ASM_AARCH32_CRYPTO 1/d' "config.h"
             sed -i.bak -e '/HAVE_GCC_INLINE_ASM_NEON 1/d' "config.h"
           fi
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -6028,9 +6028,9 @@ function build_libgcrypt()
         echo "Running libgcrypt make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
@@ -6041,31 +6041,31 @@ function build_libgcrypt()
         # dyld: Library not loaded: /Users/ilg/opt/xbb/lib/libgcrypt.20.dylib
         # Referenced from: /Users/ilg/Work/xbb-3.1-macosx-10.15.3-x86_64/build/libs/libgcrypt-1.8.5/tests/.libs/random
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libgcrypt_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libgcrypt_src_folder_name}" \
         "${libgcrypt_folder_name}"
     )
 
     (
       test_libgcrypt_libs
-      test_libgcrypt "${BINS_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/test-output-$(ndate).txt"
+      test_libgcrypt "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/test-output-$(ndate).txt"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libgcrypt_stamp_file_path}"
 
   else
     echo "Library libgcrypt already installed."
   fi
 
-  tests_add "test_libgcrypt" "${BINS_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_libgcrypt" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_libgcrypt_libs()
@@ -6073,12 +6073,12 @@ function test_libgcrypt_libs()
   echo
   echo "Checking the libgcrypt shared libraries..."
 
-  # show_libs "${INSTALL_FOLDER_PATH}/bin/libgcrypt-config"
-  show_libs "${LIBS_INSTALL_FOLDER_PATH}/bin/dumpsexp"
-  show_libs "${LIBS_INSTALL_FOLDER_PATH}/bin/hmac256"
-  show_libs "${LIBS_INSTALL_FOLDER_PATH}/bin/mpicalc"
+  # show_libs "${XBB_INSTALL_FOLDER_PATH}/bin/libgcrypt-config"
+  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/dumpsexp"
+  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/hmac256"
+  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/mpicalc"
 
-  show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib/libgcrypt.${SHLIB_EXT}"
+  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgcrypt.${XBB_SHLIB_EXT}"
 }
 
 function test_libgcrypt()
@@ -6089,7 +6089,7 @@ function test_libgcrypt()
     echo
     echo "Checking the libgcrypt shared libraries..."
 
-    # show_libs "${INSTALL_FOLDER_PATH}/bin/libgcrypt-config"
+    # show_libs "${XBB_INSTALL_FOLDER_PATH}/bin/libgcrypt-config"
     show_libs "${test_bin_folder_path}/dumpsexp"
     show_libs "${test_bin_folder_path}/hmac256"
     show_libs "${test_bin_folder_path}/mpicalc"
@@ -6105,8 +6105,8 @@ function test_libgcrypt()
     # --help not available
     # run_app "${test_bin_folder_path}/hmac256" --help
 
-    rm -rf "${TESTS_FOLDER_PATH}/libgcrypt"
-    mkdir -pv "${TESTS_FOLDER_PATH}/libgcrypt"; cd "${TESTS_FOLDER_PATH}/libgcrypt"
+    rm -rf "${XBB_TESTS_FOLDER_PATH}/libgcrypt"
+    mkdir -pv "${XBB_TESTS_FOLDER_PATH}/libgcrypt"; cd "${XBB_TESTS_FOLDER_PATH}/libgcrypt"
 
     touch test.in
     test_expect "0e824ce7c056c82ba63cc40cffa60d3195b5bb5feccc999a47724cc19211aef6  test.in"  "${test_bin_folder_path}/hmac256" "testing" test.in
@@ -6138,21 +6138,21 @@ function build_libassuan()
 
   local libassuan_folder_name="${libassuan_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libassuan_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libassuan_folder_name}"
 
-  local libassuan_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${libassuan_folder_name}-installed"
+  local libassuan_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libassuan_folder_name}-installed"
   if [ ! -f "${libassuan_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libassuan_url}" "${libassuan_archive}" \
       "${libassuan_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libassuan_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libassuan_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libassuan_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libassuan_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -6161,7 +6161,7 @@ function build_libassuan()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -6174,7 +6174,7 @@ function build_libassuan()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -6182,40 +6182,40 @@ function build_libassuan()
           echo
           echo "Running libassuan configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libassuan_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libassuan_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
           # Exception: use LIBS_INSTALL_*.
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
-          config_options+=("--with-libgpg-error-prefix=${LIBS_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-libgpg-error-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
 
           config_options+=("--enable-static") # HB
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libassuan_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libassuan_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libassuan_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libassuan_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libassuan_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libassuan_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -6223,41 +6223,41 @@ function build_libassuan()
         echo "Running libassuan make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libassuan_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libassuan_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libassuan_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libassuan_src_folder_name}" \
         "${libassuan_folder_name}"
     )
 
     (
       test_libassuan_libs
-      test_libassuan "${BINS_INSTALL_FOLDER_PATH}/bin"
+      test_libassuan "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libassuan_folder_name}/test-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libassuan_folder_name}/test-output-$(ndate).txt"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libassuan_stamp_file_path}"
 
   else
     echo "Library libassuan already installed."
   fi
 
-  tests_add "test_libassuan" "${BINS_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_libassuan" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_libassuan_libs()
@@ -6265,8 +6265,8 @@ function test_libassuan_libs()
   echo
   echo "Checking the libassuan shared libraries..."
 
-  # show_libs "${INSTALL_FOLDER_PATH}/bin/libassuan-config"
-  show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib/libassuan.${SHLIB_EXT}"
+  # show_libs "${XBB_INSTALL_FOLDER_PATH}/bin/libassuan-config"
+  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libassuan.${XBB_SHLIB_EXT}"
 }
 
 function test_libassuan()
@@ -6307,21 +6307,21 @@ function build_libksba()
 
   local libksba_patch_file_name="${libksba_folder_name}.patch"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libksba_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libksba_folder_name}"
 
-  local libksba_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${libksba_folder_name}-installed"
+  local libksba_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libksba_folder_name}-installed"
   if [ ! -f "${libksba_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libksba_url}" "${libksba_archive}" \
       "${libksba_src_folder_name}" "${libksba_patch_file_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libksba_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libksba_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libksba_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libksba_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -6330,7 +6330,7 @@ function build_libksba()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -6345,7 +6345,7 @@ function build_libksba()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -6353,38 +6353,38 @@ function build_libksba()
           echo
           echo "Running libksba configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libksba_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libksba_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
           # Exception: use LIBS_INSTALL_*.
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
-          config_options+=("--with-libgpg-error-prefix=${LIBS_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-libgpg-error-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libksba_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libksba_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libksba_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libksba_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libksba_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libksba_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -6392,40 +6392,40 @@ function build_libksba()
         echo "Running libksba make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libksba_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libksba_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libksba_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libksba_src_folder_name}" \
         "${libksba_folder_name}"
     )
 
     (
       test_libksba_libs
-      test_libksba "${BINS_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libksba_folder_name}/test-output-$(ndate).txt"
+      test_libksba "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libksba_folder_name}/test-output-$(ndate).txt"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libksba_stamp_file_path}"
 
   else
     echo "Library libksba already installed."
   fi
 
-  tests_add "test_libksba" "${BINS_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_libksba" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_libksba_libs()
@@ -6433,8 +6433,8 @@ function test_libksba_libs()
   echo
   echo "Checking the libksba shared libraries..."
 
-  # show_libs "${INSTALL_FOLDER_PATH}/bin/ksba-config"
-  show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib/libksba.${SHLIB_EXT}"
+  # show_libs "${XBB_INSTALL_FOLDER_PATH}/bin/ksba-config"
+  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libksba.${XBB_SHLIB_EXT}"
 }
 
 function test_libksba()
@@ -6471,23 +6471,23 @@ function build_npth()
 
   local npth_folder_name="${npth_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${npth_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${npth_folder_name}"
 
-  local npth_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${npth_folder_name}-installed"
+  local npth_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${npth_folder_name}-installed"
   if [ ! -f "${npth_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${npth_url}" "${npth_archive}" \
       "${npth_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${npth_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${npth_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${npth_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${npth_folder_name}"
 
-      if [ "${TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
       then
         # /usr/include/os/base.h:113:20: error: missing binary operator before token "("
         # #if __has_extension(attribute_overloadable)
@@ -6501,7 +6501,7 @@ function build_npth()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -6514,7 +6514,7 @@ function build_npth()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -6522,36 +6522,36 @@ function build_npth()
           echo
           echo "Running npth configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${npth_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${npth_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
           # Exception: use LIBS_INSTALL_*.
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${npth_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${npth_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${npth_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${npth_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${npth_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${npth_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -6559,40 +6559,40 @@ function build_npth()
         echo "Running npth make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${npth_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${npth_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${npth_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${npth_src_folder_name}" \
         "${npth_folder_name}"
     )
 
     (
       test_npth_libs
-      test_npth "${BINS_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${npth_folder_name}/test-output-$(ndate).txt"
+      test_npth "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${npth_folder_name}/test-output-$(ndate).txt"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${npth_stamp_file_path}"
 
   else
     echo "Library npth already installed."
   fi
 
-  tests_add "test_npth" "${BINS_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_npth" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_npth_libs()
@@ -6600,7 +6600,7 @@ function test_npth_libs()
   echo
   echo "Checking the npth shared libraries..."
 
-  show_libs "${LIBS_INSTALL_FOLDER_PATH}/lib/libnpth.${SHLIB_EXT}"
+  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libnpth.${XBB_SHLIB_EXT}"
 }
 
 function test_npth()
@@ -6645,21 +6645,21 @@ function build_nettle()
 
   local nettle_patch_file_path="${nettle_folder_name}.patch"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${nettle_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${nettle_folder_name}"
 
-  local nettle_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${nettle_folder_name}-installed"
+  local nettle_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${nettle_folder_name}-installed"
   if [ ! -f "${nettle_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${nettle_url}" "${nettle_archive}" \
       "${nettle_src_folder_name}" "${nettle_patch_file_path}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${nettle_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${nettle_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${nettle_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${nettle_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -6668,7 +6668,7 @@ function build_nettle()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -6681,7 +6681,7 @@ function build_nettle()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -6689,24 +6689,24 @@ function build_nettle()
           echo
           echo "Running nettle configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${nettle_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${nettle_src_folder_name}/configure" --help
           fi
 
           # -disable-static
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # config_options+=("--enable-mini-gmp")
           config_options+=("--enable-shared") # HB
@@ -6717,7 +6717,7 @@ function build_nettle()
           config_options+=("--disable-arm-neon")
           config_options+=("--disable-assembler")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${nettle_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${nettle_src_folder_name}/configure" \
             "${config_options[@]}"
 
           if false # is_darwin # && [ "${XBB_LAYER}" == "xbb-bootstrap" ]
@@ -6730,8 +6730,8 @@ function build_nettle()
               "testsuite/Makefile"
           fi
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${nettle_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${nettle_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${nettle_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${nettle_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -6739,7 +6739,7 @@ function build_nettle()
         echo "Running nettle make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         # make install-strip
         # For unknown reasons, on 32-bits make install-info fails
@@ -6747,7 +6747,7 @@ function build_nettle()
         # Make the other install targets.
         run_verbose make install-headers install-static install-pkgconfig install-shared-nettle install-shared-hogweed
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           if false # is_darwin
           then
@@ -6762,10 +6762,10 @@ function build_nettle()
           fi
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${nettle_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${nettle_folder_name}/make-output-$(ndate).txt"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${nettle_stamp_file_path}"
 
   else
@@ -6798,23 +6798,23 @@ function build_libusb()
 
   local libusb_folder_name="${libusb_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libusb_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libusb_folder_name}"
 
-  local libusb_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-libusb-${libusb_version}-installed"
+  local libusb_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-libusb-${libusb_version}-installed"
   if [ ! -f "${libusb_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libusb_url}" "${libusb_archive}" \
       "${libusb_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libusb_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libusb_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_folder_name}"
 
-      if [ "${TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
       then
         # /Users/ilg/Work/qemu-arm-6.2.0-1/darwin-x64/sources/libusb-1.0.24/libusb/os/darwin_usb.c: In function 'darwin_handle_transfer_completion':
         # /Users/ilg/Work/qemu-arm-6.2.0-1/darwin-x64/sources/libusb-1.0.24/libusb/os/darwin_usb.c:2151:3: error: variable-sized object may not be initialized
@@ -6829,7 +6829,7 @@ function build_libusb()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -6843,7 +6843,7 @@ function build_libusb()
       then
 
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -6851,25 +6851,25 @@ function build_libusb()
           echo
           echo "Running libusb configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libusb_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libusb_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--disable-dependency-tracking")
-          if [ "${TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
           then
             # On 32-bit Arm `/lib/arm-linux-gnueabihf/libudev.so.1` has
             # a dependency on the system `libgcc_s.so.1` and makes
@@ -6877,11 +6877,11 @@ function build_libusb()
             config_options+=("--disable-udev")
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libusb_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libusb_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libusb_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libusb_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libusb_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libusb_folder_name}/configure-output-$(ndate).txt"
 
       fi
 
@@ -6890,23 +6890,23 @@ function build_libusb()
         echo "Running libusb make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libusb_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libusb_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libusb_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libusb_src_folder_name}" \
         "${libusb_folder_name}"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libusb_stamp_file_path}"
 
   else
@@ -6934,20 +6934,20 @@ function build_libusb_w32()
 
   local libusb_w32_folder_name="${libusb_w32_prefix}-${libusb_w32_version}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libusb_w32_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libusb_w32_folder_name}"
 
   local libusb_w32_patch="libusb-win32-${libusb_w32_version}-mingw-w64.patch"
 
-  local libusb_w32_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${libusb_w32_folder_name}-installed"
+  local libusb_w32_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${libusb_w32_folder_name}-installed"
   if [ ! -f "${libusb_w32_stamp_file_path}" ]
   then
 
     echo
     echo "libusb_w32 in-source building"
 
-    if [ ! -d "${LIBS_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}" ]
+    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}" ]
     then
-      cd "${LIBS_BUILD_FOLDER_PATH}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
       # Do not add the patch here, it must be done after dos2unix.
       download_and_extract "${libusb_w32_url}" "${libusb_w32_archive}" \
@@ -6958,7 +6958,7 @@ function build_libusb_w32()
         mv -v "${libusb_w32_src_folder_name}" "${libusb_w32_folder_name}"
       fi
 
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}"
 
       # Patch from:
       # https://gitorious.org/jtag-tools/openocd-mingw-build-scripts
@@ -6969,9 +6969,9 @@ function build_libusb_w32()
       run_verbose dos2unix src/install_filter_win.c
       run_verbose dos2unix src/registry.c
 
-      if [ -f "${BUILD_GIT_PATH}/patches/${libusb_w32_patch}" ]
+      if [ -f "${XBB_BUILD_GIT_PATH}/patches/${libusb_w32_patch}" ]
       then
-        run_verbose patch -p0 < "${BUILD_GIT_PATH}/patches/${libusb_w32_patch}"
+        run_verbose patch -p0 < "${XBB_BUILD_GIT_PATH}/patches/${libusb_w32_patch}"
       fi
     fi
 
@@ -6979,7 +6979,7 @@ function build_libusb_w32()
       echo
       echo "Running libusb-win32 make..."
 
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -6996,7 +6996,7 @@ function build_libusb_w32()
           export CXXFLAGS
           export LDFLAGS
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -7007,34 +7007,34 @@ function build_libusb_w32()
             dll
 
           # Manually install, could not find a make target.
-          mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/bin"
+          mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin"
 
           # Skipping it does not remove the reference from openocd, so for the
           # moment it is preserved.
-          cp -v "${LIBS_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}/libusb0.dll" \
-            "${LIBS_INSTALL_FOLDER_PATH}/bin"
+          cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}/libusb0.dll" \
+            "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin"
 
-          mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/lib"
-          cp -v "${LIBS_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}/libusb.a" \
-            "${LIBS_INSTALL_FOLDER_PATH}/lib"
+          mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+          cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}/libusb.a" \
+            "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
 
-          mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig"
-          sed -e "s|XXX|${LIBS_INSTALL_FOLDER_PATH}|" \
+          mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig"
+          sed -e "s|XXX|${XBB_LIBRARIES_INSTALL_FOLDER_PATH}|" \
             "${helper_folder_path}/pkgconfig/${libusb_w32_prefix_version}.pc" \
-            > "${LIBS_INSTALL_FOLDER_PATH}/lib/pkgconfig/libusb.pc"
+            > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/libusb.pc"
 
-          mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/include/libusb"
-          cp -v "${LIBS_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}/src/lusb0_usb.h" \
-            "${LIBS_INSTALL_FOLDER_PATH}/include/libusb/usb.h"
+          mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/libusb"
+          cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}/src/lusb0_usb.h" \
+            "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/libusb/usb.h"
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libusb_w32_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libusb_w32_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${LIBS_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}" \
+        "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}" \
         "${libusb_w32_folder_name}"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libusb_w32_stamp_file_path}"
 
   else
@@ -7068,21 +7068,21 @@ function build_vde()
   local vde_folder_name="${vde_src_folder_name}"
   local vde_patch_file_patch="${vde_folder_name}.patch.diff"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${vde_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${vde_folder_name}"
 
-  local vde_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${vde_folder_name}-installed"
+  local vde_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${vde_folder_name}-installed"
   if [ ! -f "${vde_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${vde_url}" "${vde_archive}" \
       "${vde_src_folder_name}" "${vde_patch_file_patch}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${vde_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${vde_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${vde_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${vde_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -7099,7 +7099,7 @@ function build_vde()
       CXXFLAGS="$(echo "${XBB_CXXFLAGS_NO_W}" | sed -e 's|-O0|-O2|')"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -7112,7 +7112,7 @@ function build_vde()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -7120,32 +7120,32 @@ function build_vde()
           echo
           echo "Running vde configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${vde_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${vde_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--disable-python")
           # src/vde_cryptcab/cryptcab.c:25:23: error: tentative definition has type 'EVP_CIPHER_CTX' (aka 'struct evp_cipher_ctx_st') that is never completed
           config_options+=("--disable-cryptcab")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${vde_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${vde_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${vde_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${vde_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${vde_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${vde_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -7154,29 +7154,29 @@ function build_vde()
 
         # Build.
         # *** No rule to make target '../../src/lib/libvdemgmt.la', needed by 'libvdesnmp.la'.  Stop.
-        run_verbose make # -j ${JOBS}
+        run_verbose make # -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${vde_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${vde_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${vde_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${vde_src_folder_name}" \
         "${vde_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${vde_stamp_file_path}"
 
   else
@@ -7208,21 +7208,21 @@ function build_libpcap()
 
   local libpcap_folder_name="${libpcap_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libpcap_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libpcap_folder_name}"
 
-  local libpcap_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${libpcap_folder_name}-installed"
+  local libpcap_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libpcap_folder_name}-installed"
   if [ ! -f "${libpcap_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libpcap_url}" "${libpcap_archive}" \
       "${libpcap_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libpcap_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libpcap_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libpcap_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libpcap_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -7231,7 +7231,7 @@ function build_libpcap()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -7244,7 +7244,7 @@ function build_libpcap()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -7252,31 +7252,31 @@ function build_libpcap()
           echo
           echo "Running libpcap configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${libpcap_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libpcap_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # HomeBrew
           config_options+=("--disable-universal")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${libpcap_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libpcap_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${libpcap_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libpcap_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libpcap_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libpcap_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -7284,19 +7284,19 @@ function build_libpcap()
         echo "Running libpcap make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         run_verbose make install
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libpcap_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libpcap_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libpcap_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libpcap_src_folder_name}" \
         "${libpcap_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libpcap_stamp_file_path}"
 
   else
@@ -7333,21 +7333,21 @@ function build_libssh()
 
   local libssh_folder_name="${libssh_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${libssh_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libssh_folder_name}"
 
-  local libssh_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${libssh_folder_name}-installed"
+  local libssh_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libssh_folder_name}-installed"
   if [ ! -f "${libssh_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libssh_url}" "${libssh_archive}" \
       "${libssh_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${libssh_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${libssh_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libssh_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libssh_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -7356,7 +7356,7 @@ function build_libssh()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -7367,7 +7367,7 @@ function build_libssh()
       export LDFLAGS
 
       local build_type
-      if [ "${IS_DEBUG}" == "y" ]
+      if [ "${XBB_IS_DEBUG}" == "y" ]
       then
         build_type=Debug
       else
@@ -7377,7 +7377,7 @@ function build_libssh()
       if [ ! -f "CMakeCache.txt" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -7388,7 +7388,7 @@ function build_libssh()
           config_options=()
 
           # TODO: add separate BINS/LIBS.
-          config_options+=("-DCMAKE_INSTALL_PREFIX=${LIBS_INSTALL_FOLDER_PATH}")
+          config_options+=("-DCMAKE_INSTALL_PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           config_options+=("-DBUILD_STATIC_LIB=ON")
           config_options+=("-DWITH_SYMBOL_VERSIONING=OFF")
@@ -7399,7 +7399,7 @@ function build_libssh()
           # Since CMake insists on picking the system one.
           config_options+=("-DWITH_ZLIB=OFF")
 
-          if [ "${TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
           then
             # On Linux
             # undefined reference to `__stack_chk_guard'
@@ -7411,9 +7411,9 @@ function build_libssh()
           run_verbose cmake \
             "${config_options[@]}" \
             \
-            "${SOURCES_FOLDER_PATH}/${libssh_src_folder_name}"
+            "${XBB_SOURCES_FOLDER_PATH}/${libssh_src_folder_name}"
 
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libssh_folder_name}/cmake-output-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libssh_folder_name}/cmake-output-$(ndate).txt"
       fi
 
       (
@@ -7421,19 +7421,19 @@ function build_libssh()
         echo "Running libssh make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         run_verbose make install
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${libssh_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libssh_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${libssh_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${libssh_src_folder_name}" \
         "${libssh_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libssh_stamp_file_path}"
 
   else
@@ -7470,23 +7470,23 @@ function build_sdl2()
 
   local sdl2_folder_name="${sdl2_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${sdl2_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${sdl2_folder_name}"
 
-  local sdl2_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-sdl2-${sdl2_version}-installed"
+  local sdl2_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-sdl2-${sdl2_version}-installed"
   if [ ! -f "${sdl2_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${sdl2_url}" "${sdl2_archive}" \
       "${sdl2_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${sdl2_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${sdl2_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${sdl2_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${sdl2_folder_name}"
 
-      if [ "${TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
       then
         # GNU GCC fails with
         #  CC     build/SDL_syspower.lo
@@ -7504,7 +7504,7 @@ function build_sdl2()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -7518,7 +7518,7 @@ function build_sdl2()
       then
 
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -7526,45 +7526,45 @@ function build_sdl2()
           echo
           echo "Running sdl2 configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${sdl2_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${sdl2_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--enable-video")
           config_options+=("--disable-audio")
           config_options+=("--disable-joystick")
           config_options+=("--disable-haptic")
 
-          if [ "${TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
             :
-          elif [ "${TARGET_PLATFORM}" == "linux" ]
+          elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
           then
             config_options+=("--enable-video-opengl")
             config_options+=("--enable-video-x11")
-          elif [ "${TARGET_PLATFORM}" == "darwin" ]
+          elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
             config_options+=("--without-x")
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${sdl2_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${sdl2_src_folder_name}/configure" \
             ${config_options[@]}
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${sdl2_folder_name}/config-log.txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${sdl2_folder_name}/configure-output.txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${sdl2_folder_name}/config-log.txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_folder_name}/configure-output.txt"
 
       fi
 
@@ -7573,19 +7573,19 @@ function build_sdl2()
         echo "Running sdl2 make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         run_verbose make install
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${sdl2_folder_name}/make-output.txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_folder_name}/make-output.txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${sdl2_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${sdl2_src_folder_name}" \
         "${sdl2_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${sdl2_stamp_file_path}"
 
   else
@@ -7619,21 +7619,21 @@ function build_sdl2_image()
 
   local sdl2_image_folder_name="${sdl2_image_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${sdl2_image_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${sdl2_image_folder_name}"
 
-  local sdl2_image_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-sdl2-image-${sdl2_image_version}-installed"
+  local sdl2_image_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-sdl2-image-${sdl2_image_version}-installed"
   if [ ! -f "${sdl2_image_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${sdl2_image_url}" "${sdl2_image_archive}" \
       "${sdl2_image_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${sdl2_image_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${sdl2_image_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${sdl2_image_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${sdl2_image_folder_name}"
 
       # The windows build checks this.
       mkdir -pv lib
@@ -7646,11 +7646,11 @@ function build_sdl2_image()
       OBJCFLAGS="${XBB_CFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
-      if [ "${IS_DEVELOP}" == "y" ]
+      if [ "${XBB_IS_DEVELOP}" == "y" ]
       then
         LDFLAGS+=" -v"
       fi
@@ -7661,7 +7661,7 @@ function build_sdl2_image()
       export OBJCFLAGS
       export LDFLAGS
 
-      if [ "${TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         export OBJC=clang
       fi
@@ -7674,7 +7674,7 @@ function build_sdl2_image()
       then
 
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -7682,22 +7682,22 @@ function build_sdl2_image()
           echo
           echo "Running sdl2-image configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${sdl2_image_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${sdl2_image_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--enable-jpg")
           config_options+=("--enable-png")
@@ -7719,16 +7719,16 @@ function build_sdl2_image()
           config_options+=("--disable-webp")
           config_options+=("--disable-webp-shared")
 
-          if [ "${TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
             config_options+=("--enable-imageio")
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${sdl2_image_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${sdl2_image_src_folder_name}/configure" \
             ${config_options[@]}
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${sdl2_image_folder_name}/config-log.txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${sdl2_image_folder_name}/configure-output.txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${sdl2_image_folder_name}/config-log.txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_image_folder_name}/configure-output.txt"
 
       fi
 
@@ -7737,24 +7737,24 @@ function build_sdl2_image()
         echo "Running sdl2-image make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${sdl2_image_folder_name}/make-output.txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_image_folder_name}/make-output.txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${sdl2_image_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${sdl2_image_src_folder_name}" \
         "${sdl2_image_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${sdl2_image_stamp_file_path}"
 
   else
@@ -7785,21 +7785,21 @@ function build_pcre2()
 
   local pcre2_folder_name="${pcre2_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${pcre2_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${pcre2_folder_name}"
 
-  local pcre2_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${pcre2_folder_name}-installed"
+  local pcre2_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${pcre2_folder_name}-installed"
   if [ ! -f "${pcre2_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${pcre2_url}" "${pcre2_archive}" \
       "${pcre2_src_folder_name}"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${pcre2_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${pcre2_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${pcre2_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${pcre2_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -7808,7 +7808,7 @@ function build_pcre2()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -7821,7 +7821,7 @@ function build_pcre2()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -7829,22 +7829,22 @@ function build_pcre2()
           echo
           echo "Running pcre2 configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${pcre2_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${pcre2_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--enable-pcre2-16")
           config_options+=("--enable-pcre2-32")
@@ -7853,11 +7853,11 @@ function build_pcre2()
           config_options+=("--enable-pcre2grep-libbz2")
           # config_options+=("--enable-pcre2test-libreadline")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${pcre2_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${pcre2_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${pcre2_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${pcre2_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${pcre2_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${pcre2_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -7865,29 +7865,29 @@ function build_pcre2()
         echo "Running pcre2 make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${pcre2_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${pcre2_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${pcre2_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${pcre2_src_folder_name}" \
         "${pcre2_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${pcre2_stamp_file_path}"
 
   else
@@ -7917,14 +7917,14 @@ function build_termcap()
 
   local termcap_folder_name="${termcap_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${termcap_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${termcap_folder_name}"
 
-  local termcap_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${termcap_folder_name}-installed"
+  local termcap_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${termcap_folder_name}-installed"
   if [ ! -f "${termcap_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     if [ ! -d "${termcap_src_folder_name}" ]
     then
@@ -7936,8 +7936,8 @@ function build_termcap()
     fi
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${termcap_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${termcap_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${termcap_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${termcap_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -7946,7 +7946,7 @@ function build_termcap()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -7959,7 +7959,7 @@ function build_termcap()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -7967,28 +7967,28 @@ function build_termcap()
           echo
           echo "Running termcap configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${termcap_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${termcap_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${termcap_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${termcap_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${termcap_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${termcap_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${termcap_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${termcap_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -7996,9 +7996,9 @@ function build_termcap()
         echo "Running termcap make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
@@ -8006,15 +8006,15 @@ function build_termcap()
         run_verbose make install
 
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${termcap_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${termcap_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${termcap_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${termcap_src_folder_name}" \
         "${termcap_folder_name}"
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${termcap_stamp_file_path}"
 
   else

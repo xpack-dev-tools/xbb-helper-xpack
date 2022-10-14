@@ -12,7 +12,7 @@
 
 function echo_develop()
 {
-  if [ "${IS_DEVELOP}" == "y" ]
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
     echo "$@"
   fi
@@ -46,13 +46,13 @@ function run_app()
   local app_path=$1
   shift
 
-  if [ "${TARGET_PLATFORM}" == "linux" ]
+  if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
   then
     run_verbose "${app_path}" "$@"
-  elif [ "${TARGET_PLATFORM}" == "darwin" ]
+  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
   then
     run_verbose "${app_path}" "$@"
-  elif [ "${TARGET_PLATFORM}" == "win32" ]
+  elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
     if [ -x "${app_path}" ]
     then
@@ -91,7 +91,7 @@ function run_app()
     )
 
   else
-    echo "Unsupported TARGET_PLATFORM=${TARGET_PLATFORM}."
+    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
     exit 1
   fi
 }
@@ -102,7 +102,7 @@ function run_verbose_develop()
   local app_path=$1
   shift
 
-  if [ "${IS_DEVELOP}" == "y" ]
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
     echo
     echo "[${app_path} $@]"
@@ -134,7 +134,7 @@ function is_pe()
 
   if [ -f "${bin_path}" ]
   then
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
       file ${bin_path} | egrep -q "( PE )|( PE32 )|( PE32\+ )"
     else
@@ -164,10 +164,10 @@ function is_elf()
   if [ -f "${bin_path}" ]
   then
     # Return 0 (true) if found.
-    if [ "${TARGET_PLATFORM}" == "linux" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
     then
       file ${bin_path} | egrep -q "( ELF )"
-    elif [ "${TARGET_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
     then
       # This proved to be very tricky.
       file ${bin_path} | egrep -q "x86_64:Mach-O|arm64e:Mach-O|Mach-O.*x86_64|Mach-O.*arm64"

@@ -34,9 +34,9 @@ function copy_license()
         if [[ $f =~ AUTHORS.*|NEWS.*|COPYING.*|README.*|LICENSE.*|Copyright.*|COPYRIGHT.*|FAQ.*|DEPENDENCIES.*|THANKS.*|CHANGES.* ]]
         then
           install -d -m 0755 \
-            "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/licenses/$2"
+            "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2"
           install -v -c -m 644 "$f" \
-            "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/licenses/$2"
+            "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2"
         fi
       elif [ -d "$f" ] && [[ $f =~ [Ll][Ii][Cc][Ee][Nn][Ss][Ee]* ]]
       then
@@ -46,18 +46,18 @@ function copy_license()
           for file in ${files}
           do
             install -d -m 0755 \
-              "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
+              "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
             install -v -c -m 644 "$file" \
-              "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
+              "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
           done
         )
       fi
     done
   )
   (
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
-      find "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/licenses" \
+      find "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses" \
         -type f \
         -exec unix2dos '{}' ';'
     fi
@@ -72,47 +72,47 @@ function copy_build_files()
   local verbose=""
 
   (
-    rm -rf "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/scripts"
-    rm -rf "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}/patches"
+    rm -rf "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/scripts"
+    rm -rf "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/patches"
 
-    cd "${BUILD_GIT_PATH}"
+    cd "${XBB_BUILD_GIT_PATH}"
 
     # Ignore hidden folders/files (like .DS_Store).
     find scripts -type d ! -iname '.*' \
       -exec install -d -m 0755 \
-        "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}"/'{}' ';'
+        "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"/'{}' ';'
 
     find scripts -type f ! -iname '.*' \
       -exec install -v -c -m 644 \
-        '{}' "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}"/'{}' ';'
+        '{}' "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"/'{}' ';'
 
     if [ -d patches ]
     then
       find patches -type d ! -iname '.*' \
         -exec install -d -m 0755 \
-          "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}"/'{}' ';'
+          "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"/'{}' ';'
 
       find patches -type f ! -iname '.*' \
         -exec install -v -c -m 644 \
-          '{}' "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}"/'{}' ';'
+          '{}' "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"/'{}' ';'
     fi
 
     if [ -f CHANGELOG.txt ]
     then
       install -v -c -m 644 \
-          CHANGELOG.txt "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}"
+          CHANGELOG.txt "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"
     fi
     if [ -f CHANGELOG.md ]
     then
       install -v -c -m 644 \
-          CHANGELOG.md "${APPLICATION_INSTALL_FOLDER_PATH}/${DISTRO_INFO_NAME}"
+          CHANGELOG.md "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"
     fi
   )
 }
 
 # Must be called in the build folder, like
-# cd "${LIBS_BUILD_FOLDER_PATH}"
-# cd "${BUILD_FOLDER_PATH}"
+# cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
+# cd "${XBB_BUILD_FOLDER_PATH}"
 
 function copy_cmake_logs()
 {
@@ -120,14 +120,14 @@ function copy_cmake_logs()
 
   echo
   echo "Preserving CMake log files..."
-  rm -rf "${LOGS_FOLDER_PATH}/${folder_name}"
-  mkdir -pv "${LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles"
+  rm -rf "${XBB_LOGS_FOLDER_PATH}/${folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles"
 
   (
     cd "${folder_name}"
-    cp -v "CMakeCache.txt" "${LOGS_FOLDER_PATH}/${folder_name}"
+    cp -v "CMakeCache.txt" "${XBB_LOGS_FOLDER_PATH}/${folder_name}"
 
-    cp -v "CMakeFiles"/*.log "${LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles"
+    cp -v "CMakeFiles"/*.log "${XBB_LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles"
   )
 }
 

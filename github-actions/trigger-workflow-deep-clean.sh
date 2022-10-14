@@ -62,10 +62,10 @@ source "${helper_folder_path}/scripts/xbb.sh"
 
 # GITHUB_API_DISPATCH_TOKEN must be present in the environment.
 
-message="Deep clean ${APP_NAME}"
+message="Deep clean ${XBB_APPLICATION_NAME}"
 
 branch="xpack-develop"
-version=${RELEASE_VERSION:-"$(xbb_get_current_version)"}
+version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 workflow_id="deep-clean.yml"
 
 while [ $# -gt 0 ]
@@ -109,8 +109,8 @@ cat <<__EOF__ > "${data_file_path}"
 __EOF__
 
 trigger_github_workflow \
-  "${GITHUB_ORG}" \
-  "${GITHUB_REPO}" \
+  "${XBB_GITHUB_ORG}" \
+  "${XBB_GITHUB_REPO}" \
   "${workflow_id}" \
   "${data_file_path}" \
   "${GITHUB_API_DISPATCH_TOKEN}"

@@ -5,7 +5,7 @@
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
-name: 'Build xPack {{ APP_NAME }} xbbla32'
+name: 'Build xPack {{ XBB_APPLICATION_NAME }} xbbla32'
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ jobs:
 {% for platform in platforms -%}
 {% if platform == "linux-arm" %}
   linux-arm:
-    name: 'Linux Arm 32 - {{ APP_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+    name: 'Linux Arm 32 - {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm, xbbla32]
     container:

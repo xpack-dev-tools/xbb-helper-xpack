@@ -61,11 +61,11 @@ source "${helper_folder_path}/scripts/xbb.sh"
 
 # GITHUB_API_DISPATCH_TOKEN must be present in the environment.
 
-message="Test ${APP_DESCRIPTION} on native platforms"
+message="Test ${XBB_APPLICATION_DESCRIPTION} on native platforms"
 
 branch="xpack-develop"
 base_url="pre-release"
-version="${RELEASE_VERSION:-$(xbb_get_current_version)}"
+version="${XBB_RELEASE_VERSION:-$(xbb_get_current_version)}"
 workflow_id="test-prime.yml"
 helper_git_ref="v$(xbb_get_current_helper_version)"
 
@@ -119,8 +119,8 @@ cat <<__EOF__ > "${data_file_path}"
 __EOF__
 
 trigger_github_workflow \
-  "${GITHUB_ORG}" \
-  "${GITHUB_REPO}" \
+  "${XBB_GITHUB_ORG}" \
+  "${XBB_GITHUB_REPO}" \
   "${workflow_id}" \
   "${data_file_path}" \
   "${GITHUB_API_DISPATCH_TOKEN}"

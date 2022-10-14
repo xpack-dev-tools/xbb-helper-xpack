@@ -42,9 +42,9 @@ function trigger_github_workflow()
 
 function download_binaries()
 {
-  local destination_folder_path="${1:-"${HOME}/Downloads/xpack-binaries/${APP_LC_NAME}"}"
+  local destination_folder_path="${1:-"${HOME}/Downloads/xpack-binaries/${XBB_APPLICATION_LOWER_CASE_NAME}"}"
 
-  local version=${RELEASE_VERSION:-"$(xbb_get_current_version)"}
+  local version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 
   (
     rm -rf "${destination_folder_path}-bak"
@@ -77,7 +77,7 @@ function download_binaries()
         extension='zip'
       fi
 
-      archive_name="${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${version}-${platform}.${extension}"
+      archive_name="${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${version}-${platform}.${extension}"
       archive_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/test/${archive_name}"
 
       run_verbose curl --location --insecure --fail --location --silent \

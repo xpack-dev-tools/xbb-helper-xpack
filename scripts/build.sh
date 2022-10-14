@@ -28,82 +28,82 @@ function build_parse_options()
   local help_message="$1"
   shift
 
-  REQUEST_BUILD_WINDOWS="n"
+  XBB_REQUEST_BUILD_WINDOWS="n"
 
-  IS_DEBUG="n"
-  IS_DEVELOP="n"
-  WITH_STRIP="y"
-  WITH_PDF="n"
-  WITH_HTML="n"
-  WITH_TESTS="n"
-  WITHOUT_MULTILIB="n"
-  TEST_ONLY="n"
+  XBB_IS_DEBUG="n"
+  XBB_IS_DEVELOP="n"
+  XBB_WITH_STRIP="y"
+  XBB_WITH_PDF="n"
+  XBB_WITH_HTML="n"
+  XBB_WITH_TESTS="n"
+  XBB_WITHOUT_MULTILIB="n"
+  XBB_TEST_ONLY="n"
 
-  REQUESTED_TARGET=""
-  REQUESTED_BUILD_RELATIVE_FOLDER=""
+  XBB_REQUESTED_TARGET=""
+  XBB_REQUESTED_BUILD_RELATIVE_FOLDER=""
 
   local uname="$(uname)"
   if [ "${uname}" == "Linux" ]
   then
-    JOBS="$(nproc)"
+    XBB_JOBS="$(nproc)"
   elif [ "${uname}" == "Darwin" ]
   then
-    JOBS="$(sysctl hw.ncpu | sed 's/hw.ncpu: //')"
+    XBB_JOBS="$(sysctl hw.ncpu | sed 's/hw.ncpu: //')"
   else
-    JOBS="1"
+    XBB_JOBS="1"
   fi
 
   echo
-  echo "The ${APP_DISTRO_NAME} ${APP_NAME} distribution build script"
+  echo "The ${XBB_APPLICATION_DISTRO_NAME} ${XBB_APPLICATION_NAME} distribution build script"
 
   while [ $# -gt 0 ]
   do
     case "$1" in
 
       --win|--windows)
-        REQUEST_BUILD_WINDOWS="y"
+        XBB_REQUEST_BUILD_WINDOWS="y"
         shift
         ;;
 
       --debug)
-        IS_DEBUG="y"
+        XBB_IS_DEBUG="y"
         shift
         ;;
 
       --develop)
-        IS_DEVELOP="y"
+        XBB_IS_DEVELOP="y"
         shift
         ;;
 
       --jobs)
         shift
-        JOBS=$1
+        XBB_JOBS=$1
         shift
         ;;
 
       --disable-strip)
-        WITH_STRIP="n"
+        XBB_WITH_STRIP="n"
         shift
         ;;
 
       --disable-tests)
-        WITH_TESTS="n"
+        XBB_WITH_TESTS="n"
         shift
         ;;
 
       --test-only|--tests-only)
-        TEST_ONLY="y"
+        XBB_TEST_ONLY="y"
         shift
         ;;
 
       --disable-multilib)
-        WITHOUT_MULTILIB="y"
+        XBB_WITHOUT_MULTILIB="y"
         shift
         ;;
 
       --target)
         shift
-        REQUESTED_TARGET="$1"
+        XBB_REQUESTED_TARGET="$1"
         shift
         ;;
 
@@ -114,7 +114,7 @@ function build_parse_options()
           echo "Only relative paths are accepted for --build-folder"
           exit 1
         fi
-        REQUESTED_BUILD_RELATIVE_FOLDER="$1"
+        XBB_REQUESTED_BUILD_RELATIVE_FOLDER="$1"
         shift
         ;;
 
@@ -135,22 +135,22 @@ function build_parse_options()
   done
 
   # Debug automatically disables strip.
-  if [ "${IS_DEBUG}" == "y" ]
+  if [ "${XBB_IS_DEBUG}" == "y" ]
   then
-    WITH_STRIP="n"
+    XBB_WITH_STRIP="n"
   fi
 
-  export IS_DEBUG
-  export IS_DEVELOP
-  export WITH_STRIP
-  export WITH_PDF
-  export WITH_HTML
-  export WITH_TESTS
-  export WITHOUT_MULTILIB
-  export TEST_ONLY
+  export XBB_IS_DEBUG
+  export XBB_IS_DEVELOP
+  export XBB_WITH_STRIP
+  export XBB_WITH_PDF
+  export XBB_WITH_HTML
+  export XBB_WITH_TESTS
+  export XBB_WITHOUT_MULTILIB
+  export XBB_TEST_ONLY
 
-  export REQUEST_BUILD_WINDOWS
-  export REQUESTED_BUILD_RELATIVE_FOLDER
+  export XBB_REQUEST_BUILD_WINDOWS
+  export XBB_REQUESTED_BUILD_RELATIVE_FOLDER
 }
 
 
@@ -158,49 +158,49 @@ function build_parse_options()
 function build_set_request_target()
 {
   # The default case, when the target is the same as the host.
-  REQUESTED_TARGET_PLATFORM="${HOST_NODE_PLATFORM}"
-  REQUESTED_TARGET_ARCH="${HOST_NODE_ARCH}"
-  REQUESTED_TARGET_BITS="${HOST_BITS}"
-  REQUESTED_TARGET_MACHINE="${HOST_MACHINE}"
+  XBB_REQUESTED_TARGET_PLATFORM="${XBB_HOST_NODE_PLATFORM}"
+  XBB_REQUESTED_TARGET_ARCH="${XBB_HOST_NODE_ARCH}"
+  XBB_REQUESTED_TARGET_BITS="${XBB_HOST_BITS}"
+  XBB_REQUESTED_TARGET_MACHINE="${XBB_HOST_MACHINE}"
 
-  case "${REQUESTED_TARGET}" in
+  case "${XBB_REQUESTED_TARGET}" in
     linux-x64)
-      REQUESTED_TARGET_PLATFORM="linux"
-      REQUESTED_TARGET_ARCH="x64"
-      REQUESTED_TARGET_BITS="64"
-      REQUESTED_TARGET_MACHINE="x86_64"
+      XBB_REQUESTED_TARGET_PLATFORM="linux"
+      XBB_REQUESTED_TARGET_ARCH="x64"
+      XBB_REQUESTED_TARGET_BITS="64"
+      XBB_REQUESTED_TARGET_MACHINE="x86_64"
       ;;
 
     linux-arm64)
-      REQUESTED_TARGET_PLATFORM="linux"
-      REQUESTED_TARGET_ARCH="arm64"
-      REQUESTED_TARGET_BITS="64"
-      REQUESTED_TARGET_MACHINE="aarch64"
+      XBB_REQUESTED_TARGET_PLATFORM="linux"
+      XBB_REQUESTED_TARGET_ARCH="arm64"
+      XBB_REQUESTED_TARGET_BITS="64"
+      XBB_REQUESTED_TARGET_MACHINE="aarch64"
       ;;
 
     linux-arm)
-      REQUESTED_TARGET_PLATFORM="linux"
-      REQUESTED_TARGET_ARCH="arm"
-      REQUESTED_TARGET_BITS="32"
-      REQUESTED_TARGET_MACHINE="armv7l"
+      XBB_REQUESTED_TARGET_PLATFORM="linux"
+      XBB_REQUESTED_TARGET_ARCH="arm"
+      XBB_REQUESTED_TARGET_BITS="32"
+      XBB_REQUESTED_TARGET_MACHINE="armv7l"
       ;;
 
     darwin-x64)
-      REQUESTED_TARGET_PLATFORM="darwin"
-      REQUESTED_TARGET_ARCH="x64"
-      REQUESTED_TARGET_BITS="64"
-      REQUESTED_TARGET_MACHINE="x86_64"
+      XBB_REQUESTED_TARGET_PLATFORM="darwin"
+      XBB_REQUESTED_TARGET_ARCH="x64"
+      XBB_REQUESTED_TARGET_BITS="64"
+      XBB_REQUESTED_TARGET_MACHINE="x86_64"
       ;;
 
     darwin-arm64)
-      REQUESTED_TARGET_PLATFORM="darwin"
-      REQUESTED_TARGET_ARCH="arm64"
-      REQUESTED_TARGET_BITS="64"
-      REQUESTED_TARGET_MACHINE="arm64"
+      XBB_REQUESTED_TARGET_PLATFORM="darwin"
+      XBB_REQUESTED_TARGET_ARCH="arm64"
+      XBB_REQUESTED_TARGET_BITS="64"
+      XBB_REQUESTED_TARGET_MACHINE="arm64"
       ;;
 
     win32-x64)
-      REQUEST_BUILD_WINDOWS="y"
+      XBB_REQUEST_BUILD_WINDOWS="y"
       ;;
 
     "")
@@ -214,32 +214,33 @@ function build_set_request_target()
 
   esac
 
-  if [ "${REQUESTED_TARGET_PLATFORM}" != "${HOST_NODE_PLATFORM}" -o "${REQUESTED_TARGET_ARCH}" != "${HOST_NODE_ARCH}" ]
+  if [ "${XBB_REQUESTED_TARGET_PLATFORM}" != "${XBB_HOST_NODE_PLATFORM}" ] ||
+     [ "${XBB_REQUESTED_TARGET_ARCH}" != "${XBB_HOST_NODE_ARCH}" ]
   then
     # TODO: allow armv7l to run on armv8l, but with a warning.
-    echo "Cannot cross build --target ${REQUESTED_TARGET}"
+    echo "Cannot cross build --target ${XBB_REQUESTED_TARGET}"
     exit 1
   fi
 
   # Windows is a special case, the built runs on Linux x64.
-  if [ "${REQUEST_BUILD_WINDOWS}" == "y" ]
+  if [ "${XBB_REQUEST_BUILD_WINDOWS}" == "y" ]
   then
-    if [ "${HOST_NODE_PLATFORM}" == "linux" ] && [ "${HOST_NODE_ARCH}" == "x64" ]
+    if [ "${XBB_HOST_NODE_PLATFORM}" == "linux" ] && [ "${XBB_HOST_NODE_ARCH}" == "x64" ]
     then
-      REQUESTED_TARGET_PLATFORM="win32"
-      REQUESTED_TARGET_ARCH="x64"
-      REQUESTED_TARGET_BITS="64"
-      REQUESTED_TARGET_MACHINE="x86_64"
+      XBB_REQUESTED_TARGET_PLATFORM="win32"
+      XBB_REQUESTED_TARGET_ARCH="x64"
+      XBB_REQUESTED_TARGET_BITS="64"
+      XBB_REQUESTED_TARGET_MACHINE="x86_64"
     else
       echo "Windows cross builds are available only on Intel GNU/Linux"
       exit 1
     fi
   fi
 
-  export REQUESTED_TARGET_PLATFORM
-  export REQUESTED_TARGET_ARCH
-  export REQUESTED_TARGET_BITS
-  export REQUESTED_TARGET_MACHINE
+  export XBB_REQUESTED_TARGET_PLATFORM
+  export XBB_REQUESTED_TARGET_ARCH
+  export XBB_REQUESTED_TARGET_BITS
+  export XBB_REQUESTED_TARGET_MACHINE
 }
 
 # =============================================================================
@@ -274,13 +275,13 @@ function build_perform_common()
 
     build_versioned_components
 
-    if [ ! "${TEST_ONLY}" == "y" ]
+    if [ ! "${XBB_TEST_ONLY}" == "y" ]
     then
       (
-        if [ "${TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
         then
           # The Windows still has a reference to libgcc_s and libwinpthread
-          export DO_COPY_GCC_LIBS="y"
+          export XBB_DO_COPY_GCC_LIBS="y"
         fi
 
         # Post processing.
@@ -295,7 +296,7 @@ function build_perform_common()
         check_binaries
 
         create_archive
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/post-process-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/post-process-output-$(ndate).txt"
     fi
   )
 
@@ -311,25 +312,25 @@ function build_perform_common()
 
   # -----------------------------------------------------------------------------
 
-  if [ "${TEST_ONLY}" != "y" ]
+  if [ "${XBB_TEST_ONLY}" != "y" ]
   then
     (
       echo
       echo "# Build results..."
 
-      run_verbose ls -l "${DEPLOY_FOLDER_PATH}"
+      run_verbose ls -l "${XBB_DEPLOY_FOLDER_PATH}"
 
-      run_verbose ls -l "${APPLICATION_INSTALL_FOLDER_PATH}"
-      run_verbose ls -l "${APPLICATION_INSTALL_FOLDER_PATH}/bin"
+      run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+      run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
 
       (
-        cd "${APPLICATION_INSTALL_FOLDER_PATH}/bin"
+        cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
 
         echo
         echo "package.json xpack.bin definitions:"
         ls -1 | sed -e 's|\.exe$||' | sed -e '/\.dll$/d' | sort | sed -e 's|\(.*\)|      "\1": "./.content/bin/\1",|'
       )
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/post-lists-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/post-lists-output-$(ndate).txt"
   fi
 
 

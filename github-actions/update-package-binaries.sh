@@ -60,16 +60,16 @@ source "${helper_folder_path}/scripts/wrappers.sh"
 # -----------------------------------------------------------------------------
 
 echo
-echo "Update the ${APP_DESCRIPTION} package.json binaries..."
+echo "Update the ${XBB_APPLICATION_DESCRIPTION} package.json binaries..."
 
 # -----------------------------------------------------------------------------
 
-version=${RELEASE_VERSION:-"$(xbb_get_current_version)"}
+version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 
 run_verbose xpm-dev binaries-update \
-  -C "${HOME}/Work/${APP_LC_NAME}-xpack.git" \
+  -C "${HOME}/Work/${XBB_APPLICATION_LOWER_CASE_NAME}-xpack.git" \
   "${version}" \
-  "${HOME}/Downloads/xpack-binaries/${APP_LC_NAME}"
+  "${HOME}/Downloads/xpack-binaries/${XBB_APPLICATION_LOWER_CASE_NAME}"
 
 echo
 echo "Done."

@@ -5,7 +5,7 @@
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
-name: 'Publish the xPack {{ APP_NAME }} release'
+name: 'Publish the xPack {{ XBB_APPLICATION_NAME }} release'
 
 on:
   workflow_dispatch:
@@ -51,7 +51,7 @@ jobs:
       - name: 'Create body'
         run: |
           npm install
-          cat scripts/templates/body-github-release-liquid.md | npm run liquidjs --silent -- '{ "RELEASE_VERSION": "{% raw %}${{ github.event.inputs.version }}{% endraw %}" }' >.github/workflows/body-github-release.md
+          cat scripts/templates/body-github-release-liquid.md | npm run liquidjs --silent -- '{ "XBB_RELEASE_VERSION": "{% raw %}${{ github.event.inputs.version }}{% endraw %}" }' >.github/workflows/body-github-release.md
           cat .github/workflows/body-github-release.md
 
       - name: 'Publish release'
@@ -62,7 +62,7 @@ jobs:
           bodyFile: '.github/workflows/body-github-release.md'
           commit: 'xpack-develop'
           draft: true
-          name: 'xPack {{ APP_NAME }} v{% raw %}${{ github.event.inputs.version }}{% endraw %}'
+          name: 'xPack {{ XBB_APPLICATION_NAME }} v{% raw %}${{ github.event.inputs.version }}{% endraw %}'
           omitBodyDuringUpdate: true
           omitDraftDuringUpdate: true
           omitNameDuringUpdate: true
@@ -70,7 +70,7 @@ jobs:
           owner: 'xpack-dev-tools'
           prerelease: true
           replacesArtifacts: false
-          repo: '{{ APP_LC_NAME }}-xpack'
+          repo: '{{ XBB_APPLICATION_LOWER_CASE_NAME }}-xpack'
           tag: 'v{% raw %}${{ github.event.inputs.version }}{% endraw %}'
           token: {% raw %}${{ secrets.PUBLISH_TOKEN }}{% endraw %}
 
@@ -82,7 +82,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          artifacts: '~/Downloads/xpack-binaries/{{ APP_LC_NAME }}/*'
+          artifacts: '~/Downloads/xpack-binaries/{{ XBB_APPLICATION_LOWER_CASE_NAME }}/*'
           commit: 'xpack-develop'
           draft: true
           omitBodyDuringUpdate: true
@@ -92,6 +92,6 @@ jobs:
           owner: 'xpack-dev-tools'
           prerelease: true
           replacesArtifacts: false
-          repo: '{{ APP_LC_NAME }}-xpack'
+          repo: '{{ XBB_APPLICATION_LOWER_CASE_NAME }}-xpack'
           tag: 'v{% raw %}${{ github.event.inputs.version }}{% endraw %}'
           token: {% raw %}${{ secrets.PUBLISH_TOKEN }}{% endraw %}

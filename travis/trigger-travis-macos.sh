@@ -58,11 +58,11 @@ source "${helper_folder_path}/scripts/xbb.sh"
 
 # Script to trigger a set of macOS tests on Travis.
 
-message="Test ${APP_DESCRIPTION} on macOS platforms"
+message="Test ${XBB_APPLICATION_DESCRIPTION} on macOS platforms"
 
 branch="xpack-develop"
 base_url="pre-release"
-version="${RELEASE_VERSION:-$(xbb_get_current_version)}"
+version="${XBB_RELEASE_VERSION:-$(xbb_get_current_version)}"
 helper_git_ref="v$(xbb_get_current_helper_version)"
 
 while [ $# -gt 0 ]
@@ -112,8 +112,8 @@ create_macos_data_file \
 
 # TRAVIS_ORG_TOKEN must be present in the environment.
 trigger_travis \
-  "${GITHUB_ORG}" \
-  "${GITHUB_REPO}" \
+  "${XBB_GITHUB_ORG}" \
+  "${XBB_GITHUB_REPO}" \
   "${data_file_path}" \
   "${TRAVIS_COM_TOKEN}"
 

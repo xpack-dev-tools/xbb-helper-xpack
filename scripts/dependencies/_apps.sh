@@ -44,34 +44,34 @@ function build_patchelf()
 
   local patchelf_folder_name="${patchelf_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${patchelf_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${patchelf_folder_name}"
 
-  local patchelf_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${patchelf_folder_name}-installed"
+  local patchelf_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${patchelf_folder_name}-installed"
   if [ ! -f "${patchelf_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${patchelf_url}" "${patchelf_archive}" \
       "${patchelf_src_folder_name}"
 
     (
-      if [ ! -x "${SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}/configure" ]
+      if [ ! -x "${XBB_SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}/configure" ]
       then
 
-        cd "${SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}"
+        cd "${XBB_SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}"
 
         xbb_activate_installed_dev
 
         run_verbose bash ${DEBUG} "bootstrap.sh"
 
       fi
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${patchelf_folder_name}/autogen-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${patchelf_folder_name}/autogen-output-$(ndate).txt"
 
     (
-      mkdir -pv "${BUILD_FOLDER_PATH}/${patchelf_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${patchelf_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${patchelf_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${patchelf_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -82,7 +82,7 @@ function build_patchelf()
       # Wihtout -static-libstdc++, it fails with
       # /usr/lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.29' not found
       LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -95,7 +95,7 @@ function build_patchelf()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -103,35 +103,35 @@ function build_patchelf()
           echo
           echo "Running patchelf configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             config_options+=("--disable-silent-rules") # HB
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${patchelf_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${patchelf_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${patchelf_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${patchelf_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -139,9 +139,9 @@ function build_patchelf()
         echo "Running patchelf make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
@@ -153,27 +153,27 @@ function build_patchelf()
         # x86_64: FAIL: set-interpreter-long.sh (Segmentation fault (core dumped))
         # make -C tests -j1 check
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${patchelf_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${patchelf_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}" \
         "${patchelf_folder_name}"
     )
 
     (
-      test_patchelf "${BINS_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${patchelf_folder_name}/test-output-$(ndate).txt"
+      test_patchelf "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${patchelf_folder_name}/test-output-$(ndate).txt"
 
     hash -r
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${patchelf_stamp_file_path}"
 
   else
     echo "Component patchelf already installed."
   fi
 
-  tests_add "test_patchelf" "${BINS_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_patchelf" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_patchelf()
@@ -226,23 +226,23 @@ function build_automake()
   # help2man: can't get `--help' info from automake-1.16
   # Try `--no-discard-stderr' if option outputs to stderr
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${automake_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${automake_folder_name}"
 
   local automake_patch_file_name="${automake_folder_name}.patch"
-  local automake_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${automake_folder_name}-installed"
+  local automake_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${automake_folder_name}-installed"
   if [ ! -f "${automake_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${automake_url}" "${automake_archive}" \
       "${automake_src_folder_name}" \
       "${automake_patch_file_name}"
 
     (
-      mkdir -pv "${BUILD_FOLDER_PATH}/${automake_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${automake_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${automake_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${automake_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -252,7 +252,7 @@ function build_automake()
 
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -265,7 +265,7 @@ function build_automake()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -273,28 +273,28 @@ function build_automake()
           echo
           echo "Running automake configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${automake_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${automake_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${BINS_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${LIBS_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${LIBS_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${LIBS_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${LIBS_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${automake_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${automake_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${automake_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${automake_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${automake_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${automake_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -302,9 +302,9 @@ function build_automake()
         echo "Running automake make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
@@ -320,27 +320,27 @@ function build_automake()
           run_verbose make -j1 check
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${automake_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${automake_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${automake_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${automake_src_folder_name}" \
         "${automake_folder_name}"
     )
 
     (
-      test_automake "${BINS_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${automake_folder_name}/test-output-$(ndate).txt"
+      test_automake "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${automake_folder_name}/test-output-$(ndate).txt"
 
     hash -r
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${automake_stamp_file_path}"
 
   else
     echo "Component automake already installed."
   fi
 
-  tests_add "test_automake" "${BINS_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_automake" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_automake()
@@ -374,34 +374,34 @@ function build_findutils()
 
   local findutils_folder_name="${findutils_src_folder_name}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${findutils_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${findutils_folder_name}"
 
-  local findutils_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${findutils_folder_name}-installed"
+  local findutils_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${findutils_folder_name}-installed"
   if [ ! -f "${findutils_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${findutils_url}" "${findutils_archive}" \
       "${findutils_src_folder_name}"
 
     (
-      if [ ! -x "${SOURCES_FOLDER_PATH}/${findutils_src_folder_name}/configure" ]
+      if [ ! -x "${XBB_SOURCES_FOLDER_PATH}/${findutils_src_folder_name}/configure" ]
       then
 
-        cd "${SOURCES_FOLDER_PATH}/${findutils_src_folder_name}"
+        cd "${XBB_SOURCES_FOLDER_PATH}/${findutils_src_folder_name}"
 
         xbb_activate_installed_dev
 
         run_verbose bash ${DEBUG} "bootstrap.sh"
 
       fi
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${findutils_folder_name}/autogen-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${findutils_folder_name}/autogen-output-$(ndate).txt"
 
     (
-      mkdir -pv "${LIBS_BUILD_FOLDER_PATH}/${findutils_folder_name}"
-      cd "${LIBS_BUILD_FOLDER_PATH}/${findutils_folder_name}"
+      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${findutils_folder_name}"
+      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${findutils_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -411,7 +411,7 @@ function build_findutils()
 
       LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
 
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -424,7 +424,7 @@ function build_findutils()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -432,24 +432,24 @@ function build_findutils()
           echo
           echo "Running findutils configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${findutils_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${findutils_src_folder_name}/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${LIBS_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
-          config_options+=("--build=${BUILD}")
-          # config_options+=("--host=${HOST}")
-          # config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          # config_options+=("--host=${XBB_HOST}")
+          # config_options+=("--target=${XBB_TARGET}")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${findutils_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${findutils_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${findutils_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${findutils_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${findutils_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${findutils_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -457,30 +457,30 @@ function build_findutils()
         echo "Running findutils make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_STRIP}" == "y" ]
+        if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
         else
           run_verbose make install
         fi
 
-        show_libs "${LIBS_INSTALL_FOLDER_PATH}/bin/find"
+        show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/find"
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${findutils_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${findutils_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${findutils_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${findutils_src_folder_name}" \
         "${findutils_folder_name}"
 
     )
 
     (
       test_findutils
-    ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${findutils_folder_name}/test-output-$(ndate).txt"
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${findutils_folder_name}/test-output-$(ndate).txt"
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${findutils_stamp_file_path}"
 
   else
@@ -496,11 +496,11 @@ function test_findutils()
     echo
     echo "Checking the findutils shared libraries..."
 
-    show_libs "${LIBS_INSTALL_FOLDER_PATH}/bin/find"
+    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/find"
 
     echo
     echo "Checking if findutils starts..."
-    "${LIBS_INSTALL_FOLDER_PATH}/bin/find" || true
+    "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/find" || true
   )
 }
 
@@ -516,7 +516,7 @@ function prepare_mingw_config_options_common()
 
   config_options_common=()
 
-  local prefix=${APP_PREFIX}
+  local prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}
   if [ $# -ge 1 ]
   then
     config_options_common+=("--prefix=$1")
@@ -533,8 +533,8 @@ function prepare_mingw_config_options_common()
 
   # `ucrt` is the new Microsoft C runtime.
   # https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c
-  config_options_common+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}")
-  # config_options_common+=("--with-default-msvcrt=${MINGW_MSVCRT:-msvcrt}")
+  config_options_common+=("--with-default-msvcrt=${XBB_MINGW_MSVCRT:-ucrt}")
+  # config_options_common+=("--with-default-msvcrt=${XBB_MINGW_MSVCRT:-msvcrt}")
 
   config_options_common+=("--enable-wildcard")
   config_options_common+=("--enable-warnings=0")
@@ -542,14 +542,14 @@ function prepare_mingw_config_options_common()
 
 function prepare_mingw_env()
 {
-  export MINGW_VERSION="$1"
-  export MINGW_NAME_SUFFIX=${2-''}
+  export XBB_MINGW_VERSION="$1"
+  export XBB_MINGW_NAME_SUFFIX=${2-''}
 
-  export MINGW_VERSION_MAJOR=$(echo ${MINGW_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
+  export XBB_MINGW_VERSION_MAJOR=$(echo ${XBB_MINGW_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 
   # The original SourceForge location.
-  export MINGW_SRC_FOLDER_NAME="mingw-w64-v${MINGW_VERSION}"
-  export MINGW_FOLDER_NAME="${MINGW_SRC_FOLDER_NAME}${MINGW_NAME_SUFFIX}"
+  export XBB_MINGW_SRC_FOLDER_NAME="mingw-w64-v${XBB_MINGW_VERSION}"
+  export XBB_MINGW_FOLDER_NAME="${XBB_MINGW_SRC_FOLDER_NAME}${XBB_MINGW_NAME_SUFFIX}"
 }
 
 function build_mingw_headers()
@@ -581,13 +581,13 @@ function build_mingw_headers()
   # 2021-05-22, "9.0.0"
   # 2022-04-04, "10.0.0"
 
-  local mingw_archive="${MINGW_SRC_FOLDER_NAME}.tar.bz2"
+  local mingw_archive="${XBB_MINGW_SRC_FOLDER_NAME}.tar.bz2"
   local mingw_url="https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/${mingw_archive}"
 
   # If SourceForge is down, there is also a GitHub mirror.
   # https://github.com/mirror/mingw-w64
-  # MINGW_FOLDER_NAME="mingw-w64-${MINGW_VERSION}"
-  # mingw_archive="v${MINGW_VERSION}.tar.gz"
+  # XBB_MINGW_FOLDER_NAME="mingw-w64-${XBB_MINGW_VERSION}"
+  # mingw_archive="v${XBB_MINGW_VERSION}.tar.gz"
   # mingw_url="https://github.com/mirror/mingw-w64/archive/${mingw_archive}"
 
   # https://sourceforge.net/p/mingw-w64/wiki2/Cross%20Win32%20and%20Win64%20compiler/
@@ -598,7 +598,7 @@ function build_mingw_headers()
   # the toolchain to be relocatable.
 
   # Recommended GCC configuration:
-  # (to disable multilib, add `--enable-targets="${TARGET}"`)
+  # (to disable multilib, add `--enable-targets="${XBB_TARGET}"`)
   #
   # $ ../gcc-trunk/configure --{host,build}=<build triplet> \
 	# --target=x86_64-w64-mingw32 --enable-multilib --enable-64bit \
@@ -623,56 +623,56 @@ function build_mingw_headers()
 
   # The 'headers' step creates the 'include' folder.
 
-  local mingw_headers_folder_name="mingw-${MINGW_VERSION}-headers${MINGW_NAME_SUFFIX}"
+  local mingw_headers_folder_name="mingw-${XBB_MINGW_VERSION}-headers${XBB_MINGW_NAME_SUFFIX}"
 
-  cd "${SOURCES_FOLDER_PATH}"
+  cd "${XBB_SOURCES_FOLDER_PATH}"
 
   download_and_extract "${mingw_url}" "${mingw_archive}" \
-    "${MINGW_SRC_FOLDER_NAME}"
+    "${XBB_MINGW_SRC_FOLDER_NAME}"
 
   # The docs recommend to add several links, but for non-multilib
   # configurations there are no target or lib32/lib64 specific folders.
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}"
 
   # ---------------------------------------------------------------------------
 
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
 
-  local mingw_headers_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mingw_headers_folder_name}-installed"
+  local mingw_headers_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_headers_folder_name}-installed"
   if [ ! -f "${mingw_headers_stamp_file_path}" ]
   then
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${mingw_headers_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${mingw_headers_folder_name}"
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${mingw_headers_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_headers_folder_name}"
 
       if [ ! -f "config.status" ]
       then
         (
           echo
-          echo "Running mingw-w64-headers${MINGW_NAME_SUFFIX} configure..."
+          echo "Running mingw-w64-headers${XBB_MINGW_NAME_SUFFIX} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-headers/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-headers/configure" --help
           fi
 
-          if [ -n "${MINGW_NAME_SUFFIX}" ]
+          if [ -n "${XBB_MINGW_NAME_SUFFIX}" ]
           then
-            prepare_mingw_config_options_common "${APP_PREFIX}${MINGW_NAME_SUFFIX}"
+            prepare_mingw_config_options_common "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}"
             config_options=("${config_options_common[@]}")
 
-            config_options+=("--build=${BUILD}")
+            config_options+=("--build=${XBB_BUILD}")
             # The bootstrap binaries will run on the build machine.
-            config_options+=("--host=${TARGET}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--host=${XBB_TARGET}")
+            config_options+=("--target=${XBB_TARGET}")
           else
-            prepare_mingw_config_options_common "${APP_PREFIX}${MINGW_NAME_SUFFIX}/${CROSS_COMPILE_PREFIX}"
+            prepare_mingw_config_options_common "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}"
             config_options=("${config_options_common[@]}")
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
           fi
 
           config_options+=("--with-tune=generic")
@@ -684,27 +684,27 @@ function build_mingw_headers()
           # From Arch, but not recognised.
           # config_options+=("--enable-secure-api")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-headers/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-headers/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/config-headers-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/configure-headers-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/config-headers-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/configure-headers-output-$(ndate).txt"
       fi
 
       (
         echo
-        echo "Running mingw-w64-headers${MINGW_NAME_SUFFIX} make..."
+        echo "Running mingw-w64-headers${XBB_MINGW_NAME_SUFFIX} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         run_verbose make install-strip
 
-        if [ -n "${MINGW_NAME_SUFFIX}" ]
+        if [ -n "${XBB_MINGW_NAME_SUFFIX}" ]
         then
-          mkdir -pv "${APP_PREFIX}${MINGW_NAME_SUFFIX}/${CROSS_COMPILE_PREFIX}"
+          mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}"
           (
-            cd "${APP_PREFIX}${MINGW_NAME_SUFFIX}/${CROSS_COMPILE_PREFIX}"
+            cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}"
             run_verbose ln -sv ../include include
           )
 
@@ -712,30 +712,30 @@ function build_mingw_headers()
           # The directory that should contain system headers does not exist:
           # /Host/home/ilg/Work/gcc-11.1.0-1/win32-x64/install/gcc-bootstrap/mingw/include
 
-          rm -rf "${APP_PREFIX}${MINGW_NAME_SUFFIX}/mingw"
+          rm -rf "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/mingw"
           (
-            cd "${APP_PREFIX}${MINGW_NAME_SUFFIX}"
-            run_verbose ln -sv "${CROSS_COMPILE_PREFIX}" "mingw"
+            cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}"
+            run_verbose ln -sv "${XBB_CROSS_COMPILE_PREFIX}" "mingw"
           )
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-headers-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/make-headers-output-$(ndate).txt"
 
       # No need to do it again for each component.
-      if [ -z "${MINGW_NAME_SUFFIX}" ]
+      if [ -z "${XBB_MINGW_NAME_SUFFIX}" ]
       then
         copy_license \
-          "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}" \
-          "${MINGW_FOLDER_NAME}"
+          "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}" \
+          "${XBB_MINGW_FOLDER_NAME}"
       fi
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${mingw_headers_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-headers${MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-headers${XBB_MINGW_NAME_SUFFIX} already installed."
   fi
 }
 
@@ -747,14 +747,14 @@ function build_mingw_crt()
 
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
 
-  local mingw_crt_folder_name="mingw-${MINGW_VERSION}-crt${MINGW_NAME_SUFFIX}"
+  local mingw_crt_folder_name="mingw-${XBB_MINGW_VERSION}-crt${XBB_MINGW_NAME_SUFFIX}"
 
-  local mingw_crt_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mingw_crt_folder_name}-installed"
+  local mingw_crt_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_crt_folder_name}-installed"
   if [ ! -f "${mingw_crt_stamp_file_path}" ]
   then
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${mingw_crt_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${mingw_crt_folder_name}"
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${mingw_crt_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_crt_folder_name}"
 
       # -ffunction-sections -fdata-sections fail with:
       # Error: .seh_endproc used in segment '.text' instead of expected '.text$WinMainCRTStartup'
@@ -764,7 +764,7 @@ function build_mingw_crt()
 
       LDFLAGS=""
 
-      if [ "${IS_DEVELOP}" == "y" ]
+      if [ "${XBB_IS_DEVELOP}" == "y" ]
       then
         LDFLAGS+=" -v"
       fi
@@ -784,76 +784,76 @@ function build_mingw_crt()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
 
           echo
-          echo "Running mingw-w64-crt${MINGW_NAME_SUFFIX} configure..."
+          echo "Running mingw-w64-crt${XBB_MINGW_NAME_SUFFIX} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-crt/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-crt/configure" --help
           fi
 
-          prepare_mingw_config_options_common "${APP_PREFIX}${MINGW_NAME_SUFFIX}/${CROSS_COMPILE_PREFIX}"
+          prepare_mingw_config_options_common "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}"
           config_options=("${config_options_common[@]}")
-          config_options+=("--with-sysroot=${APP_PREFIX}${MINGW_NAME_SUFFIX}")
+          config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
-          if [ -n "${MINGW_NAME_SUFFIX}" ]
+          if [ -n "${XBB_MINGW_NAME_SUFFIX}" ]
           then
-            config_options+=("--build=${BUILD}")
+            config_options+=("--build=${XBB_BUILD}")
             # The bootstrap binaries will run on the build machine.
-            config_options+=("--host=${TARGET}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--host=${XBB_TARGET}")
+            config_options+=("--target=${XBB_TARGET}")
           else
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
           fi
 
-          if [ "${TARGET_ARCH}" == "x64" ]
+          if [ "${XBB_TARGET_ARCH}" == "x64" ]
           then
             config_options+=("--disable-lib32")
             config_options+=("--enable-lib64")
-          elif [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
+          elif [ "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
           then
             config_options+=("--enable-lib32")
             config_options+=("--disable-lib64")
           else
-            echo "Unsupported TARGET_ARCH=${TARGET_ARCH}."
+            echo "Unsupported XBB_TARGET_ARCH=${XBB_TARGET_ARCH}."
             exit 1
           fi
 
           config_options+=("--enable-wildcard")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-crt/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-crt/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/config-crt-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/configure-crt-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/config-crt-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/configure-crt-output-$(ndate).txt"
       fi
 
       (
         echo
-        echo "Running mingw-w64-crt${MINGW_NAME_SUFFIX} make..."
+        echo "Running mingw-w64-crt${XBB_MINGW_NAME_SUFFIX} make..."
 
         # Build.
         # On Linux it fails with weird messages.
-        # run_verbose make -j ${JOBS}
+        # run_verbose make -j ${XBB_JOBS}
         run_verbose make -j1
 
         run_verbose make install-strip
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-crt-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/make-crt-output-$(ndate).txt"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${mingw_crt_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-crt${MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-crt${XBB_MINGW_NAME_SUFFIX} already installed."
   fi
 }
 
@@ -862,14 +862,14 @@ function build_mingw_winpthreads()
 {
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-winpthreads/trunk/PKGBUILD
 
-  local mingw_winpthreads_folder_name="mingw-${MINGW_VERSION}-winpthreads${MINGW_NAME_SUFFIX}"
+  local mingw_winpthreads_folder_name="mingw-${XBB_MINGW_VERSION}-winpthreads${XBB_MINGW_NAME_SUFFIX}"
 
-  local mingw_winpthreads_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mingw_winpthreads_folder_name}-installed"
+  local mingw_winpthreads_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_winpthreads_folder_name}-installed"
   if [ ! -f "${mingw_winpthreads_stamp_file_path}" ]
   then
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${mingw_winpthreads_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${mingw_winpthreads_folder_name}"
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${mingw_winpthreads_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_winpthreads_folder_name}"
 
       # -ffunction-sections -fdata-sections fail with:
       # Error: .seh_endproc used in segment '.text' instead of expected '.text$WinMainCRTStartup'
@@ -879,7 +879,7 @@ function build_mingw_winpthreads()
 
       LDFLAGS=""
 
-      if [ "${IS_DEVELOP}" == "y" ]
+      if [ "${XBB_IS_DEVELOP}" == "y" ]
       then
         LDFLAGS+=" -v"
       fi
@@ -892,29 +892,29 @@ function build_mingw_winpthreads()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
 
           echo
-          echo "Running mingw-w64-winpthreads${MINGW_NAME_SUFFIX} configure..."
+          echo "Running mingw-w64-winpthreads${XBB_MINGW_NAME_SUFFIX} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winpthreads/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winpthreads/configure" --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${APP_PREFIX}${MINGW_NAME_SUFFIX}/${CROSS_COMPILE_PREFIX}")
-          config_options+=("--with-sysroot=${APP_PREFIX}${MINGW_NAME_SUFFIX}")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}")
+          config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
-          config_options+=("--libdir=${APP_PREFIX}${MINGW_NAME_SUFFIX}/${CROSS_COMPILE_PREFIX}/lib")
+          config_options+=("--libdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}/lib")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
           # This prevents references to libwinpthread-1.dll, which is
           # particularly useful with -static-libstdc++, otherwise the
@@ -922,44 +922,44 @@ function build_mingw_winpthreads()
           # This also requires disabling shared in the GCC configuration.
           config_options+=("--disable-shared")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winpthreads/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winpthreads/configure" \
             "${config_options[@]}"
 
-         cp "config.log" "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/config-winpthreads-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/configure-winpthreads-output-$(ndate).txt"
+         cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/config-winpthreads-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/configure-winpthreads-output-$(ndate).txt"
       fi
 
       (
         echo
-        echo "Running mingw-w64-winpthreads${MINGW_NAME_SUFFIX} make..."
+        echo "Running mingw-w64-winpthreads${XBB_MINGW_NAME_SUFFIX} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         run_verbose make install-strip
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-winpthreads-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/make-winpthreads-output-$(ndate).txt"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${mingw_winpthreads_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-winpthreads${MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-winpthreads${XBB_MINGW_NAME_SUFFIX} already installed."
   fi
 }
 
 function build_mingw_winstorecompat()
 {
-  local mingw_winstorecompat_folder_name="mingw-${MINGW_VERSION}-winstorecompat${MINGW_NAME_SUFFIX}"
+  local mingw_winstorecompat_folder_name="mingw-${XBB_MINGW_VERSION}-winstorecompat${XBB_MINGW_NAME_SUFFIX}"
 
-  local mingw_winstorecompat_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mingw_winstorecompat_folder_name}-installed"
+  local mingw_winstorecompat_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_winstorecompat_folder_name}-installed"
   if [ ! -f "${mingw_winstorecompat_stamp_file_path}" ]
   then
 
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${mingw_winstorecompat_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${mingw_winstorecompat_folder_name}"
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${mingw_winstorecompat_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_winstorecompat_folder_name}"
 
       CPPFLAGS=""
       CFLAGS="-O2 -pipe -w"
@@ -967,7 +967,7 @@ function build_mingw_winstorecompat()
 
       LDFLAGS=""
 
-      if [ "${IS_DEVELOP}" == "y" ]
+      if [ "${XBB_IS_DEVELOP}" == "y" ]
       then
         LDFLAGS+=" -v"
       fi
@@ -980,67 +980,67 @@ function build_mingw_winstorecompat()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
 
           echo
-          echo "Running mingw-w64-winstorecompat${MINGW_NAME_SUFFIX} configure..."
+          echo "Running mingw-w64-winstorecompat${XBB_MINGW_NAME_SUFFIX} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winstorecompat/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winstorecompat/configure" --help
           fi
 
           config_options=()
           # Note: native library.
 
-          config_options+=("--prefix=${APP_PREFIX}${MINGW_NAME_SUFFIX}/${CROSS_COMPILE_PREFIX}")
-          config_options+=("--libdir=${APP_PREFIX}${MINGW_NAME_SUFFIX}/${CROSS_COMPILE_PREFIX}/lib")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}")
+          config_options+=("--libdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}/lib")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_TARGET}")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winstorecompat/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winstorecompat/configure" \
             "${config_options[@]}"
 
-         cp "config.log" "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/config-winstorecompat-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/configure-winstorecompat-output-$(ndate).txt"
+         cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/config-winstorecompat-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/configure-winstorecompat-output-$(ndate).txt"
       fi
 
       (
         echo
-        echo "Running mingw-w64-winstorecompat${MINGW_NAME_SUFFIX} make..."
+        echo "Running mingw-w64-winstorecompat${XBB_MINGW_NAME_SUFFIX} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         run_verbose make install-strip
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-winstorecompat-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/make-winstorecompat-output-$(ndate).txt"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${mingw_winstorecompat_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-winstorecompat${MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-winstorecompat${XBB_MINGW_NAME_SUFFIX} already installed."
   fi
 }
 
 function build_mingw_libmangle()
 {
-  local mingw_libmangle_folder_name="mingw-${MINGW_VERSION}-libmangle${MINGW_NAME_SUFFIX}"
+  local mingw_libmangle_folder_name="mingw-${XBB_MINGW_VERSION}-libmangle${XBB_MINGW_NAME_SUFFIX}"
 
-  local mingw_libmangle_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mingw_libmangle_folder_name}-installed"
+  local mingw_libmangle_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_libmangle_folder_name}-installed"
   if [ ! -f "${mingw_libmangle_stamp_file_path}" ]
   then
 
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${mingw_libmangle_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${mingw_libmangle_folder_name}"
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${mingw_libmangle_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_libmangle_folder_name}"
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -1056,73 +1056,73 @@ function build_mingw_libmangle()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
 
           echo
-          echo "Running mingw-w64-libmangle${MINGW_NAME_SUFFIX} configure..."
+          echo "Running mingw-w64-libmangle${XBB_MINGW_NAME_SUFFIX} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/libmangle/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/libmangle/configure" --help
           fi
 
           config_options=()
           # Note: native library.
-          config_options+=("--prefix=${LIBS_INSTALL_FOLDER_PATH}${MINGW_NAME_SUFFIX}")
+          config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
-          if [ -n "${MINGW_NAME_SUFFIX}" ]
+          if [ -n "${XBB_MINGW_NAME_SUFFIX}" ]
           then
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${BUILD}")
-            config_options+=("--target=${BUILD}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_BUILD}")
+            config_options+=("--target=${XBB_BUILD}")
           else
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/libmangle/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/libmangle/configure" \
             "${config_options[@]}"
 
-         cp "config.log" "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/config-libmangle-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/configure-libmangle-output-$(ndate).txt"
+         cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/config-libmangle-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/configure-libmangle-output-$(ndate).txt"
       fi
 
       (
         echo
-        echo "Running mingw-w64-libmangle${MINGW_NAME_SUFFIX} make..."
+        echo "Running mingw-w64-libmangle${XBB_MINGW_NAME_SUFFIX} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         run_verbose make install-strip
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-libmangle-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/make-libmangle-output-$(ndate).txt"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${mingw_libmangle_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-libmangle${MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-libmangle${XBB_MINGW_NAME_SUFFIX} already installed."
   fi
 }
 
 
 function build_mingw_gendef()
 {
-  local mingw_gendef_folder_name="mingw-${MINGW_VERSION}-gendef${MINGW_NAME_SUFFIX}"
+  local mingw_gendef_folder_name="mingw-${XBB_MINGW_VERSION}-gendef${XBB_MINGW_NAME_SUFFIX}"
 
-  local mingw_gendef_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mingw_gendef_folder_name}-installed"
+  local mingw_gendef_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_gendef_folder_name}-installed"
   if [ ! -f "${mingw_gendef_stamp_file_path}" ]
   then
 
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${mingw_gendef_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${mingw_gendef_folder_name}"
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${mingw_gendef_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gendef_folder_name}"
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -1138,73 +1138,73 @@ function build_mingw_gendef()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
 
           echo
-          echo "Running mingw-w64-gendef${MINGW_NAME_SUFFIX} configure..."
+          echo "Running mingw-w64-gendef${XBB_MINGW_NAME_SUFFIX} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/gendef/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/gendef/configure" --help
           fi
 
-          config_options+=("--prefix=${APP_PREFIX}${MINGW_NAME_SUFFIX}")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
-          if [ -n "${MINGW_NAME_SUFFIX}" ]
+          if [ -n "${XBB_MINGW_NAME_SUFFIX}" ]
           then
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${BUILD}")
-            config_options+=("--target=${BUILD}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_BUILD}")
+            config_options+=("--target=${XBB_BUILD}")
           else
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
           fi
 
-          config_options+=("--with-mangle=${LIBS_INSTALL_FOLDER_PATH}${MINGW_NAME_SUFFIX}")
+          config_options+=("--with-mangle=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/gendef/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/gendef/configure" \
             "${config_options[@]}"
 
-         cp "config.log" "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/config-gendef-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/configure-gendef-output-$(ndate).txt"
+         cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/config-gendef-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/configure-gendef-output-$(ndate).txt"
       fi
 
       (
         echo
-        echo "Running mingw-w64-gendef${MINGW_NAME_SUFFIX} make..."
+        echo "Running mingw-w64-gendef${XBB_MINGW_NAME_SUFFIX} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         run_verbose make install-strip
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-gendef-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/make-gendef-output-$(ndate).txt"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${mingw_gendef_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-gendef${MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-gendef${XBB_MINGW_NAME_SUFFIX} already installed."
   fi
 }
 
 
 function build_mingw_widl()
 {
-  local mingw_widl_folder_name="mingw-${MINGW_VERSION}-widl${MINGW_NAME_SUFFIX}"
+  local mingw_widl_folder_name="mingw-${XBB_MINGW_VERSION}-widl${XBB_MINGW_NAME_SUFFIX}"
 
-  local mingw_widl_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${mingw_widl_folder_name}-installed"
+  local mingw_widl_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_widl_folder_name}-installed"
   if [ ! -f "${mingw_widl_stamp_file_path}" ]
   then
 
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${mingw_widl_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${mingw_widl_folder_name}"
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${mingw_widl_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_widl_folder_name}"
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -1220,72 +1220,72 @@ function build_mingw_widl()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
 
           echo
-          echo "Running mingw-w64-widl${MINGW_NAME_SUFFIX} configure..."
+          echo "Running mingw-w64-widl${XBB_MINGW_NAME_SUFFIX} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/widl/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/widl/configure" --help
           fi
 
           config_options=()
-          config_options+=("--prefix=${APP_PREFIX}${MINGW_NAME_SUFFIX}")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
-          if [ -n "${MINGW_NAME_SUFFIX}" ]
+          if [ -n "${XBB_MINGW_NAME_SUFFIX}" ]
           then
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}") # Native!
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}") # Native!
+            config_options+=("--target=${XBB_TARGET}")
 
           else
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
 
             # To remove any target specific prefix and leave only widl.exe.
             config_options+=("--program-prefix=")
           fi
 
-          config_options+=("--with-widl-includedir=${APP_PREFIX}${MINGW_NAME_SUFFIX}/${CROSS_COMPILE_PREFIX}/include")
+          config_options+=("--with-widl-includedir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}/include")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/widl/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/widl/configure" \
             "${config_options[@]}"
 
-         cp "config.log" "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/config-widl-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/configure-widl-output-$(ndate).txt"
+         cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/config-widl-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/configure-widl-output-$(ndate).txt"
       fi
 
       (
         echo
-        echo "Running mingw-w64-widl${MINGW_NAME_SUFFIX} make..."
+        echo "Running mingw-w64-widl${XBB_MINGW_NAME_SUFFIX} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
         run_verbose make install-strip
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${MINGW_FOLDER_NAME}/make-widl-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_MINGW_FOLDER_NAME}/make-widl-output-$(ndate).txt"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${mingw_widl_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-widl${MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-widl${XBB_MINGW_NAME_SUFFIX} already installed."
   fi
 }
 
 # -----------------------------------------------------------------------------
 
 # Environment variables:
-# QEMU_GIT_URL
-# QEMU_GIT_BRANCH
-# QEMU_GIT_COMMIT
+# XBB_QEMU_GIT_URL
+# XBB_QEMU_GIT_BRANCH
+# XBB_QEMU_GIT_COMMIT
 
 function build_qemu()
 {
@@ -1305,35 +1305,35 @@ function build_qemu()
   local qemu_version="$1"
   local qemu_target="$2" # arm, riscv, tools
 
-  qemu_src_folder_name="${QEMU_SRC_FOLDER_NAME:-qemu-${qemu_version}.git}"
+  qemu_src_folder_name="${XBB_QEMU_SRC_FOLDER_NAME:-qemu-${qemu_version}.git}"
 
   local qemu_folder_name="qemu-${qemu_version}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${qemu_folder_name}/"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${qemu_folder_name}/"
 
-  local qemu_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${qemu_folder_name}-installed"
-  if [ ! -f "${qemu_stamp_file_path}" ] || [ "${IS_DEBUG}" == "y" ]
+  local qemu_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${qemu_folder_name}-installed"
+  if [ ! -f "${qemu_stamp_file_path}" ] || [ "${XBB_IS_DEBUG}" == "y" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
-    if [ ! -d "${SOURCES_FOLDER_PATH}/${qemu_src_folder_name}" ]
+    if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}" ]
     then
-      git_clone "${QEMU_GIT_URL}" "${QEMU_GIT_BRANCH}" \
-          "${QEMU_GIT_COMMIT}" "${SOURCES_FOLDER_PATH}/${qemu_src_folder_name}"
+      git_clone "${XBB_QEMU_GIT_URL}" "${XBB_QEMU_GIT_BRANCH}" \
+          "${XBB_QEMU_GIT_COMMIT}" "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}"
 
       # Simple way to customise the greeting message, instead of
       # managing a patch, or a fork.
       run_verbose sed -i.bak \
         -e 's|printf("QEMU emulator version "|printf("xPack QEMU emulator version "|' \
-        "${SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c"
+        "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c"
     fi
     # exit 1
 
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${qemu_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${qemu_folder_name}"
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1343,10 +1343,10 @@ function build_qemu()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
-      elif [ "${TARGET_PLATFORM}" == "win32" ]
+      elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         LDFLAGS+=" -fstack-protector"
       fi
@@ -1361,7 +1361,7 @@ function build_qemu()
         if [ ! -f "config.status" ]
         then
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -1369,26 +1369,26 @@ function build_qemu()
           echo
           echo "Running qemu ${qemu_target} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             # Although it shouldn't, the script checks python before --help.
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/configure" \
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/configure" \
               --help
           fi
 
           config_options=()
 
-          config_options+=("--prefix=${APP_PREFIX}")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
 
-          config_options+=("--bindir=${APP_PREFIX}/bin")
+          config_options+=("--bindir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin")
 
           # This seems redundant, but without it the greeting
           # string is suffixed by -dirty.
-          config_options+=("--with-pkgversion=${QEMU_GIT_COMMIT}")
+          config_options+=("--with-pkgversion=${XBB_QEMU_GIT_COMMIT}")
 
-          if [ "${TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
-            config_options+=("--cross-prefix=${CROSS_COMPILE_PREFIX}-")
+            config_options+=("--cross-prefix=${XBB_CROSS_COMPILE_PREFIX}-")
           fi
 
           config_options+=("--cc=${CC}")
@@ -1415,7 +1415,7 @@ function build_qemu()
             exit 1
           fi
 
-          if [ "${IS_DEBUG}" == "y" ]
+          if [ "${XBB_IS_DEBUG}" == "y" ]
           then
             config_options+=("--enable-debug")
           fi
@@ -1426,17 +1426,17 @@ function build_qemu()
           # Not toghether with nettle.
           # config_options+=("--enable-gcrypt")
 
-          if [ "${TARGET_PLATFORM}" != "win32" ]
+          if [ "${XBB_TARGET_PLATFORM}" != "win32" ]
           then
             config_options+=("--enable-libssh")
             config_options+=("--enable-curses")
             config_options+=("--enable-vde")
           fi
 
-          if [ "${TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
             # For now, Cocoa builds fail on macOS 10.13.
-            if [ "${ENABLE_QEMU_SDL:-"n"}" == "y" ]
+            if [ "${XBB_ENABLE_QEMU_SDL:-"n"}" == "y" ]
             then
               # In the first Arm release.
               config_options+=("--disable-cocoa")
@@ -1455,51 +1455,51 @@ function build_qemu()
           config_options+=("--disable-guest-agent")
           config_options+=("--disable-gtk")
 
-          if [ "${WITH_STRIP}" != "y" ]
+          if [ "${XBB_WITH_STRIP}" != "y" ]
           then
             config_options+=("--disable-strip")
           fi
 
           config_options+=("--disable-werror")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/configure" \
             ${config_options[@]}
 
         fi
-        cp "config.log" "${LOGS_FOLDER_PATH}/${qemu_folder_name}/configure-log-$(ndate).txt"
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${qemu_folder_name}/configure-output-$(ndate).txt"
+        cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${qemu_folder_name}/configure-log-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${qemu_folder_name}/configure-output-$(ndate).txt"
 
       (
         echo
         echo "Running qemu ${qemu_target} make..."
 
         # Build.
-        run_verbose make -j ${JOBS} # V=1
+        run_verbose make -j ${XBB_JOBS} # V=1
 
         run_verbose make install
 
         if [ "${qemu_target}" == "arm" ]
         then
-          show_libs "${APP_PREFIX}/bin/qemu-system-aarch64"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/qemu-system-aarch64"
         elif [ "${qemu_target}" == "riscv" ]
         then
-          show_libs "${APP_PREFIX}/bin/qemu-system-riscv64"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/qemu-system-riscv64"
         elif [ "${qemu_target}" == "tools" ]
         then
-          show_libs "${APP_PREFIX}/bin/qemu-img"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/qemu-img"
         else
           echo "Unsupported qemu_target ${qemu_target}"
           exit 1
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${qemu_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${qemu_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${qemu_src_folder_name}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}" \
         "qemu-${QEMU_VERSION}"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${qemu_stamp_file_path}"
 
   else
@@ -1554,47 +1554,47 @@ function build_native_binutils()
   local binutils_archive="${binutils_src_folder_name}.tar.xz"
   local binutils_url="https://ftp.gnu.org/gnu/binutils/${binutils_archive}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${binutils_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}"
 
   local binutils_patch_file_name="binutils-${binutils_version}.patch"
-  local binutils_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${binutils_folder_name}-installed"
+  local binutils_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${binutils_folder_name}-installed"
   if [ ! -f "${binutils_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${binutils_url}" "${binutils_archive}" \
       "${binutils_src_folder_name}" "${binutils_patch_file_name}"
 
-    local binutils_prerequisites_download_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${binutils_folder_name}-prerequisites-downloaded"
+    local binutils_prerequisites_download_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${binutils_folder_name}-prerequisites-downloaded"
     if false # [ ! -f "${binutils_prerequisites_download_stamp_file_path}" ]
     then
       (
-        cd "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}"
+        cd "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}"
 
         # Fool the script to think it is in the gcc folder.
         mkdir -p gcc
         touch gcc/BASE-VER
 
-        run_verbose bash "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/contrib/download_prerequisites"  --no-verify
+        run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/contrib/download_prerequisites"  --no-verify
 
         rm -rf gcc
 
-        mkdir -pv "${STAMPS_FOLDER_PATH}"
+        mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
         touch "${binutils_prerequisites_download_stamp_file_path}"
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${binutils_folder_name}/prerequisites-download-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/prerequisites-download-output-$(ndate).txt"
     fi
 
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${binutils_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${binutils_folder_name}"
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
 
       if [ "${name_suffix}" == "-bootstrap" ]
       then
 
-        CPPFLAGS="${XBB_CPPFLAGS} -I${LIBS_INSTALL_FOLDER_PATH}${name_suffix}/include"
+        CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include"
         CFLAGS="${XBB_CFLAGS_NO_W}"
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
@@ -1610,19 +1610,19 @@ function build_native_binutils()
 
         LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
 
-        if [ "${TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
         then
-          if [ "${TARGET_ARCH}" == "x32" -o "${TARGET_ARCH}" == "ia32" ]
+          if [ "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
           then
             # From MSYS2 MINGW
             LDFLAGS+=" -Wl,--large-address-aware"
           fi
 
           # Used to enable wildcard; inspired from arm-none-eabi-gcc.
-          LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
-        elif [ "${TARGET_PLATFORM}" == "linux" ]
+          LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
+        elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
-          LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${LIBS_INSTALL_FOLDER_PATH}/lib}"
+          LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
         fi
       fi
 
@@ -1634,7 +1634,7 @@ function build_native_binutils()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -1642,14 +1642,14 @@ function build_native_binutils()
           echo
           echo "Running binutils${name_suffix} configure..."
 
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" --help
 
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/binutils/configure" --help
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/bfd/configure" --help
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/gas/configure" --help
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/ld/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/binutils/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/bfd/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/gas/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/ld/configure" --help
           fi
 
           # ? --without-python --without-curses, --with-expat
@@ -1658,15 +1658,15 @@ function build_native_binutils()
           if [ "${name_suffix}" == "-bootstrap" ]
           then
 
-            config_options+=("--prefix=${APP_PREFIX}${name_suffix}")
-            config_options+=("--with-sysroot=${APP_PREFIX}${name_suffix}")
+            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
 
-            config_options+=("--build=${BUILD}")
+            config_options+=("--build=${XBB_BUILD}")
             # The bootstrap binaries will run on the build machine.
-            config_options+=("--host=${BUILD}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--host=${XBB_BUILD}")
+            config_options+=("--target=${XBB_TARGET}")
 
-            config_options+=("--with-pkgversion=${GCC_BOOTSTRAP_BRANDING}")
+            config_options+=("--with-pkgversion=${XBB_GCC_BOOTSTRAP_BRANDING}")
 
             config_options+=("--with-libiconv-prefix=${XBB_FOLDER_PATH}")
 
@@ -1684,25 +1684,25 @@ function build_native_binutils()
 
           else
 
-            config_options+=("--prefix=${APP_PREFIX}")
-            config_options+=("--with-sysroot=${APP_PREFIX}")
+            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+            config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
             # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
             config_options+=("--program-suffix=")
 
-            config_options+=("--infodir=${APP_PREFIX_DOC}/info")
-            config_options+=("--mandir=${APP_PREFIX_DOC}/man")
-            config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
-            config_options+=("--pdfdir=${APP_PREFIX_DOC}/pdf")
+            config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
+            config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
+            config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
+            config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
 
-            config_options+=("--with-pkgversion=${BINUTILS_BRANDING}")
+            config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
 
-            if [ "${TARGET_PLATFORM}" != "linux" ]
+            if [ "${XBB_TARGET_PLATFORM}" != "linux" ]
             then
-              config_options+=("--with-libiconv-prefix=${LIBS_INSTALL_FOLDER_PATH}")
+              config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
             fi
 
             config_options+=("--without-system-zlib")
@@ -1712,12 +1712,12 @@ function build_native_binutils()
             # error: debuginfod is missing or unusable
             config_options+=("--without-debuginfod")
 
-            if [ "${TARGET_PLATFORM}" == "win32" ]
+            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
             then
 
               config_options+=("--enable-ld")
 
-              if [ "${TARGET_ARCH}" == "x64" ]
+              if [ "${XBB_TARGET_ARCH}" == "x64" ]
               then
                 # From MSYS2 MINGW
                 config_options+=("--enable-64-bit-bfd")
@@ -1726,7 +1726,7 @@ function build_native_binutils()
               config_options+=("--enable-shared")
               config_options+=("--enable-shared-libgcc")
 
-            elif [ "${TARGET_PLATFORM}" == "linux" ]
+            elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
             then
 
               config_options+=("--enable-ld")
@@ -1734,13 +1734,13 @@ function build_native_binutils()
               config_options+=("--disable-shared")
               config_options+=("--disable-shared-libgcc")
 
-            elif [ "${TARGET_PLATFORM}" == "darwin" ]
+            elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
             then
               echo
               echo "binutils not supported on macOS"
               exit 1
             else
-              echo "Unsupported ${TARGET_PLATFORM}."
+              echo "Unsupported ${XBB_TARGET_PLATFORM}."
               exit 1
             fi
 
@@ -1768,11 +1768,11 @@ function build_native_binutils()
 
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
             ${config_options[@]}
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${binutils_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${binutils_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -1780,9 +1780,9 @@ function build_native_binutils()
         echo "Running binutils${name_suffix} make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           : # run_verbose make check
         fi
@@ -1794,65 +1794,65 @@ function build_native_binutils()
         if [ "${name_suffix}" == "-bootstrap" ]
         then
 
-          show_native_libs "${APP_PREFIX}${name_suffix}/bin/${CROSS_COMPILE_PREFIX}-ar"
-          show_native_libs "${APP_PREFIX}${name_suffix}/bin/${CROSS_COMPILE_PREFIX}-as"
-          show_native_libs "${APP_PREFIX}${name_suffix}/bin/${CROSS_COMPILE_PREFIX}-ld"
-          show_native_libs "${APP_PREFIX}${name_suffix}/bin/${CROSS_COMPILE_PREFIX}-strip"
-          show_native_libs "${APP_PREFIX}${name_suffix}/bin/${CROSS_COMPILE_PREFIX}-nm"
-          show_native_libs "${APP_PREFIX}${name_suffix}/bin/${CROSS_COMPILE_PREFIX}-objcopy"
-          show_native_libs "${APP_PREFIX}${name_suffix}/bin/${CROSS_COMPILE_PREFIX}-objdump"
-          show_native_libs "${APP_PREFIX}${name_suffix}/bin/${CROSS_COMPILE_PREFIX}-ranlib"
-          show_native_libs "${APP_PREFIX}${name_suffix}/bin/${CROSS_COMPILE_PREFIX}-size"
-          show_native_libs "${APP_PREFIX}${name_suffix}/bin/${CROSS_COMPILE_PREFIX}-strings"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-ar"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-as"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-ld"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-strip"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-nm"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-objcopy"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-objdump"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-ranlib"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-size"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-strings"
 
         else
 
-          if [ "${TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
-            : # rm -rv "${APP_PREFIX}/bin/strip"
+            : # rm -rv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/strip"
           fi
 
           (
             xbb_activate_tex
 
-            if [ "${WITH_PDF}" == "y" ]
+            if [ "${XBB_WITH_PDF}" == "y" ]
             then
               run_verbose make pdf
               run_verbose make install-pdf
             fi
 
-            if [ "${WITH_HTML}" == "y" ]
+            if [ "${XBB_WITH_HTML}" == "y" ]
             then
               run_verbose make html
               run_verbose make install-html
             fi
           )
 
-          show_libs "${APP_PREFIX}/bin/ar"
-          show_libs "${APP_PREFIX}/bin/as"
-          show_libs "${APP_PREFIX}/bin/ld"
-          show_libs "${APP_PREFIX}/bin/strip"
-          show_libs "${APP_PREFIX}/bin/nm"
-          show_libs "${APP_PREFIX}/bin/objcopy"
-          show_libs "${APP_PREFIX}/bin/objdump"
-          show_libs "${APP_PREFIX}/bin/ranlib"
-          show_libs "${APP_PREFIX}/bin/size"
-          show_libs "${APP_PREFIX}/bin/strings"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/ar"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/as"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/ld"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/strip"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/nm"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/objcopy"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/objdump"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/ranlib"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/size"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/strings"
 
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
 
       if [ -z "${name_suffix}" ]
       then
         copy_license \
-          "${SOURCES_FOLDER_PATH}/${binutils_src_folder_name}" \
+          "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}" \
           "${binutils_folder_name}"
       fi
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${binutils_stamp_file_path}"
 
   else
@@ -1872,53 +1872,53 @@ function test_native_binutils()
   (
     if [ -d "xpacks/.bin" ]
     then
-      TEST_BIN_PATH="$(pwd)/xpacks/.bin"
-    elif [ -d "${APP_PREFIX}/bin" ]
+      XBB_TEST_BIN_PATH="$(pwd)/xpacks/.bin"
+    elif [ -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin" ]
     then
-      TEST_BIN_PATH="${APP_PREFIX}/bin"
+      XBB_TEST_BIN_PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
     else
       echo "Wrong folder."
       exit 1
     fi
 
-    show_libs "${TEST_BIN_PATH}/ar"
-    show_libs "${TEST_BIN_PATH}/as"
-    show_libs "${TEST_BIN_PATH}/elfedit"
-    show_libs "${TEST_BIN_PATH}/gprof"
-    show_libs "${TEST_BIN_PATH}/ld"
-    show_libs "${TEST_BIN_PATH}/ld.gold"
-    show_libs "${TEST_BIN_PATH}/strip"
-    show_libs "${TEST_BIN_PATH}/nm"
-    show_libs "${TEST_BIN_PATH}/objcopy"
-    show_libs "${TEST_BIN_PATH}/objdump"
-    show_libs "${TEST_BIN_PATH}/ranlib"
-    show_libs "${TEST_BIN_PATH}/readelf"
-    show_libs "${TEST_BIN_PATH}/size"
-    show_libs "${TEST_BIN_PATH}/strings"
-    show_libs "${TEST_BIN_PATH}/strip"
+    show_libs "${XBB_TEST_BIN_PATH}/ar"
+    show_libs "${XBB_TEST_BIN_PATH}/as"
+    show_libs "${XBB_TEST_BIN_PATH}/elfedit"
+    show_libs "${XBB_TEST_BIN_PATH}/gprof"
+    show_libs "${XBB_TEST_BIN_PATH}/ld"
+    show_libs "${XBB_TEST_BIN_PATH}/ld.gold"
+    show_libs "${XBB_TEST_BIN_PATH}/strip"
+    show_libs "${XBB_TEST_BIN_PATH}/nm"
+    show_libs "${XBB_TEST_BIN_PATH}/objcopy"
+    show_libs "${XBB_TEST_BIN_PATH}/objdump"
+    show_libs "${XBB_TEST_BIN_PATH}/ranlib"
+    show_libs "${XBB_TEST_BIN_PATH}/readelf"
+    show_libs "${XBB_TEST_BIN_PATH}/size"
+    show_libs "${XBB_TEST_BIN_PATH}/strings"
+    show_libs "${XBB_TEST_BIN_PATH}/strip"
 
     echo
     echo "Testing if binutils starts properly..."
 
-    run_app "${TEST_BIN_PATH}/ar" --version
-    run_app "${TEST_BIN_PATH}/as" --version
-    run_app "${TEST_BIN_PATH}/elfedit" --version
-    run_app "${TEST_BIN_PATH}/gprof" --version
-    run_app "${TEST_BIN_PATH}/ld" --version
-    if [ -f  "${TEST_BIN_PATH}/ld.gold${DOT_EXE}" ]
+    run_app "${XBB_TEST_BIN_PATH}/ar" --version
+    run_app "${XBB_TEST_BIN_PATH}/as" --version
+    run_app "${XBB_TEST_BIN_PATH}/elfedit" --version
+    run_app "${XBB_TEST_BIN_PATH}/gprof" --version
+    run_app "${XBB_TEST_BIN_PATH}/ld" --version
+    if [ -f  "${XBB_TEST_BIN_PATH}/ld.gold${XBB_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
-      run_app "${TEST_BIN_PATH}/ld.gold" --version
+      run_app "${XBB_TEST_BIN_PATH}/ld.gold" --version
     fi
-    run_app "${TEST_BIN_PATH}/strip" --version
-    run_app "${TEST_BIN_PATH}/nm" --version
-    run_app "${TEST_BIN_PATH}/objcopy" --version
-    run_app "${TEST_BIN_PATH}/objdump" --version
-    run_app "${TEST_BIN_PATH}/ranlib" --version
-    run_app "${TEST_BIN_PATH}/readelf" --version
-    run_app "${TEST_BIN_PATH}/size" --version
-    run_app "${TEST_BIN_PATH}/strings" --version
-    run_app "${TEST_BIN_PATH}/strip" --version
+    run_app "${XBB_TEST_BIN_PATH}/strip" --version
+    run_app "${XBB_TEST_BIN_PATH}/nm" --version
+    run_app "${XBB_TEST_BIN_PATH}/objcopy" --version
+    run_app "${XBB_TEST_BIN_PATH}/objdump" --version
+    run_app "${XBB_TEST_BIN_PATH}/ranlib" --version
+    run_app "${XBB_TEST_BIN_PATH}/readelf" --version
+    run_app "${XBB_TEST_BIN_PATH}/size" --version
+    run_app "${XBB_TEST_BIN_PATH}/strings" --version
+    run_app "${XBB_TEST_BIN_PATH}/strip" --version
   )
 
   echo
@@ -1928,10 +1928,10 @@ function test_native_binutils()
 # -----------------------------------------------------------------------------
 
 # Environment variables:
-# BINUTILS_VERSION
-# BINUTILS_SRC_FOLDER_NAME
-# BINUTILS_ARCHIVE_NAME
-# BINUTILS_URL
+# XBB_BINUTILS_VERSION
+# XBB_BINUTILS_SRC_FOLDER_NAME
+# XBB_BINUTILS_ARCHIVE_NAME
+# XBB_BINUTILS_URL
 
 # https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-binutils/trunk/PKGBUILD
 # https://github.com/archlinux/svntogit-community/blob/packages/riscv32-elf-binutils/trunk/PKGBUILD
@@ -1942,24 +1942,24 @@ function build_cross_binutils()
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=binutils-git
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
 
-  local binutils_folder_name="binutils-${BINUTILS_VERSION}"
+  local binutils_folder_name="binutils-${XBB_BINUTILS_VERSION}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${binutils_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}"
 
   local binutils_patch="${binutils_folder_name}.patch"
-  local binutils_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${binutils_folder_name}-installed"
+  local binutils_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${binutils_folder_name}-installed"
   if [ ! -f "${binutils_stamp_file_path}" ]
   then
 
     # Download binutils.
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
-    download_and_extract "${BINUTILS_ARCHIVE_URL}" "${BINUTILS_ARCHIVE_NAME}" \
-        "${BINUTILS_SRC_FOLDER_NAME}" "${binutils_patch}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
+    download_and_extract "${XBB_BINUTILS_ARCHIVE_URL}" "${XBB_BINUTILS_ARCHIVE_NAME}" \
+        "${XBB_BINUTILS_SRC_FOLDER_NAME}" "${binutils_patch}"
 
     (
-      mkdir -pv "${BUILD_FOLDER_PATH}/${binutils_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${binutils_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1968,10 +1968,10 @@ function build_cross_binutils()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/mingw/lib/CRT_glob.o"
-      elif [ "${TARGET_PLATFORM}" == "linux" ]
+      elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -1984,7 +1984,7 @@ function build_cross_binutils()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -1992,7 +1992,7 @@ function build_cross_binutils()
           echo
           echo "Running cross binutils configure..."
 
-          bash "${SOURCES_FOLDER_PATH}/${BINUTILS_SRC_FOLDER_NAME}/configure" --help
+          bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_BINUTILS_SRC_FOLDER_NAME}/configure" --help
 
           # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
           # binutils_configure='--enable-initfini-array --disable-nls
@@ -2011,15 +2011,15 @@ function build_cross_binutils()
 
           config_options=()
 
-          config_options+=("--prefix=${APP_PREFIX}")
-          config_options+=("--infodir=${APP_PREFIX_DOC}/info")
-          config_options+=("--mandir=${APP_PREFIX_DOC}/man")
-          config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
-          config_options+=("--pdfdir=${APP_PREFIX_DOC}/pdf")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
+          config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
+          config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
+          config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${GCC_TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_GCC_TARGET}")
 
           config_options+=("--disable-nls") # Arm, AArch64
           config_options+=("--disable-gdb") # Arm, AArch64
@@ -2033,7 +2033,7 @@ function build_cross_binutils()
           config_options+=("--enable-plugins") # Arm, AArch64
           config_options+=("--enable-build-warnings=no")
 
-          if [ "${GCC_TARGET}" == "aarch64-none-elf" ]
+          if [ "${XBB_GCC_TARGET}" == "aarch64-none-elf" ]
           then
             config_options+=("--enable-64-bit-bfd") # AArch64
             config_options+=("--enable-targets=arm-none-eabi,aarch64-none-linux-gnu,aarch64-none-elf") # AArch64
@@ -2044,14 +2044,14 @@ function build_cross_binutils()
           config_options+=("--without-tcl") # Arm, AArch64
           config_options+=("--without-tk") # Arm, AArch64
 
-          config_options+=("--with-pkgversion=${BRANDING}")
+          config_options+=("--with-pkgversion=${XBB_BRANDING}")
           config_options+=("--with-system-zlib")
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${BINUTILS_SRC_FOLDER_NAME}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_BINUTILS_SRC_FOLDER_NAME}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${binutils_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${binutils_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -2059,11 +2059,11 @@ function build_cross_binutils()
         echo "Running cross binutils make..."
 
         # Build.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
 
-        if [ "${WITH_TESTS}" == "y" ]
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
             # /bin/bash: DSYMUTIL@: command not found
             :
@@ -2079,13 +2079,13 @@ function build_cross_binutils()
         (
           xbb_activate_tex
 
-          if [ "${WITH_PDF}" == "y" ]
+          if [ "${XBB_WITH_PDF}" == "y" ]
           then
             run_verbose make pdf
             run_verbose make install-pdf
           fi
 
-          if [ "${WITH_HTML}" == "y" ]
+          if [ "${XBB_WITH_HTML}" == "y" ]
           then
             run_verbose make html
             run_verbose make install-html
@@ -2097,28 +2097,28 @@ function build_cross_binutils()
           # Without this copy, the build for the nano version of the GCC second
           # step fails with unexpected errors, like "cannot compute suffix of
           # object files: cannot compile".
-          copy_dir "${APP_PREFIX}" "${APP_PREFIX_NANO}"
+          copy_dir "${XBB_BINARIES_INSTALL_FOLDER_PATH}" "${APP_PREFIX_NANO}"
         fi
 
-        show_libs "${APP_PREFIX}/bin/${GCC_TARGET}-ar"
-        show_libs "${APP_PREFIX}/bin/${GCC_TARGET}-as"
-        show_libs "${APP_PREFIX}/bin/${GCC_TARGET}-ld"
-        show_libs "${APP_PREFIX}/bin/${GCC_TARGET}-nm"
-        show_libs "${APP_PREFIX}/bin/${GCC_TARGET}-objcopy"
-        show_libs "${APP_PREFIX}/bin/${GCC_TARGET}-objdump"
-        show_libs "${APP_PREFIX}/bin/${GCC_TARGET}-ranlib"
-        show_libs "${APP_PREFIX}/bin/${GCC_TARGET}-size"
-        show_libs "${APP_PREFIX}/bin/${GCC_TARGET}-strings"
-        show_libs "${APP_PREFIX}/bin/${GCC_TARGET}-strip"
+        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ar"
+        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-as"
+        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ld"
+        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-nm"
+        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-objcopy"
+        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-objdump"
+        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ranlib"
+        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-size"
+        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strings"
+        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strip"
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${BINUTILS_SRC_FOLDER_NAME}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${XBB_BINUTILS_SRC_FOLDER_NAME}" \
         "${binutils_folder_name}"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${binutils_stamp_file_path}"
 
   else
@@ -2133,36 +2133,36 @@ function test_cross_binutils()
   (
     if [ -d "xpacks/.bin" ]
     then
-      TEST_BIN_PATH="$(pwd)/xpacks/.bin"
-    elif [ -d "${APP_PREFIX}/bin" ]
+      XBB_TEST_BIN_PATH="$(pwd)/xpacks/.bin"
+    elif [ -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin" ]
     then
-      TEST_BIN_PATH="${APP_PREFIX}/bin"
+      XBB_TEST_BIN_PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
     else
       echo "Wrong folder."
       exit 1
     fi
 
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-ar"
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-as"
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-ld"
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-nm"
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-objcopy"
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-objdump"
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-ranlib"
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-size"
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-strings"
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-strip"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ar"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-as"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ld"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-nm"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-objcopy"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-objdump"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ranlib"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-size"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-strings"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-strip"
 
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-ar" --version
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-as" --version
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-ld" --version
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-nm" --version
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-objcopy" --version
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-objdump" --version
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-ranlib" --version
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-size" --version
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-strings" --version
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-strip" --version
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ar" --version
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-as" --version
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ld" --version
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-nm" --version
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-objcopy" --version
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-objdump" --version
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ranlib" --version
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-size" --version
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-strings" --version
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-strip" --version
   )
 }
 
@@ -2188,14 +2188,14 @@ function define_flags_for_target()
 
   CFLAGS_FOR_TARGET="${optimize}"
   CXXFLAGS_FOR_TARGET="${optimize}"
-  if [ "${IS_DEBUG}" == "y" ]
+  if [ "${XBB_IS_DEBUG}" == "y" ]
   then
     # Avoid `-g`, many local symbols cannot be removed by strip.
     CFLAGS_FOR_TARGET+=" -g"
     CXXFLAGS_FOR_TARGET+=" -g"
   fi
 
-  if [ "${WITH_LIBS_LTO:-}" == "y" ]
+  if [ "${XBB_WITH_LIBS_LTO:-}" == "y" ]
   then
     CFLAGS_FOR_TARGET+=" -flto -ffat-lto-objects"
     CXXFLAGS_FOR_TARGET+=" -flto -ffat-lto-objects"
@@ -2208,61 +2208,61 @@ function define_flags_for_target()
 
 function download_cross_gcc()
 {
-  if [ ! -d "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}" ]
+  if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}" ]
   then
     (
-      mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+      mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
-      download_and_extract "${GCC_ARCHIVE_URL}" \
-        "${GCC_ARCHIVE_NAME}" "${GCC_SRC_FOLDER_NAME}" \
-        "${GCC_PATCH_FILE_NAME}"
+      download_and_extract "${XBB_GCC_ARCHIVE_URL}" \
+        "${XBB_GCC_ARCHIVE_NAME}" "${XBB_GCC_SRC_FOLDER_NAME}" \
+        "${XBB_GCC_PATCH_FILE_NAME}"
     )
   fi
 }
 
 # Environment variables:
-# GCC_VERSION
-# GCC_SRC_FOLDER_NAME
-# GCC_ARCHIVE_URL
-# GCC_ARCHIVE_NAME
-# GCC_PATCH_FILE_NAME
+# XBB_GCC_VERSION
+# XBB_GCC_SRC_FOLDER_NAME
+# XBB_GCC_ARCHIVE_URL
+# XBB_GCC_ARCHIVE_NAME
+# XBB_GCC_PATCH_FILE_NAME
 
 # https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-gcc/trunk/PKGBUILD
 # https://github.com/archlinux/svntogit-community/blob/packages/riscv64-elf-gcc/trunk/PKGBUILD
 
 function build_cross_gcc_first()
 {
-  local gcc_first_folder_name="gcc-${GCC_VERSION}-first"
+  local gcc_first_folder_name="gcc-${XBB_GCC_VERSION}-first"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${gcc_first_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gcc_first_folder_name}"
 
-  local gcc_first_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${gcc_first_folder_name}-installed"
+  local gcc_first_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${gcc_first_folder_name}-installed"
   if [ ! -f "${gcc_first_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_cross_gcc
 
     (
-      mkdir -pv "${BUILD_FOLDER_PATH}/${gcc_first_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${gcc_first_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gcc_first_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${gcc_first_folder_name}"
 
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-      if [ "${TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         # The CFLAGS are set in XBB_CFLAGS, but for C++ it must be selective.
         # Without it gcc cannot identify cc1 and other binaries
         CXXFLAGS+=" -D__USE_MINGW_ACCESS"
       fi
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -2281,7 +2281,7 @@ function build_cross_gcc_first()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -2289,7 +2289,7 @@ function build_cross_gcc_first()
           echo
           echo "Running cross gcc first stage configure..."
 
-          bash "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" --help
+          bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
 
           # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
           # gcc1_configure='--target=arm-none-eabi
@@ -2328,19 +2328,19 @@ function build_cross_gcc_first()
           # --enable-lto make it explicit, Arm uses the default.
 
           # Prefer an explicit libexec folder.
-          # --libexecdir="${APP_PREFIX}/lib"
+          # --libexecdir="${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib"
 
           config_options=()
 
-          config_options+=("--prefix=${APP_PREFIX}")
-          config_options+=("--infodir=${APP_PREFIX_DOC}/info")
-          config_options+=("--mandir=${APP_PREFIX_DOC}/man")
-          config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
-          config_options+=("--pdfdir=${APP_PREFIX_DOC}/pdf")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
+          config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
+          config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
+          config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${GCC_TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_GCC_TARGET}")
 
           config_options+=("--disable-libgomp") # ABE
           config_options+=("--disable-libmudflap") # ABE
@@ -2364,29 +2364,29 @@ function build_cross_gcc_first()
           config_options+=("--with-gnu-as") # Arm, ABE
           config_options+=("--with-gnu-ld") # Arm, ABE
 
-          config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}") # AArch64
-          config_options+=("--with-pkgversion=${BRANDING}")
+          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}") # AArch64
+          config_options+=("--with-pkgversion=${XBB_BRANDING}")
           config_options+=("--with-newlib") # Arm, AArch64
 
           config_options+=("--with-system-zlib")
 
-          if [ "${GCC_TARGET}" == "arm-none-eabi" ]
+          if [ "${XBB_GCC_TARGET}" == "arm-none-eabi" ]
           then
             config_options+=("--disable-libatomic") # ABE
 
-            if [ "${WITHOUT_MULTILIB}" == "y" ]
+            if [ "${XBB_WITHOUT_MULTILIB}" == "y" ]
             then
               config_options+=("--disable-multilib")
             else
               config_options+=("--enable-multilib") # Arm
-              config_options+=("--with-multilib-list=${GCC_MULTILIB_LIST}")  # Arm
+              config_options+=("--with-multilib-list=${XBB_GCC_MULTILIB_LIST}")  # Arm
             fi
-          elif [ "${GCC_TARGET}" == "riscv-none-elf" ]
+          elif [ "${XBB_GCC_TARGET}" == "riscv-none-elf" ]
           then
-            config_options+=("--with-abi=${GCC_ABI}")
-            config_options+=("--with-arch=${GCC_ARCH}")
+            config_options+=("--with-abi=${XBB_GCC_ABI}")
+            config_options+=("--with-arch=${XBB_GCC_ARCH}")
 
-            if [ "${WITHOUT_MULTILIB}" == "y" ]
+            if [ "${XBB_WITHOUT_MULTILIB}" == "y" ]
             then
               config_options+=("--disable-multilib")
             else
@@ -2394,11 +2394,11 @@ function build_cross_gcc_first()
             fi
           fi
 
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${gcc_first_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_first_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${gcc_first_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gcc_first_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -2408,7 +2408,7 @@ function build_cross_gcc_first()
 
         # No need to make 'all', 'all-gcc' is enough to compile the libraries.
         # Parallel builds may fail.
-        run_verbose make -j ${JOBS} all-gcc
+        run_verbose make -j ${XBB_JOBS} all-gcc
         # make all-gcc
 
         # No -strip available here.
@@ -2416,10 +2416,10 @@ function build_cross_gcc_first()
 
         # Strip?
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_first_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gcc_first_folder_name}/make-output-$(ndate).txt"
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gcc_first_stamp_file_path}"
 
   else
@@ -2430,10 +2430,10 @@ function build_cross_gcc_first()
 # -----------------------------------------------------------------------------
 
 # Environment variables:
-# NEWLIB_VERSION
-# NEWLIB_SRC_FOLDER_NAME
-# NEWLIB_ARCHIVE_URL
-# NEWLIB_ARCHIVE_NAME
+# XBB_NEWLIB_VERSION
+# XBB_NEWLIB_SRC_FOLDER_NAME
+# XBB_NEWLIB_ARCHIVE_URL
+# XBB_NEWLIB_ARCHIVE_NAME
 
 # https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-newlib/trunk/PKGBUILD
 # https://github.com/archlinux/svntogit-community/blob/packages/riscv32-elf-newlib/trunk/PKGBUILD
@@ -2443,28 +2443,28 @@ function build_cross_gcc_first()
 function build_cross_newlib()
 {
   local name_suffix=${1-''}
-  local newlib_folder_name="newlib-${NEWLIB_VERSION}${name_suffix}"
+  local newlib_folder_name="newlib-${XBB_NEWLIB_VERSION}${name_suffix}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${newlib_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${newlib_folder_name}"
 
-  local newlib_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${newlib_folder_name}-installed"
+  local newlib_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${newlib_folder_name}-installed"
   if [ ! -f "${newlib_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
-    if [ ! -d "${NEWLIB_SRC_FOLDER_NAME}" ]
+    if [ ! -d "${XBB_NEWLIB_SRC_FOLDER_NAME}" ]
     then
-      download_and_extract "${NEWLIB_ARCHIVE_URL}" "${NEWLIB_ARCHIVE_NAME}" \
-      "${NEWLIB_SRC_FOLDER_NAME}"
+      download_and_extract "${XBB_NEWLIB_ARCHIVE_URL}" "${XBB_NEWLIB_ARCHIVE_NAME}" \
+      "${XBB_NEWLIB_SRC_FOLDER_NAME}"
 
-      if [ "${ENABLE_NEWLIB_RISCV_NANO_CXX_PATCH:-""}" == "y" ]
+      if [ "${XBB_ENABLE_NEWLIB_RISCV_NANO_CXX_PATCH:-""}" == "y" ]
       then
         echo
         echo "Patching nano.specs..."
 
-        local nano_specs_file_path="${NEWLIB_SRC_FOLDER_NAME}/libgloss/riscv/nano.specs"
+        local nano_specs_file_path="${XBB_NEWLIB_SRC_FOLDER_NAME}/libgloss/riscv/nano.specs"
         if grep "%(nano_link)" "${nano_specs_file_path}" | grep -q "%:replace-outfile(-lstdc++ -lstdc++_nano)"
         then
           echo "-lstdc++_nano already in"
@@ -2486,13 +2486,13 @@ function build_cross_newlib()
     fi
 
     (
-      mkdir -pv "${BUILD_FOLDER_PATH}/${newlib_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${newlib_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${newlib_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${newlib_folder_name}"
 
       xbb_activate_installed_dev
 
       # Add the gcc first stage binaries to the path.
-      PATH="${APP_PREFIX}/bin:${PATH}"
+      PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -2511,7 +2511,7 @@ function build_cross_newlib()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -2538,7 +2538,7 @@ function build_cross_newlib()
           echo
           echo "Running cross newlib${name_suffix} configure..."
 
-          bash "${SOURCES_FOLDER_PATH}/${NEWLIB_SRC_FOLDER_NAME}/configure" --help
+          bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/configure" --help
 
           config_options=()
 
@@ -2557,15 +2557,15 @@ function build_cross_newlib()
             # --enable-newlib-mb --enable-newlib-reent-check-verify
             # --target=aarch64-none-elf --prefix=/'
 
-            config_options+=("--prefix=${APP_PREFIX}")
-            config_options+=("--infodir=${APP_PREFIX_DOC}/info")
-            config_options+=("--mandir=${APP_PREFIX_DOC}/man")
-            config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
-            config_options+=("--pdfdir=${APP_PREFIX_DOC}/pdf")
+            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+            config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
+            config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
+            config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
+            config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${GCC_TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_GCC_TARGET}")
 
             config_options+=("--disable-newlib-supplied-syscalls") # Arm, AArch64
 
@@ -2579,7 +2579,7 @@ function build_cross_newlib()
 
             config_options+=("--enable-newlib-retargetable-locking") # Arm
 
-            run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${NEWLIB_SRC_FOLDER_NAME}/configure" \
+            run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/configure" \
               "${config_options[@]}"
 
           elif [ "${name_suffix}" == "-nano" ]
@@ -2601,9 +2601,9 @@ function build_cross_newlib()
 
             config_options+=("--prefix=${APP_PREFIX_NANO}")
 
-            config_options+=("--build=${BUILD}")
-            config_options+=("--host=${HOST}")
-            config_options+=("--target=${GCC_TARGET}")
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_GCC_TARGET}")
 
             config_options+=("--disable-newlib-fseek-optimization") # Arm
             config_options+=("--disable-newlib-fvwrite-in-streamio") # Arm
@@ -2621,7 +2621,7 @@ function build_cross_newlib()
 
             config_options+=("--enable-newlib-retargetable-locking") # Arm
 
-            run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${NEWLIB_SRC_FOLDER_NAME}/configure" \
+            run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/configure" \
               "${config_options[@]}"
 
           else
@@ -2629,8 +2629,8 @@ function build_cross_newlib()
             exit 1
           fi
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${newlib_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${newlib_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${newlib_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${newlib_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -2639,7 +2639,7 @@ function build_cross_newlib()
         echo "Running cross newlib${name_suffix} make..."
 
         # Parallel builds may fail.
-        run_verbose make -j ${JOBS}
+        run_verbose make -j ${XBB_JOBS}
         # make
 
         # Top make fails with install-strip due to libgloss make.
@@ -2648,7 +2648,7 @@ function build_cross_newlib()
         if [ "${name_suffix}" == "" ]
         then
 
-          if [ "${WITH_PDF}" == "y" ]
+          if [ "${XBB_WITH_PDF}" == "y" ]
           then
 
             xbb_activate_tex
@@ -2656,43 +2656,43 @@ function build_cross_newlib()
             # Warning, parallel build failed on Debian 32-bit.
             run_verbose make pdf
 
-            install -v -d "${APP_PREFIX_DOC}/pdf"
+            install -v -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf"
 
             install -v -c -m 644 \
-              "${GCC_TARGET}/libgloss/doc/porting.pdf" "${APP_PREFIX_DOC}/pdf"
+              "${XBB_GCC_TARGET}/libgloss/doc/porting.pdf" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf"
             install -v -c -m 644 \
-              "${GCC_TARGET}/newlib/libc/libc.pdf" "${APP_PREFIX_DOC}/pdf"
+              "${XBB_GCC_TARGET}/newlib/libc/libc.pdf" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf"
             install -v -c -m 644 \
-              "${GCC_TARGET}/newlib/libm/libm.pdf" "${APP_PREFIX_DOC}/pdf"
+              "${XBB_GCC_TARGET}/newlib/libm/libm.pdf" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf"
 
           fi
 
-          if [ "${WITH_HTML}" == "y" ]
+          if [ "${XBB_WITH_HTML}" == "y" ]
           then
 
             run_verbose make html
 
-            install -v -d "${APP_PREFIX_DOC}/html"
+            install -v -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html"
 
-            copy_dir "${GCC_TARGET}/newlib/libc/libc.html" "${APP_PREFIX_DOC}/html/libc"
-            copy_dir "${GCC_TARGET}/newlib/libm/libm.html" "${APP_PREFIX_DOC}/html/libm"
+            copy_dir "${XBB_GCC_TARGET}/newlib/libc/libc.html" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html/libc"
+            copy_dir "${XBB_GCC_TARGET}/newlib/libm/libm.html" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html/libm"
 
           fi
 
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${newlib_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${newlib_folder_name}/make-output-$(ndate).txt"
 
       if [ "${name_suffix}" == "" ]
       then
         copy_license \
-          "${SOURCES_FOLDER_PATH}/${NEWLIB_SRC_FOLDER_NAME}" \
+          "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}" \
           "${newlib_folder_name}"
       fi
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${newlib_stamp_file_path}"
 
   else
@@ -2764,30 +2764,30 @@ function copy_cross_multi_libs()
 
 function copy_cross_linux_libs()
 {
-  local copy_linux_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-copy-linux-completed"
+  local copy_linux_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-copy-linux-completed"
   if [ ! -f "${copy_linux_stamp_file_path}" ]
   then
 
-    local linux_path="${LINUX_INSTALL_RELATIVE_PATH}/${APP_LC_NAME}"
+    local linux_path="${LINUX_INSTALL_RELATIVE_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}"
 
     (
-      cd "${TARGET_WORK_FOLDER_PATH}"
+      cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
-      copy_dir "${linux_path}/${GCC_TARGET}/lib" "${APP_PREFIX}/${GCC_TARGET}/lib"
-      copy_dir "${linux_path}/${GCC_TARGET}/include" "${APP_PREFIX}/${GCC_TARGET}/include"
-      copy_dir "${linux_path}/include" "${APP_PREFIX}/include"
-      copy_dir "${linux_path}/lib" "${APP_PREFIX}/lib"
-      copy_dir "${linux_path}/share" "${APP_PREFIX}/share"
+      copy_dir "${linux_path}/${XBB_GCC_TARGET}/lib" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/lib"
+      copy_dir "${linux_path}/${XBB_GCC_TARGET}/include" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/include"
+      copy_dir "${linux_path}/include" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/include"
+      copy_dir "${linux_path}/lib" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib"
+      copy_dir "${linux_path}/share" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share"
     )
 
     (
-      cd "${APP_PREFIX}"
-      find "${GCC_TARGET}/lib" "${GCC_TARGET}/include" "include" "lib" "share" \
+      cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}"
+      find "${XBB_GCC_TARGET}/lib" "${XBB_GCC_TARGET}/include" "include" "lib" "share" \
         -perm /111 -and ! -type d \
         -exec rm '{}' ';'
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${copy_linux_stamp_file_path}"
 
   else
@@ -2800,18 +2800,18 @@ function copy_cross_linux_libs()
 function add_cross_linux_install_path()
 {
   # Verify that the compiler is there.
-  "${TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/${APP_LC_NAME}/bin/${GCC_TARGET}-gcc" --version
+  "${XBB_TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}/bin/${XBB_GCC_TARGET}-gcc" --version
 
-  export PATH="${TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/${APP_LC_NAME}/bin:${PATH}"
+  export PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}/bin:${PATH}"
   echo ${PATH}
 }
 
 # Environment variables:
-# GCC_VERSION
-# GCC_SRC_FOLDER_NAME
-# GCC_ARCHIVE_URL
-# GCC_ARCHIVE_NAME
-# GCC_PATCH_FILE_NAME
+# XBB_GCC_VERSION
+# XBB_GCC_SRC_FOLDER_NAME
+# XBB_GCC_ARCHIVE_URL
+# XBB_GCC_ARCHIVE_NAME
+# XBB_GCC_PATCH_FILE_NAME
 
 # For the nano build, call it with "-nano".
 # $1="" or $1="-nano"
@@ -2819,35 +2819,35 @@ function build_cross_gcc_final()
 {
   local name_suffix=${1-''}
 
-  local gcc_final_folder_name="gcc-${GCC_VERSION}-final${name_suffix}"
+  local gcc_final_folder_name="gcc-${XBB_GCC_VERSION}-final${name_suffix}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${gcc_final_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gcc_final_folder_name}"
 
-  local gcc_final_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${gcc_final_folder_name}-installed"
+  local gcc_final_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${gcc_final_folder_name}-installed"
   if [ ! -f "${gcc_final_stamp_file_path}" ]
   then
 
-    mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_cross_gcc
 
     (
-      mkdir -pv "${BUILD_FOLDER_PATH}/${gcc_final_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${gcc_final_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gcc_final_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${gcc_final_folder_name}"
 
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
-      # if [ "${TARGET_PLATFORM}" == "darwin" ]
+      # if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
       # then
       #   # Hack to avoid spurious errors like:
       #   # fatal error: bits/nested_exception.h: No such file or directory
-      #   CPPFLAGS+=" -I${BUILD_FOLDER_PATH}/${gcc_final_folder_name}/${GCC_TARGET}/libstdc++-v3/include"
+      #   CPPFLAGS+=" -I${XBB_BUILD_FOLDER_PATH}/${gcc_final_folder_name}/${XBB_GCC_TARGET}/libstdc++-v3/include"
       # fi
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-      if [ "${TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         # The CFLAGS are set in XBB_CFLAGS, but for C++ it must be selective.
         # Without it gcc cannot identify cc1 and other binaries
@@ -2858,7 +2858,7 @@ function build_cross_gcc_final()
       fi
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -2876,23 +2876,23 @@ function build_cross_gcc_final()
       export CXXFLAGS_FOR_TARGET
       export LDFLAGS_FOR_TARGET
 
-      if [ "${TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         add_cross_linux_install_path
 
-        export AR_FOR_TARGET=${GCC_TARGET}-ar
-        export NM_FOR_TARGET=${GCC_TARGET}-nm
-        export OBJDUMP_FOR_TARET=${GCC_TARGET}-objdump
-        export STRIP_FOR_TARGET=${GCC_TARGET}-strip
-        export CC_FOR_TARGET=${GCC_TARGET}-gcc
-        export GCC_FOR_TARGET=${GCC_TARGET}-gcc
-        export CXX_FOR_TARGET=${GCC_TARGET}-g++
+        export AR_FOR_TARGET=${XBB_GCC_TARGET}-ar
+        export NM_FOR_TARGET=${XBB_GCC_TARGET}-nm
+        export OBJDUMP_FOR_TARET=${XBB_GCC_TARGET}-objdump
+        export STRIP_FOR_TARGET=${XBB_GCC_TARGET}-strip
+        export CC_FOR_TARGET=${XBB_GCC_TARGET}-gcc
+        export GCC_FOR_TARGET=${XBB_GCC_TARGET}-gcc
+        export CXX_FOR_TARGET=${XBB_GCC_TARGET}-g++
       fi
 
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -2900,7 +2900,7 @@ function build_cross_gcc_final()
           echo
           echo "Running cross gcc${name_suffix} final stage configure..."
 
-          bash "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" --help
+          bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
 
           # https://gcc.gnu.org/install/configure.html
           # --enable-shared[=package[,…]] build shared versions of libraries
@@ -2912,7 +2912,7 @@ function build_cross_gcc_final()
           # --enable-languages=c,c++ Support only C/C++, ignore all other.
 
           # Prefer an explicit libexec folder.
-          # --libexecdir="${APP_PREFIX}/lib" \
+          # --libexecdir="${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib" \
 
           # --enable-lto make it explicit, Arm uses the default.
           # --with-native-system-header-dir is needed to locate stdio.h, to
@@ -2921,14 +2921,14 @@ function build_cross_gcc_final()
 
           config_options=()
 
-          config_options+=("--prefix=${APP_PREFIX}${name_suffix}")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
           if [ "${name_suffix}" == "" ]
           then
-            config_options+=("--prefix=${APP_PREFIX}")
-            config_options+=("--infodir=${APP_PREFIX_DOC}/info")
-            config_options+=("--mandir=${APP_PREFIX_DOC}/man")
-            config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
-            config_options+=("--pdfdir=${APP_PREFIX_DOC}/pdf")
+            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+            config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
+            config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
+            config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
+            config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
           elif [ "${name_suffix}" == "-nano" ]
           then
             config_options+=("--prefix=${APP_PREFIX_NANO}")
@@ -2937,9 +2937,9 @@ function build_cross_gcc_final()
             exit 1
           fi
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${GCC_TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_GCC_TARGET}")
 
           config_options+=("--disable-libgomp") # ABE
           config_options+=("--disable-libmudflap") # ABE
@@ -2955,15 +2955,15 @@ function build_cross_gcc_final()
           config_options+=("--enable-checking=release") # Arm, AArch64
           config_options+=("--enable-languages=c,c++,fortran") # Arm, AArch64
 
-          if [ "${TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
             config_options+=("--enable-mingw-wildcard")
           fi
 
-          config_options+=("--with-gmp=${LIBS_INSTALL_FOLDER_PATH}") # AArch64
+          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}") # AArch64
 
           config_options+=("--with-newlib") # Arm, AArch64
-          config_options+=("--with-pkgversion=${BRANDING}")
+          config_options+=("--with-pkgversion=${XBB_BRANDING}")
 
           config_options+=("--with-gnu-as") # Arm ABE
           config_options+=("--with-gnu-ld") # Arm ABE
@@ -2974,26 +2974,26 @@ function build_cross_gcc_final()
           # is checked for presence; if not present `inhibit_libc=true` and
           # libgcov.a is compiled with empty functions.
           # https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/issues/1
-          config_options+=("--with-sysroot=${APP_PREFIX}/${GCC_TARGET}")
+          config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}")
           config_options+=("--with-native-system-header-dir=/include")
 
-          if [ "${GCC_TARGET}" == "arm-none-eabi" ]
+          if [ "${XBB_GCC_TARGET}" == "arm-none-eabi" ]
           then
             config_options+=("--disable-libatomic") # ABE
 
-            if [ "${WITHOUT_MULTILIB}" == "y" ]
+            if [ "${XBB_WITHOUT_MULTILIB}" == "y" ]
             then
               config_options+=("--disable-multilib")
             else
               config_options+=("--enable-multilib") # Arm
-              config_options+=("--with-multilib-list=${GCC_MULTILIB_LIST}")  # Arm
+              config_options+=("--with-multilib-list=${XBB_GCC_MULTILIB_LIST}")  # Arm
             fi
-          elif [ "${GCC_TARGET}" == "riscv-none-elf" ]
+          elif [ "${XBB_GCC_TARGET}" == "riscv-none-elf" ]
           then
-            config_options+=("--with-abi=${GCC_ABI}")
-            config_options+=("--with-arch=${GCC_ARCH}")
+            config_options+=("--with-abi=${XBB_GCC_ABI}")
+            config_options+=("--with-arch=${XBB_GCC_ARCH}")
 
-            if [ "${WITHOUT_MULTILIB}" == "y" ]
+            if [ "${XBB_WITHOUT_MULTILIB}" == "y" ]
             then
               config_options+=("--disable-multilib")
             else
@@ -3027,7 +3027,7 @@ function build_cross_gcc_final()
             # --enable-checking=release --enable-languages=c,c++,fortran
             # --with-newlib 			 			 			'
 
-            run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" \
+            run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" \
               "${config_options[@]}"
 
           elif [ "${name_suffix}" == "-nano" ]
@@ -3044,12 +3044,12 @@ function build_cross_gcc_final()
             # --enable-checking=release --enable-languages=c,c++,fortran
             # --with-newlib --with-multilib-list=aprofile,rmprofile'
 
-            run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" \
+            run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" \
               "${config_options[@]}"
 
           fi
-          cp "config.log" "${LOGS_FOLDER_PATH}/${gcc_final_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_final_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${gcc_final_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gcc_final_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -3057,7 +3057,7 @@ function build_cross_gcc_final()
         echo
         echo "Running cross gcc${name_suffix} final stage make..."
 
-        if [ "${TARGET_PLATFORM}" != "win32" ]
+        if [ "${XBB_TARGET_PLATFORM}" != "win32" ]
         then
 
           # Passing USE_TM_CLONE_REGISTRY=0 via INHIBIT_LIBC_CFLAGS to disable
@@ -3065,22 +3065,22 @@ function build_cross_gcc_final()
           # This is a workaround. Better approach is have a t-* to set this flag via
           # CRTSTUFF_T_CFLAGS
 
-          if [ "${TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
-            if [ "${IS_DEVELOP}" == "y" ]
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
             then
-              run_verbose make -j ${JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0"
+              run_verbose make -j ${XBB_JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0"
             else
               # Retry, parallel builds do fail, headers are probably
               # used before being installed. For example:
               # fatal error: bits/string_view.tcc: No such file or directory
-              run_verbose make -j ${JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0" \
-              || run_verbose make -j ${JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0" \
-              || run_verbose make -j ${JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0" \
-              || run_verbose make -j ${JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0"
+              run_verbose make -j ${XBB_JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0" \
+              || run_verbose make -j ${XBB_JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0" \
+              || run_verbose make -j ${XBB_JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0" \
+              || run_verbose make -j ${XBB_JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0"
             fi
           else
-            run_verbose make -j ${JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0"
+            run_verbose make -j ${XBB_JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0"
           fi
 
           # Avoid strip here, it may interfere with patchelf.
@@ -3091,18 +3091,18 @@ function build_cross_gcc_final()
           then
 
             local target_gcc=""
-            if [ "${TARGET_PLATFORM}" == "win32" ]
+            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
             then
-              target_gcc="${GCC_TARGET}-gcc"
+              target_gcc="${XBB_GCC_TARGET}-gcc"
             else
-              if [ -x "${APP_PREFIX_NANO}/bin/${GCC_TARGET}-gcc" ]
+              if [ -x "${APP_PREFIX_NANO}/bin/${XBB_GCC_TARGET}-gcc" ]
               then
-                target_gcc="${APP_PREFIX_NANO}/bin/${GCC_TARGET}-gcc"
-              # elif [ -x "${APP_PREFIX}/bin/${GCC_TARGET}-gcc" ]
+                target_gcc="${APP_PREFIX_NANO}/bin/${XBB_GCC_TARGET}-gcc"
+              # elif [ -x "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gcc" ]
               # then
-              #   target_gcc="${APP_PREFIX}/bin/${GCC_TARGET}-gcc"
+              #   target_gcc="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gcc"
               else
-                echo "No ${GCC_TARGET}-gcc --print-multi-lib"
+                echo "No ${XBB_GCC_TARGET}-gcc --print-multi-lib"
                 exit 1
               fi
             fi
@@ -3110,15 +3110,15 @@ function build_cross_gcc_final()
             # Copy the libraries after appending the `_nano` suffix.
             # Iterate through all multilib names.
             copy_cross_multi_libs \
-              "${APP_PREFIX_NANO}/${GCC_TARGET}/lib" \
-              "${APP_PREFIX}/${GCC_TARGET}/lib" \
+              "${APP_PREFIX_NANO}/${XBB_GCC_TARGET}/lib" \
+              "${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/lib" \
               "${target_gcc}"
 
             # Copy the nano configured newlib.h file into the location that nano.specs
             # expects it to be.
-            mkdir -pv "${APP_PREFIX}/${GCC_TARGET}/include/newlib-nano"
-            cp -v -f "${APP_PREFIX_NANO}/${GCC_TARGET}/include/newlib.h" \
-              "${APP_PREFIX}/${GCC_TARGET}/include/newlib-nano/newlib.h"
+            mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/include/newlib-nano"
+            cp -v -f "${APP_PREFIX_NANO}/${XBB_GCC_TARGET}/include/newlib.h" \
+              "${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/include/newlib-nano/newlib.h"
 
           fi
 
@@ -3127,7 +3127,7 @@ function build_cross_gcc_final()
           # For Windows build only the GCC binaries, the libraries were copied
           # from the Linux build.
           # Parallel builds may fail.
-          run_verbose make -j ${JOBS} all-gcc
+          run_verbose make -j ${XBB_JOBS} all-gcc
           # make all-gcc
 
           # No -strip here.
@@ -3143,37 +3143,37 @@ function build_cross_gcc_final()
             xbb_activate_tex
 
             # Full build, with documentation.
-            if [ "${WITH_PDF}" == "y" ]
+            if [ "${XBB_WITH_PDF}" == "y" ]
             then
               run_verbose make pdf
               run_verbose make install-pdf
             fi
 
-            if [ "${WITH_HTML}" == "y" ]
+            if [ "${XBB_WITH_HTML}" == "y" ]
             then
               run_verbose make html
               run_verbose make install-html
             fi
 
-            if [ "${WITH_PDF}" != "y" -a "${WITH_HTML}" != "y" ]
+            if [ "${XBB_WITH_PDF}" != "y" -a "${XBB_WITH_HTML}" != "y" ]
             then
-              run_verbose rm -rf "${APP_PREFIX}/shrare/doc"
+              run_verbose rm -rf "${XBB_BINARIES_INSTALL_FOLDER_PATH}/shrare/doc"
             fi
           )
         fi
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gcc_final_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gcc_final_folder_name}/make-output-$(ndate).txt"
 
       if [ "${name_suffix}" == "" ]
       then
         copy_license \
-          "${SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}" \
-          "gcc-${GCC_VERSION}"
+          "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}" \
+          "gcc-${XBB_GCC_VERSION}"
       fi
 
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gcc_final_stamp_file_path}"
 
   else
@@ -3191,33 +3191,33 @@ function test_cross_gcc()
   (
     if [ -d "xpacks/.bin" ]
     then
-      TEST_BIN_PATH="$(pwd)/xpacks/.bin"
-    elif [ -d "${APP_PREFIX}/bin" ]
+      XBB_TEST_BIN_PATH="$(pwd)/xpacks/.bin"
+    elif [ -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin" ]
     then
-      TEST_BIN_PATH="${APP_PREFIX}/bin"
+      XBB_TEST_BIN_PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
     else
       echo "Wrong folder."
       exit 1
     fi
 
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-gcc"
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-g++"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-g++"
 
-    if [ "${TARGET_PLATFORM}" != "win32" ]
+    if [ "${XBB_TARGET_PLATFORM}" != "win32" ]
     then
-      show_libs "$(${TEST_BIN_PATH}/${GCC_TARGET}-gcc -print-prog-name=cc1)"
-      show_libs "$(${TEST_BIN_PATH}/${GCC_TARGET}-gcc -print-prog-name=cc1plus)"
-      show_libs "$(${TEST_BIN_PATH}/${GCC_TARGET}-gcc -print-prog-name=collect2)"
-      show_libs "$(${TEST_BIN_PATH}/${GCC_TARGET}-gcc -print-prog-name=lto-wrapper)"
-      show_libs "$(${TEST_BIN_PATH}/${GCC_TARGET}-gcc -print-prog-name=lto1)"
+      show_libs "$(${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1)"
+      show_libs "$(${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1plus)"
+      show_libs "$(${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc -print-prog-name=collect2)"
+      show_libs "$(${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc -print-prog-name=lto-wrapper)"
+      show_libs "$(${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc -print-prog-name=lto1)"
     fi
 
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gcc" --help
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gcc" -dumpversion
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gcc" -dumpmachine
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gcc" -print-multi-lib
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gcc" -print-search-dirs
-    # run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gcc" -dumpspecs | wc -l
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" --help
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -dumpversion
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -dumpmachine
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -print-multi-lib
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -print-search-dirs
+    # run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -dumpspecs | wc -l
 
     local tmp=$(mktemp /tmp/gcc-test.XXXXX)
     rm -rf "${tmp}"
@@ -3225,18 +3225,18 @@ function test_cross_gcc()
     mkdir -pv "${tmp}"
     cd "${tmp}"
 
-    if false # [ "${TARGET_PLATFORM}" == "win32" ] && [ -z ${IS_NATIVE_TEST+x} ]
+    if false # [ "${XBB_TARGET_PLATFORM}" == "win32" ] && [ -z ${IS_NATIVE_TEST+x} ]
     then
       : # Skip Windows when non native (running on Wine).
     else
 
-      if [ "${GCC_TARGET}" == "arm-none-eabi" ]
+      if [ "${XBB_GCC_TARGET}" == "arm-none-eabi" ]
       then
         specs="-specs=rdimon.specs"
-      elif [ "${GCC_TARGET}" == "aarch64-none-elf" ]
+      elif [ "${XBB_GCC_TARGET}" == "aarch64-none-elf" ]
       then
         specs="-specs=rdimon.specs"
-      elif [ "${GCC_TARGET}" == "riscv-none-elf" ]
+      elif [ "${XBB_GCC_TARGET}" == "riscv-none-elf" ]
       then
         specs="-specs=semihost.specs"
       else
@@ -3254,10 +3254,10 @@ main(int argc, char* argv[])
 }
 __EOF__
 
-      run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gcc" -pipe -o hello-c.elf "${specs}" hello.c -v
+      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -pipe -o hello-c.elf "${specs}" hello.c -v
 
-      run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gcc" -pipe -o hello.c.o -c -flto hello.c
-      run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gcc" -pipe -o hello-c-lto.elf "${specs}" -flto -v hello.c.o
+      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -pipe -o hello.c.o -c -flto hello.c
+      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -pipe -o hello-c-lto.elf "${specs}" -flto -v hello.c.o
 
       # Note: __EOF__ is quoted to prevent substitutions here.
       cat <<'__EOF__' > hello.cpp
@@ -3277,12 +3277,12 @@ __sync_synchronize()
 }
 __EOF__
 
-      run_app "${TEST_BIN_PATH}/${GCC_TARGET}-g++" -pipe -o hello-cpp.elf "${specs}" hello.cpp
+      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp.elf "${specs}" hello.cpp
 
-      run_app "${TEST_BIN_PATH}/${GCC_TARGET}-g++" -pipe -o hello.cpp.o -c -flto hello.cpp
-      run_app "${TEST_BIN_PATH}/${GCC_TARGET}-g++" -pipe -o hello-cpp-lto.elf "${specs}" -flto -v hello.cpp.o
+      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-g++" -pipe -o hello.cpp.o -c -flto hello.cpp
+      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp-lto.elf "${specs}" -flto -v hello.cpp.o
 
-      run_app "${TEST_BIN_PATH}/${GCC_TARGET}-g++" -pipe -o hello-cpp-gcov.elf "${specs}" -fprofile-arcs -ftest-coverage -lgcov hello.cpp
+      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp-gcov.elf "${specs}" -fprofile-arcs -ftest-coverage -lgcov hello.cpp
     fi
 
     cd ..
@@ -3293,11 +3293,11 @@ __EOF__
 # -----------------------------------------------------------------------------
 
 # Environment variables:
-# GDB_VERSION
-# GDB_SRC_FOLDER_NAME
-# GDB_ARCHIVE_URL
-# GDB_ARCHIVE_NAME
-# GDB_PATCH_FILE_NAME
+# XBB_GDB_VERSION
+# XBB_GDB_SRC_FOLDER_NAME
+# XBB_GDB_ARCHIVE_URL
+# XBB_GDB_ARCHIVE_NAME
+# XBB_GDB_PATCH_FILE_NAME
 
 # https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-gdb/trunk/PKGBUILD
 # https://github.com/archlinux/svntogit-community/blob/packages/riscv32-elf-gdb/trunk/PKGBUILD
@@ -3311,29 +3311,29 @@ function build_cross_gdb()
   # GDB Text User Interface
   # https://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_19.html#SEC197
 
-  local gdb_folder_name="gdb-${GDB_VERSION}${name_suffix}"
+  local gdb_folder_name="gdb-${XBB_GDB_VERSION}${name_suffix}"
 
-  mkdir -pv "${LOGS_FOLDER_PATH}/${gdb_folder_name}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}"
 
-  local gdb_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-${gdb_folder_name}-installed"
+  local gdb_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${gdb_folder_name}-installed"
 
   if [ ! -f "${gdb_stamp_file_path}" ]
   then
 
     # Download gdb
-    if [ ! -d "${SOURCES_FOLDER_PATH}/${GDB_SRC_FOLDER_NAME}" ]
+    if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}" ]
     then
-      mkdir -pv "${SOURCES_FOLDER_PATH}"
-    cd "${SOURCES_FOLDER_PATH}"
+      mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
 
-      download_and_extract "${GDB_ARCHIVE_URL}" "${GDB_ARCHIVE_NAME}" \
-          "${GDB_SRC_FOLDER_NAME}" "${GDB_PATCH_FILE_NAME}"
+      download_and_extract "${XBB_GDB_ARCHIVE_URL}" "${XBB_GDB_ARCHIVE_NAME}" \
+          "${XBB_GDB_SRC_FOLDER_NAME}" "${XBB_GDB_PATCH_FILE_NAME}"
     fi
     # exit 1
 
     (
-      mkdir -pv "${BUILD_FOLDER_PATH}/${gdb_folder_name}"
-      cd "${BUILD_FOLDER_PATH}/${gdb_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gdb_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${gdb_folder_name}"
 
       # To pick up the python lib from XBB
       # xbb_activate_dev
@@ -3348,7 +3348,7 @@ function build_cross_gdb()
 
       # libiconv is used by Python3.
       # export LIBS="-liconv"
-      if [ "${TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         # https://stackoverflow.com/questions/44150871/embeded-python3-6-with-mingw-in-c-fail-on-linking
         # ???
@@ -3357,7 +3357,7 @@ function build_cross_gdb()
         if [ "${name_suffix}" == "-py" ]
         then
           # Definition required by python-config.sh.
-          export GNURM_PYTHON_WIN_DIR="${SOURCES_FOLDER_PATH}/${PYTHON2_SRC_FOLDER_NAME}"
+          export GNURM_PYTHON_WIN_DIR="${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON2_SRC_FOLDER_NAME}"
         fi
 
         # Hack to place the bcrypt library at the end of the list of libraries,
@@ -3370,10 +3370,10 @@ function build_cross_gdb()
         # Workaround for undefined reference to `__strcpy_chk' in GCC 9.
         # https://sourceforge.net/p/mingw-w64/bugs/818/
         LIBS="-lssp -liconv"
-      elif [ "${TARGET_PLATFORM}" == "darwin" ]
+      elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         : # LIBS="-liconv -lncurses"
-      elif [ "${TARGET_PLATFORM}" == "linux" ]
+      elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -3382,15 +3382,15 @@ function build_cross_gdb()
 
       if [ "${name_suffix}" == "-py3" ]
       then
-        if [ "${TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
         then
           # The source archive includes only the pyconfig.h.in, which needs
           # to be configured, which is not an easy task. Thus add the file copied
           # from a Windows install.
-          cp -v "${helper_folder_path}/extras/python/pyconfig-win-${PYTHON3_VERSION}.h" \
-            "${LIBS_INSTALL_FOLDER_PATH}/include/pyconfig.h"
+          cp -v "${helper_folder_path}/extras/python/pyconfig-win-${XBB_PYTHON3_VERSION}.h" \
+            "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/pyconfig.h"
         else
-          CONFIG_PYTHON_PREFIX="${APP_PREFIX}"
+          CONFIG_PYTHON_PREFIX="${XBB_BINARIES_INSTALL_FOLDER_PATH}"
         fi
       fi
 
@@ -3415,7 +3415,7 @@ function build_cross_gdb()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${IS_DEVELOP}" == "y" ]
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
             env | sort
           fi
@@ -3423,7 +3423,7 @@ function build_cross_gdb()
           echo
           echo "Running cross gdb${name_suffix} configure..."
 
-          bash "${SOURCES_FOLDER_PATH}/${GDB_SRC_FOLDER_NAME}/gdb/configure" --help
+          bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/configure" --help
 
           # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
           # gdb_configure='--enable-initfini-array --disable-nls --without-x
@@ -3457,17 +3457,17 @@ function build_cross_gdb()
 
           config_options=()
 
-          config_options+=("--prefix=${APP_PREFIX}")
-          config_options+=("--infodir=${APP_PREFIX_DOC}/info")
-          config_options+=("--mandir=${APP_PREFIX_DOC}/man")
-          config_options+=("--htmldir=${APP_PREFIX_DOC}/html")
-          config_options+=("--pdfdir=${APP_PREFIX_DOC}/pdf")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
+          config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
+          config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
+          config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
 
-          config_options+=("--build=${BUILD}")
-          config_options+=("--host=${HOST}")
-          config_options+=("--target=${GCC_TARGET}")
+          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--host=${XBB_HOST}")
+          config_options+=("--target=${XBB_GCC_TARGET}")
 
-          config_options+=("--program-prefix=${GCC_TARGET}-")
+          config_options+=("--program-prefix=${XBB_GCC_TARGET}-")
           config_options+=("--program-suffix=${name_suffix}")
 
           config_options+=("--disable-binutils") # Arm, AArch64
@@ -3486,7 +3486,7 @@ function build_cross_gdb()
           config_options+=("--enable-build-warnings=no")
           config_options+=("--enable-plugins") # Arm, AArch64
 
-          if [ "${GCC_TARGET}" == "aarch64-none-elf" ]
+          if [ "${XBB_GCC_TARGET}" == "aarch64-none-elf" ]
           then
             config_options+=("--enable-64-bit-bfd") # AArch64
             config_options+=("--enable-targets=arm-none-eabi,aarch64-none-linux-gnu,aarch64-none-elf") # AArch64
@@ -3504,7 +3504,7 @@ function build_cross_gdb()
           config_options+=("--without-xxhash") # Arm, AArch64
 
           config_options+=("--with-expat") # Arm
-          config_options+=("--with-gdb-datadir=${APP_PREFIX}/${GCC_TARGET}/share/gdb")
+          config_options+=("--with-gdb-datadir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/share/gdb")
 
           # No need to, we keep track of paths to shared libraries.
           # Plus that if fails the build:
@@ -3521,23 +3521,23 @@ function build_cross_gdb()
           # config_options+=("--with-libgmp-type=static") # Arm, AArch64
           # config_options+=("--with-libmpfr-type=static") # Arm, AArch64
 
-          config_options+=("--with-pkgversion=${BRANDING}")
-          config_options+=("--with-system-gdbinit=${APP_PREFIX}/${GCC_TARGET}/lib/gdbinit")
+          config_options+=("--with-pkgversion=${XBB_BRANDING}")
+          config_options+=("--with-system-gdbinit=${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/lib/gdbinit")
           config_options+=("--with-system-zlib")
 
           if [ "${name_suffix}" == "-py3" ]
           then
-            if [ "${TARGET_PLATFORM}" == "win32" ]
+            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
             then
-              config_options+=("--with-python=${helper_folder_path}/extras/python/python${PYTHON3_VERSION_MAJOR}-config-win.sh")
+              config_options+=("--with-python=${helper_folder_path}/extras/python/python${XBB_PYTHON3_VERSION_MAJOR}-config-win.sh")
             else
-              config_options+=("--with-python=${LIBS_INSTALL_FOLDER_PATH}/bin/python3.${PYTHON3_VERSION_MINOR}")
+              config_options+=("--with-python=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python3.${XBB_PYTHON3_VERSION_MINOR}")
             fi
           else
              config_options+=("--with-python=no")
           fi
 
-          if [ "${TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
             config_options+=("--disable-tui")
           else
@@ -3545,11 +3545,11 @@ function build_cross_gdb()
           fi
 
           # Note that all components are disabled, except GDB.
-          run_verbose bash ${DEBUG} "${SOURCES_FOLDER_PATH}/${GDB_SRC_FOLDER_NAME}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/configure" \
             "${config_options[@]}"
 
-          cp "config.log" "${LOGS_FOLDER_PATH}/${gdb_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gdb_folder_name}/configure-output-$(ndate).txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}/configure-output-$(ndate).txt"
       fi
 
       (
@@ -3557,7 +3557,7 @@ function build_cross_gdb()
         echo "Running cross gdb${name_suffix} make..."
 
         # Build.
-        run_verbose make -j ${JOBS} all-gdb
+        run_verbose make -j ${XBB_JOBS} all-gdb
 
         # install-strip fails, not only because of readline has no install-strip
         # but even after patching it tries to strip a non elf file
@@ -3572,13 +3572,13 @@ function build_cross_gdb()
           (
             xbb_activate_tex
 
-            if [ "${WITH_PDF}" == "y" ]
+            if [ "${XBB_WITH_PDF}" == "y" ]
             then
               run_verbose make pdf-gdb
               run_verbose make install-pdf-gdb
             fi
 
-            if [ "${WITH_HTML}" == "y" ]
+            if [ "${XBB_WITH_HTML}" == "y" ]
             then
               run_verbose make html-gdb
               run_verbose make install-html-gdb
@@ -3586,23 +3586,23 @@ function build_cross_gdb()
           )
         fi
 
-        rm -rfv "${LIBS_INSTALL_FOLDER_PATH}/include/pyconfig.h"
+        rm -rfv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/pyconfig.h"
 
-        show_libs "${APP_PREFIX}/bin/${GCC_TARGET}-gdb${name_suffix}"
+        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gdb${name_suffix}"
 
-      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${gdb_folder_name}/make-output-$(ndate).txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}/make-output-$(ndate).txt"
 
       if [ "${name_suffix}" == "" ]
       then
         copy_license \
-          "${SOURCES_FOLDER_PATH}/${GDB_SRC_FOLDER_NAME}" \
+          "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}" \
           "${gdb_folder_name}"
       fi
     )
 
-    mkdir -pv "${STAMPS_FOLDER_PATH}"
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gdb_stamp_file_path}"
-    
+
   else
     echo "Component cross gdb${name_suffix} already installed."
   fi
@@ -3631,22 +3631,22 @@ function test_cross_gdb()
   (
     if [ -d "xpacks/.bin" ]
     then
-      TEST_BIN_PATH="$(pwd)/xpacks/.bin"
-    elif [ -d "${APP_PREFIX}/bin" ]
+      XBB_TEST_BIN_PATH="$(pwd)/xpacks/.bin"
+    elif [ -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin" ]
     then
-      TEST_BIN_PATH="${APP_PREFIX}/bin"
+      XBB_TEST_BIN_PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
     else
       echo "Wrong folder."
       exit 1
     fi
 
-    show_libs "${TEST_BIN_PATH}/${GCC_TARGET}-gdb${suffix}"
+    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gdb${suffix}"
 
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gdb${suffix}" --version
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gdb${suffix}" --config
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gdb${suffix}" --version
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gdb${suffix}" --config
 
     # This command is known to fail with 'Abort trap: 6' (SIGABRT)
-    run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gdb${suffix}" \
+    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gdb${suffix}" \
       --nh \
       --nx \
       -ex='show language' \
@@ -3656,7 +3656,7 @@ function test_cross_gdb()
     if [ "${suffix}" == "-py3" ]
     then
       # Show Python paths.
-      run_app "${TEST_BIN_PATH}/${GCC_TARGET}-gdb${suffix}" \
+      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gdb${suffix}" \
         --nh \
         --nx \
         -ex='set pagination off' \
@@ -3676,45 +3676,45 @@ function tidy_up()
     echo "# Tidying up..."
 
     # find: pred.c:1932: launch: Assertion `starting_desc >= 0' failed.
-    cd "${APP_PREFIX}"
+    cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}"
 
-    find "${APP_PREFIX}" -name "libiberty.a" -exec rm -v '{}' ';'
-    find "${APP_PREFIX}" -name '*.la' -exec rm -v '{}' ';'
+    find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name "libiberty.a" -exec rm -v '{}' ';'
+    find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name '*.la' -exec rm -v '{}' ';'
 
-    if [ "${TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
-      find "${APP_PREFIX}" -name "liblto_plugin.a" -exec rm -v '{}' ';'
-      find "${APP_PREFIX}" -name "liblto_plugin.dll.a" -exec rm -v '{}' ';'
+      find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name "liblto_plugin.a" -exec rm -v '{}' ';'
+      find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name "liblto_plugin.dll.a" -exec rm -v '{}' ';'
     fi
   )
 }
 
 function strip_libs()
 {
-  if [ "${WITH_STRIP}" == "y" ]
+  if [ "${XBB_WITH_STRIP}" == "y" ]
   then
     (
       xbb_activate
 
-      PATH="${APP_PREFIX}/bin:${PATH}"
+      PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
 
       echo
       echo "Stripping libraries..."
 
-      cd "${TARGET_WORK_FOLDER_PATH}"
+      cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
-      # which "${GCC_TARGET}-objcopy"
+      # which "${XBB_GCC_TARGET}-objcopy"
 
-      local libs=$(find "${APP_PREFIX}" -name '*.[ao]')
+      local libs=$(find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name '*.[ao]')
       for lib in ${libs}
       do
         if false
         then
-          echo "${GCC_TARGET}-objcopy -R ... ${lib}"
-          "${APP_PREFIX}/bin/${GCC_TARGET}-objcopy" -R .comment -R .note -R .debug_info -R .debug_aranges -R .debug_pubnames -R .debug_pubtypes -R .debug_abbrev -R .debug_line -R .debug_str -R .debug_ranges -R .debug_loc "${lib}" || true
+          echo "${XBB_GCC_TARGET}-objcopy -R ... ${lib}"
+          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-objcopy" -R .comment -R .note -R .debug_info -R .debug_aranges -R .debug_pubnames -R .debug_pubtypes -R .debug_abbrev -R .debug_line -R .debug_str -R .debug_ranges -R .debug_loc "${lib}" || true
         else
-          echo "[${APP_PREFIX}/bin/${GCC_TARGET}-strip --strip-debug ${lib}]"
-          "${APP_PREFIX}/bin/${GCC_TARGET}-strip" --strip-debug "${lib}"
+          echo "[${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strip --strip-debug ${lib}]"
+          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strip" --strip-debug "${lib}"
         fi
       done
     )
@@ -3726,43 +3726,43 @@ function final_tunings()
   # Create the missing LTO plugin links.
   # For `ar` to work with LTO objects, it needs the plugin in lib/bfd-plugins,
   # but the build leaves it where `ld` needs it. On POSIX, make a soft link.
-  if [ "${FIX_LTO_PLUGIN:-}" == "y" ]
+  if [ "${XBB_FIX_LTO_PLUGIN:-}" == "y" ]
   then
     (
-      cd "${APP_PREFIX}"
+      cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}"
 
       echo
-      if [ "${TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         echo
-        echo "Copying ${LTO_PLUGIN_ORIGINAL_NAME}..."
+        echo "Copying ${XBB_LTO_PLUGIN_ORIGINAL_NAME}..."
 
-        mkdir -pv "$(dirname ${LTO_PLUGIN_BFD_PATH})"
+        mkdir -pv "$(dirname ${XBB_LTO_PLUGIN_BFD_PATH})"
 
-        if [ ! -f "${LTO_PLUGIN_BFD_PATH}" ]
+        if [ ! -f "${XBB_LTO_PLUGIN_BFD_PATH}" ]
         then
-          local plugin_path="$(find * -type f -name ${LTO_PLUGIN_ORIGINAL_NAME})"
+          local plugin_path="$(find * -type f -name ${XBB_LTO_PLUGIN_ORIGINAL_NAME})"
           if [ ! -z "${plugin_path}" ]
           then
-            cp -v "${plugin_path}" "${LTO_PLUGIN_BFD_PATH}"
+            cp -v "${plugin_path}" "${XBB_LTO_PLUGIN_BFD_PATH}"
           else
-            echo "${LTO_PLUGIN_ORIGINAL_NAME} not found."
+            echo "${XBB_LTO_PLUGIN_ORIGINAL_NAME} not found."
             exit 1
           fi
         fi
       else
         echo
-        echo "Creating ${LTO_PLUGIN_ORIGINAL_NAME} link..."
+        echo "Creating ${XBB_LTO_PLUGIN_ORIGINAL_NAME} link..."
 
-        mkdir -pv "$(dirname ${LTO_PLUGIN_BFD_PATH})"
-        if [ ! -f "${LTO_PLUGIN_BFD_PATH}" ]
+        mkdir -pv "$(dirname ${XBB_LTO_PLUGIN_BFD_PATH})"
+        if [ ! -f "${XBB_LTO_PLUGIN_BFD_PATH}" ]
         then
-          local plugin_path="$(find * -type f -name ${LTO_PLUGIN_ORIGINAL_NAME})"
+          local plugin_path="$(find * -type f -name ${XBB_LTO_PLUGIN_ORIGINAL_NAME})"
           if [ ! -z "${plugin_path}" ]
           then
-            ln -s -v "../../${plugin_path}" "${LTO_PLUGIN_BFD_PATH}"
+            ln -s -v "../../${plugin_path}" "${XBB_LTO_PLUGIN_BFD_PATH}"
           else
-            echo "${LTO_PLUGIN_ORIGINAL_NAME} not found."
+            echo "${XBB_LTO_PLUGIN_ORIGINAL_NAME} not found."
             exit 1
           fi
         fi
