@@ -36,7 +36,7 @@ jobs:
           whoami
           pwd
           ls -lLA
-          env
+          env | sort
 
       - name: 'Checkout project'
         uses: actions/checkout@v3
@@ -70,7 +70,7 @@ jobs:
           whoami
           pwd
           ls -lLA
-          env
+          env | sort
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -108,7 +108,7 @@ jobs:
           whoami
           pwd
           ls -lLA
-          env
+          env | sort
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -145,7 +145,7 @@ jobs:
           whoami
           pwd
           ls -lLA
-          env
+          env | sort
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -179,7 +179,7 @@ jobs:
           whoami
           pwd
           ls -lLA
-          env
+          env | sort
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -217,7 +217,7 @@ jobs:
           whoami
           pwd
           ls -lLA
-          env
+          env | sort
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
