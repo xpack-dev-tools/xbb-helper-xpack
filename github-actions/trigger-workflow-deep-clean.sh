@@ -65,7 +65,7 @@ source "${helper_folder_path}/scripts/xbb.sh"
 message="Deep clean ${APP_NAME}"
 
 branch="xpack-develop"
-version=${RELEASE_VERSION:-"$(get_current_version)"}
+version=${RELEASE_VERSION:-"$(xbb_get_current_version)"}
 workflow_id="deep-clean.yml"
 
 while [ $# -gt 0 ]
