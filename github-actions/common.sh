@@ -40,4 +40,58 @@ function trigger_github_workflow()
   rm -rf "${data_file_path}"
 }
 
+function download_binaries()
+{
+  local destination_folder_path="${1:-"${HOME}/Downloads/xpack-binaries/${APP_LC_NAME}"}"
+
+  local version=${RELEASE_VERSION:-"$(xbb_get_current_version)"}
+
+  (
+    rm -rf "${destination_folder_path}-bak"
+    if [ -d "${destination_folder_path}" ]
+    then
+      mv "${destination_folder_path}" "${destination_folder_path}-bak"
+    fi
+
+    mkdir -pv "${destination_folder_path}"
+    cd "${destination_folder_path}"
+
+    local package_file_path="${project_folder_path}/package.json"
+
+    # Extract the xpack.properties platforms. There are also in xpack.binaries.
+    local platforms=$(grep '"platforms": "' "${package_file_path}" | sed -e 's|.*: \"\([a-z0-9]*\)\",.*|\1|' | sed 's|,| |g')
+    if [ "${platforms}" == "all" ]
+    then
+      platforms='linux-x64 linux-arm64 linux-arm darwin-x64 darwin-arm64 win32-x64'
+    fi
+
+    IFS=' '
+    for platform in ${platforms}
+    do
+
+      # echo ${platform}
+      # https://github.com/xpack-dev-tools/pre-releases/releases/download/test/xpack-ninja-build-1.11.1-2-win32-x64.zip
+      local extension='tar.gz'
+      if [ "${platform}" == "win32-x64" ]
+      then
+        extension='zip'
+      fi
+
+      archive_name="${APP_DISTRO_LC_NAME}-${APP_LC_NAME}-${version}-${platform}.${extension}"
+      archive_url="https://github.com/xpack-dev-tools/pre-releases/releases/download/test/${archive_name}"
+
+      run_verbose curl --location --insecure --fail --location --silent \
+        --output "${archive_name}" \
+        "${archive_url}"
+
+      run_verbose curl --location --insecure --fail --location --silent \
+        --output "${archive_name}.sha" \
+        "${archive_url}.sha"
+
+    done
+
+    rm -rf "${destination_folder_path}-bak"
+  )
+}
+
 # -----------------------------------------------------------------------------
