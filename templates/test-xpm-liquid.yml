@@ -52,10 +52,10 @@ jobs:
           fetch-depth: 1
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test'
-        uses: docker://ilegeul/debian:amd64-10-npm-v1
+        uses: docker://node:lts-slim
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/scripts/test.sh --image debian:buster --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+          args: /github/workspace/scripts/test.sh --image debian --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
   {% when "linux-arm64" %}
   linux-arm64:
     name: 'Linux Arm 64-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -90,10 +90,10 @@ jobs:
           fetch-depth: 1
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test'
-        uses: docker://ilegeul/debian:arm64v8-10-npm-v1
+        uses: docker://node:lts-slim
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/scripts/test.sh --image ilegeul/debian:arm64v8-10-npm-v1 --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+          args: /github/workspace/scripts/test.sh --image debian --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
   {% when "linux-arm" %}
   linux-arm32:
     name: 'Linux Arm 32-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -128,10 +128,10 @@ jobs:
           fetch-depth: 1
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test'
-        uses: docker://ilegeul/debian:arm32v7-10-npm-v1
+        uses: docker://arm32v7/node:lts-slim
         with:
           entrypoint: /bin/bash # /usr/bin/linux32
-          args: /github/workspace/scripts/test.sh --image ilegeul/debian:arm32v7-10-npm-v1 --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+          args: /github/workspace/scripts/test.sh --image debian --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
   {% when "darwin-x64" %}
   macos-x64:
     name: 'macOS Intel 64-bit {{ APP_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
