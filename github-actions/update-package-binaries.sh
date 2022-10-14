@@ -51,6 +51,7 @@ source "${scripts_folder_path}/definitions.sh"
 # Helper functions
 source "${helper_folder_path}/github-actions/common.sh"
 source "${helper_folder_path}/scripts/xbb.sh"
+source "${helper_folder_path}/scripts/wrappers.sh"
 
 # -----------------------------------------------------------------------------
 
@@ -58,17 +59,12 @@ source "${helper_folder_path}/scripts/xbb.sh"
 
 # -----------------------------------------------------------------------------
 
-source "${scripts_folder_path}/defs-source.sh"
-
 echo
 echo "Update the ${APP_DESCRIPTION} package.json binaries..."
 
-# Helper functions.
-source "${helper_folder_path}/common-functions-source.sh"
-
 # -----------------------------------------------------------------------------
 
-version=${RELEASE_VERSION:-"$(get_current_version)"}
+version=${RELEASE_VERSION:-"$(xbb_get_current_version)"}
 
 run_verbose xpm-dev binaries-update \
   -C "${HOME}/Work/${APP_LC_NAME}-xpack.git" \
