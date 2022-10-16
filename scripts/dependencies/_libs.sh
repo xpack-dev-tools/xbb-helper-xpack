@@ -79,7 +79,7 @@ function build_zlib()
 
           # Build.
           run_verbose make -f win32/Makefile.gcc \
-            PREFIX=${CROSS_COMPILE_PREFIX}- \
+            PREFIX=${XBB_CROSS_COMPILE_PREFIX}- \
             prefix="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}" \
             CFLAGS="${XBB_CFLAGS_NO_W} -Wp,-D_FORTIFY_SOURCE=2 -fexceptions --param=ssp-buffer-size=4"
 
@@ -7002,7 +7002,7 @@ function build_libusb_w32()
           fi
 
           run_verbose make \
-            host_prefix=${CROSS_COMPILE_PREFIX} \
+            host_prefix=${XBB_CROSS_COMPILE_PREFIX} \
             host_prefix_x86=i686-w64-mingw32 \
             dll
 
