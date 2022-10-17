@@ -20,7 +20,7 @@ function host_detect()
   XBB_HOST_MACHINE="$(uname -m | tr '[:upper:]' '[:lower:]')"
 
   XBB_HOST_DISTRO_NAME="?" # Linux distribution name (Ubuntu|CentOS|...)
-  XBB_HOST_DISTRO_LC_NAME="?" # Same, in lower case.
+  XBB_HOST_DISTRO_LOWER_CASE_NAME="?" # Same, in lower case.
 
   # Node.js process.platform (darwin|linux|win32)
   XBB_HOST_NODE_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')"
@@ -43,7 +43,7 @@ function host_detect()
     # uname -m -> x86_64, arm64
 
     XBB_HOST_DISTRO_NAME=Darwin
-    XBB_HOST_DISTRO_LC_NAME=darwin
+    XBB_HOST_DISTRO_LOWER_CASE_NAME=darwin
 
     XBB_HOST_BITS="64"
 
@@ -94,7 +94,7 @@ function host_detect()
     fi
 
     XBB_HOST_DISTRO_NAME=$(lsb_release -si)
-    XBB_HOST_DISTRO_LC_NAME=$(echo ${XBB_HOST_DISTRO_NAME} | tr "[:upper:]" "[:lower:]")
+    XBB_HOST_DISTRO_LOWER_CASE_NAME=$(echo ${XBB_HOST_DISTRO_NAME} | tr "[:upper:]" "[:lower:]")
 
   elif [ "${XBB_HOST_NODE_PLATFORM}" == "win32" ]
   then
@@ -115,7 +115,7 @@ function host_detect()
 
     # Git Bash returns "Msys".
     XBB_HOST_DISTRO_NAME=$(uname -o)
-    XBB_HOST_DISTRO_LC_NAME=$(echo ${XBB_HOST_DISTRO_NAME} | tr "[:upper:]" "[:lower:]")
+    XBB_HOST_DISTRO_LOWER_CASE_NAME=$(echo ${XBB_HOST_DISTRO_NAME} | tr "[:upper:]" "[:lower:]")
 
   else
     echo "Unsupported uname ${XBB_HOST_UNAME}"
@@ -129,7 +129,7 @@ function host_detect()
   export XBB_HOST_UNAME # uname
   export XBB_HOST_MACHINE # lower case uname -m, x86_64|i386|i686|aarch64|armv7l|armv8l
   export XBB_HOST_DISTRO_NAME
-  export XBB_HOST_DISTRO_LC_NAME
+  export XBB_HOST_DISTRO_LOWER_CASE_NAME
   export XBB_HOST_NODE_PLATFORM # darwin|linux|win32
   export XBB_HOST_NODE_ARCH # ia32|x64|arm|arm64
   export XBB_HOST_BITS # 64|32
