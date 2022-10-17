@@ -111,7 +111,6 @@ function copy_build_files()
 }
 
 # Must be called in the build folder, like
-# cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 # cd "${XBB_BUILD_FOLDER_PATH}"
 
 function copy_cmake_logs()
