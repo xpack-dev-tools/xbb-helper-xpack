@@ -50,6 +50,7 @@ Before starting the build, perform some checks and tweaks.
 In the `xpack-dev-tools/xbb-helper-xpack` Git repo:
 
 - switch to the `xpack-develop` branch
+- pull new changes
 - if needed, merge the `xpack` branch
 
 No need to add a tag here, it'll be added when the release is created.
