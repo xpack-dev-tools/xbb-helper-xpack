@@ -1111,7 +1111,7 @@ function build_gettext()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gettext_folder_name}"
 
-  local gettext_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${gettext_folder_name}-installed"
+  local gettext_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${gettext_folder_name}-installed"
   if [ ! -f "${gettext_stamp_file_path}" ]
   then
 
@@ -1319,7 +1319,7 @@ function build_libelf()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libelf_folder_name}"
 
-  local libelf_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${libelf_folder_name}-installed"
+  local libelf_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libelf_folder_name}-installed"
   if [ ! -f "${libelf_stamp_file_path}" ]
   then
 
@@ -1453,7 +1453,7 @@ function build_gpm()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gpm_folder_name}"
 
-  local gpm_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${gpm_folder_name}-installed"
+  local gpm_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${gpm_folder_name}-installed"
   if [ ! -f "${gpm_stamp_file_path}" ]
   then
 
@@ -2019,7 +2019,7 @@ function build_libpng()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libpng_folder_name}"
 
-  local libpng_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-libpng-${libpng_version}-installed"
+  local libpng_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-libpng-${libpng_version}-installed"
   if [ ! -f "${libpng_stamp_file_path}" ]
   then
 
@@ -2148,7 +2148,7 @@ function build_jpeg()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${jpeg_folder_name}"
 
-  local jpeg_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-jpeg-${jpeg_version}-installed"
+  local jpeg_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-jpeg-${jpeg_version}-installed"
   if [ ! -f "${jpeg_stamp_file_path}" ]
   then
 
@@ -2273,7 +2273,7 @@ function build_pixman()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${pixman_folder_name}"
 
-  local pixman_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-pixman-${pixman_version}-installed"
+  local pixman_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-pixman-${pixman_version}-installed"
   if [ ! -f "${pixman_stamp_file_path}" ]
   then
 
@@ -2437,7 +2437,7 @@ function build_glib2()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${glib_folder_name}"
 
-  local glib_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-glib-${glib_version}-installed"
+  local glib_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-glib-${glib_version}-installed"
   if [ ! -f "${glib_stamp_file_path}" ]
   then
 
@@ -2667,7 +2667,7 @@ function build_libxml2()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libxml2_folder_name}"
 
-  local libxml2_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-libxml2-${libxml2_version}-installed"
+  local libxml2_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-libxml2-${libxml2_version}-installed"
   if [ ! -f "${libxml2_stamp_file_path}" ]
   then
 
@@ -2821,7 +2821,7 @@ function build_libedit()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libedit_folder_name}"
 
-  local libedit_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${libedit_folder_name}-installed"
+  local libedit_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libedit_folder_name}-installed"
   if [ ! -f "${libedit_stamp_file_path}" ]
   then
 
@@ -2958,7 +2958,7 @@ function build_xar()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${xar_folder_name}"
 
-  local xar_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${xar_folder_name}-installed"
+  local xar_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${xar_folder_name}-installed"
   if [ ! -f "${xar_stamp_file_path}" ]
   then
 
@@ -4134,7 +4134,7 @@ function build_libusb()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libusb_folder_name}"
 
-  local libusb_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-libusb-${libusb_version}-installed"
+  local libusb_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-libusb-${libusb_version}-installed"
   if [ ! -f "${libusb_stamp_file_path}" ]
   then
 
@@ -4272,7 +4272,7 @@ function build_libusb_w32()
 
   local libusb_w32_patch="libusb-win32-${libusb_w32_version}-mingw-w64.patch"
 
-  local libusb_w32_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${libusb_w32_folder_name}-installed"
+  local libusb_w32_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libusb_w32_folder_name}-installed"
   if [ ! -f "${libusb_w32_stamp_file_path}" ]
   then
 
@@ -4809,7 +4809,7 @@ function build_sdl2()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${sdl2_folder_name}"
 
-  local sdl2_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-sdl2-${sdl2_version}-installed"
+  local sdl2_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-sdl2-${sdl2_version}-installed"
   if [ ! -f "${sdl2_stamp_file_path}" ]
   then
 
@@ -4958,7 +4958,7 @@ function build_sdl2_image()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${sdl2_image_folder_name}"
 
-  local sdl2_image_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-sdl2-image-${sdl2_image_version}-installed"
+  local sdl2_image_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-sdl2-image-${sdl2_image_version}-installed"
   if [ ! -f "${sdl2_image_stamp_file_path}" ]
   then
 
@@ -5124,7 +5124,7 @@ function build_pcre2()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${pcre2_folder_name}"
 
-  local pcre2_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${pcre2_folder_name}-installed"
+  local pcre2_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${pcre2_folder_name}-installed"
   if [ ! -f "${pcre2_stamp_file_path}" ]
   then
 
@@ -5256,7 +5256,7 @@ function build_termcap()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${termcap_folder_name}"
 
-  local termcap_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${termcap_folder_name}-installed"
+  local termcap_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${termcap_folder_name}-installed"
   if [ ! -f "${termcap_stamp_file_path}" ]
   then
 

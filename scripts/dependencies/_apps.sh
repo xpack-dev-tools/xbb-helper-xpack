@@ -1311,7 +1311,7 @@ function build_qemu()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${qemu_folder_name}/"
 
-  local qemu_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${qemu_folder_name}-installed"
+  local qemu_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${qemu_folder_name}-installed"
   if [ ! -f "${qemu_stamp_file_path}" ] || [ "${XBB_IS_DEBUG}" == "y" ]
   then
 
@@ -1557,7 +1557,7 @@ function build_native_binutils()
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}"
 
   local binutils_patch_file_name="binutils-${binutils_version}.patch"
-  local binutils_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${binutils_folder_name}-installed"
+  local binutils_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${binutils_folder_name}-installed"
   if [ ! -f "${binutils_stamp_file_path}" ]
   then
 
@@ -1947,7 +1947,7 @@ function build_cross_binutils()
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}"
 
   local binutils_patch="${binutils_folder_name}.patch"
-  local binutils_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${binutils_folder_name}-installed"
+  local binutils_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${binutils_folder_name}-installed"
   if [ ! -f "${binutils_stamp_file_path}" ]
   then
 
@@ -2237,7 +2237,7 @@ function build_cross_gcc_first()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gcc_first_folder_name}"
 
-  local gcc_first_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${gcc_first_folder_name}-installed"
+  local gcc_first_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${gcc_first_folder_name}-installed"
   if [ ! -f "${gcc_first_stamp_file_path}" ]
   then
 
@@ -2447,7 +2447,7 @@ function build_cross_newlib()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${newlib_folder_name}"
 
-  local newlib_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${newlib_folder_name}-installed"
+  local newlib_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${newlib_folder_name}-installed"
   if [ ! -f "${newlib_stamp_file_path}" ]
   then
 
@@ -2823,7 +2823,7 @@ function build_cross_gcc_final()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gcc_final_folder_name}"
 
-  local gcc_final_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${gcc_final_folder_name}-installed"
+  local gcc_final_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${gcc_final_folder_name}-installed"
   if [ ! -f "${gcc_final_stamp_file_path}" ]
   then
 
@@ -3315,7 +3315,7 @@ function build_cross_gdb()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}"
 
-  local gdb_stamp_file_path="${XBB_INSTALL_FOLDER_PATH}/stamp-${gdb_folder_name}-installed"
+  local gdb_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${gdb_folder_name}-installed"
 
   if [ ! -f "${gdb_stamp_file_path}" ]
   then
