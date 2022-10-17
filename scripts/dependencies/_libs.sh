@@ -861,6 +861,12 @@ function build_zstd()
             config_options+=("-DZSTD_BUILD_TESTS=ON")
           fi
 
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          then
+            # Otherwise it'll generate two -mmacosx-version-min
+            config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${XBB_MACOSX_DEPLOYMENT_TARGET}"
+          fi
+
           run_verbose cmake \
             "${config_options[@]}" \
             \
@@ -4743,6 +4749,10 @@ function build_libssh()
             config_options+=("-DWITH_STACK_PROTECTOR=OFF")
             config_options+=("-DWITH_STACK_PROTECTOR_STRONG=OFF")
             # config_options+=("-DWITH_STACK_CLASH_PROTECTION=OFF")
+          elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          then
+            # Otherwise it'll generate two -mmacosx-version-min
+            config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${XBB_MACOSX_DEPLOYMENT_TARGET}"
           fi
 
           run_verbose cmake \
