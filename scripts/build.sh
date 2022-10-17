@@ -265,40 +265,39 @@ function build_perform_common()
 
   # ---------------------------------------------------------------------------
 
-  (
-    echo
-    xbb_set_compiler_env
+  echo
+  xbb_set_compiler_env
 
-    echo
-    echo "Here we go..."
-    echo
+  echo
+  echo "Here we go..."
+  echo
 
-    build_versioned_components
+  # Cannot run in a sub-shell, it sets environment variables.
+  build_versioned_components
 
-    if [ ! "${XBB_TEST_ONLY}" == "y" ]
-    then
-      (
-        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
-        then
-          # The Windows still has a reference to libgcc_s and libwinpthread
-          export XBB_DO_COPY_GCC_LIBS="y"
-        fi
+  if [ ! "${XBB_TEST_ONLY}" == "y" ]
+  then
+    (
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      then
+        # The Windows still has a reference to libgcc_s and libwinpthread
+        export XBB_DO_COPY_GCC_LIBS="y"
+      fi
 
-        # Post processing.
-        make_standalone
+      # Post processing.
+      make_standalone
 
-        # strip_libs
-        strip_binaries
+      # strip_libs
+      strip_binaries
 
-        copy_distro_files
-        copy_custom_files
+      copy_distro_files
+      copy_custom_files
 
-        check_binaries
+      check_binaries
 
-        create_archive
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/post-process-output-$(ndate).txt"
-    fi
-  )
+      create_archive
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/post-process-output-$(ndate).txt"
+  fi
 
   # ---------------------------------------------------------------------------
 
@@ -310,7 +309,7 @@ function build_perform_common()
 
   tests_run_final
 
-  # -----------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------
 
   if [ "${XBB_TEST_ONLY}" != "y" ]
   then
