@@ -36,12 +36,13 @@ function build_realpath()
   then
 
     echo
-    echo "realpath in-source building"
+    echo "realpath in-source building..."
+
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${realpath_folder_name}" ]
     then
-      cd "${XBB_BUILD_FOLDER_PATH}"
-
       download_and_extract "${realpath_url}" "${realpath_archive}" \
         "${realpath_src_folder_name}"
 
@@ -156,12 +157,14 @@ function build_scons()
   if [ ! -f "${scons_stamp_file_path}" ]
   then
 
-    # In-source build
+    echo
+    echo "scons in-source building..."
+
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${scons_folder_name}" ]
     then
-      cd "${XBB_BUILD_FOLDER_PATH}"
-
       download_and_extract "${scons_url}" "${scons_archive}" \
         "${scons_src_folder_name}"
 
@@ -687,12 +690,14 @@ function build_tar()
   if [ ! -f "${tar_stamp_file_path}" ]
   then
 
-    # In-source build, to patch out tests.
+    echo
+    echo "tar in-source building..."
+
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${tar_folder_name}" ]
     then
-      cd "${XBB_BUILD_FOLDER_PATH}"
-
       download_and_extract "${tar_url}" "${tar_archive}" \
         "${tar_src_folder_name}"
 
@@ -3780,12 +3785,13 @@ function build_dos2unix()
   then
 
     echo
-    echo "dos2unix in-source building"
+    echo "dos2unix in-source building..."
+
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${dos2unix_folder_name}" ]
     then
-      cd "${XBB_BUILD_FOLDER_PATH}"
-
       download_and_extract "${dos2unix_url}" "${dos2unix_archive}" \
         "${dos2unix_src_folder_name}"
 
@@ -4171,12 +4177,14 @@ function build_perl()
   if [ ! -f "${perl_stamp_file_path}" ]
   then
 
-    # In-source build.
+    echo
+    echo "perl in-source building..."
+
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${perl_folder_name}" ]
     then
-      cd "${XBB_BUILD_FOLDER_PATH}"
-
       download_and_extract "${perl_url}" "${perl_archive}" \
         "${perl_src_folder_name}" \
         "${perl_patch_file_name}"
@@ -4613,12 +4621,14 @@ function build_git()
   if [ ! -f "${git_stamp_file_path}" ]
   then
 
-    # In-source build.
+    echo
+    echo "git in-source building..."
+
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${git_folder_name}" ]
     then
-      cd "${XBB_BUILD_FOLDER_PATH}"
-
       download_and_extract "${git_url}" "${git_archive}" \
         "${git_src_folder_name}"
 
@@ -4802,12 +4812,13 @@ function build_p7zip()
   then
 
     echo
-    echo "p7zip in-source building"
+    echo "p7zip in-source building..."
+
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${p7zip_folder_name}" ]
     then
-      cd "${XBB_BUILD_FOLDER_PATH}"
-
       download_and_extract "${p7zip_url}" "${p7zip_archive}" \
         "${p7zip_src_folder_name}" "${p7zip_patch_file_name}"
 
@@ -4954,12 +4965,14 @@ function build_rhash()
   if [ ! -f "${rhash_stamp_file_path}" ]
   then
 
-    # In-source build.
+    echo
+    echo "rhash in-source building..."
+
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${rhash_folder_name}" ]
     then
-      cd "${XBB_BUILD_FOLDER_PATH}"
-
       download_and_extract "${rhash_url}" "${rhash_archive}" \
         "${rhash_src_folder_name}"
 
@@ -5135,12 +5148,14 @@ function build_re2c()
   if [ ! -f "${re2c_stamp_file_path}" ]
   then
 
-    # In-source build.
+    echo
+    echo "re2c in-source building..."
+
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${re2c_folder_name}" ]
     then
-      cd "${XBB_BUILD_FOLDER_PATH}"
-
       download_and_extract "${re2c_url}" "${re2c_archive}" \
         "${re2c_src_folder_name}"
 

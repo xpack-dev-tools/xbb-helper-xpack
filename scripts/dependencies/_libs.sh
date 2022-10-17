@@ -1458,14 +1458,13 @@ function build_gpm()
   then
 
     echo
-    echo "gmp in-source building"
+    echo "gmp in-source building..."
 
-    cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
 
-    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gpm_folder_name}" ]
+    if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${gpm_folder_name}" ]
     then
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
-
       download_and_extract "${gpm_github_url}" "${gpm_archive}" \
         "${gpm_src_folder_name}"
 
@@ -1476,7 +1475,7 @@ function build_gpm()
     fi
 
     (
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gpm_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${gpm_folder_name}"
       if [ ! -f "stamp-autogen" ]
       then
 
@@ -1487,7 +1486,7 @@ function build_gpm()
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gpm_folder_name}/autogen-output-$(ndate).txt"
 
     (
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gpm_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${gpm_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -2964,14 +2963,13 @@ function build_xar()
   then
 
     echo
-    echo "xar in-source building"
+    echo "xar in-source building..."
 
-    cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
 
-    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${xar_folder_name}" ]
+    if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${xar_folder_name}" ]
     then
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
-
       download_and_extract "${xar_github_url}" "${xar_archive}" \
         "${xar_src_folder_name}"
 
@@ -2982,7 +2980,7 @@ function build_xar()
     fi
 
     (
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${xar_folder_name}/xar/"
+      cd "${XBB_BUILD_FOLDER_PATH}/${xar_folder_name}/xar/"
 
       xbb_activate_installed_dev
 
@@ -4279,11 +4277,14 @@ function build_libusb_w32()
   then
 
     echo
-    echo "libusb_w32 in-source building"
+    echo "libusb_w32 in-source building..."
 
-    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}" ]
+    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+    cd "${XBB_BUILD_FOLDER_PATH}"
+
+    if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}" ]
     then
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
+      cd "${XBB_BUILD_FOLDER_PATH}"
 
       # Do not add the patch here, it must be done after dos2unix.
       download_and_extract "${libusb_w32_url}" "${libusb_w32_archive}" \
@@ -4294,7 +4295,7 @@ function build_libusb_w32()
         mv -v "${libusb_w32_src_folder_name}" "${libusb_w32_folder_name}"
       fi
 
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}"
 
       # Patch from:
       # https://gitorious.org/jtag-tools/openocd-mingw-build-scripts
@@ -4315,7 +4316,7 @@ function build_libusb_w32()
       echo
       echo "Running libusb-win32 make..."
 
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -4366,7 +4367,7 @@ function build_libusb_w32()
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libusb_w32_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}" \
+        "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}" \
         "${libusb_w32_folder_name}"
     )
 
