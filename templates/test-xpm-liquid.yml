@@ -33,8 +33,8 @@ jobs:
         run: |
           uname -a
           lsb_release -sd
-          whoami
-          pwd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
           ls -lLA
           env | sort
 
@@ -67,8 +67,8 @@ jobs:
         run: |
           uname -a
           lsb_release -sd
-          whoami
-          pwd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
           ls -lLA
           env | sort
 
@@ -105,8 +105,8 @@ jobs:
         run: |
           uname -a
           lsb_release -sd
-          whoami
-          pwd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
           ls -lLA
           env | sort
 
@@ -142,8 +142,8 @@ jobs:
         run: |
           uname -a
           sw_vers # lsb_release -sd
-          whoami
-          pwd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
           ls -lLA
           env | sort
 
@@ -176,8 +176,8 @@ jobs:
         run: |
           uname -a
           sw_vers # lsb_release -sd
-          whoami
-          pwd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
           ls -lLA
           env | sort
 
@@ -214,8 +214,8 @@ jobs:
         run: |
           uname -a
           systeminfo # lsb_release -sd
-          whoami
-          pwd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
           ls -lLA
           env | sort
 
