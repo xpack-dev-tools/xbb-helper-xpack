@@ -400,8 +400,8 @@ function build_findutils()
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${findutils_folder_name}/autogen-output-$(ndate).txt"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${findutils_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${findutils_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${findutils_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${findutils_folder_name}"
 
       xbb_activate_installed_dev
 

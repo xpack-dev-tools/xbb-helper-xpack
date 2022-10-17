@@ -54,8 +54,8 @@ function build_gmp()
       "${gmp_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gmp_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gmp_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gmp_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${gmp_folder_name}"
 
       if [ "${name_suffix}" == "-bootstrap" ]
       then
@@ -277,8 +277,8 @@ function build_mpfr()
       "${mpfr_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${mpfr_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${mpfr_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mpfr_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${mpfr_folder_name}"
 
       if [ "${name_suffix}" == "-bootstrap" ]
       then
@@ -455,8 +455,8 @@ function build_mpc()
       "${mpc_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${mpc_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${mpc_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mpc_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${mpc_folder_name}"
 
       if [ "${name_suffix}" == "-bootstrap" ]
       then
@@ -626,8 +626,8 @@ function build_isl()
       "${isl_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${isl_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${isl_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${isl_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${isl_folder_name}"
 
       if [ "${name_suffix}" == "-bootstrap" ]
       then
@@ -809,8 +809,8 @@ function build_zstd()
       "${zstd_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${zstd_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${zstd_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${zstd_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${zstd_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -908,7 +908,7 @@ function build_zstd()
         "${zstd_folder_name}"
 
       (
-        cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
+        cd "${XBB_BUILD_FOLDER_PATH}"
 
         copy_cmake_logs "${zstd_folder_name}"
       )
@@ -963,8 +963,8 @@ function build_libiconv()
       "${libiconv_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libiconv_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libiconv_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libiconv_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libiconv_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1122,8 +1122,8 @@ function build_gettext()
       "${gettext_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gettext_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gettext_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gettext_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${gettext_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1330,8 +1330,8 @@ function build_libelf()
       "${libelf_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libelf_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libelf_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libelf_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libelf_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1578,7 +1578,7 @@ function build_gpm()
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gpm_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
-        "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gpm_folder_name}" \
+        "${XBB_BUILD_FOLDER_PATH}/${gpm_folder_name}" \
         "${gpm_folder_name}"
     )
 
@@ -1631,8 +1631,8 @@ function build_lzo()
       "${lzo_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${lzo_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${lzo_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${lzo_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${lzo_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -1766,8 +1766,8 @@ function build_python2()
       "${XBB_PYTHON2_SRC_FOLDER_NAME}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${python2_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${python2_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${python2_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${python2_folder_name}"
 
       # To pick the new libraries
       xbb_activate_installed_dev
@@ -2030,8 +2030,8 @@ function build_libpng()
       "${libpng_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libpng_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libpng_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libpng_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libpng_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -2159,8 +2159,8 @@ function build_jpeg()
         "${jpeg_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${jpeg_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${jpeg_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${jpeg_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${jpeg_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -2284,8 +2284,8 @@ function build_pixman()
       "${pixman_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${pixman_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${pixman_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${pixman_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${pixman_folder_name}"
 
       # Windows libtool chaks for it.
       mkdir -pv test/lib
@@ -2449,8 +2449,8 @@ function build_glib2()
 
     (
       # Hack, /gio/lib added because libtool needs it on Win32.
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}"/gio/lib
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}"/gio/lib
+      cd "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}"
 
       if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
       then
@@ -2678,13 +2678,13 @@ function build_libxml2()
       "${libxml2_src_folder_name}"
 
     # Fails if not built in place.
-    if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxml2_folder_name}" ]
+    if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}" ]
     then
       (
         cp -r "${libxml2_src_folder_name}" \
           "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxml2_folder_name}"
 
-        cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxml2_folder_name}"
+        cd "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
 
         xbb_activate_installed_dev
 
@@ -2694,8 +2694,8 @@ function build_libxml2()
 
     (
       # /lib added due to wrong -Llib used during make.
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxml2_folder_name}/lib"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libxml2_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}/lib"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -2832,8 +2832,8 @@ function build_libedit()
       "${libedit_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libedit_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libedit_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libedit_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libedit_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -3115,8 +3115,8 @@ function build_libgpg_error()
       "${libgpg_error_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libgpg_error_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libgpg_error_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libgpg_error_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libgpg_error_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -3268,8 +3268,8 @@ function build_libgcrypt()
       "${libgcrypt_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libgcrypt_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libgcrypt_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libgcrypt_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libgcrypt_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -3485,8 +3485,8 @@ function build_libassuan()
       "${libassuan_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libassuan_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libassuan_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libassuan_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libassuan_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -3654,8 +3654,8 @@ function build_libksba()
       "${libksba_src_folder_name}" "${libksba_patch_file_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libksba_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libksba_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libksba_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libksba_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -3818,8 +3818,8 @@ function build_npth()
       "${npth_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${npth_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${npth_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${npth_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${npth_folder_name}"
 
       if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
       then
@@ -3992,8 +3992,8 @@ function build_nettle()
       "${nettle_src_folder_name}" "${nettle_patch_file_path}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${nettle_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${nettle_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${nettle_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${nettle_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -4145,8 +4145,8 @@ function build_libusb()
       "${libusb_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libusb_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libusb_folder_name}"
 
       if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
       then
@@ -4418,8 +4418,8 @@ function build_vde()
       "${vde_src_folder_name}" "${vde_patch_file_patch}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${vde_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${vde_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${vde_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${vde_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -4558,8 +4558,8 @@ function build_libpcap()
       "${libpcap_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libpcap_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libpcap_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libpcap_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libpcap_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -4683,8 +4683,8 @@ function build_libssh()
       "${libssh_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libssh_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libssh_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libssh_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${libssh_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -4820,8 +4820,8 @@ function build_sdl2()
       "${sdl2_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${sdl2_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${sdl2_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${sdl2_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${sdl2_folder_name}"
 
       if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
       then
@@ -4969,8 +4969,8 @@ function build_sdl2_image()
       "${sdl2_image_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${sdl2_image_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${sdl2_image_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${sdl2_image_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${sdl2_image_folder_name}"
 
       # The windows build checks this.
       mkdir -pv lib
@@ -5135,8 +5135,8 @@ function build_pcre2()
       "${pcre2_src_folder_name}"
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${pcre2_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${pcre2_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${pcre2_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${pcre2_folder_name}"
 
       xbb_activate_installed_dev
 
@@ -5273,8 +5273,8 @@ function build_termcap()
     fi
 
     (
-      mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${termcap_folder_name}"
-      cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${termcap_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${termcap_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${termcap_folder_name}"
 
       xbb_activate_installed_dev
 
