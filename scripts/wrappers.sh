@@ -110,9 +110,126 @@ function run_verbose_develop()
   "${app_path}" "$@" 2>&1
 }
 
-# run_app_silent
-# run_app_exit
-# test_expect
+# -----------------------------------------------------------------------------
+
+function run_app_silent()
+{
+  # Does not include the .exe extension.
+  local app_path=$1
+  shift
+
+  if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+  then
+    "${app_path}" "$@" 2>&1
+  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+  then
+    "${app_path}" "$@" 2>&1
+  elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  then
+    if [ "$(uname -o)" == "Msys" ]
+    then
+      "${app_path}.exe" "$@"
+      return
+    fi
+
+    local wsl_path=$(which wsl.exe 2>/dev/null)
+    if [ ! -z "${wsl_path}" ]
+    then
+      "${app_path}.exe" "$@" 2>&1
+      return
+    fi
+    (
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        if [ -f "${app_path}.exe" ]
+        then
+          wine "${app_path}.exe" "$@" 2>&1
+        else
+          echo "${app_path}.exe not found"
+          exit 1
+        fi
+      else
+        echo "Install wine if you want to run the .exe binaries on Linux."
+      fi
+    )
+
+  else
+    echo "Oops! Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
+    exit 1
+  fi
+}
+
+function run_app_exit()
+{
+  local expected_exit_code=$1
+  shift
+  local app_path=$1
+  shift
+  if [ "${node_platform}" == "win32" ]
+  then
+    app_path+='.exe'
+  fi
+
+  (
+    set +e
+    echo
+    echo "${app_path} $@"
+    "${app_path}" "$@" 2>&1
+    local actual_exit_code=$?
+    echo "exit(${actual_exit_code})"
+    set -e
+    if [ ${actual_exit_code} -ne ${expected_exit_code} ]
+    then
+      exit ${actual_exit_code}
+    fi
+  )
+}
+
+function test_expect()
+{
+  local expected="$1"
+  local app_path="$2"
+  shift 2
+
+  (
+    set +e
+
+    # Remove the trailing CR present on Windows.
+    local output
+    if [ "${app_path:0:1}" == "/" ]
+    then
+      show_libs "${app_path}"
+      output="$(run_app_silent "${app_path}" "$@" | sed 's/\r$//')"
+    elif [ "${app_path:0:2}" == "./" ]
+    then
+      show_libs "${app_path}"
+      output="$(run_app_silent "${app_path}" "$@" | sed 's/\r$//')"
+    else
+      if [ -x "${app_path}" ]
+      then
+        show_libs "${app_path}"
+        output="$(run_app_silent "./${app_path}" "$@" | sed 's/\r$//')"
+      else
+        # bash case
+        output="$(run_app_silent "${app_path}" "$@" | sed 's/\r$//')"
+      fi
+    fi
+
+    if [ "x${output}x" == "x${expected}x" ]
+    then
+      echo
+      echo "Test \"${app_path} $@\" passed, got \"${expected}\" :-)"
+    else
+      echo
+      echo "Test \"${app_path} $@\" failed :-("
+      echo "expected ${#expected}: \"${expected}\""
+      echo "got ${#output}: \"${output}\""
+      echo
+      exit 1
+    fi
+  )
+}
 
 # -----------------------------------------------------------------------------
 
