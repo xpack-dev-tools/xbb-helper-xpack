@@ -491,8 +491,6 @@ function build_findutils()
 function test_findutils()
 {
   (
-    xbb_activate
-
     echo
     echo "Checking the findutils shared libraries..."
 
@@ -3670,8 +3668,6 @@ function test_cross_gdb()
 function tidy_up()
 {
   (
-    xbb_activate
-
     echo
     echo "# Tidying up..."
 
@@ -3694,8 +3690,6 @@ function strip_libs()
   if [ "${XBB_WITH_STRIP}" == "y" ]
   then
     (
-      xbb_activate
-
       PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
 
       echo
