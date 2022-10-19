@@ -152,7 +152,9 @@ function build_coreutils()
         if [ "${XBB_COREUTILS_INSTALL_REALPATH_ONLY:-}" == "y" ]
         then
           run_verbose install -v -c -m 755 src/realpath \
-            "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+            "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/grealpath"
+          run_verbose install -v -c -m 755 src/readlink \
+            "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/greadlink"
         else
           if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
@@ -268,19 +270,21 @@ function test_coreutils_realpath()
 {
   local test_bin_folder_path="$1"
 
-  local prefix=""
+  local prefix="g"
 
   (
     echo
     echo "Checking the coreutils binaries shared libraries..."
 
     show_libs "${test_bin_folder_path}/${prefix}realpath"
+    show_libs "${test_bin_folder_path}/${prefix}readlink"
 
     echo
     echo "Testing if coreutils binaries start properly..."
 
     echo
     run_app "${test_bin_folder_path}/${prefix}realpath" --version
+    run_app "${test_bin_folder_path}/${prefix}readlink" --version
   )
 }
 
