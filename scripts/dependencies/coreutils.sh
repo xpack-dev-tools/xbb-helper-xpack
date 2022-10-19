@@ -149,17 +149,23 @@ function build_coreutils()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+        if [ "${XBB_COREUTILS_INSTALL_REALPATH_ONLY:-}" == "y" ]
         then
-          # Strip fails with:
-          # 2022-10-01T12:53:19.6394770Z /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/strip: error: symbols referenced by indirect symbol table entries that can't be stripped in: /Users/ilg/Work/xbb-bootstrap-4.0/darwin-arm64/install/xbb-bootstrap/libexec/coreutils/_inst.24110_
-          run_verbose make install
+          run_verbose install -v -c -m 755 src/realpath \
+            "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
         else
-          if [ "${XBB_WITH_STRIP}" == "y" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
-            run_verbose make install-strip
-          else
+            # Strip fails with:
+            # 2022-10-01T12:53:19.6394770Z /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/strip: error: symbols referenced by indirect symbol table entries that can't be stripped in: /Users/ilg/Work/xbb-bootstrap-4.0/darwin-arm64/install/xbb-bootstrap/libexec/coreutils/_inst.24110_
             run_verbose make install
+          else
+            if [ "${XBB_WITH_STRIP}" == "y" ]
+            then
+              run_verbose make install-strip
+            else
+              run_verbose make install
+            fi
           fi
         fi
 
@@ -177,7 +183,12 @@ function build_coreutils()
     )
 
     (
-      test_coreutils "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      if [ "${XBB_COREUTILS_INSTALL_REALPATH_ONLY:-}" == "y" ]
+      then
+        test_coreutils_realpath "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      else
+        test_coreutils "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      fi
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${coreutils_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -189,7 +200,12 @@ function build_coreutils()
     echo "Component coreutils already installed."
   fi
 
-  tests_add "test_coreutils" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  if [ "${XBB_COREUTILS_INSTALL_REALPATH_ONLY:-}" == "y" ]
+  then
+    tests_add "test_coreutils_realpath" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  else
+    tests_add "test_coreutils" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  fi
 }
 
 function test_coreutils()
@@ -245,6 +261,26 @@ function test_coreutils()
     run_app "${test_bin_folder_path}/${prefix}touch" --version
     run_app "${test_bin_folder_path}/${prefix}tr" --version
     run_app "${test_bin_folder_path}/${prefix}wc" --version
+  )
+}
+
+function test_coreutils_realpath()
+{
+  local test_bin_folder_path="$1"
+
+  local prefix=""
+
+  (
+    echo
+    echo "Checking the coreutils binaries shared libraries..."
+
+    show_libs "${test_bin_folder_path}/${prefix}realpath"
+
+    echo
+    echo "Testing if coreutils binaries start properly..."
+
+    echo
+    run_app "${test_bin_folder_path}/${prefix}realpath" --version
   )
 }
 
