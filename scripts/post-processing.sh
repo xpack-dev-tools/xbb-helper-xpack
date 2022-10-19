@@ -2116,12 +2116,20 @@ function create_archive()
       # -J uses xz for compression; best compression ratio.
       # -j uses bz2 for compression; good compression ratio.
       # -z uses gzip for compression; fair compression ratio.
-      tar -c -z -f "${distribution_file}" \
-        --owner=0 \
-        --group=0 \
-        --format=posix \
-        --hard-dereference \
-        *
+      if [ "${XBB_HOST_UNAME}" == "Darwin" ]
+      then
+        tar -c -z -f "${distribution_file}" \
+          --uid=0 \
+          --gid=0 \
+          *
+      else
+        tar -c -z -f "${distribution_file}" \
+          --owner=0 \
+          --group=0 \
+          --format=posix \
+          --hard-dereference \
+          *
+      fi
 
       # Put folders back.
       mv -v "${archive_version_path}"/* "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
