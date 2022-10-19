@@ -652,9 +652,11 @@ function xbb_activate_cxx_rpath()
 {
   local cxx_lib_path=""
 
+  local realpath=$(which grealpath || which realpath)
+
   if [[ ${CC} =~ .*gcc.* ]]
   then
-    cxx_lib_path="$(realpath $(dirname $(${CXX} -print-file-name=libstdc++.so.6)))"
+    cxx_lib_path="$(${realpath} $(dirname $(${CXX} -print-file-name=libstdc++.so.6)))"
     if [ "${cxx_lib_path}" == "libstdc++.so.6" ]
     then
       return
