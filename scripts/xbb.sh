@@ -119,9 +119,12 @@ function xbb_set_env()
   # Decide where to run the build for the requested target.
   if [ ! -z ${WORK_FOLDER_PATH+x} ]
   then
-    # If the work folder is defined in the environent
-    # (usually something like "${HOME}/Work")
-    # group all targets below a versioned application folder.
+    # On the main development machine, the repos are stored in a folder
+    # that is saved daily by Time Machine, and having the build folders
+    # in the same place is a waste.
+    # To avoid this, define a separate work folder (excluded from backup,
+    # usually something like "${HOME}/Work")
+    # and group all targets below a versioned application folder.
     XBB_TARGET_WORK_FOLDER_PATH="${WORK_FOLDER_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}/${XBB_TARGET_FOLDER_NAME}"
   elif [ ! -z "${XBB_REQUESTED_BUILD_RELATIVE_FOLDER:-}" ]
   then
