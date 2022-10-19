@@ -566,6 +566,15 @@ function xbb_activate_installed_bin()
 
   hash -r
 
+  # Update PKG_CONFIG, in case it was compiled locally.
+  if [ ! -z "$(which pkg-config-verbose)" -a "${XBB_IS_DEVELOP}" == "y" ]
+  then
+    PKG_CONFIG="$(which pkg-config-verbose)"
+  elif [ ! -z "$(which pkg-config)" ]
+  then
+    PKG_CONFIG="$(which pkg-config)"
+  fi
+
   export PATH
 }
 
