@@ -28,6 +28,7 @@ function build_libffi()
   # 12-Nov-2014, "3.2.1"
   # 23 Nov 2019, "3.3"
   # 29 Jun 2021, "3.4.2"
+  # 19 Sep 2022, "3.4.3"
 
   local libffi_version="$1"
 
