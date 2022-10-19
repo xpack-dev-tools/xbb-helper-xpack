@@ -13,8 +13,10 @@
 
 # -----------------------------------------------------------------------------
 
-# Minimalistic realpath to be used on macOS
-function build_realpath()
+# Minimalistic realpath to be used on macOS; does not support `--relative-to`.
+# Deprecated, use the more elaborate coreutils one.
+
+function _build_realpath()
 {
   # https://github.com/harto/realpath-osx
   # https://github.com/harto/realpath-osx/archive/1.0.0.tar.gz
