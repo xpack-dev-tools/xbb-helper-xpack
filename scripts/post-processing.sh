@@ -2118,10 +2118,7 @@ function create_archive()
       # -z uses gzip for compression; fair compression ratio.
       if [ "${XBB_HOST_UNAME}" == "Darwin" ]
       then
-        tar -c -z -f "${distribution_file}" \
-          --uid=0 \
-          --gid=0 \
-          *
+        tar -c -z -f "${distribution_file}" *
       else
         tar -c -z -f "${distribution_file}" \
           --owner=0 \
@@ -2137,7 +2134,13 @@ function create_archive()
     fi
 
     cd "${XBB_DEPLOY_FOLDER_PATH}"
-    compute_sha sha256sum "$(basename ${distribution_file})"
+    if [ "${XBB_HOST_UNAME}" == "Darwin" ]
+    then
+      # Isn't it binary?
+      shasum -a 256 "$(basename ${distribution_file})" >"$(basename ${distribution_file}).sha"
+    else
+      sha256sum "$(basename ${distribution_file})" >"$(basename ${distribution_file}).sha"
+    fi
   )
 }
 
