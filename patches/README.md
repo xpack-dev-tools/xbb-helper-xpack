@@ -42,3 +42,14 @@ Current thread 0x0000000115493600 (most recent call first):
   <no Python frame>
 ```
 
+## libusb-win32-*-mingw-w64.patch
+
+Make `libusb-win32` build without the Microsoft DDK; it was copied from the [JTAG Tools](https://gitorious.org/jtag-tools/openocd-mingw-build-scripts) project.
+
+## libftdi-*.patch
+
+Add `NO_DEFAULT_PATH` when searching libusb.
+
+## hidapi-*.patch
+
+Remove AC_CONFIG_MACRO_DIR([m4]).
