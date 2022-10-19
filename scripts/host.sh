@@ -14,7 +14,7 @@
 
 function host_detect()
 {
-  # The original upper case name; actually not used.
+  # The original upper case name (Linux, Darwin).
   XBB_HOST_UNAME="$(uname)"
   # `uname -m` is more reliable than `uname -p`
   XBB_HOST_MACHINE="$(uname -m | tr '[:upper:]' '[:lower:]')"
@@ -40,7 +40,7 @@ function host_detect()
   if [ "${XBB_HOST_NODE_PLATFORM}" == "darwin" ]
   then
     # uname -p -> i386, arm
-    # uname -m -> x86_64, arm64
+    # uname -m -> x86_64|arm64
 
     XBB_HOST_DISTRO_NAME=Darwin
     XBB_HOST_DISTRO_LOWER_CASE_NAME=darwin
@@ -63,14 +63,15 @@ function host_detect()
     # ----- Determine distribution name and word size -----
 
     # uname -p -> x86_64|i686 (unknown in recent versions, use -m)
-    # uname -m -> x86_64|i686|aarch64|armv7l
+    # uname -m -> x86_64|i386|i486|i586|i686|aarch64|armv7l|armv8l
 
     if [ "${XBB_HOST_MACHINE}" == "x86_64" ]
     then
       XBB_HOST_BITS="64"
       XBB_HOST_NODE_ARCH="x64"
-    elif [ "${XBB_HOST_MACHINE}" == "i386" -o "${XBB_HOST_MACHINE}" == "i586" -o "${XBB_HOST_MACHINE}" == "i686" ]
+    elif [[ "${XBB_HOST_MACHINE}" =~ i[3456]86  ]]
     then
+      # For completeness, no longer supported.
       XBB_HOST_BITS="32"
       XBB_HOST_NODE_ARCH="ia32"
     elif [ "${XBB_HOST_MACHINE}" == "aarch64" ]
