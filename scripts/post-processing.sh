@@ -213,6 +213,8 @@ function copy_dependencies_recursive()
 
   (
     # set -x
+    local realpath=$(which grealpath || which realpath)
+    local readlink=$(which greadlink || which readlink)
 
     local source_file_path="$1"
     local destination_folder_path="$2"
@@ -232,7 +234,7 @@ function copy_dependencies_recursive()
 
     # Assume a regular file. Later changed if link.
     local actual_source_file_path="${source_file_path}"
-    local actual_destination_file_path="$(realpath ${destination_folder_path})/${source_file_name}"
+    local actual_destination_file_path="$(${realpath} ${destination_folder_path})/${source_file_name}"
 
     # echo "I. Processing ${source_file_path} itself..."
 
@@ -246,13 +248,13 @@ function copy_dependencies_recursive()
         # how many links there are on the way.
         echo "process link ${source_file_path}"
 
-        actual_source_file_path="$(readlink -f "${source_file_path}")"
+        actual_source_file_path="$(${readlink} -f "${source_file_path}")"
         actual_source_file_name="$(basename "${actual_source_file_path}")"
 
         actual_destination_file_path="${destination_folder_path}/${actual_source_file_name}"
         if [ -f "${actual_destination_file_path}" ]
         then
-          actual_destination_file_path="$(realpath "${actual_destination_file_path}")"
+          actual_destination_file_path="$(${realpath} "${actual_destination_file_path}")"
         fi
 
         install_elf "${actual_source_file_path}" "${actual_destination_file_path}"
@@ -346,7 +348,7 @@ function copy_dependencies_recursive()
 
               # If outside XBB_APPLICATION_INSTALL_FOLDER_PATH, copy it to libexec,
               # otherwise leave it in place and add a new $ORIGIN.
-              local rpath_relative_to_app_prefix="$(realpath --relative-to="${XBB_APPLICATION_INSTALL_FOLDER_PATH}" "${rpath}")"
+              local rpath_relative_to_app_prefix="$(${realpath} --relative-to="${XBB_APPLICATION_INSTALL_FOLDER_PATH}" "${rpath}")"
               echo_develop "relative to XBB_APPLICATION_INSTALL_FOLDER_PATH ${rpath_relative_to_app_prefix}"
               # If the relative path starts with `..`, it is outside.
               if [ "${rpath_relative_to_app_prefix:0:2}" == ".." ]
@@ -482,14 +484,14 @@ function copy_dependencies_recursive()
                 echo_develop "maybe ${maybe_file_path}"
                 if [ -f "${maybe_file_path}" ]
                 then
-                  found_absolute_lib_path="$(realpath ${maybe_file_path})"
+                  found_absolute_lib_path="$(${realpath} ${maybe_file_path})"
                   break
                 fi
                 maybe_file_path="${actual_destination_folder_path}/${lc_rpath:${#loader_prefix}}/${file_relative_path}"
                 echo_develop "maybe ${maybe_file_path}"
                 if [ -f "${maybe_file_path}" ]
                 then
-                  found_absolute_lib_path="$(realpath ${maybe_file_path})"
+                  found_absolute_lib_path="$(${realpath} ${maybe_file_path})"
                   break
                 fi
                 continue
@@ -501,7 +503,7 @@ function copy_dependencies_recursive()
               fi
               if [ -f "${lc_rpath}/${file_relative_path}" ]
               then
-                found_absolute_lib_path="$(realpath ${lc_rpath}/${file_relative_path})"
+                found_absolute_lib_path="$(${realpath} ${lc_rpath}/${file_relative_path})"
                 break
               fi
             done
@@ -561,7 +563,7 @@ function copy_dependencies_recursive()
         # TODO check if relative to XBB_APPLICATION_INSTALL_FOLDER_PATH, to avoid copying to libexec.
 
         # For consistency reasons, update rpath first, before dependencies.
-        local relative_folder_path="$(realpath --relative-to="${actual_destination_folder_path}" "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
+        local relative_folder_path="$(${realpath} --relative-to="${actual_destination_folder_path}" "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
         patch_macos_elf_add_rpath \
           "${actual_destination_file_path}" \
           "${loader_prefix}${relative_folder_path}"
@@ -620,7 +622,7 @@ function copy_dependencies_recursive()
         # On Windows don't bother with sym links, simply copy the file
         # to the destination.
 
-        actual_source_file_path="$(readlink -f "${source_file_path}")"
+        actual_source_file_path="$(${readlink} -f "${source_file_path}")"
         copied_file_path="${destination_folder_path}/${source_file_name}"
 
       else
@@ -652,12 +654,12 @@ function copy_dependencies_recursive()
         (
           cd "${destination_folder_path}"
 
-          local link_relative_path="$(realpath --relative-to="${destination_folder_path}" "${copied_file_path}")"
+          local link_relative_path="$(${realpath} --relative-to="${destination_folder_path}" "${copied_file_path}")"
           run_verbose ln -s "${link_relative_path}" "${source_file_name}"
         )
       fi
 
-      local actual_destination_file_path="$(realpath "${destination_folder_path}/${source_file_name}")"
+      local actual_destination_file_path="$(${realpath} "${destination_folder_path}/${source_file_name}")"
       local actual_destination_folder_path="$(dirname "${actual_destination_file_path}")"
 
       # echo "II. Processing ${source_file_path} dependencies..."
@@ -837,10 +839,12 @@ function is_darwin_dylib()
   local bin_path="$1"
   local real_path
 
+  local realpath=$(which grealpath || which realpath)
+
   # Follow symlinks.
   if [ -L "${bin_path}" ]
   then
-    real_path="$(realpath "${bin_path}")"
+    real_path="$(${realpath} "${bin_path}")"
   else
     real_path="${bin_path}"
   fi
@@ -1549,7 +1553,9 @@ function compute_origin_relative_to_libexec()
 
   local folder_path="$1"
 
-  local relative_folder_path="$(realpath --relative-to="${folder_path}" "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
+  local realpath=$(which grealpath || which realpath)
+
+  local relative_folder_path="$(${realpath} --relative-to="${folder_path}" "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
 
   echo "\$ORIGIN/${relative_folder_path}"
 }
@@ -1566,7 +1572,9 @@ function compute_origin_relative_to_path()
   local reference_folder_path="$1"
   local folder_path="$2"
 
-  local relative_folder_path="$(realpath --relative-to="${folder_path}" "${reference_folder_path}")"
+  local realpath=$(which grealpath || which realpath)
+
+  local relative_folder_path="$(${realpath} --relative-to="${folder_path}" "${reference_folder_path}")"
 
   echo "\$ORIGIN/${relative_folder_path}"
 }
