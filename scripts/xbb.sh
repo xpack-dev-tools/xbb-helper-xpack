@@ -564,6 +564,8 @@ function xbb_activate_installed_bin()
     PATH="${XBB_TEST_BIN_PATH}:${PATH}"
   fi
 
+  hash -r
+
   export PATH
 }
 
