@@ -31,6 +31,8 @@ function build_realpath()
 
   local realpath_folder_name="${realpath_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${realpath_folder_name}"
+
   local realpath_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${realpath_folder_name}-installed"
   if [ ! -f "${realpath_stamp_file_path}" ]
   then
@@ -51,8 +53,6 @@ function build_realpath()
         mv -v "${realpath_src_folder_name}" "${realpath_folder_name}"
       fi
     fi
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${realpath_folder_name}"
 
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${realpath_folder_name}"
@@ -153,6 +153,8 @@ function build_scons()
 
   local scons_folder_name="scons-${scons_version}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${scons_folder_name}"
+
   local scons_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${scons_folder_name}-installed"
   if [ ! -f "${scons_stamp_file_path}" ]
   then
@@ -176,8 +178,6 @@ function build_scons()
         mv -v "${scons_folder_name}-tmp" "${scons_folder_name}"
       fi
     fi
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${scons_folder_name}"
 
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${scons_folder_name}"
@@ -251,187 +251,6 @@ function test_scons()
 
 # -----------------------------------------------------------------------------
 
-function build_pkg_config()
-{
-  # https://www.freedesktop.org/wiki/Software/pkg-config/
-  # https://pkgconfig.freedesktop.org/releases/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/pkgconf/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/pkgconf/files/PKGBUILD
-
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=pkg-config-git
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/pkg-config.rb
-
-  # 2017-03-20, "0.29.2", latest
-
-  local pkg_config_version="$1"
-
-  local pkg_config_src_folder_name="pkg-config-${pkg_config_version}"
-
-  local pkg_config_archive="${pkg_config_src_folder_name}.tar.gz"
-  local pkg_config_url="https://pkgconfig.freedesktop.org/releases/${pkg_config_archive}"
-  # local pkg_config_url="https://github.com/gnu-mcu-eclipse/files/raw/master/libs/${pkg_config_archive}"
-
-  local pkg_config_folder_name="${pkg_config_src_folder_name}"
-
-  local pkg_config_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${pkg_config_folder_name}-installed"
-  if [ ! -f "${pkg_config_stamp_file_path}" ]
-  then
-
-    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
-
-    download_and_extract "${pkg_config_url}" "${pkg_config_archive}" \
-      "${pkg_config_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${pkg_config_folder_name}"
-
-    (
-      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${pkg_config_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${pkg_config_folder_name}"
-
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
-      then
-        # error: variably modified 'bytes' at file scope
-        prepare_clang_env ""
-      fi
-
-      xbb_activate_installed_dev
-
-      CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
-      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
-      then
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
-      fi
-
-      export CPPFLAGS
-      export CFLAGS
-      export CXXFLAGS
-      export LDFLAGS
-
-      if [ ! -f "config.status" ]
-      then
-        (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
-
-          echo
-          echo "Running pkg_config configure..."
-
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${pkg_config_src_folder_name}/configure" --help
-            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${pkg_config_src_folder_name}/glib/configure" --help
-          fi
-
-          config_options=()
-
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
-
-          config_options+=("--build=${XBB_BUILD}")
-          config_options+=("--host=${XBB_HOST}")
-          config_options+=("--target=${XBB_TARGET}")
-
-          config_options+=("--with-internal-glib") # HB
-          config_options+=("--with-pc-path=")
-
-          # On Intel Linux
-          # gconvert.c:61:2: error: #error GNU libiconv not in use but included iconv.h is from libiconv
-          config_options+=("--with-libiconv=yes")
-
-          config_options+=("--disable-debug") # HB
-          config_options+=("--disable-host-tool") # HB
-
-          # --with-internal-glib fails with
-          # gconvert.c:61:2: error: #error GNU libiconv not in use but included iconv.h is from libiconv
-          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${pkg_config_src_folder_name}/configure" \
-            "${config_options[@]}"
-
-          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${pkg_config_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${pkg_config_folder_name}/configure-output-$(ndate).txt"
-      fi
-
-      (
-        echo
-        echo "Running pkg_config make..."
-
-        # Build.
-        run_verbose make -j ${XBB_JOBS}
-
-        if [ "${XBB_WITH_STRIP}" == "y" ]
-        then
-          run_verbose make install-strip
-        else
-          run_verbose make install
-        fi
-
-        # Extra: pkg-config-verbose
-        run_verbose cp -v "${helper_folder_path}/extras/pkg-config-verbose" \
-          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-        run_verbose chmod +x "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/pkg-config-verbose"
-
-        if [ "${XBB_WITH_TESTS}" == "y" ]
-        then
-          run_verbose make -j1 check
-        fi
-
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${pkg_config_folder_name}/make-output-$(ndate).txt"
-
-      copy_license \
-        "${XBB_SOURCES_FOLDER_PATH}/${pkg_config_src_folder_name}" \
-        "${pkg_config_folder_name}"
-    )
-
-    (
-      test_pkg_config "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${pkg_config_folder_name}/test-output-$(ndate).txt"
-
-    hash -r
-
-    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
-    touch "${pkg_config_stamp_file_path}"
-
-  else
-    echo "Component pkg_config already installed."
-  fi
-
-  tests_add "test_pkg_config" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-}
-
-function test_pkg_config()
-{
-  local test_bin_folder_path="$1"
-
-  (
-    echo
-    echo "Checking the pkg_config binaries shared libraries..."
-
-    show_libs "${test_bin_folder_path}/pkg-config"
-
-    echo
-    echo "Testing if pkg_config binaries start properly..."
-
-    run_app "${test_bin_folder_path}/pkg-config" --version
-    (
-      xbb_activate_installed_bin
-      run_app "${test_bin_folder_path}/pkg-config-verbose" --version
-    )
-  )
-}
-
-# -----------------------------------------------------------------------------
 
 function build_curl()
 {
@@ -462,6 +281,8 @@ function build_curl()
 
   local curl_folder_name="curl-${curl_version}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${curl_folder_name}"
+
   local curl_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${curl_folder_name}-installed"
   if [ ! -f "${curl_stamp_file_path}" ]
   then
@@ -471,8 +292,6 @@ function build_curl()
 
     download_and_extract "${curl_url}" "${curl_archive}" \
       "${curl_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${curl_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${curl_folder_name}"
@@ -686,6 +505,8 @@ function build_tar()
 
   local tar_folder_name="${tar_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${tar_folder_name}"
+
   local tar_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${tar_folder_name}-installed"
   if [ ! -f "${tar_stamp_file_path}" ]
   then
@@ -706,8 +527,6 @@ function build_tar()
         mv -v "${tar_src_folder_name}" "${tar_folder_name}"
       fi
     fi
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${tar_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${tar_folder_name}"
@@ -890,208 +709,6 @@ function test_tar()
 
 # -----------------------------------------------------------------------------
 
-function build_libtool()
-{
-  # https://www.gnu.org/software/libtool/
-  # http://ftpmirror.gnu.org/libtool/
-  # http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz
-
-  # https://archlinuxarm.org/packages/aarch64/libtool/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libtool-git
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libtool.rb
-
-  # 15-Feb-2015, "2.4.6", latest
-
-  local libtool_version="$1"
-
-  local step
-  if [ $# -ge 2 ]
-  then
-    step="$2"
-  else
-    step=""
-  fi
-
-  local libtool_src_folder_name="libtool-${libtool_version}"
-
-  local libtool_archive="${libtool_src_folder_name}.tar.xz"
-  local libtool_url="http://ftp.hosteurope.de/mirror/ftp.gnu.org/gnu/libtool/${libtool_archive}"
-
-  local libtool_folder_name="libtool${step}-${libtool_version}"
-
-  local libtool_patch_file_name="${libtool_folder_name}.patch"
-
-  local libtool_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libtool_folder_name}-installed"
-  if [ ! -f "${libtool_stamp_file_path}" ]
-  then
-
-    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
-
-    download_and_extract "${libtool_url}" "${libtool_archive}" \
-      "${libtool_src_folder_name}" "${libtool_patch_file_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libtool_folder_name}"
-
-    (
-      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libtool_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libtool_folder_name}"
-
-      xbb_activate_installed_bin
-      # The new CC was set before the call.
-      xbb_activate_installed_dev
-
-      CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
-      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
-      then
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
-      fi
-
-      export CPPFLAGS
-      export CFLAGS
-      export CXXFLAGS
-      export LDFLAGS
-
-      if [ ! -f "config.status" ]
-      then
-        (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
-
-          echo
-          echo "Running libtool configure..."
-
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libtool_src_folder_name}/configure" --help
-          fi
-
-          # From HomeBrew: Ensure configure is happy with the patched files
-          for f in aclocal.m4 libltdl/aclocal.m4 Makefile.in libltdl/Makefile.in config-h.in libltdl/config-h.in configure libltdl/configure
-          do
-            touch "${XBB_SOURCES_FOLDER_PATH}/${libtool_src_folder_name}/$f"
-          done
-
-          config_options=()
-
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
-
-          config_options+=("--build=${XBB_BUILD}")
-          config_options+=("--host=${XBB_HOST}")
-          config_options+=("--target=${XBB_TARGET}")
-
-          config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            config_options+=("--disable-silent-rules") # HB
-          fi
-
-          config_options+=("--enable-ltdl-install") # HB
-
-          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libtool_src_folder_name}/configure" \
-            "${config_options[@]}"
-
-          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libtool_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libtool_folder_name}/configure-output-$(ndate).txt"
-      fi
-
-      (
-        echo
-        echo "Running libtool make..."
-
-        # Build.
-        run_verbose make -j ${XBB_JOBS}
-
-        if [ "${XBB_WITH_STRIP}" == "y" ]
-        then
-          run_verbose make install-strip
-        else
-          run_verbose make install
-        fi
-
-        (
-          echo
-          echo "Linking glibtool..."
-          cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-          rm -fv glibtool glibtoolize
-          ln -sv libtool glibtool
-          ln -sv libtoolize glibtoolize
-        )
-
-        # amd64: ERROR: 139 tests were run,
-        # 11 failed (5 expected failures).
-        # 31 tests were skipped.
-        # It takes too long (170 tests).
-        if false # [ "${RUN_LONG_TESTS}" == "y" ]
-        then
-          make -j1 check gl_public_submodule_commit=
-        fi
-
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libtool_folder_name}/make-output-$(ndate).txt"
-
-      copy_license \
-        "${XBB_SOURCES_FOLDER_PATH}/${libtool_src_folder_name}" \
-        "${libtool_folder_name}"
-    )
-
-    (
-      test_libtool_libs
-      test_libtool "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libtool_folder_name}/test-output-$(ndate).txt"
-
-    hash -r
-
-    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
-    touch "${libtool_stamp_file_path}"
-
-  else
-    echo "Component libtool already installed."
-  fi
-
-  if [ -z "${step}" ]
-  then
-    : # tests_add "test_libtool" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-  fi
-}
-
-function test_libtool_libs()
-{
-  echo
-  echo "Checking the libtool shared libraries..."
-
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libltdl.${XBB_SHLIB_EXT}"
-}
-
-function test_libtool()
-{
-  local test_bin_folder_path="$1"
-
-  (
-    echo
-    echo "Testing if libtool binaries start properly..."
-
-    run_app "${test_bin_folder_path}/libtool" --version
-
-    echo
-    echo "Testing if libtool binaries display help..."
-
-    run_app "${test_bin_folder_path}/libtool" --help
-  )
-}
-
-# -----------------------------------------------------------------------------
 
 function build_guile()
 {
@@ -1117,6 +734,8 @@ function build_guile()
 
   local guile_folder_name="${guile_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${guile_folder_name}"
+
   local guile_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${guile_folder_name}-installed"
   if [ ! -f "${guile_stamp_file_path}" ]
   then
@@ -1126,8 +745,6 @@ function build_guile()
 
     download_and_extract "${guile_url}" "${guile_archive}" \
       "${guile_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${guile_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}"
@@ -1310,6 +927,8 @@ function build_autogen()
 
   local autogen_folder_name="${autogen_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${autogen_folder_name}"
+
   local autogen_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${autogen_folder_name}-installed"
   if [ ! -f "${autogen_stamp_file_path}" ]
   then
@@ -1319,8 +938,6 @@ function build_autogen()
 
     download_and_extract "${autogen_url}" "${autogen_archive}" \
       "${autogen_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${autogen_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}"
@@ -1492,239 +1109,6 @@ function test_autogen()
 
 # -----------------------------------------------------------------------------
 
-function build_coreutils()
-{
-  # https://www.gnu.org/software/coreutils/
-  # https://ftp.gnu.org/gnu/coreutils/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/coreutils/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/coreutils/files/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/coreutils.rb
-
-  # 2018-07-01, "8.30"
-  # 2019-03-10 "8.31"
-  # 2020-03-05, "8.32"
-  # 2021-09-24, "9.0"
-
-  local coreutils_version="$1"
-
-  local coreutils_src_folder_name="coreutils-${coreutils_version}"
-
-  local coreutils_archive="${coreutils_src_folder_name}.tar.xz"
-  local coreutils_url="https://ftp.gnu.org/gnu/coreutils/${coreutils_archive}"
-
-  local coreutils_folder_name="${coreutils_src_folder_name}"
-
-  local coreutils_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${coreutils_folder_name}-installed"
-  if [ ! -f "${coreutils_stamp_file_path}" ]
-  then
-
-    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
-
-    download_and_extract "${coreutils_url}" "${coreutils_archive}" \
-      "${coreutils_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${coreutils_folder_name}"
-
-    (
-      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${coreutils_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${coreutils_folder_name}"
-
-      xbb_activate_installed_dev
-
-      CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
-      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
-      then
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
-      fi
-
-      export CPPFLAGS
-      export CFLAGS
-      export CXXFLAGS
-      export LDFLAGS
-
-      if [ ! -f "config.status" ]
-      then
-        (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
-
-          echo
-          echo "Running coreutils configure..."
-
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${coreutils_src_folder_name}/configure" --help
-          fi
-
-          if [ "${HOME}" == "/root" ]
-          then
-            # configure: error: you should not run configure as root
-            # (set FORCE_UNSAFE_CONFIGURE=1 in environment to bypass this check)
-            export FORCE_UNSAFE_CONFIGURE=1
-          fi
-
-          config_options=()
-
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
-
-          config_options+=("--build=${XBB_BUILD}")
-          config_options+=("--host=${XBB_HOST}")
-          config_options+=("--target=${XBB_TARGET}")
-
-          config_options+=("--without-selinux") # HB
-
-          config_options+=("--with-universal-archs=${XBB_TARGET_BITS}-bit")
-          config_options+=("--with-computed-gotos")
-          config_options+=("--with-dbmliborder=gdbm:ndbm")
-
-          config_options+=("--with-openssl") # Arch
-
-          config_options+=("--with-gmp") # HB
-
-          config_options+=("--disable-debug") # HB
-          config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            config_options+=("--disable-silent-rules") # HB
-          fi
-
-          config_options+=("--disable-nls")
-
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
-          then
-            # --program-prefix=g # HB
-            # `ar` must be excluded, it interferes with Apple similar program.
-            config_options+=("--enable-no-install-program=ar")
-          fi
-
-          # --enable-no-install-program=groups,hostname,kill,uptime # Arch
-
-          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${coreutils_src_folder_name}/configure" \
-            "${config_options[@]}"
-
-          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${coreutils_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${coreutils_folder_name}/configure-output-$(ndate).txt"
-      fi
-
-      (
-        echo
-        echo "Running coreutils make..."
-
-        # Build.
-        run_verbose make -j ${XBB_JOBS}
-
-        if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
-        then
-          # Strip fails with:
-          # 2022-10-01T12:53:19.6394770Z /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/strip: error: symbols referenced by indirect symbol table entries that can't be stripped in: /Users/ilg/Work/xbb-bootstrap-4.0/darwin-arm64/install/xbb-bootstrap/libexec/coreutils/_inst.24110_
-          run_verbose make install
-        else
-          if [ "${XBB_WITH_STRIP}" == "y" ]
-          then
-            run_verbose make install-strip
-          else
-            run_verbose make install
-          fi
-        fi
-
-        # Takes very long and fails.
-        # x86_64: FAIL: tests/misc/chroot-credentials.sh
-        # x86_64: ERROR: tests/du/long-from-unreadable.sh
-        # WARN-TEST
-        # make -j1 check
-
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${coreutils_folder_name}/make-output-$(ndate).txt"
-
-      copy_license \
-        "${XBB_SOURCES_FOLDER_PATH}/${coreutils_src_folder_name}" \
-        "${coreutils_folder_name}"
-    )
-
-    (
-      test_coreutils "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${coreutils_folder_name}/test-output-$(ndate).txt"
-
-    hash -r
-
-    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
-    touch "${coreutils_stamp_file_path}"
-
-  else
-    echo "Component coreutils already installed."
-  fi
-
-  tests_add "test_coreutils" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-}
-
-function test_coreutils()
-{
-  local test_bin_folder_path="$1"
-
-  (
-    echo
-    echo "Checking the coreutils binaries shared libraries..."
-
-    show_libs "${test_bin_folder_path}/basename"
-    show_libs "${test_bin_folder_path}/cat"
-    show_libs "${test_bin_folder_path}/chmod"
-    show_libs "${test_bin_folder_path}/chown"
-    show_libs "${test_bin_folder_path}/cp"
-    show_libs "${test_bin_folder_path}/dirname"
-    show_libs "${test_bin_folder_path}/ln"
-    show_libs "${test_bin_folder_path}/ls"
-    show_libs "${test_bin_folder_path}/mkdir"
-    show_libs "${test_bin_folder_path}/mv"
-    show_libs "${test_bin_folder_path}/printf"
-    show_libs "${test_bin_folder_path}/realpath"
-    show_libs "${test_bin_folder_path}/rm"
-    show_libs "${test_bin_folder_path}/rmdir"
-    show_libs "${test_bin_folder_path}/sha256sum"
-    show_libs "${test_bin_folder_path}/sort"
-    show_libs "${test_bin_folder_path}/touch"
-    show_libs "${test_bin_folder_path}/tr"
-    show_libs "${test_bin_folder_path}/wc"
-
-    echo
-    echo "Testing if coreutils binaries start properly..."
-
-    echo
-    run_app "${test_bin_folder_path}/basename" --version
-    run_app "${test_bin_folder_path}/cat" --version
-    run_app "${test_bin_folder_path}/chmod" --version
-    run_app "${test_bin_folder_path}/chown" --version
-    run_app "${test_bin_folder_path}/cp" --version
-    run_app "${test_bin_folder_path}/dirname" --version
-    run_app "${test_bin_folder_path}/ln" --version
-    run_app "${test_bin_folder_path}/ls" --version
-    run_app "${test_bin_folder_path}/mkdir" --version
-    run_app "${test_bin_folder_path}/mv" --version
-    run_app "${test_bin_folder_path}/printf" --version
-    run_app "${test_bin_folder_path}/realpath" --version
-    run_app "${test_bin_folder_path}/rm" --version
-    run_app "${test_bin_folder_path}/rmdir" --version
-    run_app "${test_bin_folder_path}/sha256sum" --version
-    run_app "${test_bin_folder_path}/sort" --version
-    run_app "${test_bin_folder_path}/touch" --version
-    run_app "${test_bin_folder_path}/tr" --version
-    run_app "${test_bin_folder_path}/wc" --version
-  )
-}
-
-# -----------------------------------------------------------------------------
 
 function build_m4()
 {
@@ -1749,6 +1133,8 @@ function build_m4()
 
   local m4_folder_name="${m4_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${m4_folder_name}"
+
   local m4_patch_file_name="${m4_folder_name}.patch"
   local m4_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${m4_folder_name}-installed"
   if [ ! -f "${m4_stamp_file_path}" ]
@@ -1760,8 +1146,6 @@ function build_m4()
     download_and_extract "${m4_url}" "${m4_archive}" \
       "${m4_src_folder_name}" \
       "${m4_patch_file_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${m4_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${m4_folder_name}"
@@ -1945,6 +1329,8 @@ function build_gawk()
 
   local gawk_folder_name="${gawk_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gawk_folder_name}"
+
   local gawk_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${gawk_folder_name}-installed"
   if [ ! -f "${gawk_stamp_file_path}" ]
   then
@@ -1954,8 +1340,6 @@ function build_gawk()
 
     download_and_extract "${gawk_url}" "${gawk_archive}" \
       "${gawk_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gawk_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gawk_folder_name}"
@@ -2138,6 +1522,8 @@ function build_sed()
 
   local sed_folder_name="${sed_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${sed_folder_name}"
+
   local sed_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${sed_folder_name}-installed"
   if [ ! -f "${sed_stamp_file_path}" ]
   then
@@ -2147,8 +1533,6 @@ function build_sed()
 
     download_and_extract "${sed_url}" "${sed_archive}" \
       "${sed_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${sed_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${sed_folder_name}"
@@ -2317,166 +1701,6 @@ function test_sed()
 
 # -----------------------------------------------------------------------------
 
-function build_autoconf()
-{
-  # https://www.gnu.org/software/autoconf/
-  # https://ftp.gnu.org/gnu/autoconf/
-
-  # https://archlinuxarm.org/packages/any/autoconf2.13/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=autoconf-git
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/autoconf.rb
-
-  # 2012-04-24, "2.69"
-  # 2021-01-28, "2.71"
-
-  local autoconf_version="$1"
-
-  local autoconf_src_folder_name="autoconf-${autoconf_version}"
-
-  local autoconf_archive="${autoconf_src_folder_name}.tar.xz"
-  local autoconf_url="https://ftp.gnu.org/gnu/autoconf/${autoconf_archive}"
-
-  local autoconf_folder_name="${autoconf_src_folder_name}"
-
-  local autoconf_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${autoconf_folder_name}-installed"
-  if [ ! -f "${autoconf_stamp_file_path}" ]
-  then
-
-    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
-
-    download_and_extract "${autoconf_url}" "${autoconf_archive}" \
-      "${autoconf_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${autoconf_folder_name}"
-
-    (
-      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${autoconf_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${autoconf_folder_name}"
-
-      xbb_activate_installed_dev
-
-      CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
-      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
-      then
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
-      fi
-
-      export CPPFLAGS
-      export CFLAGS
-      export CXXFLAGS
-      export LDFLAGS
-
-      if [ ! -f "config.status" ]
-      then
-        (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
-
-          echo
-          echo "Running autoconf configure..."
-
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${autoconf_src_folder_name}/configure" --help
-          fi
-
-          config_options=()
-
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
-
-          config_options+=("--build=${XBB_BUILD}")
-          config_options+=("--host=${XBB_HOST}")
-          config_options+=("--target=${XBB_TARGET}")
-
-          config_options+=("--with-universal-archs=${XBB_TARGET_BITS}-bit")
-          config_options+=("--with-computed-gotos")
-          config_options+=("--with-dbmliborder=gdbm:ndbm")
-
-          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${autoconf_src_folder_name}/configure" \
-            "${config_options[@]}"
-
-          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${autoconf_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${autoconf_folder_name}/configure-output-$(ndate).txt"
-      fi
-
-      (
-        echo
-        echo "Running autoconf make..."
-
-        # Build.
-        run_verbose make -j ${XBB_JOBS}
-
-        if [ "${XBB_WITH_STRIP}" == "y" ]
-        then
-          run_verbose make install-strip
-        else
-          run_verbose make install
-        fi
-
-        if false # [ "${RUN_LONG_TESTS}" == "y" ]
-        then
-          # 500 tests, 7 fail.
-          make -j1 check
-        fi
-
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${autoconf_folder_name}/make-output-$(ndate).txt"
-
-      copy_license \
-        "${XBB_SOURCES_FOLDER_PATH}/${autoconf_src_folder_name}" \
-        "${autoconf_folder_name}"
-    )
-
-    (
-      test_autoconf "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${autoconf_folder_name}/test-output-$(ndate).txt"
-
-    hash -r
-
-    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
-    touch "${autoconf_stamp_file_path}"
-
-  else
-    echo "Component autoconf already installed."
-  fi
-
-  tests_add "test_autoconf" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-}
-
-function test_autoconf()
-{
-  local test_bin_folder_path="$1"
-
-  (
-    echo
-    echo "Testing if autoconf scripts start properly..."
-
-    run_app "${test_bin_folder_path}/autoconf" --version
-
-    # Can't locate Autom4te/ChannelDefs.pm in @INC (you may need to install the Autom4te::ChannelDefs module) (@INC contains: /Users/ilg/Work/xbb-bootstrap-4.0.0/darwin-x64/install/libs/share/autoconf /Users/ilg/.local/xbb/lib/perl5/site_perl/5.34.0/darwin-thread-multi-2level /Users/ilg/.local/xbb/lib/perl5/site_perl/5.34.0 /Users/ilg/.local/xbb/lib/perl5/5.34.0/darwin-thread-multi-2level /Users/ilg/.local/xbb/lib/perl5/5.34.0) at /Users/ilg/Work/xbb-bootstrap-4.0.0/darwin-x64/install/xbb-bootstrap/bin/autoheader line 45.
-    # BEGIN failed--compilation aborted at /Users/ilg/Work/xbb-bootstrap-4.0.0/darwin-x64/install/xbb-bootstrap/bin/autoheader line 45.
-    # run_app "${test_bin_folder_path}/autoheader" --version
-
-    # run_app "${test_bin_folder_path}/autoscan" --version
-    # run_app "${test_bin_folder_path}/autoupdate" --version
-
-    # No ELFs, only scripts.
-  )
-}
-
-# -----------------------------------------------------------------------------
 
 function build_patch()
 {
@@ -2501,6 +1725,8 @@ function build_patch()
 
   local patch_folder_name="${patch_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${patch_folder_name}"
+
   local patch_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${patch_folder_name}-installed"
   if [ ! -f "${patch_stamp_file_path}" ]
   then
@@ -2510,8 +1736,6 @@ function build_patch()
 
     download_and_extract "${patch_url}" "${patch_archive}" \
       "${patch_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${patch_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${patch_folder_name}"
@@ -2662,6 +1886,8 @@ function build_diffutils()
 
   local diffutils_folder_name="${diffutils_src_folder_name}"
 
+   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${diffutils_folder_name}"
+
   local diffutils_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${diffutils_folder_name}-installed"
   if [ ! -f "${diffutils_stamp_file_path}" ]
   then
@@ -2671,8 +1897,6 @@ function build_diffutils()
 
     download_and_extract "${diffutils_url}" "${diffutils_archive}" \
       "${diffutils_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${diffutils_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${diffutils_folder_name}"
@@ -2851,6 +2075,8 @@ function build_bison()
 
   local bison_folder_name="${bison_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${bison_folder_name}"
+
   local bison_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${bison_folder_name}-installed"
   if [ ! -f "${bison_stamp_file_path}" ]
   then
@@ -2860,8 +2086,6 @@ function build_bison()
 
     download_and_extract "${bison_url}" "${bison_archive}" \
       "${bison_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${bison_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${bison_folder_name}"
@@ -3070,6 +2294,8 @@ function build_make()
   # glob/libglob.a(glob.o): In function `glob_in_dir':
   # glob.c:(.text.glob_in_dir+0x90): undefined reference to `__alloca'
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${make_folder_name}"
+
   local make_patch_file_name="${make_folder_name}.patch"
   local make_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${make_folder_name}-installed"
   if [ ! -f "${make_stamp_file_path}" ]
@@ -3081,8 +2307,6 @@ function build_make()
     download_and_extract "${make_url}" "${make_archive}" \
       "${make_src_folder_name}" \
       "${make_patch_file_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${make_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${make_folder_name}"
@@ -3249,6 +2473,8 @@ function build_bash()
 
   local bash_folder_name="${bash_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${bash_folder_name}"
+
   local bash_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${bash_folder_name}-installed"
   if [ ! -f "${bash_stamp_file_path}" ]
   then
@@ -3258,8 +2484,6 @@ function build_bash()
 
     download_and_extract "${bash_url}" "${bash_archive}" \
       "${bash_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${bash_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${bash_folder_name}"
@@ -3423,6 +2647,8 @@ function build_wget()
 
   local wget_folder_name="${wget_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${wget_folder_name}"
+
   local wget_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${wget_folder_name}-installed"
   if [ ! -f "${wget_stamp_file_path}" ]
   then
@@ -3432,8 +2658,6 @@ function build_wget()
 
     download_and_extract "${wget_url}" "${wget_archive}" \
       "${wget_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${wget_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${wget_folder_name}"
@@ -3585,176 +2809,6 @@ function test_wget()
 
 # -----------------------------------------------------------------------------
 
-function build_texinfo()
-{
-  # https://www.gnu.org/software/texinfo/
-  # https://ftp.gnu.org/gnu/texinfo/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/texinfo/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/texinfo/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=texinfo-svn
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/texinfo.rb
-
-  # 2017-09-12, "6.5"
-  # 2019-02-16, "6.6"
-  # 2019-09-23, "6.7"
-  # 2021-07-03, "6.8"
-
-  local texinfo_version="$1"
-
-  local texinfo_src_folder_name="texinfo-${texinfo_version}"
-
-  local texinfo_archive="${texinfo_src_folder_name}.tar.gz"
-  local texinfo_url="https://ftp.gnu.org/gnu/texinfo/${texinfo_archive}"
-
-  local texinfo_folder_name="${texinfo_src_folder_name}"
-
-  local texinfo_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${texinfo_folder_name}-installed"
-  if [ ! -f "${texinfo_stamp_file_path}" ]
-  then
-
-    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
-
-    download_and_extract "${texinfo_url}" "${texinfo_archive}" \
-      "${texinfo_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${texinfo_folder_name}"
-
-    (
-      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${texinfo_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${texinfo_folder_name}"
-
-      xbb_activate_installed_dev
-
-      CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
-      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
-      then
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
-      fi
-
-      export CPPFLAGS
-      export CFLAGS
-      export CXXFLAGS
-      export LDFLAGS
-
-      if [ ! -f "config.status" ]
-      then
-        (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
-
-          echo
-          echo "Running texinfo configure..."
-
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${texinfo_src_folder_name}/configure" --help
-          fi
-
-          config_options=()
-
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
-
-          config_options+=("--build=${XBB_BUILD}")
-          config_options+=("--host=${XBB_HOST}")
-          config_options+=("--target=${XBB_TARGET}")
-
-          config_options+=("--disable-debug") # HB
-          config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            config_options+=("--disable-silent-rules") # HB
-          fi
-
-          config_options+=("--disable-install-warnings") # HB
-
-          config_options+=("--disable-nls")
-
-          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${texinfo_src_folder_name}/configure" \
-            "${config_options[@]}"
-
-          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${texinfo_folder_name}/config-log-$(ndate).txt"
-        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${texinfo_folder_name}/configure-output-$(ndate).txt"
-      fi
-
-      (
-        echo
-        echo "Running texinfo make..."
-
-        # Build.
-        run_verbose make -j ${XBB_JOBS}
-
-        if [ "${XBB_WITH_STRIP}" == "y" ]
-        then
-          run_verbose make install-strip
-        else
-          run_verbose make install
-        fi
-
-        # Darwin: FAIL: t/94htmlxref.t 11 - htmlxref errors file_html
-        # Darwin: ERROR: t/94htmlxref.t - exited with status 2
-
-        if [ "${XBB_WITH_TESTS}" == "y" ]
-        then
-          if false # is_darwin
-          then
-            run_verbose make -j1 check || true
-          else
-            run_verbose make -j1 check
-          fi
-        fi
-
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${texinfo_folder_name}/make-output-$(ndate).txt"
-
-      copy_license \
-        "${XBB_SOURCES_FOLDER_PATH}/${texinfo_src_folder_name}" \
-        "${texinfo_folder_name}"
-    )
-
-    (
-      test_texinfo "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${texinfo_folder_name}/test-output-$(ndate).txt"
-
-    hash -r
-
-    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
-    touch "${texinfo_stamp_file_path}"
-
-  else
-    echo "Component texinfo already installed."
-  fi
-
-  tests_add "test_texinfo" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-}
-
-function test_texinfo()
-{
-  local test_bin_folder_path="$1"
-
-  (
-    echo
-    echo "Testing if texinfo scripts start properly..."
-
-    run_app "${test_bin_folder_path}/texi2pdf" --version
-
-    # No ELFs, it is a script.
-  )
-}
-
-# -----------------------------------------------------------------------------
 
 function build_dos2unix()
 {
@@ -3780,6 +2834,8 @@ function build_dos2unix()
 
   local dos2unix_folder_name="${dos2unix_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${dos2unix_folder_name}"
+
   local dos2unix_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${dos2unix_folder_name}-installed"
   if [ ! -f "${dos2unix_stamp_file_path}" ]
   then
@@ -3800,8 +2856,6 @@ function build_dos2unix()
         mv -v "${dos2unix_src_folder_name}" "${dos2unix_folder_name}"
       fi
     fi
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${dos2unix_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${dos2unix_folder_name}"
@@ -3935,6 +2989,8 @@ function build_flex()
 
   local flex_folder_name="${flex_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${flex_folder_name}"
+
   local flex_patch_file_name="${flex_folder_name}.git.patch"
   local flex_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${flex_folder_name}-installed"
   if [ ! -f "${flex_stamp_file_path}" ]
@@ -3946,8 +3002,6 @@ function build_flex()
     download_and_extract "${flex_url}" "${flex_archive}" \
       "${flex_src_folder_name}" \
       "${flex_patch_file_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${flex_folder_name}"
 
     (
       cd "${XBB_SOURCES_FOLDER_PATH}/${flex_src_folder_name}"
@@ -4170,6 +3224,8 @@ function build_perl()
 
   local perl_folder_name="${perl_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${perl_folder_name}"
+
   # Fix an incompatibility with libxcrypt and glibc.
   # https://groups.google.com/forum/#!topic/perl.perl5.porters/BTMp2fQg8q4
   local perl_patch_file_name="${perl_folder_name}.patch"
@@ -4194,8 +3250,6 @@ function build_perl()
         mv -v "${perl_src_folder_name}" "${perl_folder_name}"
       fi
     fi
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${perl_folder_name}"
 
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${perl_folder_name}"
@@ -4399,6 +3453,8 @@ function build_tcl()
 
   local tcl_folder_name="${tcl_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${tcl_folder_name}"
+
   local tcl_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${tcl_folder_name}-installed"
   if [ ! -f "${tcl_stamp_file_path}" ]
   then
@@ -4408,8 +3464,6 @@ function build_tcl()
 
     download_and_extract "${tcl_url}" "${tcl_archive}" \
       "${tcl_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${tcl_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${tcl_folder_name}"
@@ -4617,6 +3671,8 @@ function build_git()
 
   local git_folder_name="${git_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${git_folder_name}"
+
   local git_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${git_folder_name}-installed"
   if [ ! -f "${git_stamp_file_path}" ]
   then
@@ -4637,8 +3693,6 @@ function build_git()
         mv -v "${git_src_folder_name}" "${git_folder_name}"
       fi
     fi
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${git_folder_name}"
 
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${git_folder_name}"
@@ -4806,6 +3860,8 @@ function build_p7zip()
 
   local p7zip_folder_name="p7zip-${p7zip_version}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${p7zip_folder_name}"
+
   local p7zip_patch_file_name="p7zip-${p7zip_version}.git.patch"
   local p7zip_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${p7zip_folder_name}-installed"
   if [ ! -f "${p7zip_stamp_file_path}" ]
@@ -4827,8 +3883,6 @@ function build_p7zip()
         mv -v "${p7zip_src_folder_name}" "${p7zip_folder_name}"
       fi
     fi
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${p7zip_folder_name}"
 
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${p7zip_folder_name}"
@@ -4961,6 +4015,8 @@ function build_rhash()
 
   local rhash_folder_name="rhash-${rhash_version}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${rhash_folder_name}"
+
   local rhash_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${rhash_folder_name}-installed"
   if [ ! -f "${rhash_stamp_file_path}" ]
   then
@@ -4983,8 +4039,6 @@ function build_rhash()
         mv -v "${rhash_folder_name}-tmp" "${rhash_folder_name}"
       fi
     fi
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${rhash_folder_name}"
 
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${rhash_folder_name}"
@@ -5144,6 +4198,8 @@ function build_re2c()
 
   local re2c_folder_name="${re2c_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${re2c_folder_name}"
+
   local re2c_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${re2c_folder_name}-installed"
   if [ ! -f "${re2c_stamp_file_path}" ]
   then
@@ -5164,8 +4220,6 @@ function build_re2c()
         mv -v "${re2c_src_folder_name}" "${re2c_folder_name}"
       fi
     fi
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${re2c_folder_name}"
 
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${re2c_folder_name}"
@@ -5355,6 +4409,8 @@ function build_gnupg()
 
   local gnupg_folder_name="${gnupg_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gnupg_folder_name}"
+
   local gnupg_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${gnupg_folder_name}-installed"
   if [ ! -f "${gnupg_stamp_file_path}" ]
   then
@@ -5364,8 +4420,6 @@ function build_gnupg()
 
     download_and_extract "${gnupg_url}" "${gnupg_archive}" \
       "${gnupg_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gnupg_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gnupg_folder_name}"
@@ -5564,6 +4618,8 @@ function build_makedepend()
 
   local makedepend_folder_name="${makedepend_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${makedepend_folder_name}"
+
   local makedepend_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${makedepend_folder_name}-installed"
   if [ ! -f "${makedepend_stamp_file_path}" ]
   then
@@ -5573,8 +4629,6 @@ function build_makedepend()
 
     download_and_extract "${makedepend_url}" "${makedepend_archive}" \
       "${makedepend_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${makedepend_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${makedepend_folder_name}"

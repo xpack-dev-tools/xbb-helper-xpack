@@ -40,6 +40,8 @@ function build_libtasn1()
 
   local libtasn1_folder_name="${libtasn1_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libtasn1_folder_name}"
+
   local libtasn1_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libtasn1_folder_name}-installed"
   if [ ! -f "${libtasn1_stamp_file_path}" ]
   then
@@ -49,8 +51,6 @@ function build_libtasn1()
 
     download_and_extract "${libtasn1_url}" "${libtasn1_archive}" \
       "${libtasn1_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libtasn1_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libtasn1_folder_name}"
@@ -175,6 +175,8 @@ function build_libunistring()
 
   local libunistring_folder_name="${libunistring_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libunistring_folder_name}"
+
   local libunistring_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${libunistring_folder_name}-installed"
   if [ ! -f "${libunistring_stamp_file_path}" ]
   then
@@ -184,8 +186,6 @@ function build_libunistring()
 
     download_and_extract "${libunistring_url}" "${libunistring_archive}" \
       "${libunistring_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libunistring_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libunistring_folder_name}"
@@ -320,6 +320,8 @@ function build_gc()
 
   local gc_folder_name="${gc_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gc_folder_name}"
+
   local gc_patch_file_name="${gc_folder_name}.patch.diff"
   local gc_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${gc_folder_name}-installed"
   if [ ! -f "${gc_stamp_file_path}" ]
@@ -330,8 +332,6 @@ function build_gc()
 
     download_and_extract "${gc_url}" "${gc_archive}" \
       "${gc_src_folder_name}" "${gc_patch_file_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gc_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gc_folder_name}"
@@ -507,6 +507,8 @@ function build_gnutls()
 
   local gnutls_folder_name="${gnutls_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gnutls_folder_name}"
+
   local gnutls_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${gnutls_folder_name}-installed"
   if [ ! -f "${gnutls_stamp_file_path}" ]
   then
@@ -516,8 +518,6 @@ function build_gnutls()
 
     download_and_extract "${gnutls_url}" "${gnutls_archive}" \
       "${gnutls_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gnutls_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gnutls_folder_name}"
@@ -722,6 +722,8 @@ function build_xorg_util_macros()
 
   local xorg_util_macros_folder_name="${xorg_util_macros_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${xorg_util_macros_folder_name}"
+
   local xorg_util_macros_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${xorg_util_macros_folder_name}-installed"
   if [ ! -f "${xorg_util_macros_stamp_file_path}" ]
   then
@@ -731,8 +733,6 @@ function build_xorg_util_macros()
 
     download_and_extract "${xorg_util_macros_url}" "${xorg_util_macros_archive}" \
       "${xorg_util_macros_src_folder_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${xorg_util_macros_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${xorg_util_macros_folder_name}"
@@ -852,6 +852,8 @@ function build_xorg_xproto()
 
   local xorg_xproto_folder_name="${xorg_xproto_src_folder_name}"
 
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${xorg_xproto_folder_name}"
+
   # Add aarch64 to the list of Arm architectures.
   local xorg_xproto_patch_file_name="${xorg_xproto_folder_name}.patch"
   local xorg_xproto_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${xorg_xproto_folder_name}-installed"
@@ -863,8 +865,6 @@ function build_xorg_xproto()
 
     download_and_extract "${xorg_xproto_url}" "${xorg_xproto_archive}" \
       "${xorg_xproto_src_folder_name}" "${xorg_xproto_patch_file_name}"
-
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${xorg_xproto_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${xorg_xproto_folder_name}"
