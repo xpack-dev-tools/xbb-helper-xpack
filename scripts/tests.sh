@@ -278,6 +278,50 @@ function tests_install_via_xpm()
   )
 }
 
+# -----------------------------------------------------------------------------
+
+function tests_update_system_common()
+{
+  local image_name="$1"
+
+  # Make sure that the minimum prerequisites are met.
+  if [[ ${image_name} == github-actions-ubuntu* ]]
+  then
+    : # sudo apt-get -qq install -y XXX
+  elif [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${image_name} == *raspbian* ]]
+  then
+    run_verbose apt-get -qq update
+    run_verbose apt-get -qq install -y git-core curl tar gzip lsb-release binutils
+  elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
+  then
+    run_verbose yum install -y -q git curl tar gzip redhat-lsb-core binutils which
+  elif [[ ${image_name} == *suse* ]]
+  then
+    run_verbose zypper -q --no-gpg-checks in -y git-core curl tar gzip lsb-release binutils findutils util-linux
+  elif [[ ${image_name} == *manjaro* ]]
+  then
+    # run_verbose pacman-mirrors -g
+    run_verbose pacman -S -y -q --noconfirm
+
+    # Update even if up to date (-yy) & upgrade (-u).
+    # pacman -S -yy -u -q --noconfirm
+    run_verbose pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
+  elif [[ ${image_name} == *archlinux* ]]
+  then
+    run_verbose pacman -S -y -q --noconfirm
+
+    # Update even if up to date (-yy) & upgrade (-u).
+    # pacman -S -yy -u -q --noconfirm
+    run_verbose pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
+  fi
+}
+
+# Redefine it in the application if more updates are needed.
+function tests_update_system()
+{
+  :
+}
+
 # =============================================================================
 
 function tests_perform_common()
@@ -292,6 +336,7 @@ function tests_perform_common()
       (
         # When running in a Docker container, the system may be minimal; update it.
         export LANG="C"
+        tests_update_system_common "${XBB_IMAGE_NAME}"
         tests_update_system "${XBB_IMAGE_NAME}"
       )
     fi
@@ -314,6 +359,7 @@ function tests_perform_common()
       (
         # Currently "ubuntu20".
         export LANG="C"
+        tests_update_system_common "${XBB_IMAGE_NAME}"
         tests_update_system "github-actions-${ImageOS}"
       )
     fi
