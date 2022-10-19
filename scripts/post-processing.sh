@@ -2112,7 +2112,7 @@ function create_archive()
 
       # Without --hard-dereference the hard links may be turned into
       # broken soft links on macOS.
-      cd "${XBB_INSTALL_FOLDER_PATH}"/archive
+      cd "${XBB_INSTALL_FOLDER_PATH}/archive"
       # -J uses xz for compression; best compression ratio.
       # -j uses bz2 for compression; good compression ratio.
       # -z uses gzip for compression; fair compression ratio.
