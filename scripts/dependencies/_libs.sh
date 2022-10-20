@@ -2384,13 +2384,8 @@ function build_glib2()
               "${config_options[@]}"
 
             # Disable SPLICE, it fails on CentOS.
-            local gsed_path=$(which gsed)
-            if [ ! -z "${gsed_path}" ]
-            then
-              run_verbose gsed -i -e '/#define HAVE_SPLICE 1/d' config.h
-            else
-              run_verbose sed -i -e '/#define HAVE_SPLICE 1/d' config.h
-            fi
+            local sed_path=$(which gsed || whioch sed || echo sed)
+            run_verbose "${sed_path}" -i -e '/#define HAVE_SPLICE 1/d' config.h
 
             cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${glib_folder_name}/config-log-$(ndate).txt"
           ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${glib_folder_name}/configure-output-$(ndate).txt"

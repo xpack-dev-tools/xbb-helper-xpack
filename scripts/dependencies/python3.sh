@@ -231,8 +231,8 @@ function test_python3()
 
     (
       xbb_activate_installed_bin
-      
-      local realpath=$(which grealpath || which realpath)
+
+      local realpath=$(which grealpath || which realpath || echo realpath)
       show_libs "$(dirname $(${realpath} ${test_bin_folder_path}/python3))/../lib/libpython3"*."${XBB_SHLIB_EXT}"
     )
 

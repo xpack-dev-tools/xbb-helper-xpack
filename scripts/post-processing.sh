@@ -213,8 +213,8 @@ function copy_dependencies_recursive()
 
   (
     # set -x
-    local realpath=$(which grealpath || which realpath)
-    local readlink=$(which greadlink || which readlink)
+    local realpath=$(which grealpath || which realpath || echo realpath)
+    local readlink=$(which greadlink || which readlink || echo readlink)
 
     local source_file_path="$1"
     local destination_folder_path="$2"
@@ -839,7 +839,7 @@ function is_darwin_dylib()
   local bin_path="$1"
   local real_path
 
-  local realpath=$(which grealpath || which realpath)
+  local realpath=$(which grealpath || which realpath || echo realpath)
 
   # Follow symlinks.
   if [ -L "${bin_path}" ]
@@ -1311,7 +1311,7 @@ function patch_linux_elf_origin()
 
   local do_require_rpath="${XBB_DO_REQUIRE_RPATH:-"y"}"
 
-  local patchelf=${PATCHELF:-$(which patchelf)}
+  local patchelf=${PATCHELF:-$(which patchelf || echo patchelf)}
   # run_verbose "${patchelf}" --version
   # run_verbose "${patchelf}" --help
 
@@ -1392,7 +1392,7 @@ function patch_linux_elf_set_rpath()
   then
     file "${file_path}"
   else
-    local patchelf=${PATCHELF:-$(which patchelf)}
+    local patchelf=${PATCHELF:-$(which patchelf || echo patchelf)}
     # run_verbose "${patchelf}" --version
     # run_verbose "${patchelf}" --help
 
@@ -1497,7 +1497,7 @@ function patch_linux_elf_add_rpath()
       new_rpath="${linux_rpaths_line}:${new_rpath}"
     fi
 
-    local patchelf=${PATCHELF:-$(which patchelf)}
+    local patchelf=${PATCHELF:-$(which patchelf || echo patchelf)}
     # run_verbose "${patchelf}" --version
     # run_verbose "${patchelf}" --help
 
@@ -1553,7 +1553,7 @@ function compute_origin_relative_to_libexec()
 
   local folder_path="$1"
 
-  local realpath=$(which grealpath || which realpath)
+  local realpath=$(which grealpath || which realpath || echo realpath)
 
   local relative_folder_path="$(${realpath} --relative-to="${folder_path}" "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
 
@@ -1572,7 +1572,7 @@ function compute_origin_relative_to_path()
   local reference_folder_path="$1"
   local folder_path="$2"
 
-  local realpath=$(which grealpath || which realpath)
+  local realpath=$(which grealpath || which realpath || echo realpath)
 
   local relative_folder_path="$(${realpath} --relative-to="${folder_path}" "${reference_folder_path}")"
 
