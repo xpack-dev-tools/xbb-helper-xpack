@@ -35,11 +35,6 @@ function xbb_make_writable()
 
         # Non-recursive! (Recursive fails with exit code 2)
         run_verbose chmod a+w "${project_folder_path}/xpacks"
-
-        if [ -d "${project_folder_path}/xpacks/.bin" ]
-        then
-          run_verbose chmod a+w "${project_folder_path}/xpacks/.bin"
-        fi
       fi
     )
   fi
