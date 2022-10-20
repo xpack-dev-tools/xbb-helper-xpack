@@ -16,9 +16,9 @@ Programmatic access to GitHub is done via the v3 API:
 ```sh
 curl -i https://api.github.com/users/ilg-ul/orgs
 
-curl -i https://api.github.com/repos/xpack-dev-tools/xxxx-xpack/releases
+curl -i https://api.github.com/repos/xpack-dev-tools/xyz-xpack/releases
 
-curl -v -X GET https://api.github.com/repos/xpack-dev-tools/xxxxx-xpack/hooks
+curl -v -X GET https://api.github.com/repos/xpack-dev-tools/xyz-xpack/hooks
 ```
 
 For authenticated requests, preferably create a new token and pass it
@@ -40,7 +40,7 @@ curl \
   --header "Content-Type: application/json" \
   --header "Accept: application/vnd.github.everest-preview+json" \
   --data '{"event_type": "on-demand-test", "client_payload": {}}' \
-  https://api.github.com/repos/xpack-dev-tools/xxxxx-xpack/dispatches
+  https://api.github.com/repos/xpack-dev-tools/xyz-xpack/dispatches
 ```
 
 The request should return `HTTP/1.1 204 No Content`.
@@ -55,7 +55,7 @@ To enable the travis tests:
 
 - login to <https://travis-ci.com/> with the GitHub credentials
 - in the user settings, select the **3rd Party xpack Dev Tools** organization
-- enable the **meson-build-xpack** project
+- enable the **xyz-xpack** project
 - in Setting, disable **Build pushed branches** and **Build pull requests**
 
 ### Test work flow
@@ -78,4 +78,4 @@ These scripts call `tests/scripts/native-test.sh`, which can directly include
 
 The test results will be available at
 
-- <https://travis-ci.com/github/xpack-dev-tools/xxxxx-xpack>
+- <https://travis-ci.com/github/xpack-dev-tools/xyz-xpack>
