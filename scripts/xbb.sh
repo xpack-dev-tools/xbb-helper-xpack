@@ -52,6 +52,10 @@ function xbb_set_env()
   LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
   LANG="${LANG:-"C"}"
 
+  # Prevent 'configure: error: you should not run configure as root'
+  # when running inside a docker container.
+  FORCE_UNSAFE_CONFIGURE=1
+
   # Set the actual to the requested. This is useful in case the target was
   # temporarily changed for native builds.
   XBB_TARGET_PLATFORM="${XBB_REQUESTED_TARGET_PLATFORM}"
@@ -203,6 +207,8 @@ function xbb_set_env()
   export LANG
 
   export CI
+  export FORCE_UNSAFE_CONFIGURE
+
   export XBB_DASH_V
   export XBB_DOT_EXE
   export XBB_SHLIB_EXT

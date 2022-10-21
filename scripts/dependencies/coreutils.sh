@@ -84,12 +84,8 @@ function build_coreutils()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${coreutils_src_folder_name}/configure" --help
           fi
 
-          if [ "${HOME}" == "/root" ]
-          then
-            # configure: error: you should not run configure as root
-            # (set FORCE_UNSAFE_CONFIGURE=1 in environment to bypass this check)
-            export FORCE_UNSAFE_CONFIGURE=1
-          fi
+          # configure: error: you should not run configure as root
+          # (set FORCE_UNSAFE_CONFIGURE=1 in environment to bypass this check)
 
           config_options=()
 
