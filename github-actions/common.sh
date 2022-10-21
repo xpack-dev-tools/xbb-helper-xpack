@@ -59,7 +59,7 @@ function download_binaries()
     local package_file_path="${project_folder_path}/package.json"
 
     # Extract the xpack.properties platforms. There are also in xpack.binaries.
-    local platforms=$(grep '"platforms": "' "${package_file_path}" | sed -e 's|.*: \"\([a-z0-9]*\)\",.*|\1|' | sed 's|,| |g')
+    local platforms=$(grep '"platforms": "' "${package_file_path}" | sed -e 's|.*: "||' | sed -e 's|".*||' | sed 's|,| |g')
     if [ "${platforms}" == "all" ]
     then
       platforms='linux-x64 linux-arm64 linux-arm darwin-x64 darwin-arm64 win32-x64'
