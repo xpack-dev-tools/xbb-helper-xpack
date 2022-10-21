@@ -9,6 +9,8 @@
 
 # -----------------------------------------------------------------------------
 
+# Note: the build fails on Ubuntu/Debian!
+
 function build_libiconv()
 {
   # https://www.gnu.org/software/libiconv/
