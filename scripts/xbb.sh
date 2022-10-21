@@ -290,25 +290,25 @@ function xbb_set_compiler_env()
 
     if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
-      which ${XBB_NATIVE_CXX} || ${XBB_NATIVE_CXX} --version || true
+      which ${XBB_NATIVE_CXX} && ${XBB_NATIVE_CXX} --version && echo || true
     fi
 
-    which ${CXX} || ${CXX} --version || true
+    which ${CXX} && ${CXX} --version && echo || true
 
     if [ "${XBB_IS_DEVELOP}" == "y" ]
     then
-      which bash || bash --version || true
-      which curl || curl --version || true
-      which flex || flex --version || true
-      which git || git --version || true
-      which m4 || m4 --version || true
-      which make || make --version || true
-      which perl || perl --version || true
-      which python || python --version || true
-      which python3 || python3 --version || true
-      which tar || tar --version || true
-      which zip || zip --version || true
-      which yacc || yacc --version || true
+      which bash && bash --version && echo || true
+      which curl && curl --version && echo || true
+      which flex && flex --version && echo || true
+      which git && git --version && echo || true
+      which m4 && m4 --version && echo || true
+      which make && make --version && echo || true
+      which perl && perl --version && echo || true
+      which python && python --version && echo || true
+      which python3 && python3 --version && echo || true
+      which tar && tar --version && echo || true
+      which zip && zip --version && echo || true
+      which yacc && yacc --version && echo || true
     fi
 
   )
