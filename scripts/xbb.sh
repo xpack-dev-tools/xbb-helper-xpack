@@ -280,20 +280,33 @@ function xbb_set_compiler_env()
 
   echo
 
-  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
-  then
-    (
-      set +e
-      which ${XBB_NATIVE_CXX} || true
-      ${XBB_NATIVE_CXX} --version || true
-    )
-  fi
+  (
+    set +e
 
-  which ${CXX}
-  ${CXX} --version
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    then
+      which ${XBB_NATIVE_CXX} || ${XBB_NATIVE_CXX} --version || true
+    fi
 
-  which make
-  make --version
+    which ${CXX} || ${CXX} --version || true
+
+    if [ "${XBB_IS_DEVELOP}" == "y" ]
+    then
+      which bash || bash --version || true
+      which curl || curl --version || true
+      which flex || flex --version || true
+      which git || git --version || true
+      which m4 || m4 --version || true
+      which make || make --version || true
+      which perl || perl --version || true
+      which python || python --version || true
+      which python3 || python3 --version || true
+      which tar || tar --version || true
+      which zip || zip --version || true
+      which yacc || yacc --version || true
+    fi
+
+  )
 }
 
 function xbb_unset_compiler_env()
