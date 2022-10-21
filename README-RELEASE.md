@@ -18,8 +18,8 @@ To clone the stable branch (`xpack`), run the following commands in a
 terminal (on Windows use the _Git Bash_ console):
 
 ```sh
-rm -rf ~/Work/xbb-helper-xpack.git && \
-mkdir -p ~/Work && \
+rm -rf ~/Work/xbb-helper-xpack.git; \
+mkdir -p ~/Work; \
 git clone \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
   ~/Work/xbb-helper-xpack.git
@@ -28,8 +28,8 @@ git clone \
 For development purposes, clone the `xpack-develop` branch:
 
 ```sh
-rm -rf ~/Work/xbb-helper-xpack.git && \
-mkdir -p ~/Work && \
+rm -rf ~/Work/xbb-helper-xpack.git; \
+mkdir -p ~/Work; \
 git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
