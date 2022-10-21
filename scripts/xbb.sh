@@ -69,8 +69,6 @@ function xbb_set_env()
     XBB_DASH_V="-v"
   fi
 
-  CI="false"
-
   XBB_DOT_EXE=""
   # Compute the XBB_BUILD/XBB_HOST/XBB_TARGET for configure.
   XBB_CROSS_COMPILE_PREFIX=""
@@ -206,6 +204,7 @@ function xbb_set_env()
   export LD_LIBRARY_PATH
   export LANG
 
+  CI=${CI:-"false"}
   export CI
   export FORCE_UNSAFE_CONFIGURE
 
