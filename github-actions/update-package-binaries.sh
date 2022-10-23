@@ -46,7 +46,7 @@ scripts_folder_path="${project_folder_path}/scripts"
 
 # -----------------------------------------------------------------------------
 
-source "${scripts_folder_path}/definitions.sh"
+source "${scripts_folder_path}/application.sh"
 
 # Helper functions
 source "${helper_folder_path}/github-actions/common.sh"
