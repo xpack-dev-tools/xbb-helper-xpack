@@ -284,9 +284,6 @@ function build_perform_common()
         export XBB_DO_COPY_GCC_LIBS="y"
       fi
 
-      # For realpath on macOS
-      xbb_activate_installed_bin
-
       # Post processing.
       make_standalone
 
