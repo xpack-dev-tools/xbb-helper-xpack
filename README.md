@@ -143,9 +143,9 @@ helper_folder_path="${project_folder_path}/xpacks/xpack-dev-tools-xbb-helper"
 
 # -----------------------------------------------------------------------------
 
-source "${scripts_folder_path}/definitions.sh"
+source "${scripts_folder_path}/application.sh"
 
-source "${helper_folder_path}/scripts/helper.sh"
+# Common definitions.
 source "${helper_folder_path}/scripts/common-build.sh"
 
 source "${scripts_folder_path}/versioning.sh"
