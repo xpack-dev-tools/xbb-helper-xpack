@@ -66,7 +66,8 @@ function build_findutils()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      LDFLAGS="${XBB_LDFLAGS_APP}"
 
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
@@ -784,7 +785,8 @@ function build_mingw_gendef()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      LDFLAGS="${XBB_LDFLAGS_APP}"
 
       export CPPFLAGS
       export CFLAGS
@@ -866,7 +868,8 @@ function build_mingw_widl()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      LDFLAGS="${XBB_LDFLAGS_APP}"
 
       export CPPFLAGS
       export CFLAGS
@@ -1265,7 +1268,8 @@ function build_native_binutils()
         CFLAGS="${XBB_CFLAGS_NO_W}"
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-        LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+        # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+        LDFLAGS="${XBB_LDFLAGS_APP}"
 
         if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
         then

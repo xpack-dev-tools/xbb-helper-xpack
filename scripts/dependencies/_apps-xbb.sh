@@ -4269,8 +4269,8 @@ function build_re2c()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       # Without STATIC all tests fail.
-      LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      # LDFLAGS="${XBB_LDFLAGS_APP}"
+      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         xbb_activate_cxx_rpath
