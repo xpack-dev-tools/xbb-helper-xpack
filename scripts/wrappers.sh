@@ -139,18 +139,18 @@ function run_app_silent()
       return
     fi
     (
-      local wine_path=$(which wine 2>/dev/null)
+      local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
         if [ -f "${app_path}.exe" ]
         then
-          wine "${app_path}.exe" "$@" 2>&1
+          wine64 "${app_path}.exe" "$@" 2>&1
         else
           echo "${app_path}.exe not found"
           exit 1
         fi
       else
-        echo "Install wine if you want to run the .exe binaries on Linux."
+        echo "Install wine64 if you want to run the .exe binaries on Linux."
       fi
     )
 
