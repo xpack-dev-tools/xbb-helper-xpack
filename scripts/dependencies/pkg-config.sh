@@ -136,11 +136,6 @@ function build_pkg_config()
           run_verbose make install
         fi
 
-        # Extra: pkg-config-verbose
-        run_verbose cp -v "${helper_folder_path}/extras/pkg-config-verbose" \
-          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-        run_verbose chmod +x "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/pkg-config-verbose"
-
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
@@ -183,10 +178,6 @@ function test_pkg_config()
     echo "Testing if pkg_config binaries start properly..."
 
     run_app "${test_bin_folder_path}/pkg-config" --version
-    (
-      xbb_activate_installed_bin
-      run_app "${test_bin_folder_path}/pkg-config-verbose" --version
-    )
   )
 }
 

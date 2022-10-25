@@ -177,9 +177,15 @@ function xbb_set_env()
 
   XBB_DISTRO_INFO_NAME=${XBB_DISTRO_INFO_NAME:-"distro-info"}
 
-  if [ ! -z "$(which pkg-config-verbose)" -a "${XBB_IS_DEVELOP}" == "y" ]
+  if [ ! -z "$(which pkg-config)" -a "${XBB_IS_DEVELOP}" == "y" ]
   then
-    PKG_CONFIG="$(which pkg-config-verbose)"
+    # Extra: pkg-config-verbose.
+    mkdir -pv "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
+    run_verbose cp -v "${helper_folder_path}/extras/pkg-config-verbose" \
+      "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
+    run_verbose chmod +x "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/pkg-config-verbose"
+
+    PKG_CONFIG="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/pkg-config-verbose"
   elif [ ! -z "$(which pkg-config)" ]
   then
     PKG_CONFIG="$(which pkg-config)"
