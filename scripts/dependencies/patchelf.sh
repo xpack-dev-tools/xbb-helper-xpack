@@ -37,9 +37,6 @@ function build_patchelf()
   local patchelf_src_folder_name="patchelf-${patchelf_version}"
 
   local patchelf_archive="${patchelf_src_folder_name}.tar.bz2"
-  # GitHub release archive.
-  # local patchelf_github_archive="${patchelf_version}.tar.gz"
-  # local patchelf_url="https://github.com/NixOS/patchelf/archive/${patchelf_github_archive}"
   local patchelf_url="https://github.com/NixOS/patchelf/releases/download/${patchelf_version}/${patchelf_archive}"
 
   local patchelf_folder_name="${patchelf_src_folder_name}"
