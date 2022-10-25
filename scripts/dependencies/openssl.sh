@@ -90,6 +90,7 @@ function build_openssl()
         # typedef CCCryptorStatus CCRNGStatus;
         : # CPPFLAGS+=" -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
       fi
+
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
@@ -99,6 +100,11 @@ function build_openssl()
       then
         xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
+      elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      then
+        # test/drbg_cavs_data.o: too many sections (40327)
+        CFLAGS+=" -Wa,-mbig-obj"
+        CXXFLAGS+=" -Wa,-mbig-obj"
       fi
 
       export CPPFLAGS
