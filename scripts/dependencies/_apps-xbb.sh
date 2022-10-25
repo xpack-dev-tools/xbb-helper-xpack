@@ -69,6 +69,7 @@ function _build_realpath()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -196,6 +197,7 @@ function build_scons()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -309,6 +311,7 @@ function build_curl()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -544,6 +547,7 @@ function build_tar()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -762,6 +766,7 @@ function build_guile()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -956,6 +961,7 @@ function build_autogen()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -1163,6 +1169,7 @@ function build_m4()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -1357,6 +1364,7 @@ function build_gawk()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -1557,6 +1565,7 @@ function build_sed()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -1753,6 +1762,7 @@ function build_patch()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -1921,6 +1931,7 @@ function build_diffutils()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2103,6 +2114,7 @@ function build_bison()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2324,6 +2336,7 @@ function build_make()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2501,6 +2514,7 @@ function build_bash()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2675,6 +2689,7 @@ function build_wget()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2873,6 +2888,7 @@ function build_dos2unix()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -3037,6 +3053,7 @@ function build_flex()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -3267,6 +3284,7 @@ function build_perl()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -3481,6 +3499,7 @@ function build_tcl()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -3715,6 +3734,7 @@ function build_git()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -3903,6 +3923,7 @@ function build_p7zip()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH} -liconv"
       fi
 
@@ -4055,6 +4076,7 @@ function build_rhash()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -4251,6 +4273,7 @@ function build_re2c()
       # LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -4437,6 +4460,7 @@ function build_gnupg()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         export LIBS="-lrt"
       fi
@@ -4646,6 +4670,7 @@ function build_makedepend()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         export LIBS="-lrt"
       fi

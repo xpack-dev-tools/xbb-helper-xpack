@@ -70,6 +70,7 @@ function build_findutils()
 
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -1000,6 +1001,7 @@ function build_qemu()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
@@ -1277,6 +1279,7 @@ function build_native_binutils()
           LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
         elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
+          xbb_activate_cxx_rpath
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
         fi
       fi
@@ -1628,6 +1631,7 @@ function build_cross_binutils()
         LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/mingw/lib/CRT_glob.o"
       elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -1919,6 +1923,7 @@ function build_cross_gcc_first()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2515,6 +2520,7 @@ function build_cross_gcc_final()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
       # Do not add CRT_glob.o here, it will fail with already defined,
@@ -3030,6 +3036,7 @@ function build_cross_gdb()
         : # LIBS="-liconv -lncurses"
       elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 

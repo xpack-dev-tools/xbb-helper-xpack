@@ -96,6 +96,7 @@ function build_openssl()
       LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 

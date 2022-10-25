@@ -56,6 +56,7 @@ function build_libusb1()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 

@@ -57,6 +57,7 @@ function build_autoconf()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 

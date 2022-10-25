@@ -65,6 +65,7 @@ function build_libtasn1()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -200,6 +201,7 @@ function build_libunistring()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -346,6 +348,7 @@ function build_gc()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -747,6 +750,7 @@ function build_xorg_util_macros()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -879,6 +883,7 @@ function build_xorg_xproto()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 

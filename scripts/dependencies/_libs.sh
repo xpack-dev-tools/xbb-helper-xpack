@@ -79,6 +79,7 @@ function build_gmp()
         LDFLAGS="${XBB_LDFLAGS_LIB}"
         if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
+          xbb_activate_cxx_rpath
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         fi
 
@@ -300,6 +301,7 @@ function build_mpfr()
         LDFLAGS="${XBB_LDFLAGS_LIB}"
         if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
+          xbb_activate_cxx_rpath
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         fi
 
@@ -478,6 +480,7 @@ function build_mpc()
         LDFLAGS="${XBB_LDFLAGS_LIB}"
         if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
+          xbb_activate_cxx_rpath
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         fi
 
@@ -650,6 +653,7 @@ function build_isl()
         LDFLAGS="${XBB_LDFLAGS_LIB}"
         if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
+          xbb_activate_cxx_rpath
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         fi
 
@@ -821,6 +825,7 @@ function build_zstd()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -983,6 +988,7 @@ function build_gettext()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -1191,6 +1197,7 @@ function build_libelf()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -1346,6 +1353,7 @@ function build_gpm()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
         LDFLAGS+=" -Wl,--allow-multiple-definition"
       fi
@@ -1492,6 +1500,7 @@ function build_lzo()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -1628,6 +1637,7 @@ function build_python2()
       LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -1891,6 +1901,7 @@ function build_libpng()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2020,6 +2031,7 @@ function build_jpeg()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2154,6 +2166,7 @@ function build_pixman()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2318,6 +2331,7 @@ function build_glib2()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH} -liconv"
         # LIBS="-liconv"
       elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
@@ -2550,6 +2564,7 @@ function build_libxml2()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2698,6 +2713,7 @@ function build_libedit()
           echo "No include/ncurses folder."
           exit 1
         fi
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2835,6 +2851,7 @@ function build_xar()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -2971,6 +2988,7 @@ function build_libgpg_error()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -3124,6 +3142,7 @@ function build_libgcrypt()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -3341,6 +3360,7 @@ function build_libassuan()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -3510,6 +3530,7 @@ function build_libksba()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -3681,6 +3702,7 @@ function build_npth()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -3848,6 +3870,7 @@ function build_nettle()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -4009,6 +4032,7 @@ function build_libusb()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -4152,6 +4176,7 @@ function build_vde()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -4284,6 +4309,7 @@ function build_libpcap()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -4409,6 +4435,7 @@ function build_libssh()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -4561,6 +4588,7 @@ function build_sdl2()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -4703,6 +4731,7 @@ function build_sdl2_image()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
       if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -4865,6 +4894,7 @@ function build_pcre2()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
@@ -5003,6 +5033,7 @@ function build_termcap()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
