@@ -181,9 +181,8 @@ function xbb_set_env()
   then
     # Extra: pkg-config-verbose.
     mkdir -pv "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
-    run_verbose cp -v "${helper_folder_path}/extras/pkg-config-verbose" \
+    run_verbose install -v -c -m 755 "${helper_folder_path}/extras/pkg-config-verbose" \
       "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
-    run_verbose chmod +x "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/pkg-config-verbose"
 
     PKG_CONFIG="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/pkg-config-verbose"
   elif [ ! -z "$(which pkg-config)" ]
