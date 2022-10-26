@@ -541,7 +541,8 @@ function xbb_set_libraries_install()
 # Add the freshly built binaries.
 function xbb_activate_installed_bin()
 {
-  echo "xbb_activate_installed_bin"
+  echo_develop
+  echo_develop "[xbb_activate_installed_bin]"
 
   # Add the XBB bin to the PATH.
   if [ ! -z ${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH+x} ]
@@ -579,7 +580,8 @@ function xbb_activate_installed_dev()
 {
   local name_suffix=${1-''}
 
-  echo "xbb_activate_installed_dev${name_suffix}"
+  echo_develop
+  echo_develop "[xbb_activate_installed_dev${name_suffix}]"
 
   # Add XBB include in front of XBB_CPPFLAGS.
   XBB_CPPFLAGS="-I${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/include ${XBB_CPPFLAGS}"
@@ -650,6 +652,8 @@ function xbb_activate_cxx_rpath()
   if [[ ${CC} =~ .*gcc.* ]]
   then
     cxx_lib_path="$(${realpath} $(dirname $(${CXX} -print-file-name=libstdc++.so.6)))"
+    echo_develop
+    echo_develop "libstdc++.so.6 -> ${cxx_lib_path}"
     if [ "${cxx_lib_path}" == "libstdc++.so.6" ]
     then
       return
