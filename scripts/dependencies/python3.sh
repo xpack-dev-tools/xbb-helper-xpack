@@ -304,20 +304,6 @@ function download_python3_win()
       "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
   )
 
-  export XBB_PYTHON3_SRC_FOLDER_NAME="Python-${python3_win_version}"
-
-  local python3_archive="${XBB_PYTHON3_SRC_FOLDER_NAME}.tar.xz"
-  local python3_url="https://www.python.org/ftp/python/${python3_win_version}/${python3_archive}"
-
-  # The full source is needed for the headers.
-  if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_SRC_FOLDER_NAME}" ]
-  then
-    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
-
-    download_and_extract "${python3_url}" "${python3_archive}" \
-      "${XBB_PYTHON3_SRC_FOLDER_NAME}"
-  fi
 }
 
 # -----------------------------------------------------------------------------
