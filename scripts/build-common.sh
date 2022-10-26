@@ -273,7 +273,7 @@ function build_perform_common()
   echo
 
   # Cannot run in a sub-shell, it sets environment variables.
-  build_versioned_components
+  build_application_versioned_components
 
   if [ ! "${XBB_TEST_ONLY}" == "y" ]
   then
