@@ -17,11 +17,17 @@ function tests_initialize()
   rm -rf "${XBB_TEST_COMMANDS_FILE_PATH}"
   mkdir -pv "$(dirname ${XBB_TEST_COMMANDS_FILE_PATH})"
   touch "${XBB_TEST_COMMANDS_FILE_PATH}"
+
+  XBB_WHILE_RUNNING_TESTS="n"
+  export XBB_WHILE_RUNNING_TESTS
 }
 
 function tests_add()
 {
-  echo "$@" >> "${XBB_TEST_COMMANDS_FILE_PATH}"
+  if [ "${XBB_WHILE_RUNNING_TESTS}" != "y" ]
+  then
+    echo "$@" >> "${XBB_TEST_COMMANDS_FILE_PATH}"
+  fi
 }
 
 function tests_run_final()
@@ -29,6 +35,9 @@ function tests_run_final()
   (
     echo
     echo "# Running final tests..."
+
+    XBB_WHILE_RUNNING_TESTS="y"
+    export XBB_WHILE_RUNNING_TESTS
 
     for line in $(cat ${XBB_TEST_COMMANDS_FILE_PATH})
     do
