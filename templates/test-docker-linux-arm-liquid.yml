@@ -64,7 +64,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -116,7 +116,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -163,7 +163,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -204,7 +204,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -257,7 +257,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -303,7 +303,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -342,7 +342,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -389,7 +389,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -428,7 +428,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -467,7 +467,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -518,7 +518,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -563,7 +563,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -602,7 +602,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -649,7 +649,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*

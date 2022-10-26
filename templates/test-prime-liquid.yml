@@ -40,7 +40,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Checkout project'
         uses: actions/checkout@v3
@@ -71,7 +71,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -109,7 +109,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -146,7 +146,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -180,7 +180,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: rm -rf * .git*
@@ -218,7 +218,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'

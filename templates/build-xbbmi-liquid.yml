@@ -36,7 +36,7 @@ jobs:
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
           ls -lLA
-          env | sort | egrep '^[^\s]*='
+          env | sort | egrep '^[^\s][^\s]*='
 
       - name: 'Clean working area'
         run: rm -rf * .git*
