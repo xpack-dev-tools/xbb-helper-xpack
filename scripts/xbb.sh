@@ -494,18 +494,22 @@ function xbb_set_compiler_flags()
   XBB_CFLAGS_NO_W="${XBB_CFLAGS} -w"
   XBB_CXXFLAGS_NO_W="${XBB_CXXFLAGS} -w"
 
-  set +u
-  echo
-  echo "CC=${CC}"
-  echo "CXX=${CXX}"
-  echo "XBB_CPPFLAGS=${XBB_CPPFLAGS}"
-  echo "XBB_CFLAGS=${XBB_CFLAGS}"
-  echo "XBB_CXXFLAGS=${XBB_CXXFLAGS}"
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  then
+    (
+      set +u
+      echo
+      echo "CC=${CC}"
+      echo "CXX=${CXX}"
+      echo "XBB_CPPFLAGS=${XBB_CPPFLAGS}"
+      echo "XBB_CFLAGS=${XBB_CFLAGS}"
+      echo "XBB_CXXFLAGS=${XBB_CXXFLAGS}"
 
-  echo "XBB_LDFLAGS_LIB=${XBB_LDFLAGS_LIB}"
-  echo "XBB_LDFLAGS_APP=${XBB_LDFLAGS_APP}"
-  echo "XBB_LDFLAGS_APP_STATIC_GCC=${XBB_LDFLAGS_APP_STATIC_GCC}"
-  set -u
+      echo "XBB_LDFLAGS_LIB=${XBB_LDFLAGS_LIB}"
+      echo "XBB_LDFLAGS_APP=${XBB_LDFLAGS_APP}"
+      echo "XBB_LDFLAGS_APP_STATIC_GCC=${XBB_LDFLAGS_APP_STATIC_GCC}"
+    )
+  fi
 
   # ---------------------------------------------------------------------------
 
