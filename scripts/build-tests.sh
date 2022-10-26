@@ -13,9 +13,9 @@
 
 function tests_initialize()
 {
-  export XBB_TEST_COMMANDS_FILE_PATH="${XBB_INSTALL_FOLDER_PATH}/test-commands"
+  export XBB_TEST_COMMANDS_FILE_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/tests/commands"
   rm -rf "${XBB_TEST_COMMANDS_FILE_PATH}"
-  mkdir -pv "${XBB_INSTALL_FOLDER_PATH}"
+  mkdir -pv "$(dirname ${XBB_TEST_COMMANDS_FILE_PATH})"
   touch "${XBB_TEST_COMMANDS_FILE_PATH}"
 }
 
