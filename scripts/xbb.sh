@@ -51,13 +51,15 @@ function xbb_set_env()
   PATH="${PATH:-""}"
   LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
   LANG="${LANG:-"C"}"
+  CI=${CI:-"false"}
 
-  # Set the actual to the requested. This is useful in case the target was
-  # temporarily changed for native builds.
-  XBB_TARGET_PLATFORM="${XBB_REQUESTED_TARGET_PLATFORM}"
-  XBB_TARGET_ARCH="${XBB_REQUESTED_TARGET_ARCH}"
-  XBB_TARGET_BITS="${XBB_REQUESTED_TARGET_BITS}"
-  XBB_TARGET_MACHINE="${XBB_REQUESTED_TARGET_MACHINE}"
+  export PATH
+  export LD_LIBRARY_PATH
+  export LANG
+
+  export CI
+
+  # ---------------------------------------------------------------------------
 
   XBB_DASH_V=""
   if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -65,54 +67,9 @@ function xbb_set_env()
     XBB_DASH_V="-v"
   fi
 
-  XBB_DOT_EXE=""
-  # Compute the XBB_BUILD/XBB_HOST/XBB_TARGET for configure.
-  XBB_CROSS_COMPILE_PREFIX=""
-  if [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "win32" ]
-  then
-
-    # Disable tests when cross compiling for Windows.
-    XBB_WITH_TESTS="n"
-
-    XBB_DOT_EXE=".exe"
-
-    XBB_SHLIB_EXT="dll"
-
-    # Use the 64-bit mingw-w64 gcc to compile Windows binaries.
-    XBB_CROSS_COMPILE_PREFIX="x86_64-w64-mingw32"
-
-    XBB_BUILD=$(xbb_config_guess)
-    XBB_HOST="${XBB_CROSS_COMPILE_PREFIX}"
-    XBB_TARGET="${XBB_HOST}"
-
-  elif [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "linux" ]
-  then
-
-    XBB_SHLIB_EXT="so"
-
-    XBB_BUILD=$(xbb_config_guess)
-    XBB_HOST="${XBB_BUILD}"
-    XBB_TARGET="${XBB_HOST}"
-
-  elif [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "darwin" ]
-  then
-
-    XBB_SHLIB_EXT="dylib"
-
-    XBB_BUILD=$(xbb_config_guess)
-    XBB_HOST="${XBB_BUILD}"
-    XBB_TARGET="${XBB_HOST}"
-
-  else
-    echo "Unsupported XBB_REQUESTED_TARGET_PLATFORM=${XBB_REQUESTED_TARGET_PLATFORM}."
-    exit 1
-  fi
-
-  # ---------------------------------------------------------------------------
-
   XBB_RELEASE_VERSION="${XBB_RELEASE_VERSION:-$(xbb_get_current_version)}"
 
-  XBB_TARGET_FOLDER_NAME="${XBB_TARGET_PLATFORM}-${XBB_TARGET_ARCH}"
+  XBB_TARGET_FOLDER_NAME="${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH}"
 
   # Decide where to run the build for the requested target.
   if [ ! -z ${WORK_FOLDER_PATH+x} ]
@@ -138,53 +95,46 @@ function xbb_set_env()
 
   XBB_SOURCES_FOLDER_NAME="${XBB_SOURCES_FOLDER_NAME:-sources}"
   XBB_SOURCES_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_SOURCES_FOLDER_NAME}"
-  # mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
 
-  XBB_BUILD_FOLDER_NAME="${XBB_BUILD_FOLDER_NAME-build}"
-  XBB_BUILD_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_BUILD_FOLDER_NAME}"
-  # mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-
-  XBB_INSTALL_FOLDER_NAME="${XBB_INSTALL_FOLDER_NAME:-install}"
-  XBB_INSTALL_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
-
-  XBB_DEPENDENCIES_INSTALL_FOLDER_PATH="${XBB_INSTALL_FOLDER_PATH}/dependencies"
-  # mkdir -pv "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
-
-  # XBB_APPLICATION_INSTALL_FOLDER_PATH="${XBB_INSTALL_FOLDER_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}"
-  XBB_APPLICATION_INSTALL_FOLDER_PATH="${XBB_INSTALL_FOLDER_PATH}/application"
-  # mkdir -pv "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
-
-  # Deprecated!
-  # APP_PREFIX="${XBB_INSTALL_FOLDER_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}"
-  # The documentation location is now the same on all platforms.
-  # APP_PREFIX_DOC="${APP_PREFIX}/share/doc"
-
-  XBB_STAMPS_FOLDER_NAME="${XBB_STAMPS_FOLDER_NAME:-stamps}"
-  XBB_STAMPS_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_STAMPS_FOLDER_NAME}"
-  # mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
-
-  XBB_LOGS_FOLDER_NAME="${XBB_LOGS_FOLDER_NAME:-logs}"
-  XBB_LOGS_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_LOGS_FOLDER_NAME}"
-  # mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
+  XBB_APPLICATION_INSTALL_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/application"
 
   XBB_DEPLOY_FOLDER_NAME="${XBB_DEPLOY_FOLDER_NAME:-deploy}"
   XBB_DEPLOY_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_DEPLOY_FOLDER_NAME}"
-  # mkdir -pv "${XBB_DEPLOY_FOLDER_PATH}"
 
-  XBB_TESTS_FOLDER_NAME="${XBB_TESTS_FOLDER_NAME:-tests}"
-  XBB_TESTS_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_TESTS_FOLDER_NAME}"
-  # Created if needed.
+  XBB_ARCHIVE_FOLDER_NAME="${XBB_ARCHIVE_FOLDER_NAME:-archive}"
+  XBB_ARCHIVE_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_ARCHIVE_FOLDER_NAME}"
 
   XBB_DISTRO_INFO_NAME=${XBB_DISTRO_INFO_NAME:-"distro-info"}
+
+  XBB_INSTALL_FOLDER_NAME="${XBB_INSTALL_FOLDER_NAME:-install}"
+
+  XBB_TARGET_NATIVE_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/$(xbb_config_guess)"
+  XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH="${XBB_TARGET_NATIVE_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
+
+  export XBB_DASH_V
+
+  export XBB_BUILD_GIT_PATH
+  export XBB_DISTRO_INFO_NAME
+
+  export XBB_TARGET_WORK_FOLDER_PATH
+  export XBB_DOWNLOAD_FOLDER_PATH
+  export XBB_SOURCES_FOLDER_PATH
+  export XBB_APPLICATION_INSTALL_FOLDER_PATH
+  export XBB_DEPLOY_FOLDER_PATH
+  export XBB_ARCHIVE_FOLDER_PATH
+
+  export XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH
+
+  # ---------------------------------------------------------------------------
 
   if [ ! -z "$(which pkg-config)" -a "${XBB_IS_DEVELOP}" == "y" ]
   then
     # Extra: pkg-config-verbose.
-    mkdir -pv "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
+    run_verbose install -d -m 0755 "${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
     run_verbose install -v -c -m 755 "${helper_folder_path}/extras/pkg-config-verbose" \
-      "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
+      "${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
 
-    PKG_CONFIG="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/pkg-config-verbose"
+    PKG_CONFIG="${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/pkg-config-verbose"
   elif [ ! -z "$(which pkg-config)" ]
   then
     PKG_CONFIG="$(which pkg-config)"
@@ -197,58 +147,25 @@ function xbb_set_env()
   # pkg-config at build time).
   PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-""}
 
-  # libtool fails with the old Ubuntu /bin/sh.
-  # export SHELL="/bin/bash"
-  # export CONFIG_SHELL="/bin/bash"
-
-  export PATH
-  export LD_LIBRARY_PATH
-  export LANG
-
-  CI=${CI:-"false"}
-  export CI
-
-
-  # Prevent 'configure: error: you should not run configure as root'
-  # when running inside a docker container.
-  export FORCE_UNSAFE_CONFIGURE=1
-
-  export XBB_DASH_V
-  export XBB_DOT_EXE
-  export XBB_SHLIB_EXT
-
-  export XBB_TARGET_PLATFORM
-  export XBB_TARGET_ARCH
-  export XBB_TARGET_BITS
-  export XBB_TARGET_MACHINE
-
-  export XBB_BUILD
-  export XBB_HOST
-  export XBB_TARGET
-
-  export XBB_TARGET_WORK_FOLDER_PATH
-  export XBB_DOWNLOAD_FOLDER_PATH
-  export XBB_SOURCES_FOLDER_PATH
-  export XBB_BUILD_FOLDER_PATH
-  export XBB_INSTALL_FOLDER_PATH
-  export XBB_DEPENDENCIES_INSTALL_FOLDER_PATH
-  export XBB_APPLICATION_INSTALL_FOLDER_PATH
-  export XBB_STAMPS_FOLDER_PATH
-  export XBB_DEPLOY_FOLDER_PATH
-  export XBB_TESTS_FOLDER_PATH
-
-  export XBB_BUILD_GIT_PATH
-  export XBB_DISTRO_INFO_NAME
-
   export PKG_CONFIG
   export PKG_CONFIG_PATH
   export PKG_CONFIG_LIBDIR
 
   # ---------------------------------------------------------------------------
 
-  echo
-  echo "XBB environment..."
-  env | sort
+  # libtool fails with the old Ubuntu /bin/sh.
+  export SHELL="/bin/bash"
+  export CONFIG_SHELL="/bin/bash"
+
+
+  # Prevent 'configure: error: you should not run configure as root'
+  # when running inside a docker container.
+  export FORCE_UNSAFE_CONFIGURE=1
+
+
+
+
+  # ---------------------------------------------------------------------------
 }
 
 
