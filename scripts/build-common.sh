@@ -379,6 +379,9 @@ function build_set_target()
 
 function build_perform_common()
 {
+  # Avoid leaving files that cannot be removed by users.
+  trap xbb_make_writable EXIT
+
   # Must be after host_parse_options, for a simple --help.
   timer_start
 
@@ -388,17 +391,15 @@ function build_perform_common()
 
   xbb_set_env
 
-  # Avoid leaving files that cannot be removed by users.
-  trap xbb_make_writable EXIT
+  copy_build_files
 
   tests_initialize
 
-  copy_build_files
+  build_set_target "${XBB_APPLICATION_INITIAL_TARGET:-requested}"
+
+  xbb_show_tools_versions
 
   # ---------------------------------------------------------------------------
-
-  echo
-  xbb_set_compiler_env
 
   echo
   echo "Here we go..."
