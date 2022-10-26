@@ -528,14 +528,14 @@ function xbb_set_binaries_install()
 {
   export XBB_BINARIES_INSTALL_FOLDER_PATH="$1"
 
-  tests_add "xbb_set_binaries_install" "$1"
+  # tests_add "xbb_set_binaries_install" "$1"
 }
 
 function xbb_set_libraries_install()
 {
   export XBB_LIBRARIES_INSTALL_FOLDER_PATH="$1"
 
-  tests_add "xbb_set_libraries_install" "$1"
+  # tests_add "xbb_set_libraries_install" "$1"
 }
 
 # Add the freshly built binaries.
