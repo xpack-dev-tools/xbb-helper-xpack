@@ -267,10 +267,6 @@ function download_python3_win()
 
   local python3_win_version="$1"
 
-  XBB_PYTHON3_VERSION_MAJOR=$(echo ${python3_win_version} | sed -e 's|\([0-9]\)\..*|\1|')
-  XBB_PYTHON3_VERSION_MINOR=$(echo ${python3_win_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
-  export XBB_PYTHON3_VERSION_MAJOR_MINOR=${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}
-
   # Version 3.7.2 uses a longer name, like python-3.7.2.post1-embed-amd64.zip.
   if [ "${XBB_TARGET_BITS}" == "32" ]
   then
