@@ -227,7 +227,8 @@ function build_openssl()
             config_options+=("${CFLAGS}")
             config_options+=("${LDFLAGS}")
 
-            config_options+=("-Wa,--noexecstack ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}")
+            # config_options+=("-Wa,--noexecstack ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}")
+            config_options+=("-Wa,--noexecstack")
 
             set +u
 
