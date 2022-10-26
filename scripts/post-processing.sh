@@ -2068,7 +2068,7 @@ function create_archive()
     local distribution_file="${XBB_DEPLOY_FOLDER_PATH}/${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${distribution_file_version}-${target_folder_name}"
 
     local archive_version_path
-    archive_version_path="${XBB_INSTALL_FOLDER_PATH}/archive/${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${distribution_file_version}"
+    archive_version_path="${XBB_ARCHIVE_FOLDER_PATH}/${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${distribution_file_version}"
 
     cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
     find . -name '.DS_Store' -exec rm '{}' ';'
@@ -2093,11 +2093,11 @@ function create_archive()
       echo
       echo "ZIP file: \"${distribution_file}\"."
 
-      rm -rf "${XBB_INSTALL_FOLDER_PATH}/archive"
+      rm -rf "${XBB_ARCHIVE_FOLDER_PATH}"
       mkdir -pv "${archive_version_path}"
       mv "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
 
-      cd "${XBB_INSTALL_FOLDER_PATH}/archive"
+      cd "${XBB_ARCHIVE_FOLDER_PATH}"
       zip -r9 -q "${distribution_file}" *
 
       # Put everything back.
@@ -2114,13 +2114,13 @@ function create_archive()
 
       echo "Compressed tarball: \"${distribution_file}\"."
 
-      rm -rf "${XBB_INSTALL_FOLDER_PATH}/archive"
+      rm -rf "${XBB_ARCHIVE_FOLDER_PATH}"
       mkdir -pv "${archive_version_path}"
       mv -v "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
 
       # Without --hard-dereference the hard links may be turned into
       # broken soft links on macOS.
-      cd "${XBB_INSTALL_FOLDER_PATH}/archive"
+      cd "${XBB_ARCHIVE_FOLDER_PATH}"
       # -J uses xz for compression; best compression ratio.
       # -j uses bz2 for compression; good compression ratio.
       # -z uses gzip for compression; fair compression ratio.
