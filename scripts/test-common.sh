@@ -100,68 +100,6 @@ function tests_parse_options()
   fi
 }
 
-# Runs natively or inside a container.
-#
-# Sets the following variables:
-#
-# - XBB_TARGET_PLATFORM=node_platform={win32,linux,darwin}
-# - XBB_TARGET_ARCH=node_architecture={x64,ia32,arm64,arm}
-# - XBB_TARGET_BITS={32,64}
-#
-# It requires the host identity.
-
-function tests_set_target()
-{
-  # The default case, when the target is the same as the host.
-  XBB_REQUESTED_TARGET_PLATFORM="${XBB_HOST_NODE_PLATFORM}"
-  XBB_REQUESTED_TARGET_ARCH="${XBB_HOST_NODE_ARCH}"
-  XBB_REQUESTED_TARGET_BITS="${XBB_HOST_BITS}"
-  XBB_REQUESTED_TARGET_MACHINE="${XBB_HOST_MACHINE}"
-
-  XBB_TARGET_PLATFORM="${XBB_REQUESTED_TARGET_PLATFORM}"
-  XBB_TARGET_ARCH="${XBB_REQUESTED_TARGET_ARCH}"
-  XBB_TARGET_BITS="${XBB_REQUESTED_TARGET_BITS}"
-  XBB_TARGET_MACHINE="${XBB_REQUESTED_TARGET_MACHINE}"
-
-  if [ "${XBB_FORCE_32_BIT}" == "y" ]
-  then
-    if [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
-       [ "${XBB_REQUESTED_TARGET_ARCH}" == "arm64" ]
-    then
-      # Pretend to be a 32-bit platform.
-      XBB_TARGET_ARCH="arm"
-      XBB_TARGET_BITS="32"
-      XBB_TARGET_MACHINE="armv8l"
-    elif [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
-       [ "${XBB_REQUESTED_TARGET_ARCH}" == "arm" ]
-    then
-      echo "Already a 32-bit platform, --32 ineffective"
-    else
-      echo "Cannot run 32-bit tests on ${XBB_TARGET_MACHINE}"
-      exit 1
-    fi
-  fi
-
-  export XBB_REQUESTED_TARGET_PLATFORM
-  export XBB_REQUESTED_TARGET_ARCH
-  export XBB_REQUESTED_TARGET_BITS
-  export XBB_REQUESTED_TARGET_MACHINE
-
-  export XBB_TARGET_PLATFORM
-  export XBB_TARGET_ARCH
-  export XBB_TARGET_BITS
-  export XBB_TARGET_MACHINE
-
-  if false
-  then
-    echo
-    echo "XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}"
-    echo "XBB_TARGET_ARCH=${XBB_TARGET_ARCH}"
-    echo "XBB_TARGET_BITS=${XBB_TARGET_BITS}"
-    echo "XBB_TARGET_MACHINE=${XBB_TARGET_MACHINE}"
-  fi
-}
-
 # -----------------------------------------------------------------------------
 
 # Requires XBB_BASE_URL and lots of other variables.
@@ -242,13 +180,6 @@ function tests_good_bye()
     elif [ "${XBB_HOST_NODE_PLATFORM}" == "darwin" ]
     then
       run_verbose sw_vers
-    fi
-
-    if false # [ ! -f "/.dockerenv" -a "${CI:-""}" != "true" ]
-    then
-      echo
-      echo "To remove the temporary folders, use: ' rm -rf ${tests_xpacks_folder_path} '."
-      echo "This test also leaves a folder in ~/Downloads and an archive in ${cache_folder_path}."
     fi
   )
 }
