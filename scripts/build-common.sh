@@ -165,50 +165,50 @@ function build_set_request_target()
   XBB_REQUESTED_TARGET_PREFIX=$(xbb_config_guess)
 
   case "${XBB_REQUESTED_TARGET}" in
-    linux-x64)
+    linux-x64 )
       XBB_REQUESTED_TARGET_PLATFORM="linux"
       XBB_REQUESTED_TARGET_ARCH="x64"
       XBB_REQUESTED_TARGET_BITS="64"
       XBB_REQUESTED_TARGET_MACHINE="x86_64"
       ;;
 
-    linux-arm64)
+    linux-arm64 )
       XBB_REQUESTED_TARGET_PLATFORM="linux"
       XBB_REQUESTED_TARGET_ARCH="arm64"
       XBB_REQUESTED_TARGET_BITS="64"
       XBB_REQUESTED_TARGET_MACHINE="aarch64"
       ;;
 
-    linux-arm)
+    linux-arm )
       XBB_REQUESTED_TARGET_PLATFORM="linux"
       XBB_REQUESTED_TARGET_ARCH="arm"
       XBB_REQUESTED_TARGET_BITS="32"
       XBB_REQUESTED_TARGET_MACHINE="armv7l"
       ;;
 
-    darwin-x64)
+    darwin-x64 )
       XBB_REQUESTED_TARGET_PLATFORM="darwin"
       XBB_REQUESTED_TARGET_ARCH="x64"
       XBB_REQUESTED_TARGET_BITS="64"
       XBB_REQUESTED_TARGET_MACHINE="x86_64"
       ;;
 
-    darwin-arm64)
+    darwin-arm64 )
       XBB_REQUESTED_TARGET_PLATFORM="darwin"
       XBB_REQUESTED_TARGET_ARCH="arm64"
       XBB_REQUESTED_TARGET_BITS="64"
       XBB_REQUESTED_TARGET_MACHINE="arm64"
       ;;
 
-    win32-x64)
+    win32-x64 )
       XBB_REQUEST_BUILD_WINDOWS="y"
       ;;
 
-    "")
+    "" )
       # Keep the defaults.
       ;;
 
-    *)
+    * )
       echo "Unknown --target $1"
       exit 1
       ;;
