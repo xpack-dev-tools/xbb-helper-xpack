@@ -79,10 +79,7 @@ function _build_realpath()
       export LDFLAGS
 
       (
-        if [ "${XBB_IS_DEVELOP}" == "y" ]
-        then
-          env | sort
-        fi
+        xbb_show_env_develop
 
         echo
         echo "Running realpath make..."
@@ -206,10 +203,7 @@ function build_scons()
       export CXXFLAGS
       export LDFLAGS
 
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
-      then
-        env | sort
-      fi
+      xbb_show_env_develop
 
       echo
       echo "Running scons install..."
@@ -323,10 +317,7 @@ function build_curl()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running curl configure..."
@@ -559,10 +550,7 @@ function build_tar()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running tar configure..."
@@ -787,10 +775,7 @@ function build_guile()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running guile configure..."
@@ -980,10 +965,7 @@ function build_autogen()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running autogen configure..."
@@ -1181,10 +1163,7 @@ function build_m4()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running m4 configure..."
@@ -1376,10 +1355,7 @@ function build_gawk()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running gawk configure..."
@@ -1577,10 +1553,7 @@ function build_sed()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running sed configure..."
@@ -1774,10 +1747,7 @@ function build_patch()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running patch configure..."
@@ -1943,10 +1913,7 @@ function build_diffutils()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running diffutils configure..."
@@ -2134,10 +2101,7 @@ function build_bison()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running bison configure..."
@@ -2348,10 +2312,7 @@ function build_make()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running make configure..."
@@ -2526,10 +2487,7 @@ function build_bash()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running bash configure..."
@@ -2704,10 +2662,7 @@ function build_wget()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running wget configure..."
@@ -2898,10 +2853,7 @@ function build_dos2unix()
       export LDFLAGS
 
       (
-        if [ "${XBB_IS_DEVELOP}" == "y" ]
-        then
-          env | sort
-        fi
+        xbb_show_env_develop
 
         echo
         echo "Running dos2unix make..."
@@ -3065,10 +3017,7 @@ function build_flex()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running flex configure..."
@@ -3302,10 +3251,7 @@ function build_perl()
       if [ ! -f "config.h" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running perl configure..."
@@ -3511,10 +3457,7 @@ function build_tcl()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running tcl configure..."
@@ -3754,10 +3697,7 @@ function build_git()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running git configure..."
@@ -3932,10 +3872,7 @@ function build_p7zip()
       export CXXFLAGS
       export LDFLAGS
 
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
-      then
-        env | sort
-      fi
+      xbb_show_env_develop
 
       echo
       echo "Running p7zip make..."
@@ -4088,10 +4025,7 @@ function build_rhash()
       if [ ! -f "stamp-configure" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running rhash configure..."
@@ -4285,10 +4219,7 @@ function build_re2c()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running re2c configure..."
@@ -4473,10 +4404,7 @@ function build_gnupg()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running gnupg configure..."
@@ -4685,10 +4613,7 @@ function build_makedepend()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running makedepend configure..."

@@ -96,10 +96,7 @@ function build_ncurses()
           # configure: error: expected a pathname, not ""
           export PKG_CONFIG_LIBDIR="no"
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running ncurses configure..."

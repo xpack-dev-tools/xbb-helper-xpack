@@ -83,10 +83,7 @@ function build_findutils()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running findutils configure..."
@@ -441,10 +438,7 @@ function build_mingw_crt()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running mingw-w64-crt${XBB_MINGW_NAME_SUFFIX} configure..."
@@ -549,10 +543,7 @@ function build_mingw_winpthreads()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running mingw-w64-winpthreads${XBB_MINGW_NAME_SUFFIX} configure..."
@@ -637,10 +628,7 @@ function build_mingw_winstorecompat()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running mingw-w64-winstorecompat${XBB_MINGW_NAME_SUFFIX} configure..."
@@ -713,10 +701,7 @@ function build_mingw_libmangle()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running mingw-w64-libmangle${XBB_MINGW_NAME_SUFFIX} configure..."
@@ -796,10 +781,7 @@ function build_mingw_gendef()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running mingw-w64-gendef${XBB_MINGW_NAME_SUFFIX} configure..."
@@ -879,10 +861,7 @@ function build_mingw_widl()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running mingw-w64-widl${XBB_MINGW_NAME_SUFFIX} configure..."
@@ -1021,10 +1000,7 @@ function build_qemu()
         if [ ! -f "config.status" ]
         then
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running qemu ${qemu_target} configure..."
@@ -1296,10 +1272,7 @@ function build_native_binutils()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running binutils${name_suffix} configure..."
@@ -1647,10 +1620,7 @@ function build_cross_binutils()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running cross binutils configure..."
@@ -1945,10 +1915,7 @@ function build_cross_gcc_first()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running cross gcc first stage configure..."
@@ -2175,10 +2142,7 @@ function build_cross_newlib()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           # --disable-nls do not use Native Language Support
           # --enable-newlib-io-long-double   enable long double type support in IO functions printf/scanf
@@ -2557,10 +2521,7 @@ function build_cross_gcc_final()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running cross gcc${name_suffix} final stage configure..."
@@ -3081,10 +3042,7 @@ function build_cross_gdb()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running cross gdb${name_suffix} configure..."

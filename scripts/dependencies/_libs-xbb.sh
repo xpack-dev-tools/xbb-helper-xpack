@@ -77,10 +77,7 @@ function build_libtasn1()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libtasn1 configure..."
@@ -213,10 +210,7 @@ function build_libunistring()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libunistring configure..."
@@ -360,10 +354,7 @@ function build_gc()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running gc configure..."
@@ -554,10 +545,7 @@ function build_gnutls()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running gnutls configure..."
@@ -762,10 +750,7 @@ function build_xorg_util_macros()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running xorg_util_macros configure..."
@@ -895,10 +880,7 @@ function build_xorg_xproto()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running xorg_xproto configure..."

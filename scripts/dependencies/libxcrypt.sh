@@ -102,10 +102,7 @@ function build_libxcrypt()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libxcrypt configure..."

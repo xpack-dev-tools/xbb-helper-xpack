@@ -105,10 +105,7 @@ function build_gmp()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running gmp${name_suffix} configure..."
@@ -315,10 +312,7 @@ function build_mpfr()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running mpfr${name_suffix} configure..."
@@ -494,10 +488,7 @@ function build_mpc()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running mpc${name_suffix} configure..."
@@ -667,10 +658,7 @@ function build_isl()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running isl${name_suffix} configure..."
@@ -845,10 +833,7 @@ function build_zstd()
       if [ ! -f "CMakeCache.txt" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running zstd cmake..."
@@ -1000,10 +985,7 @@ function build_gettext()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running gettext configure..."
@@ -1209,10 +1191,7 @@ function build_libelf()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libelf configure..."
@@ -1366,10 +1345,7 @@ function build_gpm()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running gpm configure..."
@@ -1512,10 +1488,7 @@ function build_lzo()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running lzo configure..."
@@ -1658,10 +1631,7 @@ function build_python2()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running python2 configure..."
@@ -1914,10 +1884,7 @@ function build_libpng()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libpng configure..."
@@ -2044,10 +2011,7 @@ function build_jpeg()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running jpeg configure..."
@@ -2179,10 +2143,7 @@ function build_pixman()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running pixman configure..."
@@ -2352,10 +2313,7 @@ function build_glib2()
         if [ ! -f "config.status" ]
         then
           (
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
-            then
-              env | sort
-            fi
+            xbb_show_env_develop
 
             echo
             echo "Running glib configure..."
@@ -2425,10 +2383,7 @@ function build_glib2()
         if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}/build.ninja" ]
         then
           (
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
-            then
-              env | sort
-            fi
+            xbb_show_env_develop
 
             echo
             echo "Running glib meson setup..."
@@ -2577,10 +2532,7 @@ function build_libxml2()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libxml2 configure..."
@@ -2726,10 +2678,7 @@ function build_libedit()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libedit configure..."
@@ -2873,10 +2822,7 @@ function build_xar()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running xar configure..."
@@ -3001,10 +2947,7 @@ function build_libgpg_error()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libgpg-error configure..."
@@ -3155,10 +3098,7 @@ function build_libgcrypt()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libgcrypt configure..."
@@ -3373,10 +3313,7 @@ function build_libassuan()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libassuan configure..."
@@ -3545,10 +3482,7 @@ function build_libksba()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libksba configure..."
@@ -3715,10 +3649,7 @@ function build_npth()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running npth configure..."
@@ -3883,10 +3814,7 @@ function build_nettle()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running nettle configure..."
@@ -4046,10 +3974,7 @@ function build_libusb()
       then
 
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libusb configure..."
@@ -4189,10 +4114,7 @@ function build_vde()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running vde configure..."
@@ -4322,10 +4244,7 @@ function build_libpcap()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libpcap configure..."
@@ -4456,10 +4375,7 @@ function build_libssh()
       if [ ! -f "CMakeCache.txt" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libssh cmake..."
@@ -4602,10 +4518,7 @@ function build_sdl2()
       then
 
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running sdl2 configure..."
@@ -4753,16 +4666,11 @@ function build_sdl2_image()
 
       # export LIBS="-lpng16 -ljpeg"
 
-      env | sort
-
       if [ ! -f "config.status" ]
       then
 
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running sdl2-image configure..."
@@ -4907,10 +4815,7 @@ function build_pcre2()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running pcre2 configure..."
@@ -5046,10 +4951,7 @@ function build_termcap()
       if [ ! -f "config.status" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running termcap configure..."

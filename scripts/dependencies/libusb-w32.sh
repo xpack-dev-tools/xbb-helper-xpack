@@ -93,10 +93,7 @@ function build_libusb_w32()
         export CXXFLAGS
         export LDFLAGS
 
-        if [ "${XBB_IS_DEVELOP}" == "y" ]
-        then
-          env | sort
-        fi
+        xbb_show_env_develop
 
         run_verbose make \
           host_prefix=${XBB_CROSS_COMPILE_PREFIX} \

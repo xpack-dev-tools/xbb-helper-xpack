@@ -644,4 +644,17 @@ function xbb_show_tools_versions()
   )
 }
 
+function xbb_show_env()
+{
+  env | sort | egrep '^[^\s]*='
+}
+
+function xbb_show_env_develop()
+{
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  then
+    xbb_show_env
+  fi
+}
+
 # -----------------------------------------------------------------------------

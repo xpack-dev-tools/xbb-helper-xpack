@@ -68,10 +68,7 @@ function build_libftdi()
       export LDFLAGS
 
       (
-        if [ "${XBB_IS_DEVELOP}" == "y" ]
-        then
-          env | sort
-        fi
+        xbb_show_env_develop
 
         echo
         echo "Running libftdi configure..."

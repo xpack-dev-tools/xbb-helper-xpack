@@ -156,10 +156,7 @@ function build_hidapi()
         fi
 
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running hidapi cmake..."

@@ -372,7 +372,7 @@ function build_set_target()
 
   echo
   echo "XBB environment..."
-  env | sort | egrep '^[^\s]*='
+  xbb_show_env
 }
 
 # =============================================================================

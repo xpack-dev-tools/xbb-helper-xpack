@@ -66,10 +66,7 @@ function build_zlib()
       if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running zlib${name_suffix} make..."
@@ -109,10 +106,7 @@ function build_zlib()
         if [ ! -f "libz.a" ]
         then
           (
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
-            then
-              env | sort
-            fi
+            xbb_show_env_develop
 
             echo
             echo "Running zlib configure..."

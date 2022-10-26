@@ -65,10 +65,7 @@ function build_libusb0()
       then
 
         (
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            env | sort
-          fi
+          xbb_show_env_develop
 
           echo
           echo "Running libusb0 configure..."
