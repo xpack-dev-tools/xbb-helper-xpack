@@ -257,6 +257,9 @@ function tests_update_system()
 
 function tests_perform_common()
 {
+  # Avoid leaving files that cannot be removed by users.
+  trap xbb_make_writable EXIT
+
   # ---------------------------------------------------------------------------
 
   if [ -f "/.dockerenv" ]
@@ -272,9 +275,9 @@ function tests_perform_common()
       )
     fi
 
-    # The XBB docker images have nvm installed in the /root folder;
+    # The first XBB docker images have nvm installed in the /root folder;
     # import the nvm settings into the current user environment to
-    # get access to node/npm.
+    # get access to node/npm. No longer needed with v5.0 or later.
     if [ -d "/root/.nvm" ]
     then
       export NVM_DIR="/root/.nvm"
@@ -300,12 +303,9 @@ function tests_perform_common()
 
   host_detect
 
-  tests_set_target
-
+  xbb_set_request_target
   xbb_set_env
-
-  # Avoid leaving files that cannot be removed by users.
-  trap xbb_make_writable EXIT
+  xbb_set_target
 
   if [ "${XBB_DO_TEST_VIA_XPM}" == "y" ]
   then
@@ -322,6 +322,12 @@ function tests_perform_common()
   fi
 
   tests_good_bye
+}
+
+# Called by xbb_set_target.
+function tests_add()
+{
+  :
 }
 
 # -----------------------------------------------------------------------------
