@@ -648,7 +648,7 @@ function xbb_show_tools_versions()
 
 function xbb_show_env()
 {
-  env | sort | egrep '^[^\s]*='
+  env | sort | egrep '^[^\s][^\s]*='
 }
 
 function xbb_show_env_develop()
