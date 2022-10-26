@@ -162,6 +162,7 @@ function build_set_request_target()
   XBB_REQUESTED_TARGET_ARCH="${XBB_HOST_NODE_ARCH}"
   XBB_REQUESTED_TARGET_BITS="${XBB_HOST_BITS}"
   XBB_REQUESTED_TARGET_MACHINE="${XBB_HOST_MACHINE}"
+  XBB_REQUESTED_TARGET_PREFIX=$(xbb_config_guess)
 
   case "${XBB_REQUESTED_TARGET}" in
     linux-x64)
@@ -231,6 +232,7 @@ function build_set_request_target()
       XBB_REQUESTED_TARGET_ARCH="x64"
       XBB_REQUESTED_TARGET_BITS="64"
       XBB_REQUESTED_TARGET_MACHINE="x86_64"
+      XBB_REQUESTED_TARGET_PREFIX="x86_64-w64-mingw32"
     else
       echo "Windows cross builds are available only on Intel GNU/Linux"
       exit 1
@@ -241,6 +243,7 @@ function build_set_request_target()
   export XBB_REQUESTED_TARGET_ARCH
   export XBB_REQUESTED_TARGET_BITS
   export XBB_REQUESTED_TARGET_MACHINE
+  export XBB_REQUESTED_TARGET_PREFIX
 }
 
 # =============================================================================
