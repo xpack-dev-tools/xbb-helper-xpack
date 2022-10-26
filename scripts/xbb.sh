@@ -157,17 +157,231 @@ function xbb_set_env()
   export SHELL="/bin/bash"
   export CONFIG_SHELL="/bin/bash"
 
-
   # Prevent 'configure: error: you should not run configure as root'
   # when running inside a docker container.
   export FORCE_UNSAFE_CONFIGURE=1
-
-
-
-
-  # ---------------------------------------------------------------------------
 }
 
+# Requires the host identity.
+function xbb_set_request_target()
+{
+  # The default case, when the target is the same as the host.
+  XBB_REQUESTED_TARGET_PLATFORM="${XBB_HOST_NODE_PLATFORM}"
+  XBB_REQUESTED_TARGET_ARCH="${XBB_HOST_NODE_ARCH}"
+  XBB_REQUESTED_TARGET_BITS="${XBB_HOST_BITS}"
+  XBB_REQUESTED_TARGET_MACHINE="${XBB_HOST_MACHINE}"
+  XBB_REQUESTED_TARGET_PREFIX=$(xbb_config_guess)
+
+  case "${XBB_REQUESTED_TARGET:-""}" in
+    linux-x64 )
+      XBB_REQUESTED_TARGET_PLATFORM="linux"
+      XBB_REQUESTED_TARGET_ARCH="x64"
+      XBB_REQUESTED_TARGET_BITS="64"
+      XBB_REQUESTED_TARGET_MACHINE="x86_64"
+      ;;
+
+    linux-arm64 )
+      XBB_REQUESTED_TARGET_PLATFORM="linux"
+      XBB_REQUESTED_TARGET_ARCH="arm64"
+      XBB_REQUESTED_TARGET_BITS="64"
+      XBB_REQUESTED_TARGET_MACHINE="aarch64"
+      ;;
+
+    linux-arm )
+      XBB_REQUESTED_TARGET_PLATFORM="linux"
+      XBB_REQUESTED_TARGET_ARCH="arm"
+      XBB_REQUESTED_TARGET_BITS="32"
+      XBB_REQUESTED_TARGET_MACHINE="armv7l"
+      ;;
+
+    darwin-x64 )
+      XBB_REQUESTED_TARGET_PLATFORM="darwin"
+      XBB_REQUESTED_TARGET_ARCH="x64"
+      XBB_REQUESTED_TARGET_BITS="64"
+      XBB_REQUESTED_TARGET_MACHINE="x86_64"
+      ;;
+
+    darwin-arm64 )
+      XBB_REQUESTED_TARGET_PLATFORM="darwin"
+      XBB_REQUESTED_TARGET_ARCH="arm64"
+      XBB_REQUESTED_TARGET_BITS="64"
+      XBB_REQUESTED_TARGET_MACHINE="arm64"
+      ;;
+
+    win32-x64 )
+      XBB_REQUEST_BUILD_WINDOWS="y"
+      ;;
+
+    "" )
+      # Keep the defaults.
+      ;;
+
+    * )
+      echo "Unknown --target $1"
+      exit 1
+      ;;
+
+  esac
+
+  if [ "${XBB_REQUESTED_TARGET_PLATFORM}" != "${XBB_HOST_NODE_PLATFORM}" ] ||
+     [ "${XBB_REQUESTED_TARGET_ARCH}" != "${XBB_HOST_NODE_ARCH}" ]
+  then
+    # TODO: allow armv7l to run on armv8l, but with a warning.
+    echo "Cannot cross build --target ${XBB_REQUESTED_TARGET}"
+    exit 1
+  fi
+
+  # Windows is a special case, the built runs on Linux x64.
+  if [ "${XBB_REQUEST_BUILD_WINDOWS}" == "y" ]
+  then
+    if [ "${XBB_HOST_NODE_PLATFORM}" == "linux" ] && [ "${XBB_HOST_NODE_ARCH}" == "x64" ]
+    then
+      XBB_REQUESTED_TARGET_PLATFORM="win32"
+      XBB_REQUESTED_TARGET_ARCH="x64"
+      XBB_REQUESTED_TARGET_BITS="64"
+      XBB_REQUESTED_TARGET_MACHINE="x86_64"
+      XBB_REQUESTED_TARGET_PREFIX="x86_64-w64-mingw32"
+    else
+      echo "Windows cross builds are available only on Intel GNU/Linux"
+      exit 1
+    fi
+  fi
+
+  export XBB_REQUESTED_TARGET_PLATFORM
+  export XBB_REQUESTED_TARGET_ARCH
+  export XBB_REQUESTED_TARGET_BITS
+  export XBB_REQUESTED_TARGET_MACHINE
+  export XBB_REQUESTED_TARGET_PREFIX
+}
+
+function xbb_set_target()
+{
+  local kind="${1:-"requested"}"
+
+  if [ "${kind}" == "native" ]
+  then
+    # The target is the same as the host.
+    XBB_TARGET_PLATFORM="${XBB_HOST_NODE_PLATFORM}"
+    XBB_TARGET_ARCH="${XBB_HOST_NODE_ARCH}"
+    XBB_TARGET_BITS="${XBB_HOST_BITS}"
+    XBB_TARGET_MACHINE="${XBB_HOST_MACHINE}"
+    XBB_TARGET_PREFIX="$(xbb_config_guess)"
+  elif [ "${kind}" == "cross" ]
+  then
+    XBB_TARGET_PLATFORM="win32"
+    XBB_TARGET_ARCH="x64"
+    XBB_TARGET_BITS="64"
+    XBB_TARGET_MACHINE="x86_64"
+    XBB_TARGET_PREFIX="x86_64-w64-mingw32"
+  elif [ "${kind}" == "requested" ]
+  then
+    # Set the actual to the requested.
+    XBB_TARGET_PLATFORM="${XBB_REQUESTED_TARGET_PLATFORM}"
+    XBB_TARGET_ARCH="${XBB_REQUESTED_TARGET_ARCH}"
+    XBB_TARGET_BITS="${XBB_REQUESTED_TARGET_BITS}"
+    XBB_TARGET_MACHINE="${XBB_REQUESTED_TARGET_MACHINE}"
+    XBB_TARGET_PREFIX="${XBB_REQUESTED_TARGET_PREFIX}"
+  else
+    echo "Unsupported xbb_set_target ${kind}"
+    exit 1
+  fi
+
+  export XBB_TARGET_PLATFORM
+  export XBB_TARGET_ARCH
+  export XBB_TARGET_BITS
+  export XBB_TARGET_MACHINE
+  export XBB_TARGET_SUFFIX
+
+  # ---------------------------------------------------------------------------
+  # Prefixed paths.
+  XBB_TARGET_PREFIXED_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_TARGET_PREFIX}"
+
+  XBB_BUILD_FOLDER_NAME="${XBB_BUILD_FOLDER_NAME-build}"
+  XBB_BUILD_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_BUILD_FOLDER_NAME}"
+
+  XBB_DEPENDENCIES_INSTALL_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
+
+  XBB_STAMPS_FOLDER_NAME="${XBB_STAMPS_FOLDER_NAME:-stamps}"
+  XBB_STAMPS_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_STAMPS_FOLDER_NAME}"
+
+  XBB_LOGS_FOLDER_NAME="${XBB_LOGS_FOLDER_NAME:-logs}"
+  XBB_LOGS_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_LOGS_FOLDER_NAME}"
+
+  XBB_TESTS_FOLDER_NAME="${XBB_TESTS_FOLDER_NAME:-tests}"
+  XBB_TESTS_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_TESTS_FOLDER_NAME}"
+
+  export XBB_BUILD_FOLDER_PATH
+  export XBB_DEPENDENCIES_INSTALL_FOLDER_PATH
+  export XBB_STAMPS_FOLDER_PATH
+  export XBB_LOGS_FOLDER_PATH
+  export XBB_TESTS_FOLDER_PATH
+
+  # ---------------------------------------------------------------------------
+
+  XBB_DOT_EXE=""
+  # Compute the XBB_BUILD/XBB_HOST/XBB_TARGET for configure.
+  XBB_CROSS_COMPILE_PREFIX=""
+  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  then
+
+    # Disable tests when cross compiling for Windows.
+    XBB_WITH_TESTS="n"
+
+    XBB_DOT_EXE=".exe"
+
+    XBB_SHLIB_EXT="dll"
+
+    # Use the 64-bit mingw-w64 gcc to compile Windows binaries.
+    XBB_CROSS_COMPILE_PREFIX="x86_64-w64-mingw32"
+
+    XBB_BUILD=$(xbb_config_guess)
+    XBB_HOST="${XBB_CROSS_COMPILE_PREFIX}"
+    XBB_TARGET="${XBB_HOST}"
+
+  elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+  then
+
+    XBB_SHLIB_EXT="so"
+
+    XBB_BUILD=$(xbb_config_guess)
+    XBB_HOST="${XBB_BUILD}"
+    XBB_TARGET="${XBB_HOST}"
+
+  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+  then
+
+    XBB_SHLIB_EXT="dylib"
+
+    XBB_BUILD=$(xbb_config_guess)
+    XBB_HOST="${XBB_BUILD}"
+    XBB_TARGET="${XBB_HOST}"
+
+  else
+    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
+    exit 1
+  fi
+
+  export XBB_DOT_EXE
+  export XBB_SHLIB_EXT
+
+  export XBB_BUILD
+  export XBB_HOST
+  export XBB_TARGET
+
+  # ---------------------------------------------------------------------------
+
+  xbb_set_compiler_env
+
+  # ---------------------------------------------------------------------------
+
+  tests_add "xbb_set_target" "${kind}"
+
+  # ---------------------------------------------------------------------------
+
+  echo
+  echo "XBB environment..."
+  xbb_show_env
+}
 
 function xbb_config_guess()
 {
