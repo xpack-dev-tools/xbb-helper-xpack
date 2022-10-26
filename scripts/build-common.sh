@@ -246,6 +246,135 @@ function build_set_request_target()
   export XBB_REQUESTED_TARGET_PREFIX
 }
 
+function build_set_target()
+{
+  local kind="${1:-"requested"}"
+
+  if [ "${kind}" == "native" ]
+  then
+    # The target is the same as the host.
+    XBB_TARGET_PLATFORM="${XBB_HOST_NODE_PLATFORM}"
+    XBB_TARGET_ARCH="${XBB_HOST_NODE_ARCH}"
+    XBB_TARGET_BITS="${XBB_HOST_BITS}"
+    XBB_TARGET_MACHINE="${XBB_HOST_MACHINE}"
+    XBB_TARGET_PREFIX="$(xbb_config_guess)"
+  elif [ "${kind}" == "cross" ]
+  then
+    XBB_TARGET_PLATFORM="win32"
+    XBB_TARGET_ARCH="x64"
+    XBB_TARGET_BITS="64"
+    XBB_TARGET_MACHINE="x86_64"
+    XBB_TARGET_PREFIX="x86_64-w64-mingw32"
+  elif [ "${kind}" == "requested" ]
+  then
+    # Set the actual to the requested.
+    XBB_TARGET_PLATFORM="${XBB_REQUESTED_TARGET_PLATFORM}"
+    XBB_TARGET_ARCH="${XBB_REQUESTED_TARGET_ARCH}"
+    XBB_TARGET_BITS="${XBB_REQUESTED_TARGET_BITS}"
+    XBB_TARGET_MACHINE="${XBB_REQUESTED_TARGET_MACHINE}"
+    XBB_TARGET_PREFIX="${XBB_REQUESTED_TARGET_PREFIX}"
+  else
+    echo "Unsupported build_set_target ${kind}"
+    exit 1
+  fi
+
+  export XBB_TARGET_PLATFORM
+  export XBB_TARGET_ARCH
+  export XBB_TARGET_BITS
+  export XBB_TARGET_MACHINE
+  export XBB_TARGET_SUFFIX
+
+  # ---------------------------------------------------------------------------
+  # Prefixed paths.
+  XBB_TARGET_PREFIXED_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_TARGET_PREFIX}"
+
+  XBB_BUILD_FOLDER_NAME="${XBB_BUILD_FOLDER_NAME-build}"
+  XBB_BUILD_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_BUILD_FOLDER_NAME}"
+
+  XBB_DEPENDENCIES_INSTALL_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
+
+  XBB_STAMPS_FOLDER_NAME="${XBB_STAMPS_FOLDER_NAME:-stamps}"
+  XBB_STAMPS_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_STAMPS_FOLDER_NAME}"
+
+  XBB_LOGS_FOLDER_NAME="${XBB_LOGS_FOLDER_NAME:-logs}"
+  XBB_LOGS_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_LOGS_FOLDER_NAME}"
+
+  XBB_TESTS_FOLDER_NAME="${XBB_TESTS_FOLDER_NAME:-tests}"
+  XBB_TESTS_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_TESTS_FOLDER_NAME}"
+
+  export XBB_BUILD_FOLDER_PATH
+  export XBB_DEPENDENCIES_INSTALL_FOLDER_PATH
+  export XBB_STAMPS_FOLDER_PATH
+  export XBB_LOGS_FOLDER_PATH
+  export XBB_TESTS_FOLDER_PATH
+
+  # ---------------------------------------------------------------------------
+
+  XBB_DOT_EXE=""
+  # Compute the XBB_BUILD/XBB_HOST/XBB_TARGET for configure.
+  XBB_CROSS_COMPILE_PREFIX=""
+  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  then
+
+    # Disable tests when cross compiling for Windows.
+    XBB_WITH_TESTS="n"
+
+    XBB_DOT_EXE=".exe"
+
+    XBB_SHLIB_EXT="dll"
+
+    # Use the 64-bit mingw-w64 gcc to compile Windows binaries.
+    XBB_CROSS_COMPILE_PREFIX="x86_64-w64-mingw32"
+
+    XBB_BUILD=$(xbb_config_guess)
+    XBB_HOST="${XBB_CROSS_COMPILE_PREFIX}"
+    XBB_TARGET="${XBB_HOST}"
+
+  elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+  then
+
+    XBB_SHLIB_EXT="so"
+
+    XBB_BUILD=$(xbb_config_guess)
+    XBB_HOST="${XBB_BUILD}"
+    XBB_TARGET="${XBB_HOST}"
+
+  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+  then
+
+    XBB_SHLIB_EXT="dylib"
+
+    XBB_BUILD=$(xbb_config_guess)
+    XBB_HOST="${XBB_BUILD}"
+    XBB_TARGET="${XBB_HOST}"
+
+  else
+    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
+    exit 1
+  fi
+
+  export XBB_DOT_EXE
+  export XBB_SHLIB_EXT
+
+  export XBB_BUILD
+  export XBB_HOST
+  export XBB_TARGET
+
+  # ---------------------------------------------------------------------------
+
+  xbb_set_compiler_env
+
+  # ---------------------------------------------------------------------------
+
+  tests_add "build_set_target" "${kind}"
+
+  # ---------------------------------------------------------------------------
+
+  echo
+  echo "XBB environment..."
+  env | sort | egrep '^[^\s]*='
+}
+
 # =============================================================================
 
 function build_perform_common()
