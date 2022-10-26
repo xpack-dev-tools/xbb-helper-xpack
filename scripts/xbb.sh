@@ -287,36 +287,6 @@ function xbb_set_compiler_env()
     echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
     exit 1
   fi
-
-  echo
-
-  (
-    set +e
-
-    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
-    then
-      which ${XBB_NATIVE_CXX} && ${XBB_NATIVE_CXX} --version && echo || true
-    fi
-
-    which ${CXX} && ${CXX} --version && echo || true
-
-    if [ "${XBB_IS_DEVELOP}" == "y" ]
-    then
-      which bash && bash --version && echo || true
-      which curl && curl --version && echo || true
-      which flex && flex --version && echo || true
-      which git && git --version && echo || true
-      which m4 && m4 --version && echo || true
-      which make && make --version && echo || true
-      which perl && perl --version && echo || true
-      which python && python --version && echo || true
-      which python3 && python3 --version && echo || true
-      which tar && tar --version && echo || true
-      which zip && zip --version && echo || true
-      which yacc && yacc --version && echo || true
-    fi
-
-  )
 }
 
 function xbb_unset_compiler_env()
@@ -715,6 +685,38 @@ function xbb_get_current_helper_version()
 
   # Extract the semver.
   grep '"@xpack-dev-tools/xbb-helper": "' "${package_file_path}" | sed -e 's|.*"\^\([0-9.]*\).*|\1|'
+}
+
+function xbb_show_tools_versions()
+{
+  echo
+
+  (
+    set +e
+
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    then
+      which ${XBB_NATIVE_CXX} && ${XBB_NATIVE_CXX} --version && echo || true
+    fi
+
+    which ${CXX} && ${CXX} --version && echo || true
+
+    if [ "${XBB_IS_DEVELOP}" == "y" ]
+    then
+      which bash && bash --version && echo || true
+      which curl && curl --version && echo || true
+      which flex && flex --version && echo || true
+      which git && git --version && echo || true
+      which m4 && m4 --version && echo || true
+      which make && make --version && echo || true
+      which perl && perl --version && echo || true
+      which python && python --version && echo || true
+      which python3 && python3 --version && echo || true
+      which tar && tar --version && echo || true
+      which zip && zip --version && echo || true
+      which yacc && yacc --version && echo || true
+    fi
+  )
 }
 
 # -----------------------------------------------------------------------------
