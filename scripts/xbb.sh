@@ -254,6 +254,14 @@ function xbb_set_request_target()
   export XBB_REQUESTED_TARGET_PREFIX
 }
 
+# Sets the following variables:
+#
+# - XBB_TARGET_PLATFORM=node_platform={win32,linux,darwin}
+# - XBB_TARGET_ARCH=node_architecture={x64,ia32,arm64,arm}
+# - XBB_TARGET_BITS={32,64}
+# - XBB_TARGET_MACHINE={x86_64,arm64,aarch64,armv7l,armv8l}
+# - XBB_TARGET_PREFIX={*,x86_64-w64-mingw32}
+
 function xbb_set_target()
 {
   local kind="${1:-"requested"}"
@@ -281,6 +289,25 @@ function xbb_set_target()
     XBB_TARGET_BITS="${XBB_REQUESTED_TARGET_BITS}"
     XBB_TARGET_MACHINE="${XBB_REQUESTED_TARGET_MACHINE}"
     XBB_TARGET_PREFIX="${XBB_REQUESTED_TARGET_PREFIX}"
+
+    if [ "${XBB_FORCE_32_BIT:-""}" == "y" ]
+    then
+      if [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
+        [ "${XBB_REQUESTED_TARGET_ARCH}" == "arm64" ]
+      then
+        # Pretend to be a 32-bit platform.
+        XBB_TARGET_ARCH="arm"
+        XBB_TARGET_BITS="32"
+        XBB_TARGET_MACHINE="armv8l"
+      elif [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
+        [ "${XBB_REQUESTED_TARGET_ARCH}" == "arm" ]
+      then
+        echo "Already a 32-bit platform, --32 ineffective"
+      else
+        echo "Cannot run 32-bit tests on ${XBB_TARGET_MACHINE}"
+        exit 1
+      fi
+    fi
   else
     echo "Unsupported xbb_set_target ${kind}"
     exit 1
