@@ -106,6 +106,15 @@ function build_hidapi()
         run_verbose cp -v "hidapi/hidapi.h" \
           "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/hidapi"
 
+        find "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" \
+          -name 'libhidapi-hidraw.la' \
+          -exec rm -v '{}' ';'
+        # rm -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"/lib*/libhidapi-hidraw.la
+
+        copy_license \
+          "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}" \
+          "${hidapi_folder_name}"
+
       elif [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
 
@@ -218,16 +227,16 @@ function build_hidapi()
           copy_cmake_logs "${hidapi_folder_name}"
         )
 
+        find "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" \
+          -name 'libhidapi-hidraw.la' \
+          -exec rm -v '{}' ';'
+        # rm -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"/lib*/libhidapi-hidraw.la
+
+        copy_license \
+          "${XBB_SOURCES_FOLDER_PATH}/${hidapi_src_folder_name}" \
+          "${hidapi_folder_name}"
+
       fi
-
-      find "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" \
-        -name 'libhidapi-hidraw.la' \
-        -exec rm -v '{}' ';'
-      # rm -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"/lib*/libhidapi-hidraw.la
-
-      copy_license \
-        "${XBB_SOURCES_FOLDER_PATH}/${hidapi_src_folder_name}" \
-        "${hidapi_folder_name}"
     )
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
