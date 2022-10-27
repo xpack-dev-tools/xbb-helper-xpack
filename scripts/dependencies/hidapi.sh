@@ -45,40 +45,26 @@ function build_hidapi()
   if [ ! -f "${hidapi_stamp_file_path}" ]
   then
 
-    if false
-    then
-    echo
-    echo "hidapi in-source building..."
-
-    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
-
-    if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}" ]
-    then
-      download_and_extract "${hidapi_url}" "${hidapi_archive}" \
-        "${hidapi_src_folder_name}" "${hidapi_patch_file_name}"
-
-      if [ "${hidapi_src_folder_name}" != "${hidapi_folder_name}" ]
-      then
-        mv -v "${hidapi_src_folder_name}" "${hidapi_folder_name}"
-      fi
-    fi
-    else
-      mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-      cd "${XBB_SOURCES_FOLDER_PATH}"
-
-      download_and_extract "${hidapi_url}" "${hidapi_archive}" \
-        "${hidapi_src_folder_name}" "${hidapi_patch_file_name}"
-    fi
-
     (
-      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
-
-      xbb_activate_installed_dev
-
       if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
+
+        echo
+        echo "hidapi in-source building..."
+
+        mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
+        cd "${XBB_BUILD_FOLDER_PATH}"
+
+        if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}" ]
+        then
+          download_and_extract "${hidapi_url}" "${hidapi_archive}" \
+            "${hidapi_src_folder_name}" "${hidapi_patch_file_name}"
+
+          if [ "${hidapi_src_folder_name}" != "${hidapi_folder_name}" ]
+          then
+            mv -v "${hidapi_src_folder_name}" "${hidapi_folder_name}"
+          fi
+        fi
 
         hidapi_OBJECT="hid.o"
         hidapi_A="libhid.a"
@@ -102,8 +88,8 @@ function build_hidapi()
 
         # Make just compiles the file. Create the archive and convert it to library.
         # No dynamic/shared libs involved.
-        ar -r  "${hidapi_A}" "${hidapi_OBJECT}"
-        ${XBB_CROSS_COMPILE_PREFIX}-ranlib "${hidapi_A}"
+        run_verbose ar -r  "${hidapi_A}" "${hidapi_OBJECT}"
+        run_verbose ${XBB_CROSS_COMPILE_PREFIX}-ranlib "${hidapi_A}"
 
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
         cp -v "${hidapi_A}" \
@@ -111,7 +97,7 @@ function build_hidapi()
 
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig"
         sed -e "s|XXX|${XBB_LIBRARIES_INSTALL_FOLDER_PATH}|" \
-          "${XBB_BUILD_GIT_PATH}/pkgconfig/hidapi-${hidapi_version}-windows.pc" \
+          "${helper_folder_path}/pkgconfig/hidapi-${hidapi_version}-windows.pc" \
           > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/hidapi.pc"
 
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/hidapi"
@@ -120,6 +106,17 @@ function build_hidapi()
 
       elif [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
+
+        mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+        cd "${XBB_SOURCES_FOLDER_PATH}"
+
+        download_and_extract "${hidapi_url}" "${hidapi_archive}" \
+          "${hidapi_src_folder_name}" "${hidapi_patch_file_name}"
+
+        mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
+        cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
+
+        xbb_activate_installed_dev
 
         if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
@@ -221,7 +218,10 @@ function build_hidapi()
 
       fi
 
-      rm -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"/lib*/libhidapi-hidraw.la
+      find "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" \
+        -name 'libhidapi-hidraw.la' \
+        -exec rm -v '{}' ';'
+      # rm -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"/lib*/libhidapi-hidraw.la
 
       copy_license \
         "${XBB_SOURCES_FOLDER_PATH}/${hidapi_src_folder_name}" \
