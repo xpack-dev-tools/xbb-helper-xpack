@@ -363,7 +363,7 @@ function add_python3_syslibs()
         # For just in case.
         find "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
           \( -name '*.opt-1.pyc' -o -name '*.opt-2.pyc' \) \
-          -exec rm -v {} \;
+          -exec rm -v '{}' ';'
       )
 
       echo "Replacing .py files with .pyc files..."
