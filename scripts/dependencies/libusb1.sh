@@ -109,6 +109,9 @@ function build_libusb1()
           run_verbose make install
         fi
 
+        # The .la file is broken, it includes a bad reference to libatomic.la.
+        run_verbose rm -v -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libusb-1.0.la"
+
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libusb1_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
