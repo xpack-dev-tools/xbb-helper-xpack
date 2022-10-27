@@ -88,11 +88,12 @@ function build_hidapi()
 
         # Make just compiles the file. Create the archive and convert it to library.
         # No dynamic/shared libs involved.
+        cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}/windows"
         run_verbose ar -r  "${hidapi_A}" "${hidapi_OBJECT}"
         run_verbose ${XBB_CROSS_COMPILE_PREFIX}-ranlib "${hidapi_A}"
 
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-        cp -v "${hidapi_A}" \
+        run_verbose cp -v "${hidapi_A}" \
           "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
 
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig"
@@ -100,8 +101,9 @@ function build_hidapi()
           "${helper_folder_path}/pkgconfig/hidapi-${hidapi_version}-windows.pc" \
           > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/hidapi.pc"
 
+        cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/hidapi"
-        cp -v "${XBB_SOURCES_FOLDER_PATH}/${hidapi_folder_name}/hidapi/hidapi.h" \
+        run_verbose cp -v "hidapi/hidapi.h" \
           "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/hidapi"
 
       elif [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
