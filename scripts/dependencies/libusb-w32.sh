@@ -105,11 +105,11 @@ function build_libusb_w32()
 
         # Skipping it does not remove the reference from openocd, so for the
         # moment it is preserved.
-        cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}/libusb0.dll" \
+        cp -v "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}/libusb0.dll" \
           "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin"
 
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-        cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}/libusb.a" \
+        cp -v "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}/libusb.a" \
           "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
 
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig"
@@ -118,7 +118,7 @@ function build_libusb_w32()
           > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/libusb.pc"
 
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/libusb"
-        cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${libusb_w32_folder_name}/src/lusb0_usb.h" \
+        cp -v "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}/src/lusb0_usb.h" \
           "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/libusb/usb.h"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libusb_w32_folder_name}/make-output-$(ndate).txt"
