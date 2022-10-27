@@ -42,8 +42,6 @@ function build_libusb0()
       cd "${XBB_BUILD_FOLDER_PATH}/${libusb0_folder_name}"
 
       xbb_activate_installed_dev
-      # For pkg-config
-      xbb_activate_installed_bin
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
