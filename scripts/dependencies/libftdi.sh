@@ -48,8 +48,6 @@ function build_libftdi()
       cd "${XBB_BUILD_FOLDER_PATH}/${libftdi_folder_name}"
 
       xbb_activate_installed_dev
-      # For pkg-config
-      xbb_activate_installed_bin
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
