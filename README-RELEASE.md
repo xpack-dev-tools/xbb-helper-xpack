@@ -36,6 +36,12 @@ git clone \
   ~/Work/xbb-helper-xpack.git
 ```
 
+Link it to the central xPacks store:
+
+```sh
+xpm link -C ~/Work/xbb-helper-xpack.git
+```
+
 ## Prerequisites
 
 A recent [xpm](https://xpack.github.io/xpm/), which is a portable
