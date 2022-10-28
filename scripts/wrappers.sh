@@ -139,6 +139,9 @@ function run_app_silent()
       return
     fi
     (
+      unset DISPLAY
+      export WINEDEBUG=-all
+
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
