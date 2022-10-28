@@ -552,11 +552,8 @@ function xbb_set_compiler_flags()
   XBB_CFLAGS="-ffunction-sections -fdata-sections -pipe"
   XBB_CXXFLAGS="-ffunction-sections -fdata-sections -pipe"
 
-  if [ "${XBB_TARGET_ARCH}" == "x64" -o "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
-  then
-    XBB_CFLAGS+=" -m${XBB_TARGET_BITS}"
-    XBB_CXXFLAGS+=" -m${XBB_TARGET_BITS}"
-  fi
+  # No longer set -m64/-m32, since it may interfere with multilib builds,
+  # like wine.
 
   XBB_LDFLAGS=""
 
