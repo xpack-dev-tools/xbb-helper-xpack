@@ -51,7 +51,7 @@ function show_libs()
       else
         echo "${app_path}:"
       fi
-      otool -L "${app_path}" | sed -e '1d'
+      otool -L "${app_path}" | tail -n +2
     elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
       if is_elf "${app_path}"

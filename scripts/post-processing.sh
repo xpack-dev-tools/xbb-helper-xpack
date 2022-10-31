@@ -1883,7 +1883,7 @@ function check_binary_for_libraries()
           echo "${file_name}: (${file_path})"
         fi
 
-        otool -L "${file_name}" | sed -e '1d'
+        otool -L "${file_name}" | tail -n +2
         set -e
       )
 
