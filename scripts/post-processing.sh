@@ -11,61 +11,6 @@
 # -----------------------------------------------------------------------------
 # Functions used after the build, to prepare the distribution archive.
 
-# $1 - absolute path to input folder
-# $2 - name of output folder below INSTALL_FOLDER
-function copy_license()
-{
-  # Iterate all files in a folder and install some of them in the
-  # destination folder
-  (
-    if [ -z "$2" ]
-    then
-      return
-    fi
-
-    echo
-    echo "Copying license files for $2..."
-
-    cd "$1"
-    local f
-    for f in *
-    do
-      if [ -f "$f" ]
-      then
-        if [[ $f =~ AUTHORS.*|NEWS.*|COPYING.*|README.*|LICENSE.*|Copyright.*|COPYRIGHT.*|FAQ.*|DEPENDENCIES.*|THANKS.*|CHANGES.* ]]
-        then
-          install -d -m 0755 \
-            "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2"
-          install -v -c -m 644 "$f" \
-            "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2"
-        fi
-      elif [ -d "$f" ] && [[ $f =~ [Ll][Ii][Cc][Ee][Nn][Ss][Ee]* ]]
-      then
-        (
-          cd "$f"
-          local files=$(find . -type f)
-          for file in ${files}
-          do
-            install -d -m 0755 \
-              "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
-            install -v -c -m 644 "$file" \
-              "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
-          done
-        )
-      fi
-    done
-
-    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
-    then
-      find "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses" \
-        -type f \
-        -exec unix2dos '{}' ';'
-    fi
-  )
-}
-
-# -----------------------------------------------------------------------------
-
 # Process all elf files in a folder (executables and shared libraries).
 
 # $1 = folder path (default ${XBB_APPLICATION_INSTALL_FOLDER_PATH})

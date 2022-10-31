@@ -53,8 +53,7 @@ function copy_license()
         )
       fi
     done
-  )
-  (
+
     if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
       find "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses" \
