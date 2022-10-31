@@ -208,6 +208,9 @@ function build_perform_common()
 
       create_archive
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/post-process-output-$(ndate).txt"
+  else
+    echo
+    echo "Tests only, skipping post processing..."
   fi
 
   # ---------------------------------------------------------------------------
