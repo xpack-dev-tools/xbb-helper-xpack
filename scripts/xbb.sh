@@ -796,12 +796,6 @@ function xbb_activate_installed_dev()
 
   export PKG_CONFIG_PATH
   export LD_LIBRARY_PATH
-
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
-  then
-    echo
-    env | sort
-  fi
 }
 
 function xbb_activate_cxx_rpath()
