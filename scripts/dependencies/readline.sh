@@ -102,7 +102,12 @@ function build_readline()
           config_options+=("--host=${XBB_HOST}")
           config_options+=("--target=${XBB_TARGET}")
 
-          config_options+=("--with-curses")
+          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          then
+            config_options+=("--without-curses")
+          else
+            config_options+=("--with-curses")
+          fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${readline_src_folder_name}/configure" \
             "${config_options[@]}"
