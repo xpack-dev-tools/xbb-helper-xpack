@@ -153,6 +153,15 @@ function xbb_set_env()
 
   # ---------------------------------------------------------------------------
 
+  if [ "${XBB_HOST_NODE_PLATFORM}" == "linux" ]
+  then
+    # Start with the library path known by the compiler.
+    # Later this path will be added to -rpath.
+    export LD_LIBRARY_PATH="$(/usr/bin/gcc -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+  fi
+
+  # ---------------------------------------------------------------------------
+
   # libtool fails with the old Ubuntu /bin/sh.
   export SHELL="/bin/bash"
   export CONFIG_SHELL="/bin/bash"
