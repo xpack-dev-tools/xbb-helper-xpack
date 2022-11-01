@@ -56,8 +56,29 @@ function build_glib2()
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
     cd "${XBB_SOURCES_FOLDER_PATH}"
 
-    download_and_extract "${glib_url}" "${glib_archive}" \
-      "${glib_src_folder_name}"
+    if [ ! -d "${glib_src_folder_name}" ]
+    then
+      download_and_extract "${glib_url}" "${glib_archive}" \
+        "${glib_src_folder_name}"
+
+      # When resolving the path to python, meson gets confused and
+      # returns the path to itself; thus make the path explicit.
+      which python3
+      which_python=$(which python3)
+      run_verbose sed -i.bak \
+        -e "s|python = import('python').find_installation()|python = import('python').find_installation('${which_python}')|"   \
+        "${glib_src_folder_name}/meson.build"
+
+      diff "${glib_src_folder_name}/meson.build.bak" "${glib_src_folder_name}/meson.build" || true
+
+      # When invoking python scripts, meson gets confused and
+      # tries to use itself; thus invoke python explicitly.
+      run_verbose sed -i.bak \
+        -e "s|command: \[gengiotypefuncs_prog, '@OUTPUT@', '@INPUT@'\])|command: [find_program('python3'), gengiotypefuncs_prog.full_path(), '@OUTPUT@', '@INPUT@'])|" \
+        "${glib_src_folder_name}/gio/tests/meson.build"
+
+      diff "${glib_src_folder_name}/gio/tests/meson.build.bak" "${glib_src_folder_name}/gio/tests/meson.build" || true
+    fi
 
     (
       # Hack, /gio/lib added because libtool needs it on Win32.
