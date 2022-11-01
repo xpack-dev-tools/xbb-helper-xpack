@@ -714,16 +714,28 @@ function xbb_activate_installed_bin()
   echo_develop
   echo_develop "[xbb_activate_installed_bin]"
 
-  # Add the XBB bin to the PATH.
-  if [ ! -z ${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH+x} ]
+  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
-    # When invoked from tests, the libs are not available.
-    PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
-  fi
+    # Add the native XBB bin to the PATH.
+    if [ ! -z ${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH+x} ] &&
+       [ -d "${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin" ]
+    then
+      PATH="${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin:$PATH"
+    fi
+  else
 
-  if [ ! -z ${XBB_APPLICATION_INSTALL_FOLDER_PATH+x} ]
-  then
-    PATH="${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin:${XBB_APPLICATION_INSTALL_FOLDER_PATH}/usr/bin:${PATH}"
+    # Add the XBB bin to the PATH.
+    if [ ! -z ${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH+x} ]
+    then
+      # When invoked from tests, the libs are not available.
+      PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
+    fi
+
+    if [ ! -z ${XBB_APPLICATION_INSTALL_FOLDER_PATH+x} ]
+    then
+      PATH="${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin:${XBB_APPLICATION_INSTALL_FOLDER_PATH}/usr/bin:${PATH}"
+    fi
+
   fi
 
   if [ ! -z ${XBB_TEST_BIN_PATH+x} ]
