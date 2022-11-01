@@ -84,10 +84,7 @@ function build_termcap()
           config_options=()
 
           config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
-          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
+          # No --libdir, --includedir, --datarootdir, --mandir
 
           config_options+=("--build=${XBB_BUILD}")
           config_options+=("--host=${XBB_HOST}")
