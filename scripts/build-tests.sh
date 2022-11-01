@@ -60,7 +60,7 @@ function tests_run_final()
 
 function tests_prime_wine()
 {
-  if [  "${XBB_TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "win32" ]
   then
     (
       echo
