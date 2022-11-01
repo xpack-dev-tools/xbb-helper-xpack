@@ -33,6 +33,7 @@ function build_glib2()
   # 2021-Dec-03, "2.70.2"
   # 2022-Apr-14, "2.72.1"
   # 2022-Aug-05, "2.73.3"
+  # 2022-Oct-25, "2.74.1"
 
   local glib_version="$1"
   local glib_major_version=$(echo ${glib_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.[0-9].*|\1|')
