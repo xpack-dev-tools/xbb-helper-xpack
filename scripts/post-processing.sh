@@ -58,6 +58,8 @@ function make_standalone()
 
       # rpaths are not cleaned on the spot, to allow hard links to be
       # processed later, and add new $ORIGINs for the new locations.
+      # Find again, to get the libraries copied to libexec.
+      binaries=$(find_binaries "${folder_path}")
       for bin_path in ${binaries}
       do
         if is_elf "${bin_path}"
@@ -87,6 +89,8 @@ function make_standalone()
 
       # rpaths are not cleaned on the spot, to allow hard links to be
       # processed later, and add new $ORIGINs for the new locations.
+      # Find again, to get the libraries copied to libexec.
+      binaries=$(find_binaries "${folder_path}")
       for bin_path in ${binaries}
       do
         if is_elf_dynamic "${bin_path}"
