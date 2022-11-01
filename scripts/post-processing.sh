@@ -1650,7 +1650,13 @@ function strip_binary()
   fi
 
   echo "[${strip} ${file_path}]"
-  "${strip}" -S "${file_path}" || true
+  if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+  then
+    # Remove the debugging symbol table entries; there is no --strip-unneeded.
+    "${strip}" -S "${file_path}" || true
+  else
+    "${strip}" --strip-unneeded "${file_path}" || true
+  fi
 }
 
 # -----------------------------------------------------------------------------
