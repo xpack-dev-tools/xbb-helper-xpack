@@ -86,13 +86,6 @@ function build_glib2()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}"/gio/lib
       cd "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}"
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
-      then
-        # GCC fails with
-        # error: unknown type name ‘dispatch_block_t
-        prepare_clang_env ""
-      fi
-
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
