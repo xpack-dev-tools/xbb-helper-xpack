@@ -177,6 +177,9 @@ function build_perform_common()
 
   xbb_show_tools_versions
 
+  # Prime it early
+  tests_prime_wine
+
   # ---------------------------------------------------------------------------
 
   echo
@@ -216,10 +219,6 @@ function build_perform_common()
   # ---------------------------------------------------------------------------
 
   # Final checks.
-  # To keep everything as pristine as possible, run tests
-  # only after the archive is packed.
-
-  tests_prime_wine
 
   tests_run_final
 
