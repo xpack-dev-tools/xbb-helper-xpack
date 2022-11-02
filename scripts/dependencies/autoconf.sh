@@ -48,6 +48,8 @@ function build_autoconf()
       cd "${XBB_BUILD_FOLDER_PATH}/${autoconf_folder_name}"
 
       # xbb_activate_installed_dev
+      # For the local M4, remove it when available as dependency.
+      xbb_activate_installed_bin
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
