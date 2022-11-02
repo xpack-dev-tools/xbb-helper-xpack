@@ -49,12 +49,6 @@ function build_pkg_config()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${pkg_config_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${pkg_config_folder_name}"
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
-      then
-        # error: variably modified 'bytes' at file scope
-        prepare_clang_env ""
-      fi
-
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"

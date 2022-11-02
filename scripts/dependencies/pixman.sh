@@ -54,12 +54,6 @@ function build_pixman()
       # Windows libtool chaks for it.
       mkdir -pv test/lib
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
-      then
-        # TODO: check again on Apple Silicon.
-        prepare_clang_env ""
-      fi
-
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"

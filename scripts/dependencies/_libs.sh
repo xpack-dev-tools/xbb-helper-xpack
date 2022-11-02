@@ -2104,13 +2104,6 @@ function build_npth()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${npth_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${npth_folder_name}"
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
-      then
-        # /usr/include/os/base.h:113:20: error: missing binary operator before token "("
-        # #if __has_extension(attribute_overloadable)
-        prepare_clang_env ""
-      fi
-
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
@@ -2271,14 +2264,6 @@ function _build_libusb()
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libusb_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libusb_folder_name}"
-
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
-      then
-        # /Users/ilg/Work/qemu-arm-6.2.0-1/darwin-x64/sources/libusb-1.0.24/libusb/os/darwin_usb.c: In function 'darwin_handle_transfer_completion':
-        # /Users/ilg/Work/qemu-arm-6.2.0-1/darwin-x64/sources/libusb-1.0.24/libusb/os/darwin_usb.c:2151:3: error: variable-sized object may not be initialized
-        # 2151 |   const char *transfer_types[max_transfer_type + 1] = {"control", "isoc", "bulk", "interrupt", "bulk-stream"};
-        prepare_clang_env ""
-      fi
 
       xbb_activate_installed_dev
 

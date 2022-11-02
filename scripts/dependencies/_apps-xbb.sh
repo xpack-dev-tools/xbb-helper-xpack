@@ -3466,12 +3466,6 @@ function build_git()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${git_folder_name}"
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
-      then
-        # The requested URL returned error: 405
-        prepare_clang_env ""
-      fi
-
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"

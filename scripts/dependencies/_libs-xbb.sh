@@ -513,12 +513,6 @@ function build_gnutls()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gnutls_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${gnutls_folder_name}"
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
-      then
-        # lib/system/certs.c:49 error: variably modified 'bytes' at file scope
-        prepare_clang_env ""
-      fi
-
       xbb_activate_installed_dev
 
       # For guile.
