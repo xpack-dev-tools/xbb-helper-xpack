@@ -25,7 +25,8 @@ function build_sdl2()
   # sdl2_version="2.0.9" # 2018-10-31
   # 2021-11-30, "2.0.18"
   # 2022-04-25, "2.0.22"
-  # 2022-08-19, "2.24.0"
+  # 2022-08-19, "2.24.0" # Fails on arm linux with xbb v5.0.0
+  # 2022-11-01, "2.24.2"
 
   local sdl2_version="$1"
 
@@ -51,17 +52,6 @@ function build_sdl2()
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${sdl2_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${sdl2_folder_name}"
-
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [[ ${CC} =~ .*gcc.* ]]
-      then
-        # GNU GCC fails with
-        #  CC     build/SDL_syspower.lo
-        # In file included from //System/Library/Frameworks/CoreFoundation.framework/Headers/CFPropertyList.h:13,
-        #                 from //System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h:55,
-        #                 from /Users/ilg/Work/qemu-riscv-2.8.0-9/sources/SDL2-2.0.9/src/power/macosx/SDL_syspower.c:26:
-        # //System/Library/Frameworks/CoreFoundation.framework/Headers/CFStream.h:249:59: error: unknown type name ‘dispatch_queue_t’
-        prepare_clang_env ""
-      fi
 
       xbb_activate_installed_dev
 
@@ -119,6 +109,8 @@ function build_sdl2()
           then
             config_options+=("--enable-video-opengl")
             config_options+=("--enable-video-x11")
+
+            config_options+=("--enable-libudev")
           elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
             config_options+=("--without-x")
