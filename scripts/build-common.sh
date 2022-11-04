@@ -173,7 +173,7 @@ function build_perform_common()
 
   tests_initialize
 
-  xbb_set_target "${XBB_APPLICATION_INITIAL_TARGET:-requested}"
+  xbb_set_target "native"
 
   xbb_show_tools_versions
 
