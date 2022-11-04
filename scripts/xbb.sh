@@ -275,6 +275,9 @@ function xbb_set_target()
 {
   local kind="${1:-"requested"}"
 
+  echo
+  echo "[xbb_set_target ${kind}]"
+
   if [ "${kind}" == "native" ]
   then
     # The target is the same as the host.
@@ -407,6 +410,9 @@ function xbb_set_target()
   # ---------------------------------------------------------------------------
 
   xbb_set_compiler_env
+
+  xbb_set_binaries_install "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
+  xbb_set_libraries_install "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
   # ---------------------------------------------------------------------------
 
