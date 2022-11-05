@@ -426,7 +426,7 @@ function build_cross_gcc_final()
           config_options=()
 
           config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
-          if [ "${name_suffix}" == "" ]
+          if [ -z "${name_suffix}" ]
           then
             config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
             config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
@@ -661,42 +661,33 @@ function build_cross_gcc_final()
 
   if [ "${name_suffix}" == "" ]
   then
-    tests_add "test_cross_gcc"
+    tests_add "test_cross_gcc" "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}"
   fi
 }
 
 function test_cross_gcc()
 {
-  (
-    if [ -d "xpacks/.bin" ]
-    then
-      XBB_TEST_BIN_PATH="$(pwd)/xpacks/.bin"
-    elif [ -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin" ]
-    then
-      XBB_TEST_BIN_PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-    else
-      echo "Wrong folder."
-      exit 1
-    fi
+  local test_bin_path="$1"
 
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc"
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-g++"
+  (
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-gcc"
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-g++"
 
     if [ "${XBB_TARGET_PLATFORM}" != "win32" ]
     then
-      show_libs "$(${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1)"
-      show_libs "$(${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1plus)"
-      show_libs "$(${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc -print-prog-name=collect2)"
-      show_libs "$(${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc -print-prog-name=lto-wrapper)"
-      show_libs "$(${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc -print-prog-name=lto1)"
+      show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1)"
+      show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1plus)"
+      show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=collect2)"
+      show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=lto-wrapper)"
+      show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=lto1)"
     fi
 
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" --help
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -dumpversion
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -dumpmachine
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -print-multi-lib
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -print-search-dirs
-    # run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -dumpspecs | wc -l
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-gcc" --help
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -dumpversion
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -dumpmachine
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -print-multi-lib
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -print-search-dirs
+    # run_app "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -dumpspecs | wc -l
 
     local tmp=$(mktemp /tmp/gcc-test.XXXXX)
     rm -rf "${tmp}"
@@ -733,10 +724,10 @@ main(int argc, char* argv[])
 }
 __EOF__
 
-      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -pipe -o hello-c.elf "${specs}" hello.c -v
+      run_app "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -pipe -o hello-c.elf "${specs}" hello.c -v
 
-      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -pipe -o hello.c.o -c -flto hello.c
-      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gcc" -pipe -o hello-c-lto.elf "${specs}" -flto -v hello.c.o
+      run_app "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -pipe -o hello.c.o -c -flto hello.c
+      run_app "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -pipe -o hello-c-lto.elf "${specs}" -flto -v hello.c.o
 
       # Note: __EOF__ is quoted to prevent substitutions here.
       cat <<'__EOF__' > hello.cpp
@@ -756,12 +747,12 @@ __sync_synchronize()
 }
 __EOF__
 
-      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp.elf "${specs}" hello.cpp
+      run_app "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp.elf "${specs}" hello.cpp
 
-      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-g++" -pipe -o hello.cpp.o -c -flto hello.cpp
-      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp-lto.elf "${specs}" -flto -v hello.cpp.o
+      run_app "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello.cpp.o -c -flto hello.cpp
+      run_app "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp-lto.elf "${specs}" -flto -v hello.cpp.o
 
-      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp-gcov.elf "${specs}" -fprofile-arcs -ftest-coverage -lgcov hello.cpp
+      run_app "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp-gcov.elf "${specs}" -fprofile-arcs -ftest-coverage -lgcov hello.cpp
     fi
 
     cd ..
