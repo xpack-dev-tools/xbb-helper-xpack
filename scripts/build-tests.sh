@@ -68,7 +68,7 @@ function tests_prime_wine()
       # When running in Docker with the home mounted, wine throws:
       # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
       # To avoid it, create the .wine folder beforehand.
-      mkdir -p "${HOME}/.wine"
+      mkdir -pv "${HOME}/.wine"
       winecfg
 
       echo "wine primed, testing..."

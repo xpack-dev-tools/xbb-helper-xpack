@@ -195,11 +195,11 @@ function build_bzip2()
             RANLIB=${RANLIB} \
             LDFLAGS=${LDFLAGS} \
 
-          mkdir -p "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include"
+          mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include"
           run_verbose cp bzlib.h "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include"
-          mkdir -p "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+          mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
           run_verbose cp libbz2.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-          mkdir -p "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin"
+          mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin"
           run_verbose cp bzip2.exe "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin"
           run_verbose cp bzip2recover.exe "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin"
 
@@ -256,7 +256,7 @@ function build_bzip2()
 
 function create_bzip2_pc()
 {
-  mkdir -p "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig"
+  mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig"
   # Note: __EOF__ is NOT quoted to allow substitutions.
   cat <<__EOF__ >"${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/bzip2.pc"
 prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}

@@ -192,7 +192,7 @@ function tests_install_via_xpm()
 
   (
     rm -rf "${tests_folder_path}"
-    mkdir -p "${XBB_XPACK_FOLDER_PATH}"
+    mkdir -pv "${XBB_XPACK_FOLDER_PATH}"
     cd "${XBB_XPACK_FOLDER_PATH}"
     run_verbose pwd
 

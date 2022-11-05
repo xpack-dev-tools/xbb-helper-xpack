@@ -59,7 +59,7 @@ function build_qemu()
     # exit 1
 
     (
-      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}"
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}"
 
       xbb_activate_installed_dev

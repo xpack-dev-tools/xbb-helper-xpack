@@ -284,7 +284,7 @@ function download_python3_win()
       download "${python3_win_embed_url}" "${python3_win_embed_pack}"
 
       # The archive has no folders, so extract it manually.
-      mkdir -p "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
+      mkdir -pv "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
       cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
       run_verbose_develop unzip "${XBB_DOWNLOAD_FOLDER_PATH}/${python3_win_embed_pack}"
     else
