@@ -1640,8 +1640,8 @@ function strip_binary()
     return
   fi
 
-  # Deprecated.
-  if false # has_origin "${file_path}"
+  # Deprecated? Not yet, gcc still sigfaults.
+  if has_origin "${file_path}"
   then
     # If the file was patched, skip strip, otherwise
     # we may damage the binary due to a bug in strip.
