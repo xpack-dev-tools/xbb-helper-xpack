@@ -53,7 +53,7 @@ function build_mpfr()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mpfr_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${mpfr_folder_name}"
 
-      if [ "${name_suffix}" == "-bootstrap" ]
+      if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
       then
 
         CPPFLAGS="${XBB_CPPFLAGS}"
@@ -105,7 +105,7 @@ function build_mpfr()
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
-          if [ "${name_suffix}" == "-bootstrap" ]
+          if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
 
             config_options+=("--build=${XBB_BUILD}")
@@ -229,7 +229,7 @@ function build_mpc()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mpc_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${mpc_folder_name}"
 
-      if [ "${name_suffix}" == "-bootstrap" ]
+      if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
       then
 
         CPPFLAGS="${XBB_CPPFLAGS}"
@@ -281,7 +281,7 @@ function build_mpc()
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
-          if [ "${name_suffix}" == "-bootstrap" ]
+          if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
 
             config_options+=("--build=${XBB_BUILD}")
@@ -398,7 +398,7 @@ function build_isl()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${isl_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${isl_folder_name}"
 
-      if [ "${name_suffix}" == "-bootstrap" ]
+      if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
       then
 
         # Otherwise `configure: error: gmp.h header not found`.`
@@ -451,7 +451,7 @@ function build_isl()
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
-          if [ "${name_suffix}" == "-bootstrap" ]
+          if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
 
             config_options+=("--build=${XBB_BUILD}")

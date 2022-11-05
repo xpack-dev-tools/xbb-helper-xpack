@@ -94,7 +94,7 @@ function build_libiconv()
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
           config_options+=("--build=${XBB_BUILD}")
-          if [ "${name_suffix}" == "-bootstrap" ]
+          if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
             # The bootstrap binaries will run on the build machine.
             config_options+=("--host=${XBB_BUILD}")

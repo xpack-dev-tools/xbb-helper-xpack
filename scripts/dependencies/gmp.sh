@@ -52,7 +52,7 @@ function build_gmp()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gmp_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${gmp_folder_name}"
 
-      if [ "${name_suffix}" == "-bootstrap" ]
+      if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
       then
 
         CPPFLAGS="${XBB_CPPFLAGS}"
@@ -123,7 +123,7 @@ function build_gmp()
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
-          if [ "${name_suffix}" == "-bootstrap" ]
+          if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
 
             config_options+=("--build=${XBB_BUILD}")
