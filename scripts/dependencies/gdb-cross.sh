@@ -303,46 +303,36 @@ function build_cross_gdb()
     echo "Component cross gdb${name_suffix} already installed."
   fi
 
-  tests_add "test_cross_gdb${name_suffix}"
+  tests_add "test_cross_gdb${name_suffix}" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_cross_gdb_py()
 {
-  test_cross_gdb "-py"
+  local test_bin_path="$1"
+
+  test_cross_gdb "${test_bin_path}" "-py"
 }
 
 function test_cross_gdb_py3()
 {
-  test_cross_gdb "-py3"
+  local test_bin_path="$1"
+
+  test_cross_gdb "${test_bin_path}" "-py3"
 }
 
 function test_cross_gdb()
 {
-  local suffix=""
-  if [ $# -ge 1 ]
-  then
-    suffix="$1"
-  fi
+  local test_bin_path="$1"
+  local suffix="${2:-}"
 
   (
-    if [ -d "xpacks/.bin" ]
-    then
-      XBB_TEST_BIN_PATH="$(pwd)/xpacks/.bin"
-    elif [ -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin" ]
-    then
-      XBB_TEST_BIN_PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-    else
-      echo "Wrong folder."
-      exit 1
-    fi
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}"
 
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gdb${suffix}"
-
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gdb${suffix}" --version
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gdb${suffix}" --config
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" --version
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" --config
 
     # This command is known to fail with 'Abort trap: 6' (SIGABRT)
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gdb${suffix}" \
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" \
       --nh \
       --nx \
       -ex='show language' \
@@ -352,7 +342,7 @@ function test_cross_gdb()
     if [ "${suffix}" == "-py3" ]
     then
       # Show Python paths.
-      run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-gdb${suffix}" \
+      run_app "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" \
         --nh \
         --nx \
         -ex='set pagination off' \
