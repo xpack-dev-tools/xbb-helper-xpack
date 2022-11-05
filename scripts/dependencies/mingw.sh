@@ -46,7 +46,7 @@ function prepare_mingw_config_options_common()
 function prepare_mingw_env()
 {
   export XBB_MINGW_VERSION="$1"
-  export XBB_MINGW_NAME_SUFFIX=${2-''}
+  export XBB_MINGW_NAME_SUFFIX=${2:-''}
 
   export XBB_MINGW_VERSION_MAJOR=$(echo ${XBB_MINGW_VERSION} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 

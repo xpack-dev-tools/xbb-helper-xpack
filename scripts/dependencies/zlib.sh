@@ -24,7 +24,7 @@ function build_zlib()
   # 2022-03-27, "1.2.12"
 
   local zlib_version="$1"
-  local name_suffix=${2-''}
+  local name_suffix=${2:-''}
 
   # The folder name as resulted after being extracted from the archive.
   local zlib_src_folder_name="zlib-${zlib_version}"

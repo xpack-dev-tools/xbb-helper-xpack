@@ -44,7 +44,7 @@ function build_binutils_native()
   # 2022-08-05, "2.39"
 
   local binutils_version="$1"
-  local name_suffix=${2-''}
+  local name_suffix=${2:-''}
 
   local binutils_src_folder_name="binutils-${binutils_version}"
   local binutils_folder_name="${binutils_src_folder_name}${name_suffix}"
