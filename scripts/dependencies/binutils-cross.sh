@@ -189,44 +189,35 @@ function build_binutils_cross()
     echo "Component cross binutils already installed."
   fi
 
-  tests_add "test_binutils_cross"
+  tests_add "test_binutils_cross" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_binutils_cross()
 {
+  local test_bin_path="$1"
   (
-    if [ -d "xpacks/.bin" ]
-    then
-      XBB_TEST_BIN_PATH="$(pwd)/xpacks/.bin"
-    elif [ -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin" ]
-    then
-      XBB_TEST_BIN_PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-    else
-      echo "Wrong folder."
-      exit 1
-    fi
 
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ar"
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-as"
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ld"
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-nm"
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-objcopy"
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-objdump"
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ranlib"
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-size"
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-strings"
-    show_libs "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-strip"
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-ar"
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-as"
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-ld"
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-nm"
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-objcopy"
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-objdump"
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-ranlib"
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-size"
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-strings"
+    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-strip"
 
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ar" --version
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-as" --version
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ld" --version
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-nm" --version
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-objcopy" --version
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-objdump" --version
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-ranlib" --version
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-size" --version
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-strings" --version
-    run_app "${XBB_TEST_BIN_PATH}/${XBB_GCC_TARGET}-strip" --version
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-ar" --version
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-as" --version
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-ld" --version
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-nm" --version
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-objcopy" --version
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-objdump" --version
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-ranlib" --version
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-size" --version
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-strings" --version
+    run_app "${test_bin_path}/${XBB_GCC_TARGET}-strip" --version
   )
 }
 
