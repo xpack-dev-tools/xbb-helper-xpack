@@ -111,6 +111,8 @@ function xbb_set_env()
   XBB_TARGET_NATIVE_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/$(xbb_config_guess)"
   XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH="${XBB_TARGET_NATIVE_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
 
+  XBB_BOOTSTRAP_SUFFIX="-bootstrap"
+
   export XBB_DASH_V
 
   export XBB_BUILD_GIT_PATH
@@ -124,6 +126,8 @@ function xbb_set_env()
   export XBB_ARCHIVE_FOLDER_PATH
 
   export XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH
+
+  export XBB_BOOTSTRAP_SUFFIX
 
   # ---------------------------------------------------------------------------
 
