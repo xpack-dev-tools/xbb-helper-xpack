@@ -454,22 +454,6 @@ function build_native_binutils()
             : # rm -rv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/strip"
           fi
 
-          (
-            xbb_activate_tex
-
-            if [ "${XBB_WITH_PDF}" == "y" ]
-            then
-              run_verbose make pdf
-              run_verbose make install-pdf
-            fi
-
-            if [ "${XBB_WITH_HTML}" == "y" ]
-            then
-              run_verbose make html
-              run_verbose make install-html
-            fi
-          )
-
           show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/ar"
           show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/as"
           show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/ld"
@@ -715,22 +699,6 @@ function build_cross_binutils()
         # Avoid strip here, it may interfere with patchelf.
         # make install-strip
         run_verbose make install
-
-        (
-          xbb_activate_tex
-
-          if [ "${XBB_WITH_PDF}" == "y" ]
-          then
-            run_verbose make pdf
-            run_verbose make install-pdf
-          fi
-
-          if [ "${XBB_WITH_HTML}" == "y" ]
-          then
-            run_verbose make html
-            run_verbose make install-html
-          fi
-        )
 
         if [ -n "${APP_PREFIX_NANO:-}" ]
         then
@@ -1280,42 +1248,6 @@ function build_cross_newlib()
         # Top make fails with install-strip due to libgloss make.
         run_verbose make install
 
-        if [ "${name_suffix}" == "" ]
-        then
-
-          if [ "${XBB_WITH_PDF}" == "y" ]
-          then
-
-            xbb_activate_tex
-
-            # Warning, parallel build failed on Debian 32-bit.
-            run_verbose make pdf
-
-            install -v -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf"
-
-            install -v -c -m 644 \
-              "${XBB_GCC_TARGET}/libgloss/doc/porting.pdf" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf"
-            install -v -c -m 644 \
-              "${XBB_GCC_TARGET}/newlib/libc/libc.pdf" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf"
-            install -v -c -m 644 \
-              "${XBB_GCC_TARGET}/newlib/libm/libm.pdf" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf"
-
-          fi
-
-          if [ "${XBB_WITH_HTML}" == "y" ]
-          then
-
-            run_verbose make html
-
-            install -v -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html"
-
-            copy_dir "${XBB_GCC_TARGET}/newlib/libc/libc.html" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html/libc"
-            copy_dir "${XBB_GCC_TARGET}/newlib/libm/libm.html" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html/libm"
-
-          fi
-
-        fi
-
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${newlib_folder_name}/make-output-$(ndate).txt"
 
       if [ "${name_suffix}" == "" ]
@@ -1770,31 +1702,6 @@ function build_cross_gcc_final()
 
         fi
 
-        if [ "${name_suffix}" == "" ]
-        then
-          (
-            xbb_activate_tex
-
-            # Full build, with documentation.
-            if [ "${XBB_WITH_PDF}" == "y" ]
-            then
-              run_verbose make pdf
-              run_verbose make install-pdf
-            fi
-
-            if [ "${XBB_WITH_HTML}" == "y" ]
-            then
-              run_verbose make html
-              run_verbose make install-html
-            fi
-
-            if [ "${XBB_WITH_PDF}" != "y" -a "${XBB_WITH_HTML}" != "y" ]
-            then
-              run_verbose rm -rf "${XBB_BINARIES_INSTALL_FOLDER_PATH}/shrare/doc"
-            fi
-          )
-        fi
-
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gcc_final_folder_name}/make-output-$(ndate).txt"
 
       if [ "${name_suffix}" == "" ]
@@ -2197,25 +2104,6 @@ function build_cross_gdb()
         # The explicit `-gdb` fixes a bug noticed with gdb 12, that builds
         # a defective `as.exe` even if instructed not to do so.
         run_verbose make install-gdb
-
-        if [ "${name_suffix}" == "" ]
-        then
-          (
-            xbb_activate_tex
-
-            if [ "${XBB_WITH_PDF}" == "y" ]
-            then
-              run_verbose make pdf-gdb
-              run_verbose make install-pdf-gdb
-            fi
-
-            if [ "${XBB_WITH_HTML}" == "y" ]
-            then
-              run_verbose make html-gdb
-              run_verbose make install-html-gdb
-            fi
-          )
-        fi
 
         rm -rfv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/pyconfig.h"
 
