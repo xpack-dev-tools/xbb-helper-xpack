@@ -65,7 +65,7 @@ function build_gmp()
 
         xbb_activate_installed_dev
         # For the local M4; remove it when available as dependency.
-        xbb_activate_installed_bin
+        # xbb_activate_installed_bin
 
         # Exceptions used by Arm GCC script and by mingw-w64.
         CPPFLAGS="${XBB_CPPFLAGS} -fexceptions"
