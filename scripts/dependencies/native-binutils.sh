@@ -1,0 +1,389 @@
+#!/usr/bin/env bash
+# -----------------------------------------------------------------------------
+# This file is part of the xPack distribution.
+#   (https://xpack.github.io)
+# Copyright (c) 2020 Liviu Ionescu.
+#
+# Permission to use, copy, modify, and/or distribute this software
+# for any purpose is hereby granted, under the terms of the MIT license.
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+
+# binutils should not be used on Darwin, the build is ok, but
+# there are functional issues, due to the different ld/as/etc.
+
+function build_binutils_native()
+{
+  # https://www.gnu.org/software/binutils/
+  # https://ftp.gnu.org/gnu/binutils/
+
+  # https://archlinuxarm.org/packages/aarch64/binutils/files/PKGBUILD
+  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
+
+  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-binutils
+  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-binutils/PKGBUILD
+
+  # mingw-w64
+  # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-binutils/trunk/PKGBUILD
+
+
+  # 2017-07-24, "2.29"
+  # 2018-01-28, "2.30"
+  # 2018-07-18, "2.31.1"
+  # 2019-02-02, "2.32"
+  # 2019-10-12, "2.33.1"
+  # 2020-02-01, "2.34"
+  # 2020-07-24, "2.35"
+  # 2020-09-19, "2.35.1"
+  # 2021-01-24, "2.36"
+  # 2021-01-30, "2.35.2"
+  # 2021-02-06, "2.36.1"
+  # 2021-07-18, "2.37"
+  # 2022-02-09, "2.38"
+  # 2022-08-05, "2.39"
+
+  local binutils_version="$1"
+  local name_suffix=${2-''}
+
+  local binutils_src_folder_name="binutils-${binutils_version}"
+  local binutils_folder_name="${binutils_src_folder_name}${name_suffix}"
+
+  local binutils_archive="${binutils_src_folder_name}.tar.xz"
+  local binutils_url="https://ftp.gnu.org/gnu/binutils/${binutils_archive}"
+
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}"
+
+  local binutils_patch_file_name="binutils-${binutils_version}.patch"
+  local binutils_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${binutils_folder_name}-installed"
+  if [ ! -f "${binutils_stamp_file_path}" ]
+  then
+
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
+
+    download_and_extract "${binutils_url}" "${binutils_archive}" \
+      "${binutils_src_folder_name}" "${binutils_patch_file_name}"
+
+    (
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
+
+      if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
+      then
+
+        CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include"
+        CFLAGS="${XBB_CFLAGS_NO_W}"
+        CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+
+        LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
+
+      else
+        # To access the newly compiled libraries.
+        xbb_activate_installed_dev
+
+        CPPFLAGS="${XBB_CPPFLAGS}"
+        CFLAGS="${XBB_CFLAGS_NO_W}"
+        CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+
+        # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+        LDFLAGS="${XBB_LDFLAGS_APP}"
+
+        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+        then
+          if [ "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
+          then
+            # From MSYS2 MINGW
+            LDFLAGS+=" -Wl,--large-address-aware"
+          fi
+
+          # Used to enable wildcard; inspired from arm-none-eabi-gcc.
+          LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
+        elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+        then
+          xbb_activate_cxx_rpath
+          LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
+        fi
+      fi
+
+      export CPPFLAGS
+      export CFLAGS
+      export CXXFLAGS
+      export LDFLAGS
+
+      if [ ! -f "config.status" ]
+      then
+        (
+          xbb_show_env_develop
+
+          echo
+          echo "Running binutils${name_suffix} configure..."
+
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          then
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" --help
+
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/binutils/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/bfd/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/gas/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/ld/configure" --help
+          fi
+
+          # ? --without-python --without-curses, --with-expat
+          config_options=()
+
+          if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
+          then
+
+            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+
+            config_options+=("--build=${XBB_BUILD}")
+            # The bootstrap binaries will run on the build machine.
+            config_options+=("--host=${XBB_BUILD}")
+            config_options+=("--target=${XBB_TARGET}")
+
+            config_options+=("--with-pkgversion=${XBB_GCC_BOOTSTRAP_BRANDING}")
+
+            config_options+=("--with-libiconv-prefix=${XBB_FOLDER_PATH}")
+
+            config_options+=("--disable-multilib")
+            config_options+=("--disable-werror")
+            config_options+=("--disable-shared")
+            config_options+=("--disable-nls")
+
+            config_options+=("--enable-static")
+            config_options+=("--enable-build-warnings=no")
+            config_options+=("--enable-lto")
+            config_options+=("--enable-plugins")
+            config_options+=("--enable-deterministic-archives")
+            config_options+=("--enable-libssp")
+
+          else
+
+            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+            config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+            # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
+            config_options+=("--program-suffix=")
+
+            config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
+            config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
+            config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
+            config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
+
+            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--target=${XBB_TARGET}")
+
+            config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
+
+            if [ "${XBB_TARGET_PLATFORM}" != "linux" ]
+            then
+              config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+            fi
+
+            config_options+=("--without-system-zlib")
+
+            config_options+=("--with-pic")
+
+            # error: debuginfod is missing or unusable
+            config_options+=("--without-debuginfod")
+
+            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+            then
+
+              config_options+=("--enable-ld")
+
+              if [ "${XBB_TARGET_ARCH}" == "x64" ]
+              then
+                # From MSYS2 MINGW
+                config_options+=("--enable-64-bit-bfd")
+              fi
+
+              config_options+=("--enable-shared")
+              config_options+=("--enable-shared-libgcc")
+
+            elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+            then
+
+              config_options+=("--enable-ld")
+
+              config_options+=("--disable-shared")
+              config_options+=("--disable-shared-libgcc")
+
+            elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+            then
+              echo
+              echo "binutils not supported on macOS"
+              exit 1
+            else
+              echo "Unsupported ${XBB_TARGET_PLATFORM}."
+              exit 1
+            fi
+
+            config_options+=("--enable-static")
+
+            config_options+=("--enable-gold")
+            config_options+=("--enable-lto")
+            config_options+=("--enable-libssp")
+            config_options+=("--enable-relro")
+            config_options+=("--enable-threads")
+            config_options+=("--enable-interwork")
+            config_options+=("--enable-plugins")
+            config_options+=("--enable-build-warnings=no")
+            config_options+=("--enable-deterministic-archives")
+
+            # TODO
+            # config_options+=("--enable-nls")
+            config_options+=("--disable-nls")
+
+            config_options+=("--disable-new-dtags")
+
+            config_options+=("--disable-multilib")
+            config_options+=("--disable-werror")
+            config_options+=("--disable-sim")
+
+          fi
+
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
+            ${config_options[@]}
+
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/configure-output-$(ndate).txt"
+      fi
+
+      (
+        echo
+        echo "Running binutils${name_suffix} make..."
+
+        # Build.
+        run_verbose make -j ${XBB_JOBS}
+
+        if [ "${XBB_WITH_TESTS}" == "y" ]
+        then
+          : # run_verbose make check
+        fi
+
+        # Avoid strip here, it may interfere with patchelf.
+        # make install-strip
+        run_verbose make install
+
+        if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
+        then
+
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-ar"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-as"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-ld"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-strip"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-nm"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-objcopy"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-objdump"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-ranlib"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-size"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-strings"
+
+        else
+
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          then
+            : # rm -rv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/strip"
+          fi
+
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/ar"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/as"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/ld"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/strip"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/nm"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/objcopy"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/objdump"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/ranlib"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/size"
+          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/strings"
+
+        fi
+
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
+
+      if [ -z "${name_suffix}" ]
+      then
+        copy_license \
+          "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}" \
+          "${binutils_folder_name}"
+      fi
+
+    )
+
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
+    touch "${binutils_stamp_file_path}"
+
+  else
+    echo "Component binutils${name_suffix} already installed."
+  fi
+
+  if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
+  then
+    :
+  else
+    tests_add "test_native_binutils"
+  fi
+}
+
+function test_native_binutils()
+{
+  (
+    if [ -d "xpacks/.bin" ]
+    then
+      XBB_TEST_BIN_PATH="$(pwd)/xpacks/.bin"
+    elif [ -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin" ]
+    then
+      XBB_TEST_BIN_PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    else
+      echo "Wrong folder."
+      exit 1
+    fi
+
+    show_libs "${XBB_TEST_BIN_PATH}/ar"
+    show_libs "${XBB_TEST_BIN_PATH}/as"
+    show_libs "${XBB_TEST_BIN_PATH}/elfedit"
+    show_libs "${XBB_TEST_BIN_PATH}/gprof"
+    show_libs "${XBB_TEST_BIN_PATH}/ld"
+    show_libs "${XBB_TEST_BIN_PATH}/ld.gold"
+    show_libs "${XBB_TEST_BIN_PATH}/strip"
+    show_libs "${XBB_TEST_BIN_PATH}/nm"
+    show_libs "${XBB_TEST_BIN_PATH}/objcopy"
+    show_libs "${XBB_TEST_BIN_PATH}/objdump"
+    show_libs "${XBB_TEST_BIN_PATH}/ranlib"
+    show_libs "${XBB_TEST_BIN_PATH}/readelf"
+    show_libs "${XBB_TEST_BIN_PATH}/size"
+    show_libs "${XBB_TEST_BIN_PATH}/strings"
+    show_libs "${XBB_TEST_BIN_PATH}/strip"
+
+    echo
+    echo "Testing if binutils starts properly..."
+
+    run_app "${XBB_TEST_BIN_PATH}/ar" --version
+    run_app "${XBB_TEST_BIN_PATH}/as" --version
+    run_app "${XBB_TEST_BIN_PATH}/elfedit" --version
+    run_app "${XBB_TEST_BIN_PATH}/gprof" --version
+    run_app "${XBB_TEST_BIN_PATH}/ld" --version
+    if [ -f  "${XBB_TEST_BIN_PATH}/ld.gold${XBB_DOT_EXE}" ]
+    then
+      # No ld.gold on Windows.
+      run_app "${XBB_TEST_BIN_PATH}/ld.gold" --version
+    fi
+    run_app "${XBB_TEST_BIN_PATH}/strip" --version
+    run_app "${XBB_TEST_BIN_PATH}/nm" --version
+    run_app "${XBB_TEST_BIN_PATH}/objcopy" --version
+    run_app "${XBB_TEST_BIN_PATH}/objdump" --version
+    run_app "${XBB_TEST_BIN_PATH}/ranlib" --version
+    run_app "${XBB_TEST_BIN_PATH}/readelf" --version
+    run_app "${XBB_TEST_BIN_PATH}/size" --version
+    run_app "${XBB_TEST_BIN_PATH}/strings" --version
+    run_app "${XBB_TEST_BIN_PATH}/strip" --version
+  )
+
+  echo
+  echo "Local binutils tests completed successfuly."
+}
+
+# -----------------------------------------------------------------------------
