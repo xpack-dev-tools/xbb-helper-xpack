@@ -13,7 +13,7 @@
 # binutils should not be used on Darwin, the build is ok, but
 # there are functional issues, due to the different ld/as/etc.
 
-function build_binutils_native()
+function build_binutils()
 {
   # https://www.gnu.org/software/binutils/
   # https://ftp.gnu.org/gnu/binutils/
@@ -27,6 +27,8 @@ function build_binutils_native()
 
   # mingw-w64
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-binutils/trunk/PKGBUILD
+
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/binutils.rb
 
 
   # 2017-07-24, "2.29"
@@ -185,7 +187,7 @@ function build_binutils_native()
               config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
             fi
 
-            config_options+=("--with-system-zlib") # Arch
+            config_options+=("--with-system-zlib") # Arch, HB
 
             config_options+=("--with-pic") # Arch
 
@@ -203,11 +205,8 @@ function build_binutils_native()
               if [ "${XBB_TARGET_ARCH}" == "x64" ]
               then
                 # From MSYS2 MINGW
-                config_options+=("--enable-64-bit-bfd")
+                : # config_options+=("--enable-64-bit-bfd")
               fi
-
-              # config_options+=("--enable-shared")
-              # config_options+=("--enable-shared-libgcc")
 
             elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
             then
@@ -217,40 +216,48 @@ function build_binutils_native()
               if [ "${XBB_TARGET_ARCH}" == "x64" ]
               then
                 config_options+=("--enable-multilib")
+              else
+                : # No multilib on Arm
               fi
 
               # config_options+=("--enable-targets=x86_64-pep,bpf-unknown-none")
 
-              # config_options+=("--disable-shared")
-              # config_options+=("--disable-shared-libgcc")
-
             elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
             then
-              echo
-              echo "binutils not supported on macOS"
-              exit 1
+
+              config_options+=("--enable-multilib")
+
             else
               echo "Unsupported ${XBB_TARGET_PLATFORM}."
               exit 1
             fi
 
-
+            config_options+=("--enable-64-bit-bfd") # HB
             config_options+=("--enable-cet") # Arch
             config_options+=("--enable-default-execstack=no") # Arch
-            config_options+=("--enable-deterministic-archives") # Arch
-            config_options+=("--enable-gold") # Arch
+            config_options+=("--enable-deterministic-archives") # Arch, HB
+            config_options+=("--enable-gold") # Arch, HB
             config_options+=("--enable-install-libiberty") # Arch
+            config_options+=("--enable-interwork") # HB
             # config_options+=("--enable-jansson") # Arch
             config_options+=("--enable-lto")
             config_options+=("--enable-libssp")
             config_options+=("--enable-pgo-build=lto") # Arch
-            config_options+=("--enable-plugins") # Arch
+            config_options+=("--enable-plugins") # Arch, HB
             config_options+=("--enable-relro") # Arch
             config_options+=("--enable-shared") # Arch
             config_options+=("--enable-static")
+            config_options+=("--enable-targets=all") # HB
             config_options+=("--enable-threads") # Arch
             config_options+=("--enable-interwork")
             config_options+=("--enable-build-warnings=no")
+
+            config_options+=("--disable-debug") # HB
+            config_options+=("--disable-dependency-tracking") # HB
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            then
+              config_options+=("--disable-silent-rules")
+            fi
 
             config_options+=("--disable-gdb") # Arch
             config_options+=("--disable-gdbserver") # Arch
@@ -259,14 +266,14 @@ function build_binutils_native()
 
             # TODO
             # config_options+=("--enable-nls")
-            config_options+=("--disable-nls")
+            config_options+=("--disable-nls") # HB
 
             config_options+=("--disable-new-dtags")
 
             # config_options+=("--disable-multilib")
-            config_options+=("--enable-multilib")
+            config_options+=("--enable-multilib") # HB
 
-            config_options+=("--disable-werror") # Arch
+            config_options+=("--disable-werror") # Arch, HB
             config_options+=("--disable-sim") # Arch
 
           fi
@@ -303,7 +310,7 @@ function build_binutils_native()
         fi
 
         run_verbose rm -rf "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}/doc"
-exit 1
+
         if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
         then
 
@@ -360,11 +367,11 @@ exit 1
   then
     :
   else
-    tests_add "test_native_binutils" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    tests_add "test_binutils" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
   fi
 }
 
-function test_native_binutils()
+function test_binutils()
 {
   local test_bin_path="$1"
 
