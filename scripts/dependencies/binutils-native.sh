@@ -324,62 +324,53 @@ function build_binutils_native()
   then
     :
   else
-    tests_add "test_native_binutils"
+    tests_add "test_native_binutils" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
   fi
 }
 
 function test_native_binutils()
 {
-  (
-    if [ -d "xpacks/.bin" ]
-    then
-      XBB_TEST_BIN_PATH="$(pwd)/xpacks/.bin"
-    elif [ -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin" ]
-    then
-      XBB_TEST_BIN_PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-    else
-      echo "Wrong folder."
-      exit 1
-    fi
+  local test_bin_path="$1"
 
-    show_libs "${XBB_TEST_BIN_PATH}/ar"
-    show_libs "${XBB_TEST_BIN_PATH}/as"
-    show_libs "${XBB_TEST_BIN_PATH}/elfedit"
-    show_libs "${XBB_TEST_BIN_PATH}/gprof"
-    show_libs "${XBB_TEST_BIN_PATH}/ld"
-    show_libs "${XBB_TEST_BIN_PATH}/ld.gold"
-    show_libs "${XBB_TEST_BIN_PATH}/strip"
-    show_libs "${XBB_TEST_BIN_PATH}/nm"
-    show_libs "${XBB_TEST_BIN_PATH}/objcopy"
-    show_libs "${XBB_TEST_BIN_PATH}/objdump"
-    show_libs "${XBB_TEST_BIN_PATH}/ranlib"
-    show_libs "${XBB_TEST_BIN_PATH}/readelf"
-    show_libs "${XBB_TEST_BIN_PATH}/size"
-    show_libs "${XBB_TEST_BIN_PATH}/strings"
-    show_libs "${XBB_TEST_BIN_PATH}/strip"
+  (
+    show_libs "${test_bin_path}/ar"
+    show_libs "${test_bin_path}/as"
+    show_libs "${test_bin_path}/elfedit"
+    show_libs "${test_bin_path}/gprof"
+    show_libs "${test_bin_path}/ld"
+    show_libs "${test_bin_path}/ld.gold"
+    show_libs "${test_bin_path}/strip"
+    show_libs "${test_bin_path}/nm"
+    show_libs "${test_bin_path}/objcopy"
+    show_libs "${test_bin_path}/objdump"
+    show_libs "${test_bin_path}/ranlib"
+    show_libs "${test_bin_path}/readelf"
+    show_libs "${test_bin_path}/size"
+    show_libs "${test_bin_path}/strings"
+    show_libs "${test_bin_path}/strip"
 
     echo
     echo "Testing if binutils starts properly..."
 
-    run_app "${XBB_TEST_BIN_PATH}/ar" --version
-    run_app "${XBB_TEST_BIN_PATH}/as" --version
-    run_app "${XBB_TEST_BIN_PATH}/elfedit" --version
-    run_app "${XBB_TEST_BIN_PATH}/gprof" --version
-    run_app "${XBB_TEST_BIN_PATH}/ld" --version
-    if [ -f  "${XBB_TEST_BIN_PATH}/ld.gold${XBB_DOT_EXE}" ]
+    run_app "${test_bin_path}/ar" --version
+    run_app "${test_bin_path}/as" --version
+    run_app "${test_bin_path}/elfedit" --version
+    run_app "${test_bin_path}/gprof" --version
+    run_app "${test_bin_path}/ld" --version
+    if [ -f  "${test_bin_path}/ld.gold${XBB_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
-      run_app "${XBB_TEST_BIN_PATH}/ld.gold" --version
+      run_app "${test_bin_path}/ld.gold" --version
     fi
-    run_app "${XBB_TEST_BIN_PATH}/strip" --version
-    run_app "${XBB_TEST_BIN_PATH}/nm" --version
-    run_app "${XBB_TEST_BIN_PATH}/objcopy" --version
-    run_app "${XBB_TEST_BIN_PATH}/objdump" --version
-    run_app "${XBB_TEST_BIN_PATH}/ranlib" --version
-    run_app "${XBB_TEST_BIN_PATH}/readelf" --version
-    run_app "${XBB_TEST_BIN_PATH}/size" --version
-    run_app "${XBB_TEST_BIN_PATH}/strings" --version
-    run_app "${XBB_TEST_BIN_PATH}/strip" --version
+    run_app "${test_bin_path}/strip" --version
+    run_app "${test_bin_path}/nm" --version
+    run_app "${test_bin_path}/objcopy" --version
+    run_app "${test_bin_path}/objdump" --version
+    run_app "${test_bin_path}/ranlib" --version
+    run_app "${test_bin_path}/readelf" --version
+    run_app "${test_bin_path}/size" --version
+    run_app "${test_bin_path}/strings" --version
+    run_app "${test_bin_path}/strip" --version
   )
 
   echo
