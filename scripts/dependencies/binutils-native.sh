@@ -18,6 +18,7 @@ function build_binutils_native()
   # https://www.gnu.org/software/binutils/
   # https://ftp.gnu.org/gnu/binutils/
 
+  # https://github.com/archlinux/svntogit-packages/blob/packages/binutils/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/binutils/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
 
@@ -147,7 +148,9 @@ function build_binutils_native()
 
             config_options+=("--with-libiconv-prefix=${XBB_FOLDER_PATH}")
 
+            # ?
             config_options+=("--disable-multilib")
+
             config_options+=("--disable-werror")
             config_options+=("--disable-shared")
             config_options+=("--disable-nls")
@@ -166,10 +169,10 @@ function build_binutils_native()
             # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
             config_options+=("--program-suffix=")
 
-            config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
-            config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
-            config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
-            config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
+            config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/info")
+            config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/man")
+            config_options+=("--htmldir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/html")
+            config_options+=("--pdfdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
 
             config_options+=("--build=${XBB_BUILD}")
             config_options+=("--host=${XBB_HOST}")
@@ -182,11 +185,12 @@ function build_binutils_native()
               config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
             fi
 
-            config_options+=("--without-system-zlib")
+            config_options+=("--with-system-zlib") # Arch
 
-            config_options+=("--with-pic")
+            config_options+=("--with-pic") # Arch
 
             # error: debuginfod is missing or unusable
+            # config_options+=("--with-debuginfod") # Arch
             config_options+=("--without-debuginfod")
 
             if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
@@ -194,22 +198,31 @@ function build_binutils_native()
 
               config_options+=("--enable-ld")
 
+              config_options+=("--enable-multilib")
+
               if [ "${XBB_TARGET_ARCH}" == "x64" ]
               then
                 # From MSYS2 MINGW
                 config_options+=("--enable-64-bit-bfd")
               fi
 
-              config_options+=("--enable-shared")
-              config_options+=("--enable-shared-libgcc")
+              # config_options+=("--enable-shared")
+              # config_options+=("--enable-shared-libgcc")
 
             elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
             then
 
-              config_options+=("--enable-ld")
+              config_options+=("--enable-ld=default") # Arch
 
-              config_options+=("--disable-shared")
-              config_options+=("--disable-shared-libgcc")
+              if [ "${XBB_TARGET_ARCH}" == "x64" ]
+              then
+                config_options+=("--enable-multilib")
+              fi
+
+              # config_options+=("--enable-targets=x86_64-pep,bpf-unknown-none")
+
+              # config_options+=("--disable-shared")
+              # config_options+=("--disable-shared-libgcc")
 
             elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
             then
@@ -221,17 +234,28 @@ function build_binutils_native()
               exit 1
             fi
 
-            config_options+=("--enable-static")
 
-            config_options+=("--enable-gold")
+            config_options+=("--enable-cet") # Arch
+            config_options+=("--enable-default-execstack=no") # Arch
+            config_options+=("--enable-deterministic-archives") # Arch
+            config_options+=("--enable-gold") # Arch
+            config_options+=("--enable-install-libiberty") # Arch
+            # config_options+=("--enable-jansson") # Arch
             config_options+=("--enable-lto")
             config_options+=("--enable-libssp")
-            config_options+=("--enable-relro")
-            config_options+=("--enable-threads")
+            config_options+=("--enable-pgo-build=lto") # Arch
+            config_options+=("--enable-plugins") # Arch
+            config_options+=("--enable-relro") # Arch
+            config_options+=("--enable-shared") # Arch
+            config_options+=("--enable-static")
+            config_options+=("--enable-threads") # Arch
             config_options+=("--enable-interwork")
-            config_options+=("--enable-plugins")
             config_options+=("--enable-build-warnings=no")
-            config_options+=("--enable-deterministic-archives")
+
+            config_options+=("--disable-gdb") # Arch
+            config_options+=("--disable-gdbserver") # Arch
+            config_options+=("--disable-libdecnumber") # Arch
+            config_options+=("--disable-readline") # Arch
 
             # TODO
             # config_options+=("--enable-nls")
@@ -239,9 +263,11 @@ function build_binutils_native()
 
             config_options+=("--disable-new-dtags")
 
-            config_options+=("--disable-multilib")
-            config_options+=("--disable-werror")
-            config_options+=("--disable-sim")
+            # config_options+=("--disable-multilib")
+            config_options+=("--enable-multilib")
+
+            config_options+=("--disable-werror") # Arch
+            config_options+=("--disable-sim") # Arch
 
           fi
 
@@ -268,6 +294,16 @@ function build_binutils_native()
         # make install-strip
         run_verbose make install
 
+        # install PIC version of libiberty
+        libiberty_file_path="$(find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name libiberty.a)"
+        if [ -n "${libiberty_file_path}" ]
+        then
+          run_verbose install -v -c -m 644 libiberty/pic/libiberty.a \
+            "$(dirname ${libiberty_file_path})"
+        fi
+
+        run_verbose rm -rf "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}/doc"
+exit 1
         if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
         then
 
