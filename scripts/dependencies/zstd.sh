@@ -62,15 +62,19 @@ function build_zstd()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         CFLAGS+=' -ffat-lto-objects' # Arch
         CXXFLAGS+=' -ffat-lto-objects' # Arch
+      fi
 
+      LDFLAGS="${XBB_LDFLAGS_LIB}"
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      then
         xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
+
 
       export CPPFLAGS
       export CFLAGS
