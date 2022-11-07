@@ -73,7 +73,7 @@ function build_qemu()
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
+        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
       elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         LDFLAGS+=" -fstack-protector"
