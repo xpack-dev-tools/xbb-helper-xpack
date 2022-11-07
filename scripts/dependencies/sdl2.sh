@@ -60,7 +60,7 @@ function build_sdl2()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
@@ -202,14 +202,10 @@ function build_sdl2_image()
       OBJCFLAGS="${XBB_CFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
-      fi
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
-      then
-        LDFLAGS+=" -v"
       fi
 
       export CPPFLAGS
