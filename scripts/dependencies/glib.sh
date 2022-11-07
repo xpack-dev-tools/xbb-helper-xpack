@@ -94,14 +94,16 @@ function build_glib()
       LIBS=""
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      then
+        LDFLAGS+=" -Wl,--allow-multiple-definition"
+      fi
+
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" -o  "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH} -liconv"
         # LIBS="-liconv"
-      elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
-      then
-        LDFLAGS+=" -Wl,--allow-multiple-definition"
       fi
 
       export CPPFLAGS
