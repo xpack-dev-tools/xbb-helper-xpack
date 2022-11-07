@@ -94,17 +94,19 @@ function build_openssl()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
-      then
-        xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
-      elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         # test/drbg_cavs_data.o: too many sections (40327)
         CFLAGS+=" -Wa,-mbig-obj"
         CXXFLAGS+=" -Wa,-mbig-obj"
+      fi
+
+      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      LDFLAGS="${XBB_LDFLAGS_APP}"
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      then
+        xbb_activate_cxx_rpath
+        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
 
       export CPPFLAGS
