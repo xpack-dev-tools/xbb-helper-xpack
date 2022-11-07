@@ -85,20 +85,20 @@ function build_python3()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
-      then
-        xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}:${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib"
-      fi
-
       if [[ ${CC} =~ .*gcc.* ]]
       then
         # Inspired from Arch; not supported by clang.
         CFLAGS+=" -fno-semantic-interposition"
         CXXFLAGS+=" -fno-semantic-interposition"
         LDFLAGS+=" -fno-semantic-interposition"
+      fi
+
+      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      LDFLAGS="${XBB_LDFLAGS_APP}"
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      then
+        xbb_activate_cxx_rpath
+        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}:${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib"
       fi
 
       export CPPFLAGS
