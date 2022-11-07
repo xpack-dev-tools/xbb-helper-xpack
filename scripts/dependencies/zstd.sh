@@ -65,6 +65,9 @@ function build_zstd()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
+        CFLAGS+=' -ffat-lto-objects' # Arch
+        CXXFLAGS+=' -ffat-lto-objects' # Arch
+
         xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
       fi
@@ -92,21 +95,37 @@ function build_zstd()
 
           config_options=()
 
-          config_options+=("-LH")
+          config_options+=("-LH") # display help for each variable
           config_options+=("-G" "Ninja")
 
           config_options+=("-DCMAKE_INSTALL_PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+
+          config_options+=("-DZSTD_BUILD_CONTRIB=ON") # Arch, MD
+          config_options+=("-DZSTD_BUILD_CONTRIB=OFF")
+
           config_options+=("-DZSTD_BUILD_PROGRAMS=OFF")
+
+          # config_options+=("-DZSTD_BUILD_STATIC=OFF") # Arch
+          config_options+=("-DZSTD_BUILD_STATIC=ON")
 
           if [ "${XBB_WITH_TESTS}" == "y" ]
           then
             config_options+=("-DZSTD_BUILD_TESTS=ON")
           fi
 
+          config_options+=("-DZSTD_LEGACY_SUPPORT=ON") # HB
+          config_options+=("-DZSTD_ZLIB_SUPPORT=ON") # HB
+          config_options+=("-DZSTD_LZMA_SUPPORT=ON") # HB
+          # config_options+=("-DZSTD_LZ4_SUPPORT=ON") # HB
+
+          config_options+=("-DZSTD_PROGRAMS_LINK_SHARED=ON") # Arch, HB
+
           if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
             # Otherwise it'll generate two -mmacosx-version-min
             config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${XBB_MACOSX_DEPLOYMENT_TARGET}")
+
+            config_options+=("-DCMAKE_INSTALL_RPATH=${LD_LIBRARY_PATH}")
           fi
 
           run_verbose cmake \
