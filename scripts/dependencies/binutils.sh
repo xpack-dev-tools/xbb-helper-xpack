@@ -102,7 +102,9 @@ function build_binutils()
 
           # Used to enable wildcard; inspired from arm-none-eabi-gcc.
           LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
-        elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+        fi
+
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" -o  "${XBB_TARGET_PLATFORM}" == "darwin" ]
         then
           xbb_activate_cxx_rpath
           LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
