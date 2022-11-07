@@ -53,7 +53,9 @@ function build_binutils_cross()
       if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/mingw/lib/CRT_glob.o"
-      elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      fi
+
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" -o  "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
