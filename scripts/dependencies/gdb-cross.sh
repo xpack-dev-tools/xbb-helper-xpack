@@ -87,10 +87,9 @@ function build_cross_gdb()
         # Workaround for undefined reference to `__strcpy_chk' in GCC 9.
         # https://sourceforge.net/p/mingw-w64/bugs/818/
         LIBS="-lssp -liconv"
-      elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
-      then
-        : # LIBS="-liconv -lncurses"
-      elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      fi
+
+      if [ "${XBB_TARGET_PLATFORM}" == "linux"  -o  "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         xbb_activate_cxx_rpath
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
