@@ -12,7 +12,7 @@
 # Included by the application `scripts/build.sh`.
 
 source "${helper_folder_path}/scripts/timer.sh"
-source "${helper_folder_path}/scripts/host.sh"
+source "${helper_folder_path}/scripts/machine.sh"
 source "${helper_folder_path}/scripts/wrappers.sh"
 source "${helper_folder_path}/scripts/xbb.sh"
 source "${helper_folder_path}/scripts/build-tests.sh"
@@ -163,7 +163,7 @@ function build_perform_common()
   # Must be after host_parse_options, for a simple --help.
   timer_start
 
-  host_detect
+  machine_detect
 
   xbb_set_request_target
 

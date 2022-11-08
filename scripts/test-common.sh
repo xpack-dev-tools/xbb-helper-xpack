@@ -11,7 +11,7 @@
 # -----------------------------------------------------------------------------
 # Included by the application `scripts/test.sh`.
 
-source "${helper_folder_path}/scripts/host.sh"
+source "${helper_folder_path}/scripts/machine.sh"
 source "${helper_folder_path}/scripts/wrappers.sh"
 source "${helper_folder_path}/scripts/xbb.sh"
 source "${helper_folder_path}/scripts/show-libs.sh"
@@ -301,7 +301,7 @@ function tests_perform_common()
 
   # ---------------------------------------------------------------------------
 
-  host_detect
+  machine_detect
 
   xbb_set_request_target
   xbb_set_env
