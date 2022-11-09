@@ -28,7 +28,7 @@ function build_parse_options()
   local help_message="$1"
   shift
 
-  XBB_REQUEST_BUILD_WINDOWS="n"
+  XBB_REQUEST_TARGET_BE_WINDOWS="n"
 
   XBB_IS_DEBUG="n"
   XBB_IS_DEVELOP="n"
@@ -61,7 +61,7 @@ function build_parse_options()
     case "$1" in
 
       --win|--windows)
-        XBB_REQUEST_BUILD_WINDOWS="y"
+        XBB_REQUEST_TARGET_BE_WINDOWS="y"
         shift
         ;;
 
@@ -149,7 +149,7 @@ function build_parse_options()
   export XBB_WITHOUT_MULTILIB
   export XBB_TEST_ONLY
 
-  export XBB_REQUEST_BUILD_WINDOWS
+  export XBB_REQUEST_TARGET_BE_WINDOWS
   export XBB_REQUESTED_BUILD_RELATIVE_FOLDER
 }
 

@@ -222,7 +222,7 @@ function xbb_set_request_target()
       ;;
 
     win32-x64 )
-      XBB_REQUEST_BUILD_WINDOWS="y"
+      XBB_REQUEST_TARGET_BE_WINDOWS="y"
       ;;
 
     "" )
@@ -245,7 +245,7 @@ function xbb_set_request_target()
   fi
 
   # Windows is a special case, the built runs on Linux x64.
-  if [ "${XBB_REQUEST_BUILD_WINDOWS:-""}" == "y" ]
+  if [ "${XBB_REQUEST_TARGET_BE_WINDOWS:-""}" == "y" ]
   then
     if [ "${XBB_HOST_NODE_PLATFORM}" == "linux" ] && [ "${XBB_HOST_NODE_ARCH}" == "x64" ]
     then
