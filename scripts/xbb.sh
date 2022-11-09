@@ -480,20 +480,21 @@ function xbb_get_current_version()
 
 function xbb_set_compiler_env()
 {
-  if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+  if [ "${XBB_HOST_PLATFORM}" == "win32" && "${XBB_TARGET_TRIPLET}" == "${XBB_HOST_TRIPLET}" ]
   then
-    xbb_prepare_clang_env
-  elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
-  then
-    xbb_prepare_gcc_env
-  elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
-  then
+    # Windows cross build case.
     export XBB_NATIVE_CC="gcc"
     export XBB_NATIVE_CXX="g++"
 
-    xbb_prepare_gcc_env "${XBB_CROSS_COMPILE_PREFIX}-"
+    xbb_prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
+  elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+  then
+    xbb_prepare_clang_env
+  elif [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+  then
+    xbb_prepare_gcc_env
   else
-    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
+    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}, XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM}."
     exit 1
   fi
 }
@@ -624,19 +625,19 @@ function xbb_set_compiler_flags()
     XBB_LDFLAGS+=" -v"
   fi
 
-  if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
   then
     # Do not add -static here, it fails.
     # Do not try to link pthread statically, it must match the system glibc.
     XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
     XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
-  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
-    if [ "${XBB_TARGET_ARCH}" == "x64" ]
+    if [ "${XBB_HOST_ARCH}" == "x64" ]
     then
       export XBB_MACOSX_DEPLOYMENT_TARGET="10.13"
-    elif [ "${XBB_TARGET_ARCH}" == "arm64" ]
+    elif [ "${XBB_HOST_ARCH}" == "arm64" ]
     then
       export XBB_MACOSX_DEPLOYMENT_TARGET="11.0"
     else
@@ -665,11 +666,11 @@ function xbb_set_compiler_flags()
     then
       XBB_LDFLAGS_APP_STATIC_GCC+=" -static-libgcc"
     fi
-  elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
 
     # Note: use this explcitly in the application.
-    # prepare_gcc_env "${XBB_CROSS_COMPILE_PREFIX}-"
+    # prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
 
     # To make `access()` not fail when passing a non-zero mode.
     # https://sourceforge.net/p/mingw-w64/mailman/message/37372220/
@@ -756,7 +757,7 @@ function xbb_activate_installed_bin()
   echo_develop
   echo_develop "[xbb_activate_installed_bin]"
 
-  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
     # Add the native XBB bin to the PATH.
     if [ ! -z ${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH+x} ] &&
@@ -893,7 +894,7 @@ function xbb_activate_cxx_rpath()
 
 function xbb_adjust_ldflags_rpath()
 {
-  if [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
+  if [ "${XBB_HOST_PLATFORM}" == "linux" -o "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
     xbb_activate_cxx_rpath
     LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
@@ -923,7 +924,7 @@ function xbb_show_tools_versions()
   (
     set +e
 
-    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       which ${XBB_NATIVE_CXX} && ${XBB_NATIVE_CXX} --version && echo || true
     fi

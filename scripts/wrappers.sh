@@ -46,13 +46,13 @@ function run_app()
   local app_path=$1
   shift
 
-  if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
   then
     run_verbose "${app_path}" "$@"
-  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
     run_verbose "${app_path}" "$@"
-  elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
     if [ -x "${app_path}" ]
     then
@@ -118,13 +118,13 @@ function run_app_silent()
   local app_path=$1
   shift
 
-  if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
   then
     "${app_path}" "$@" 2>&1
-  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
     "${app_path}" "$@" 2>&1
-  elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
     if [ "$(uname -o)" == "Msys" ]
     then
@@ -254,7 +254,7 @@ function is_pe()
 
   if [ -f "${bin_path}" ]
   then
-    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       file ${bin_path} | egrep -q "( PE )|( PE32 )|( PE32\+ )"
     else
@@ -284,10 +284,10 @@ function is_elf()
   if [ -f "${bin_path}" ]
   then
     # Return 0 (true) if found.
-    if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
       file ${bin_path} | egrep -q "( ELF )"
-    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       # This proved to be very tricky.
       file ${bin_path} | egrep -q "x86_64:Mach-O|arm64e:Mach-O|Mach-O.*x86_64|Mach-O.*arm64"

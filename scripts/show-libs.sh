@@ -17,7 +17,7 @@ function show_libs()
   shift
 
   (
-    if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
       run_verbose ls -l "${app_path}"
       if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -33,7 +33,7 @@ function show_libs()
       echo "[ldd -v ${app_path}]"
       ldd -v "${app_path}" || true
       set -e
-    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       run_verbose ls -l "${app_path}"
       if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -52,7 +52,7 @@ function show_libs()
         echo "${app_path}:"
       fi
       otool -L "${app_path}" | tail -n +2
-    elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       if is_elf "${app_path}"
       then
@@ -79,8 +79,8 @@ function show_libs()
             run_verbose file "${app_path}"
           fi
           echo
-          echo "[${XBB_CROSS_COMPILE_PREFIX}-objdump -x ${app_path}]"
-          ${XBB_CROSS_COMPILE_PREFIX}-objdump -x ${app_path} | grep -i 'DLL Name' || true
+          echo "[${XBB_TARGET_TRIPLET}-objdump -x ${app_path}]"
+          ${XBB_TARGET_TRIPLET}-objdump -x ${app_path} | grep -i 'DLL Name' || true
         elif [ -f "${app_path}.exe" ]
         then
           run_verbose ls -l "${app_path}.exe"
@@ -89,8 +89,8 @@ function show_libs()
             run_verbose file "${app_path}.exe"
           fi
           echo
-          echo "[${XBB_CROSS_COMPILE_PREFIX}-objdump -x ${app_path}.exe]"
-          ${XBB_CROSS_COMPILE_PREFIX}-objdump -x ${app_path}.exe | grep -i 'DLL Name' || true
+          echo "[${XBB_TARGET_TRIPLET}-objdump -x ${app_path}.exe]"
+          ${XBB_TARGET_TRIPLET}-objdump -x ${app_path}.exe | grep -i 'DLL Name' || true
         else
           run_verbose file "${app_path}"
         fi

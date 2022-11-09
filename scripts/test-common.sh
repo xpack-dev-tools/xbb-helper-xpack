@@ -113,8 +113,8 @@ function tests_install_archive()
 
   (
     local archive_extension
-    local archive_architecture="${XBB_HOST_NODE_ARCH}"
-    if [ "${XBB_HOST_NODE_PLATFORM}" == "win32" ]
+    local archive_architecture="${XBB_BUILD_ARCH}"
+    if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
     then
       archive_extension="zip"
       if [ "${XBB_FORCE_32_BIT}" == "y" ]
@@ -124,7 +124,7 @@ function tests_install_archive()
     else
       archive_extension="tar.gz"
     fi
-    local archive_name="${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}-${XBB_HOST_NODE_PLATFORM}-${archive_architecture}.${archive_extension}"
+    local archive_name="${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}-${XBB_BUILD_PLATFORM}-${archive_architecture}.${archive_extension}"
 
     run_verbose rm -rf "${tests_folder_path}"
 
@@ -170,14 +170,14 @@ function tests_good_bye()
     echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} tests completed successfully."
 
     run_verbose uname -a
-    if [ "${XBB_HOST_NODE_PLATFORM}" == "linux" ]
+    if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
       # On opensuse/tumbleweed:latest it fails:
       # /usr/bin/lsb_release: line 122: getopt: command not found
       # install gnu-getopt.
       run_verbose lsb_release -a
       run_verbose ldd --version
-    elif [ "${XBB_HOST_NODE_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
       run_verbose sw_vers
     fi

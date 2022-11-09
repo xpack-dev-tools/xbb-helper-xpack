@@ -192,7 +192,7 @@ function build_perform_common()
   if [ ! "${XBB_TEST_ONLY}" == "y" ]
   then
     (
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         # The Windows still has a reference to libgcc_s and libwinpthread
         export XBB_DO_COPY_GCC_LIBS="y"
