@@ -321,7 +321,7 @@ function add_cross_linux_install_path()
 # $1="" or $1="-nano"
 function build_cross_gcc_final()
 {
-  local name_suffix=${1-''}
+  local name_suffix="${1:-""}"
 
   local gcc_final_folder_name="gcc-${XBB_GCC_VERSION}-final${name_suffix}"
 

@@ -22,7 +22,7 @@
 # $1="" or $1="-nano"
 function build_cross_newlib()
 {
-  local name_suffix=${1-''}
+  local name_suffix="${1:-""}"
   local newlib_folder_name="newlib-${XBB_NEWLIB_VERSION}${name_suffix}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${newlib_folder_name}"

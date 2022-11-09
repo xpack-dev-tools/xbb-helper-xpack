@@ -23,7 +23,7 @@
 # $1="" or $1="-py" or $1="-py3"
 function build_cross_gdb()
 {
-  local name_suffix=${1-''}
+  local name_suffix="${1:-""}"
 
   # GDB Text User Interface
   # https://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_19.html#SEC197

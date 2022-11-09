@@ -168,7 +168,7 @@ function build_zlib()
 
 function test_zlib_libs()
 {
-  local name_suffix=${1-''}
+  local name_suffix="${1:-""}"
 
   (
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
