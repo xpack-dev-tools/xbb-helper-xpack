@@ -116,4 +116,47 @@ function readelf_shared_libs()
   )
 }
 
+function show_native_libs()
+{
+  # Does not include the .exe extension.
+  local app_path=$1
+  shift
+
+  (
+    echo
+    echo "[readelf -d ${app_path} | egrep ...]"
+    # Ignore errors in case it is not using shared libraries.
+    set +e
+    readelf_shared_libs "${app_path}"
+    echo
+    echo "[ldd -v ${app_path}]"
+    ldd -v "${app_path}" || true
+    set -e
+  )
+}
+
+function show_dlls()
+{
+  # Does not include the .exe extension.
+  local objdump_path="$1"
+  local exe_path="$2"
+
+  (
+    if [ -f "${exe_path}" ]
+    then
+      run_verbose ls -l "${exe_path}"
+      if [ "${XBB_IS_DEVELOP}" == "y" ]
+      then
+        run_verbose file "${exe_path}"
+      fi
+      echo
+      echo "[${objdump_path} -x ${exe_path}]"
+      "${objdump_path}" -x "${exe_path}" | grep -i 'DLL Name' || true
+    else
+      echo
+      file "${exe_path}"
+    fi
+  )
+}
+
 # -----------------------------------------------------------------------------
