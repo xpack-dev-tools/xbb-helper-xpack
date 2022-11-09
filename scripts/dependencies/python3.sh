@@ -95,11 +95,7 @@ function build_python3()
 
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
-      then
-        xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}:${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib"
-      fi
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
@@ -265,7 +261,7 @@ function download_python3_win()
   local python3_win_version="$1"
 
   # Version 3.7.2 uses a longer name, like python-3.7.2.post1-embed-amd64.zip.
-  if [ "${XBB_TARGET_BITS}" == "32" ]
+  if [ "${XBB_HOST_BITS}" == "32" ]
   then
     XBB_PYTHON3_WIN_SRC_FOLDER_NAME="python-${python3_win_version}-embed-win32"
   else
@@ -309,7 +305,7 @@ function download_python3_win()
 # from POSIX.
 function add_python3_win_syslibs()
 {
-  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
     echo
     echo "Copying .pyd & .dll files from the embedded Python distribution..."
@@ -344,7 +340,7 @@ function add_python3_syslibs()
           "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/"
 
         echo "Compiling all python sources..."
-        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
           run_verbose "${XBB_TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/libs/bin/python3.${XBB_PYTHON3_VERSION_MINOR}" \
             -m compileall \
@@ -374,7 +370,7 @@ function add_python3_syslibs()
       echo
       echo "Copying Python shared libraries..."
 
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         # Copy the Windows specific DLLs (.pyd) to the separate folder;
         # they are dynamically loaded by Python.

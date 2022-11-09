@@ -61,11 +61,13 @@ function build_cross_gdb()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+      xbb_adjust_ldflags_rpath
+
       LIBS=""
 
       # libiconv is used by Python3.
       # export LIBS="-liconv"
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         # https://stackoverflow.com/questions/44150871/embeded-python3-6-with-mingw-in-c-fail-on-linking
         # ???
@@ -89,17 +91,11 @@ function build_cross_gdb()
         LIBS="-lssp -liconv"
       fi
 
-      if [ "${XBB_TARGET_PLATFORM}" == "linux"  -o  "${XBB_TARGET_PLATFORM}" == "darwin" ]
-      then
-        xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
-      fi
-
       CONFIG_PYTHON_PREFIX=""
 
       if [ "${name_suffix}" == "-py3" ]
       then
-        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
           # The source archive includes only the pyconfig.h.in, which needs
           # to be configured, which is not an easy task. Thus add the file copied
@@ -237,11 +233,13 @@ function build_cross_gdb()
 
           config_options+=("--with-pkgversion=${XBB_BRANDING}")
           config_options+=("--with-system-gdbinit=${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/lib/gdbinit")
+
+          # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib")
 
           if [ "${name_suffix}" == "-py3" ]
           then
-            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+            if [ "${XBB_HOST_PLATFORM}" == "win32" ]
             then
               config_options+=("--with-python=${helper_folder_path}/extras/python/python${XBB_PYTHON3_VERSION_MAJOR}-config-win.sh")
             else
@@ -251,7 +249,7 @@ function build_cross_gdb()
              config_options+=("--with-python=no")
           fi
 
-          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             config_options+=("--disable-tui")
           else

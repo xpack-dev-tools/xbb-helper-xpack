@@ -94,15 +94,16 @@ function build_glib()
       LIBS=""
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      xbb_adjust_ldflags_rpath
+
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         LDFLAGS+=" -Wl,--allow-multiple-definition"
       fi
 
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" -o  "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_HOST_PLATFORM}" == "linux" -o  "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
-        xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH} -liconv"
+        LDFLAGS+=" -liconv"
         # LIBS="-liconv"
       fi
 
@@ -203,7 +204,7 @@ function build_glib()
             config_options+=("--libdir" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
             config_options+=("--backend" "ninja")
 
-            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+            if [ "${XBB_HOST_PLATFORM}" == "win32" ]
             then
               config_options+=("--cross" "${helper_folder_path}/extras/meson/mingw-w64-gcc.ini")
             fi

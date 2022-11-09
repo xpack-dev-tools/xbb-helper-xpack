@@ -113,7 +113,7 @@ function build_coreutils()
 
           config_options+=("--disable-nls")
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # This is debatable, to either keep the original names
             # (and avoid ar) or to prefix everything with g (like HB).
@@ -148,7 +148,7 @@ function build_coreutils()
           run_verbose install -v -c -m 755 src/readlink \
             "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/greadlink"
         else
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # Strip fails with:
             # 2022-10-01T12:53:19.6394770Z /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/strip: error: symbols referenced by indirect symbol table entries that can't be stripped in: /Users/ilg/Work/xbb-bootstrap-4.0/darwin-arm64/install/xbb-bootstrap/libexec/coreutils/_inst.24110_

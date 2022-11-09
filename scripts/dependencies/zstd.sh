@@ -62,7 +62,7 @@ function build_zstd()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         CFLAGS+=' -ffat-lto-objects' # Arch
         CXXFLAGS+=' -ffat-lto-objects' # Arch
@@ -70,7 +70,6 @@ function build_zstd()
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       xbb_adjust_ldflags_rpath
-
 
       export CPPFLAGS
       export CFLAGS
@@ -120,7 +119,7 @@ function build_zstd()
 
           config_options+=("-DZSTD_PROGRAMS_LINK_SHARED=ON") # Arch, HB
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # Otherwise it'll generate two -mmacosx-version-min
             config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${XBB_MACOSX_DEPLOYMENT_TARGET}")

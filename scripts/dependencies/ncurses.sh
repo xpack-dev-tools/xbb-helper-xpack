@@ -115,7 +115,7 @@ function build_ncurses()
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           # Not yet functional on windows.
-          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
 
             # The build passes, but generally it is not expected to be

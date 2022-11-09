@@ -91,10 +91,11 @@ function build_binutils()
 
         # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
         LDFLAGS="${XBB_LDFLAGS_APP}"
+        xbb_adjust_ldflags_rpath
 
-        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
-          if [ "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
+          if [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
           then
             # From MSYS2 MINGW
             LDFLAGS+=" -Wl,--large-address-aware"
@@ -178,11 +179,12 @@ function build_binutils()
 
             config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
 
-            if [ "${XBB_TARGET_PLATFORM}" != "linux" ]
+            if [ "${XBB_HOST_PLATFORM}" != "linux" ]
             then
               config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
             fi
 
+            # Use the zlib compiled from sources.
             config_options+=("--with-system-zlib") # Arch, HB
 
             config_options+=("--with-pic") # Arch
@@ -191,25 +193,25 @@ function build_binutils()
             # config_options+=("--with-debuginfod") # Arch
             config_options+=("--without-debuginfod")
 
-            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+            if [ "${XBB_HOST_PLATFORM}" == "win32" ]
             then
 
               config_options+=("--enable-ld")
 
               config_options+=("--enable-multilib")
 
-              if [ "${XBB_TARGET_ARCH}" == "x64" ]
+              if [ "${XBB_HOST_ARCH}" == "x64" ]
               then
                 # From MSYS2 MINGW
                 : # config_options+=("--enable-64-bit-bfd")
               fi
 
-            elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+            elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
             then
 
               config_options+=("--enable-ld=default") # Arch
 
-              if [ "${XBB_TARGET_ARCH}" == "x64" ]
+              if [ "${XBB_HOST_ARCH}" == "x64" ]
               then
                 config_options+=("--enable-multilib")
               else
@@ -218,7 +220,7 @@ function build_binutils()
 
               # config_options+=("--enable-targets=x86_64-pep,bpf-unknown-none")
 
-            elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+            elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
             then
 
               config_options+=("--enable-multilib")
@@ -245,7 +247,6 @@ function build_binutils()
             config_options+=("--enable-static")
             config_options+=("--enable-targets=all") # HB
             config_options+=("--enable-threads") # Arch
-            config_options+=("--enable-interwork")
             config_options+=("--enable-build-warnings=no")
 
             config_options+=("--disable-debug") # HB
@@ -323,7 +324,7 @@ function build_binutils()
 
         else
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             : # rm -rv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/strip"
           fi
@@ -396,7 +397,7 @@ function test_binutils()
     run_app "${test_bin_path}/elfedit" --version
     run_app "${test_bin_path}/gprof" --version
     run_app "${test_bin_path}/ld" --version
-    if [ -f  "${test_bin_path}/ld.gold${XBB_DOT_EXE}" ]
+    if [ -f  "${test_bin_path}/ld.gold${XBB_HOST_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
       run_app "${test_bin_path}/ld.gold" --version

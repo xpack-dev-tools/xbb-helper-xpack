@@ -737,7 +737,7 @@ function build_guile()
       # Otherwise guile-config displays the verbosity.
       unset PKG_CONFIG
 
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         # export LD_LIBRARY_PATH="${XBB_LIBRARY_PATH}:${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}/libguile/.libs"
         export LD_LIBRARY_PATH="${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}/libguile/.libs"
@@ -922,7 +922,7 @@ function build_autogen()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         # To find libopts.so during build.
         # export LD_LIBRARY_PATH="${XBB_LIBRARY_PATH}:${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}/autoopts/.libs"
@@ -977,7 +977,7 @@ function build_autogen()
 
           config_options+=("--program-prefix=")
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # It fails on macOS with:
             # /Users/ilg/Work/xbb-bootstrap-4.0.0/darwin-arm64/sources/autogen-5.18.16/agen5/expExtract.c:48:46: error: 'struct stat' has no member named 'st_mtim'
@@ -1304,7 +1304,7 @@ function build_sed()
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         # Configure expects a warning for clang.
         CFLAGS="${XBB_CFLAGS}"
@@ -1362,7 +1362,7 @@ function build_sed()
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${sed_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
             # Fails on Intel and Arm, better disable it completely.
             run_verbose sed -i.bak \
@@ -1399,7 +1399,7 @@ function build_sed()
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           # WARN-TEST
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # FAIL:  6
             # Some tests fail due to missing locales.
@@ -1656,7 +1656,7 @@ function build_diffutils()
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         # Configure expects a warning for clang.
         CFLAGS="${XBB_CFLAGS}"
@@ -1732,7 +1732,7 @@ function build_diffutils()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # Silence these tests on macOS.
             echo "#!/bin/sh" > "${XBB_SOURCES_FOLDER_PATH}/${diffutils_folder_name}/tests/colors"
@@ -1846,7 +1846,7 @@ function build_bison()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         # undefined reference to `clock_gettime' on docker
         export LIBS="-lrt"
@@ -2610,7 +2610,7 @@ function build_dos2unix()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             #   Failed test 'dos2unix convert DOS UTF-16LE to Unix GB18030'
             #   at utf16_gb.t line 27.
@@ -2816,7 +2816,7 @@ function build_flex()
         then
           # cxx_restart fails - https://github.com/westes/flex/issues/98
           # make -k check || true
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [ "${XBB_TARGET_ARCH}" == "arm64" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [ "${XBB_HOST_ARCH}" == "arm64" ]
           then
             : # Fails with internal error, caused by gm4
           else
@@ -2974,7 +2974,7 @@ function build_perl()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         # Required to pick libcrypt and libssp from bootstrap.
         : # export LD_LIBRARY_PATH="${XBB_LIBRARY_PATH}"
@@ -3056,7 +3056,7 @@ function build_perl()
         (
           xbb_activate_installed_bin
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # Remove any existing .cpan
             rm -rf ${HOME}/.cpan
@@ -3108,7 +3108,7 @@ function test_perl()
     (
       # To find libssp.so.0.
       # /opt/xbb/bin/perl: error while loading shared libraries: libssp.so.0: cannot open shared object file: No such file or directory
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         : # export LD_LIBRARY_PATH="${XBB_LIBRARY_PATH}"
       fi
@@ -3207,7 +3207,7 @@ function build_tcl()
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
             if [ "${XBB_IS_DEVELOP}" == "y" ]
             then
@@ -3215,7 +3215,7 @@ function build_tcl()
             fi
 
             config_options+=("--enable-threads")
-            if [ "${XBB_TARGET_BITS}" == "64" ]
+            if [ "${XBB_HOST_BITS}" == "64" ]
             then
               config_options+=("--enable-64bit")
             fi
@@ -3223,7 +3223,7 @@ function build_tcl()
             run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${tcl_src_folder_name}/unix/configure" \
               "${config_options[@]}"
 
-          elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
 
             if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -3231,7 +3231,7 @@ function build_tcl()
               run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${tcl_src_folder_name}/macosx/configure" --help
             fi
 
-            if [ "${XBB_TARGET_ARCH}" == "arm64" ]
+            if [ "${XBB_HOST_ARCH}" == "arm64" ]
             then
               # The current GCC 11.2 generates wrong code for this illegal option.
               run_verbose sed -i.bak \
@@ -3301,7 +3301,7 @@ function test_tcl_libs()
     echo
     echo "Checking the tcl binaries shared libraries..."
 
-    if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
       show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/thread* -name 'libthread*.so')"
       for lib in $(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/tdb* -name 'libtdb*.so')
@@ -3310,7 +3310,7 @@ function test_tcl_libs()
       done
       show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/itcl* -name 'libitcl*.so')"
       show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/sqlite* -name 'libsqlite*.so')"
-    elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/thread* -name 'libthread*.dylib')"
       for lib in $(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/tdb* -name 'libtdb*.dylib')
@@ -3411,7 +3411,7 @@ function build_git()
       export CXXFLAGS
       export LDFLAGS
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         export NO_OPENSSL=1
         export APPLE_COMMON_CRYPTO=1
@@ -3575,7 +3575,7 @@ function build_p7zip()
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         CPPFLAGS+=" -DENV_MACOSX"
       fi
@@ -3586,11 +3586,11 @@ function build_p7zip()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_HOST_PLATFORM}" == "linux" -o "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         LDFLAGS+=" -liconv"
       fi
-      
+
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
@@ -3601,7 +3601,7 @@ function build_p7zip()
       echo
       echo "Running p7zip make..."
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         run_verbose cp -v "makefile.macosx_llvm_64bits" "makefile.machine"
       fi
@@ -3825,7 +3825,7 @@ function test_rhash_libs()
   echo
   echo "Checking the flex shared libraries..."
 
-  if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+  if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
     show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/librhash.0.dylib"
   else
@@ -4105,12 +4105,7 @@ function build_gnupg()
 
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" -o  "${XBB_TARGET_PLATFORM}" == "darwin" ]
-      then
-        xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
-        export LIBS="-lrt"
-      fi
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
@@ -4190,7 +4185,7 @@ function build_gnupg()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if false # [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [ "${XBB_TARGET_ARCH}" == "arm64" ]
+          if false # [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [ "${XBB_HOST_ARCH}" == "arm64" ]
           then
             : # Fails with:
             # dyld: Library not loaded: libbz2.1.0.8.dylib
@@ -4312,12 +4307,7 @@ function build_makedepend()
 
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" -o  "${XBB_TARGET_PLATFORM}" == "darwin" ]
-      then
-        xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
-        export LIBS="-lrt"
-      fi
+      xbb_adjust_ldflags_rpath
 
       # export PKG_CONFIG_PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/pkgconfig:${PKG_CONFIG_PATH}"
 

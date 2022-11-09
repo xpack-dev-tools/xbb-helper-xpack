@@ -150,7 +150,7 @@ function build_isl()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
             # /Host/Users/ilg/Work/gcc-8.4.0-1/linux-x64/build/libs/isl-0.22/.libs/lt-isl_test_cpp: relocation error: /Host/Users/ilg/Work/gcc-8.4.0-1/linux-x64/build/libs/isl-0.22/.libs/lt-isl_test_cpp: symbol _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERmm, version GLIBCXX_3.4.21 not defined in file libstdc++.so.6 with link time reference
             # FAIL isl_test_cpp (exit status: 127)

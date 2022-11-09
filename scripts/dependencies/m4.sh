@@ -134,7 +134,7 @@ function build_m4()
           # checks/198.sysval:err
           rm -rf "${XBB_SOURCES_FOLDER_PATH}/${m4_src_folder_name}/checks/198.sysval"
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # Silence this test on macOS.
             echo "#!/bin/sh" > "${XBB_SOURCES_FOLDER_PATH}/${m4_src_folder_name}/tests/test-execute.sh"

@@ -245,7 +245,7 @@ function build_python2()
           # Create the PythonX.Y.so.
           config_options+=("--enable-shared")
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             config_options+=("--enable-unicode=ucs2")
           else
@@ -335,7 +335,7 @@ function download_python2_win()
 
   local python2_win_pack
 
-  if [ "${XBB_TARGET_BITS}" == "32" ]
+  if [ "${XBB_HOST_BITS}" == "32" ]
   then
     XBB_PYTHON2_WIN_SRC_FOLDER_NAME="python-${python2_win_version}-embed-win32"
     python2_win_pack="python-${python2_win_version}.msi"
@@ -769,7 +769,7 @@ function build_libgcrypt()
 
           config_options+=("--disable-padlock-support") # Arch
 
-          if [ "${XBB_HOST_MACHINE}" != "aarch64" ]
+          if [ "${XBB_BUILD_MACHINE}" != "aarch64" ]
           then
             config_options+=("--disable-neon-support")
             config_options+=("--disable-arm-crypto-support")
@@ -787,7 +787,7 @@ function build_libgcrypt()
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libgcrypt_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          if false # [ "${XBB_HOST_MACHINE}" != "aarch64" ]
+          if false # [ "${XBB_BUILD_MACHINE}" != "aarch64" ]
           then
             # fix screwed up capability detection
             sed -i.bak -e '/HAVE_GCC_INLINE_ASM_AARCH32_CRYPTO 1/d' "config.h"
@@ -1448,7 +1448,7 @@ function _build_libusb()
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           config_options+=("--disable-dependency-tracking")
-          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
             # On 32-bit Arm `/lib/arm-linux-gnueabihf/libudev.so.1` has
             # a dependency on the system `libgcc_s.so.1` and makes

@@ -78,13 +78,13 @@ function build_libftdi()
         config_options+=("-DFTDI_EEPROM:BOOL=off")
         config_options+=("-DPYTHON_BINDINGS:BOOL=off")
 
-        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
           config_options+=("-DCMAKE_TOOLCHAIN_FILE=${XBB_SOURCES_FOLDER_PATH}/${libftdi_src_folder_name}/cmake/Toolchain-${XBB_TARGET_TRIPLET}.cmake")
           config_options+=("-DLIBUSB_INCLUDE_DIR=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/libusb-1.0")
           config_options+=("-DLIBUSB_LIBRARIES=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libusb-1.0.a")
           config_options+=("-DFTDIPP:BOOL=off")
-        elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+        elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
           config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${XBB_MACOSX_DEPLOYMENT_TARGET}")
         fi

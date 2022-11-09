@@ -92,15 +92,15 @@ function build_gettext()
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             config_options+=("--enable-threads=windows")
             config_options+=("--with-gnu-ld")
-          elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+          elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
             config_options+=("--enable-threads=posix")
             config_options+=("--with-gnu-ld")
-          elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             config_options+=("--enable-threads=posix")
           fi

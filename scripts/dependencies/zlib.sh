@@ -63,7 +63,7 @@ function build_zlib()
 
       xbb_activate_installed_dev
 
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         (
           xbb_show_env_develop
@@ -171,7 +171,7 @@ function test_zlib_libs()
   local name_suffix=${1-''}
 
   (
-    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       echo
       echo "No checking for the zlib${name_suffix} shared libraries..."

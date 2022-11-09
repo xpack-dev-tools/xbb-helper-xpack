@@ -403,7 +403,7 @@ function build_gc()
           run_verbose make install
         fi
 
-        if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+        if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
           # Otherwise guile fails.
           mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include"
@@ -413,7 +413,7 @@ function build_gc()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${XBB_TARGET_PLATFORM}" == "linux" ] && [ "${XBB_TARGET_ARCH}" == "arm" ]
+          if [ "${XBB_HOST_PLATFORM}" == "linux" ] && [ "${XBB_HOST_ARCH}" == "arm" ]
           then
             : # FAIL: gctest (on Ubuntu 18)
           else
@@ -507,7 +507,7 @@ function build_gnutls()
       xbb_activate_installed_bin
 
       CPPFLAGS="${XBB_CPPFLAGS}"
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         CPPFLAGS+=" -D_Noreturn="
       fi

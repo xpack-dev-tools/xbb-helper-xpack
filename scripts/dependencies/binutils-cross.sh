@@ -50,15 +50,11 @@ function build_binutils_cross()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      xbb_adjust_ldflags_rpath
+
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/mingw/lib/CRT_glob.o"
-      fi
-
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" -o  "${XBB_TARGET_PLATFORM}" == "darwin" ]
-      then
-        xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
       fi
 
       export CPPFLAGS
@@ -127,6 +123,8 @@ function build_binutils_cross()
           config_options+=("--without-tk") # Arm, AArch64
 
           config_options+=("--with-pkgversion=${XBB_BRANDING}")
+          
+          # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_BINUTILS_SRC_FOLDER_NAME}/configure" \
@@ -145,7 +143,7 @@ function build_binutils_cross()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # /bin/bash: DSYMUTIL@: command not found
             :

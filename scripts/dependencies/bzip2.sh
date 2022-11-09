@@ -81,7 +81,7 @@ function build_bzip2()
         echo
         echo "Running bzip2 make..."
 
-        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+        if [ "${XBB_HOST_PLATFORM}" == "linux" ]
         then
           # Build.
           run_verbose make all -j ${XBB_JOBS} \
@@ -130,7 +130,7 @@ function build_bzip2()
 
           create_bzip2_pc
 
-        elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+        elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
 
           # Build.
@@ -181,7 +181,7 @@ function build_bzip2()
 
           create_bzip2_pc
 
-        elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+        elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
 
           run_verbose make libbz2.a bzip2 bzip2recover -j ${XBB_JOBS} \

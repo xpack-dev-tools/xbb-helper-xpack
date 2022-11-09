@@ -70,11 +70,9 @@ function build_qemu()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
-      then
-        xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
-      elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      xbb_adjust_ldflags_rpath
+
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         LDFLAGS+=" -fstack-protector"
       fi
@@ -111,7 +109,7 @@ function build_qemu()
           # string is suffixed by -dirty.
           config_options+=("--with-pkgversion=${XBB_QEMU_GIT_COMMIT}")
 
-          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             config_options+=("--cross-prefix=${XBB_TARGET_TRIPLET}-")
           fi
@@ -153,14 +151,14 @@ function build_qemu()
           # Not toghether with nettle.
           # config_options+=("--enable-gcrypt")
 
-          if [ "${XBB_TARGET_PLATFORM}" != "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" != "win32" ]
           then
             config_options+=("--enable-libssh")
             config_options+=("--enable-curses")
             config_options+=("--enable-vde")
           fi
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # For now, Cocoa builds fail on macOS 10.13.
             if [ "${XBB_ENABLE_QEMU_SDL:-"n"}" == "y" ]

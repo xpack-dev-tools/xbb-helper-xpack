@@ -141,7 +141,7 @@ function build_libxml2()
 
           # config_options+=("--disable-static") # Arch
 
-          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             config_options+=("--with-threads=win32")
             config_options+=("--without-catalog")

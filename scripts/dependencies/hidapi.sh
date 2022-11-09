@@ -46,7 +46,7 @@ function build_hidapi()
   then
 
     (
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
 
         echo
@@ -115,7 +115,7 @@ function build_hidapi()
           "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}" \
           "${hidapi_folder_name}"
 
-      elif [ "${XBB_TARGET_PLATFORM}" == "linux" -o "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      elif [ "${XBB_HOST_PLATFORM}" == "linux" -o "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
 
         mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
@@ -129,12 +129,12 @@ function build_hidapi()
 
         xbb_activate_installed_dev
 
-        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+        if [ "${XBB_HOST_PLATFORM}" == "linux" ]
         then
           copy_libudev
 
           export LIBS="-liconv"
-        elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+        elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
           : # With GCC: error: unknown type name ‘dispatch_block_t’
         fi
@@ -174,7 +174,7 @@ function build_hidapi()
           config_options+=("-DCMAKE_VERBOSE_MAKEFILE=ON")
           config_options+=("-DCMAKE_BUILD_TYPE=${build_type}")
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # Otherwise it'll generate two -mmacosx-version-min
             config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${XBB_MACOSX_DEPLOYMENT_TARGET}")

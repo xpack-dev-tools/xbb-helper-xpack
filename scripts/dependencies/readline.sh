@@ -98,7 +98,7 @@ function build_readline()
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             config_options+=("--without-curses")
           else

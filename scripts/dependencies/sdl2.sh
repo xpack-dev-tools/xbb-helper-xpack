@@ -98,16 +98,16 @@ function build_sdl2()
           config_options+=("--disable-joystick")
           config_options+=("--disable-haptic")
 
-          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             :
-          elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+          elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
             config_options+=("--enable-video-opengl")
             config_options+=("--enable-video-x11")
 
             config_options+=("--enable-libudev")
-          elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             config_options+=("--without-x")
           fi
@@ -206,7 +206,7 @@ function build_sdl2_image()
       export OBJCFLAGS
       export LDFLAGS
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         export OBJC=clang
       fi
@@ -259,7 +259,7 @@ function build_sdl2_image()
           config_options+=("--disable-webp")
           config_options+=("--disable-webp-shared")
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             config_options+=("--enable-imageio")
           fi

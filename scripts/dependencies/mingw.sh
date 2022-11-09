@@ -314,11 +314,11 @@ function build_mingw_crt()
             config_options+=("--target=${XBB_TARGET_TRIPLET}")
           fi
 
-          if [ "${XBB_TARGET_ARCH}" == "x64" ]
+          if [ "${XBB_HOST_ARCH}" == "x64" ]
           then
             config_options+=("--disable-lib32")
             config_options+=("--enable-lib64")
-          elif [ "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
+          elif [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
           then
             config_options+=("--enable-lib32")
             config_options+=("--disable-lib64")

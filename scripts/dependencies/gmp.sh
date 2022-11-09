@@ -76,7 +76,7 @@ function build_gmp()
         LDFLAGS="${XBB_LDFLAGS_LIB}"
         xbb_adjust_ldflags_rpath
 
-        if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
           export CC_FOR_BUILD="${XBB_NATIVE_CC}"
         fi
@@ -90,9 +90,9 @@ function build_gmp()
 
       # ABI is mandatory, otherwise configure fails on 32-bit.
       # (see https://gmplib.org/manual/ABI-and-ISA.html)
-      if [ "${XBB_TARGET_ARCH}" == "x64" -o "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
+      if [ "${XBB_HOST_ARCH}" == "x64" -o "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
       then
-        export ABI="${XBB_TARGET_BITS}"
+        export ABI="${XBB_HOST_BITS}"
       fi
 
       if [ ! -f "config.status" ]
@@ -138,19 +138,19 @@ function build_gmp()
             # From Arm.
             config_options+=("--enable-fft")
 
-            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+            if [ "${XBB_HOST_PLATFORM}" == "win32" ]
             then
               # mpfr asks for this explicitly during configure.
               # (although the message is confusing)
               config_options+=("--enable-shared")
               config_options+=("--disable-static")
-            elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+            elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
             then
               # Enable --with-pic to avoid linking issues with the static library
               config_options+=("--with-pic") # HB
             fi
 
-            if [ "${XBB_TARGET_ARCH}" == "ia32" -o "${XBB_TARGET_ARCH}" == "arm" ]
+            if [ "${XBB_HOST_ARCH}" == "ia32" -o "${XBB_HOST_ARCH}" == "arm" ]
             then
               config_options+=("ABI=32")
             fi
@@ -160,7 +160,7 @@ function build_gmp()
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          if false # [ "${XBB_TARGET_PLATFORM}" == "darwin" ] # and clang
+          if false # [ "${XBB_HOST_PLATFORM}" == "darwin" ] # and clang
           then
             # Disable failing `t-sqrlo` test.
             run_verbose sed -i.bak \
@@ -181,7 +181,7 @@ function build_gmp()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${XBB_TARGET_ARCH}" == "arm64" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" ]
           then
             # FAIL: t-rand
             :

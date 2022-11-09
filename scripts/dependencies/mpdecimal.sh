@@ -124,7 +124,7 @@ function build_mpdecimal()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
             # TODO
             # Fails shared on darwin

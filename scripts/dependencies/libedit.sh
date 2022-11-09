@@ -56,7 +56,7 @@ function build_libedit()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         if [ -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw" ]
         then

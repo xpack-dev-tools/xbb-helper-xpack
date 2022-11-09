@@ -84,7 +84,7 @@ function build_openssl()
 
       # export CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${openssl_folder_name}/include"
       CPPFLAGS="${XBB_CPPFLAGS}"
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         # /usr/include/CommonCrypto/CommonRandom.h:35:9: error: unknown type name 'CCCryptorStatus'
         # typedef CCCryptorStatus CCRNGStatus;
@@ -94,7 +94,7 @@ function build_openssl()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         # test/drbg_cavs_data.o: too many sections (40327)
         CFLAGS+=" -Wa,-mbig-obj"
@@ -119,7 +119,7 @@ function build_openssl()
           echo "Running openssl configure..."
 
           echo
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
 
             # Older versions do not support the KERNEL_BITS trick and require
@@ -190,7 +190,7 @@ function build_openssl()
 
             fi
 
-          elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+          elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
 
             config_options=()
@@ -210,10 +210,10 @@ function build_openssl()
             config_options+=("no-ssl3-method")
             config_options+=("no-zlib")
 
-            if [ "${XBB_TARGET_ARCH}" == "x64" ]
+            if [ "${XBB_HOST_ARCH}" == "x64" ]
             then
               config_options+=("enable-ec_nistp_64_gcc_128")
-            elif [ "${XBB_TARGET_ARCH}" == "arm64" ]
+            elif [ "${XBB_HOST_ARCH}" == "arm64" ]
             then
               config_options+=("no-afalgeng")
             fi
@@ -241,17 +241,17 @@ function build_openssl()
               run_verbose make depend
             fi
 
-          elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
 
             run_verbose "./Configure" --help || true
 
             config_options=()
 
-            if [ "${XBB_TARGET_ARCH}" == "x64" ]
+            if [ "${XBB_HOST_ARCH}" == "x64" ]
             then
               config_options+=("mingw64")
-            elif [ "${XBB_TARGET_ARCH}" == "ia32" ]
+            elif [ "${XBB_HOST_ARCH}" == "ia32" ]
             then
               config_options+=("mingw")
             else
@@ -263,7 +263,7 @@ function build_openssl()
             # DO NOT USE --libdir
 
             # Not needed, the CC/CXX macros already define the target.
-            # config_options+=("--cross-compile-prefix=${XBB_TARGET}")
+            # config_options+=("--cross-compile-prefix=${XBB_TARGET_TRIPLET}")
 
             config_options+=("--openssldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/openssl")
 

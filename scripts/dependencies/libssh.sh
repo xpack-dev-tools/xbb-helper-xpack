@@ -96,14 +96,14 @@ function build_libssh()
           # Since CMake insists on picking the system one.
           config_options+=("-DWITH_ZLIB=OFF")
 
-          if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+          if [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
             # On Linux
             # undefined reference to `__stack_chk_guard'
             config_options+=("-DWITH_STACK_PROTECTOR=OFF")
             config_options+=("-DWITH_STACK_PROTECTOR_STRONG=OFF")
             # config_options+=("-DWITH_STACK_CLASH_PROTECTION=OFF")
-          elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # Otherwise it'll generate two -mmacosx-version-min
             config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${XBB_MACOSX_DEPLOYMENT_TARGET}")

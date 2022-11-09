@@ -164,7 +164,7 @@ function build_libxcrypt()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             # macOS FAIL: test/symbols-static.sh
             # macOS FAIL: test/symbols-renames.sh

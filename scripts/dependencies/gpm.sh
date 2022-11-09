@@ -80,10 +80,10 @@ function build_gpm()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      xbb_adjust_ldflags_rpath
+
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
-        xbb_activate_cxx_rpath
-        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
         LDFLAGS+=" -Wl,--allow-multiple-definition"
       fi
 
@@ -145,7 +145,7 @@ function build_gpm()
           run_verbose make install
         fi
 
-        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+        if [ "${XBB_HOST_PLATFORM}" == "linux" ]
         then
           (
             mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"

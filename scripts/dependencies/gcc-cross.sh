@@ -96,12 +96,13 @@ function build_cross_gcc_first()
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         # The CFLAGS are set in XBB_CFLAGS, but for C++ it must be selective.
         # Without it gcc cannot identify cc1 and other binaries
         CXXFLAGS+=" -D__USE_MINGW_ACCESS"
       fi
+
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
@@ -203,6 +204,7 @@ function build_cross_gcc_first()
           config_options+=("--with-pkgversion=${XBB_BRANDING}")
           config_options+=("--with-newlib") # Arm, AArch64
 
+          # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib")
 
           if [ "${XBB_GCC_TARGET}" == "arm-none-eabi" ]
@@ -341,7 +343,7 @@ function build_cross_gcc_final()
       xbb_activate_installed_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
-      # if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      # if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       # then
       #   # Hack to avoid spurious errors like:
       #   # fatal error: bits/nested_exception.h: No such file or directory
@@ -349,7 +351,7 @@ function build_cross_gcc_final()
       # fi
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         # The CFLAGS are set in XBB_CFLAGS, but for C++ it must be selective.
         # Without it gcc cannot identify cc1 and other binaries
@@ -375,7 +377,7 @@ function build_cross_gcc_final()
       export CXXFLAGS_FOR_TARGET
       export LDFLAGS_FOR_TARGET
 
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         add_cross_linux_install_path
 
@@ -451,7 +453,7 @@ function build_cross_gcc_final()
           config_options+=("--enable-checking=release") # Arm, AArch64
           config_options+=("--enable-languages=c,c++,fortran") # Arm, AArch64
 
-          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             config_options+=("--enable-mingw-wildcard")
           fi
@@ -464,6 +466,7 @@ function build_cross_gcc_final()
           config_options+=("--with-gnu-as") # Arm ABE
           config_options+=("--with-gnu-ld") # Arm ABE
 
+          # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib")
 
           # `${with_sysroot}${native_system_header_dir}/stdio.h`
@@ -553,7 +556,7 @@ function build_cross_gcc_final()
         echo
         echo "Running cross gcc${name_suffix} final stage make..."
 
-        if [ "${XBB_TARGET_PLATFORM}" != "win32" ]
+        if [ "${XBB_HOST_PLATFORM}" != "win32" ]
         then
 
           # Passing USE_TM_CLONE_REGISTRY=0 via INHIBIT_LIBC_CFLAGS to disable
@@ -561,7 +564,7 @@ function build_cross_gcc_final()
           # This is a workaround. Better approach is have a t-* to set this flag via
           # CRTSTUFF_T_CFLAGS
 
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             if [ "${XBB_IS_DEVELOP}" == "y" ]
             then
@@ -587,7 +590,7 @@ function build_cross_gcc_final()
           then
 
             local target_gcc=""
-            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+            if [ "${XBB_HOST_PLATFORM}" == "win32" ]
             then
               target_gcc="${XBB_GCC_TARGET}-gcc"
             else
@@ -665,7 +668,7 @@ function test_cross_gcc()
     show_libs "${test_bin_path}/${XBB_GCC_TARGET}-gcc"
     show_libs "${test_bin_path}/${XBB_GCC_TARGET}-g++"
 
-    if [ "${XBB_TARGET_PLATFORM}" != "win32" ]
+    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
       show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1)"
       show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1plus)"
@@ -687,7 +690,7 @@ function test_cross_gcc()
     mkdir -pv "${tmp}"
     cd "${tmp}"
 
-    if false # [ "${XBB_TARGET_PLATFORM}" == "win32" ] && [ -z ${IS_NATIVE_TEST+x} ]
+    if false # [ "${XBB_HOST_PLATFORM}" == "win32" ] && [ -z ${IS_NATIVE_TEST+x} ]
     then
       : # Skip Windows when non native (running on Wine).
     else
@@ -766,7 +769,7 @@ function cross_tidy_up()
     find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name "libiberty.a" -exec rm -v '{}' ';'
     find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name '*.la' -exec rm -v '{}' ';'
 
-    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name "liblto_plugin.a" -exec rm -v '{}' ';'
       find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name "liblto_plugin.dll.a" -exec rm -v '{}' ';'
@@ -815,7 +818,7 @@ function cross_final_tunings()
       cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}"
 
       echo
-      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         echo
         echo "Copying ${XBB_LTO_PLUGIN_ORIGINAL_NAME}..."
