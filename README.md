@@ -154,7 +154,7 @@ source "${scripts_folder_path}/dependencies/ninja.sh"
 
 # -----------------------------------------------------------------------------
 
-host_detect
+machine_detect
 
 help_message="    bash $0 [--win] [--debug] [--develop] [--jobs N] [--help]"
 host_parse_options "${help_message}" "$@"
