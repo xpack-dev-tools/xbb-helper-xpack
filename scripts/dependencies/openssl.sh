@@ -364,18 +364,18 @@ function test_openssl_libs()
 
     show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/openssl"
 
-    if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libcrypto.${XBB_SHLIB_EXT}" ]
+    if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libcrypto.${XBB_HOST_SHLIB_EXT}" ]
     then
-      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libcrypto.${XBB_SHLIB_EXT}"
+      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libcrypto.${XBB_HOST_SHLIB_EXT}"
     else
-      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcrypto.${XBB_SHLIB_EXT}"
+      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcrypto.${XBB_HOST_SHLIB_EXT}"
     fi
 
-    if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libssl.${XBB_SHLIB_EXT}" ]
+    if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libssl.${XBB_HOST_SHLIB_EXT}" ]
     then
-      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libssl.${XBB_SHLIB_EXT}"
+      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libssl.${XBB_HOST_SHLIB_EXT}"
     else
-      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libssl.${XBB_SHLIB_EXT}"
+      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libssl.${XBB_HOST_SHLIB_EXT}"
     fi
   )
 }

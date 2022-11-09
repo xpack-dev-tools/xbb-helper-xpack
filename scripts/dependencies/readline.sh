@@ -148,8 +148,8 @@ function test_readline()
     echo
     echo "Checking the readline shared libraries..."
 
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libreadline.${XBB_SHLIB_EXT}"
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libhistory.${XBB_SHLIB_EXT}"
+    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libreadline.${XBB_HOST_SHLIB_EXT}"
+    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libhistory.${XBB_HOST_SHLIB_EXT}"
   )
 }
 

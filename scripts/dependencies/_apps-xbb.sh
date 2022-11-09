@@ -849,7 +849,7 @@ function test_guile_libs()
   echo
   echo "Checking the guile shared libraries..."
 
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libguile-2.2.${XBB_SHLIB_EXT}"
+  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libguile-2.2.${XBB_HOST_SHLIB_EXT}"
   show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/guile/2.2/extensions/guile-readline.so"
 }
 
@@ -1036,7 +1036,7 @@ function build_autogen()
 
 function test_autogen_libs()
 {
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libopts.${XBB_SHLIB_EXT}"
+  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libopts.${XBB_HOST_SHLIB_EXT}"
 }
 
 function test_autogen()
@@ -2853,7 +2853,7 @@ function test_flex_libs()
   echo
   echo "Checking the flex shared libraries..."
 
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libfl.${XBB_SHLIB_EXT}"
+  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libfl.${XBB_HOST_SHLIB_EXT}"
 }
 
 function test_flex()

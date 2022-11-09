@@ -448,9 +448,9 @@ function test_gc_libs()
     echo
     echo "Checking the gc shared libraries..."
 
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgc.${XBB_SHLIB_EXT}"
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgccpp.${XBB_SHLIB_EXT}"
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcord.${XBB_SHLIB_EXT}"
+    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgc.${XBB_HOST_SHLIB_EXT}"
+    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgccpp.${XBB_HOST_SHLIB_EXT}"
+    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcord.${XBB_HOST_SHLIB_EXT}"
   )
 }
 

@@ -241,9 +241,9 @@ function build_ncurses()
             > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/curses++.pc"
         fi
 
-        if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libncurses.${XBB_SHLIB_EXT}" ]
+        if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libncurses.${XBB_HOST_SHLIB_EXT}" ]
         then
-          ln -sfv libncurses.${XBB_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcurses.${XBB_SHLIB_EXT}"
+          ln -sfv libncurses.${XBB_HOST_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcurses.${XBB_HOST_SHLIB_EXT}"
         fi
 
         if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libncurses.a" ]
@@ -251,9 +251,9 @@ function build_ncurses()
           ln -sfv libncurses.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcurses.a"
         fi
 
-        if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libncurses++.${XBB_SHLIB_EXT}" ]
+        if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libncurses++.${XBB_HOST_SHLIB_EXT}" ]
         then
-          ln -sfv libncurses++.${XBB_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcurses++.${XBB_SHLIB_EXT}"
+          ln -sfv libncurses++.${XBB_HOST_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcurses++.${XBB_HOST_SHLIB_EXT}"
         fi
 
         if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libncurses++.a" ]
