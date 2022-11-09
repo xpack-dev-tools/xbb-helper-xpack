@@ -509,26 +509,50 @@ function copy_dependencies_recursive()
           fi
         fi
 
-        # TODO check if relative to XBB_APPLICATION_INSTALL_FOLDER_PATH, to avoid copying to libexec.
-
-        # For consistency reasons, update rpath first, before dependencies.
-        local relative_folder_path="$(${realpath} --relative-to="${actual_destination_folder_path}" "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
-        patch_macos_elf_add_rpath \
-          "${actual_destination_file_path}" \
-          "${loader_prefix}${relative_folder_path}"
-
-        if [ "${lib_path}" != "@rpath/$(basename "${from_path}")" ]
+        # If outside XBB_APPLICATION_INSTALL_FOLDER_PATH, copy it to libexec,
+        # otherwise leave it in place and add a new $ORIGIN.
+        local rpath_relative_to_app_prefix="$(${realpath} --relative-to="${XBB_APPLICATION_INSTALL_FOLDER_PATH}" "${from_path}")"
+        echo_develop "relative to XBB_APPLICATION_INSTALL_FOLDER_PATH ${rpath_relative_to_app_prefix}"
+        # If the relative path starts with `..`, it is outside.
+        if [ "${rpath_relative_to_app_prefix:0:2}" == ".." ]
         then
+
+          # For consistency reasons, update rpath first, before dependencies.
+          local relative_folder_path="$(${realpath} --relative-to="${actual_destination_folder_path}" "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
+          patch_macos_elf_add_rpath \
+            "${actual_destination_file_path}" \
+            "${loader_prefix}${relative_folder_path}"
+
+          if [ "${lib_path}" != "@rpath/$(basename "${from_path}")" ]
+          then
+            chmod +w "${actual_destination_file_path}"
+            run_verbose install_name_tool \
+              -change "${lib_path}" \
+              "@rpath/$(basename "${from_path}")" \
+              "${actual_destination_file_path}"
+          fi
+
+          copy_dependencies_recursive \
+            "${from_path}" \
+            "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec"
+
+        else
+
+          echo_develop "no need to copy to libexec"
+          local relative_lc_rpath="$(${realpath} --relative-to="${actual_destination_folder_path}" "$(dirname ${from_path})")"
+
           chmod +w "${actual_destination_file_path}"
+
+          patch_macos_elf_add_rpath "${actual_destination_file_path}" "@loader_path/${relative_lc_rpath}"
+
           run_verbose install_name_tool \
             -change "${lib_path}" \
             "@rpath/$(basename "${from_path}")" \
             "${actual_destination_file_path}"
-        fi
 
-        copy_dependencies_recursive \
-          "${from_path}" \
-          "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec"
+          show_libs "${actual_destination_file_path}"
+
+        fi
 
       done
 
