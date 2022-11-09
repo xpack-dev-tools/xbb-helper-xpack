@@ -25,7 +25,7 @@ function build_gmp()
   # 14-Nov-2020, "6.2.1"
 
   local gmp_version="$1"
-  local name_suffix=${2:-''}
+  local name_suffix="${2:-""}"
 
   # The folder name as resulted after being extracted from the archive.
   local gmp_src_folder_name="gmp-${gmp_version}"

@@ -26,7 +26,7 @@ function build_mpc()
   # 2020-10 "1.2.1"
 
   local mpc_version="$1"
-  local name_suffix=${2:-''}
+  local name_suffix="${2:-""}"
 
   # The folder name as resulted after being extracted from the archive.
   local mpc_src_folder_name="mpc-${mpc_version}"

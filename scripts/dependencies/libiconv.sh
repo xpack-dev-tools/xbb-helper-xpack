@@ -27,7 +27,7 @@ function build_libiconv()
   # 2022-05-15 "1.17"
 
   local libiconv_version="$1"
-  local name_suffix=${2:-''}
+  local name_suffix="${2:-""}"
 
   local libiconv_src_folder_name="libiconv-${libiconv_version}"
 

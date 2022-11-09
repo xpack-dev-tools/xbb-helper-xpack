@@ -29,7 +29,7 @@ function build_isl()
   # 2022-07-02 "0.25"
 
   local isl_version="$1"
-  local name_suffix=${2:-''}
+  local name_suffix="${2:-""}"
 
   # The folder name as resulted after being extracted from the archive.
   local isl_src_folder_name="isl-${isl_version}"

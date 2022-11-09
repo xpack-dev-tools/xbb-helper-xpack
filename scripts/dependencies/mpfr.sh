@@ -27,7 +27,7 @@ function build_mpfr()
   # 10 July 2020 "4.1.0"
 
   local mpfr_version="$1"
-  local name_suffix=${2:-''}
+  local name_suffix="${2:-""}"
 
   # The folder name as resulted after being extracted from the archive.
   local mpfr_src_folder_name="mpfr-${mpfr_version}"
