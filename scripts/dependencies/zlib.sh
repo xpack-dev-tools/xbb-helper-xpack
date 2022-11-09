@@ -73,7 +73,7 @@ function build_zlib()
 
           # Build.
           run_verbose make -f win32/Makefile.gcc \
-            PREFIX=${XBB_CROSS_COMPILE_PREFIX}- \
+            PREFIX=${XBB_TARGET_TRIPLET}- \
             prefix="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}" \
             CFLAGS="${XBB_CFLAGS_NO_W} -Wp,-D_FORTIFY_SOURCE=2 -fexceptions --param=ssp-buffer-size=4"
 

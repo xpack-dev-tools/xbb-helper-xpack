@@ -140,8 +140,8 @@ function build_cross_newlib()
             config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
             config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
 
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_HOST_TRIPLET}")
             config_options+=("--target=${XBB_GCC_TARGET}")
 
             config_options+=("--disable-newlib-supplied-syscalls") # Arm, AArch64
@@ -178,8 +178,8 @@ function build_cross_newlib()
 
             config_options+=("--prefix=${APP_PREFIX_NANO}")
 
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_HOST_TRIPLET}")
             config_options+=("--target=${XBB_GCC_TARGET}")
 
             config_options+=("--disable-newlib-fseek-optimization") # Arm

@@ -101,13 +101,7 @@ function build_binutils()
           fi
 
           # Used to enable wildcard; inspired from arm-none-eabi-gcc.
-          LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${XBB_CROSS_COMPILE_PREFIX}/lib/CRT_glob.o"
-        fi
-
-        if [ "${XBB_TARGET_PLATFORM}" == "linux" -o  "${XBB_TARGET_PLATFORM}" == "darwin" ]
-        then
-          xbb_activate_cxx_rpath
-          LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
+          LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${XBB_TARGET_TRIPLET}/lib/CRT_glob.o"
         fi
       fi
 
@@ -143,10 +137,10 @@ function build_binutils()
             config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
             config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
 
-            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
             # The bootstrap binaries will run on the build machine.
-            config_options+=("--host=${XBB_BUILD}")
-            config_options+=("--target=${XBB_TARGET}")
+            config_options+=("--host=${XBB_BUILD_TRIPLET}")
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
             config_options+=("--with-pkgversion=${XBB_GCC_BOOTSTRAP_BRANDING}")
 
@@ -178,9 +172,9 @@ function build_binutils()
             config_options+=("--htmldir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/html")
             config_options+=("--pdfdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
 
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_HOST}")
-            config_options+=("--target=${XBB_TARGET}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_HOST_TRIPLET}")
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
             config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
 
@@ -316,16 +310,16 @@ function build_binutils()
         if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
         then
 
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-ar"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-as"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-ld"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-strip"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-nm"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-objcopy"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-objdump"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-ranlib"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-size"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_CROSS_COMPILE_PREFIX}-strings"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ar"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-as"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ld"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-strip"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-nm"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-objcopy"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-objdump"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ranlib"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-size"
+          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-strings"
 
         else
 

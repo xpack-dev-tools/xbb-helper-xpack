@@ -89,15 +89,15 @@ function build_libiconv()
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
-          config_options+=("--build=${XBB_BUILD}")
+          config_options+=("--build=${XBB_BUILD_TRIPLET}")
           if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
             # The bootstrap binaries will run on the build machine.
-            config_options+=("--host=${XBB_BUILD}")
+            config_options+=("--host=${XBB_BUILD_TRIPLET}")
           else
-            config_options+=("--host=${XBB_HOST}")
+            config_options+=("--host=${XBB_HOST_TRIPLET}")
           fi
-          config_options+=("--target=${XBB_TARGET}")
+          config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB

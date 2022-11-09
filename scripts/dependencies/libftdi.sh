@@ -80,7 +80,7 @@ function build_libftdi()
 
         if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
         then
-          config_options+=("-DCMAKE_TOOLCHAIN_FILE=${XBB_SOURCES_FOLDER_PATH}/${libftdi_src_folder_name}/cmake/Toolchain-${XBB_CROSS_COMPILE_PREFIX}.cmake")
+          config_options+=("-DCMAKE_TOOLCHAIN_FILE=${XBB_SOURCES_FOLDER_PATH}/${libftdi_src_folder_name}/cmake/Toolchain-${XBB_TARGET_TRIPLET}.cmake")
           config_options+=("-DLIBUSB_INCLUDE_DIR=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/libusb-1.0")
           config_options+=("-DLIBUSB_LIBRARIES=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libusb-1.0.a")
           config_options+=("-DFTDIPP:BOOL=off")

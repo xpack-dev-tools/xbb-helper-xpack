@@ -79,9 +79,9 @@ function build_libusb1()
 
           config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
-          config_options+=("--build=${XBB_BUILD}")
-          config_options+=("--host=${XBB_HOST}")
-          config_options+=("--target=${XBB_TARGET}")
+          config_options+=("--build=${XBB_BUILD_TRIPLET}")
+          config_options+=("--host=${XBB_HOST_TRIPLET}")
+          config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libusb1_src_folder_name}/configure" \
             "${config_options[@]}"

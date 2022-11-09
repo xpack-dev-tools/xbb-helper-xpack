@@ -88,9 +88,9 @@ function build_jpeg()
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--build=${XBB_BUILD}")
-          config_options+=("--host=${XBB_HOST}")
-          config_options+=("--target=${XBB_TARGET}")
+          config_options+=("--build=${XBB_BUILD_TRIPLET}")
+          config_options+=("--host=${XBB_HOST_TRIPLET}")
+          config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           # --enable-shared needed by sdl2_image on CentOS 64-bit and Ubuntu.
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${jpeg_src_folder_name}/configure" \

@@ -83,14 +83,14 @@ function build_hidapi()
         export LDFLAGS
 
         run_verbose make -f Makefile.mingw \
-          CC=${XBB_CROSS_COMPILE_PREFIX}-gcc \
+          CC=${XBB_TARGET_TRIPLET}-gcc \
           "${hidapi_OBJECT}"
 
         # Make just compiles the file. Create the archive and convert it to library.
         # No dynamic/shared libs involved.
         cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}/windows"
         run_verbose ar -r  "${hidapi_A}" "${hidapi_OBJECT}"
-        run_verbose ${XBB_CROSS_COMPILE_PREFIX}-ranlib "${hidapi_A}"
+        run_verbose ${XBB_TARGET_TRIPLET}-ranlib "${hidapi_A}"
 
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
         run_verbose cp -v "${hidapi_A}" \

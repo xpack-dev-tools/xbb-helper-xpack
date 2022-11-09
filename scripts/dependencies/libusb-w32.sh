@@ -96,7 +96,7 @@ function build_libusb_w32()
         xbb_show_env_develop
 
         run_verbose make \
-          host_prefix=${XBB_CROSS_COMPILE_PREFIX} \
+          host_prefix=${XBB_TARGET_TRIPLET} \
           host_prefix_x86=i686-w64-mingw32 \
           dll
 

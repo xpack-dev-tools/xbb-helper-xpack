@@ -101,7 +101,7 @@ function build_mingw_headers()
   # the toolchain to be relocatable.
 
   # Recommended GCC configuration:
-  # (to disable multilib, add `--enable-targets="${XBB_TARGET}"`)
+  # (to disable multilib, add `--enable-targets="${XBB_TARGET_TRIPLET}"`)
   #
   # $ ../gcc-trunk/configure --{host,build}=<build triplet> \
 	# --target=x86_64-w64-mingw32 --enable-multilib --enable-64bit \
@@ -166,17 +166,17 @@ function build_mingw_headers()
             prepare_mingw_config_options_common "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}"
             config_options=("${config_options_common[@]}")
 
-            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
             # The bootstrap binaries will run on the build machine.
-            config_options+=("--host=${XBB_CROSS_COMPILE_PREFIX}")
-            config_options+=("--target=${XBB_CROSS_COMPILE_PREFIX}")
+            config_options+=("--host=${XBB_TARGET_TRIPLET}")
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
           else
-            prepare_mingw_config_options_common "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}"
+            prepare_mingw_config_options_common "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
             config_options=("${config_options_common[@]}")
 
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_HOST}")
-            config_options+=("--target=${XBB_TARGET}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_HOST_TRIPLET}")
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
           fi
 
           config_options+=("--with-tune=generic")
@@ -206,9 +206,9 @@ function build_mingw_headers()
 
         if [ "${XBB_MINGW_NAME_SUFFIX}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
         then
-          mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}"
+          mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
           (
-            cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}"
+            cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
             run_verbose ln -sv ../include include
           )
 
@@ -219,7 +219,7 @@ function build_mingw_headers()
           rm -rf "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/mingw"
           (
             cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}"
-            run_verbose ln -sv "${XBB_CROSS_COMPILE_PREFIX}" "mingw"
+            run_verbose ln -sv "${XBB_TARGET_TRIPLET}" "mingw"
           )
         fi
 
@@ -298,20 +298,20 @@ function build_mingw_crt()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-crt/configure" --help
           fi
 
-          prepare_mingw_config_options_common "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}"
+          prepare_mingw_config_options_common "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
           config_options=("${config_options_common[@]}")
           config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
           if [ "${XBB_MINGW_NAME_SUFFIX}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
-            config_options+=("--build=${XBB_BUILD}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
             # The bootstrap binaries will run on the build machine.
-            config_options+=("--host=${XBB_TARGET}")
-            config_options+=("--target=${XBB_TARGET}")
+            config_options+=("--host=${XBB_TARGET_TRIPLET}")
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
           else
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_HOST}")
-            config_options+=("--target=${XBB_TARGET}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_HOST_TRIPLET}")
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
           fi
 
           if [ "${XBB_TARGET_ARCH}" == "x64" ]
@@ -405,14 +405,14 @@ function build_mingw_winpthreads()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}")
           config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
-          config_options+=("--libdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}/lib")
+          config_options+=("--libdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}/lib")
 
-          config_options+=("--build=${XBB_BUILD}")
-          config_options+=("--host=${XBB_HOST}")
-          config_options+=("--target=${XBB_TARGET}")
+          config_options+=("--build=${XBB_BUILD_TRIPLET}")
+          config_options+=("--host=${XBB_HOST_TRIPLET}")
+          config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           # This prevents references to libwinpthread-1.dll, which is
           # particularly useful with -static-libstdc++, otherwise the
@@ -491,12 +491,12 @@ function build_mingw_winstorecompat()
           config_options=()
           # Note: native library.
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}")
-          config_options+=("--libdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}/lib")
+          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}")
+          config_options+=("--libdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}/lib")
 
-          config_options+=("--build=${XBB_BUILD}")
-          config_options+=("--host=${XBB_HOST}")
-          config_options+=("--target=${XBB_TARGET}")
+          config_options+=("--build=${XBB_BUILD_TRIPLET}")
+          config_options+=("--host=${XBB_HOST_TRIPLET}")
+          config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winstorecompat/configure" \
             "${config_options[@]}"
@@ -567,13 +567,13 @@ function build_mingw_libmangle()
 
           if [ "${XBB_MINGW_NAME_SUFFIX}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_BUILD}")
-            config_options+=("--target=${XBB_BUILD}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_BUILD_TRIPLET}")
+            config_options+=("--target=${XBB_BUILD_TRIPLET}")
           else
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_HOST}")
-            config_options+=("--target=${XBB_TARGET}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_HOST_TRIPLET}")
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
           fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/libmangle/configure" \
@@ -645,13 +645,13 @@ function build_mingw_gendef()
 
           if [ "${XBB_MINGW_NAME_SUFFIX}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_BUILD}")
-            config_options+=("--target=${XBB_BUILD}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_BUILD_TRIPLET}")
+            config_options+=("--target=${XBB_BUILD_TRIPLET}")
           else
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_HOST}")
-            config_options+=("--target=${XBB_TARGET}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_HOST_TRIPLET}")
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
           fi
 
           config_options+=("--with-mangle=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
@@ -726,20 +726,20 @@ function build_mingw_widl()
 
           if [ "${XBB_MINGW_NAME_SUFFIX}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_HOST}") # Native!
-            config_options+=("--target=${XBB_TARGET}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_HOST_TRIPLET}") # Native!
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           else
-            config_options+=("--build=${XBB_BUILD}")
-            config_options+=("--host=${XBB_HOST}")
-            config_options+=("--target=${XBB_TARGET}")
+            config_options+=("--build=${XBB_BUILD_TRIPLET}")
+            config_options+=("--host=${XBB_HOST_TRIPLET}")
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
             # To remove any target specific prefix and leave only widl.exe.
             config_options+=("--program-prefix=")
           fi
 
-          config_options+=("--with-widl-includedir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_CROSS_COMPILE_PREFIX}/include")
+          config_options+=("--with-widl-includedir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}/include")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/widl/configure" \
             "${config_options[@]}"

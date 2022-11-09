@@ -113,7 +113,7 @@ function build_qemu()
 
           if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
-            config_options+=("--cross-prefix=${XBB_CROSS_COMPILE_PREFIX}-")
+            config_options+=("--cross-prefix=${XBB_TARGET_TRIPLET}-")
           fi
 
           config_options+=("--cc=${CC}")

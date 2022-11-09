@@ -82,9 +82,9 @@ function build_termcap()
           config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
           # No --libdir, --includedir, --datarootdir, --mandir
 
-          config_options+=("--build=${XBB_BUILD}")
-          config_options+=("--host=${XBB_HOST}")
-          config_options+=("--target=${XBB_TARGET}")
+          config_options+=("--build=${XBB_BUILD_TRIPLET}")
+          config_options+=("--host=${XBB_HOST_TRIPLET}")
+          config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${termcap_src_folder_name}/configure" \
             "${config_options[@]}"
