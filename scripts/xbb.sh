@@ -801,7 +801,7 @@ function xbb_activate_installed_bin()
 # Add the freshly built headers and libraries.
 function xbb_activate_installed_dev()
 {
-  local name_suffix=${1-''}
+  local name_suffix="${1:-""}"
 
   echo_develop
   echo_develop "[xbb_activate_installed_dev${name_suffix}]"
