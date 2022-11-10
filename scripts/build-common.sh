@@ -165,7 +165,7 @@ function build_perform_common()
 
   machine_detect
 
-  xbb_set_request_target
+  xbb_set_requested
 
   xbb_set_env
 
