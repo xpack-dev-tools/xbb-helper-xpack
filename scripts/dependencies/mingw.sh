@@ -323,7 +323,7 @@ function build_mingw_crt()
             config_options+=("--enable-lib32")
             config_options+=("--disable-lib64")
           else
-            echo "Unsupported XBB_TARGET_ARCH=${XBB_TARGET_ARCH}."
+            echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in build mingw crt."
             exit 1
           fi
 

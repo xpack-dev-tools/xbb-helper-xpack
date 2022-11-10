@@ -3320,7 +3320,7 @@ function test_tcl_libs()
       show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/itcl* -name 'libitcl*.dylib')"
       show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/sqlite* -name 'libsqlite*.dylib')"
     else
-      echo "Unknown platform."
+      echo "Unsupported platform."
       exit 1
     fi
   )

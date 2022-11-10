@@ -96,7 +96,7 @@ function show_libs()
         fi
       fi
     else
-      echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
+      echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in show libs."
       exit 1
     fi
   )

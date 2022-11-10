@@ -226,7 +226,7 @@ function build_binutils()
               config_options+=("--enable-multilib")
 
             else
-              echo "Unsupported ${XBB_TARGET_PLATFORM}."
+              echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in build binutils."
               exit 1
             fi
 

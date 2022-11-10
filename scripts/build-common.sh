@@ -126,7 +126,7 @@ function build_parse_options()
         ;;
 
       *)
-        echo "Unknown action/option $1"
+        echo "Unsupported action/option $1"
         exit 1
         ;;
 

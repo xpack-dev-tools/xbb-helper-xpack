@@ -53,7 +53,7 @@ do
       ;;
 
     --*)
-      echo "Unknown option: ${opt}" >&2
+      echo "Unsupported option: ${opt}" >&2
       exit 1
       ;;
 

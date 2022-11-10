@@ -237,7 +237,7 @@ function xbb_set_request_target()
       ;;
 
     * )
-      echo "Unknown --target $1"
+      echo "Unsupported --target $1"
       exit 1
       ;;
 
@@ -436,7 +436,7 @@ function xbb_set_target()
     XBB_HOST_SHLIB_EXT="dylib"
 
   else
-    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
+    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in set target."
     exit 1
   fi
 
@@ -494,7 +494,7 @@ function xbb_set_compiler_env()
   then
     xbb_prepare_gcc_env
   else
-    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}, XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM}."
+    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM}, XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM}."
     exit 1
   fi
 }
@@ -641,7 +641,7 @@ function xbb_set_compiler_flags()
     then
       export XBB_MACOSX_DEPLOYMENT_TARGET="11.0"
     else
-      echo "Unknown XBB_TARGET_ARCH ${XBB_TARGET_ARCH}"
+      echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH}"
       exit 1
     fi
 
@@ -696,7 +696,7 @@ function xbb_set_compiler_flags()
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
     XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
   else
-    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM}."
+    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in set compiler flags."
     exit 1
   fi
 

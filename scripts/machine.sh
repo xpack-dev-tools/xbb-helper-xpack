@@ -55,7 +55,7 @@ function machine_detect()
     then
       XBB_BUILD_ARCH="arm64"
     else
-      echo "Unknown uname -m ${XBB_BUILD_MACHINE}"
+      echo "Unsupported uname -m ${XBB_BUILD_MACHINE}"
       exit 1
     fi
 
@@ -84,7 +84,7 @@ function machine_detect()
       XBB_BUILD_BITS="32"
       XBB_BUILD_ARCH="arm"
     else
-      echo "Unknown uname -m ${XBB_BUILD_MACHINE}"
+      echo "Unsupported uname -m ${XBB_BUILD_MACHINE}"
       exit 1
     fi
 
@@ -111,7 +111,7 @@ function machine_detect()
       XBB_BUILD_BITS="32"
       XBB_BUILD_ARCH="ia32"
     else
-      echo "Unknown uname -m ${XBB_BUILD_MACHINE}"
+      echo "Unsupported uname -m ${XBB_BUILD_MACHINE}"
       exit 1
     fi
 
