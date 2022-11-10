@@ -380,7 +380,7 @@ function xbb_set_target()
   XBB_DESTINATION_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_HOST_TRIPLET}"
 
   # Binaries are installed in the top folder.
-  xbb_set_binaries_install "${XBB_DESTINATION_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
+  xbb_set_executables_install_path "${XBB_DESTINATION_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
 
   if [ "${XBB_HOST_TRIPLET}" != "${XBB_TARGET_TRIPLET}" ]
   then
@@ -390,7 +390,7 @@ function xbb_set_target()
   XBB_DEPENDENCIES_INSTALL_FOLDER_PATH="${XBB_DESTINATION_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
 
   # Libraries are installed in the specific folder.
-  xbb_set_libraries_install "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
+  xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
   XBB_BUILD_FOLDER_NAME="${XBB_BUILD_FOLDER_NAME-build}"
   XBB_BUILD_FOLDER_PATH="${XBB_DESTINATION_FOLDER_PATH}/${XBB_BUILD_FOLDER_NAME}"
@@ -731,18 +731,14 @@ function xbb_set_compiler_flags()
   export XBB_LDFLAGS_APP_STATIC_GCC
 }
 
-function xbb_set_binaries_install()
+function xbb_set_executables_install_path()
 {
-  export XBB_BINARIES_INSTALL_FOLDER_PATH="$1"
-
-  # tests_add "xbb_set_binaries_install" "$1"
+  export XBB_EXECUTABLES_INSTALL_FOLDER_PATH="$1"
 }
 
-function xbb_set_libraries_install()
+function xbb_set_libraries_install_path()
 {
   export XBB_LIBRARIES_INSTALL_FOLDER_PATH="$1"
-
-  # tests_add "xbb_set_libraries_install" "$1"
 }
 
 # Add the freshly built binaries.
@@ -798,12 +794,12 @@ function xbb_activate_installed_bin()
 
 # Add the freshly built dependencies (headers and libraries) to the
 # XBB environment variables.
-function xbb_activate_installed_dev()
+function xbb_activate_dependencies_dev()
 {
   local name_suffix="${1:-""}" # Deprecated, do not use.
 
   echo_develop
-  echo_develop "[xbb_activate_installed_dev${name_suffix}]"
+  echo_develop "[xbb_activate_dependencies_dev${name_suffix}]"
 
   # Add XBB include in front of XBB_CPPFLAGS.
   XBB_CPPFLAGS="-I${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/include ${XBB_CPPFLAGS}"
