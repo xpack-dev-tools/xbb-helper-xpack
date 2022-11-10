@@ -138,7 +138,7 @@ function build_openssl()
               run_verbose "./Configure" "darwin64-x86_64-cc" \
                 --prefix="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" \
                 \
-                --openssldir="${XBB_BINARIES_INSTALL_FOLDER_PATH}/openssl" \
+                --openssldir="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl" \
                 shared \
                 enable-md2 \
                 enable-rc5 \
@@ -169,7 +169,7 @@ function build_openssl()
               config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
               # DO NOT USE --libdir
 
-              config_options+=("--openssldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/openssl")
+              config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
               config_options+=("shared")
               config_options+=("enable-md2")
               config_options+=("enable-rc5")
@@ -198,7 +198,7 @@ function build_openssl()
             config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
             # DO NOT USE --libdir
 
-            config_options+=("--openssldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/openssl")
+            config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
             config_options+=("shared")
             config_options+=("enable-md2")
             config_options+=("enable-rc5")
@@ -265,7 +265,7 @@ function build_openssl()
             # Not needed, the CC/CXX macros already define the target.
             # config_options+=("--cross-compile-prefix=${XBB_TARGET_TRIPLET}")
 
-            config_options+=("--openssldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/openssl")
+            config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
 
             config_options+=("shared")
             config_options+=("zlib-dynamic")
@@ -307,13 +307,13 @@ function build_openssl()
         run_verbose make install_sw
 
         # Copy openssl to APP_INSTALL
-        if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_BINARIES_INSTALL_FOLDER_PATH}" ]
+        if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" ]
         then
-          mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+          mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/openssl" \
-            "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+            "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/c_rehash" \
-            "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+            "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
         fi
 
         if false
@@ -342,7 +342,7 @@ function build_openssl()
 
       (
         test_openssl_libs
-        test_openssl "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+        test_openssl "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${openssl_folder_name}/test-output-$(ndate).txt"
     )
 
@@ -353,7 +353,7 @@ function build_openssl()
     echo "Component openssl already installed."
   fi
 
-  tests_add test_openssl "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add test_openssl "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_openssl_libs()
@@ -362,7 +362,7 @@ function test_openssl_libs()
     echo
     echo "Checking the openssl shared libraries..."
 
-    show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/openssl"
+    show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/openssl"
 
     if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libcrypto.${XBB_HOST_SHLIB_EXT}" ]
     then

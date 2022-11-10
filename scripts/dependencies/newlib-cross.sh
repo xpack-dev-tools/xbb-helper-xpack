@@ -73,7 +73,7 @@ function build_cross_newlib()
 
       # TODO!
       # Add the gcc first stage binaries to the path.
-      PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
+      PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin:${PATH}"
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -135,11 +135,11 @@ function build_cross_newlib()
             # --enable-newlib-mb --enable-newlib-reent-check-verify
             # --target=aarch64-none-elf --prefix=/'
 
-            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
-            config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
-            config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
-            config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
-            config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
+            config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+            config_options+=("--infodir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/info")
+            config_options+=("--mandir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/man")
+            config_options+=("--htmldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/html")
+            config_options+=("--pdfdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/pdf")
 
             config_options+=("--build=${XBB_BUILD_TRIPLET}")
             config_options+=("--host=${XBB_HOST_TRIPLET}")

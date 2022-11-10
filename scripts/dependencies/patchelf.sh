@@ -102,7 +102,7 @@ function build_patchelf()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -153,7 +153,7 @@ function build_patchelf()
     )
 
     (
-      test_patchelf "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_patchelf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${patchelf_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -165,7 +165,7 @@ function build_patchelf()
     echo "Component patchelf already installed."
   fi
 
-  tests_add "test_patchelf" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_patchelf" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_patchelf()

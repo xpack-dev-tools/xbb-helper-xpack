@@ -164,15 +164,15 @@ function build_cross_gcc_first()
           # --enable-lto make it explicit, Arm uses the default.
 
           # Prefer an explicit libexec folder.
-          # --libexecdir="${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib"
+          # --libexecdir="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
-          config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
-          config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
-          config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          config_options+=("--infodir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/info")
+          config_options+=("--mandir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/man")
+          config_options+=("--htmldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/html")
+          config_options+=("--pdfdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/pdf")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
@@ -277,15 +277,15 @@ function copy_cross_linux_libs()
     (
       cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
-      copy_dir "${linux_path}/${XBB_GCC_TARGET}/lib" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/lib"
-      copy_dir "${linux_path}/${XBB_GCC_TARGET}/include" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/include"
-      copy_dir "${linux_path}/include" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/include"
-      copy_dir "${linux_path}/lib" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib"
-      copy_dir "${linux_path}/share" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/share"
+      copy_dir "${linux_path}/${XBB_GCC_TARGET}/lib" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/lib"
+      copy_dir "${linux_path}/${XBB_GCC_TARGET}/include" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/include"
+      copy_dir "${linux_path}/include" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include"
+      copy_dir "${linux_path}/lib" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+      copy_dir "${linux_path}/share" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share"
     )
 
     (
-      cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}"
+      cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
       find "${XBB_GCC_TARGET}/lib" "${XBB_GCC_TARGET}/include" "include" "lib" "share" \
         -perm /111 -and ! -type d \
         -exec rm '{}' ';'
@@ -410,7 +410,7 @@ function build_cross_gcc_final()
           # --enable-languages=c,c++ Support only C/C++, ignore all other.
 
           # Prefer an explicit libexec folder.
-          # --libexecdir="${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib" \
+          # --libexecdir="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib" \
 
           # --enable-lto make it explicit, Arm uses the default.
           # --with-native-system-header-dir is needed to locate stdio.h, to
@@ -419,14 +419,14 @@ function build_cross_gcc_final()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
           if [ -z "${name_suffix}" ]
           then
-            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
-            config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
-            config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
-            config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
-            config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
+            config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+            config_options+=("--infodir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/info")
+            config_options+=("--mandir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/man")
+            config_options+=("--htmldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/html")
+            config_options+=("--pdfdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/pdf")
           elif [ "${name_suffix}" == "-nano" ]
           then
             config_options+=("--prefix=${APP_PREFIX_NANO}")
@@ -473,7 +473,7 @@ function build_cross_gcc_final()
           # is checked for presence; if not present `inhibit_libc=true` and
           # libgcov.a is compiled with empty functions.
           # https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/issues/1
-          config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}")
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}")
           config_options+=("--with-native-system-header-dir=/include")
 
           if [ "${XBB_GCC_TARGET}" == "arm-none-eabi" ]
@@ -597,9 +597,9 @@ function build_cross_gcc_final()
               if [ -x "${APP_PREFIX_NANO}/bin/${XBB_GCC_TARGET}-gcc" ]
               then
                 target_gcc="${APP_PREFIX_NANO}/bin/${XBB_GCC_TARGET}-gcc"
-              # elif [ -x "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gcc" ]
+              # elif [ -x "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gcc" ]
               # then
-              #   target_gcc="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gcc"
+              #   target_gcc="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gcc"
               else
                 echo "No ${XBB_GCC_TARGET}-gcc --print-multi-lib"
                 exit 1
@@ -610,14 +610,14 @@ function build_cross_gcc_final()
             # Iterate through all multilib names.
             copy_cross_multi_libs \
               "${APP_PREFIX_NANO}/${XBB_GCC_TARGET}/lib" \
-              "${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/lib" \
+              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/lib" \
               "${target_gcc}"
 
             # Copy the nano configured newlib.h file into the location that nano.specs
             # expects it to be.
-            mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/include/newlib-nano"
+            mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/include/newlib-nano"
             cp -v -f "${APP_PREFIX_NANO}/${XBB_GCC_TARGET}/include/newlib.h" \
-              "${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/include/newlib-nano/newlib.h"
+              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/include/newlib-nano/newlib.h"
 
           fi
 
@@ -656,7 +656,7 @@ function build_cross_gcc_final()
 
   if [ "${name_suffix}" == "" ]
   then
-    tests_add "test_cross_gcc" "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}"
+    tests_add "test_cross_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}"
   fi
 }
 
@@ -764,15 +764,15 @@ function cross_tidy_up()
     echo "# Tidying up..."
 
     # find: pred.c:1932: launch: Assertion `starting_desc >= 0' failed.
-    cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}"
+    cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
 
-    find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name "libiberty.a" -exec rm -v '{}' ';'
-    find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name '*.la' -exec rm -v '{}' ';'
+    find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" -name "libiberty.a" -exec rm -v '{}' ';'
+    find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" -name '*.la' -exec rm -v '{}' ';'
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
-      find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name "liblto_plugin.a" -exec rm -v '{}' ';'
-      find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name "liblto_plugin.dll.a" -exec rm -v '{}' ';'
+      find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" -name "liblto_plugin.a" -exec rm -v '{}' ';'
+      find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" -name "liblto_plugin.dll.a" -exec rm -v '{}' ';'
     fi
   )
 }
@@ -783,7 +783,7 @@ function cross_strip_libs()
   then
     (
       # TODO!
-      PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
+      PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin:${PATH}"
 
       echo
       echo "Stripping libraries..."
@@ -792,16 +792,16 @@ function cross_strip_libs()
 
       # which "${XBB_GCC_TARGET}-objcopy"
 
-      local libs=$(find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name '*.[ao]')
+      local libs=$(find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" -name '*.[ao]')
       for lib in ${libs}
       do
         if false
         then
           echo "${XBB_GCC_TARGET}-objcopy -R ... ${lib}"
-          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-objcopy" -R .comment -R .note -R .debug_info -R .debug_aranges -R .debug_pubnames -R .debug_pubtypes -R .debug_abbrev -R .debug_line -R .debug_str -R .debug_ranges -R .debug_loc "${lib}" || true
+          "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-objcopy" -R .comment -R .note -R .debug_info -R .debug_aranges -R .debug_pubnames -R .debug_pubtypes -R .debug_abbrev -R .debug_line -R .debug_str -R .debug_ranges -R .debug_loc "${lib}" || true
         else
-          echo "[${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strip --strip-debug ${lib}]"
-          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strip" --strip-debug "${lib}"
+          echo "[${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strip --strip-debug ${lib}]"
+          "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strip" --strip-debug "${lib}"
         fi
       done
     )
@@ -816,7 +816,7 @@ function cross_final_tunings()
   if [ "${XBB_FIX_LTO_PLUGIN:-}" == "y" ]
   then
     (
-      cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}"
+      cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
 
       echo
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]

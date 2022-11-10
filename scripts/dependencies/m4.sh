@@ -80,7 +80,7 @@ function build_m4()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -123,7 +123,7 @@ function build_m4()
         (
           echo
           echo "Linking gm4..."
-          cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           rm -fv gm4
           ln -sv m4 gm4
         )
@@ -155,7 +155,7 @@ function build_m4()
     )
 
     (
-      test_m4 "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_m4 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${m4_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -167,7 +167,7 @@ function build_m4()
     echo "Component m4 already installed."
   fi
 
-  tests_add "test_m4" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_m4" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_m4()

@@ -91,7 +91,7 @@ function build_libtool()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -134,7 +134,7 @@ function build_libtool()
         (
           echo
           echo "Linking glibtool..."
-          cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           rm -fv glibtool glibtoolize
           ln -sv libtool glibtool
           ln -sv libtoolize glibtoolize
@@ -158,7 +158,7 @@ function build_libtool()
 
     (
       test_libtool_libs
-      test_libtool "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_libtool "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libtool_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -172,7 +172,7 @@ function build_libtool()
 
   if [ -z "${step}" ]
   then
-    tests_add "test_libtool" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    tests_add "test_libtool" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
   fi
 }
 

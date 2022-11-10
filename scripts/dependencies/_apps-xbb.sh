@@ -78,14 +78,14 @@ function _build_realpath()
 
         run_verbose make
 
-        install -v -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-        install -v -c -m 644 realpath "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+        install -v -d "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+        install -v -c -m 644 realpath "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${realpath_folder_name}/make-output-$(ndate).txt"
     )
 
     (
-      test_realpath "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_realpath "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${realpath_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -97,7 +97,7 @@ function _build_realpath()
     echo "Component realpath already installed."
   fi
 
-  tests_add "test_realpath" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_realpath" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_realpath()
@@ -201,14 +201,14 @@ function build_scons()
 
       echo
       run_verbose python3 setup.py install \
-        --prefix="${XBB_BINARIES_INSTALL_FOLDER_PATH}" \
+        --prefix="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" \
         \
         --optimize=1 \
 
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${scons_folder_name}/install-output-$(ndate).txt"
 
     (
-      test_scons "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_scons "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${scons_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -220,7 +220,7 @@ function build_scons()
     echo "Component scons already installed."
   fi
 
-  tests_add "test_scons" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_scons" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_scons()
@@ -318,7 +318,7 @@ function build_curl()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -336,7 +336,7 @@ function build_curl()
 
           if false
           then
-            config_options+=("--with-ca-bundle=${XBB_BINARIES_INSTALL_FOLDER_PATH}/openssl/ca-bundle.crt") # Arch
+            config_options+=("--with-ca-bundle=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl/ca-bundle.crt") # Arch
           else
             config_options+=("--without-ca-bundle") # HB
 
@@ -420,7 +420,7 @@ function build_curl()
     )
 
     (
-      test_curl "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_curl "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${curl_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -430,7 +430,7 @@ function build_curl()
     echo "Component curl already installed."
   fi
 
-  tests_add "test_curl" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_curl" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_curl()
@@ -549,7 +549,7 @@ function build_tar()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -585,7 +585,7 @@ function build_tar()
         (
           echo
           echo "Linking gnutar..."
-          cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           rm -fv gnutar
           ln -sv tar gnutar
         )
@@ -620,7 +620,7 @@ function build_tar()
     )
 
     (
-      test_tar "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_tar "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${tar_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -632,7 +632,7 @@ function build_tar()
     echo "Component tar already installed."
   fi
 
-  tests_add "test_tar" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_tar" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_tar()
@@ -763,7 +763,7 @@ function build_guile()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -829,7 +829,7 @@ function build_guile()
 
     (
       test_guile_libs
-      test_guile "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_guile "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${guile_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -841,7 +841,7 @@ function build_guile()
     echo "Component guile already installed."
   fi
 
-  tests_add "test_guile" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_guile" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_guile_libs()
@@ -956,7 +956,7 @@ function build_autogen()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1021,7 +1021,7 @@ function build_autogen()
 
     (
       test_autogen_libs
-      test_autogen "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_autogen "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${autogen_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -1031,7 +1031,7 @@ function build_autogen()
     echo "Component autogen already installed."
   fi
 
-  tests_add "test_autogen" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_autogen" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_autogen_libs()
@@ -1163,7 +1163,7 @@ function build_gawk()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1223,7 +1223,7 @@ function build_gawk()
     )
 
     (
-      test_gawk "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_gawk "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gawk_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -1235,7 +1235,7 @@ function build_gawk()
     echo "Component gawk already installed."
   fi
 
-  tests_add "test_gawk" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_gawk" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_gawk()
@@ -1338,7 +1338,7 @@ function build_sed()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1391,7 +1391,7 @@ function build_sed()
         (
           echo
           echo "Linking gsed..."
-          cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           rm -fv gsed
           ln -sv sed gsed
         )
@@ -1418,7 +1418,7 @@ function build_sed()
     )
 
     (
-      test_sed "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_sed "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sed_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -1430,7 +1430,7 @@ function build_sed()
     echo "Component sed already installed."
   fi
 
-  tests_add "test_sed" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_sed" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_sed()
@@ -1528,7 +1528,7 @@ function build_patch()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1579,7 +1579,7 @@ function build_patch()
     )
 
     (
-      test_patch "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_patch "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${patch_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -1591,7 +1591,7 @@ function build_patch()
     echo "Component patch already installed."
   fi
 
-  tests_add "test_patch" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_patch" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_patch()
@@ -1690,7 +1690,7 @@ function build_diffutils()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1753,7 +1753,7 @@ function build_diffutils()
     )
 
     (
-      test_diffutils "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_diffutils "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${diffutils_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -1765,7 +1765,7 @@ function build_diffutils()
     echo "Component diffutils already installed."
   fi
 
-  tests_add "test_diffutils" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_diffutils" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_diffutils()
@@ -1874,7 +1874,7 @@ function build_bison()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1933,7 +1933,7 @@ function build_bison()
     )
 
     (
-      test_bison "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_bison "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${bison_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -1945,7 +1945,7 @@ function build_bison()
     echo "Component bison already installed."
   fi
 
-  tests_add "test_bison" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_bison" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_bison()
@@ -2081,7 +2081,7 @@ function build_make()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -2126,7 +2126,7 @@ function build_make()
         (
           echo
           echo "Linking gmake -> make..."
-          cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           rm -fv make
           ln -sv gmake make
         )
@@ -2147,7 +2147,7 @@ function build_make()
     )
 
     (
-      test_make "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_make "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${make_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -2159,7 +2159,7 @@ function build_make()
     echo "Component make already installed."
   fi
 
-  tests_add "test_make" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_make" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_make()
@@ -2252,7 +2252,7 @@ function build_bash()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           # config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -2304,7 +2304,7 @@ function build_bash()
     )
 
     (
-      test_bash "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_bash "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${bash_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -2316,7 +2316,7 @@ function build_bash()
     echo "Component bash already installed."
   fi
 
-  tests_add "test_bash" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_bash" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_bash()
@@ -2423,7 +2423,7 @@ function build_wget()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -2488,7 +2488,7 @@ function build_wget()
     )
 
     (
-      test_wget "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_wget "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${wget_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -2500,7 +2500,7 @@ function build_wget()
     echo "Component wget already installed."
   fi
 
-  tests_add "test_wget" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_wget" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_wget()
@@ -2604,9 +2604,9 @@ function build_dos2unix()
         echo "Running dos2unix make..."
 
         # Build.
-        run_verbose make -j ${XBB_JOBS} prefix="${XBB_BINARIES_INSTALL_FOLDER_PATH}" ENABLE_NLS=
+        run_verbose make -j ${XBB_JOBS} prefix="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" ENABLE_NLS=
 
-        run_verbose make prefix="${XBB_BINARIES_INSTALL_FOLDER_PATH}" install # No strip.
+        run_verbose make prefix="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" install # No strip.
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
@@ -2632,7 +2632,7 @@ function build_dos2unix()
     )
 
     (
-      test_dos2unix "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_dos2unix "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${dos2unix_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -2644,7 +2644,7 @@ function build_dos2unix()
     echo "Component dos2unix already installed."
   fi
 
-  tests_add "test_dos2unix" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_dos2unix" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_dos2unix()
@@ -2770,7 +2770,7 @@ function build_flex()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -2833,7 +2833,7 @@ function build_flex()
 
     (
       test_flex_libs
-      test_flex "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_flex "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${flex_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -2845,7 +2845,7 @@ function build_flex()
     echo "Component flex already installed."
   fi
 
-  tests_add "test_flex" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_flex" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_flex_libs()
@@ -3002,7 +3002,7 @@ function build_perl()
           # worry about the weird rpath.
 
           run_verbose bash ${DEBUG} "./Configure" -d -e -s \
-            -Dprefix="${XBB_BINARIES_INSTALL_FOLDER_PATH}" \
+            -Dprefix="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" \
             \
             -Dcc="${CC}" \
             -Dccflags="${CFLAGS}" \
@@ -3077,7 +3077,7 @@ function build_perl()
     )
 
     (
-      test_perl "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_perl "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${perl_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -3089,7 +3089,7 @@ function build_perl()
     echo "Component perl already installed."
   fi
 
-  tests_add "test_perl" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_perl" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_perl()
@@ -3197,7 +3197,7 @@ function build_tcl()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -3280,7 +3280,7 @@ function build_tcl()
 
     (
       test_tcl_libs
-      test_tcl "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_tcl "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${tcl_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -3292,7 +3292,7 @@ function build_tcl()
     echo "Component tcl already installed."
   fi
 
-  tests_add "test_tcl" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_tcl" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_tcl_libs()
@@ -3432,7 +3432,7 @@ function build_git()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -3473,7 +3473,7 @@ function build_git()
     )
 
     (
-      test_git "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_git "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${git_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -3485,7 +3485,7 @@ function build_git()
     echo "Component git already installed."
   fi
 
-  tests_add "test_git" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_git" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_git()
@@ -3625,9 +3625,9 @@ function build_p7zip()
         run_verbose make -j1 test test_7z test_7zr # all_test
       fi
 
-      run_verbose install -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7z" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-      run_verbose install -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7za" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
-      run_verbose install -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7zr" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      run_verbose install -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7z" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      run_verbose install -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7za" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      run_verbose install -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7zr" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${p7zip_folder_name}/install-output-$(ndate).txt"
 
@@ -3636,7 +3636,7 @@ function build_p7zip()
       "${p7zip_folder_name}"
 
     (
-      test_p7zip "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_p7zip "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${p7zip_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -3648,7 +3648,7 @@ function build_p7zip()
     echo "Component p7zip already installed."
   fi
 
-  tests_add "test_p7zip" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_p7zip" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_p7zip()
@@ -3757,7 +3757,7 @@ function build_rhash()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           # Does not support these options.
           # config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
@@ -3805,7 +3805,7 @@ function build_rhash()
     (
       test_rhash_libs
 
-      test_rhash "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_rhash "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${rhash_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -3817,7 +3817,7 @@ function build_rhash()
     echo "Component rhash already installed."
   fi
 
-  # tests_add "test_rhash" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  # tests_add "test_rhash" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_rhash_libs()
@@ -3947,7 +3947,7 @@ function build_re2c()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -3998,7 +3998,7 @@ function build_re2c()
     )
 
     (
-      test_re2c "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_re2c "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${re2c_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -4010,7 +4010,7 @@ function build_re2c()
     echo "Component re2c already installed."
   fi
 
-  tests_add "test_re2c" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_re2c" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_re2c()
@@ -4127,7 +4127,7 @@ function build_gnupg()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -4205,7 +4205,7 @@ function build_gnupg()
     )
 
     (
-      test_gpg "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_gpg "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gnupg_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -4217,7 +4217,7 @@ function build_gnupg()
     echo "Component gnupg already installed."
   fi
 
-  tests_add "test_gpg" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_gpg" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_gpg()
@@ -4252,8 +4252,8 @@ function test_gpg()
     run_app "${test_bin_folder_path}/gpg-wks-server" --version
     run_app "${test_bin_folder_path}/gpgtar" --version
 
-    # run_app "${XBB_BINARIES_INSTALL_FOLDER_PATH}/sbin/addgnupghome" --version
-    # run_app "${XBB_BINARIES_INSTALL_FOLDER_PATH}/sbin/applygnupgdefaults" --version
+    # run_app "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/sbin/addgnupghome" --version
+    # run_app "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/sbin/applygnupgdefaults" --version
 
     # TODO: add functional tests from HomeBrew.
   )
@@ -4309,7 +4309,7 @@ function build_makedepend()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
-      # export PKG_CONFIG_PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/pkgconfig:${PKG_CONFIG_PATH}"
+      # export PKG_CONFIG_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/pkgconfig:${PKG_CONFIG_PATH}"
 
       export CPPFLAGS
       export CFLAGS
@@ -4331,7 +4331,7 @@ function build_makedepend()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -4382,7 +4382,7 @@ function build_makedepend()
     )
 
     (
-      test_makedepend "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_makedepend "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${makedepend_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -4394,7 +4394,7 @@ function build_makedepend()
     echo "Component makedepend already installed."
   fi
 
-  tests_add "test_makedepend" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_makedepend" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_makedepend()

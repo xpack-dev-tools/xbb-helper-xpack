@@ -135,8 +135,8 @@ function build_binutils()
           if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
 
-            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
-            config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
 
             config_options+=("--build=${XBB_BUILD_TRIPLET}")
             # The bootstrap binaries will run on the build machine.
@@ -163,8 +163,8 @@ function build_binutils()
 
           else
 
-            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
-            config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+            config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+            config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
             # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
             config_options+=("--program-suffix=")
 
@@ -299,7 +299,7 @@ function build_binutils()
         run_verbose make install
 
         # install PIC version of libiberty
-        libiberty_file_path="$(find "${XBB_BINARIES_INSTALL_FOLDER_PATH}" -name libiberty.a)"
+        libiberty_file_path="$(find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" -name libiberty.a)"
         if [ -n "${libiberty_file_path}" ]
         then
           run_verbose install -v -c -m 644 libiberty/pic/libiberty.a \
@@ -311,34 +311,34 @@ function build_binutils()
         if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
         then
 
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ar"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-as"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ld"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-strip"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-nm"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-objcopy"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-objdump"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ranlib"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-size"
-          show_native_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-strings"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ar"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-as"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ld"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-strip"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-nm"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-objcopy"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-objdump"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ranlib"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-size"
+          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-strings"
 
         else
 
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
-            : # rm -rv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/strip"
+            : # rm -rv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/strip"
           fi
 
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/ar"
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/as"
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/ld"
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/strip"
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/nm"
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/objcopy"
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/objdump"
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/ranlib"
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/size"
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/strings"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/ar"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/as"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/ld"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/strip"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/nm"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/objcopy"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/objdump"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/ranlib"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/size"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/strings"
 
         fi
 
@@ -364,7 +364,7 @@ function build_binutils()
   then
     :
   else
-    tests_add "test_binutils" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    tests_add "test_binutils" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
   fi
 }
 

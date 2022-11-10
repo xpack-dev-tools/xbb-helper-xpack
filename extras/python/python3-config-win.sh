@@ -28,7 +28,7 @@ do
     --prefix|--exec-prefix)
       # prefix="${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}"
       # Must have a common part to force PYTHON_PATH_RELOCATABLE
-      prefix="${XBB_BINARIES_INSTALL_FOLDER_PATH}"
+      prefix="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
       echo "${opt} -> [${prefix}]" >&2
       echo "${prefix}"
       ;;

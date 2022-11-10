@@ -101,9 +101,9 @@ function build_qemu()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
 
-          config_options+=("--bindir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin")
+          config_options+=("--bindir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin")
 
           # This seems redundant, but without it the greeting
           # string is suffixed by -dirty.
@@ -205,13 +205,13 @@ function build_qemu()
 
         if [ "${qemu_target}" == "arm" ]
         then
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/qemu-system-aarch64"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-aarch64"
         elif [ "${qemu_target}" == "riscv" ]
         then
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/qemu-system-riscv64"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-riscv64"
         elif [ "${qemu_target}" == "tools" ]
         then
-          show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/qemu-img"
+          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-img"
         else
           echo "Unsupported qemu_target ${qemu_target}"
           exit 1
@@ -232,7 +232,7 @@ function build_qemu()
   fi
 
   # Define this function at package level.
-  tests_add "test_qemu_${qemu_target}" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_qemu_${qemu_target}" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 # -----------------------------------------------------------------------------

@@ -131,7 +131,7 @@ function build_glib()
 
             config_options=()
 
-            config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+            config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
             config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
             config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
             # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -199,7 +199,7 @@ function build_glib()
             # https://mesonbuild.com/Commands.html#setup
             config_options=()
 
-            config_options+=("--prefix" "${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+            config_options+=("--prefix" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
             config_options+=("--includedir" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
             config_options+=("--libdir" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
             config_options+=("--backend" "ninja")

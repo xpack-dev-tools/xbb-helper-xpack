@@ -113,7 +113,7 @@ function build_gmp()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
@@ -197,13 +197,13 @@ function build_gmp()
           run_verbose make install
         fi
 
-        if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_BINARIES_INSTALL_FOLDER_PATH}" ]
+        if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" ]
         then
-          if [ -f "${XBB_BINARIES_INSTALL_FOLDER_PATH}/include/gmp.h" ]
+          if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include/gmp.h" ]
           then
             # For unknow reasons, this file is stored in the wrong location.
             mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include"
-            mv -fv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/include/gmp.h" \
+            mv -fv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include/gmp.h" \
               "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include"
           fi
         fi

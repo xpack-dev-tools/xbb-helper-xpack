@@ -103,7 +103,7 @@ function build_cross_gdb()
           cp -v "${helper_folder_path}/extras/python/pyconfig-win-${XBB_PYTHON3_VERSION}.h" \
             "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/pyconfig.h"
         else
-          CONFIG_PYTHON_PREFIX="${XBB_BINARIES_INSTALL_FOLDER_PATH}"
+          CONFIG_PYTHON_PREFIX="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
         fi
       fi
 
@@ -167,11 +167,11 @@ function build_cross_gdb()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--infodir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/info")
-          config_options+=("--mandir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/man")
-          config_options+=("--htmldir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/html")
-          config_options+=("--pdfdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          config_options+=("--infodir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/info")
+          config_options+=("--mandir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/man")
+          config_options+=("--htmldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/html")
+          config_options+=("--pdfdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/pdf")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
@@ -214,7 +214,7 @@ function build_cross_gdb()
           config_options+=("--without-xxhash") # Arm, AArch64
 
           config_options+=("--with-expat") # Arm
-          config_options+=("--with-gdb-datadir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/share/gdb")
+          config_options+=("--with-gdb-datadir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/share/gdb")
 
           # No need to, we keep track of paths to shared libraries.
           # Plus that if fails the build:
@@ -232,7 +232,7 @@ function build_cross_gdb()
           # config_options+=("--with-libmpfr-type=static") # Arm, AArch64
 
           config_options+=("--with-pkgversion=${XBB_BRANDING}")
-          config_options+=("--with-system-gdbinit=${XBB_BINARIES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/lib/gdbinit")
+          config_options+=("--with-system-gdbinit=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/lib/gdbinit")
 
           # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib")
@@ -281,7 +281,7 @@ function build_cross_gdb()
 
         rm -rfv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/pyconfig.h"
 
-        show_libs "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gdb${name_suffix}"
+        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gdb${name_suffix}"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}/make-output-$(ndate).txt"
 
@@ -300,7 +300,7 @@ function build_cross_gdb()
     echo "Component cross gdb${name_suffix} already installed."
   fi
 
-  tests_add "test_cross_gdb${name_suffix}" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_cross_gdb${name_suffix}" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_cross_gdb_py()

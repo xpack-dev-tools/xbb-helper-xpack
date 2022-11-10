@@ -93,11 +93,11 @@ function build_bzip2()
 
           run_verbose make install PREFIX="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
-          if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_BINARIES_INSTALL_FOLDER_PATH}" ]
+          if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" ]
           then
-            run_verbose make install PREFIX="${XBB_BINARIES_INSTALL_FOLDER_PATH}"
-            rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/libbz2.a"
-            rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/include/bzlib.h"
+            run_verbose make install PREFIX="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+            rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/libbz2.a"
+            rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include/bzlib.h"
           fi
 
           if [ "${XBB_WITH_TESTS}" == "y" ]
@@ -143,11 +143,11 @@ function build_bzip2()
 
           run_verbose make install PREFIX="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
-          if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_BINARIES_INSTALL_FOLDER_PATH}" ]
+          if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" ]
           then
-            run_verbose make install PREFIX="${XBB_BINARIES_INSTALL_FOLDER_PATH}"
-            rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/libbz2.a"
-            rm -rfv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/include/bzlib.h"
+            run_verbose make install PREFIX="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+            rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/libbz2.a"
+            rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include/bzlib.h"
           fi
 
           if [ "${XBB_WITH_TESTS}" == "y" ]
@@ -201,10 +201,10 @@ function build_bzip2()
 
         fi
 
-        if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_BINARIES_INSTALL_FOLDER_PATH}" ]
+        if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" ]
         then
           (
-            cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
             # For unknown reasons, the original links are absolute.
             # Make them relative to the current folder.

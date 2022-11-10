@@ -83,7 +83,7 @@ function build_coreutils()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -142,11 +142,11 @@ function build_coreutils()
         if [ "${XBB_COREUTILS_INSTALL_REALPATH_ONLY:-}" == "y" ]
         then
           run_verbose install -v -d \
-            "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+            "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           run_verbose install -v -c -m 755 src/realpath \
-            "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/grealpath"
+            "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/grealpath"
           run_verbose install -v -c -m 755 src/readlink \
-            "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/greadlink"
+            "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/greadlink"
         else
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
@@ -179,9 +179,9 @@ function build_coreutils()
     (
       if [ "${XBB_COREUTILS_INSTALL_REALPATH_ONLY:-}" == "y" ]
       then
-        test_coreutils_realpath "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+        test_coreutils_realpath "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
       else
-        test_coreutils "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+        test_coreutils "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
       fi
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${coreutils_folder_name}/test-output-$(ndate).txt"
 
@@ -196,9 +196,9 @@ function build_coreutils()
 
   if [ "${XBB_COREUTILS_INSTALL_REALPATH_ONLY:-}" == "y" ]
   then
-    tests_add "test_coreutils_realpath" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    tests_add "test_coreutils_realpath" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
   else
-    tests_add "test_coreutils" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    tests_add "test_coreutils" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
   fi
 }
 

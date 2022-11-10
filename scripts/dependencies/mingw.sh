@@ -19,7 +19,7 @@ function prepare_mingw_config_options_common()
 
   config_options_common=()
 
-  # local prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}
+  # local prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}
   if [ $# -ge 1 ]
   then
     config_options_common+=("--prefix=$1")
@@ -163,7 +163,7 @@ function build_mingw_headers()
 
           if [ "${XBB_MINGW_NAME_SUFFIX}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
-            prepare_mingw_config_options_common "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}"
+            prepare_mingw_config_options_common "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}"
             config_options=("${config_options_common[@]}")
 
             config_options+=("--build=${XBB_BUILD_TRIPLET}")
@@ -171,7 +171,7 @@ function build_mingw_headers()
             config_options+=("--host=${XBB_TARGET_TRIPLET}")
             config_options+=("--target=${XBB_TARGET_TRIPLET}")
           else
-            prepare_mingw_config_options_common "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
+            prepare_mingw_config_options_common "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
             config_options=("${config_options_common[@]}")
 
             config_options+=("--build=${XBB_BUILD_TRIPLET}")
@@ -206,9 +206,9 @@ function build_mingw_headers()
 
         if [ "${XBB_MINGW_NAME_SUFFIX}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
         then
-          mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
+          mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
           (
-            cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
+            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
             run_verbose ln -sv ../include include
           )
 
@@ -216,9 +216,9 @@ function build_mingw_headers()
           # The directory that should contain system headers does not exist:
           # /Host/home/ilg/Work/gcc-11.1.0-1/win32-x64/install/gcc-bootstrap/mingw/include
 
-          rm -rf "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/mingw"
+          rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/mingw"
           (
-            cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}"
+            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}"
             run_verbose ln -sv "${XBB_TARGET_TRIPLET}" "mingw"
           )
         fi
@@ -298,9 +298,9 @@ function build_mingw_crt()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-crt/configure" --help
           fi
 
-          prepare_mingw_config_options_common "${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
+          prepare_mingw_config_options_common "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}"
           config_options=("${config_options_common[@]}")
-          config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
           if [ "${XBB_MINGW_NAME_SUFFIX}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
@@ -405,10 +405,10 @@ function build_mingw_winpthreads()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}")
-          config_options+=("--with-sysroot=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}")
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
-          config_options+=("--libdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}/lib")
+          config_options+=("--libdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}/lib")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
@@ -491,8 +491,8 @@ function build_mingw_winstorecompat()
           config_options=()
           # Note: native library.
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}")
-          config_options+=("--libdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}/lib")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}")
+          config_options+=("--libdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}/lib")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
@@ -641,7 +641,7 @@ function build_mingw_gendef()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/gendef/configure" --help
           fi
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
           if [ "${XBB_MINGW_NAME_SUFFIX}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
@@ -722,7 +722,7 @@ function build_mingw_widl()
           fi
 
           config_options=()
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}")
 
           if [ "${XBB_MINGW_NAME_SUFFIX}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
           then
@@ -739,7 +739,7 @@ function build_mingw_widl()
             config_options+=("--program-prefix=")
           fi
 
-          config_options+=("--with-widl-includedir=${XBB_BINARIES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}/include")
+          config_options+=("--with-widl-includedir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_MINGW_NAME_SUFFIX}/${XBB_TARGET_TRIPLET}/include")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/widl/configure" \
             "${config_options[@]}"

@@ -89,7 +89,7 @@ function build_automake()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -137,7 +137,7 @@ function build_automake()
     )
 
     (
-      test_automake "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_automake "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${automake_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -149,7 +149,7 @@ function build_automake()
     echo "Component automake already installed."
   fi
 
-  tests_add "test_automake" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_automake" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_automake()

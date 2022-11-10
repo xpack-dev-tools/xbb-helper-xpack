@@ -83,7 +83,7 @@ function build_libelf()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -231,7 +231,7 @@ function build_python2()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -479,7 +479,7 @@ function build_xar()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -601,7 +601,7 @@ function build_libgpg_error()
           config_options=()
 
           # Exception: use LIBS_INSTALL_*.
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -748,7 +748,7 @@ function build_libgcrypt()
           config_options=()
 
           # Exception: use LIBS_INSTALL_*.
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -830,7 +830,7 @@ function build_libgcrypt()
 
     (
       test_libgcrypt_libs
-      test_libgcrypt "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_libgcrypt "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -840,7 +840,7 @@ function build_libgcrypt()
     echo "Library libgcrypt already installed."
   fi
 
-  tests_add "test_libgcrypt" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_libgcrypt" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_libgcrypt_libs()
@@ -959,7 +959,7 @@ function build_libassuan()
           config_options=()
 
           # Exception: use LIBS_INSTALL_*.
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1015,7 +1015,7 @@ function build_libassuan()
 
     (
       test_libassuan_libs
-      test_libassuan "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_libassuan "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libassuan_folder_name}/test-output-$(ndate).txt"
 
@@ -1026,7 +1026,7 @@ function build_libassuan()
     echo "Library libassuan already installed."
   fi
 
-  tests_add "test_libassuan" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_libassuan" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_libassuan_libs()
@@ -1124,7 +1124,7 @@ function build_libksba()
           config_options=()
 
           # Exception: use LIBS_INSTALL_*.
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1178,7 +1178,7 @@ function build_libksba()
 
     (
       test_libksba_libs
-      test_libksba "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_libksba "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libksba_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -1188,7 +1188,7 @@ function build_libksba()
     echo "Library libksba already installed."
   fi
 
-  tests_add "test_libksba" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_libksba" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_libksba_libs()
@@ -1280,7 +1280,7 @@ function build_npth()
           config_options=()
 
           # Exception: use LIBS_INSTALL_*.
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1332,7 +1332,7 @@ function build_npth()
 
     (
       test_npth_libs
-      test_npth "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_npth "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${npth_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -1342,7 +1342,7 @@ function build_npth()
     echo "Library npth already installed."
   fi
 
-  tests_add "test_npth" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_npth" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_npth_libs()
@@ -1437,7 +1437,7 @@ function _build_libusb()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")

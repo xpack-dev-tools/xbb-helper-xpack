@@ -126,9 +126,9 @@ function build_python3()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           # Exception: use BINS_INSTALL_*.
-          config_options+=("--libdir=${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--libdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
@@ -182,7 +182,7 @@ function build_python3()
         run_verbose make altinstall
 
         (
-          cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           run_verbose ln -svf "python${XBB_PYTHON3_VERSION_MAJOR}.${XBB_PYTHON3_VERSION_MINOR}" \
             "python${XBB_PYTHON3_VERSION_MAJOR}"
         )
@@ -198,7 +198,7 @@ function build_python3()
     )
 
     (
-      test_python3 "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      test_python3 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${python3_folder_name}/test-output-$(ndate).txt"
 
     copy_license \
@@ -212,7 +212,7 @@ function build_python3()
     echo "Component python3 already installed."
   fi
 
-  tests_add "test_python3" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_python3" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 function test_python3()
@@ -224,6 +224,7 @@ function test_python3()
     echo "Checking the python3 binary shared libraries..."
 
     (
+      # TODO!
       xbb_activate_installed_bin
 
       local realpath=$(which grealpath || which realpath || echo realpath)
@@ -309,15 +310,15 @@ function add_python3_win_syslibs()
   then
     echo
     echo "Copying .pyd & .dll files from the embedded Python distribution..."
-    mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+    mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}/python${XBB_PYTHON3_VERSION_MAJOR_MINOR}.zip"\
-      "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+      "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
-    mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/DLLs"
+    mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/DLLs"
     cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"/*.pyd \
-      "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/DLLs"
+      "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/DLLs"
     cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"/*.dll \
-      "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/DLLs"
+      "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/DLLs"
   fi
 }
 
@@ -326,10 +327,10 @@ function add_python3_win_syslibs()
 function add_python3_syslibs()
 {
   local python_with_version="python${XBB_PYTHON3_VERSION_MAJOR}.${XBB_PYTHON3_VERSION_MINOR}"
-  if [ ! -d "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" ]
+  if [ ! -d "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" ]
   then
     (
-      mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/"
+      mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/"
 
       (
         echo
@@ -337,7 +338,7 @@ function add_python3_syslibs()
 
         # Copy all .py from the original source package.
         cp -r "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_SRC_FOLDER_NAME}"/Lib/* \
-          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/"
+          "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/"
 
         echo "Compiling all python sources..."
         if [ "${XBB_HOST_PLATFORM}" == "win32" ]
@@ -345,27 +346,27 @@ function add_python3_syslibs()
           run_verbose "${XBB_TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/libs/bin/python3.${XBB_PYTHON3_VERSION_MINOR}" \
             -m compileall \
             -j "${XBB_JOBS}" \
-            -f "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
+            -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
             || true
         else
           # Compiling tests fails, ignore the errors.
           run_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python3.${XBB_PYTHON3_VERSION_MINOR}" \
             -m compileall \
             -j "${XBB_JOBS}" \
-            -f "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
+            -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
             || true
         fi
 
         # For just in case.
-        find "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
+        find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
           \( -name '*.opt-1.pyc' -o -name '*.opt-2.pyc' \) \
           -exec rm -v '{}' ';'
       )
 
       echo "Replacing .py files with .pyc files..."
-      move_pyc "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}"
+      move_pyc "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}"
 
-      mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
+      mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
 
       echo
       echo "Copying Python shared libraries..."
@@ -375,14 +376,14 @@ function add_python3_syslibs()
         # Copy the Windows specific DLLs (.pyd) to the separate folder;
         # they are dynamically loaded by Python.
         cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"/*.pyd \
-          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
+          "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
         # Copy the usual DLLs too; the python*.dll are used, do not remove them.
         cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"/*.dll \
-          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
+          "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
       else
         # Copy dynamically loaded modules and rename folder.
         cp -rv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/python${XBB_PYTHON3_VERSION_MAJOR}.${XBB_PYTHON3_VERSION_MINOR}"/lib-dynload/* \
-          "${XBB_BINARIES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
+          "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
       fi
     )
   fi
