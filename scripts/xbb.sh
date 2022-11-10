@@ -783,22 +783,27 @@ function xbb_activate_installed_bin()
 
   hash -r
 
-  # Update PKG_CONFIG, in case it was compiled locally.
+  export PATH
+  echo_develop "PATH=${PATH}"
+
+  # Update PKG_CONFIG, in case it was compiled locally
+  # and now it shows up in the new PATH.
   if [ ! -z "$(which pkg-config-verbose)" -a "${XBB_IS_DEVELOP}" == "y" ]
   then
-    PKG_CONFIG="$(which pkg-config-verbose)"
+    export PKG_CONFIG="$(which pkg-config-verbose)"
+    echo_develop "PKG_CONFIG=${PKG_CONFIG}"
   elif [ ! -z "$(which pkg-config)" ]
   then
-    PKG_CONFIG="$(which pkg-config)"
+    export PKG_CONFIG="$(which pkg-config)"
+    echo_develop "PKG_CONFIG=${PKG_CONFIG}"
   fi
-
-  export PATH
 }
 
-# Add the freshly built headers and libraries.
+# Add the freshly built dependencies (headers and libraries) to the
+# XBB environment variables.
 function xbb_activate_installed_dev()
 {
-  local name_suffix="${1:-""}"
+  local name_suffix="${1:-""}" # Deprecated, do not use.
 
   echo_develop
   echo_develop "[xbb_activate_installed_dev${name_suffix}]"
@@ -846,6 +851,8 @@ function xbb_activate_installed_dev()
     fi
   fi
 
+  echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
   export XBB_CPPFLAGS
 
   export XBB_LDFLAGS
@@ -885,6 +892,8 @@ function xbb_activate_cxx_rpath()
   else
     LD_LIBRARY_PATH="${cxx_lib_path}:${LD_LIBRARY_PATH}"
   fi
+
+  echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
   export LD_LIBRARY_PATH
 }
