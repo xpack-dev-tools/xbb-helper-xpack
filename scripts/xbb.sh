@@ -177,7 +177,7 @@ function xbb_set_env()
 
 # Requires the build machine identity and the XBB_REQUESTED_TARGET variable,
 # set via --target in build_parse_options().
-function xbb_set_request_target()
+function xbb_set_requested()
 {
   # The default case, when the target and the host are the same as the build.
   XBB_REQUESTED_TARGET_PLATFORM="${XBB_BUILD_PLATFORM}"
