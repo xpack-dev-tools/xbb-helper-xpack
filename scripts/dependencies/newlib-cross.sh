@@ -71,6 +71,7 @@ function build_cross_newlib()
 
       xbb_activate_installed_dev
 
+      # TODO!
       # Add the gcc first stage binaries to the path.
       PATH="${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
 
