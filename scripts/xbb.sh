@@ -679,15 +679,12 @@ function xbb_set_compiler_flags()
     # `if (sys::fs::access(LockFileName.c_str(), sys::fs::AccessMode::Exist) ==`
     XBB_CFLAGS+=" -D__USE_MINGW_ACCESS"
 
-    # llvm fails. Enable it only when needed.
-    if false
-    then
-      # To prevent "too many sections", "File too big" etc.
-      # Unfortunately some builds fail, so it must be used explictly.
-      # TODO: check if the RISC-V toolchain no longer fails.
-      XBB_CFLAGS+=" -Wa,-mbig-obj"
-      XBB_CXXFLAGS+=" -Wa,-mbig-obj"
-    fi
+    # To prevent "too many sections", "File too big" etc try to add `-mbig-obj`
+    # to the compiler flags.
+    # export CFLAGS+=" -Wa,-mbig-obj"
+    # export CXXFLAGS+=" -Wa,-mbig-obj"
+    # If this fails (like for GCC), remove the `-ffunction-sections` `-fdata-sections`
+    # CXXFLAGS=$(echo ${CXXFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')
 
     # CRT_glob is from Arm script
     # -static avoids libwinpthread-1.dll
