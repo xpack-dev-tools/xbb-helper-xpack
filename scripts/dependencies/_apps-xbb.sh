@@ -175,6 +175,8 @@ function build_scons()
       cd "${XBB_BUILD_FOLDER_PATH}/${scons_folder_name}"
 
       xbb_activate_installed_dev
+
+      # TODO!
       # For Python
       xbb_activate_installed_bin
 
@@ -657,6 +659,7 @@ function test_tar()
 
     run_app "${test_bin_folder_path}/tar" -czvf hello.tar.gz hello.txt
     (
+      # TODO!
       # For xz
       xbb_activate_installed_bin
 
@@ -670,6 +673,7 @@ function test_tar()
     cmp hello.txt hello.txt.orig
 
     (
+      # TODO!
       # For xz
       xbb_activate_installed_bin
 
@@ -1992,6 +1996,7 @@ int main() { yyparse(); }
 __EOF__
 
     (
+      # TODO!
       xbb_activate_installed_bin
       run_app "${test_bin_folder_path}/bison" test.y -Wno-conflicts-sr
     )
@@ -3054,6 +3059,7 @@ function build_perl()
         fi
 
         (
+          # TODO!
           xbb_activate_installed_bin
 
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]

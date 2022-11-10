@@ -76,6 +76,7 @@ function build_libxml2()
       if [ ! -f "stamp-autoreconf" ]
       then
 
+        # TODO!
         # auto* tools must be available locally.
         xbb_activate_installed_bin
 
@@ -92,6 +93,8 @@ function build_libxml2()
       cd "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
 
       xbb_activate_installed_dev
+
+      # TODO!
       xbb_activate_installed_bin
 
       CPPFLAGS="${XBB_CPPFLAGS}"

@@ -52,6 +52,7 @@ function build_libtool()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libtool_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libtool_folder_name}"
 
+      # TODO!
       # To pick autoconf & automake.
       xbb_activate_installed_bin
       # The new CC was set before the call.

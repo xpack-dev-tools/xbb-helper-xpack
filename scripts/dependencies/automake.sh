@@ -58,6 +58,8 @@ function build_automake()
       cd "${XBB_BUILD_FOLDER_PATH}/${automake_folder_name}"
 
       # xbb_activate_installed_dev
+
+      # TODO!
       # To pick autoconf
       xbb_activate_installed_bin
 

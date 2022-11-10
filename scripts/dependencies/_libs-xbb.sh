@@ -503,6 +503,7 @@ function build_gnutls()
 
       xbb_activate_installed_dev
 
+      # TODO!
       # For guile.
       xbb_activate_installed_bin
 
