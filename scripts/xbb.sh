@@ -477,7 +477,7 @@ function xbb_get_current_version()
 
 function xbb_set_compiler_env()
 {
-  if [ "${XBB_HOST_PLATFORM}" == "win32" && "${XBB_TARGET_TRIPLET}" == "${XBB_HOST_TRIPLET}" ]
+  if [ "${XBB_HOST_PLATFORM}" == "win32" -a "${XBB_TARGET_TRIPLET}" == "${XBB_HOST_TRIPLET}" ]
   then
     # Windows cross build case.
     export XBB_NATIVE_CC="gcc"
