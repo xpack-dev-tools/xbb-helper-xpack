@@ -179,61 +179,63 @@ function xbb_set_env()
 # set via --target in build_parse_options().
 function xbb_set_requested()
 {
-  # The default case, when the target and the host are the same as the build.
-  XBB_REQUESTED_TARGET_PLATFORM="${XBB_BUILD_PLATFORM}"
-  XBB_REQUESTED_TARGET_ARCH="${XBB_BUILD_ARCH}"
-  XBB_REQUESTED_TARGET_BITS="${XBB_BUILD_BITS}"
-  XBB_REQUESTED_TARGET_MACHINE="${XBB_BUILD_MACHINE}"
-  XBB_REQUESTED_TARGET_TRIPLET="${XBB_BUILD_TRIPLET}"
-
-  XBB_REQUESTED_HOST_PLATFORM="${XBB_BUILD_PLATFORM}"
-  XBB_REQUESTED_HOST_ARCH="${XBB_BUILD_ARCH}"
-  XBB_REQUESTED_HOST_BITS="${XBB_BUILD_BITS}"
-  XBB_REQUESTED_HOST_MACHINE="${XBB_BUILD_MACHINE}"
-  XBB_REQUESTED_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
-
   case "${XBB_REQUESTED_TARGET:-""}" in
     linux-x64 )
-      XBB_REQUESTED_TARGET_PLATFORM="linux"
-      XBB_REQUESTED_TARGET_ARCH="x64"
-      XBB_REQUESTED_TARGET_BITS="64"
-      XBB_REQUESTED_TARGET_MACHINE="x86_64"
+      XBB_REQUESTED_HOST_PLATFORM="linux"
+      XBB_REQUESTED_HOST_ARCH="x64"
+      XBB_REQUESTED_HOST_BITS="64"
+      XBB_REQUESTED_HOST_MACHINE="x86_64"
       ;;
 
     linux-arm64 )
-      XBB_REQUESTED_TARGET_PLATFORM="linux"
-      XBB_REQUESTED_TARGET_ARCH="arm64"
-      XBB_REQUESTED_TARGET_BITS="64"
-      XBB_REQUESTED_TARGET_MACHINE="aarch64"
+      XBB_REQUESTED_HOST_PLATFORM="linux"
+      XBB_REQUESTED_HOST_ARCH="arm64"
+      XBB_REQUESTED_HOST_BITS="64"
+      XBB_REQUESTED_HOST_MACHINE="aarch64"
       ;;
 
     linux-arm )
-      XBB_REQUESTED_TARGET_PLATFORM="linux"
-      XBB_REQUESTED_TARGET_ARCH="arm"
-      XBB_REQUESTED_TARGET_BITS="32"
-      XBB_REQUESTED_TARGET_MACHINE="armv7l"
+      XBB_REQUESTED_HOST_PLATFORM="linux"
+      XBB_REQUESTED_HOST_ARCH="arm"
+      XBB_REQUESTED_HOST_BITS="32"
+      XBB_REQUESTED_HOST_MACHINE="armv7l"
       ;;
 
     darwin-x64 )
-      XBB_REQUESTED_TARGET_PLATFORM="darwin"
-      XBB_REQUESTED_TARGET_ARCH="x64"
-      XBB_REQUESTED_TARGET_BITS="64"
-      XBB_REQUESTED_TARGET_MACHINE="x86_64"
+      XBB_REQUESTED_HOST_PLATFORM="darwin"
+      XBB_REQUESTED_HOST_ARCH="x64"
+      XBB_REQUESTED_HOST_BITS="64"
+      XBB_REQUESTED_HOST_MACHINE="x86_64"
       ;;
 
     darwin-arm64 )
-      XBB_REQUESTED_TARGET_PLATFORM="darwin"
-      XBB_REQUESTED_TARGET_ARCH="arm64"
-      XBB_REQUESTED_TARGET_BITS="64"
-      XBB_REQUESTED_TARGET_MACHINE="arm64"
+      XBB_REQUESTED_HOST_PLATFORM="darwin"
+      XBB_REQUESTED_HOST_ARCH="arm64"
+      XBB_REQUESTED_HOST_BITS="64"
+      XBB_REQUESTED_HOST_MACHINE="arm64"
       ;;
 
     win32-x64 )
-      XBB_REQUEST_TARGET_BE_WINDOWS="y"
+      # The Windows build is a special case, it runs only on Linux x64.
+      if [ "${XBB_BUILD_PLATFORM}" == "linux" ] && [ "${XBB_BUILD_ARCH}" == "x64" ]
+      then
+        XBB_REQUESTED_HOST_PLATFORM="win32"
+        XBB_REQUESTED_HOST_ARCH="x64"
+        XBB_REQUESTED_HOST_BITS="64"
+        XBB_REQUESTED_HOST_MACHINE="x86_64"
+        XBB_REQUESTED_HOST_TRIPLET="x86_64-w64-mingw32"
+      else
+        echo "Windows cross builds are available only on Intel GNU/Linux"
+        exit 1
+      fi
       ;;
 
     "" )
-      # Keep the defaults.
+      XBB_REQUESTED_HOST_PLATFORM="${XBB_BUILD_PLATFORM}"
+      XBB_REQUESTED_HOST_ARCH="${XBB_BUILD_ARCH}"
+      XBB_REQUESTED_HOST_BITS="${XBB_BUILD_BITS}"
+      XBB_REQUESTED_HOST_MACHINE="${XBB_BUILD_MACHINE}"
+      XBB_REQUESTED_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
       ;;
 
     * )
@@ -243,51 +245,33 @@ function xbb_set_requested()
 
   esac
 
-  if [ "${XBB_REQUESTED_TARGET_PLATFORM}" != "${XBB_BUILD_PLATFORM}" ] ||
-     [ "${XBB_REQUESTED_TARGET_ARCH}" != "${XBB_BUILD_ARCH}" ]
-  then
-    # TODO: allow armv7l to run on armv8l, but with a warning.
-    echo "Cannot cross build --target ${XBB_REQUESTED_TARGET}"
-    exit 1
-  fi
+  export XBB_REQUESTED_HOST_PLATFORM
+  export XBB_REQUESTED_HOST_ARCH
+  export XBB_REQUESTED_HOST_BITS
+  export XBB_REQUESTED_HOST_MACHINE
+  export XBB_REQUESTED_HOST_TRIPLET
 
-  # The Windows build is a special case, it runs only on Linux x64.
-  if [ "${XBB_REQUEST_TARGET_BE_WINDOWS:-""}" == "y" ]
-  then
-    if [ "${XBB_BUILD_PLATFORM}" == "linux" ] && [ "${XBB_BUILD_ARCH}" == "x64" ]
-    then
-      XBB_REQUESTED_TARGET_PLATFORM="win32"
-      XBB_REQUESTED_TARGET_ARCH="x64"
-      XBB_REQUESTED_TARGET_BITS="64"
-      XBB_REQUESTED_TARGET_MACHINE="x86_64"
-      XBB_REQUESTED_TARGET_TRIPLET="x86_64-w64-mingw32"
-    else
-      echo "Windows cross builds are available only on Intel GNU/Linux"
-      exit 1
-    fi
-  fi
+  XBB_REQUESTED_TARGET_PLATFORM="${XBB_REQUESTED_HOST_PLATFORM}"
+  XBB_REQUESTED_TARGET_ARCH="${XBB_REQUESTED_HOST_ARCH}"
+  XBB_REQUESTED_TARGET_BITS="${XBB_REQUESTED_HOST_BITS}"
+  XBB_REQUESTED_TARGET_MACHINE="${XBB_REQUESTED_HOST_MACHINE}"
+  XBB_REQUESTED_TARGET_TRIPLET="${XBB_REQUESTED_HOST_TRIPLET}"
 
   export XBB_REQUESTED_TARGET_PLATFORM
   export XBB_REQUESTED_TARGET_ARCH
   export XBB_REQUESTED_TARGET_BITS
   export XBB_REQUESTED_TARGET_MACHINE
   export XBB_REQUESTED_TARGET_TRIPLET
-
-  export XBB_REQUESTED_HOST_PLATFORM
-  export XBB_REQUESTED_HOST_ARCH
-  export XBB_REQUESTED_HOST_BITS
-  export XBB_REQUESTED_HOST_MACHINE
-  export XBB_REQUESTED_HOST_TRIPLET
 }
 
 
 # Sets the following variables:
 #
-# - XBB_TARGET_PLATFORM=node_platform={win32,linux,darwin}
-# - XBB_TARGET_ARCH=node_architecture={x64,ia32,arm64,arm}
-# - XBB_TARGET_BITS={32,64}
-# - XBB_TARGET_MACHINE={x86_64,arm64,aarch64,armv7l,armv8l}
-# - XBB_TARGET_TRIPLET={*,x86_64-w64-mingw32}
+# - XBB_HOST|TARGET_PLATFORM=node_platform={win32,linux,darwin}
+# - XBB_HOST|TARGET_ARCH=node_architecture={x64,ia32,arm64,arm}
+# - XBB_HOST|TARGET_BITS={32,64}
+# - XBB_HOST|TARGET_MACHINE={x86_64,arm64,aarch64,armv7l,armv8l}
+# - XBB_HOST|TARGET_TRIPLET={*,x86_64-w64-mingw32}
 
 # "" (requested), "native", "mingw-w64-native", "mingw-w64-cross"
 function xbb_set_target()
@@ -299,70 +283,74 @@ function xbb_set_target()
 
   if [ "${kind}" == "native" ]
   then
+    XBB_HOST_PLATFORM="${XBB_BUILD_PLATFORM}"
+    XBB_HOST_ARCH="${XBB_BUILD_ARCH}"
+    XBB_HOST_BITS="${XBB_BUILD_BITS}"
+    XBB_HOST_MACHINE="${XBB_BUILD_MACHINE}"
+    XBB_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
+
     # The target is the same as the host.
     XBB_TARGET_PLATFORM="${XBB_BUILD_PLATFORM}"
     XBB_TARGET_ARCH="${XBB_BUILD_ARCH}"
     XBB_TARGET_BITS="${XBB_BUILD_BITS}"
     XBB_TARGET_MACHINE="${XBB_BUILD_MACHINE}"
     XBB_TARGET_TRIPLET="${XBB_BUILD_TRIPLET}"
-
-    XBB_HOST_PLATFORM="${XBB_BUILD_PLATFORM}"
-    XBB_HOST_ARCH="${XBB_BUILD_ARCH}"
-    XBB_HOST_BITS="${XBB_BUILD_BITS}"
-    XBB_HOST_MACHINE="${XBB_BUILD_MACHINE}"
-    XBB_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
   elif [ "${kind}" == "mingw-w64-native" ]
   then
-    XBB_TARGET_PLATFORM="win32"
-    XBB_TARGET_ARCH="x64"
-    XBB_TARGET_BITS="64"
-    XBB_TARGET_MACHINE="x86_64"
-    XBB_TARGET_TRIPLET="x86_64-w64-mingw32"
-
     XBB_HOST_PLATFORM="${XBB_BUILD_PLATFORM}"
     XBB_HOST_ARCH="${XBB_BUILD_ARCH}"
     XBB_HOST_BITS="${XBB_BUILD_BITS}"
     XBB_HOST_MACHINE="${XBB_BUILD_MACHINE}"
     XBB_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
-  elif [ "${kind}" == "mingw-w64-cross" ]
-  then
+
     XBB_TARGET_PLATFORM="win32"
     XBB_TARGET_ARCH="x64"
     XBB_TARGET_BITS="64"
     XBB_TARGET_MACHINE="x86_64"
     XBB_TARGET_TRIPLET="x86_64-w64-mingw32"
-
+  elif [ "${kind}" == "mingw-w64-cross" ]
+  then
     XBB_HOST_PLATFORM="win32"
     XBB_HOST_ARCH="x64"
     XBB_HOST_BITS="64"
     XBB_HOST_MACHINE="x86_64"
     XBB_HOST_TRIPLET="x86_64-w64-mingw32"
+
+    XBB_TARGET_PLATFORM="win32"
+    XBB_TARGET_ARCH="x64"
+    XBB_TARGET_BITS="64"
+    XBB_TARGET_MACHINE="x86_64"
+    XBB_TARGET_TRIPLET="x86_64-w64-mingw32"
   elif [ "${kind}" == "requested" ]
   then
     # Set the actual to the requested.
-    XBB_TARGET_PLATFORM="${XBB_REQUESTED_TARGET_PLATFORM}"
-    XBB_TARGET_ARCH="${XBB_REQUESTED_TARGET_ARCH}"
-    XBB_TARGET_BITS="${XBB_REQUESTED_TARGET_BITS}"
-    XBB_TARGET_MACHINE="${XBB_REQUESTED_TARGET_MACHINE}"
-    XBB_TARGET_TRIPLET="${XBB_REQUESTED_TARGET_TRIPLET}"
-
     XBB_HOST_PLATFORM="${XBB_REQUESTED_HOST_PLATFORM}"
     XBB_HOST_ARCH="${XBB_REQUESTED_HOST_ARCH}"
     XBB_HOST_BITS="${XBB_REQUESTED_HOST_BITS}"
     XBB_HOST_MACHINE="${XBB_REQUESTED_HOST_MACHINE}"
     XBB_HOST_TRIPLET="${XBB_REQUESTED_HOST_TRIPLET}"
 
+    XBB_TARGET_PLATFORM="${XBB_REQUESTED_TARGET_PLATFORM}"
+    XBB_TARGET_ARCH="${XBB_REQUESTED_TARGET_ARCH}"
+    XBB_TARGET_BITS="${XBB_REQUESTED_TARGET_BITS}"
+    XBB_TARGET_MACHINE="${XBB_REQUESTED_TARGET_MACHINE}"
+    XBB_TARGET_TRIPLET="${XBB_REQUESTED_TARGET_TRIPLET}"
+
     if [ "${XBB_FORCE_32_BIT:-""}" == "y" ]
     then
-      if [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
-        [ "${XBB_REQUESTED_TARGET_ARCH}" == "arm64" ]
+      if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ] && \
+        [ "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
       then
         # Pretend to be a 32-bit platform.
+        XBB_HOST_ARCH="arm"
+        XBB_HOST_BITS="32"
+        XBB_HOST_MACHINE="armv8l"
+
         XBB_TARGET_ARCH="arm"
         XBB_TARGET_BITS="32"
         XBB_TARGET_MACHINE="armv8l"
-      elif [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "linux" ] && \
-        [ "${XBB_REQUESTED_TARGET_ARCH}" == "arm" ]
+      elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ] && \
+        [ "${XBB_REQUESTED_HOST_ARCH}" == "arm" ]
       then
         echo "Already a 32-bit platform, --32 ineffective"
       else
@@ -375,38 +363,50 @@ function xbb_set_target()
     exit 1
   fi
 
-  export XBB_TARGET_PLATFORM
-  export XBB_TARGET_ARCH
-  export XBB_TARGET_BITS
-  export XBB_TARGET_MACHINE
-  export XBB_TARGET_TRIPLET
-
   export XBB_HOST_PLATFORM
   export XBB_HOST_ARCH
   export XBB_HOST_BITS
   export XBB_HOST_MACHINE
   export XBB_HOST_TRIPLET
 
+  export XBB_TARGET_PLATFORM
+  export XBB_TARGET_ARCH
+  export XBB_TARGET_BITS
+  export XBB_TARGET_MACHINE
+  export XBB_TARGET_TRIPLET
+
   # ---------------------------------------------------------------------------
-  # Prefixed paths. Identified by the destination host triplet.
-  XBB_TARGET_PREFIXED_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_HOST_TRIPLET}"
+  # Specific paths. Identified by the destination host[/target] triplet.
+  XBB_DESTINATION_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${XBB_HOST_TRIPLET}"
+
+  # Binaries are installed in the top folder.
+  xbb_set_binaries_install "${XBB_DESTINATION_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
+
+  if [ "${XBB_HOST_TRIPLET}" != "${XBB_TARGET_TRIPLET}" ]
+  then
+    XBB_DESTINATION_FOLDER_PATH+="/${XBB_TARGET_TRIPLET}"
+  fi
+
+  XBB_DEPENDENCIES_INSTALL_FOLDER_PATH="${XBB_DESTINATION_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
+
+  # Libraries are installed in the specific folder.
+  xbb_set_libraries_install "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
   XBB_BUILD_FOLDER_NAME="${XBB_BUILD_FOLDER_NAME-build}"
-  XBB_BUILD_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_BUILD_FOLDER_NAME}"
-
-  XBB_DEPENDENCIES_INSTALL_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_INSTALL_FOLDER_NAME}"
+  XBB_BUILD_FOLDER_PATH="${XBB_DESTINATION_FOLDER_PATH}/${XBB_BUILD_FOLDER_NAME}"
 
   XBB_STAMPS_FOLDER_NAME="${XBB_STAMPS_FOLDER_NAME:-stamps}"
-  XBB_STAMPS_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_STAMPS_FOLDER_NAME}"
+  XBB_STAMPS_FOLDER_PATH="${XBB_DESTINATION_FOLDER_PATH}/${XBB_STAMPS_FOLDER_NAME}"
 
   XBB_LOGS_FOLDER_NAME="${XBB_LOGS_FOLDER_NAME:-logs}"
-  XBB_LOGS_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_LOGS_FOLDER_NAME}"
+  XBB_LOGS_FOLDER_PATH="${XBB_DESTINATION_FOLDER_PATH}/${XBB_LOGS_FOLDER_NAME}"
 
   XBB_TESTS_FOLDER_NAME="${XBB_TESTS_FOLDER_NAME:-tests}"
-  XBB_TESTS_FOLDER_PATH="${XBB_TARGET_PREFIXED_FOLDER_PATH}/${XBB_TESTS_FOLDER_NAME}"
+  XBB_TESTS_FOLDER_PATH="${XBB_DESTINATION_FOLDER_PATH}/${XBB_TESTS_FOLDER_NAME}"
+
+  export XBB_DEPENDENCIES_INSTALL_FOLDER_PATH
 
   export XBB_BUILD_FOLDER_PATH
-  export XBB_DEPENDENCIES_INSTALL_FOLDER_PATH
   export XBB_STAMPS_FOLDER_PATH
   export XBB_LOGS_FOLDER_PATH
   export XBB_TESTS_FOLDER_PATH
@@ -446,9 +446,6 @@ function xbb_set_target()
   # ---------------------------------------------------------------------------
 
   xbb_set_compiler_env
-
-  xbb_set_binaries_install "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
-  xbb_set_libraries_install "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
   # ---------------------------------------------------------------------------
 
