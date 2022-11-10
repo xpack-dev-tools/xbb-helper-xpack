@@ -44,7 +44,7 @@ function build_libusb1()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libusb1_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libusb1_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       # GCC-7 fails to compile Darwin USB.h:
       # error: too many #pragma options align=reset

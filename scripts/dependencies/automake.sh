@@ -57,7 +57,7 @@ function build_automake()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${automake_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${automake_folder_name}"
 
-      # xbb_activate_installed_dev
+      # xbb_activate_dependencies_dev
 
       # TODO!
       # To pick autoconf

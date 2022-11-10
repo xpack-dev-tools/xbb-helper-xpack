@@ -79,7 +79,7 @@ function build_python3()
       # -DkAuthorizationExternalFormLength=32 not working
 
       # To pick the new libraries
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
       CFLAGS="${XBB_CFLAGS_NO_W}"

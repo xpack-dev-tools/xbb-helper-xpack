@@ -127,7 +127,7 @@ function build_hidapi()
         mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
         cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
 
-        xbb_activate_installed_dev
+        xbb_activate_dependencies_dev
 
         if [ "${XBB_HOST_PLATFORM}" == "linux" ]
         then

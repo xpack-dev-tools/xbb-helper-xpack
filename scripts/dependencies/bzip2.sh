@@ -60,7 +60,7 @@ function build_bzip2()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${bzip2_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       # libbz2.a(bzlib.o): relocation R_X86_64_PC32 against symbol `BZ2_crc32Table' can not be used when making a shared object; recompile with -fPIC

@@ -62,7 +62,7 @@ function build_qemu()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
 

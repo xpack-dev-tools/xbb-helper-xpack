@@ -91,7 +91,7 @@ function build_cross_gcc_first()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gcc_first_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${gcc_first_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -340,7 +340,7 @@ function build_cross_gcc_final()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gcc_final_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${gcc_final_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       # if [ "${XBB_HOST_PLATFORM}" == "darwin" ]

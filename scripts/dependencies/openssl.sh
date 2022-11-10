@@ -78,7 +78,7 @@ function build_openssl()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${openssl_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       #  -Wno-unused-command-line-argument
 

@@ -86,7 +86,7 @@ function build_glib()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}"/gio/lib
       cd "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

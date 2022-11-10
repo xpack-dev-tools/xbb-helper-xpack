@@ -92,7 +92,7 @@ function build_libxml2()
 
       cd "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       # TODO!
       xbb_activate_installed_bin

@@ -41,7 +41,7 @@ function build_libusb0()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libusb0_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libusb0_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

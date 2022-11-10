@@ -54,7 +54,7 @@ function build_pixman()
       # Windows libtool chaks for it.
       mkdir -pv test/lib
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

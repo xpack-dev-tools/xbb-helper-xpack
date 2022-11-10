@@ -55,7 +55,7 @@ function _build_realpath()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${realpath_folder_name}"
 
-      # xbb_activate_installed_dev
+      # xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -174,7 +174,7 @@ function build_scons()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${scons_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       # TODO!
       # For Python
@@ -285,7 +285,7 @@ function build_curl()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${curl_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${curl_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -514,7 +514,7 @@ function build_tar()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${tar_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${tar_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -728,7 +728,7 @@ function build_guile()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -916,7 +916,7 @@ function build_autogen()
       cd "${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}"
 
       # xbb_activate_installed_bin
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS} -D_POSIX_C_SOURCE"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -1118,7 +1118,7 @@ function build_gawk()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gawk_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${gawk_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -1305,7 +1305,7 @@ function build_sed()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${sed_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${sed_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
@@ -1502,7 +1502,7 @@ function build_patch()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${patch_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${patch_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -1657,7 +1657,7 @@ function build_diffutils()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${diffutils_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${diffutils_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
@@ -1840,7 +1840,7 @@ function build_bison()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${bison_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${bison_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -2056,7 +2056,7 @@ function build_make()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${make_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${make_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -2227,7 +2227,7 @@ function build_bash()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${bash_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${bash_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -2395,7 +2395,7 @@ function build_wget()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${wget_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${wget_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -2587,7 +2587,7 @@ function build_dos2unix()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${dos2unix_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${dos2unix_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -2728,7 +2728,7 @@ function build_flex()
       if [ ! -f "stamp-autogen" ]
       then
 
-        xbb_activate_installed_dev
+        xbb_activate_dependencies_dev
 
         run_verbose bash ${DEBUG} "autogen.sh"
 
@@ -2744,7 +2744,7 @@ function build_flex()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${flex_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${flex_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       # make[2]: *** [Makefile:1834: stage1scan.c] Segmentation fault (core dumped)
       CPPFLAGS="${XBB_CPPFLAGS} -D_GNU_SOURCE"
@@ -2968,7 +2968,7 @@ function build_perl()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${perl_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       # -Wno-null-pointer-arithmetic
@@ -3178,7 +3178,7 @@ function build_tcl()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${tcl_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${tcl_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -3400,7 +3400,7 @@ function build_git()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${git_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -3578,7 +3578,7 @@ function build_p7zip()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${p7zip_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
@@ -3733,7 +3733,7 @@ function build_rhash()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${rhash_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -3910,7 +3910,7 @@ function build_re2c()
       if false # [ ! -f "stamp-autogen" ]
       then
 
-        xbb_activate_installed_dev
+        xbb_activate_dependencies_dev
 
         run_verbose bash ${DEBUG} "autogen.sh"
 
@@ -3922,7 +3922,7 @@ function build_re2c()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${re2c_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -4103,7 +4103,7 @@ function build_gnupg()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gnupg_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${gnupg_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -4305,7 +4305,7 @@ function build_makedepend()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${makedepend_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${makedepend_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

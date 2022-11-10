@@ -52,7 +52,7 @@ function build_libtasn1()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libtasn1_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libtasn1_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -181,7 +181,7 @@ function build_libunistring()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libunistring_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libunistring_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -321,7 +321,7 @@ function build_gc()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gc_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${gc_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -501,7 +501,7 @@ function build_gnutls()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gnutls_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${gnutls_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       # TODO!
       # For guile.
@@ -708,7 +708,7 @@ function build_xorg_util_macros()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${xorg_util_macros_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${xorg_util_macros_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -834,7 +834,7 @@ function build_xorg_xproto()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${xorg_xproto_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${xorg_xproto_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

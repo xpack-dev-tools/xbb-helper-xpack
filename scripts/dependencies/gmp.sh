@@ -63,7 +63,7 @@ function build_gmp()
 
       else
 
-        xbb_activate_installed_dev
+        xbb_activate_dependencies_dev
         # For the local M4; remove it when available as dependency.
         # xbb_activate_installed_bin
 

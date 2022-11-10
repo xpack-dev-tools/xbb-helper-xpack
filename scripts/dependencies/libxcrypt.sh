@@ -60,7 +60,7 @@ function build_libxcrypt()
       (
         cd "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}"
 
-        xbb_activate_installed_dev
+        xbb_activate_dependencies_dev
 
         if [ -f "autogen.sh" ]
         then
@@ -81,7 +81,7 @@ function build_libxcrypt()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libxcrypt_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libxcrypt_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

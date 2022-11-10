@@ -52,7 +52,7 @@ function build_libiconv()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libiconv_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libiconv_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       # -fgnu89-inline fixes "undefined reference to `aliases2_lookup'"

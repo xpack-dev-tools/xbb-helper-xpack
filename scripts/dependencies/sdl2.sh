@@ -53,7 +53,7 @@ function build_sdl2()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${sdl2_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${sdl2_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -190,7 +190,7 @@ function build_sdl2_image()
       # The windows build checks this.
       mkdir -pv lib
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

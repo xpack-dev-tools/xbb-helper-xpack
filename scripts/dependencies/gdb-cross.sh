@@ -54,7 +54,7 @@ function build_cross_gdb()
 
       # To pick up the python lib from XBB
       # xbb_activate_dev
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

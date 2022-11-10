@@ -59,7 +59,7 @@ function build_mpdecimal()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${mpdecimal_src_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

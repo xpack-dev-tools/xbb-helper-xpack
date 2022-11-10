@@ -78,7 +78,7 @@ function build_libusb_w32()
 
       cd "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       # Build.
       (

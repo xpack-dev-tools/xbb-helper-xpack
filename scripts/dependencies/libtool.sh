@@ -56,7 +56,7 @@ function build_libtool()
       # To pick autoconf & automake.
       xbb_activate_installed_bin
       # The new CC was set before the call.
-      # xbb_activate_installed_dev
+      # xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

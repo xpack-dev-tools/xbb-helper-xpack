@@ -54,7 +54,7 @@ function build_libelf()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libelf_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libelf_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -184,7 +184,7 @@ function build_python2()
       cd "${XBB_BUILD_FOLDER_PATH}/${python2_folder_name}"
 
       # To pick the new libraries
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -441,7 +441,7 @@ function build_xar()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${xar_folder_name}/xar/"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -571,7 +571,7 @@ function build_libgpg_error()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libgpg_error_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libgpg_error_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -718,7 +718,7 @@ function build_libgcrypt()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libgcrypt_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libgcrypt_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -929,7 +929,7 @@ function build_libassuan()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libassuan_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libassuan_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -1092,7 +1092,7 @@ function build_libksba()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libksba_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libksba_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -1250,7 +1250,7 @@ function build_npth()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${npth_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${npth_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -1407,7 +1407,7 @@ function _build_libusb()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libusb_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libusb_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

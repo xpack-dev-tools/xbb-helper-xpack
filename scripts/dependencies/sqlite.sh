@@ -77,7 +77,7 @@ function build_sqlite()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${sqlite_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${sqlite_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/readline"
       CFLAGS="${XBB_CFLAGS_NO_W}"

@@ -47,7 +47,7 @@ function build_autoconf()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${autoconf_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${autoconf_folder_name}"
 
-      # xbb_activate_installed_dev
+      # xbb_activate_dependencies_dev
       # For the local M4; remove it when available as dependency.
       # xbb_activate_installed_bin
 

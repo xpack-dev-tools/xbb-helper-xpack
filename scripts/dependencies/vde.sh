@@ -49,7 +49,7 @@ function build_vde()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${vde_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${vde_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       # On debug, -O[01] fail with:
       # Undefined symbols for architecture x86_64:

@@ -57,7 +57,7 @@ function build_libffi()
 
         cd "${XBB_SOURCES_FOLDER_PATH}/${libffi_src_folder_name}"
 
-        xbb_activate_installed_dev
+        xbb_activate_dependencies_dev
 
         run_verbose bash ${DEBUG} "autogen.sh"
 
@@ -68,7 +68,7 @@ function build_libffi()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libffi_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${libffi_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

@@ -61,7 +61,7 @@ function build_zlib()
     (
       cd "${XBB_BUILD_FOLDER_PATH}/${zlib_folder_name}"
 
-      xbb_activate_installed_dev
+      xbb_activate_dependencies_dev
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
