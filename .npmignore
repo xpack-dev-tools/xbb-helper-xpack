@@ -9,7 +9,7 @@
 build/
 ci/
 docs/
-tests*/
+# tests*/
 example/
 
 .clang-*
