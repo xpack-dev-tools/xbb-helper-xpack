@@ -179,12 +179,14 @@ function xbb_set_env()
 # set via --target in build_parse_options().
 function xbb_set_requested()
 {
+
   case "${XBB_REQUESTED_TARGET:-""}" in
     linux-x64 )
       XBB_REQUESTED_HOST_PLATFORM="linux"
       XBB_REQUESTED_HOST_ARCH="x64"
       XBB_REQUESTED_HOST_BITS="64"
       XBB_REQUESTED_HOST_MACHINE="x86_64"
+      XBB_REQUESTED_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
       ;;
 
     linux-arm64 )
@@ -192,6 +194,7 @@ function xbb_set_requested()
       XBB_REQUESTED_HOST_ARCH="arm64"
       XBB_REQUESTED_HOST_BITS="64"
       XBB_REQUESTED_HOST_MACHINE="aarch64"
+      XBB_REQUESTED_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
       ;;
 
     linux-arm )
@@ -199,6 +202,7 @@ function xbb_set_requested()
       XBB_REQUESTED_HOST_ARCH="arm"
       XBB_REQUESTED_HOST_BITS="32"
       XBB_REQUESTED_HOST_MACHINE="armv7l"
+      XBB_REQUESTED_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
       ;;
 
     darwin-x64 )
@@ -206,6 +210,7 @@ function xbb_set_requested()
       XBB_REQUESTED_HOST_ARCH="x64"
       XBB_REQUESTED_HOST_BITS="64"
       XBB_REQUESTED_HOST_MACHINE="x86_64"
+      XBB_REQUESTED_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
       ;;
 
     darwin-arm64 )
@@ -213,6 +218,7 @@ function xbb_set_requested()
       XBB_REQUESTED_HOST_ARCH="arm64"
       XBB_REQUESTED_HOST_BITS="64"
       XBB_REQUESTED_HOST_MACHINE="arm64"
+      XBB_REQUESTED_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
       ;;
 
     win32-x64 )
