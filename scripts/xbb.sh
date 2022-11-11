@@ -707,7 +707,6 @@ function xbb_set_compiler_flags()
   then
     (
       set +u
-      echo
       echo "CC=${CC}"
       echo "CXX=${CXX}"
       echo "XBB_CPPFLAGS=${XBB_CPPFLAGS}"
@@ -762,16 +761,17 @@ function xbb_activate_installed_bin()
       PATH="${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin:$PATH"
     fi
   else
-    # Add the XBB bin to the PATH.
+    # Add the dependencies bin to the PATH.
     if [ ! -z ${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH+x} ]
     then
-      # When invoked from tests, the libs are not available.
       PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
     fi
-
-    if [ ! -z ${XBB_APPLICATION_INSTALL_FOLDER_PATH+x} ]
+    # Add the executables bin to the PATH, if different.
+    if [ ! -z ${XBB_EXECUTABLES_INSTALL_FOLDER_PATH+x} ] &&
+       [ -d "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" ] &&
+       [ "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" != "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}" ]
     then
-      PATH="${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin:${XBB_APPLICATION_INSTALL_FOLDER_PATH}/usr/bin:${PATH}"
+      PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin:${PATH}"
     fi
   fi
 
@@ -780,10 +780,10 @@ function xbb_activate_installed_bin()
     PATH="${XBB_TEST_BIN_PATH}:${PATH}"
   fi
 
-  hash -r
-
   export PATH
   echo_develop "PATH=${PATH}"
+
+  hash -r
 
   # Update PKG_CONFIG, in case it was compiled locally
   # and now it shows up in the new PATH.
