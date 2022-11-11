@@ -798,6 +798,21 @@ function xbb_activate_installed_bin()
   fi
 }
 
+# Add the application binaries to the PATH.
+function xbb_activate_application_bin()
+{
+  echo_develop
+  echo_develop "[xbb_activate_application_bin]"
+
+  if [ ! -z ${XBB_APPLICATION_INSTALL_FOLDER_PATH+x} ]
+  then
+    PATH="${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin:${XBB_APPLICATION_INSTALL_FOLDER_PATH}/usr/bin:${PATH}"
+  fi
+
+  export PATH
+  echo_develop "PATH=${PATH}"
+}
+
 # Add the freshly built dependencies (headers and libraries) to the
 # XBB environment variables.
 function xbb_activate_dependencies_dev()
