@@ -472,7 +472,8 @@ function test_mingw2_gcc()
     echo "Testing if ${mingw_triplet}-gcc${name_suffix} compiles simple Hello programs..."
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"
-    mkdir -pv "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"; cd "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"
+    mkdir -pv "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"
+    cd "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"
 
     echo
     echo "pwd: $(pwd)"
@@ -491,8 +492,10 @@ function test_mingw2_gcc()
 
     cp -rv "${helper_folder_path}/tests/c-cpp" .
     cp -rv "${helper_folder_path}/tests/wine"/* c-cpp
-    
+
     cp -rv "${helper_folder_path}/tests/fortran" .
+
+    chmod -R a+w "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"
 
     # -------------------------------------------------------------------------
 
