@@ -182,39 +182,44 @@ function build_perform_common()
 
   # ---------------------------------------------------------------------------
 
-  echo
-  echo "Here we go..."
-  echo
-
-  # Cannot run in a sub-shell, it sets environment variables.
-  build_application_versioned_components
-
-  if [ ! "${XBB_TEST_ONLY}" == "y" ]
-  then
-    (
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-      then
-        # The Windows still has a reference to libgcc_s and libwinpthread
-        export XBB_DO_COPY_GCC_LIBS="y"
-      fi
-
-      # Post processing.
-      make_standalone
-
-      # strip_libs
-      strip_binaries
-
-      copy_distro_files
-      copy_custom_files
-
-      check_binaries
-
-      create_archive
-    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/post-process-output-$(ndate).txt"
-  else
+  (
+    # Isolate the build in a sub-shell, to run the test in a clean environment.
     echo
-    echo "Tests only, skipping post processing..."
-  fi
+    echo "Here we go..."
+    echo
+
+    # Cannot run in a sub-shell, it sets environment variables.
+    build_application_versioned_components
+
+    mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
+
+    if [ ! "${XBB_TEST_ONLY}" == "y" ]
+    then
+      (
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+        then
+          # The Windows still has a reference to libgcc_s and libwinpthread
+          export XBB_DO_COPY_GCC_LIBS="y"
+        fi
+
+        # Post processing.
+        make_standalone
+
+        # strip_libs
+        strip_binaries
+
+        copy_distro_files
+        copy_custom_files
+
+        check_binaries
+
+        create_archive
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/post-process-output-$(ndate).txt"
+    else
+      echo
+      echo "Tests only, skipping post processing..."
+    fi
+  )
 
   # ---------------------------------------------------------------------------
 
