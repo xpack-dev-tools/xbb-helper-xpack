@@ -284,10 +284,10 @@ function is_elf()
   if [ -f "${bin_path}" ]
   then
     # Return 0 (true) if found.
-    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
       file ${bin_path} | egrep -q "( ELF )"
-    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
       # This proved to be very tricky.
       file ${bin_path} | egrep -q "x86_64:Mach-O|arm64e:Mach-O|Mach-O.*x86_64|Mach-O.*arm64"
