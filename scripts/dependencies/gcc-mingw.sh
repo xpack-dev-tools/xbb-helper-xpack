@@ -422,7 +422,12 @@ function test_mingw2_gcc()
       run_app "${F90}" --version
     fi
 
-    run_app "${AR}" --version
+    # x86_64-w64-mingw32-gcc-ar.exe: Cannot find binary 'ar'
+    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+    then
+      run_app "${AR}" --version
+    fi
+
     run_app "${NM}" --version
     run_app "${RANLIB}" --version
 
