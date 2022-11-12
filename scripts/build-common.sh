@@ -229,6 +229,9 @@ function build_perform_common()
 
   # ---------------------------------------------------------------------------
 
+  # We're basically done, errors here should not break the build.
+  set +e
+  
   if [ "${XBB_TEST_ONLY}" != "y" ]
   then
     (
