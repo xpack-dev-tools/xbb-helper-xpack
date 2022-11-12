@@ -491,11 +491,12 @@ function test_mingw2_gcc()
     # -------------------------------------------------------------------------
 
     cp -rv "${helper_folder_path}/tests/c-cpp" .
+    chmod -R a+w c-cpp
     cp -rv "${helper_folder_path}/tests/wine"/* c-cpp
+    chmod -R a+w c-cpp
 
     cp -rv "${helper_folder_path}/tests/fortran" .
-
-    chmod -R a+w "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"
+    chmod -R a+w fortran
 
     # -------------------------------------------------------------------------
 
