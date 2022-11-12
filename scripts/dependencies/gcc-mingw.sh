@@ -423,13 +423,13 @@ function test_mingw2_gcc()
     fi
 
     # x86_64-w64-mingw32-gcc-ar.exe: Cannot find binary 'ar'
+    # x86_64-w64-mingw32-gcc-nm.exe: Cannot find binary 'nm'
     if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
       run_app "${AR}" --version
+      run_app "${NM}" --version
+      run_app "${RANLIB}" --version
     fi
-
-    run_app "${NM}" --version
-    run_app "${RANLIB}" --version
 
     run_app "${GCOV}" --version
     run_app "${GCOV}-dump" --version
