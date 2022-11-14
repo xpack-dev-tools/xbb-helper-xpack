@@ -84,6 +84,9 @@ function build_mingw_gcc_first()
         # x86_64-w64-mingw32/bin/as: insn-emit.o: too many sections (32823)
         # `-Wa,-mbig-obj` is passed to the wrong compiler, and fails
         CXXFLAGS=$(echo ${CXXFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')
+
+        # Without it gcc cannot identify cc1 and other binaries
+        CXXFLAGS+=" -D__USE_MINGW_ACCESS"
       fi
 
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
