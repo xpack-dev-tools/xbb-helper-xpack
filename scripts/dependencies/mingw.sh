@@ -76,40 +76,6 @@ function download_mingw()
   )
 }
 
-# Used to initialise options in all mingw builds:
-# `config_options=("${config_options_common[@]}")`
-
-function prepare_mingw2_config_options_common()
-{
-  # ---------------------------------------------------------------------------
-  # Used in multiple configurations.
-
-  config_options_common=()
-
-  local prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}
-  if [ $# -ge 1 ]
-  then
-    config_options_common+=("--prefix=$1")
-  else
-    echo "prepare_mingw2_config_options_common requires a prefix path"
-    exit 1
-  fi
-
-  config_options_common+=("--disable-multilib")
-
-  # https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=msvc-160
-  # Windows 7
-  config_options_common+=("--with-default-win32-winnt=0x601")
-
-  # `ucrt` is the new Windows Universal C Runtime:
-  # https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c
-  # config_options_common+=("--with-default-msvcrt=${MINGW_MSVCRT:-msvcrt}")
-  config_options_common+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}")
-
-  config_options_common+=("--enable-wildcard")
-  config_options_common+=("--enable-warnings=0")
-}
-
 
 function build_mingw_headers()
 {
@@ -144,10 +110,19 @@ function build_mingw_headers()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-headers/configure" --help
           fi
 
+          config_options=()
+
           # Use architecture subfolders.
-          prepare_mingw2_config_options_common "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/${mingw_triplet}" # Arch
-          config_options=("${config_options_common[@]}")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}")  # Arch
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
+
+          # https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=msvc-160
+          # Windows 7
+          config_options+=("--with-default-win32-winnt=0x601")
+          # `ucrt` is the new Windows Universal C Runtime:
+          # https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c
+          # config_options_common+=("--with-default-msvcrt=${MINGW_MSVCRT:-msvcrt}")
+          config_options+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${mingw_triplet}") # Arch
@@ -524,11 +499,16 @@ function build_mingw_crt()
 
           config_options=()
 
-          prepare_mingw2_config_options_common "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/${mingw_triplet}" # Arch /usr
-          config_options=("${config_options_common[@]}")
+          # Use architecture subfolders.
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}")  # Arch
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}") # HB
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
+
+          # `ucrt` is the new Windows Universal C Runtime:
+          # https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c
+          # config_options_common+=("--with-default-msvcrt=${MINGW_MSVCRT:-msvcrt}")
+          config_options+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${mingw_triplet}") # Arch
