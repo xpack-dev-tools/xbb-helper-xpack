@@ -208,6 +208,10 @@ function test_expect()
     then
       show_libs "${app_path}"
       output="$(run_app_silent "${app_path}" "$@" | sed 's/\r$//')"
+    elif [ -f "${app_path}.exe" ]
+    then
+      show_libs "${app_path}"
+      output="$(run_app_silent "${app_path}" "$@" | sed 's/\r$//')"
     else
       if [ -x "${app_path}" ]
       then
