@@ -47,10 +47,16 @@ function build_binutils()
   # 2022-08-05, "2.39"
 
   local binutils_version="$1"
-  local name_suffix="${2:-""}"
+  local mingw_triplet="${2:-""}"
+
+  local name_prefix=""
+  if [ ! -z "${mingw_triplet}" ]
+  then
+    name_prefix="${mingw_triplet}-"
+  fi
 
   local binutils_src_folder_name="binutils-${binutils_version}"
-  local binutils_folder_name="${binutils_src_folder_name}${name_suffix}"
+  local binutils_folder_name="${name_prefix}binutils-${binutils_version}"
 
   local binutils_archive="${binutils_src_folder_name}.tar.xz"
   local binutils_url="https://ftp.gnu.org/gnu/binutils/${binutils_archive}"
@@ -72,38 +78,27 @@ function build_binutils()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
 
-      if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
+      # To access the newly compiled libraries.
+      xbb_activate_dependencies_dev
+
+      CPPFLAGS="${XBB_CPPFLAGS}"
+      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+
+      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      LDFLAGS="${XBB_LDFLAGS_APP}"
+      xbb_adjust_ldflags_rpath
+
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
-
-        CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include"
-        CFLAGS="${XBB_CFLAGS_NO_W}"
-        CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-        LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
-
-      else
-        # To access the newly compiled libraries.
-        xbb_activate_dependencies_dev
-
-        CPPFLAGS="${XBB_CPPFLAGS}"
-        CFLAGS="${XBB_CFLAGS_NO_W}"
-        CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-        # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-        LDFLAGS="${XBB_LDFLAGS_APP}"
-        xbb_adjust_ldflags_rpath
-
-        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+        if [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
         then
-          if [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
-          then
-            # From MSYS2 MINGW
-            LDFLAGS+=" -Wl,--large-address-aware"
-          fi
-
-          # Used to enable wildcard; inspired from arm-none-eabi-gcc.
-          LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/usr/${XBB_TARGET_TRIPLET}/lib/CRT_glob.o"
+          # From MSYS2 MINGW
+          LDFLAGS+=" -Wl,--large-address-aware"
         fi
+
+        # Used to enable wildcard; inspired from arm-none-eabi-gcc.
+        LDFLAGS+=" -Wl,${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}/lib/CRT_glob.o"
       fi
 
       export CPPFLAGS
@@ -117,7 +112,7 @@ function build_binutils()
           xbb_show_env_develop
 
           echo
-          echo "Running binutils${name_suffix} configure..."
+          echo "Running ${name_prefix}binutils configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -132,148 +127,124 @@ function build_binutils()
           # ? --without-python --without-curses, --with-expat
           config_options=()
 
-          if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
+
+          config_options+=("--program-prefix=${name_prefix}")
+          config_options+=("--program-suffix=")
+
+          config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/info")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/man")
+          config_options+=("--htmldir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/html")
+          config_options+=("--pdfdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
+
+          config_options+=("--build=${XBB_BUILD_TRIPLET}")
+          config_options+=("--host=${XBB_HOST_TRIPLET}")
+          if [ ! -z "${mingw_triplet}" ]
+          then
+            config_options+=("--target=${mingw_triplet}") # Arch, HB
+          else
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
+          fi
+
+          config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
+
+          if [ "${XBB_HOST_PLATFORM}" != "linux" ]
+          then
+            config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          fi
+
+          # Use the zlib compiled from sources.
+          config_options+=("--with-system-zlib") # Arch, HB
+
+          config_options+=("--with-pic") # Arch
+
+          # error: debuginfod is missing or unusable
+          # config_options+=("--with-debuginfod") # Arch
+          config_options+=("--without-debuginfod")
+
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
 
-            config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
-            config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
+            config_options+=("--enable-ld")
 
-            config_options+=("--build=${XBB_BUILD_TRIPLET}")
-            # The bootstrap binaries will run on the build machine.
-            config_options+=("--host=${XBB_BUILD_TRIPLET}")
-            config_options+=("--target=${XBB_TARGET_TRIPLET}")
+          elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+          then
 
-            config_options+=("--with-pkgversion=${XBB_GCC_BOOTSTRAP_BRANDING}")
+            if [ -z "${mingw_triplet}" ]
+            then
+              config_options+=("--enable-pgo-build=lto") # Arch
+            fi
+            config_options+=("--enable-ld=default") # Arch
 
-            config_options+=("--with-libiconv-prefix=${XBB_FOLDER_PATH}")
+            # config_options+=("--enable-targets=x86_64-pep,bpf-unknown-none")
 
-            # ?
-            config_options+=("--disable-multilib")
+          elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+          then
 
-            config_options+=("--disable-werror")
-            config_options+=("--disable-shared")
-            config_options+=("--disable-nls")
-
-            config_options+=("--enable-static")
-            config_options+=("--enable-build-warnings=no")
-            config_options+=("--enable-lto")
-            config_options+=("--enable-plugins")
-            config_options+=("--enable-deterministic-archives")
-            config_options+=("--enable-libssp")
+            config_options+=("--enable-pgo-build=lto")
 
           else
-
-            config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-            config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-            # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
-            config_options+=("--program-suffix=")
-
-            config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/info")
-            config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/man")
-            config_options+=("--htmldir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/html")
-            config_options+=("--pdfdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
-
-            config_options+=("--build=${XBB_BUILD_TRIPLET}")
-            config_options+=("--host=${XBB_HOST_TRIPLET}")
-            config_options+=("--target=${XBB_TARGET_TRIPLET}")
-
-            config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
-
-            if [ "${XBB_HOST_PLATFORM}" != "linux" ]
-            then
-              config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-            fi
-
-            # Use the zlib compiled from sources.
-            config_options+=("--with-system-zlib") # Arch, HB
-
-            config_options+=("--with-pic") # Arch
-
-            # error: debuginfod is missing or unusable
-            # config_options+=("--with-debuginfod") # Arch
-            config_options+=("--without-debuginfod")
-
-            if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-            then
-
-              config_options+=("--enable-ld")
-
-              config_options+=("--enable-multilib")
-
-              if [ "${XBB_HOST_ARCH}" == "x64" ]
-              then
-                # From MSYS2 MINGW
-                : # config_options+=("--enable-64-bit-bfd")
-              fi
-
-            elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
-            then
-
-              config_options+=("--enable-ld=default") # Arch
-
-              if [ "${XBB_HOST_ARCH}" == "x64" ]
-              then
-                config_options+=("--enable-multilib")
-              else
-                : # No multilib on Arm
-              fi
-
-              # config_options+=("--enable-targets=x86_64-pep,bpf-unknown-none")
-
-            elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-            then
-
-              config_options+=("--enable-multilib")
-
-            else
-              echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in build binutils."
-              exit 1
-            fi
-
-            config_options+=("--enable-64-bit-bfd") # HB
-            config_options+=("--enable-cet") # Arch
-            config_options+=("--enable-default-execstack=no") # Arch
-            config_options+=("--enable-deterministic-archives") # Arch, HB
-            config_options+=("--enable-gold") # Arch, HB
-            config_options+=("--enable-install-libiberty") # Arch
-            config_options+=("--enable-interwork") # HB
-            # config_options+=("--enable-jansson") # Arch
-            config_options+=("--enable-lto")
-            config_options+=("--enable-libssp")
-            config_options+=("--enable-pgo-build=lto") # Arch
-            config_options+=("--enable-plugins") # Arch, HB
-            config_options+=("--enable-relro") # Arch
-            config_options+=("--enable-shared") # Arch
-            config_options+=("--enable-static")
-            config_options+=("--enable-targets=all") # HB
-            config_options+=("--enable-threads") # Arch
-            config_options+=("--enable-build-warnings=no")
-
-            config_options+=("--disable-debug") # HB
-            config_options+=("--disable-dependency-tracking") # HB
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
-            then
-              config_options+=("--disable-silent-rules")
-            fi
-
-            config_options+=("--disable-gdb") # Arch
-            config_options+=("--disable-gdbserver") # Arch
-            config_options+=("--disable-libdecnumber") # Arch
-            config_options+=("--disable-readline") # Arch
-
-            # TODO
-            # config_options+=("--enable-nls")
-            config_options+=("--disable-nls") # HB
-
-            config_options+=("--disable-new-dtags")
-
-            # config_options+=("--disable-multilib")
-            config_options+=("--enable-multilib") # HB
-
-            config_options+=("--disable-werror") # Arch, HB
-            config_options+=("--disable-sim") # Arch
-
+            echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in build ${name_prefix}binutils."
+            exit 1
           fi
+
+          config_options+=("--enable-64-bit-bfd") # HB
+          config_options+=("--enable-build-warnings=no")
+          config_options+=("--enable-cet") # Arch
+          config_options+=("--enable-default-execstack=no") # Arch
+          config_options+=("--enable-deterministic-archives") # Arch, HB
+          config_options+=("--enable-gold") # Arch, HB
+          config_options+=("--enable-install-libiberty") # Arch
+          config_options+=("--enable-interwork") # HB
+          # config_options+=("--enable-jansson") # Arch
+          config_options+=("--enable-libssp")
+          config_options+=("--enable-lto")
+
+          if [ ! -z "${mingw_triplet}" ]
+          then
+            # The mingw binaries have architecture specific names,
+            # so multilib makes no sense.
+            config_options+=("--disable-multilib") # Arch, HB
+          else
+            if [ "${XBB_HOST_PLATFORM}" == "linux" ] && [ "${XBB_HOST_ARCH}" == "arm64" -o "${XBB_HOST_ARCH}" == "arm" ]
+            then
+              # No multilib on Arm
+              config_options+=("--disable-multilib")
+            else
+              config_options+=("--enable-multilib") # HB
+            fi
+          fi
+
+          config_options+=("--enable-plugins") # Arch, HB
+          config_options+=("--enable-relro") # Arch
+          config_options+=("--enable-shared") # Arch
+          config_options+=("--enable-static")
+          config_options+=("--enable-targets=all") # HB
+          if [ ! -z "${mingw_triplet}" ]
+          then
+            config_options+=("--enable-targets=${mingw_triplet}") # HB
+          fi
+          config_options+=("--enable-threads") # Arch
+
+          config_options+=("--disable-debug") # HB
+          config_options+=("--disable-dependency-tracking") # HB
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          then
+            config_options+=("--disable-silent-rules")
+          fi
+
+          config_options+=("--disable-gdb") # Arch
+          config_options+=("--disable-gdbserver") # Arch
+          config_options+=("--disable-libdecnumber") # Arch
+
+          config_options+=("--disable-new-dtags")
+          config_options+=("--disable-nls") # HB
+
+          config_options+=("--disable-readline") # Arch
+          config_options+=("--disable-sim") # Arch
+          config_options+=("--disable-werror") # Arch, HB
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
             ${config_options[@]}
@@ -284,7 +255,7 @@ function build_binutils()
 
       (
         echo
-        echo "Running binutils${name_suffix} make..."
+        echo "Running ${name_prefix}binutils make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -298,58 +269,26 @@ function build_binutils()
         # make install-strip
         run_verbose make install
 
-        # install PIC version of libiberty
-        libiberty_file_path="$(find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" -name libiberty.a)"
-        if [ -n "${libiberty_file_path}" ]
+        if [ -f "libiberty/pic/libiberty.a" ]
         then
-          run_verbose install -v -c -m 644 libiberty/pic/libiberty.a \
-            "$(dirname ${libiberty_file_path})"
+          # install PIC version of libiberty
+          libiberty_file_path="$(find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" -name libiberty.a)"
+          if [ -n "${libiberty_file_path}" ]
+          then
+            run_verbose install -v -c -m 644 libiberty/pic/libiberty.a \
+              "$(dirname ${libiberty_file_path})"
+          fi
         fi
 
         run_verbose rm -rf "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}/doc"
 
-        if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
-        then
-
-          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ar"
-          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-as"
-          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ld"
-          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-strip"
-          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-nm"
-          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-objcopy"
-          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-objdump"
-          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-ranlib"
-          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-size"
-          show_native_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${XBB_TARGET_TRIPLET}-strings"
-
-        else
-
-          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-          then
-            : # rm -rv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/strip"
-          fi
-
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/ar"
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/as"
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/ld"
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/strip"
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/nm"
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/objcopy"
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/objdump"
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/ranlib"
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/size"
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/strings"
-
-        fi
+        test_binutils_libs
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
 
-      if [ -z "${name_suffix}" ]
-      then
-        copy_license \
-          "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}" \
-          "${binutils_folder_name}"
-      fi
+      copy_license \
+        "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}" \
+        "${binutils_folder_name}"
 
     )
 
@@ -357,64 +296,98 @@ function build_binutils()
     touch "${binutils_stamp_file_path}"
 
   else
-    echo "Component binutils${name_suffix} already installed."
+    echo "Component ${name_prefix}binutils already installed."
   fi
 
-  if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
-  then
-    :
-  else
-    tests_add "test_binutils" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-  fi
+  tests_add "test_binutils" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${name_prefix}"
+}
+
+function test_binutils_libs()
+{
+  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ar"
+  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}as"
+  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ld"
+  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}nm"
+  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}objcopy"
+  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}objdump"
+  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ranlib"
+  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}size"
+  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}strings"
+  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}strip"
 }
 
 function test_binutils()
 {
   local test_bin_path="$1"
+  local name_prefix="${2:-""}"
 
   (
-    show_libs "${test_bin_path}/ar"
-    show_libs "${test_bin_path}/as"
-    show_libs "${test_bin_path}/elfedit"
-    show_libs "${test_bin_path}/gprof"
-    show_libs "${test_bin_path}/ld"
-    show_libs "${test_bin_path}/ld.gold"
-    show_libs "${test_bin_path}/strip"
-    show_libs "${test_bin_path}/nm"
-    show_libs "${test_bin_path}/objcopy"
-    show_libs "${test_bin_path}/objdump"
-    show_libs "${test_bin_path}/ranlib"
-    show_libs "${test_bin_path}/readelf"
-    show_libs "${test_bin_path}/size"
-    show_libs "${test_bin_path}/strings"
-    show_libs "${test_bin_path}/strip"
-
     echo
-    echo "Testing if binutils starts properly..."
+    echo "Checking the ${name_prefix}binutils shared libraries..."
 
-    run_app "${test_bin_path}/ar" --version
-    run_app "${test_bin_path}/as" --version
-    run_app "${test_bin_path}/elfedit" --version
-    run_app "${test_bin_path}/gprof" --version
-    run_app "${test_bin_path}/ld" --version
-    if [ -f  "${test_bin_path}/ld.gold${XBB_HOST_DOT_EXE}" ]
+    show_libs "${test_bin_path}/${name_prefix}ar"
+    show_libs "${test_bin_path}/${name_prefix}as"
+    show_libs "${test_bin_path}/${name_prefix}elfedit"
+    show_libs "${test_bin_path}/${name_prefix}gprof"
+    show_libs "${test_bin_path}/${name_prefix}ld"
+    if [ -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
-      run_app "${test_bin_path}/ld.gold" --version
+      show_libs "${test_bin_path}/${name_prefix}ld.gold"
     fi
-    run_app "${test_bin_path}/strip" --version
-    run_app "${test_bin_path}/nm" --version
-    run_app "${test_bin_path}/objcopy" --version
-    run_app "${test_bin_path}/objdump" --version
-    run_app "${test_bin_path}/ranlib" --version
-    run_app "${test_bin_path}/readelf" --version
-    run_app "${test_bin_path}/size" --version
-    run_app "${test_bin_path}/strings" --version
-    run_app "${test_bin_path}/strip" --version
-  )
+    show_libs "${test_bin_path}/${name_prefix}nm"
+    show_libs "${test_bin_path}/${name_prefix}objcopy"
+    show_libs "${test_bin_path}/${name_prefix}objdump"
+    show_libs "${test_bin_path}/${name_prefix}ranlib"
+    show_libs "${test_bin_path}/${name_prefix}readelf"
+    show_libs "${test_bin_path}/${name_prefix}size"
+    show_libs "${test_bin_path}/${name_prefix}strings"
+    show_libs "${test_bin_path}/${name_prefix}strip"
 
-  echo
-  echo "Local binutils tests completed successfuly."
+    echo
+    echo "Testing if ${name_prefix}binutils starts properly..."
+
+    run_app "${test_bin_path}/${name_prefix}ar" --version
+    run_app "${test_bin_path}/${name_prefix}as" --version
+    run_app "${test_bin_path}/${name_prefix}elfedit" --version
+    run_app "${test_bin_path}/${name_prefix}gprof" --version
+    run_app "${test_bin_path}/${name_prefix}ld" --version
+    if [ -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
+    then
+      # No ld.gold on Windows.
+      run_app "${test_bin_path}/${name_prefix}ld.gold" --version
+    fi
+    run_app "${test_bin_path}/${name_prefix}nm" --version
+    run_app "${test_bin_path}/${name_prefix}objcopy" --version
+    run_app "${test_bin_path}/${name_prefix}objdump" --version
+    run_app "${test_bin_path}/${name_prefix}ranlib" --version
+    run_app "${test_bin_path}/${name_prefix}readelf" --version
+    run_app "${test_bin_path}/${name_prefix}size" --version
+    run_app "${test_bin_path}/${name_prefix}strings" --version
+    run_app "${test_bin_path}/${name_prefix}strip" --version
+
+    echo
+    echo "Testing if ${name_prefix}binutils binaries display help..."
+
+    run_app "${test_bin_path}/${name_prefix}ar" --help
+    run_app "${test_bin_path}/${name_prefix}as" --help
+    run_app "${test_bin_path}/${name_prefix}elfedit" --help
+    run_app "${test_bin_path}/${name_prefix}gprof" --help
+    run_app "${test_bin_path}/${name_prefix}ld" --help
+    if [ -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
+    then
+      # No ld.gold on Windows.
+      run_app "${test_bin_path}/${name_prefix}ld.gold" --help
+    fi
+    run_app "${test_bin_path}/${name_prefix}nm" --help
+    run_app "${test_bin_path}/${name_prefix}objcopy" --help
+    run_app "${test_bin_path}/${name_prefix}objdump" --help
+    run_app "${test_bin_path}/${name_prefix}ranlib" --help
+    run_app "${test_bin_path}/${name_prefix}readelf" --help
+    run_app "${test_bin_path}/${name_prefix}size" --help
+    run_app "${test_bin_path}/${name_prefix}strings" --help
+    run_app "${test_bin_path}/${name_prefix}strip" --help || true
+  )
 }
 
 # -----------------------------------------------------------------------------
