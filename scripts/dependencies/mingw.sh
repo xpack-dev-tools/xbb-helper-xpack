@@ -44,6 +44,32 @@
 # 2021-05-22, "9.0.0"
 # 2022-04-04, "10.0.0"
 
+# For binutils/GCC, the official method to build the mingw-w64 toolchain
+# is to set --prefix and --with-sysroot to the same directory to allow
+# the toolchain to be relocatable.
+
+# Recommended GCC configuration:
+# (to disable multilib, add `--enable-targets="${XBB_TARGET_TRIPLET}"`)
+#
+# $ ../gcc-trunk/configure --{host,build}=<build triplet> \
+# --target=x86_64-w64-mingw32 --enable-multilib --enable-64bit \
+# --{prefix,with-sysroot}=<prefix> --enable-version-specific-runtime-libs \
+# --enable-shared --with-dwarf --enable-fully-dynamic-string \
+# --enable-languages=c,ada,c++,fortran,objc,obj-c++ --enable-libgomp \
+# --enable-libssp --with-host-libstdcxx="-lstdc++ -lsupc++" \
+# --with-{gmp,mpfr,mpc,cloog,ppl}=<host dir> --enable-lto
+#
+# $ make all-gcc && make install-gcc
+#
+# build mingw-w64-crt (headers, crt, tools)
+#
+# $ make all-target-libgcc && make install-target-libgcc
+#
+# build mingw-libraries (winpthreads)
+#
+# Continue the GCC build (C++)
+# $ make && make install
+
 function download_mingw()
 {
   local mingw_folder_archive="${XBB_MINGW_SRC_FOLDER_NAME}.tar.bz2"
@@ -82,10 +108,15 @@ function build_mingw_headers()
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-headers-git/PKGBUILD
 
-  local mingw_triplet="$1"
-  local mingw_name_suffix="${2:-""}"
+  local mingw_triplet="${1:-""}"
 
-  local mingw_headers_folder_name="${mingw_triplet}-headers${mingw_name_suffix}-${XBB_MINGW_VERSION}"
+  local name_prefix="x86_64-w64-mingw32-"
+  if [ ! -z "${mingw_triplet}" ]
+  then
+    name_prefix="${mingw_triplet}-"
+  fi
+
+  local mingw_headers_folder_name="${name_prefix}headers-${XBB_MINGW_VERSION}"
 
   local mingw_headers_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_headers_folder_name}-installed"
   if [ ! -f "${mingw_headers_stamp_file_path}" ]
@@ -103,7 +134,7 @@ function build_mingw_headers()
           xbb_show_env_develop
 
           echo
-          echo "Running ${mingw_triplet}${mingw_name_suffix} headers configure..."
+          echo "Running ${name_prefix}headers configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -125,8 +156,14 @@ function build_mingw_headers()
           config_options+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
-          config_options+=("--host=${mingw_triplet}") # Arch
-          config_options+=("--target=${mingw_triplet}")
+          if [ ! -z "${mingw_triplet}" ]
+          then
+            config_options+=("--host=${mingw_triplet}") # Arch
+            config_options+=("--target=${mingw_triplet}")
+          else
+            config_options+=("--host=${XBB_TARGET_TRIPLET}") # Arch
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
+          fi
 
           # config_options+=("--with-tune=generic")
 
@@ -143,7 +180,7 @@ function build_mingw_headers()
 
       (
         echo
-        echo "Running ${mingw_triplet}${mingw_name_suffix} headers make..."
+        echo "Running ${name_prefix}headers make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -151,18 +188,30 @@ function build_mingw_headers()
         # make install-strip
         run_verbose make install-strip
 
-        # ?? run_verbose ln -sv ../include include
-        # ?? run_verbose ln -sv "${XBB_TARGET_TRIPLET}" "mingw"
+        if [ -z "${mingw_triplet}" ]
+        then
+          mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}"
+          (
+            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}"
+            run_verbose ln -sv ../include include
+          )
+
+          # This is this needed by the GCC bootstrap; otherwise:
+          # The directory that should contain system headers does not exist:
+          # /Host/home/ilg/Work/gcc-11.1.0-1/win32-x64/install/gcc-bootstrap/mingw/include
+
+          rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/mingw"
+          (
+            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+            run_verbose ln -sv "${XBB_TARGET_TRIPLET}" "mingw"
+          )
+        fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_headers_folder_name}/make-output-$(ndate).txt"
 
-      # No need to do it again for each component.
-      if [ -z "${mingw_name_suffix}" ]
-      then
-        copy_license \
-          "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}" \
-          "mingw-w64-${XBB_MINGW_VERSION}"
-      fi
+      copy_license \
+        "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}" \
+        "mingw-w64-${XBB_MINGW_VERSION}"
     )
 
     hash -r
@@ -171,7 +220,7 @@ function build_mingw_headers()
     touch "${mingw_headers_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet}${mingw_name_suffix} headers already installed."
+    echo "Component ${name_prefix}headers already installed."
   fi
 }
 
@@ -179,10 +228,15 @@ function build_mingw_headers()
 
 function build_mingw_widl()
 {
-  local mingw_triplet="$1"
-  local mingw_name_suffix="${2:-""}"
+  local mingw_triplet="${1:-""}"
 
-  local mingw_widl_folder_name="${mingw_triplet}-widl${mingw_name_suffix}-${XBB_MINGW_VERSION}"
+  local name_prefix="x86_64-w64-mingw32-"
+  if [ ! -z "${mingw_triplet}" ]
+  then
+    name_prefix="${mingw_triplet}-"
+  fi
+
+  local mingw_widl_folder_name="${name_prefix}widl-${XBB_MINGW_VERSION}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${mingw_widl_folder_name}"
 
@@ -214,7 +268,7 @@ function build_mingw_widl()
           xbb_show_env_develop
 
           echo
-          echo "Running ${mingw_triplet}${mingw_name_suffix} widl configure..."
+          echo "Running ${name_prefix}widl configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -223,14 +277,22 @@ function build_mingw_widl()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}") # Arch /usr
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # Arch /usr
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}") # Native!
-          config_options+=("--target=${mingw_triplet}")
+          if [ ! -z "${mingw_triplet}" ]
+          then
+            config_options+=("--target=${mingw_triplet}") # Arch, HB
+          else
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          config_options+=("--with-widl-includedir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/include")
+            # To remove any target specific prefix and leave only widl.exe.
+            config_options+=("--program-prefix=")
+          fi
+
+          config_options+=("--with-widl-includedir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/widl/configure" \
             "${config_options[@]}"
@@ -241,7 +303,7 @@ function build_mingw_widl()
 
       (
         echo
-        echo "Running ${mingw_triplet}${mingw_name_suffix} widl make..."
+        echo "Running ${name_prefix}widl make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -257,17 +319,22 @@ function build_mingw_widl()
     touch "${mingw_widl_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet}${mingw_name_suffix} widl already installed."
+    echo "Component ${name_prefix}widl already installed."
   fi
 }
 
 # Fails on macOS, due to <malloc.h>.
 function build_mingw_libmangle()
 {
-  local mingw_triplet="$1"
-  local mingw_name_suffix="${2:-""}"
+  local mingw_triplet="${1:-""}"
 
-  local mingw_libmangle_folder_name="${mingw_triplet}-libmangle${mingw_name_suffix}-${XBB_MINGW_VERSION}"
+  local name_prefix="x86_64-w64-mingw32-"
+  if [ ! -z "${mingw_triplet}" ]
+  then
+    name_prefix="${mingw_triplet}-"
+  fi
+
+  local mingw_libmangle_folder_name="${name_prefix}libmangle-${XBB_MINGW_VERSION}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${mingw_libmangle_folder_name}"
 
@@ -298,7 +365,7 @@ function build_mingw_libmangle()
           xbb_show_env_develop
 
           echo
-          echo "Running ${mingw_triplet}${mingw_name_suffix} libmangle configure..."
+          echo "Running ${name_prefix}libmangle configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -308,12 +375,17 @@ function build_mingw_libmangle()
           config_options=()
 
           # Note: native library.
-          config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${mingw_name_suffix}")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}") # Native!
-          config_options+=("--target=${mingw_triplet}")
+          if [ ! -z "${mingw_triplet}" ]
+          then
+            config_options+=("--target=${mingw_triplet}") # Arch, HB
+          else
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
+          fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/libmangle/configure" \
             "${config_options[@]}"
@@ -324,7 +396,7 @@ function build_mingw_libmangle()
 
       (
         echo
-        echo "Running ${mingw_triplet}${mingw_name_suffix} libmangle make..."
+        echo "Running ${name_prefix}libmangle make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -338,17 +410,21 @@ function build_mingw_libmangle()
     touch "${mingw_libmangle_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet}${mingw_name_suffix} libmangle already installed."
+    echo "Component ${name_prefix}libmangle already installed."
   fi
 }
 
-# Currently not used, because of libmangle.
 function build_mingw_gendef()
 {
-  local mingw_triplet="$1"
-  local mingw_name_suffix="${2:-""}"
+  local mingw_triplet="${1:-""}"
 
-  local mingw_gendef_folder_name="${mingw_triplet}-gendef${mingw_name_suffix}-${XBB_MINGW_VERSION}"
+  local name_prefix="x86_64-w64-mingw32-"
+  if [ ! -z "${mingw_triplet}" ]
+  then
+    name_prefix="${mingw_triplet}-"
+  fi
+
+  local mingw_gendef_folder_name="${name_prefix}gendef-${XBB_MINGW_VERSION}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${mingw_gendef_folder_name}"
 
@@ -381,7 +457,7 @@ function build_mingw_gendef()
           xbb_show_env_develop
 
           echo
-          echo "Running ${mingw_triplet}${mingw_name_suffix} gendef configure..."
+          echo "Running ${name_prefix}gendef configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -390,16 +466,21 @@ function build_mingw_gendef()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}") # Native!
-          config_options+=("--target=${mingw_triplet}")
+          if [ ! -z "${mingw_triplet}" ]
+          then
+            config_options+=("--target=${mingw_triplet}") # Arch, HB
+            config_options+=("--program-prefix=${name_prefix}")
+          else
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
+            config_options+=("--program-prefix=")
+          fi
 
-          config_options+=("--program-prefix=${mingw_triplet}-")
-
-          config_options+=("--with-mangle=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${mingw_name_suffix}")
+          config_options+=("--with-mangle=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/gendef/configure" \
             "${config_options[@]}"
@@ -410,7 +491,7 @@ function build_mingw_gendef()
 
       (
         echo
-        echo "Running ${mingw_triplet}${mingw_name_suffix} gendef make..."
+        echo "Running ${name_prefix}gendef make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -424,7 +505,7 @@ function build_mingw_gendef()
     touch "${mingw_gendef_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet}${mingw_name_suffix} gendef already installed."
+    echo "Component ${name_prefix}gendef already installed."
   fi
 }
 
@@ -436,10 +517,15 @@ function build_mingw_crt()
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-crt-git/PKGBUILD
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
 
-  local mingw_triplet="$1"
-  local mingw_name_suffix="${2:-""}"
+  local mingw_triplet="${1:-""}"
 
-  local mingw_crt_folder_name="${mingw_triplet}-crt${mingw_name_suffix}-${XBB_MINGW_VERSION}"
+  local name_prefix="x86_64-w64-mingw32-"
+  if [ ! -z "${mingw_triplet}" ]
+  then
+    name_prefix="${mingw_triplet}-"
+  fi
+
+  local mingw_crt_folder_name="${name_prefix}crt-${XBB_MINGW_VERSION}"
 
   local mingw_crt_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_crt_folder_name}-installed"
   if [ ! -f "${mingw_crt_stamp_file_path}" ]
@@ -490,7 +576,7 @@ function build_mingw_crt()
           xbb_show_env_develop
 
           echo
-          echo "Running ${mingw_triplet}${mingw_name_suffix} crt configure..."
+          echo "Running ${name_prefix}crt configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -511,21 +597,43 @@ function build_mingw_crt()
           config_options+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
-          config_options+=("--host=${mingw_triplet}") # Arch
-          config_options+=("--target=${mingw_triplet}")
+          if [ ! -z "${mingw_triplet}" ]
+          then
+            config_options+=("--host=${mingw_triplet}") # Arch
+            config_options+=("--target=${mingw_triplet}")
 
-          if [ "${mingw_triplet}" == "x86_64-w64-mingw32" ]
-          then
-            config_options+=("--disable-lib32") # Arch, HB
-            config_options+=("--enable-lib64") # Arch, HB
-          elif [ "${mingw_triplet}" == "i686-w64-mingw32" ]
-          then
-            config_options+=("--enable-lib32") # Arch, HB
-            config_options+=("--disable-lib64") # Arch, HB
+            if [ "${mingw_triplet}" == "x86_64-w64-mingw32" ]
+            then
+              config_options+=("--disable-lib32") # Arch, HB
+              config_options+=("--enable-lib64") # Arch, HB
+            elif [ "${mingw_triplet}" == "i686-w64-mingw32" ]
+            then
+              config_options+=("--enable-lib32") # Arch, HB
+              config_options+=("--disable-lib64") # Arch, HB
+            else
+              echo "Unsupported mingw_triplet ${mingw_triplet}."
+              exit 1
+            fi
           else
-            echo "Unsupported mingw_triplet ${mingw_triplet}."
-            exit 1
+            config_options+=("--host=${XBB_TARGET_TRIPLET}") # Arch
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
+
+            if [ "${XBB_HOST_ARCH}" == "x64" ]
+            then
+              config_options+=("--disable-lib32")
+              config_options+=("--enable-lib64")
+            elif [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
+            then
+              config_options+=("--enable-lib32")
+              config_options+=("--disable-lib64")
+            else
+              echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in build mingw crt."
+              exit 1
+            fi
           fi
+
+          config_options_common+=("--enable-wildcard")
+          config_options_common+=("--enable-warnings=0")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-crt/configure" \
             "${config_options[@]}"
@@ -536,7 +644,7 @@ function build_mingw_crt()
 
       (
         echo
-        echo "Running ${mingw_triplet} crt make..."
+        echo "Running ${name_prefix}crt make..."
 
         # Build.
         # run_verbose make -j ${XBB_JOBS}
@@ -548,7 +656,7 @@ function build_mingw_crt()
         # make install-strip
         run_verbose make install-strip
 
-        ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/${mingw_triplet}"
+        ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_crt_folder_name}/make-output-$(ndate).txt"
     )
@@ -559,7 +667,7 @@ function build_mingw_crt()
     touch "${mingw_crt_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet}${mingw_name_suffix} crt already installed."
+    echo "Component ${name_prefix}crt already installed."
   fi
 }
 
@@ -572,10 +680,15 @@ function build_mingw_winpthreads()
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-winpthreads-git/PKGBUILD
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
 
-  local mingw_triplet="$1"
-  local mingw_name_suffix="${2:-""}"
+  local mingw_triplet="${1:-""}"
 
-  local mingw_build_winpthreads_folder_name="${mingw_triplet}-winpthreads${mingw_name_suffix}-${XBB_MINGW_VERSION}"
+  local name_prefix="x86_64-w64-mingw32-"
+  if [ ! -z "${mingw_triplet}" ]
+  then
+    name_prefix="${mingw_triplet}-"
+  fi
+
+  local mingw_build_winpthreads_folder_name="${name_prefix}winpthreads-${XBB_MINGW_VERSION}"
 
   local mingw_winpthreads_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_build_winpthreads_folder_name}-installed"
   if [ ! -f "${mingw_winpthreads_stamp_file_path}" ]
@@ -611,7 +724,7 @@ function build_mingw_winpthreads()
           xbb_show_env_develop
 
           echo
-          echo "Running ${mingw_triplet}${mingw_name_suffix} winpthreads configure..."
+          echo "Running ${name_prefix}winpthreads configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -620,14 +733,19 @@ function build_mingw_winpthreads()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/${mingw_triplet}") # Arch /usr
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}") # Arch /usr
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
-          config_options+=("--host=${mingw_triplet}") # Arch
-          config_options+=("--target=${mingw_triplet}")
-
-          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}") # HB
+          if [ ! -z "${mingw_triplet}" ]
+          then
+            config_options+=("--host=${mingw_triplet}") # Arch
+            config_options+=("--target=${mingw_triplet}")
+          else
+            config_options+=("--host=${XBB_TARGET_TRIPLET}") # Arch
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
+          fi
 
           config_options+=("--enable-static") # Arch
           config_options+=("--enable-shared") # Arch
@@ -641,7 +759,7 @@ function build_mingw_winpthreads()
 
       (
         echo
-        echo "Running ${mingw_triplet}${mingw_name_suffix} winpthreads make..."
+        echo "Running ${name_prefix}winpthreads make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -649,15 +767,12 @@ function build_mingw_winpthreads()
         # make install-strip
         run_verbose make install-strip
 
-        if true # [ -z "${mingw_name_suffix}" ]
-        then
-          # GCC installs all DLLs in lib; for consistency, copy
-          # libwinpthread-1.dll there too.
-          run_verbose cp -v "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/${mingw_triplet}/bin/libwinpthread-1.dll" \
-            "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/${mingw_triplet}/lib/"
+        # GCC installs all DLLs in lib; for consistency, copy
+        # libwinpthread-1.dll there too.
+        run_verbose cp -v "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/bin/libwinpthread-1.dll" \
+          "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/lib/"
 
-          run_verbose ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/${mingw_triplet}/lib/libwinpthread"*
-        fi
+        run_verbose ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/lib/libwinpthread"*
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_build_winpthreads_folder_name}/make-output-$(ndate).txt"
     )
@@ -668,7 +783,7 @@ function build_mingw_winpthreads()
     touch "${mingw_winpthreads_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet}${mingw_name_suffix} winpthreads already installed."
+    echo "Component ${name_prefix}winpthreads already installed."
   fi
 }
 
@@ -678,10 +793,15 @@ function build_mingw_winpthreads()
 
 function build_mingw_winstorecompat()
 {
-  local mingw_triplet="$1"
-  local mingw_name_suffix="${2:-""}"
+  local mingw_triplet="${1:-""}"
 
-  local mingw_build_winstorecompat_folder_name="${mingw_triplet}-winstorecompat${mingw_name_suffix}-${XBB_MINGW_VERSION}"
+  local name_prefix="x86_64-w64-mingw32-"
+  if [ ! -z "${mingw_triplet}" ]
+  then
+    name_prefix="${mingw_triplet}-"
+  fi
+
+  local mingw_build_winstorecompat_folder_name="${name_prefix}winstorecompat-${XBB_MINGW_VERSION}"
 
   local mingw_winstorecompat_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_build_winstorecompat_folder_name}-installed"
   if [ ! -f "${mingw_winstorecompat_stamp_file_path}" ]
@@ -692,9 +812,6 @@ function build_mingw_winstorecompat()
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mingw_build_winstorecompat_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${mingw_build_winstorecompat_folder_name}"
-
-      # To use the new toolchain.
-      # xbb_activate_installed_bin
 
       CPPFLAGS=""
       CFLAGS="-O2 -pipe -w"
@@ -717,7 +834,7 @@ function build_mingw_winstorecompat()
           xbb_show_env_develop
 
           echo
-          echo "Running ${mingw_triplet}${mingw_name_suffix} winstorecompat configure..."
+          echo "Running ${name_prefix}winstorecompat configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -726,15 +843,19 @@ function build_mingw_winstorecompat()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${mingw_name_suffix}/${mingw_triplet}") # Arch /usr
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}") # Arch /usr
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${mingw_triplet}") # Arch
-          config_options+=("--target=${mingw_triplet}")
-
-          config_options+=("--enable-static")
-          config_options+=("--enable-shared")
+          if [ ! -z "${mingw_triplet}" ]
+          then
+            config_options+=("--host=${mingw_triplet}") # Arch
+            config_options+=("--target=${mingw_triplet}")
+          else
+            config_options+=("--host=${XBB_TARGET_TRIPLET}") # Arch
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
+          fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winstorecompat/configure" \
             "${config_options[@]}"
@@ -745,7 +866,7 @@ function build_mingw_winstorecompat()
 
       (
         echo
-        echo "Running ${mingw_triplet}${mingw_name_suffix} winstorecompat make..."
+        echo "Running ${name_prefix}winstorecompat make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -762,7 +883,7 @@ function build_mingw_winstorecompat()
     touch "${mingw_winstorecompat_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet}${mingw_name_suffix} winstorecompat already installed."
+    echo "Component ${name_prefix}winstorecompat already installed."
   fi
 }
 
