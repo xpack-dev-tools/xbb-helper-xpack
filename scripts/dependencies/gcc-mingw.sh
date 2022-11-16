@@ -168,7 +168,14 @@ function build_mingw_gcc_first()
 
           config_options+=("--enable-languages=c,c++,fortran,objc,obj-c++,lto") # Arch
 
-          config_options+=("--enable-shared") # Arch
+          if true
+          then
+            # undefined reference to `__imp_pthread_mutex_lock'
+            config_options+=("--enable-shared") # Arch
+          else
+            config_options+=("--disable-shared")
+          fi
+
           config_options+=("--enable-static") # Arch
 
           config_options+=("--enable-__cxa_atexit")
