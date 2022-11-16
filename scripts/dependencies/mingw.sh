@@ -778,11 +778,15 @@ function build_mingw_winpthreads()
         run_verbose make install-strip
 
         # GCC installs all DLLs in lib; for consistency, copy
-        # libwinpthread-1.dll there too.
-        run_verbose cp -v "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/bin/libwinpthread-1.dll" \
-          "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/lib/"
+        # libwinpthread-1.dll there too. Normally not needed, as
+        # shared is disabled.
+        if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/bin/libwinpthread-1.dll" ]
+        then
+          run_verbose cp -v "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/bin/libwinpthread-1.dll" \
+            "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/lib/"
 
-        run_verbose ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/lib/libwinpthread"*
+          run_verbose ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/lib"
+        fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_build_winpthreads_folder_name}/make-output-$(ndate).txt"
     )
