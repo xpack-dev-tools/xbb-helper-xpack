@@ -477,7 +477,7 @@ function test_mingw2_gcc()
     run_app "${CXX}" -print-prog-name=cc1plus
 
     echo
-    echo "Testing if ${mingw_triplet}-gcc${name_suffix} compiles simple Hello programs..."
+    echo "Testing if ${mingw_triplet}-gcc${name_suffix} compiles simple programs..."
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"
