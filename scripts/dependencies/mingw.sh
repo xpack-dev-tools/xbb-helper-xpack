@@ -748,7 +748,17 @@ function build_mingw_winpthreads()
           fi
 
           config_options+=("--enable-static") # Arch
-          config_options+=("--enable-shared") # Arch
+
+          if [ ! -z "${mingw_triplet}" ]
+          then
+            config_options+=("--enable-shared") # Arch
+          else
+            # This prevents references to libwinpthread-1.dll, which is
+            # particularly useful with -static-libstdc++, otherwise the
+            # result is not exactly static.
+            # This also requires disabling shared in the GCC configuration.
+            config_options+=("--disable-shared")
+          fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winpthreads/configure" \
             "${config_options[@]}"
