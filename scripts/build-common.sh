@@ -231,7 +231,7 @@ function build_perform_common()
 
   # We're basically done, errors here should not break the build.
   set +e
-  
+
   if [ "${XBB_TEST_ONLY}" != "y" ]
   then
     (
@@ -242,6 +242,14 @@ function build_perform_common()
 
       run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
       run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
+
+      if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
+      then
+        (
+          cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+          run_verbose find . -name '*.dll'
+        )
+      fi
 
       (
         cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
