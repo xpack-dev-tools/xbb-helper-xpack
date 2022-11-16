@@ -188,7 +188,7 @@ function build_mingw_headers()
         # make install-strip
         run_verbose make install-strip
 
-        if [ -z "${mingw_triplet}" ]
+        if false # [ -z "${mingw_triplet}" ]
         then
           mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}"
           (
