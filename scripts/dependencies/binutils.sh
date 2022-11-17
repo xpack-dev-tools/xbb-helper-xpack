@@ -202,12 +202,13 @@ function build_binutils()
             # so multilib makes no sense.
             config_options+=("--disable-multilib") # Arch, HB
           else
-            if [ "${XBB_HOST_PLATFORM}" == "linux" ] && [ "${XBB_HOST_ARCH}" == "arm64" -o "${XBB_HOST_ARCH}" == "arm" ]
+            if [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "x64" ]
             then
-              # No multilib on Arm
-              config_options+=("--disable-multilib")
-            else
+              # Only Intel Linux supports multilib.
               config_options+=("--enable-multilib") # HB
+            else
+              # All other platforms do not.
+              config_options+=("--disable-multilib")
             fi
           fi
 
