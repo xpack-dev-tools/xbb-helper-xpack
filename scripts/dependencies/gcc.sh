@@ -119,6 +119,24 @@ function build_gcc()
   # 2022-08-19, "12.2.0"
 
   local gcc_version="$1"
+  shift
+
+  local disable_shared="n"
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --disable-shared )
+        disable_shared="y"
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
 
   local gcc_version_major=$(echo ${gcc_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
 
@@ -270,7 +288,6 @@ function build_gcc()
           config_options+=("--enable-libstdcxx-visibility")
           config_options+=("--enable-libstdcxx-threads")
 
-
           config_options+=("--enable-static")
 
           config_options+=("--with-default-libstdcxx-abi=new")
@@ -409,7 +426,12 @@ function build_gcc()
             # tests with exceptions, fail.
             # Static libwinpthread also requires to disable this.
             # undefined reference to `__imp_pthread_mutex_lock'
-            config_options+=("--disable-shared")
+            if [ "${disable_shared}" == "y" ]
+            then
+              config_options+=("--disable-shared")
+            else
+              config_options+=("--enable-shared") # Arch
+            fi
 
             if [ "${XBB_HOST_ARCH}" == "x64" ]
             then
