@@ -534,7 +534,7 @@ function build_mingw_gendef()
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/gendef/configure" \
             "${config_options[@]}"
 
-         cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${mingw_gendef_folder_name}/config-gendef-log-$(ndate).txt"
+         cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${mingw_gendef_folder_name}/config-log-$(ndate).txt"
         ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gendef_folder_name}/configure-output-$(ndate).txt"
       fi
 
