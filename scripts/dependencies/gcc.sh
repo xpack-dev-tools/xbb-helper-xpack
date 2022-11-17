@@ -452,7 +452,7 @@ function build_gcc()
             config_options+=("--enable-gnu-indirect-function")
             config_options+=("--enable-linker-build-id")
 
-            config_options+=("--enable-multilib")
+            config_options+=("--disable-multilib")
 
             # Inspired from mingw-w64; apart from --with-sysroot.
             config_options+=("--with-native-system-header-dir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include")
