@@ -72,6 +72,9 @@
 
 function download_mingw()
 {
+  # The original SourceForge location.
+  export XBB_MINGW_SRC_FOLDER_NAME="mingw-w64-v${XBB_MINGW_VERSION}"
+
   local mingw_folder_archive="${XBB_MINGW_SRC_FOLDER_NAME}.tar.bz2"
   # The original SourceForge location.
   local mingw_url="https://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/${mingw_folder_archive}"
