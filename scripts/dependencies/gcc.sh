@@ -169,14 +169,6 @@ function build_gcc()
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
-        if [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
-        then
-          # From MSYS2 MINGW
-          LDFLAGS+=" -Wl,--large-address-aware"
-        fi
-        # From MSYS2, but not supported by GCC 9
-        # LDFLAGS+=" -Wl,--disable-dynamicbase"
-
         # --enable-mingw-wildcard already does this, enabling it results in:
         # multiple definition of `_dowildcard'
         # Used to enable wildcard; inspired from arm-none-eabi-gcc.
