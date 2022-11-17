@@ -376,7 +376,7 @@ function build_gcc()
               config_options+=("--with-float=hard")
               config_options+=("--with-fpu=vfpv3-d16")
             else
-              echo "Oops! Unsupported ${XBB_HOST_ARCH}."
+              echo "Unsupported ${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
               exit 1
             fi
 
@@ -423,7 +423,7 @@ function build_gcc()
               # So better disable SJLJ explicitly.
               config_options+=("--disable-sjlj-exceptions")
             else
-              echo "Oops! Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH}."
+              echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
               exit 1
             fi
 
@@ -476,7 +476,7 @@ function build_gcc()
             # export lt_cv_deplibs_check_method='pass_all'
 
           else
-            echo "Oops! Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM}."
+            echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
             exit 1
           fi
 

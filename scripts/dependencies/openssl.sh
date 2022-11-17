@@ -255,7 +255,7 @@ function build_openssl()
             then
               config_options+=("mingw")
             else
-              echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in build openssl"
+              echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
               exit 1
             fi
 
@@ -287,7 +287,7 @@ function build_openssl()
             run_verbose make -j ${XBB_JOBS}
 
           else
-            echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in build openssl."
+            echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
             exit 1
           fi
 

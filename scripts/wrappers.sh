@@ -91,7 +91,7 @@ function run_app()
     )
 
   else
-    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in run app."
+    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
   fi
 }
@@ -158,7 +158,7 @@ function run_app_silent()
     )
 
   else
-    echo "Oops! Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in run app silent."
+    echo "Oops! Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
   fi
 }

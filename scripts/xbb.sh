@@ -245,7 +245,7 @@ function xbb_set_requested()
       ;;
 
     * )
-      echo "Unsupported --target $1"
+      echo "Unsupported --target $1 in ${FUNCNAME[0]}()"
       exit 1
       ;;
 
@@ -365,7 +365,7 @@ function xbb_set_target()
       fi
     fi
   else
-    echo "Unsupported xbb_set_target ${kind}"
+    echo "Unsupported xbb_set_target ${kind} in ${FUNCNAME[0]}()"
     exit 1
   fi
 
@@ -442,7 +442,7 @@ function xbb_set_target()
     XBB_HOST_SHLIB_EXT="dylib"
 
   else
-    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in set target."
+    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
   fi
 
@@ -497,7 +497,7 @@ function xbb_set_compiler_env()
   then
     xbb_prepare_gcc_env
   else
-    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM}, XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM}."
+    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM}, XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
   fi
 }
@@ -644,7 +644,7 @@ function xbb_set_compiler_flags()
     then
       export XBB_MACOSX_DEPLOYMENT_TARGET="11.0"
     else
-      echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH}"
+      echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
       exit 1
     fi
 
@@ -696,7 +696,7 @@ function xbb_set_compiler_flags()
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
     XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
   else
-    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in set compiler flags."
+    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
   fi
 
@@ -811,6 +811,8 @@ function xbb_activate_application_bin()
 
   export PATH
   echo_develop "PATH=${PATH}"
+
+  hash -r
 }
 
 # Add the freshly built dependencies (headers and libraries) to the

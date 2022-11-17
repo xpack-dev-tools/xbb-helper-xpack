@@ -431,7 +431,7 @@ function build_cross_gcc_final()
           then
             config_options+=("--prefix=${APP_PREFIX_NANO}")
           else
-            echo "Unsupported name_suffix '${name_suffix}'"
+            echo "Unsupported name_suffix '${name_suffix}' in ${FUNCNAME[0]}()"
             exit 1
           fi
 

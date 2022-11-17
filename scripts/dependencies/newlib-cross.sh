@@ -203,7 +203,7 @@ function build_cross_newlib()
               "${config_options[@]}"
 
           else
-            echo "Unsupported build_cross_newlib name_suffix '${name_suffix}'"
+            echo "Unsupported build_cross_newlib name_suffix '${name_suffix}' in ${FUNCNAME[0]}()"
             exit 1
           fi
 

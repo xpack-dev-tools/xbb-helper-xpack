@@ -55,7 +55,7 @@ function build_sqlite()
     sqlite_archive="${sqlite_src_folder_name}.tar.gz"
     sqlite_url="https://www.sqlite.org/src/tarball/${sqlite_commit}/${sqlite_archive}"
   else
-    echo "Unsupported sqlite version ${sqlite_version}. Quit."
+    echo "Unsupported sqlite version ${sqlite_version} in ${FUNCNAME[0]}()"
     exit 1
   fi
 

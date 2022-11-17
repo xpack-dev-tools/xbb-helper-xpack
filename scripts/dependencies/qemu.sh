@@ -136,7 +136,7 @@ function build_qemu()
             config_options+=("--target-list=") # None
             config_options+=("--enable-tools")
           else
-            echo "Unsupported qemu_target ${qemu_target}"
+            echo "Unsupported qemu_target ${qemu_target} in ${FUNCNAME[0]}()"
             exit 1
           fi
 
@@ -213,7 +213,7 @@ function build_qemu()
         then
           show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-img"
         else
-          echo "Unsupported qemu_target ${qemu_target}"
+          echo "Unsupported qemu_target ${qemu_target} in ${FUNCNAME[0]}()"
           exit 1
         fi
 

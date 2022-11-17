@@ -88,7 +88,7 @@ do
       ;;
 
     --* )
-      echo "Unsupported option $1."
+      echo "Unsupported option $1 in ${FUNCNAME[0]}()"
       exit 1
       ;;
 

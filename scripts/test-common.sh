@@ -68,12 +68,12 @@ function tests_parse_options()
         ;;
 
       --* )
-        echo "Unsupported option $1"
+        echo "Unsupported option $1 in ${FUNCNAME[0]}()"
         exit 1
         ;;
 
       * )
-        echo "Unsupported arg $1"
+        echo "Unsupported arg $1 in ${FUNCNAME[0]}()"
         exit 1
         ;;
 

@@ -186,7 +186,7 @@ function build_binutils()
             config_options+=("--enable-pgo-build=lto")
 
           else
-            echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in build ${name_prefix}binutils."
+            echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
             exit 1
           fi
 

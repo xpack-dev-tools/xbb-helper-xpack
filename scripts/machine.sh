@@ -55,7 +55,7 @@ function machine_detect()
     then
       XBB_BUILD_ARCH="arm64"
     else
-      echo "Unsupported uname -m ${XBB_BUILD_MACHINE}"
+      echo "Unsupported uname -m ${XBB_BUILD_MACHINE} in ${FUNCNAME[0]}()"
       exit 1
     fi
 
@@ -84,7 +84,7 @@ function machine_detect()
       XBB_BUILD_BITS="32"
       XBB_BUILD_ARCH="arm"
     else
-      echo "Unsupported uname -m ${XBB_BUILD_MACHINE}"
+      echo "Unsupported uname -m ${XBB_BUILD_MACHINE} in ${FUNCNAME[0]}()"
       exit 1
     fi
 
@@ -111,7 +111,7 @@ function machine_detect()
       XBB_BUILD_BITS="32"
       XBB_BUILD_ARCH="ia32"
     else
-      echo "Unsupported uname -m ${XBB_BUILD_MACHINE}"
+      echo "Unsupported uname -m ${XBB_BUILD_MACHINE} in ${FUNCNAME[0]}()"
       exit 1
     fi
 
@@ -120,7 +120,7 @@ function machine_detect()
     XBB_BUILD_DISTRO_LOWER_CASE_NAME=$(echo ${XBB_BUILD_DISTRO_NAME} | tr "[:upper:]" "[:lower:]")
 
   else
-    echo "Unsupported uname ${XBB_BUILD_UNAME}"
+    echo "Unsupported uname ${XBB_BUILD_UNAME} in ${FUNCNAME[0]}()"
     exit 1
   fi
 
