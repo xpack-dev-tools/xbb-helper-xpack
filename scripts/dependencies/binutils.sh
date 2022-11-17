@@ -28,6 +28,8 @@ function build_binutils()
   # mingw-w64
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-binutils/trunk/PKGBUILD
 
+  # https://github.com/msys2/MSYS2-packages/blob/master/binutils/PKGBUILD
+
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/binutils.rb
 
 
