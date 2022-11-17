@@ -472,6 +472,11 @@ function build_mingw_gendef()
     shift
   done
 
+  if [ "${has_program_prefix}" != "y" ]
+  then
+    program_prefix="${triplet}-"
+  fi
+
   local mingw_gendef_folder_name="${name_prefix}gendef-${XBB_MINGW_VERSION}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${mingw_gendef_folder_name}"
@@ -521,11 +526,8 @@ function build_mingw_gendef()
           config_options+=("--host=${XBB_HOST_TRIPLET}") # Native!
           config_options+=("--target=${triplet}") # Arch, HB
 
-          if [ "${has_program_prefix}" == "y" ]
-          then
-            # To remove any target specific prefix and leave only gendef[.exe].
-            config_options+=("--program-prefix=${program_prefix}")
-          fi
+          # To remove any target specific prefix and leave only gendef[.exe].
+          config_options+=("--program-prefix=${program_prefix}")
 
           config_options+=("--with-mangle=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
