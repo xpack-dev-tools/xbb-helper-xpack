@@ -984,4 +984,9 @@ function xbb_show_env_develop()
   fi
 }
 
+function xbb_parse_option()
+{
+  echo "$1" | sed -e 's|--[a-zA-Z0-9-]*=||'
+}
+
 # -----------------------------------------------------------------------------
