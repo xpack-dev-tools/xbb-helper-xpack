@@ -91,12 +91,6 @@ function build_binutils()
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
-        if [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
-        then
-          # From MSYS2 MINGW
-          LDFLAGS+=" -Wl,--large-address-aware"
-        fi
-
         # Used to enable wildcard; inspired from arm-none-eabi-gcc.
         LDFLAGS+=" -Wl,${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}/lib/CRT_glob.o"
       fi
