@@ -539,6 +539,8 @@ function build_gcc()
           echo
           echo "Removing unnecessary files..."
 
+          # In the usual configuration, the binaries have no prefixes;
+          # these files are duplicates.
           run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_TARGET_TRIPLET}"-*.exe
 
           # These files are necessary:
