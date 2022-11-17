@@ -111,13 +111,24 @@ function build_mingw_headers()
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-headers-git/PKGBUILD
 
-  local mingw_triplet="${1:-""}"
+  local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
+  local name_prefix="mingw-w64-"
 
-  local name_prefix="x86_64-w64-mingw32-"
-  if [ ! -z "${mingw_triplet}" ]
-  then
-    name_prefix="${mingw_triplet}-"
-  fi
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        name_prefix="${triplet}-"
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
 
   local mingw_headers_folder_name="${name_prefix}headers-${XBB_MINGW_VERSION}"
 
@@ -147,7 +158,7 @@ function build_mingw_headers()
           config_options=()
 
           # Use architecture subfolders.
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}")  # Arch
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}")  # Arch
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           # https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=msvc-160
@@ -159,14 +170,8 @@ function build_mingw_headers()
           config_options+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
-          if [ ! -z "${mingw_triplet}" ]
-          then
-            config_options+=("--host=${mingw_triplet}") # Arch
-            config_options+=("--target=${mingw_triplet}")
-          else
-            config_options+=("--host=${XBB_TARGET_TRIPLET}") # Arch
-            config_options+=("--target=${XBB_TARGET_TRIPLET}")
-          fi
+          config_options+=("--host=${triplet}") # Arch
+          config_options+=("--target=${triplet}")
 
           # config_options+=("--with-tune=generic")
 
@@ -231,13 +236,31 @@ function build_mingw_headers()
 
 function build_mingw_widl()
 {
-  local mingw_triplet="${1:-""}"
+  local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
+  local name_prefix="mingw-w64-"
+  local program_prefix=""
+  local has_program_prefix="n"
 
-  local name_prefix="x86_64-w64-mingw32-"
-  if [ ! -z "${mingw_triplet}" ]
-  then
-    name_prefix="${mingw_triplet}-"
-  fi
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        name_prefix="${triplet}-"
+        ;;
+
+      --program-prefix=* )
+        program_prefix=$(xbb_parse_option "$1")
+        has_program_prefix="y"
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
 
   local mingw_widl_folder_name="${name_prefix}widl-${XBB_MINGW_VERSION}"
 
@@ -285,14 +308,12 @@ function build_mingw_widl()
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}") # Native!
-          if [ ! -z "${mingw_triplet}" ]
-          then
-            config_options+=("--target=${mingw_triplet}") # Arch, HB
-          else
-            config_options+=("--target=${XBB_TARGET_TRIPLET}")
+          config_options+=("--target=${triplet}") # Arch, HB
 
-            # To remove any target specific prefix and leave only widl.exe.
-            config_options+=("--program-prefix=")
+          if [ "${has_program_prefix}" == "y" ]
+          then
+            # To remove any target specific prefix and leave only widl[.exe].
+            config_options+=("--program-prefix=${program_prefix}")
           fi
 
           config_options+=("--with-widl-includedir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include")
@@ -329,13 +350,24 @@ function build_mingw_widl()
 # Fails on macOS, due to <malloc.h>.
 function build_mingw_libmangle()
 {
-  local mingw_triplet="${1:-""}"
+  local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
+  local name_prefix="mingw-w64-"
 
-  local name_prefix="x86_64-w64-mingw32-"
-  if [ ! -z "${mingw_triplet}" ]
-  then
-    name_prefix="${mingw_triplet}-"
-  fi
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        name_prefix="${triplet}-"
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
 
   local mingw_libmangle_folder_name="${name_prefix}libmangle-${XBB_MINGW_VERSION}"
 
@@ -383,12 +415,7 @@ function build_mingw_libmangle()
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}") # Native!
-          if [ ! -z "${mingw_triplet}" ]
-          then
-            config_options+=("--target=${mingw_triplet}") # Arch, HB
-          else
-            config_options+=("--target=${XBB_TARGET_TRIPLET}")
-          fi
+          config_options+=("--target=${triplet}") # Arch, HB
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/libmangle/configure" \
             "${config_options[@]}"
@@ -419,13 +446,31 @@ function build_mingw_libmangle()
 
 function build_mingw_gendef()
 {
-  local mingw_triplet="${1:-""}"
+  local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
+  local name_prefix="mingw-w64-"
+  local program_prefix=""
+  local has_program_prefix="n"
 
-  local name_prefix="x86_64-w64-mingw32-"
-  if [ ! -z "${mingw_triplet}" ]
-  then
-    name_prefix="${mingw_triplet}-"
-  fi
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        name_prefix="${triplet}-"
+        ;;
+
+      --program-prefix=* )
+        program_prefix=$(xbb_parse_option "$1")
+        has_program_prefix="y"
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
 
   local mingw_gendef_folder_name="${name_prefix}gendef-${XBB_MINGW_VERSION}"
 
@@ -474,13 +519,12 @@ function build_mingw_gendef()
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}") # Native!
-          if [ ! -z "${mingw_triplet}" ]
+          config_options+=("--target=${triplet}") # Arch, HB
+
+          if [ "${has_program_prefix}" == "y" ]
           then
-            config_options+=("--target=${mingw_triplet}") # Arch, HB
-            config_options+=("--program-prefix=${name_prefix}")
-          else
-            config_options+=("--target=${XBB_TARGET_TRIPLET}")
-            config_options+=("--program-prefix=")
+            # To remove any target specific prefix and leave only gendef[.exe].
+            config_options+=("--program-prefix=${program_prefix}")
           fi
 
           config_options+=("--with-mangle=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
@@ -520,13 +564,24 @@ function build_mingw_crt()
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-crt-git/PKGBUILD
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
 
-  local mingw_triplet="${1:-""}"
+  local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
+  local name_prefix="mingw-w64-"
 
-  local name_prefix="x86_64-w64-mingw32-"
-  if [ ! -z "${mingw_triplet}" ]
-  then
-    name_prefix="${mingw_triplet}-"
-  fi
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        name_prefix="${triplet}-"
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
 
   local mingw_crt_folder_name="${name_prefix}crt-${XBB_MINGW_VERSION}"
 
@@ -589,7 +644,7 @@ function build_mingw_crt()
           config_options=()
 
           # Use architecture subfolders.
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}")  # Arch
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}")  # Arch
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
@@ -600,39 +655,20 @@ function build_mingw_crt()
           config_options+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
-          if [ ! -z "${mingw_triplet}" ]
+          config_options+=("--host=${triplet}") # Arch
+          config_options+=("--target=${triplet}")
+
+          if [ "${triplet}" == "x86_64-w64-mingw32" ]
           then
-            config_options+=("--host=${mingw_triplet}") # Arch
-            config_options+=("--target=${mingw_triplet}")
-
-            if [ "${mingw_triplet}" == "x86_64-w64-mingw32" ]
-            then
-              config_options+=("--disable-lib32") # Arch, HB
-              config_options+=("--enable-lib64") # Arch, HB
-            elif [ "${mingw_triplet}" == "i686-w64-mingw32" ]
-            then
-              config_options+=("--enable-lib32") # Arch, HB
-              config_options+=("--disable-lib64") # Arch, HB
-            else
-              echo "Unsupported mingw_triplet ${mingw_triplet}."
-              exit 1
-            fi
+            config_options+=("--disable-lib32") # Arch, HB
+            config_options+=("--enable-lib64") # Arch, HB
+          elif [ "${triplet}" == "i686-w64-mingw32" ]
+          then
+            config_options+=("--enable-lib32") # Arch, HB
+            config_options+=("--disable-lib64") # Arch, HB
           else
-            config_options+=("--host=${XBB_TARGET_TRIPLET}") # Arch
-            config_options+=("--target=${XBB_TARGET_TRIPLET}")
-
-            if [ "${XBB_HOST_ARCH}" == "x64" ]
-            then
-              config_options+=("--disable-lib32")
-              config_options+=("--enable-lib64")
-            elif [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
-            then
-              config_options+=("--enable-lib32")
-              config_options+=("--disable-lib64")
-            else
-              echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in build mingw crt."
-              exit 1
-            fi
+            echo "Unsupported triplet ${triplet} in ${FUNCNAME[0]}()"
+            exit 1
           fi
 
           config_options_common+=("--enable-wildcard")
@@ -659,7 +695,7 @@ function build_mingw_crt()
         # make install-strip
         run_verbose make install-strip
 
-        ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}"
+        ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_crt_folder_name}/make-output-$(ndate).txt"
     )
@@ -683,13 +719,29 @@ function build_mingw_winpthreads()
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-winpthreads-git/PKGBUILD
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
 
-  local mingw_triplet="${1:-""}"
+  local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
+  local name_prefix="mingw-w64-"
+  local disable_shared="n"
 
-  local name_prefix="x86_64-w64-mingw32-"
-  if [ ! -z "${mingw_triplet}" ]
-  then
-    name_prefix="${mingw_triplet}-"
-  fi
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        name_prefix="${triplet}-"
+        ;;
+
+      --disable-shared )
+        disable_shared="y"
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
 
   local mingw_build_winpthreads_folder_name="${name_prefix}winpthreads-${XBB_MINGW_VERSION}"
 
@@ -736,31 +788,25 @@ function build_mingw_winpthreads()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}") # Arch /usr
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}") # Arch /usr
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
           config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
-          if [ ! -z "${mingw_triplet}" ]
-          then
-            config_options+=("--host=${mingw_triplet}") # Arch
-            config_options+=("--target=${mingw_triplet}")
-          else
-            config_options+=("--host=${XBB_TARGET_TRIPLET}") # Arch
-            config_options+=("--target=${XBB_TARGET_TRIPLET}")
-          fi
+          config_options+=("--host=${triplet}") # Arch
+          config_options+=("--target=${triplet}")
 
           config_options+=("--enable-static") # Arch
 
-          if [ ! -z "${mingw_triplet}" ]
+          if [ "${disable_shared}" == "y" ]
           then
-            config_options+=("--enable-shared") # Arch
-          else
             # This prevents references to libwinpthread-1.dll, which is
             # particularly useful with -static-libstdc++, otherwise the
             # result is not exactly static.
             # This also requires disabling shared in the GCC configuration.
             config_options+=("--disable-shared")
+          else
+            config_options+=("--enable-shared") # Arch
           fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winpthreads/configure" \
@@ -783,12 +829,12 @@ function build_mingw_winpthreads()
         # GCC installs all DLLs in lib; for consistency, copy
         # libwinpthread-1.dll there too. Normally not needed, as
         # shared is disabled.
-        if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/bin/libwinpthread-1.dll" ]
+        if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" ]
         then
-          run_verbose cp -v "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/bin/libwinpthread-1.dll" \
-            "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/lib/"
+          run_verbose cp -v "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" \
+            "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib/"
 
-          run_verbose ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}/lib"
+          run_verbose ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib"
         fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_build_winpthreads_folder_name}/make-output-$(ndate).txt"
@@ -810,13 +856,24 @@ function build_mingw_winpthreads()
 
 function build_mingw_winstorecompat()
 {
-  local mingw_triplet="${1:-""}"
+  local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
+  local name_prefix="mingw-w64-"
 
-  local name_prefix="x86_64-w64-mingw32-"
-  if [ ! -z "${mingw_triplet}" ]
-  then
-    name_prefix="${mingw_triplet}-"
-  fi
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        name_prefix="${triplet}-"
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
 
   local mingw_build_winstorecompat_folder_name="${name_prefix}winstorecompat-${XBB_MINGW_VERSION}"
 
@@ -860,19 +917,12 @@ function build_mingw_winstorecompat()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${mingw_triplet}") # Arch /usr
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}") # Arch /usr
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
-          config_options+=("--host=${mingw_triplet}") # Arch
-          if [ ! -z "${mingw_triplet}" ]
-          then
-            config_options+=("--host=${mingw_triplet}") # Arch
-            config_options+=("--target=${mingw_triplet}")
-          else
-            config_options+=("--host=${XBB_TARGET_TRIPLET}") # Arch
-            config_options+=("--target=${XBB_TARGET_TRIPLET}")
-          fi
+          config_options+=("--host=${triplet}") # Arch
+          config_options+=("--target=${triplet}")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winstorecompat/configure" \
             "${config_options[@]}"
