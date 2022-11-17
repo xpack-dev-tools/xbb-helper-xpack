@@ -44,7 +44,6 @@ function build_mingw_gcc_first()
 
   export mingw_gcc_version="$1"
   local mingw_triplet="$2"
-  local name_suffix="${3:-""}"
 
   # Number
   local mingw_gcc_version_major=$(echo ${mingw_gcc_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
@@ -54,9 +53,9 @@ function build_mingw_gcc_first()
   local mingw_gcc_archive="${mingw_gcc_src_folder_name}.tar.xz"
   local mingw_gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${mingw_gcc_version}/${mingw_gcc_archive}"
 
-  export mingw_gcc_folder_name="${mingw_triplet}-gcc-${mingw_gcc_version}${name_suffix}"
+  export mingw_gcc_folder_name="${mingw_triplet}-gcc-${mingw_gcc_version}"
 
-  local mingw_gcc_step1_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_triplet}-gcc-first-${mingw_gcc_version}${name_suffix}-installed"
+  local mingw_gcc_step1_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_triplet}-gcc-first-${mingw_gcc_version}-installed"
   if [ ! -f "${mingw_gcc_step1_stamp_file_path}" ]
   then
 
@@ -73,7 +72,7 @@ function build_mingw_gcc_first()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
 
-      xbb_activate_dependencies_dev "${name_suffix}"
+      xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -104,7 +103,7 @@ function build_mingw_gcc_first()
           xbb_show_env_develop
 
           echo
-          echo "Running ${mingw_triplet}-gcc${name_suffix} first configure..."
+          echo "Running ${mingw_triplet}-gcc first configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -118,9 +117,9 @@ function build_mingw_gcc_first()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}") # Arch /usr
-          config_options+=("--libexecdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/lib") # Arch /usr/lib
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # Arch /usr
+          config_options+=("--libexecdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib") # Arch /usr/lib
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}") # Same as BUILD for bootstrap
@@ -154,12 +153,12 @@ function build_mingw_gcc_first()
 
           # In file included from /Host/home/ilg/Work/mingw-w64-gcc-11.3.0-1/win32-x64/sources/gcc-11.3.0/libcc1/findcomp.cc:28:
           # /Host/home/ilg/Work/mingw-w64-gcc-11.3.0-1/win32-x64/sources/gcc-11.3.0/libcc1/../gcc/system.h:698:10: fatal error: gmp.h: No such file or directory
-          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--with-mpc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--with-isl=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-mpc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-isl=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib")
@@ -224,7 +223,7 @@ function build_mingw_gcc_first()
 
       (
         echo
-        echo "Running ${mingw_triplet}-gcc${name_suffix} first make..."
+        echo "Running ${mingw_triplet}-gcc first make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS} all-gcc
@@ -240,16 +239,15 @@ function build_mingw_gcc_first()
     touch "${mingw_gcc_step1_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet}-gcc${name_suffix} first already installed."
+    echo "Component ${mingw_triplet}-gcc first already installed."
   fi
 }
 
 function build_mingw_gcc_final()
 {
   local mingw_triplet="$1"
-  local name_suffix="${2:-""}"
 
-  local mingw_gcc_final_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_triplet}-gcc-final-${mingw_gcc_version}${name_suffix}-installed"
+  local mingw_gcc_final_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_triplet}-gcc-final-${mingw_gcc_version}-installed"
   if [ ! -f "${mingw_gcc_final_stamp_file_path}" ]
   then
 
@@ -277,7 +275,7 @@ function build_mingw_gcc_final()
       xbb_show_env_develop
 
       echo
-      echo "Running ${mingw_triplet}-gcc${name_suffix} final configure..."
+      echo "Running ${mingw_triplet}-gcc final configure..."
 
       run_verbose make -j configure-target-libgcc
 
@@ -291,7 +289,7 @@ function build_mingw_gcc_final()
       fi
 
       echo
-      echo "Running ${mingw_triplet}-gcc${name_suffix} final make..."
+      echo "Running ${mingw_triplet}-gcc final make..."
 
       # Build.
       run_verbose make -j ${XBB_JOBS}
@@ -299,18 +297,15 @@ function build_mingw_gcc_final()
       # make install-strip
       run_verbose make install-strip
 
-      if [ -z "${name_suffix}"]
-      then
-        (
-          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}"
-          run_verbose find . -name '*.dll'
-          # The DLLs are expected to be in the /${mingw_triplet}/lib folder.
-          run_verbose find bin lib -name '*.dll' -exec cp -v '{}' "${mingw_triplet}/lib" ';'
-        )
-      fi
+      (
+        cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+        run_verbose find . -name '*.dll'
+        # The DLLs are expected to be in the /${mingw_triplet}/lib folder.
+        run_verbose find bin lib -name '*.dll' -exec cp -v '{}' "${mingw_triplet}/lib" ';'
+      )
 
       # Remove weird files like x86_64-w64-mingw32-x86_64-w64-mingw32-c++.exe
-      run_verbose rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin/${mingw_triplet}-${mingw_triplet}-"*.exe
+      run_verbose rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${mingw_triplet}-${mingw_triplet}-"*.exe
 
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}/make-final-output-$(ndate).txt"
 
@@ -323,9 +318,9 @@ function build_mingw_gcc_final()
         xbb_activate_installed_bin
 
         echo
-        echo "Stripping ${mingw_triplet}-gcc${name_suffix} libraries..."
+        echo "Stripping ${mingw_triplet}-gcc libraries..."
 
-        cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}" # ! usr
+        cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" # ! usr
 
         set +e
         find ${mingw_triplet} \
@@ -349,40 +344,22 @@ function build_mingw_gcc_final()
       fi
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}/strip-final-output-$(ndate).txt"
 
-    # Run the local tests only for the bootstrap, the tests for the final
-    # version are performed at the end.
-    if [ "${name_suffix}" == "-bootstrap" ]
-    then
-      (
-        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-        then
-          # The tests also need the libraries DLLs; later on are copied.
-          export WINEPATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/bin"
-        fi
-        test_mingw2_gcc "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin" "${mingw_triplet}" "${name_suffix}"
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}/test-final-output-$(ndate).txt"
-    fi
-
     hash -r
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${mingw_gcc_final_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet}-gcc${name_suffix} final already installed."
+    echo "Component ${mingw_triplet}-gcc final already installed."
   fi
 
-  if [ -z "${name_suffix}" ]
-  then
-    tests_add "test_mingw2_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin" "${mingw_triplet}" "${name_suffix}"
-  fi
+  tests_add "test_mingw2_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${mingw_triplet}"
 }
 
 function test_mingw2_gcc()
 {
   local test_bin_path="$1"
   local mingw_triplet="$2"
-  local name_suffix="${3:-""}"
 
   (
     CC="${test_bin_path}/${mingw_triplet}-gcc"
@@ -402,7 +379,7 @@ function test_mingw2_gcc()
     WIDL="${test_bin_path}/${mingw_triplet}-widl"
 
     echo
-    echo "Checking the ${mingw_triplet}-gcc${name_suffix} shared libraries..."
+    echo "Checking the ${mingw_triplet}-gcc shared libraries..."
 
     show_libs "${CC}"
     show_libs "${CXX}"
@@ -423,7 +400,7 @@ function test_mingw2_gcc()
     show_libs "$(${CC} --print-prog-name=lto-wrapper)"
 
     echo
-    echo "Testing if ${mingw_triplet}-gcc${name_suffix} binaries start properly..."
+    echo "Testing if ${mingw_triplet}-gcc binaries start properly..."
 
     run_app "${CC}" --version
     run_app "${CXX}" --version
@@ -445,14 +422,10 @@ function test_mingw2_gcc()
     run_app "${GCOV}-dump" --version
     run_app "${GCOV}-tool" --version
 
-    # Not necessary in the bootstrap.
-    if [ -z "${name_suffix}" ]
-    then
-      run_app "${GENDEF}" --help
-    fi
+    run_app "${GENDEF}" --help
 
     echo
-    echo "Showing the ${mingw_triplet}-gcc${name_suffix} configurations..."
+    echo "Showing the ${mingw_triplet}-gcc configurations..."
 
     run_app "${CC}" --help
     run_app "${CC}" -v
@@ -484,11 +457,11 @@ function test_mingw2_gcc()
     run_app "${CXX}" -print-prog-name=cc1plus
 
     echo
-    echo "Testing if ${mingw_triplet}-gcc${name_suffix} compiles simple programs..."
+    echo "Testing if ${mingw_triplet}-gcc compiles simple programs..."
 
-    rm -rf "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"
-    mkdir -pv "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"
-    cd "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc${name_suffix}"
+    rm -rf "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc"
+    mkdir -pv "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc"
+    cd "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc"
 
     echo
     echo "pwd: $(pwd)"
@@ -527,9 +500,9 @@ function test_mingw2_gcc()
     # -------------------------------------------------------------------------
 
     # Run tests in all 3 cases.
-    test_mingw2_gcc_one "${test_bin_path}" "${mingw_triplet}" "" "" "${name_suffix}"
-    test_mingw2_gcc_one "${test_bin_path}" "${mingw_triplet}" "static-lib-" "" "${name_suffix}"
-    test_mingw2_gcc_one "${test_bin_path}" "${mingw_triplet}" "static-" "" "${name_suffix}"
+    test_mingw2_gcc_one "${test_bin_path}" "${mingw_triplet}" "" ""
+    test_mingw2_gcc_one "${test_bin_path}" "${mingw_triplet}" "static-lib-" ""
+    test_mingw2_gcc_one "${test_bin_path}" "${mingw_triplet}" "static-" ""
 
     # -------------------------------------------------------------------------
   )
@@ -541,7 +514,6 @@ function test_mingw2_gcc_one()
   local mingw_triplet="$2"
   local prefix="$3" # "", "static-lib-", "static-"
   local suffix="$4" # ""; reserved for something like "-bootstrap"
-  local name_suffix="${5:-""}"
 
   if [ "${prefix}" == "static-lib-" ]
   then
