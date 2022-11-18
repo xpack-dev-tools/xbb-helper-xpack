@@ -844,9 +844,25 @@ function test_gcc()
       test_gcc_one ""
     )
 
-    # This is the recommended use case, and it is expected to work
-    # properly on all platforms.
-    test_gcc_one "static-lib-"
+    (
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      then
+        # For libwinpthread-1.dll, possibly other.
+        if [ "$(uname -o)" == "Msys" ]
+        then
+          export PATH="${test_bin_path}/../lib;${PATH:-}"
+          echo "PATH=${PATH}"
+        elif [ "$(uname)" == "Linux" ]
+        then
+          export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
+          echo "WINEPATH=${WINEPATH}"
+        fi
+      fi
+      
+      # This is the recommended use case, and it is expected to work
+      # properly on all platforms.
+      test_gcc_one "static-lib-"
+    )
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
