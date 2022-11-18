@@ -358,6 +358,14 @@ function build_gcc()
             then
               config_options+=("--enable-multilib") # Arch
 
+              # From Ubuntu 18.04.
+              config_options+=("--enable-multiarch")
+              config_options+=("--with-arch-32=i686")
+              config_options+=("--with-abi=m64")
+              # patchelf gets confused by x32 shared libraries.
+              # config_options+=("--with-multilib-list=m32,m64,mx32")
+              config_options+=("--with-multilib-list=m32,m64")
+
               config_options+=("--with-arch=x86-64")
               config_options+=("--with-tune=generic")
               # Support for Intel Memory Protection Extensions (MPX).
