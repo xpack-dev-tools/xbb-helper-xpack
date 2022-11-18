@@ -899,6 +899,10 @@ function test_gcc()
       # On Linux static linking is highly discouraged
       echo "Skip --static"
       # test_gcc_one "static-"
+    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    then
+      # On macOS static linking is not supported.
+      echo "Skip --static"
     fi
 
     # -------------------------------------------------------------------------
