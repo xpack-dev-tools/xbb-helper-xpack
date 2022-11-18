@@ -49,12 +49,39 @@ function build_binutils()
   # 2022-08-05, "2.39"
 
   local binutils_version="$1"
-  local mingw_triplet="${2:-""}"
+  shift
 
+  local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix=""
-  if [ ! -z "${mingw_triplet}" ]
+  local program_prefix=""
+  local has_program_prefix="n"
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        name_prefix="${triplet}-"
+        ;;
+
+      --program-prefix=* )
+        program_prefix=$(xbb_parse_option "$1")
+        has_program_prefix="y"
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
+
+  if [ "${has_program_prefix}" == "y" ]
   then
-    name_prefix="${mingw_triplet}-"
+    name_prefix="${program_prefix}"
+  else
+    program_prefix="${triplet}-"
   fi
 
   local binutils_src_folder_name="binutils-${binutils_version}"
@@ -127,7 +154,7 @@ function build_binutils()
           config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
 
-          config_options+=("--program-prefix=${name_prefix}")
+          config_options+=("--program-prefix=${program_prefix}")
           config_options+=("--program-suffix=")
 
           config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/info")
@@ -137,12 +164,7 @@ function build_binutils()
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
-          if [ ! -z "${mingw_triplet}" ]
-          then
-            config_options+=("--target=${mingw_triplet}") # Arch, HB
-          else
-            config_options+=("--target=${XBB_TARGET_TRIPLET}")
-          fi
+          config_options+=("--target=${triplet}") # Arch, HB
 
           config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
 
@@ -168,10 +190,11 @@ function build_binutils()
           elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
 
-            if [ -z "${mingw_triplet}" ]
+            if [ -z "${triplet}" ]
             then
               config_options+=("--enable-pgo-build=lto") # Arch
             fi
+
             config_options+=("--enable-ld=default") # Arch
 
             # config_options+=("--enable-targets=x86_64-pep,bpf-unknown-none")
@@ -198,7 +221,7 @@ function build_binutils()
           config_options+=("--enable-libssp")
           config_options+=("--enable-lto")
 
-          if [ ! -z "${mingw_triplet}" ]
+          if [ ! -z "${triplet}" ]
           then
             # The mingw binaries have architecture specific names,
             # so multilib makes no sense.
@@ -219,9 +242,9 @@ function build_binutils()
           config_options+=("--enable-shared") # Arch
           config_options+=("--enable-static")
           config_options+=("--enable-targets=all") # HB
-          if [ ! -z "${mingw_triplet}" ]
+          if [ ! -z "${triplet}" ]
           then
-            config_options+=("--enable-targets=${mingw_triplet}") # HB
+            config_options+=("--enable-targets=${triplet}") # HB
           fi
           config_options+=("--enable-threads") # Arch
 
