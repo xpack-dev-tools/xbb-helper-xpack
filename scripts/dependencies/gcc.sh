@@ -827,7 +827,7 @@ function test_gcc()
         export LD_RUN_PATH="$(dirname $(${CC} --print-file-name=libgcc_s.so))"
         echo
         echo "LD_RUN_PATH=${LD_RUN_PATH}"
-      elif [ "${XBB_HOST_PLATFORM}" == "win32" -a -z "" ]
+      elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         # For libwinpthread-1.dll, possibly other.
         if [ "$(uname -o)" == "Msys" ]
