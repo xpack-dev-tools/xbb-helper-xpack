@@ -558,6 +558,15 @@ function build_gcc()
         elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
           show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.dylib)"
+        elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
+        then
+          if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libstdc++-6.dll" ]
+          then
+            # For unknown reasons, `libstdc++-6.dll` is installed only in
+            # the `bin` folder. Copy it to `lib` too.
+            run_verbose install -c -m 755 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libstdc++-6.dll" \
+                "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+          fi
         fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-output-$(ndate).txt"
