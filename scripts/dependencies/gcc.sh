@@ -696,6 +696,7 @@ function test_gcc()
 
     CC="${test_bin_path}/gcc"
     CXX="${test_bin_path}/g++"
+    F90="${test_bin_path}/gfortran"
 
     if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
@@ -718,6 +719,10 @@ function test_gcc()
 
     show_libs "${CC}"
     show_libs "${CXX}"
+    if [ -f "${F90}" ]
+    then
+      show_libs "${F90}"
+    fi
 
     if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
@@ -747,6 +752,10 @@ function test_gcc()
 
     run_app "${CC}" --version
     run_app "${CXX}" --version
+    if [ -f "${F90}" ]
+    then
+      run_app "${F90}" --version
+    fi
 
     if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
@@ -808,8 +817,8 @@ function test_gcc()
     cp -rv "${helper_folder_path}/tests/wine"/* c-cpp
     chmod -R a+w c-cpp
 
-    # cp -rv "${helper_folder_path}/tests/fortran" .
-    # chmod -R a+w fortran
+    cp -rv "${helper_folder_path}/tests/fortran" .
+    chmod -R a+w fortran
 
     # -------------------------------------------------------------------------
 
@@ -1209,6 +1218,24 @@ function test_gcc_one()
       test_expect "Hello World!" ./${prefix}hello-weak${suffix}
     fi
   )
+
+  (
+    cd fortran
+
+    # There is no static Fortran library.
+    if [ "${prefix}" != "static-lib-" ]
+    then
+      # Test a very simple Fortran (a print).
+      run_app "${F90}" ${VERBOSE_FLAG}  -o "${prefix}hello-f${suffix}${XBB_HOST_DOT_EXE}" hello.f90 ${STATIC_LIBGCC}
+      # The space is expected.
+      test_expect " Hello" "./${prefix}hello-f${suffix}"
+
+      run_app "${F90}" ${VERBOSE_FLAG}  -o "${prefix}concurrent-f${suffix}${XBB_HOST_DOT_EXE}" concurrent.f90 ${STATIC_LIBGCC}
+      run_app "./${prefix}concurrent-f${suffix}"
+    fi
+
+  )
+
 }
 
 # -----------------------------------------------------------------------------
