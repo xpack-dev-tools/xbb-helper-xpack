@@ -534,13 +534,20 @@ function build_gcc()
           rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc-ar"
           rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc-nm"
           rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc-ranlib"
+
+          run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_TARGET_TRIPLET}"-*
+
+        elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+        then
+          echo
+          echo "Removing unnecessary files..."
+
+          run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_TARGET_TRIPLET}"-*
         elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
           echo
           echo "Removing unnecessary files..."
 
-          # In the usual configuration, the binaries have no prefixes;
-          # these files are duplicates.
           run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_TARGET_TRIPLET}"-*.exe
 
           # These files are necessary:
