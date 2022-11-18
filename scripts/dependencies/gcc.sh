@@ -928,7 +928,13 @@ function test_gcc_one()
   if [ "${prefix}" == "static-lib-" ]
   then
       STATIC_LIBGCC="-static-libgcc"
-      STATIC_LIBSTD="-static-libstdc++"
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      then
+        # Force static libwinpthread.
+        STATIC_LIBSTD="-Wl,-Bstatic,-lstdc++,-lpthread,-Bdynamic" # -static-libstdc++"
+      else
+        STATIC_LIBSTD="-static-libstdc++"
+      fi
   elif [ "${prefix}" == "static-" ]
   then
       STATIC_LIBGCC="-static"
