@@ -43,7 +43,27 @@ function build_mingw_gcc_first()
   # 2022-08-19, "12.2.0"
 
   export mingw_gcc_version="$1"
-  local mingw_triplet="$2"
+  shift
+
+  local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
+  local name_prefix
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
+
+  name_prefix="${triplet}-"
 
   # Number
   local mingw_gcc_version_major=$(echo ${mingw_gcc_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
@@ -53,9 +73,9 @@ function build_mingw_gcc_first()
   local mingw_gcc_archive="${mingw_gcc_src_folder_name}.tar.xz"
   local mingw_gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${mingw_gcc_version}/${mingw_gcc_archive}"
 
-  export mingw_gcc_folder_name="${mingw_triplet}-gcc-${mingw_gcc_version}"
+  export mingw_gcc_folder_name="${name_prefix}gcc-${mingw_gcc_version}"
 
-  local mingw_gcc_step1_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_triplet}-gcc-first-${mingw_gcc_version}-installed"
+  local mingw_gcc_step1_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${name_prefix}gcc-first-${mingw_gcc_version}-installed"
   if [ ! -f "${mingw_gcc_step1_stamp_file_path}" ]
   then
 
@@ -103,7 +123,7 @@ function build_mingw_gcc_first()
           xbb_show_env_develop
 
           echo
-          echo "Running ${mingw_triplet}-gcc first configure..."
+          echo "Running ${name_prefix}gcc first configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -123,11 +143,11 @@ function build_mingw_gcc_first()
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}") # Same as BUILD for bootstrap
-          config_options+=("--target=${mingw_triplet}") # Arch
+          config_options+=("--target=${triplet}") # Arch
 
           if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
-            config_options+=("--program-prefix=${mingw_triplet}-")
+            config_options+=("--program-prefix=${triplet}-")
 
             # config_options+=("--with-arch=x86-64")
             # config_options+=("--with-tune=generic")
@@ -136,7 +156,7 @@ function build_mingw_gcc_first()
 
             # This should point to the location where mingw headers are,
             # relative to --prefix, but starting with /.
-            # config_options+=("--with-native-system-header-dir=${mingw_triplet}/include")
+            # config_options+=("--with-native-system-header-dir=${triplet}/include")
 
             # Disable look up installations paths in the registry.
             config_options+=("--disable-win32-registry")
@@ -223,7 +243,7 @@ function build_mingw_gcc_first()
 
       (
         echo
-        echo "Running ${mingw_triplet}-gcc first make..."
+        echo "Running ${name_prefix}gcc first make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS} all-gcc
@@ -239,15 +259,33 @@ function build_mingw_gcc_first()
     touch "${mingw_gcc_step1_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet}-gcc first already installed."
+    echo "Component ${name_prefix}gcc first already installed."
   fi
 }
 
 function build_mingw_gcc_final()
 {
-  local mingw_triplet="$1"
+  local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
+  local name_prefix
 
-  local mingw_gcc_final_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${mingw_triplet}-gcc-final-${mingw_gcc_version}-installed"
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
+
+  name_prefix="${triplet}-"
+
+  local mingw_gcc_final_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${name_prefix}gcc-final-${mingw_gcc_version}-installed"
   if [ ! -f "${mingw_gcc_final_stamp_file_path}" ]
   then
 
@@ -275,21 +313,21 @@ function build_mingw_gcc_final()
       xbb_show_env_develop
 
       echo
-      echo "Running ${mingw_triplet}-gcc final configure..."
+      echo "Running ${name_prefix}gcc final configure..."
 
       run_verbose make -j configure-target-libgcc
 
-      if false # [ -f "${mingw_triplet}/libgcc/auto-target.h" ]
+      if false # [ -f "${triplet}/libgcc/auto-target.h" ]
       then
         # Might no longer be needed with modern GCC.
-        run_verbose grep 'HAVE_SYS_MMAN_H' "${mingw_triplet}/libgcc/auto-target.h"
+        run_verbose grep 'HAVE_SYS_MMAN_H' "${triplet}/libgcc/auto-target.h"
         run_verbose sed -i.bak -e 's|#define HAVE_SYS_MMAN_H 1|#define HAVE_SYS_MMAN_H 0|' \
-          "${mingw_triplet}/libgcc/auto-target.h"
-        run_verbose diff "${mingw_triplet}/libgcc/auto-target.h.bak" "${mingw_triplet}/libgcc/auto-target.h" || true
+          "${triplet}/libgcc/auto-target.h"
+        run_verbose diff "${triplet}/libgcc/auto-target.h.bak" "${triplet}/libgcc/auto-target.h" || true
       fi
 
       echo
-      echo "Running ${mingw_triplet}-gcc final make..."
+      echo "Running ${name_prefix}gcc final make..."
 
       # Build.
       run_verbose make -j ${XBB_JOBS}
@@ -300,12 +338,12 @@ function build_mingw_gcc_final()
       (
         cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
         run_verbose find . -name '*.dll'
-        # The DLLs are expected to be in the /${mingw_triplet}/lib folder.
-        run_verbose find bin lib -name '*.dll' -exec cp -v '{}' "${mingw_triplet}/lib" ';'
+        # The DLLs are expected to be in the /${triplet}/lib folder.
+        run_verbose find bin lib -name '*.dll' -exec cp -v '{}' "${triplet}/lib" ';'
       )
 
       # Remove weird files like x86_64-w64-mingw32-x86_64-w64-mingw32-c++.exe
-      run_verbose rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${mingw_triplet}-${mingw_triplet}-"*.exe
+      run_verbose rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${triplet}-${triplet}-"*
 
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}/make-final-output-$(ndate).txt"
 
@@ -318,27 +356,27 @@ function build_mingw_gcc_final()
         xbb_activate_installed_bin
 
         echo
-        echo "Stripping ${mingw_triplet}-gcc libraries..."
+        echo "Stripping ${name_prefix}gcc libraries..."
 
         cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" # ! usr
 
         set +e
-        find ${mingw_triplet} \
+        find ${triplet} \
           -name '*.so' -type f \
           -print \
-          -exec "${mingw_triplet}-strip" --strip-debug '{}' ';'
-        find ${mingw_triplet} \
+          -exec "${triplet}-strip" --strip-debug '{}' ';'
+        find ${triplet} \
           -name '*.so.*'  \
           -type f \
           -print \
-          -exec "${mingw_triplet}-strip" --strip-debug '{}' ';'
+          -exec "${triplet}-strip" --strip-debug '{}' ';'
         # Note: without ranlib, windows builds failed.
-        find ${mingw_triplet} lib/gcc/${mingw_triplet} \
+        find ${triplet} lib/gcc/${triplet} \
           -name '*.a'  \
           -type f  \
           -print \
-          -exec "${mingw_triplet}-strip" --strip-debug '{}' ';' \
-          -exec "${mingw_triplet}-ranlib" '{}' ';'
+          -exec "${triplet}-strip" --strip-debug '{}' ';' \
+          -exec "${triplet}-ranlib" '{}' ';'
         set -e
 
       fi
@@ -350,36 +388,36 @@ function build_mingw_gcc_final()
     touch "${mingw_gcc_final_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet}-gcc final already installed."
+    echo "Component ${name_prefix}gcc final already installed."
   fi
 
-  tests_add "test_mingw2_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${mingw_triplet}"
+  tests_add "test_mingw2_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"
 }
 
 function test_mingw2_gcc()
 {
   local test_bin_path="$1"
-  local mingw_triplet="$2"
+  local triplet="$2"
 
   (
-    CC="${test_bin_path}/${mingw_triplet}-gcc"
-    CXX="${test_bin_path}/${mingw_triplet}-g++"
-    F90="${test_bin_path}/${mingw_triplet}-gfortran"
+    CC="${test_bin_path}/${triplet}-gcc"
+    CXX="${test_bin_path}/${triplet}-g++"
+    F90="${test_bin_path}/${triplet}-gfortran"
 
-    AR="${test_bin_path}/${mingw_triplet}-gcc-ar"
-    NM="${test_bin_path}/${mingw_triplet}-gcc-nm"
-    RANLIB="${test_bin_path}/${mingw_triplet}-gcc-ranlib"
+    AR="${test_bin_path}/${triplet}-gcc-ar"
+    NM="${test_bin_path}/${triplet}-gcc-nm"
+    RANLIB="${test_bin_path}/${triplet}-gcc-ranlib"
 
-    OBJDUMP="${test_bin_path}/${mingw_triplet}-objdump"
+    OBJDUMP="${test_bin_path}/${triplet}-objdump"
 
-    GCOV="${test_bin_path}/${mingw_triplet}-gcov"
+    GCOV="${test_bin_path}/${triplet}-gcov"
 
-    DLLTOOL="${test_bin_path}/${mingw_triplet}-dlltool"
-    GENDEF="${test_bin_path}/${mingw_triplet}-gendef"
-    WIDL="${test_bin_path}/${mingw_triplet}-widl"
+    DLLTOOL="${test_bin_path}/${triplet}-dlltool"
+    GENDEF="${test_bin_path}/${triplet}-gendef"
+    WIDL="${test_bin_path}/${triplet}-widl"
 
     echo
-    echo "Checking the ${mingw_triplet}-gcc shared libraries..."
+    echo "Checking the ${triplet}-gcc shared libraries..."
 
     show_libs "${CC}"
     show_libs "${CXX}"
@@ -400,7 +438,7 @@ function test_mingw2_gcc()
     show_libs "$(${CC} --print-prog-name=lto-wrapper)"
 
     echo
-    echo "Testing if ${mingw_triplet}-gcc binaries start properly..."
+    echo "Testing if ${triplet}-gcc binaries start properly..."
 
     run_app "${CC}" --version
     run_app "${CXX}" --version
@@ -425,7 +463,7 @@ function test_mingw2_gcc()
     run_app "${GENDEF}" --help
 
     echo
-    echo "Showing the ${mingw_triplet}-gcc configurations..."
+    echo "Showing the ${triplet}-gcc configurations..."
 
     run_app "${CC}" --help
     run_app "${CC}" -v
@@ -457,11 +495,11 @@ function test_mingw2_gcc()
     run_app "${CXX}" -print-prog-name=cc1plus
 
     echo
-    echo "Testing if ${mingw_triplet}-gcc compiles simple programs..."
+    echo "Testing if ${triplet}-gcc compiles simple programs..."
 
-    rm -rf "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc"
-    mkdir -pv "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc"
-    cd "${XBB_TESTS_FOLDER_PATH}/${mingw_triplet}-gcc"
+    rm -rf "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc"
+    mkdir -pv "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc"
+    cd "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc"
 
     echo
     echo "pwd: $(pwd)"
@@ -500,9 +538,9 @@ function test_mingw2_gcc()
     # -------------------------------------------------------------------------
 
     # Run tests in all 3 cases.
-    test_mingw2_gcc_one "${test_bin_path}" "${mingw_triplet}" "" ""
-    test_mingw2_gcc_one "${test_bin_path}" "${mingw_triplet}" "static-lib-" ""
-    test_mingw2_gcc_one "${test_bin_path}" "${mingw_triplet}" "static-" ""
+    test_mingw2_gcc_one "${test_bin_path}" "${triplet}" "" ""
+    test_mingw2_gcc_one "${test_bin_path}" "${triplet}" "static-lib-" ""
+    test_mingw2_gcc_one "${test_bin_path}" "${triplet}" "static-" ""
 
     # -------------------------------------------------------------------------
   )
@@ -529,7 +567,7 @@ function test_mingw2_gcc_one()
     STATIC_LIBSTD=""
 
     # The DLLs are available in the /lib folder.
-    export WINEPATH="${test_bin_path}/../${mingw_triplet}/lib;${WINEPATH:-}"
+    export WINEPATH="${test_bin_path}/../${triplet}/lib;${WINEPATH:-}"
     echo "WINEPATH=${WINEPATH}"
   fi
 
@@ -540,120 +578,120 @@ function test_mingw2_gcc_one()
 
     # Test C compile and link in a single step.
     run_app "${CC}" -v -o "${prefix}simple-hello-c1${suffix}.exe" simple-hello.c ${STATIC_LIBGCC}
-    test_expect_wine "${mingw_triplet}" "${prefix}simple-hello-c1${suffix}.exe" "Hello"
+    test_expect_wine "${triplet}" "${prefix}simple-hello-c1${suffix}.exe" "Hello"
 
     # Test C compile and link in a single step with gc.
     run_app "${CC}" ${VERBOSE_FLAG} -o "${prefix}gc-simple-hello-c1${suffix}.exe" simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC}
-    test_expect_wine "${mingw_triplet}" "${prefix}gc-simple-hello-c1${suffix}.exe" "Hello"
+    test_expect_wine "${triplet}" "${prefix}gc-simple-hello-c1${suffix}.exe" "Hello"
 
     # Test C compile and link in separate steps.
     run_app "${CC}" -o "simple-hello-c.o" -c simple-hello.c -ffunction-sections -fdata-sections
     run_app "${CC}" ${VERBOSE_FLAG} -o "${prefix}simple-hello-c2${suffix}.exe" simple-hello-c.o ${GC_SECTION} ${STATIC_LIBGCC}
-    test_expect_wine "${mingw_triplet}" "${prefix}simple-hello-c2${suffix}.exe" "Hello"
+    test_expect_wine "${triplet}" "${prefix}simple-hello-c2${suffix}.exe" "Hello"
 
     # Test LTO C compile and link in a single step.
     run_app "${CC}" ${VERBOSE_FLAG} -o "${prefix}lto-simple-hello-c1${suffix}.exe" simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
-    test_expect_wine "${mingw_triplet}" "${prefix}lto-simple-hello-c1${suffix}.exe" "Hello"
+    test_expect_wine "${triplet}" "${prefix}lto-simple-hello-c1${suffix}.exe" "Hello"
 
     # Test LTO C compile and link in separate steps.
     run_app "${CC}" -o lto-simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections -flto
     run_app "${CC}" ${VERBOSE_FLAG} -o "${prefix}lto-simple-hello-c2${suffix}.exe" lto-simple-hello-c.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
-    test_expect_wine "${mingw_triplet}" "${prefix}lto-simple-hello-c2${suffix}.exe" "Hello"
+    test_expect_wine "${triplet}" "${prefix}lto-simple-hello-c2${suffix}.exe" "Hello"
 
     # -------------------------------------------------------------------------
 
     # Test C++ compile and link in a single step.
     run_app "${CXX}" -v -o "${prefix}simple-hello-cpp1${suffix}.exe" simple-hello.cpp ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect_wine "${mingw_triplet}" "${prefix}simple-hello-cpp1${suffix}.exe" "Hello"
+    test_expect_wine "${triplet}" "${prefix}simple-hello-cpp1${suffix}.exe" "Hello"
 
     # Test C++ compile and link in a single step with gc.
     run_app "${CXX}" -v -o "${prefix}gc-simple-hello-cpp1${suffix}.exe" simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect_wine "${mingw_triplet}" "${prefix}gc-simple-hello-cpp1${suffix}.exe" "Hello"
+    test_expect_wine "${triplet}" "${prefix}gc-simple-hello-cpp1${suffix}.exe" "Hello"
 
     # Test C++ compile and link in separate steps.
     run_app "${CXX}" -o simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections
     run_app "${CXX}" ${VERBOSE_FLAG} -o "${prefix}simple-hello-cpp2${suffix}.exe" simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect_wine "${mingw_triplet}" "${prefix}simple-hello-cpp2${suffix}.exe" "Hello"
+    test_expect_wine "${triplet}" "${prefix}simple-hello-cpp2${suffix}.exe" "Hello"
 
     # Test LTO C++ compile and link in a single step.
     run_app "${CXX}" ${VERBOSE_FLAG} -o "${prefix}lto-simple-hello-cpp1${suffix}.exe" simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect_wine "${mingw_triplet}" "${prefix}lto-simple-hello-cpp1${suffix}.exe" "Hello"
+    test_expect_wine "${triplet}" "${prefix}lto-simple-hello-cpp1${suffix}.exe" "Hello"
 
     # Test LTO C++ compile and link in separate steps.
     run_app "${CXX}" -o lto-simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections -flto
     run_app "${CXX}" ${VERBOSE_FLAG} -o "${prefix}lto-simple-hello-cpp2${suffix}.exe" lto-simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect_wine "${mingw_triplet}" "${prefix}lto-simple-hello-cpp2${suffix}.exe" "Hello"
+    test_expect_wine "${triplet}" "${prefix}lto-simple-hello-cpp2${suffix}.exe" "Hello"
 
     # -------------------------------------------------------------------------
 
     run_app "${CXX}" ${VERBOSE_FLAG} -o "${prefix}simple-exception${suffix}.exe" simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect_wine "${mingw_triplet}" "${prefix}simple-exception${suffix}.exe" "MyException"
+    test_expect_wine "${triplet}" "${prefix}simple-exception${suffix}.exe" "MyException"
 
     # -O0 is an attempt to prevent any interferences with the optimiser.
     run_app "${CXX}" ${VERBOSE_FLAG} -o "${prefix}simple-str-exception${suffix}.exe" simple-str-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect_wine "${mingw_triplet}" "${prefix}simple-str-exception${suffix}.exe" "MyStringException"
+    test_expect_wine "${triplet}" "${prefix}simple-str-exception${suffix}.exe" "MyStringException"
 
     run_app "${CXX}" ${VERBOSE_FLAG} -o "${prefix}simple-int-exception${suffix}.exe" simple-int-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect_wine "${mingw_triplet}" "${prefix}simple-int-exception${suffix}.exe" "42"
+    test_expect_wine "${triplet}" "${prefix}simple-int-exception${suffix}.exe" "42"
 
     # -------------------------------------------------------------------------
 
     # Test a very simple Objective-C (a printf).
     run_app "${CC}" ${VERBOSE_FLAG} -o "${prefix}simple-objc${suffix}.exe" simple-objc.m -O0 ${STATIC_LIBGCC}
-    test_expect_wine "${mingw_triplet}" "${prefix}simple-objc${suffix}.exe" "Hello World"
+    test_expect_wine "${triplet}" "${prefix}simple-objc${suffix}.exe" "Hello World"
 
     # -------------------------------------------------------------------------
     # Tests borrowed from the llvm-mingw project.
 
     run_app "${CC}" -o "${prefix}hello${suffix}.exe" hello.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-    run_wine "${mingw_triplet}" "${prefix}hello${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}hello${suffix}.exe"
 
     run_app "${CC}" -o "${prefix}setjmp${suffix}.exe" setjmp-patched.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-    run_wine "${mingw_triplet}" "${prefix}setjmp${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}setjmp${suffix}.exe"
 
     run_app "${CC}" -o "${prefix}hello-tls${suffix}.exe" hello-tls.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-    run_wine "${mingw_triplet}" "${prefix}hello-tls${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}hello-tls${suffix}.exe"
 
     run_app "${CC}" -o "${prefix}crt-test${suffix}.exe" crt-test.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-    run_wine "${mingw_triplet}" "${prefix}crt-test${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}crt-test${suffix}.exe"
 
     if [ "${prefix}" != "static-" ]
     then
       run_app "${CC}" -o autoimport-lib.dll autoimport-lib.c -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      show_dlls "${mingw_triplet}-objdump" autoimport-lib.dll
+      show_dlls "${triplet}-objdump" autoimport-lib.dll
 
       run_app "${CC}" -o "${prefix}autoimport-main${suffix}.exe" autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      run_wine "${mingw_triplet}" "${prefix}autoimport-main${suffix}.exe"
+      run_mingw_wine "${triplet}" "${prefix}autoimport-main${suffix}.exe"
     fi
 
     # The IDL output isn't arch specific, but test each arch frontend
     run_app "${WIDL}" -o idltest.h idltest.idl -h
     run_app "${CC}" -o "${prefix}idltest${suffix}.exe" idltest.c -I. -lole32 ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-    run_wine "${mingw_triplet}" "${prefix}idltest${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}idltest${suffix}.exe"
 
     run_app ${CXX} -o "${prefix}hello-cpp${suffix}.exe" hello-cpp.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_wine "${mingw_triplet}" "${prefix}hello-cpp${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}hello-cpp${suffix}.exe"
 
     run_app ${CXX} -o "${prefix}hello-exception${suffix}.exe" hello-exception.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_wine "${mingw_triplet}" "${prefix}hello-exception${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}hello-exception${suffix}.exe"
 
     run_app ${CXX} -o "${prefix}exception-locale${suffix}.exe" exception-locale.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_wine "${mingw_triplet}" "${prefix}exception-locale${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}exception-locale${suffix}.exe"
 
     run_app ${CXX} -o "${prefix}exception-reduced${suffix}.exe" exception-reduced.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_wine "${mingw_triplet}" "${prefix}exception-reduced${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}exception-reduced${suffix}.exe"
 
     run_app ${CXX} -o "${prefix}global-terminate${suffix}.exe" global-terminate.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_wine "${mingw_triplet}" "${prefix}global-terminate${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}global-terminate${suffix}.exe"
 
     run_app ${CXX} -o "${prefix}longjmp-cleanup${suffix}.exe" longjmp-cleanup.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_wine "${mingw_triplet}" "${prefix}longjmp-cleanup${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}longjmp-cleanup${suffix}.exe"
 
     run_app ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_dlls "${mingw_triplet}-objdump" "tlstest-lib.dll"
+    show_dlls "${triplet}-objdump" "tlstest-lib.dll"
 
     run_app ${CXX} -o "${prefix}tlstest-main${suffix}.exe" tlstest-main.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_wine "${mingw_triplet}" "${prefix}tlstest-main${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}tlstest-main${suffix}.exe"
 
     if [ "${prefix}" != "static-" ]
     then
@@ -661,14 +699,14 @@ function test_mingw2_gcc_one()
 
       run_app ${CXX} -o "${prefix}throwcatch-main${suffix}.exe" throwcatch-main.cpp -L. -lthrowcatch-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
 
-      run_wine "${mingw_triplet}" "${prefix}throwcatch-main${suffix}.exe"
+      run_mingw_wine "${triplet}" "${prefix}throwcatch-main${suffix}.exe"
     fi
 
     # On Windows only the -flto linker is capable of understanding weak symbols.
     run_app "${CC}" -c -o "${prefix}hello-weak${suffix}.c.o" hello-weak.c -flto
     run_app "${CC}" -c -o "${prefix}hello-f-weak${suffix}.c.o" hello-f-weak.c -flto
     run_app "${CC}" -o "${prefix}hello-weak${suffix}.exe" "${prefix}hello-weak${suffix}.c.o" "${prefix}hello-f-weak${suffix}.c.o" ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC} -flto
-    test_expect_wine "${mingw_triplet}" "${prefix}hello-weak${suffix}.exe" "Hello World!"
+    test_expect_wine "${triplet}" "${prefix}hello-weak${suffix}.exe" "Hello World!"
   )
 
   # ---------------------------------------------------------------------------
@@ -679,10 +717,10 @@ function test_mingw2_gcc_one()
     # Test a very simple Fortran (a print).
     run_app "${F90}" ${VERBOSE_FLAG}  -o "${prefix}hello-f${suffix}.exe" hello.f90 ${STATIC_LIBGCC}
     # The space is expected.
-    test_expect_wine "${mingw_triplet}" "${prefix}hello-f${suffix}.exe" " Hello"
+    test_expect_wine "${triplet}" "${prefix}hello-f${suffix}.exe" " Hello"
 
     run_app "${F90}" ${VERBOSE_FLAG}  -o "${prefix}concurrent-f${suffix}.exe" concurrent.f90 ${STATIC_LIBGCC}
-    run_wine "${mingw_triplet}" "${prefix}concurrent-f${suffix}.exe"
+    run_mingw_wine "${triplet}" "${prefix}concurrent-f${suffix}.exe"
   )
 
   # ---------------------------------------------------------------------------
@@ -690,7 +728,7 @@ function test_mingw2_gcc_one()
 
 function test_expect_wine()
 {
-  local mingw_triplet="$1"
+  local triplet="$1"
   local app_name="$2"
   local expected="$3"
   shift 3
@@ -699,12 +737,12 @@ function test_expect_wine()
   then
     # TODO: remove absolute path when migrating to xPacks.
     # (for now i686-w64-mingw32-objdump is not available in the Docker image)
-    show_dlls "${mingw_triplet}-objdump" "${app_name}"
+    show_dlls "${triplet}-objdump" "${app_name}"
   fi
 
   # No 32-bit support in XBB wine.
   # module:load_wow64_ntdll failed to load L"\\??\\C:\\windows\\syswow64\\ntdll.dll" error c0000135
-  if [ "${mingw_triplet}" == "x86_64-w64-mingw32" ]
+  if [ "${triplet}" == "x86_64-w64-mingw32" ]
   then
     (
       local wine_path=$(which wine64 2>/dev/null)
@@ -736,24 +774,36 @@ function test_expect_wine()
     )
   else
     echo
-    echo "wine" "${app_name}" "$@" "- ${mingw_triplet} unsupported"
+    echo "wine" "${app_name}" "$@" "- ${triplet} unsupported"
   fi
 }
 
-function run_wine()
+function run_mingw_wine()
 {
-  local mingw_triplet="$1"
+  local triplet="$1"
   local app_name="$2"
   shift 2
 
   if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
-    show_dlls "${mingw_triplet}-objdump" "${app_name}"
+    show_dlls "${triplet}-objdump" "${app_name}"
   fi
 
   # No 32-bit support in XBB wine.
   # module:load_wow64_ntdll failed to load L"\\??\\C:\\windows\\syswow64\\ntdll.dll" error c0000135
-  if [ "${mingw_triplet}" == "x86_64-w64-mingw32" ]
+  if [ "${triplet}" == "x86_64-w64-mingw32" ]
+  then
+    (
+      local wine_path=$(which wine64 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        run_verbose wine64 "${app_name}" "$@"
+      else
+        echo
+        echo "wine64" "${app_name}" "$@" "- not available"
+      fi
+    )
+  elif [ "${triplet}" == "i686-w64-mingw32" ]
   then
     (
       local wine_path=$(which wine 2>/dev/null)
