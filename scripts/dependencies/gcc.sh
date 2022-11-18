@@ -582,6 +582,12 @@ function build_gcc()
             run_verbose install -c -m 755 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libstdc++-6.dll" \
                 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
           fi
+          if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libgfortran-5.dll" ]
+          then
+            # Same for `libgfortran-5.dll`.
+            run_verbose install -c -m 755 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libgfortran-5.dll" \
+                "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+          fi
         fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-output-$(ndate).txt"
