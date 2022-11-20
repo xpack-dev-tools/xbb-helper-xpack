@@ -486,8 +486,8 @@ function xbb_set_compiler_env()
   if [ "${XBB_HOST_PLATFORM}" == "win32" -a "${XBB_TARGET_TRIPLET}" == "${XBB_HOST_TRIPLET}" ]
   then
     # Windows cross build case.
-    export XBB_NATIVE_CC="gcc"
-    export XBB_NATIVE_CXX="g++"
+    export XBB_NATIVE_CC="$(which gcc)"
+    export XBB_NATIVE_CXX="$(which g++)"
 
     xbb_prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
@@ -545,26 +545,26 @@ function xbb_prepare_gcc_env()
 
   xbb_unset_compiler_env
 
-  export CC="${prefix}gcc${suffix}"
-  export CXX="${prefix}g++${suffix}"
+  export CC="$(which ${prefix}gcc${suffix})"
+  export CXX="$(which ${prefix}g++${suffix})"
 
   # These are the special GCC versions, not the binutils ones.
-  export AR="${prefix}gcc-ar${suffix}"
-  export NM="${prefix}gcc-nm${suffix}"
-  export RANLIB="${prefix}gcc-ranlib${suffix}"
+  export AR="$(which ${prefix}gcc-ar${suffix})"
+  export NM="$(which ${prefix}gcc-nm${suffix})"
+  export RANLIB="$(which ${prefix}gcc-ranlib${suffix})"
 
   # From binutils.
-  export AS="${prefix}as"
-  export DLLTOOL="${prefix}dlltool"
-  export LD="${prefix}ld"
-  export OBJCOPY="${prefix}objcopy"
-  export OBJDUMP="${prefix}objdump"
-  export READELF="${prefix}readelf"
-  export SIZE="${prefix}size"
-  export STRIP="${prefix}strip"
-  export WINDRES="${prefix}windres"
-  export WINDMC="${prefix}windmc"
-  export RC="${prefix}windres"
+  export AS="$(which ${prefix}as)"
+  export DLLTOOL="$(which ${prefix}dlltool)"
+  export LD="$(which ${prefix}ld)"
+  export OBJCOPY="$(which ${prefix}objcopy)"
+  export OBJDUMP="$(which ${prefix}objdump)"
+  export READELF="$(which ${prefix}readelf)"
+  export SIZE="$(which ${prefix}size)"
+  export STRIP="$(which ${prefix}strip)"
+  export WINDRES="$(which ${prefix}windres)"
+  export WINDMC="$(which ${prefix}windmc)"
+  export RC="$(which ${prefix}windres)"
 
   xbb_set_compiler_flags
 }
@@ -579,20 +579,20 @@ function xbb_prepare_clang_env()
 
   xbb_unset_compiler_env
 
-  export CC="${prefix}clang${suffix}"
-  export CXX="${prefix}clang++${suffix}"
+  export CC="$(which ${prefix}clang${suffix})"
+  export CXX="$(which ${prefix}clang++${suffix})"
 
-  export AR="${prefix}ar"
-  export AS="${prefix}as"
+  export AR="$(which ${prefix}ar)"
+  export AS="$(which ${prefix}as)"
   # export DLLTOOL="${prefix}dlltool"
-  export LD="${prefix}ld"
-  export NM="${prefix}nm"
+  export LD="$(which ${prefix}ld)"
+  export NM="$(which ${prefix}nm)"
   # export OBJCOPY="${prefix}objcopy"
-  export OBJDUMP="${prefix}objdump"
-  export RANLIB="${prefix}ranlib"
+  export OBJDUMP="$(which ${prefix}objdump)"
+  export RANLIB="$(which ${prefix}ranlib)"
   # export READELF="${prefix}readelf"
-  export SIZE="${prefix}size"
-  export STRIP="${prefix}strip"
+  export SIZE="$(which ${prefix}size)"
+  export STRIP="$(which ${prefix}strip)"
   # export WINDRES="${prefix}windres"
   # export WINDMC="${prefix}windmc"
   # export RC="${prefix}windres"
