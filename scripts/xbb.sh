@@ -420,34 +420,46 @@ function xbb_set_target()
   # ---------------------------------------------------------------------------
 
   XBB_HOST_DOT_EXE=""
+  XBB_TARGET_DOT_EXE=""
 
   if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
-
     # Disable tests when cross compiling for Windows.
     XBB_WITH_TESTS="n"
 
     XBB_HOST_DOT_EXE=".exe"
-
     XBB_HOST_SHLIB_EXT="dll"
-
   elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
   then
-
     XBB_HOST_SHLIB_EXT="so"
-
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
-
     XBB_HOST_SHLIB_EXT="dylib"
-
   else
     echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
   fi
 
+  if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+  then
+    XBB_TARGET_DOT_EXE=".exe"
+    XBB_TARGET_SHLIB_EXT="dll"
+  elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+  then
+    XBB_TARGET_SHLIB_EXT="so"
+  elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+  then
+    XBB_HOST_SHLIB_EXT="dylib"
+  else
+    echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM} in ${FUNCNAME[0]}()"
+    exit 1
+  fi
+
   export XBB_HOST_DOT_EXE
   export XBB_HOST_SHLIB_EXT
+
+  export XBB_TARGET_DOT_EXE
+  export XBB_TARGET_SHLIB_EXT
 
   # ---------------------------------------------------------------------------
 
