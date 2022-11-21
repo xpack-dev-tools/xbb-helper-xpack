@@ -30,7 +30,7 @@ function make_standalone()
     cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
     local binaries
-    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+    if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -42,7 +42,7 @@ function make_standalone()
         copy_dependencies_recursive "${bin}" "$(dirname "${bin}")"
       done
 
-    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -70,7 +70,7 @@ function make_standalone()
         fi
       done
 
-    elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -102,7 +102,7 @@ function make_standalone()
       done
 
     else
-      echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+      echo "Unsupported XBB_REQUESTED_HOST_PLATFORM=${XBB_REQUESTED_HOST_PLATFORM} in ${FUNCNAME[0]}()"
       exit 1
     fi
   )
@@ -121,17 +121,17 @@ function find_binaries()
     folder_path="${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
   fi
 
-  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
   then
     find "${folder_path}" \( -name \*.exe -o -name \*.dll -o -name \*.pyd \) | sort
-  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
   then
     find "${folder_path}" -name \* -type f ! -iname "*.cmake" ! -iname "*.txt" ! -iname "*.rst" ! -iname "*.html" ! -iname "*.json" ! -iname "*.py" ! -iname "*.pyc" ! -iname "*.h" ! -iname "*.xml" ! -iname "*.a" ! -iname "*.la" ! -iname "*.spec" ! -iname "*.specs" ! -iname "*.decTest" ! -iname "*.exe" ! -iname "*.c" ! -iname "*.cxx" ! -iname "*.cpp" ! -iname "*.f" ! -iname "*.f90" ! -iname "*.png" ! -iname "*.sh" ! -iname "*.bat" ! -iname "*.tcl" ! -iname "*.cfg" ! -iname "*.md" ! -iname "*.in" ! -iname "*.pl" ! -iname "*.pm" ! -iname "*.pod" ! -iname "*.enc" ! -iname "*.msg" ! -iname "*.def" ! -iname "*.dll" ! -iname "*.m4" ! -iname "*.am" ! -iname "*.awk" ! -iname "*.scm" ! -iname "*.nls" ! -iname "*.info" ! -iname "*.ld" ! -iname "*.gif" ! -iname "*.pem" ! -iname "*.zip" ! -iname "*.tpl" ! -iname "*.tlib" | grep -v "/ldscripts/" | grep -v "/doc/" | grep -v "/locale/" | grep -v "/include/" | grep -v 'MacOSX.*\.sdk' | grep -v 'macOS.*\.sdk' | grep -v "/distro-info/" | sort
-  elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+  elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
   then
     find "${folder_path}" -name \* -type f ! -iname "*.cmake" ! -iname "*.txt" ! -iname "*.rst" ! -iname "*.html" ! -iname "*.json" ! -iname "*.py" ! -iname "*.pyc" ! -iname "*.h" ! -iname "*.xml" ! -iname "*.a" ! -iname "*.la" ! -iname "*.spec" ! -iname "*.specs" ! -iname "*.decTest" ! -iname "*.exe" ! -iname "*.c" ! -iname "*.cxx" ! -iname "*.cpp" ! -iname "*.f" ! -iname "*.f90" ! -iname "*.png" ! -iname "*.sh" ! -iname "*.bat" ! -iname "*.tcl" ! -iname "*.cfg" ! -iname "*.md" ! -iname "*.in" ! -iname "*.pl" ! -iname "*.pm" ! -iname "*.pod" ! -iname "*.enc" ! -iname "*.msg" ! -iname "*.def" ! -iname "*.dll" ! -iname "*.m4" ! -iname "*.am" ! -iname "*.awk" ! -iname "*.scm" ! -iname "*.nls" ! -iname "*.info" ! -iname "*.ld" ! -iname "*.gif" ! -iname "*.pem" ! -iname "*.zip" ! -iname "*.tpl" ! -iname "*.tlib" | grep -v "/ldscripts/" | grep -v "/doc/" | grep -v "/locale/" | grep -v "/include/" | grep -v "/distro-info/" | sort
   else
-    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+    echo "Unsupported XBB_REQUESTED_HOST_PLATFORM=${XBB_REQUESTED_HOST_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
   fi
 }
@@ -242,7 +242,7 @@ function copy_dependencies_recursive()
 
     local actual_destination_folder_path="$(dirname "${actual_destination_file_path}")"
 
-    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
     then
 
       echo
@@ -368,7 +368,7 @@ function copy_dependencies_recursive()
       readelf_shared_libs "${actual_destination_file_path}"
 
       # echo "iterate ${destination_folder_path}/${source_file_name} done"
-    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
     then
 
       # echo "II. Processing ${source_file_path} dependencies..."
@@ -571,12 +571,12 @@ function copy_dependencies_recursive()
         fi
       )
 
-    elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
     then
 
       echo
       echo "${actual_destination_file_path}:"
-      ${XBB_TARGET_TRIPLET}-objdump -x "${source_file_path}" \
+      ${XBB_REQUESTED_TARGET_TRIPLET}-objdump -x "${source_file_path}" \
             | grep -i 'DLL Name' || true
 
       local source_file_name="$(basename "${source_file_path}")"
@@ -637,7 +637,7 @@ function copy_dependencies_recursive()
 
       # echo "II. Processing ${source_file_path} dependencies..."
 
-      local libs=$(${XBB_TARGET_TRIPLET}-objdump -x "${destination_folder_path}/${source_file_name}" \
+      local libs=$(${XBB_REQUESTED_TARGET_TRIPLET}-objdump -x "${destination_folder_path}/${source_file_name}" \
             | grep -i 'DLL Name' \
             | sed -e 's/.*DLL Name: \(.*\)/\1/' \
           )
@@ -651,7 +651,7 @@ function copy_dependencies_recursive()
         then
           : # System DLL, no need to copy it.
         else
-          local full_path=$(${XBB_TARGET_TRIPLET}-gcc -print-file-name=${lib_name})
+          local full_path=$(${XBB_REQUESTED_TARGET_TRIPLET}-gcc -print-file-name=${lib_name})
 
           if [ -f "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
           then
@@ -689,7 +689,7 @@ function copy_dependencies_recursive()
         fi
       done
     else
-      echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+      echo "Unsupported XBB_REQUESTED_HOST_PLATFORM=${XBB_REQUESTED_HOST_PLATFORM} in ${FUNCNAME[0]}()"
       exit 1
     fi
 
@@ -769,28 +769,28 @@ function is_target()
   if [ -f "${bin_path}" ]
   then
     # Return 0 (true) if found.
-    if [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "x64" ]
+    if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -a "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
     then
       file ${bin_path} | egrep -q ", x86-64, "
-    elif [ "${XBB_HOST_PLATFORM}" == "linux" -a \( "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" \) ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -a \( "${XBB_REQUESTED_HOST_ARCH}" == "x32" -o "${XBB_REQUESTED_HOST_ARCH}" == "ia32" \) ]
     then
       file ${bin_path} | egrep -q ", Intel 80386, "
-    elif [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "arm64" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -a "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
     then
       file ${bin_path} | egrep -q ", ARM aarch64, "
-    elif [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "arm" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -a "${XBB_REQUESTED_HOST_ARCH}" == "arm" ]
     then
       file ${bin_path} | egrep -q ", ARM, "
-    elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "x64" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" -a "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
     then
       file ${bin_path} | egrep -q "x86_64"
-    elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" -a "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
     then
       file ${bin_path} | egrep -q "arm64"
-    elif [ "${XBB_HOST_PLATFORM}" == "win32" -a "${XBB_HOST_ARCH}" == "x64" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" -a "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
     then
       file ${bin_path} | egrep -q " x86-64 "
-    elif [ "${XBB_HOST_PLATFORM}" == "win32" -a \( "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" \) ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" -a \( "${XBB_REQUESTED_HOST_ARCH}" == "x32" -o "${XBB_REQUESTED_HOST_ARCH}" == "ia32" \) ]
     then
       file ${bin_path} | egrep -q " Intel 80386"
     else
@@ -1066,7 +1066,7 @@ function has_origin()
   fi
 
   local elf="$1"
-  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
   then
     local origin=$(readelf -d ${elf} | egrep '(RUNPATH|RPATH)' | egrep '\$ORIGIN')
     if [ ! -z "${origin}" ]
@@ -1086,7 +1086,7 @@ function has_rpath_origin()
   fi
 
   local elf="$1"
-  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
   then
     local origin=$(readelf -d ${elf} | grep 'Library rpath: \[' | grep '\$ORIGIN')
     if [ ! -z "${origin}" ]
@@ -1107,7 +1107,7 @@ function has_rpath()
   fi
 
   local elf="$1"
-  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
   then
 
     local rpath=$(readelf -d ${elf} | egrep '(RUNPATH|RPATH)')
@@ -1175,7 +1175,7 @@ function clean_rpaths()
 {
   local file_path="$1"
 
-  if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
   then
     (
       local lc_rpaths=$(get_darwin_lc_rpaths "${file_path}")
@@ -1223,7 +1223,7 @@ function clean_rpaths()
         fi
       done
     )
-  elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+  elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
   then
 
       local origin_prefix="\$ORIGIN"
@@ -1258,7 +1258,7 @@ function clean_rpaths()
         "${new_rpath}"
 
   else
-    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+    echo "Unsupported XBB_REQUESTED_HOST_PLATFORM=${XBB_REQUESTED_HOST_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
   fi
 }
@@ -1572,7 +1572,7 @@ function strip_binaries()
       cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
       local binaries
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
       then
 
         binaries=$(find "${folder_path}" \( -name \*.exe -o -name \*.dll -o -name \*.pyd \))
@@ -1581,7 +1581,7 @@ function strip_binaries()
           strip_binary "${bin}"
         done
 
-      elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
       then
 
         binaries=$(find "${folder_path}" -name \* -perm +111 -type f ! -type l | grep -v 'MacOSX.*\.sdk' | grep -v 'macOS.*\.sdk' )
@@ -1598,7 +1598,7 @@ function strip_binaries()
           fi
         done
 
-      elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
       then
 
         binaries=$(find "${folder_path}" -name \* -type f ! -type l)
@@ -1633,7 +1633,7 @@ function strip_binary()
   local strip
   set +u
   strip="${STRIP}"
-  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
   then
     if [ -z "${strip}" ]
     then
@@ -1674,7 +1674,7 @@ function strip_binary()
   fi
 
   echo "[${strip} ${file_path}]"
-  if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
   then
     # Remove the debugging symbol table entries; there is no --strip-unneeded.
     "${strip}" -S "${file_path}" || true
@@ -1721,7 +1721,7 @@ function copy_dir()
 
   (
     cd "${from_path}"
-    if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
     then
       find . -xdev -print0 | cpio -oa0 | (cd "${to_path}" && cpio -im)
     else
@@ -1753,7 +1753,7 @@ function check_binaries()
     cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
     local binaries
-    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+    if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -1762,7 +1762,7 @@ function check_binaries()
         check_binary "${bin}"
       done
 
-    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -1776,7 +1776,7 @@ function check_binaries()
         fi
       done
 
-    elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
     then
 
       binaries=$(find_binaries "${folder_path}")
@@ -1791,7 +1791,7 @@ function check_binaries()
       done
 
     else
-      echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+      echo "Unsupported XBB_REQUESTED_HOST_PLATFORM=${XBB_REQUESTED_HOST_PLATFORM} in ${FUNCNAME[0]}()"
       exit 1
     fi
   ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/check-binaries-output-$(ndate).txt"
@@ -1817,7 +1817,7 @@ function check_binary_for_libraries()
   local folder_path="$(dirname ${file_path})"
 
   (
-    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+    if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
     then
       echo
       echo "${file_name}: (${file_path})"
@@ -1847,7 +1847,7 @@ function check_binary_for_libraries()
         fi
       done
       set -e
-    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
     then
       local lc_rpaths=$(get_darwin_lc_rpaths "${file_path}")
 
@@ -1977,7 +1977,7 @@ function check_binary_for_libraries()
         fi
         set -e
       )
-    elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
     then
       echo
       echo "${file_name}: (${file_path})"
@@ -2030,7 +2030,7 @@ function check_binary_for_libraries()
       done
       set -e
     else
-      echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+      echo "Unsupported XBB_REQUESTED_HOST_PLATFORM=${XBB_REQUESTED_HOST_PLATFORM} in ${FUNCNAME[0]}()"
       exit 1
     fi
   )
@@ -2065,7 +2065,7 @@ function create_archive()
     # After the archive is created, the folders are moved back.
     # The atempt to transform the tar path fails, since symlinks were
     # also transformed, which is bad.
-    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+    if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
     then
 
       local distribution_file="${distribution_file}.zip"
