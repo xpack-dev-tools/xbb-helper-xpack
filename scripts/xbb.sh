@@ -553,7 +553,7 @@ function xbb_prepare_gcc_env()
   local suffix="${2:-}"
 
   echo_develop
-  echo_develop "[xbb_prepare_gcc_env]"
+  echo_develop "[xbb_prepare_gcc_env $@]"
 
   xbb_unset_compiler_env
 
@@ -587,7 +587,7 @@ function xbb_prepare_clang_env()
   local suffix="${2:-}"
 
   echo_develop
-  echo_develop "[xbb_prepare_clang_env]"
+  echo_develop "[xbb_prepare_clang_env $@]"
 
   xbb_unset_compiler_env
 
@@ -834,7 +834,7 @@ function xbb_activate_dependencies_dev()
   local name_suffix="${1:-""}" # Deprecated, do not use.
 
   echo_develop
-  echo_develop "[xbb_activate_dependencies_dev${name_suffix}]"
+  echo_develop "[xbb_activate_dependencies_dev${name_suffix} $@]"
 
   # Add XBB include in front of XBB_CPPFLAGS.
   XBB_CPPFLAGS="-I${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/include ${XBB_CPPFLAGS}"
