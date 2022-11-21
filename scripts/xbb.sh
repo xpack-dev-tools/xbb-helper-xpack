@@ -567,16 +567,37 @@ function xbb_prepare_gcc_env()
 
   # From binutils.
   export AS="$(which ${prefix}as)"
-  export DLLTOOL="$(which ${prefix}dlltool)"
+  if [ ! -z "$(which ${prefix}dlltool)" ]
+  then
+    export DLLTOOL="$(which ${prefix}dlltool)"
+  fi
   export LD="$(which ${prefix}ld)"
-  export OBJCOPY="$(which ${prefix}objcopy)"
-  export OBJDUMP="$(which ${prefix}objdump)"
-  export READELF="$(which ${prefix}readelf)"
+  if [ ! -z "$(which ${prefix}objcopy)" ]
+  then
+    export OBJCOPY="$(which ${prefix}objcopy)"
+  fi
+  if [ ! -z "$(which ${prefix}objdump)" ]
+  then
+    export OBJDUMP="$(which ${prefix}objdump)"
+  fi
+  if [ ! -z "$(which ${prefix}readelf)" ]
+  then
+    export READELF="$(which ${prefix}readelf)"
+  fi
   export SIZE="$(which ${prefix}size)"
   export STRIP="$(which ${prefix}strip)"
-  export WINDRES="$(which ${prefix}windres)"
-  export WINDMC="$(which ${prefix}windmc)"
-  export RC="$(which ${prefix}windres)"
+  if [ ! -z "$(which ${prefix}windres)" ]
+  then
+    export WINDRES="$(which ${prefix}windres)"
+  fi
+  if [ ! -z "$(which ${prefix}windmc)" ]
+  then
+    export WINDMC="$(which ${prefix}windmc)"
+  fi
+  if [ ! -z "$(which ${prefix}windres)" ]
+  then
+    export RC="$(which ${prefix}windres)"
+  fi
 
   xbb_set_compiler_flags
 }
@@ -596,18 +617,39 @@ function xbb_prepare_clang_env()
 
   export AR="$(which ${prefix}ar)"
   export AS="$(which ${prefix}as)"
-  # export DLLTOOL="${prefix}dlltool"
+  if [ ! -z "$(which ${prefix}dlltool)" ]
+  then
+    export DLLTOOL="$(which ${prefix}dlltool)"
+  fi
   export LD="$(which ${prefix}ld)"
   export NM="$(which ${prefix}nm)"
-  # export OBJCOPY="${prefix}objcopy"
+  if [ ! -z "$(which ${prefix}objcopy)" ]
+  then
+    export OBJCOPY="$(which ${prefix}objcopy)"
+  fi
+  if [ ! -z "$(which ${prefix}objdump)" ]
+  then
   export OBJDUMP="$(which ${prefix}objdump)"
+  fi
   export RANLIB="$(which ${prefix}ranlib)"
-  # export READELF="${prefix}readelf"
+  if [ ! -z "$(which ${prefix}readelf)" ]
+  then
+    export READELF="$(which ${prefix}readelf)"
+  fi
   export SIZE="$(which ${prefix}size)"
   export STRIP="$(which ${prefix}strip)"
-  # export WINDRES="${prefix}windres"
-  # export WINDMC="${prefix}windmc"
-  # export RC="${prefix}windres"
+  if [ ! -z "$(which ${prefix}windres)" ]
+  then
+    export WINDRES="$(which ${prefix}windres)"
+  fi
+  if [ ! -z "$(which ${prefix}windmc)" ]
+  then
+    export WINDMC="$(which ${prefix}windmc)"
+  fi
+  if [ ! -z "$(which ${prefix}windres)" ]
+  then
+    export RC="$(which ${prefix}windres)"
+  fi
 
   xbb_set_compiler_flags
 }
