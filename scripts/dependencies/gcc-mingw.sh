@@ -658,7 +658,7 @@ function test_mingw2_gcc_one()
     if [ "${prefix}" != "static-" ]
     then
       run_app "${CC}" -o autoimport-lib.dll autoimport-lib.c -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      show_dlls "${triplet}-objdump" autoimport-lib.dll
+      show_dlls autoimport-lib.dll
 
       run_app "${CC}" -o "${prefix}autoimport-main${suffix}.exe" autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC}
       run_mingw_wine "${triplet}" "${prefix}autoimport-main${suffix}.exe"
@@ -688,7 +688,7 @@ function test_mingw2_gcc_one()
     run_mingw_wine "${triplet}" "${prefix}longjmp-cleanup${suffix}.exe"
 
     run_app ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_dlls "${triplet}-objdump" "tlstest-lib.dll"
+    show_dlls "tlstest-lib.dll"
 
     run_app ${CXX} -o "${prefix}tlstest-main${suffix}.exe" tlstest-main.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     run_mingw_wine "${triplet}" "${prefix}tlstest-main${suffix}.exe"
@@ -737,7 +737,7 @@ function test_expect_wine()
   then
     # TODO: remove absolute path when migrating to xPacks.
     # (for now i686-w64-mingw32-objdump is not available in the Docker image)
-    show_dlls "${triplet}-objdump" "${app_name}"
+    show_dlls "${app_name}"
   fi
 
   # No 32-bit support in XBB wine.
@@ -786,7 +786,7 @@ function run_mingw_wine()
 
   if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
-    show_dlls "${triplet}-objdump" "${app_name}"
+    show_dlls "${app_name}"
   fi
 
   # No 32-bit support in XBB wine.
