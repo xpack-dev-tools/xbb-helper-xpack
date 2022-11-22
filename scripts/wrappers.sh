@@ -296,6 +296,58 @@ function is_pe()
   fi
 }
 
+# x.exe: PE32+ executable (console) x86-64 (stripped to external PDB), for MS Windows
+# x.exe: PE32 executable (console) Intel 80386 (stripped to external PDB), for MS Windows
+
+function is_pe64()
+{
+  if [ $# -lt 1 ]
+  then
+    warning "is_pe64: Missing arguments"
+    exit 1
+  fi
+
+  local bin_path="$1"
+
+  # Symlinks do not match.
+  if [ -L "${bin_path}" ]
+  then
+    return 1
+  fi
+
+  if [ -f "${bin_path}" ]
+  then
+    # file ${bin_path} | egrep -q "( PE )|( PE32 )|( PE32\+ )" | egrep -q "x86-64"
+    file ${bin_path} | grep -q "PE32+ executable (console) x86-64"
+  else
+    return 1
+  fi
+}
+
+function is_pe32()
+{
+  if [ $# -lt 1 ]
+  then
+    warning "is_pe32: Missing arguments"
+    exit 1
+  fi
+
+  local bin_path="$1"
+
+  # Symlinks do not match.
+  if [ -L "${bin_path}" ]
+  then
+    return 1
+  fi
+
+  if [ -f "${bin_path}" ]
+  then
+    file ${bin_path} | egrep -q "( PE )|( PE32 )|( PE32\+ )" | egrep -q "80386"
+  else
+    return 1
+  fi
+}
+
 function is_elf()
 {
   if [ $# -lt 1 ]
