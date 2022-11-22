@@ -86,7 +86,7 @@ function run_app()
           exit 1
         fi
       else
-        echo "Install wine64 if you want to run the .exe binaries on Linux."
+        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     )
 
