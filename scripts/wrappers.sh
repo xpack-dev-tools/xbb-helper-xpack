@@ -290,12 +290,7 @@ function is_pe()
 
   if [ -f "${bin_path}" ]
   then
-    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-    then
-      file ${bin_path} | egrep -q "( PE )|( PE32 )|( PE32\+ )"
-    else
-      return 1
-    fi
+    file ${bin_path} | egrep -q "( PE )|( PE32 )|( PE32\+ )"
   else
     return 1
   fi
