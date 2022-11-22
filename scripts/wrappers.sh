@@ -270,6 +270,97 @@ function test_expect()
   )
 }
 
+
+function test_mingw_expect()
+{
+  local triplet="x86_64-w64-mingw32"
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        shift
+        ;;
+
+      * )
+        break
+        ;;
+    esac
+  done
+
+  local expected="$1"
+  shift
+  local app_name="$1"
+  shift
+
+  local app_path="$(realpath "${app_name}")"
+
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  then
+    show_dlls "${app_path}"
+  fi
+
+  if is_pe64 "${app_path}"
+  then
+    (
+      local wine_path=$(which wine64 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        local output
+        # Remove the trailing CR present on Windows.
+        output="$(wine64 "${app_path}" "$@" | sed 's/\r$//')"
+
+        if [ "x${output}x" == "x${expected}x" ]
+        then
+          echo
+          echo "Test \"${app_name} $@\" passed, got \"${expected}\" :-)"
+        else
+          echo
+          echo "Test \"${app_name} $@\" failed :-("
+          echo "expected ${#expected}: \"${expected}\""
+          echo "got ${#output}: \"${output}\""
+          echo
+          exit 1
+        fi
+      else
+        echo
+        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    )
+  elif is_pe32 "${app_path}"
+  then
+    (
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        local output
+        # Remove the trailing CR present on Windows.
+        output="$(wine "${app_path}" "$@" | sed 's/\r$//')"
+
+        if [ "x${output}x" == "x${expected}x" ]
+        then
+          echo
+          echo "Test \"${app_name} $@\" passed, got \"${expected}\" :-)"
+        else
+          echo
+          echo "Test \"${app_name} $@\" failed :-("
+          echo "expected ${#expected}: \"${expected}\""
+          echo "got ${#output}: \"${output}\""
+          echo
+          exit 1
+        fi
+      else
+        echo
+        echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    )
+  else
+    echo
+    echo "wine" "${app_name}" "$@" "- ${triplet} unsupported"
+  fi
+}
+
 # -----------------------------------------------------------------------------
 
 function is_pe()
