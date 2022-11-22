@@ -43,18 +43,48 @@ function run_verbose_timed()
 function run_app()
 {
   # Does not include the .exe extension.
-  local app_path=$1
+  local app_path="$1"
   shift
 
-  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+  if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+  then
+    # Possibly Windows executables, run them via wine.
+    if is_pe64 "$(realpath ${app_path}.exe)"
+    then
+      local wine_path=$(which wine64 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          run_verbose wine64 "${app_path}.exe" "$@"
+        )
+      else
+        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    elif is_pe32 "$(realpath ${app_path}.exe)"
+    then
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          run_verbose wine "${app_path}.exe" "$@"
+        )
+      else
+        echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    else
+      # Assume it is a Linux executable.
+      run_verbose "${app_path}" "$@"
+    fi
+  elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
     run_verbose "${app_path}" "$@"
-  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
   then
-    run_verbose "${app_path}" "$@"
-  elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
-  then
-    if [ -x "${app_path}" ]
+    if is_elf "${app_path}"
     then
       # When testing native variants, like llvm.
       run_verbose "${app_path}" "$@"
@@ -80,6 +110,8 @@ function run_app()
       then
         if [ -f "${app_path}.exe" ]
         then
+          unset DISPLAY
+          export WINEDEBUG=-all
           run_verbose wine64 "${app_path}.exe" "$@"
         else
           echo "${app_path}.exe not found"
