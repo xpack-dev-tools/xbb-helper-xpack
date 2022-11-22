@@ -137,12 +137,12 @@ function show_native_libs()
 
 function show_dlls()
 {
-  # Does not include the .exe extension.
-  local objdump_path="$1"
-  local exe_path="$2"
+  # Does include the .exe extension.
+  local exe_path="$1"
+  shift
 
   (
-    if [ -f "${exe_path}" ]
+    if is_pe "${exe_path}"
     then
       run_verbose ls -l "${exe_path}"
       if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -150,8 +150,8 @@ function show_dlls()
         run_verbose file "${exe_path}"
       fi
       echo
-      echo "[${objdump_path} -x ${exe_path}]"
-      "${objdump_path}" -x "${exe_path}" | grep -i 'DLL Name' || true
+      echo "[${XBB_TARGET_OBJDUMP} -x ${exe_path}]"
+      "${XBB_TARGET_OBJDUMP}" -x "${exe_path}" | grep -i 'DLL Name' || true
     else
       echo
       file "${exe_path}"
