@@ -769,12 +769,12 @@ function test_expect_wine()
         fi
       else
         echo
-        echo "wine" "${app_name}" "$@" "- not available"
+        echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     )
   else
     echo
-    echo "wine" "${app_name}" "$@" "- ${triplet} unsupported"
+    echo "wine" "${app_name}" "$@" "- ${triplet} unsupported in ${FUNCNAME[0]}()"
   fi
 }
 
@@ -800,7 +800,7 @@ function run_mingw_wine()
         run_verbose wine64 "${app_name}" "$@"
       else
         echo
-        echo "wine64" "${app_name}" "$@" "- not available"
+        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     )
   elif [ "${triplet}" == "i686-w64-mingw32" ]
@@ -812,7 +812,7 @@ function run_mingw_wine()
         run_verbose wine "${app_name}" "$@"
       else
         echo
-        echo "wine" "${app_name}" "$@" "- not available"
+        echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     )
   fi
