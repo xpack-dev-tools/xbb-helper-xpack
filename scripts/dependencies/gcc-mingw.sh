@@ -399,6 +399,8 @@ function test_mingw2_gcc()
   local test_bin_path="$1"
   local triplet="$2"
 
+  xbb_set_extra_target_env "${triplet}"
+
   (
     CC="${test_bin_path}/${triplet}-gcc"
     CXX="${test_bin_path}/${triplet}-g++"
@@ -516,12 +518,12 @@ function test_mingw2_gcc()
 
     # -------------------------------------------------------------------------
 
-    cp -rv "${helper_folder_path}/tests/c-cpp" .
+    run_verbose cp -rv "${helper_folder_path}/tests/c-cpp" .
     chmod -R a+w c-cpp
-    cp -rv "${helper_folder_path}/tests/wine"/* c-cpp
+    run_verbose cp -rv "${helper_folder_path}/tests/wine"/* c-cpp
     chmod -R a+w c-cpp
 
-    cp -rv "${helper_folder_path}/tests/fortran" .
+    run_verbose cp -rv "${helper_folder_path}/tests/fortran" .
     chmod -R a+w fortran
 
     # -------------------------------------------------------------------------
@@ -755,6 +757,36 @@ function test_expect_wine()
           output="$(wine64 "${app_name}" "$@" | sed 's/\r$//')"
         else
           output="$(wine64 "./${app_name}" "$@" | sed 's/\r$//')"
+        fi
+
+        if [ "x${output}x" == "x${expected}x" ]
+        then
+          echo
+          echo "Test \"${app_name}\" passed :-)"
+        else
+          echo "expected ${#expected}: \"${expected}\""
+          echo "got ${#output}: \"${output}\""
+          echo
+          exit 1
+        fi
+      else
+        echo
+        echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    )
+  elif [ "${triplet}" == "i686-w64-mingw32" ]
+  then
+    (
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        local output
+        # Remove the trailing CR present on Windows.
+        if [ "${app_name:0:1}" == "/" ]
+        then
+          output="$(wine "${app_name}" "$@" | sed 's/\r$//')"
+        else
+          output="$(wine "./${app_name}" "$@" | sed 's/\r$//')"
         fi
 
         if [ "x${output}x" == "x${expected}x" ]
