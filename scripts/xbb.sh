@@ -465,6 +465,9 @@ function xbb_set_target()
 
   xbb_set_compiler_env
 
+  xbb_set_extra_build_env
+  xbb_set_extra_target_env
+
   # ---------------------------------------------------------------------------
 
   tests_add "xbb_set_target" "${kind}"
@@ -512,6 +515,43 @@ function xbb_set_compiler_env()
     echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM}, XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
   fi
+}
+
+function xbb_set_extra_build_env()
+{
+  XBB_BUILD_STRIP="$(which strip)"
+  XBB_BUILD_RANLIB="$(which ranlib)"
+  XBB_BUILD_OBJDUMP="$(which objdump)"
+
+  export XBB_BUILD_STRIP
+  export XBB_BUILD_RANLIB
+  export XBB_BUILD_OBJDUMP
+}
+
+function xbb_set_extra_target_env()
+{
+  local triplet="${1:-"${XBB_TARGET_TRIPLET}"}"
+
+  if [ "${triplet}" != "${XBB_BUILD_TRIPLET}" ]
+  then
+    XBB_TARGET_STRIP="$(which ${triplet}-strip)"
+    XBB_TARGET_RANLIB="$(which ${triplet}-ranlib)"
+    XBB_TARGET_OBJDUMP="$(which ${triplet}-objdump)"
+
+    XBB_CURRENT_TRIPLET="${triplet}"
+  else
+    XBB_TARGET_STRIP="$(which strip)"
+    XBB_TARGET_RANLIB="$(which ranlib)"
+    XBB_TARGET_OBJDUMP="$(which objdump)"
+
+    XBB_CURRENT_TRIPLET=""
+  fi
+
+  export XBB_TARGET_STRIP
+  export XBB_TARGET_RANLIB
+  export XBB_TARGET_OBJDUMP
+
+  export XBB_CURRENT_TRIPLET
 }
 
 function xbb_unset_compiler_env()
