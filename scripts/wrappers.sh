@@ -361,6 +361,62 @@ function test_mingw_expect()
   fi
 }
 
+function run_mingw()
+{
+  local app_name="$1"
+  shift
+
+  local app_path="$(realpath "${app_name}")"
+
+  local triplet="x86_64-w64-mingw32"
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --triplet=* )
+        triplet=$(xbb_parse_option "$1")
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
+
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  then
+    show_dlls "${app_path}"
+  fi
+
+  if is_pe64 "${app_path}"
+  then
+    (
+      local wine_path=$(which wine64 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        run_verbose wine64 "${app_name}" "$@"
+      else
+        echo
+        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    )
+  elif is_pe32 "${app_path}"
+  then
+    (
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        run_verbose wine "${app_name}" "$@"
+      else
+        echo
+        echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    )
+  fi
+}
+
 # -----------------------------------------------------------------------------
 
 function is_pe()
