@@ -388,7 +388,7 @@ function test_openssl()
     echo
     echo "Testing if the openssl binaries start properly..."
 
-    run_app "${test_bin_folder_path}/openssl" version
+    run_app_verbose "${test_bin_folder_path}/openssl" version
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/openssl"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/openssl"; cd "${XBB_TESTS_FOLDER_PATH}/openssl"

@@ -164,7 +164,7 @@ function test_pkg_config()
     echo
     echo "Testing if pkg_config binaries start properly..."
 
-    run_app "${test_bin_folder_path}/pkg-config" --version
+    run_app_verbose "${test_bin_folder_path}/pkg-config" --version
   )
 }
 

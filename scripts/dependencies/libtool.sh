@@ -193,12 +193,12 @@ function test_libtool()
     echo
     echo "Testing if libtool binaries start properly..."
 
-    run_app "${test_bin_folder_path}/libtool" --version
+    run_app_verbose "${test_bin_folder_path}/libtool" --version
 
     echo
     echo "Testing if libtool binaries display help..."
 
-    run_app "${test_bin_folder_path}/libtool" --help
+    run_app_verbose "${test_bin_folder_path}/libtool" --help
   )
 }
 

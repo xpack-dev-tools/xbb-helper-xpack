@@ -185,12 +185,12 @@ function test_gdb()
 
   show_libs "${test_bin_path}/gdb"
 
-  run_app "${test_bin_path}/gdb" --version
-  run_app "${test_bin_path}/gdb" --help
-  run_app "${test_bin_path}/gdb" --config
+  run_app_verbose "${test_bin_path}/gdb" --version
+  run_app_verbose "${test_bin_path}/gdb" --help
+  run_app_verbose "${test_bin_path}/gdb" --config
 
   # This command is known to fail with 'Abort trap: 6' (SIGABRT)
-  run_app "${test_bin_path}/gdb" \
+  run_app_verbose "${test_bin_path}/gdb" \
     --nh \
     --nx \
     -ex='show language' \

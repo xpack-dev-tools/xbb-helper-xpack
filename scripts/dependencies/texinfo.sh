@@ -166,7 +166,7 @@ function test_texinfo()
     echo
     echo "Testing if texinfo scripts start properly..."
 
-    run_app "${test_bin_folder_path}/texi2pdf" --version
+    run_app_verbose "${test_bin_folder_path}/texi2pdf" --version
 
     # No ELFs, it is a script.
   )

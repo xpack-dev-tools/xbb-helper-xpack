@@ -325,11 +325,11 @@ function test_cross_gdb()
   (
     show_libs "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}"
 
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" --version
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" --config
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" --version
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" --config
 
     # This command is known to fail with 'Abort trap: 6' (SIGABRT)
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" \
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" \
       --nh \
       --nx \
       -ex='show language' \
@@ -339,7 +339,7 @@ function test_cross_gdb()
     if [ "${suffix}" == "-py3" ]
     then
       # Show Python paths.
-      run_app "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" \
+      run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" \
         --nh \
         --nx \
         -ex='set pagination off' \

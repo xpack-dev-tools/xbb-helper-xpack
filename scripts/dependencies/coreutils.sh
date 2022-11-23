@@ -236,25 +236,25 @@ function test_coreutils()
     echo "Testing if coreutils binaries start properly..."
 
     echo
-    run_app "${test_bin_folder_path}/${prefix}basename" --version
-    run_app "${test_bin_folder_path}/${prefix}cat" --version
-    run_app "${test_bin_folder_path}/${prefix}chmod" --version
-    run_app "${test_bin_folder_path}/${prefix}chown" --version
-    run_app "${test_bin_folder_path}/${prefix}cp" --version
-    run_app "${test_bin_folder_path}/${prefix}dirname" --version
-    run_app "${test_bin_folder_path}/${prefix}ln" --version
-    run_app "${test_bin_folder_path}/${prefix}ls" --version
-    run_app "${test_bin_folder_path}/${prefix}mkdir" --version
-    run_app "${test_bin_folder_path}/${prefix}mv" --version
-    run_app "${test_bin_folder_path}/${prefix}printf" --version
-    run_app "${test_bin_folder_path}/${prefix}realpath" --version
-    run_app "${test_bin_folder_path}/${prefix}rm" --version
-    run_app "${test_bin_folder_path}/${prefix}rmdir" --version
-    run_app "${test_bin_folder_path}/${prefix}sha256sum" --version
-    run_app "${test_bin_folder_path}/${prefix}sort" --version
-    run_app "${test_bin_folder_path}/${prefix}touch" --version
-    run_app "${test_bin_folder_path}/${prefix}tr" --version
-    run_app "${test_bin_folder_path}/${prefix}wc" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}basename" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}cat" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}chmod" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}chown" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}cp" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}dirname" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}ln" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}ls" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}mkdir" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}mv" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}printf" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}realpath" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}rm" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}rmdir" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}sha256sum" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}sort" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}touch" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}tr" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}wc" --version
   )
 }
 
@@ -275,8 +275,8 @@ function test_coreutils_realpath()
     echo "Testing if coreutils realpath binaries start properly..."
 
     echo
-    run_app "${test_bin_folder_path}/${prefix}realpath" --version
-    run_app "${test_bin_folder_path}/${prefix}readlink" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}realpath" --version
+    run_app_verbose "${test_bin_folder_path}/${prefix}readlink" --version
   )
 }
 

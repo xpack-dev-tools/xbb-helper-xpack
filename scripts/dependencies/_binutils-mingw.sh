@@ -234,30 +234,30 @@ function test_mingw2_binutils()
     echo
     echo "Testing if ${mingw_triplet} binutils${name_suffix} binaries start properly..."
 
-    run_app "${test_bin_path}/${mingw_triplet}-ar" --version
-    run_app "${test_bin_path}/${mingw_triplet}-as" --version
-    run_app "${test_bin_path}/${mingw_triplet}-ld" --version
-    run_app "${test_bin_path}/${mingw_triplet}-nm" --version
-    run_app "${test_bin_path}/${mingw_triplet}-objcopy" --version
-    run_app "${test_bin_path}/${mingw_triplet}-objdump" --version
-    run_app "${test_bin_path}/${mingw_triplet}-ranlib" --version
-    run_app "${test_bin_path}/${mingw_triplet}-size" --version
-    run_app "${test_bin_path}/${mingw_triplet}-strings" --version
-    run_app "${test_bin_path}/${mingw_triplet}-strip" --version
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-ar" --version
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-as" --version
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-ld" --version
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-nm" --version
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-objcopy" --version
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-objdump" --version
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-ranlib" --version
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-size" --version
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-strings" --version
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-strip" --version
 
     echo
     echo "Testing if ${mingw_triplet} binutils${name_suffix} binaries display help..."
 
-    run_app "${test_bin_path}/${mingw_triplet}-ar" --help
-    run_app "${test_bin_path}/${mingw_triplet}-as" --help
-    run_app "${test_bin_path}/${mingw_triplet}-ld" --help
-    run_app "${test_bin_path}/${mingw_triplet}-nm" --help
-    run_app "${test_bin_path}/${mingw_triplet}-objcopy" --help
-    run_app "${test_bin_path}/${mingw_triplet}-objdump" --help
-    run_app "${test_bin_path}/${mingw_triplet}-ranlib" --help
-    run_app "${test_bin_path}/${mingw_triplet}-size" --help
-    run_app "${test_bin_path}/${mingw_triplet}-strings" --help
-    run_app "${test_bin_path}/${mingw_triplet}-strip" --help || true
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-ar" --help
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-as" --help
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-ld" --help
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-nm" --help
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-objcopy" --help
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-objdump" --help
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-ranlib" --help
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-size" --help
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-strings" --help
+    run_app_verbose "${test_bin_path}/${mingw_triplet}-strip" --help || true
   )
 }
 

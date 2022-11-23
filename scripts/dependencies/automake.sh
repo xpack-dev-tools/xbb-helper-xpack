@@ -162,7 +162,7 @@ function test_automake()
     echo
     echo "Testing if automake scripts start properly..."
 
-    run_app "${test_bin_folder_path}/automake" --version
+    run_app_verbose "${test_bin_folder_path}/automake" --version
   )
 }
 

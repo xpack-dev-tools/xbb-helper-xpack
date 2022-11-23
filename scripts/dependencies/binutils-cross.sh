@@ -208,16 +208,16 @@ function test_binutils_cross()
     show_libs "${test_bin_path}/${XBB_GCC_TARGET}-strings"
     show_libs "${test_bin_path}/${XBB_GCC_TARGET}-strip"
 
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-ar" --version
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-as" --version
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-ld" --version
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-nm" --version
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-objcopy" --version
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-objdump" --version
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-ranlib" --version
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-size" --version
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-strings" --version
-    run_app "${test_bin_path}/${XBB_GCC_TARGET}-strip" --version
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-ar" --version
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-as" --version
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-ld" --version
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-nm" --version
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-objcopy" --version
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-objdump" --version
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-ranlib" --version
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-size" --version
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-strings" --version
+    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-strip" --version
   )
 }
 

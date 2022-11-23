@@ -659,8 +659,8 @@ function test_gnutls()
     echo
     echo "Testing if gnutls binaries start properly..."
 
-    run_app "${test_bin_folder_path}/psktool" --version
-    run_app "${test_bin_folder_path}/certtool" --version
+    run_app_verbose "${test_bin_folder_path}/psktool" --version
+    run_app_verbose "${test_bin_folder_path}/certtool" --version
   )
 }
 

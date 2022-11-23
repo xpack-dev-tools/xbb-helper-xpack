@@ -367,46 +367,46 @@ function test_binutils()
     echo
     echo "Testing if ${name_prefix}binutils starts properly..."
 
-    run_app "${test_bin_path}/${name_prefix}ar" --version
-    run_app "${test_bin_path}/${name_prefix}as" --version
-    run_app "${test_bin_path}/${name_prefix}elfedit" --version
-    run_app "${test_bin_path}/${name_prefix}gprof" --version
-    run_app "${test_bin_path}/${name_prefix}ld" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}ar" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}as" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}elfedit" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}gprof" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}ld" --version
     if [ -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
-      run_app "${test_bin_path}/${name_prefix}ld.gold" --version
+      run_app_verbose "${test_bin_path}/${name_prefix}ld.gold" --version
     fi
-    run_app "${test_bin_path}/${name_prefix}nm" --version
-    run_app "${test_bin_path}/${name_prefix}objcopy" --version
-    run_app "${test_bin_path}/${name_prefix}objdump" --version
-    run_app "${test_bin_path}/${name_prefix}ranlib" --version
-    run_app "${test_bin_path}/${name_prefix}readelf" --version
-    run_app "${test_bin_path}/${name_prefix}size" --version
-    run_app "${test_bin_path}/${name_prefix}strings" --version
-    run_app "${test_bin_path}/${name_prefix}strip" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}nm" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}objcopy" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}objdump" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}ranlib" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}readelf" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}size" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}strings" --version
+    run_app_verbose "${test_bin_path}/${name_prefix}strip" --version
 
     echo
     echo "Testing if ${name_prefix}binutils binaries display help..."
 
-    run_app "${test_bin_path}/${name_prefix}ar" --help
-    run_app "${test_bin_path}/${name_prefix}as" --help
-    run_app "${test_bin_path}/${name_prefix}elfedit" --help
-    run_app "${test_bin_path}/${name_prefix}gprof" --help
-    run_app "${test_bin_path}/${name_prefix}ld" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}ar" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}as" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}elfedit" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}gprof" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}ld" --help
     if [ -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
-      run_app "${test_bin_path}/${name_prefix}ld.gold" --help
+      run_app_verbose "${test_bin_path}/${name_prefix}ld.gold" --help
     fi
-    run_app "${test_bin_path}/${name_prefix}nm" --help
-    run_app "${test_bin_path}/${name_prefix}objcopy" --help
-    run_app "${test_bin_path}/${name_prefix}objdump" --help
-    run_app "${test_bin_path}/${name_prefix}ranlib" --help
-    run_app "${test_bin_path}/${name_prefix}readelf" --help
-    run_app "${test_bin_path}/${name_prefix}size" --help
-    run_app "${test_bin_path}/${name_prefix}strings" --help
-    run_app "${test_bin_path}/${name_prefix}strip" --help || true
+    run_app_verbose "${test_bin_path}/${name_prefix}nm" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}objcopy" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}objdump" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}ranlib" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}readelf" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}size" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}strings" --help
+    run_app_verbose "${test_bin_path}/${name_prefix}strip" --help || true
   )
 }
 

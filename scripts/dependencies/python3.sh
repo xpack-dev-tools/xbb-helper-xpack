@@ -236,10 +236,10 @@ function test_python3()
 
     # export LD_LIBRARY_PATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
 
-    run_app "${test_bin_folder_path}/python3" --version
+    run_app_verbose "${test_bin_folder_path}/python3" --version
 
-    run_app "${test_bin_folder_path}/python3" -c 'import sys; print(sys.path)'
-    run_app "${test_bin_folder_path}/python3" -c 'import sys; print(sys.prefix)'
+    run_app_verbose "${test_bin_folder_path}/python3" -c 'import sys; print(sys.path)'
+    run_app_verbose "${test_bin_folder_path}/python3" -c 'import sys; print(sys.prefix)'
   )
 }
 
