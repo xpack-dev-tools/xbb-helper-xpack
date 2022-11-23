@@ -628,7 +628,7 @@ function build_mingw_crt()
       # checking for _mingw_mac.h... no
       # configure: error: Please check if the mingw-w64 header set and the build/host option are set properly.
       # (https://github.com/henry0312/build_gcc/issues/1)
-      # export CC=""
+      export CC=""
 
       if [ ! -f "config.status" ]
       then
