@@ -557,9 +557,11 @@ function test_mingw_gcc()
 function test_mingw_gcc_single()
 {
   local test_bin_path="$1"
-  local mingw_triplet="$2"
-  local prefix="$3" # "", "static-lib-", "static-"
-  local suffix="$4" # ""; reserved for something like "-bootstrap"
+  shift
+  local prefix="$1" # "", "static-lib-", "static-"
+  shift
+  local suffix="$1" # ""; reserved for something like "-bootstrap"
+  shift
 
   if [ "${prefix}" == "static-lib-" ]
   then
