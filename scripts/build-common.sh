@@ -240,6 +240,9 @@ function build_perform_common()
 
       run_verbose ls -l "${XBB_DEPLOY_FOLDER_PATH}"
 
+      # When testing the bootstrap, the application folder is not there.
+      mkdir -pv "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
+
       run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
       run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
 
