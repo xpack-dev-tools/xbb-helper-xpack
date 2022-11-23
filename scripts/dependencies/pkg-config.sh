@@ -159,7 +159,7 @@ function test_pkg_config()
     echo
     echo "Checking the pkg_config binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/pkg-config"
+    show_host_libs "${test_bin_folder_path}/pkg-config"
 
     echo
     echo "Testing if pkg_config binaries start properly..."

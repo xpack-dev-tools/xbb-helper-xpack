@@ -324,16 +324,16 @@ function build_binutils()
 
 function test_binutils_libs()
 {
-  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ar"
-  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}as"
-  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ld"
-  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}nm"
-  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}objcopy"
-  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}objdump"
-  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ranlib"
-  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}size"
-  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}strings"
-  show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}strip"
+  show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ar"
+  show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}as"
+  show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ld"
+  show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}nm"
+  show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}objcopy"
+  show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}objdump"
+  show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ranlib"
+  show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}size"
+  show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}strings"
+  show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}strip"
 }
 
 function test_binutils()
@@ -345,24 +345,24 @@ function test_binutils()
     echo
     echo "Checking the ${name_prefix}binutils shared libraries..."
 
-    show_libs "${test_bin_path}/${name_prefix}ar"
-    show_libs "${test_bin_path}/${name_prefix}as"
-    show_libs "${test_bin_path}/${name_prefix}elfedit"
-    show_libs "${test_bin_path}/${name_prefix}gprof"
-    show_libs "${test_bin_path}/${name_prefix}ld"
+    show_host_libs "${test_bin_path}/${name_prefix}ar"
+    show_host_libs "${test_bin_path}/${name_prefix}as"
+    show_host_libs "${test_bin_path}/${name_prefix}elfedit"
+    show_host_libs "${test_bin_path}/${name_prefix}gprof"
+    show_host_libs "${test_bin_path}/${name_prefix}ld"
     if [ -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
-      show_libs "${test_bin_path}/${name_prefix}ld.gold"
+      show_host_libs "${test_bin_path}/${name_prefix}ld.gold"
     fi
-    show_libs "${test_bin_path}/${name_prefix}nm"
-    show_libs "${test_bin_path}/${name_prefix}objcopy"
-    show_libs "${test_bin_path}/${name_prefix}objdump"
-    show_libs "${test_bin_path}/${name_prefix}ranlib"
-    show_libs "${test_bin_path}/${name_prefix}readelf"
-    show_libs "${test_bin_path}/${name_prefix}size"
-    show_libs "${test_bin_path}/${name_prefix}strings"
-    show_libs "${test_bin_path}/${name_prefix}strip"
+    show_host_libs "${test_bin_path}/${name_prefix}nm"
+    show_host_libs "${test_bin_path}/${name_prefix}objcopy"
+    show_host_libs "${test_bin_path}/${name_prefix}objdump"
+    show_host_libs "${test_bin_path}/${name_prefix}ranlib"
+    show_host_libs "${test_bin_path}/${name_prefix}readelf"
+    show_host_libs "${test_bin_path}/${name_prefix}size"
+    show_host_libs "${test_bin_path}/${name_prefix}strings"
+    show_host_libs "${test_bin_path}/${name_prefix}strip"
 
     echo
     echo "Testing if ${name_prefix}binutils starts properly..."

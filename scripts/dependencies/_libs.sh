@@ -303,8 +303,8 @@ function test_python2()
     echo
     echo "Checking the python2 binary shared libraries..."
 
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}"
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libpython${XBB_PYTHON2_VERSION_MAJOR}.${XBB_PYTHON2_VERSION_MINOR}.${XBB_HOST_SHLIB_EXT}"
+    show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}"
+    show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libpython${XBB_PYTHON2_VERSION_MAJOR}.${XBB_PYTHON2_VERSION_MINOR}.${XBB_HOST_SHLIB_EXT}"
 
     echo
     echo "Testing if the python2 binary starts properly..."
@@ -673,7 +673,7 @@ function test_libgpg_error_libs()
   echo
   echo "Checking the libpng_error shared libraries..."
 
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgpg-error.${XBB_HOST_SHLIB_EXT}"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgpg-error.${XBB_HOST_SHLIB_EXT}"
 }
 
 # -----------------------------------------------------------------------------
@@ -848,12 +848,12 @@ function test_libgcrypt_libs()
   echo
   echo "Checking the libgcrypt shared libraries..."
 
-  # show_libs "${XBB_INSTALL_FOLDER_PATH}/bin/libgcrypt-config"
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/dumpsexp"
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/hmac256"
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/mpicalc"
+  # show_host_libs "${XBB_INSTALL_FOLDER_PATH}/bin/libgcrypt-config"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/dumpsexp"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/hmac256"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/mpicalc"
 
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgcrypt.${XBB_HOST_SHLIB_EXT}"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgcrypt.${XBB_HOST_SHLIB_EXT}"
 }
 
 function test_libgcrypt()
@@ -864,10 +864,10 @@ function test_libgcrypt()
     echo
     echo "Checking the libgcrypt shared libraries..."
 
-    # show_libs "${XBB_INSTALL_FOLDER_PATH}/bin/libgcrypt-config"
-    show_libs "${test_bin_folder_path}/dumpsexp"
-    show_libs "${test_bin_folder_path}/hmac256"
-    show_libs "${test_bin_folder_path}/mpicalc"
+    # show_host_libs "${XBB_INSTALL_FOLDER_PATH}/bin/libgcrypt-config"
+    show_host_libs "${test_bin_folder_path}/dumpsexp"
+    show_host_libs "${test_bin_folder_path}/hmac256"
+    show_host_libs "${test_bin_folder_path}/mpicalc"
 
     echo
     echo "Testing if libgcrypt binaries start properly..."
@@ -1034,8 +1034,8 @@ function test_libassuan_libs()
   echo
   echo "Checking the libassuan shared libraries..."
 
-  # show_libs "${XBB_INSTALL_FOLDER_PATH}/bin/libassuan-config"
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libassuan.${XBB_HOST_SHLIB_EXT}"
+  # show_host_libs "${XBB_INSTALL_FOLDER_PATH}/bin/libassuan-config"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libassuan.${XBB_HOST_SHLIB_EXT}"
 }
 
 function test_libassuan()
@@ -1196,8 +1196,8 @@ function test_libksba_libs()
   echo
   echo "Checking the libksba shared libraries..."
 
-  # show_libs "${XBB_INSTALL_FOLDER_PATH}/bin/ksba-config"
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libksba.${XBB_HOST_SHLIB_EXT}"
+  # show_host_libs "${XBB_INSTALL_FOLDER_PATH}/bin/ksba-config"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libksba.${XBB_HOST_SHLIB_EXT}"
 }
 
 function test_libksba()
@@ -1350,7 +1350,7 @@ function test_npth_libs()
   echo
   echo "Checking the npth shared libraries..."
 
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libnpth.${XBB_HOST_SHLIB_EXT}"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libnpth.${XBB_HOST_SHLIB_EXT}"
 }
 
 function test_npth()

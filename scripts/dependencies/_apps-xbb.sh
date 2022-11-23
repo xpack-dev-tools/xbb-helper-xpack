@@ -108,7 +108,7 @@ function test_realpath()
     echo
     echo "Checking the realpath binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/realpath"
+    show_host_libs "${test_bin_folder_path}/realpath"
   )
 }
 
@@ -443,7 +443,7 @@ function test_curl()
     echo
     echo "Checking the curl shared libraries..."
 
-    show_libs "${test_bin_folder_path}/curl"
+    show_host_libs "${test_bin_folder_path}/curl"
 
     echo
     echo "Testing if curl binaries start properly..."
@@ -645,7 +645,7 @@ function test_tar()
     echo
     echo "Checking the tar shared libraries..."
 
-    show_libs "${test_bin_folder_path}/tar"
+    show_host_libs "${test_bin_folder_path}/tar"
 
     echo
     echo "Testing if tar binaries start properly..."
@@ -853,8 +853,8 @@ function test_guile_libs()
   echo
   echo "Checking the guile shared libraries..."
 
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libguile-2.2.${XBB_HOST_SHLIB_EXT}"
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/guile/2.2/extensions/guile-readline.so"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libguile-2.2.${XBB_HOST_SHLIB_EXT}"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/guile/2.2/extensions/guile-readline.so"
 }
 
 function test_guile()
@@ -865,7 +865,7 @@ function test_guile()
     echo
     echo "Checking the guile shared libraries..."
 
-    show_libs "${test_bin_folder_path}/guile"
+    show_host_libs "${test_bin_folder_path}/guile"
 
     echo
     echo "Testing if guile binaries start properly..."
@@ -1040,7 +1040,7 @@ function build_autogen()
 
 function test_autogen_libs()
 {
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libopts.${XBB_HOST_SHLIB_EXT}"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libopts.${XBB_HOST_SHLIB_EXT}"
 }
 
 function test_autogen()
@@ -1051,9 +1051,9 @@ function test_autogen()
     echo
     echo "Checking the autogen shared libraries..."
 
-    show_libs "${test_bin_folder_path}/autogen"
-    show_libs "${test_bin_folder_path}/columns"
-    show_libs "${test_bin_folder_path}/getdefs"
+    show_host_libs "${test_bin_folder_path}/autogen"
+    show_host_libs "${test_bin_folder_path}/columns"
+    show_host_libs "${test_bin_folder_path}/getdefs"
 
     echo
     echo "Testing if autogen binaries start properly..."
@@ -1250,7 +1250,7 @@ function test_gawk()
     echo
     echo "Checking the gawk binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/gawk"
+    show_host_libs "${test_bin_folder_path}/gawk"
 
     echo
     echo "Testing if gawk binaries start properly..."
@@ -1445,7 +1445,7 @@ function test_sed()
     echo
     echo "Checking the sed binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/sed"
+    show_host_libs "${test_bin_folder_path}/sed"
 
     echo
     echo "Testing if sed binaries start properly..."
@@ -1606,7 +1606,7 @@ function test_patch()
     echo
     echo "Checking the patch binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/patch"
+    show_host_libs "${test_bin_folder_path}/patch"
 
     echo
     echo "Testing if patch binaries start properly..."
@@ -1780,10 +1780,10 @@ function test_diffutils()
     echo
     echo "Checking the diffutils binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/diff"
-    show_libs "${test_bin_folder_path}/cmp"
-    show_libs "${test_bin_folder_path}/diff3"
-    show_libs "${test_bin_folder_path}/sdiff"
+    show_host_libs "${test_bin_folder_path}/diff"
+    show_host_libs "${test_bin_folder_path}/cmp"
+    show_host_libs "${test_bin_folder_path}/diff3"
+    show_host_libs "${test_bin_folder_path}/sdiff"
 
     echo
     echo "Testing if diffutils binaries start properly..."
@@ -1960,7 +1960,7 @@ function test_bison()
     echo
     echo "Checking the bison binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/bison"
+    show_host_libs "${test_bin_folder_path}/bison"
     # yacc is a script.
 
     echo
@@ -2175,7 +2175,7 @@ function test_make()
     echo
     echo "Checking the make binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/gmake"
+    show_host_libs "${test_bin_folder_path}/gmake"
 
     echo
     echo "Testing if make binaries start properly..."
@@ -2332,7 +2332,7 @@ function test_bash()
     echo
     echo "Checking the bash binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/bash"
+    show_host_libs "${test_bin_folder_path}/bash"
 
     echo
     echo "Testing if bash binaries start properly..."
@@ -2516,7 +2516,7 @@ function test_wget()
     echo
     echo "Checking the wget binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/wget"
+    show_host_libs "${test_bin_folder_path}/wget"
 
     echo
     echo "Testing if wget binaries start properly..."
@@ -2660,8 +2660,8 @@ function test_dos2unix()
     echo
     echo "Checking the dos2unix binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/unix2dos"
-    show_libs "${test_bin_folder_path}/dos2unix"
+    show_host_libs "${test_bin_folder_path}/unix2dos"
+    show_host_libs "${test_bin_folder_path}/dos2unix"
 
     echo
     echo "Testing if dos2unix binaries start properly..."
@@ -2858,7 +2858,7 @@ function test_flex_libs()
   echo
   echo "Checking the flex shared libraries..."
 
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libfl.${XBB_HOST_SHLIB_EXT}"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libfl.${XBB_HOST_SHLIB_EXT}"
 }
 
 function test_flex()
@@ -2869,7 +2869,7 @@ function test_flex()
     echo
     echo "Checking the flex shared libraries..."
 
-    show_libs "${test_bin_folder_path}/flex"
+    show_host_libs "${test_bin_folder_path}/flex"
 
     echo
     echo "Testing if flex binaries start properly..."
@@ -3106,7 +3106,7 @@ function test_perl()
     echo
     echo "Checking the perl binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/perl"
+    show_host_libs "${test_bin_folder_path}/perl"
 
     echo
     echo "Testing if perl binaries start properly..."
@@ -3309,22 +3309,22 @@ function test_tcl_libs()
 
     if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
-      show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/thread* -name 'libthread*.so')"
+      show_host_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/thread* -name 'libthread*.so')"
       for lib in $(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/tdb* -name 'libtdb*.so')
       do
-        show_libs "${lib}"
+        show_host_libs "${lib}"
       done
-      show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/itcl* -name 'libitcl*.so')"
-      show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/sqlite* -name 'libsqlite*.so')"
+      show_host_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/itcl* -name 'libitcl*.so')"
+      show_host_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/sqlite* -name 'libsqlite*.so')"
     elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
-      show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/thread* -name 'libthread*.dylib')"
+      show_host_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/thread* -name 'libthread*.dylib')"
       for lib in $(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/tdb* -name 'libtdb*.dylib')
       do
-        show_libs "${lib}"
+        show_host_libs "${lib}"
       done
-      show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/itcl* -name 'libitcl*.dylib')"
-      show_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/sqlite* -name 'libsqlite*.dylib')"
+      show_host_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/itcl* -name 'libitcl*.dylib')"
+      show_host_libs "$(find ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/sqlite* -name 'libsqlite*.dylib')"
     else
       echo "Unsupported platform in ${FUNCNAME[0]}()"
       exit 1
@@ -3338,7 +3338,7 @@ function test_tcl()
 
   (
 
-    show_libs "${test_bin_folder_path}/tclsh"*
+    show_host_libs "${test_bin_folder_path}/tclsh"*
 
     echo
     echo "Testing if tcl binaries start properly..."
@@ -3502,7 +3502,7 @@ function test_git()
     echo
     echo "Checking the git binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/git"
+    show_host_libs "${test_bin_folder_path}/git"
 
     echo
     echo "Testing if git binaries start properly..."
@@ -3665,9 +3665,9 @@ function test_p7zip()
     echo
     echo "Checking the 7za shared libraries..."
 
-      show_libs "${test_bin_folder_path}/7z"
-      show_libs "${test_bin_folder_path}/7za"
-      show_libs "${test_bin_folder_path}/7zr"
+      show_host_libs "${test_bin_folder_path}/7z"
+      show_host_libs "${test_bin_folder_path}/7za"
+      show_host_libs "${test_bin_folder_path}/7zr"
 
     echo
     echo "Testing if 7za binaries start properly..."
@@ -3833,9 +3833,9 @@ function test_rhash_libs()
 
   if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/librhash.0.dylib"
+    show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/librhash.0.dylib"
   else
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/librhash.so.0"
+    show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/librhash.so.0"
   fi
 }
 
@@ -3847,7 +3847,7 @@ function test_rhash()
     echo
     echo "Checking the flex shared libraries..."
 
-    show_libs "${test_bin_folder_path}/rhash"
+    show_host_libs "${test_bin_folder_path}/rhash"
 
     echo
     echo "Testing if rhash binaries start properly..."
@@ -4027,7 +4027,7 @@ function test_re2c()
     echo
     echo "Checking the flex shared libraries..."
 
-    show_libs "${test_bin_folder_path}/re2c"
+    show_host_libs "${test_bin_folder_path}/re2c"
 
     echo
     echo "Testing if re2c binaries start properly..."
@@ -4234,7 +4234,7 @@ function test_gpg()
     echo
     echo "Checking the gpg binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/gpg"
+    show_host_libs "${test_bin_folder_path}/gpg"
 
     echo
     echo "Testing if gpg binaries start properly..."

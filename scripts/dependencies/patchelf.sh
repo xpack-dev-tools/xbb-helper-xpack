@@ -176,7 +176,7 @@ function test_patchelf()
     echo
     echo "Checking the patchelf binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/patchelf"
+    show_host_libs "${test_bin_folder_path}/patchelf"
 
     echo
     echo "Testing if patchelf binaries start properly..."

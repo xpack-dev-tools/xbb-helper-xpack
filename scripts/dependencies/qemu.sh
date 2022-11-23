@@ -205,13 +205,13 @@ function build_qemu()
 
         if [ "${qemu_target}" == "arm" ]
         then
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-aarch64"
+          show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-aarch64"
         elif [ "${qemu_target}" == "riscv" ]
         then
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-riscv64"
+          show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-riscv64"
         elif [ "${qemu_target}" == "tools" ]
         then
-          show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-img"
+          show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-img"
         else
           echo "Unsupported qemu_target ${qemu_target} in ${FUNCNAME[0]}()"
           exit 1

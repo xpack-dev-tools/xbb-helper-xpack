@@ -448,9 +448,9 @@ function test_gc_libs()
     echo
     echo "Checking the gc shared libraries..."
 
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgc.${XBB_HOST_SHLIB_EXT}"
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgccpp.${XBB_HOST_SHLIB_EXT}"
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcord.${XBB_HOST_SHLIB_EXT}"
+    show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgc.${XBB_HOST_SHLIB_EXT}"
+    show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgccpp.${XBB_HOST_SHLIB_EXT}"
+    show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcord.${XBB_HOST_SHLIB_EXT}"
   )
 }
 
@@ -648,13 +648,13 @@ function test_gnutls()
     echo
     echo "Checking the gnutls shared libraries..."
 
-    show_libs "${test_bin_folder_path}/psktool"
-    show_libs "${test_bin_folder_path}/gnutls-cli-debug"
-    show_libs "${test_bin_folder_path}/certtool"
-    show_libs "${test_bin_folder_path}/srptool"
-    show_libs "${test_bin_folder_path}/ocsptool"
-    show_libs "${test_bin_folder_path}/gnutls-serv"
-    show_libs "${test_bin_folder_path}/gnutls-cli"
+    show_host_libs "${test_bin_folder_path}/psktool"
+    show_host_libs "${test_bin_folder_path}/gnutls-cli-debug"
+    show_host_libs "${test_bin_folder_path}/certtool"
+    show_host_libs "${test_bin_folder_path}/srptool"
+    show_host_libs "${test_bin_folder_path}/ocsptool"
+    show_host_libs "${test_bin_folder_path}/gnutls-serv"
+    show_host_libs "${test_bin_folder_path}/gnutls-cli"
 
     echo
     echo "Testing if gnutls binaries start properly..."

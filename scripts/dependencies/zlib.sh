@@ -179,7 +179,7 @@ function test_zlib_libs()
       echo
       echo "Checking the zlib${name_suffix} shared libraries..."
 
-      show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib/libz.${XBB_HOST_SHLIB_EXT}"
+      show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib/libz.${XBB_HOST_SHLIB_EXT}"
     fi
   )
 }

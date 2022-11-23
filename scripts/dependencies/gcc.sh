@@ -555,24 +555,24 @@ function build_gcc()
           # run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}/bin"
         fi
 
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc"
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/g++"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/g++"
 
         if [ "${XBB_HOST_PLATFORM}" != "win32" ]
         then
-          show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=cc1)"
-          show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=cc1plus)"
-          show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=collect2)"
-          show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=lto1)"
-          show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=lto-wrapper)"
+          show_host_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=cc1)"
+          show_host_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=cc1plus)"
+          show_host_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=collect2)"
+          show_host_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=lto1)"
+          show_host_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-prog-name=lto-wrapper)"
         fi
 
         if [ "${XBB_HOST_PLATFORM}" == "linux" ]
         then
-          show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.so)"
+          show_host_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.so)"
         elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
-          show_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.dylib)"
+          show_host_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.dylib)"
         elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
           if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libstdc++-6.dll" ]
@@ -717,34 +717,34 @@ function test_gcc()
     echo
     echo "Checking the gcc shared libraries..."
 
-    show_libs "${CC}"
-    show_libs "${CXX}"
+    show_host_libs "${CC}"
+    show_host_libs "${CXX}"
     if [ -f "${F90}" ]
     then
-      show_libs "${F90}"
+      show_host_libs "${F90}"
     fi
 
     if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
-      show_libs "$(${CC} --print-prog-name=cc1)"
-      show_libs "$(${CC} --print-prog-name=cc1plus)"
-      show_libs "$(${CC} --print-prog-name=collect2)"
-      show_libs "$(${CC} --print-prog-name=lto1)"
-      show_libs "$(${CC} --print-prog-name=lto-wrapper)"
+      show_host_libs "$(${CC} --print-prog-name=cc1)"
+      show_host_libs "$(${CC} --print-prog-name=cc1plus)"
+      show_host_libs "$(${CC} --print-prog-name=collect2)"
+      show_host_libs "$(${CC} --print-prog-name=lto1)"
+      show_host_libs "$(${CC} --print-prog-name=lto-wrapper)"
     fi
 
     if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
-      show_libs "$(${CC} --print-file-name=libgcc_s.so)"
-      show_libs "$(${CC} --print-file-name=libstdc++.so)"
+      show_host_libs "$(${CC} --print-file-name=libgcc_s.so)"
+      show_host_libs "$(${CC} --print-file-name=libstdc++.so)"
     elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       local libgcc_path="$(${CC} --print-file-name=libgcc_s.1.dylib)"
       if [ "${libgcc_path}" != "libgcc_s.1.dylib" ]
       then
-        show_libs "$(${CC} --print-file-name=libgcc_s.1.dylib)"
+        show_host_libs "$(${CC} --print-file-name=libgcc_s.1.dylib)"
       fi
-      show_libs "$(${CC} --print-file-name=libstdc++.dylib)"
+      show_host_libs "$(${CC} --print-file-name=libstdc++.dylib)"
     fi
 
     echo
@@ -1054,7 +1054,7 @@ function test_gcc_one()
     then
       # 'Symbol not found: __ZdlPvm' (_operator delete(void*, unsigned long))
       run_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_HOST_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-      show_libs ${prefix}simple-exception${suffix}
+      show_host_libs ${prefix}simple-exception${suffix}
       run_app_verbose ./${prefix}simple-exception${suffix} || echo "The test ${prefix}simple-exception${suffix} is known to fail; ignored."
     else
       run_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_HOST_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
@@ -1078,71 +1078,71 @@ function test_gcc_one()
     # Tests borrowed from the llvm-mingw project.
 
     run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}hello${suffix}${XBB_HOST_DOT_EXE} hello.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-    show_libs ${prefix}hello${suffix}
+    show_host_libs ${prefix}hello${suffix}
     run_app_verbose ./${prefix}hello${suffix}
 
     run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}setjmp${suffix}${XBB_HOST_DOT_EXE} setjmp-patched.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-    show_libs ${prefix}setjmp${suffix}
+    show_host_libs ${prefix}setjmp${suffix}
     run_app_verbose ./${prefix}setjmp${suffix}
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}hello-tls${suffix}.exe hello-tls.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      show_libs ${prefix}hello-tls${suffix}
+      show_host_libs ${prefix}hello-tls${suffix}
       run_app_verbose ./${prefix}hello-tls${suffix}
 
       run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}crt-test${suffix}.exe crt-test.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      show_libs ${prefix}crt-test${suffix}
+      show_host_libs ${prefix}crt-test${suffix}
       run_app_verbose ./${prefix}crt-test${suffix}
 
       if [ "${prefix}" != "static-" ]
       then
         run_app_verbose "${CC}" ${CFLAGS} -o autoimport-lib.dll autoimport-lib.c -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-        show_libs autoimport-lib.dll
+        show_host_libs autoimport-lib.dll
 
         run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}autoimport-main${suffix}.exe autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-        show_libs ${prefix}autoimport-main${suffix}
+        show_host_libs ${prefix}autoimport-main${suffix}
         run_app_verbose ./${prefix}autoimport-main${suffix}
       fi
 
       # The IDL output isn't arch specific, but test each arch frontend
       run_app_verbose "${WIDL}" -o idltest.h idltest.idl -h
       run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}idltest${suffix}.exe idltest.c -I. -lole32 ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      show_libs ${prefix}idltest${suffix}
+      show_host_libs ${prefix}idltest${suffix}
       run_app_verbose ./${prefix}idltest${suffix}
     fi
 
     run_app_verbose ${CXX} -o ${prefix}hello-cpp${suffix}${XBB_HOST_DOT_EXE} hello-cpp.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_libs ${prefix}hello-cpp${suffix}
+    show_host_libs ${prefix}hello-cpp${suffix}
     run_app_verbose ./${prefix}hello-cpp${suffix}
 
     run_app_verbose ${CXX} -o ${prefix}hello-exception${suffix}${XBB_HOST_DOT_EXE} hello-exception.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_libs ${prefix}hello-exception${suffix}
+    show_host_libs ${prefix}hello-exception${suffix}
     run_app_verbose ./${prefix}hello-exception${suffix}
 
     run_app_verbose ${CXX} -o ${prefix}exception-locale${suffix}${XBB_HOST_DOT_EXE} exception-locale.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_libs ${prefix}exception-locale${suffix}
+    show_host_libs ${prefix}exception-locale${suffix}
     run_app_verbose ./${prefix}exception-locale${suffix}
 
     run_app_verbose ${CXX} -o ${prefix}exception-reduced${suffix}${XBB_HOST_DOT_EXE} exception-reduced.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_libs ${prefix}exception-reduced${suffix}
+    show_host_libs ${prefix}exception-reduced${suffix}
     run_app_verbose ./${prefix}exception-reduced${suffix}
 
     run_app_verbose ${CXX} -o ${prefix}global-terminate${suffix}${XBB_HOST_DOT_EXE} global-terminate.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_libs ${prefix}global-terminate${suffix}
+    show_host_libs ${prefix}global-terminate${suffix}
     run_app_verbose ./${prefix}global-terminate${suffix}
 
     run_app_verbose ${CXX} -o ${prefix}longjmp-cleanup${suffix}${XBB_HOST_DOT_EXE} longjmp-cleanup.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_libs ${prefix}longjmp-cleanup${suffix}
+    show_host_libs ${prefix}longjmp-cleanup${suffix}
     run_app_verbose ./${prefix}longjmp-cleanup${suffix}
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       run_app_verbose ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-      show_libs tlstest-lib.dll
+      show_host_libs tlstest-lib.dll
 
       run_app_verbose ${CXX} -o ${prefix}tlstest-main${suffix}.exe tlstest-main.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-      show_libs ${prefix}tlstest-main${suffix}
+      show_host_libs ${prefix}tlstest-main${suffix}
 
       (
         # For libstdc++-6.dll
@@ -1189,7 +1189,7 @@ function test_gcc_one()
         LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
         export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
-        show_libs ${prefix}throwcatch-main${suffix}
+        show_host_libs ${prefix}throwcatch-main${suffix}
         if [ "${XBB_HOST_PLATFORM}" == "win32" -a "${XBB_HOST_ARCH}" == "ia32" ]
         then
           run_app_verbose ./${prefix}throwcatch-main${suffix} || echo "The test ${prefix}throwcatch-main${suffix} is known to fail; ignored."

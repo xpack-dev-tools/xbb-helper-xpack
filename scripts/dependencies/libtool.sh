@@ -182,7 +182,7 @@ function test_libtool_libs()
   echo
   echo "Checking the libtool shared libraries..."
 
-  show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libltdl.${XBB_HOST_SHLIB_EXT}"
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libltdl.${XBB_HOST_SHLIB_EXT}"
 }
 
 function test_libtool()

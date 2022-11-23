@@ -199,9 +199,9 @@ function test_gettext()
   echo
   echo "Checking the gettext shared libraries..."
 
-  show_libs "${test_bin_folder_path}/gettext"
-  show_libs "${test_bin_folder_path}/ngettext"
-  show_libs "${test_bin_folder_path}/envsubst"
+  show_host_libs "${test_bin_folder_path}/gettext"
+  show_host_libs "${test_bin_folder_path}/ngettext"
+  show_host_libs "${test_bin_folder_path}/envsubst"
 
   run_app_verbose "${test_bin_folder_path}/gettext" --version
   test_expect "test" "${test_bin_folder_path}/gettext" test

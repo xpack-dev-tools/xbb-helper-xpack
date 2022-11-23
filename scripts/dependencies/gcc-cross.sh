@@ -665,16 +665,16 @@ function test_cross_gcc()
   local test_bin_path="$1"
 
   (
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-gcc"
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-g++"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-gcc"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-g++"
 
     if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
-      show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1)"
-      show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1plus)"
-      show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=collect2)"
-      show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=lto-wrapper)"
-      show_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=lto1)"
+      show_host_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1)"
+      show_host_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=cc1plus)"
+      show_host_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=collect2)"
+      show_host_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=lto-wrapper)"
+      show_host_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=lto1)"
     fi
 
     run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" --help

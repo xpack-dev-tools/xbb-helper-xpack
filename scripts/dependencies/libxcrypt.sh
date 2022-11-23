@@ -195,7 +195,7 @@ function test_libxcrypt()
     echo
     echo "Checking the libxcrypt shared libraries..."
 
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcrypt.${XBB_HOST_SHLIB_EXT}"
+    show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libcrypt.${XBB_HOST_SHLIB_EXT}"
   )
 }
 

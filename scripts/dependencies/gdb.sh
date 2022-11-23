@@ -159,7 +159,7 @@ function build_gdb()
         # strip:.../install/riscv-none-gcc/bin/_inst.672_: file format not recognized
         run_verbose make install-gdb
 
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gdb"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gdb"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}/make-output-$(ndate).txt"
 
@@ -183,7 +183,7 @@ function test_gdb()
 {
   local test_bin_path="$1"
 
-  show_libs "${test_bin_path}/gdb"
+  show_host_libs "${test_bin_path}/gdb"
 
   run_app_verbose "${test_bin_path}/gdb" --version
   run_app_verbose "${test_bin_path}/gdb" --help

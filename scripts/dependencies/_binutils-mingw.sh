@@ -173,9 +173,9 @@ function build_mingw_binutils()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        show_libs "ld/ld-new"
-        show_libs "gas/as-new"
-        show_libs "binutils/readelf"
+        show_host_libs "ld/ld-new"
+        show_host_libs "gas/as-new"
+        show_host_libs "binutils/readelf"
 
         # make install-strip
         run_verbose make install
@@ -219,17 +219,17 @@ function test_mingw2_binutils()
     echo
     echo "Checking the ${mingw_triplet} binutils${name_suffix} shared libraries..."
 
-    show_libs "${test_bin_path}/${mingw_triplet}-ar${XBB_HOST_DOT_EXE}"
+    show_host_libs "${test_bin_path}/${mingw_triplet}-ar${XBB_HOST_DOT_EXE}"
 
-    show_libs "${test_bin_path}/${mingw_triplet}-as${XBB_HOST_DOT_EXE}"
-    show_libs "${test_bin_path}/${mingw_triplet}-ld${XBB_HOST_DOT_EXE}"
-    show_libs "${test_bin_path}/${mingw_triplet}-nm${XBB_HOST_DOT_EXE}"
-    show_libs "${test_bin_path}/${mingw_triplet}-objcopy${XBB_HOST_DOT_EXE}"
-    show_libs "${test_bin_path}/${mingw_triplet}-objdump${XBB_HOST_DOT_EXE}"
-    show_libs "${test_bin_path}/${mingw_triplet}-ranlib${XBB_HOST_DOT_EXE}"
-    show_libs "${test_bin_path}/${mingw_triplet}-size${XBB_HOST_DOT_EXE}"
-    show_libs "${test_bin_path}/${mingw_triplet}-strings${XBB_HOST_DOT_EXE}"
-    show_libs "${test_bin_path}/${mingw_triplet}-strip${XBB_HOST_DOT_EXE}"
+    show_host_libs "${test_bin_path}/${mingw_triplet}-as${XBB_HOST_DOT_EXE}"
+    show_host_libs "${test_bin_path}/${mingw_triplet}-ld${XBB_HOST_DOT_EXE}"
+    show_host_libs "${test_bin_path}/${mingw_triplet}-nm${XBB_HOST_DOT_EXE}"
+    show_host_libs "${test_bin_path}/${mingw_triplet}-objcopy${XBB_HOST_DOT_EXE}"
+    show_host_libs "${test_bin_path}/${mingw_triplet}-objdump${XBB_HOST_DOT_EXE}"
+    show_host_libs "${test_bin_path}/${mingw_triplet}-ranlib${XBB_HOST_DOT_EXE}"
+    show_host_libs "${test_bin_path}/${mingw_triplet}-size${XBB_HOST_DOT_EXE}"
+    show_host_libs "${test_bin_path}/${mingw_triplet}-strings${XBB_HOST_DOT_EXE}"
+    show_host_libs "${test_bin_path}/${mingw_triplet}-strip${XBB_HOST_DOT_EXE}"
 
     echo
     echo "Testing if ${mingw_triplet} binutils${name_suffix} binaries start properly..."

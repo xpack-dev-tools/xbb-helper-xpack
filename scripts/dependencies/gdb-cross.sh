@@ -281,7 +281,7 @@ function build_cross_gdb()
 
         rm -rfv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/pyconfig.h"
 
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gdb${name_suffix}"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gdb${name_suffix}"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}/make-output-$(ndate).txt"
 
@@ -323,7 +323,7 @@ function test_cross_gdb()
   local suffix="${2:-}"
 
   (
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}"
 
     run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" --version
     run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" --config

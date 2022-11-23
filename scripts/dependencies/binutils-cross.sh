@@ -164,16 +164,16 @@ function build_binutils_cross()
           copy_dir "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" "${APP_PREFIX_NANO}"
         fi
 
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ar"
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-as"
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ld"
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-nm"
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-objcopy"
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-objdump"
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ranlib"
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-size"
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strings"
-        show_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strip"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ar"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-as"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ld"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-nm"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-objcopy"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-objdump"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ranlib"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-size"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strings"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strip"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
 
@@ -197,16 +197,16 @@ function test_binutils_cross()
   local test_bin_path="$1"
   (
 
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-ar"
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-as"
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-ld"
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-nm"
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-objcopy"
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-objdump"
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-ranlib"
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-size"
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-strings"
-    show_libs "${test_bin_path}/${XBB_GCC_TARGET}-strip"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-ar"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-as"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-ld"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-nm"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-objcopy"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-objdump"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-ranlib"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-size"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-strings"
+    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-strip"
 
     run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-ar" --version
     run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-as" --version

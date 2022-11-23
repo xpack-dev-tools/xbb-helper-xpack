@@ -178,7 +178,7 @@ function test_m4()
     echo
     echo "Checking the m4 binaries shared libraries..."
 
-    show_libs "${test_bin_folder_path}/m4"
+    show_host_libs "${test_bin_folder_path}/m4"
 
     echo
     echo "Testing if m4 binaries start properly..."

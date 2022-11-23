@@ -116,7 +116,7 @@ function build_findutils()
           run_verbose make install
         fi
 
-        show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/find"
+        show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/find"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${findutils_folder_name}/make-output-$(ndate).txt"
 
@@ -144,7 +144,7 @@ function test_findutils()
     echo
     echo "Checking the findutils shared libraries..."
 
-    show_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/find"
+    show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/find"
 
     echo
     echo "Checking if findutils starts..."
