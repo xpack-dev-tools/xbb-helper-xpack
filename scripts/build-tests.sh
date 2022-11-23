@@ -55,7 +55,7 @@ function tests_run_final()
 
     echo
     echo "Final tests completed successfuly."
-  )
+  ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/tests-output-$(ndate).txt"
 }
 
 function tests_prime_wine()
