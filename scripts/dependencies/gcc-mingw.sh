@@ -391,10 +391,10 @@ function build_mingw_gcc_final()
     echo "Component ${name_prefix}gcc final already installed."
   fi
 
-  tests_add "test_mingw2_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"
+  tests_add "test_mingw_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"
 }
 
-function test_mingw2_gcc()
+function test_mingw_gcc()
 {
   local test_bin_path="$1"
   local triplet="$2"
