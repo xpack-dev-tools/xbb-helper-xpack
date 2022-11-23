@@ -546,15 +546,15 @@ function test_mingw2_gcc()
     # -------------------------------------------------------------------------
 
     # Run tests in all 3 cases.
-    test_mingw2_gcc_one "${test_bin_path}" "${triplet}" "" ""
-    test_mingw2_gcc_one "${test_bin_path}" "${triplet}" "static-lib-" ""
-    test_mingw2_gcc_one "${test_bin_path}" "${triplet}" "static-" ""
+    test_mingw_gcc_single "${test_bin_path}" "" ""
+    test_mingw_gcc_single "${test_bin_path}" "static-lib-" ""
+    test_mingw_gcc_single "${test_bin_path}" "static-" ""
 
     # -------------------------------------------------------------------------
   )
 }
 
-function test_mingw2_gcc_one()
+function test_mingw_gcc_single()
 {
   local test_bin_path="$1"
   local mingw_triplet="$2"
