@@ -577,7 +577,7 @@ function test_mingw_gcc_single()
     STATIC_LIBSTD=""
 
     # The DLLs are available in the /lib folder.
-    export WINEPATH="${test_bin_path}/../${triplet}/lib;${WINEPATH:-}"
+    export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
     echo "WINEPATH=${WINEPATH}"
   fi
 
