@@ -550,7 +550,7 @@ function copy_dependencies_recursive()
             "@rpath/$(basename "${from_path}")" \
             "${actual_destination_file_path}"
 
-          show_libs "${actual_destination_file_path}"
+          show_host_libs "${actual_destination_file_path}"
 
         fi
 
