@@ -666,7 +666,7 @@ function test_mingw2_gcc_one()
     if [ "${prefix}" != "static-" ]
     then
       run_app "${CC}" -o autoimport-lib.dll autoimport-lib.c -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      show_dlls autoimport-lib.dll
+      show_target_libs autoimport-lib.dll
 
       run_app "${CC}" -o "${prefix}autoimport-main${suffix}.exe" autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC}
       run_mingw_wine "${triplet}" "${prefix}autoimport-main${suffix}.exe"
@@ -696,7 +696,7 @@ function test_mingw2_gcc_one()
     run_mingw_wine "${triplet}" "${prefix}longjmp-cleanup${suffix}.exe"
 
     run_app ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_dlls "tlstest-lib.dll"
+    show_target_libs "tlstest-lib.dll"
 
     run_app ${CXX} -o "${prefix}tlstest-main${suffix}.exe" tlstest-main.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     run_mingw_wine "${triplet}" "${prefix}tlstest-main${suffix}.exe"
