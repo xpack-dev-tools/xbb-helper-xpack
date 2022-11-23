@@ -40,16 +40,30 @@ function run_verbose_timed()
   time "${app_path}" "$@" 2>&1
 }
 
-function run_app()
+function run_app_verbose()
 {
-  # Does not include the .exe extension.
+  # Does not need to include the .exe extension.
   local app_path="$1"
   shift
 
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
     # Possibly Windows executables, run them via wine.
-    if is_pe64 "$(realpath ${app_path}.exe)"
+    if is_pe64 "$(realpath ${app_path})"
+    then
+      local wine_path=$(which wine64 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          run_verbose wine64 "${app_path}" "$@"
+        )
+      else
+        echo
+        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    elif is_pe64 "$(realpath ${app_path}.exe)"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -60,7 +74,22 @@ function run_app()
           run_verbose wine64 "${app_path}.exe" "$@"
         )
       else
+        echo
         echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    elif is_pe32 "$(realpath ${app_path})"
+    then
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          run_verbose wine "${app_path}" "$@"
+        )
+      else
+        echo
+        echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     elif is_pe32 "$(realpath ${app_path}.exe)"
     then
@@ -73,6 +102,7 @@ function run_app()
           run_verbose wine "${app_path}.exe" "$@"
         )
       else
+        echo
         echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     else
@@ -114,50 +144,104 @@ function run_app()
           export WINEDEBUG=-all
           run_verbose wine64 "${app_path}.exe" "$@"
         else
+          echo
           echo "${app_path}.exe not found"
           exit 1
         fi
       else
+        echo
         echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     )
 
   else
+    echo
     echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
   fi
 }
 
-function run_verbose_develop()
+function run_app()
 {
-  # Does not include the .exe extension.
-  local app_path=$1
+  # Does not need to include the .exe extension.
+  local app_path="$1"
   shift
 
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
-    echo
-    echo "[${app_path} $@]"
-  fi
-  "${app_path}" "$@" 2>&1
-}
+    # Possibly Windows executables, run them via wine.
+    if is_pe64 "$(realpath ${app_path})"
+    then
+      local wine_path=$(which wine64 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          wine64 "${app_path}" "$@" | sed -e 's|\r$||'
+        )
+      else
+        echo
+        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    elif is_pe64 "$(realpath ${app_path}.exe)"
+    then
+      local wine_path=$(which wine64 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          wine64 "${app_path}.exe" "$@" | sed -e 's|\r$||'
+        )
+      else
+        echo
+        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    elif is_pe32 "$(realpath ${app_path})"
+    then
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          wine "${app_path}" "$@" | sed -e 's|\r$||'
+        )
+      else
+        echo
+        echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    elif is_pe32 "$(realpath ${app_path}.exe)"
+    then
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          wine "${app_path}.exe" "$@" | sed -e 's|\r$||'
+        )
+      else
+        echo
+        echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    else
+      # Assume it is a Linux executable.
+      "${app_path}" "$@"
+    fi
+  elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+  then
+    "${app_path}" "$@"
+  elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+  then
+    if is_elf "${app_path}"
+    then
+      # When testing native variants, like llvm.
+      "${app_path}" "$@"
+      return
+    fi
 
-# -----------------------------------------------------------------------------
-
-function run_app_silent()
-{
-  # Does not include the .exe extension.
-  local app_path=$1
-  shift
-
-  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-  then
-    "${app_path}" "$@" 2>&1
-  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-  then
-    "${app_path}" "$@" 2>&1
-  elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
-  then
     if [ "$(uname -o)" == "Msys" ]
     then
       "${app_path}.exe" "$@"
@@ -167,40 +251,44 @@ function run_app_silent()
     local wsl_path=$(which wsl.exe 2>/dev/null)
     if [ ! -z "${wsl_path}" ]
     then
-      "${app_path}.exe" "$@" 2>&1
+      "${app_path}.exe" "$@"
       return
     fi
-    (
-      unset DISPLAY
-      export WINEDEBUG=-all
 
+    (
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
         if [ -f "${app_path}.exe" ]
         then
-          wine64 "${app_path}.exe" "$@" 2>&1
+          unset DISPLAY
+          export WINEDEBUG=-all
+          wine64 "${app_path}.exe" "$@" | sed -e 's|\r$||'
         else
+          echo
           echo "${app_path}.exe not found"
           exit 1
         fi
       else
-        echo "Install wine64 if you want to run the .exe binaries on Linux."
+        echo
+        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     )
 
   else
-    echo "Oops! Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+    echo
+    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
   fi
 }
 
 function run_app_exit()
 {
-  local expected_exit_code=$1
+  local expected_exit_code="$1"
   shift
-  local app_path=$1
+  local app_path="$1"
   shift
+
   if [ "${node_platform}" == "win32" ]
   then
     app_path+='.exe'
