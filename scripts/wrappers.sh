@@ -224,8 +224,9 @@ function run_app_exit()
 function test_expect()
 {
   local expected="$1"
-  local app_path="$2"
-  shift 2
+  shift
+  local app_path="$1"
+  shift
 
   (
     set +e
@@ -234,24 +235,24 @@ function test_expect()
     local output
     if [ "${app_path:0:1}" == "/" ]
     then
-      show_libs "${app_path}"
-      output="$(run_app_silent "${app_path}" "$@" | sed 's/\r$//')"
+      show_host_libs "${app_path}"
+      output="$(run_app "${app_path}" "$@" | sed -e 's|\r$||')"
     elif [ "${app_path:0:2}" == "./" ]
     then
-      show_libs "${app_path}"
-      output="$(run_app_silent "${app_path}" "$@" | sed 's/\r$//')"
+      show_host_libs "${app_path}"
+      output="$(run_app "${app_path}" "$@" | sed -e 's|\r$||')"
     elif [ -f "${app_path}.exe" ]
     then
-      show_libs "${app_path}"
-      output="$(run_app_silent "${app_path}" "$@" | sed 's/\r$//')"
+      show_host_libs "${app_path}"
+      output="$(run_app "${app_path}" "$@" | sed -e 's|\r$||')"
     else
       if [ -x "${app_path}" ]
       then
-        show_libs "${app_path}"
-        output="$(run_app_silent "./${app_path}" "$@" | sed 's/\r$//')"
+        show_host_libs "${app_path}"
+        output="$(run_app "./${app_path}" "$@" | sed -e 's|\r$||')"
       else
         # bash case
-        output="$(run_app_silent "${app_path}" "$@" | sed 's/\r$//')"
+        output="$(run_app "${app_path}" "$@" | sed -e 's|\r$||')"
       fi
     fi
 
