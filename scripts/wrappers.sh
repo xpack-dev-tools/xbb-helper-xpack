@@ -489,7 +489,7 @@ function is_pe32()
 
   if [ -f "${bin_path}" ]
   then
-    file ${bin_path} | egrep -q "( PE )|( PE32 )|( PE32\+ )" | egrep -q "80386"
+    file ${bin_path} | grep -q "PE32 executable (console) Intel 80386"
   else
     return 1
   fi
