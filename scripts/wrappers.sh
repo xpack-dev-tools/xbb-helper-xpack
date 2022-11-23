@@ -273,22 +273,6 @@ function test_expect()
 
 function test_mingw_expect()
 {
-  local triplet="x86_64-w64-mingw32"
-
-  while [ $# -gt 0 ]
-  do
-    case "$1" in
-      --triplet=* )
-        triplet=$(xbb_parse_option "$1")
-        shift
-        ;;
-
-      * )
-        break
-        ;;
-    esac
-  done
-
   local expected="$1"
   shift
   local app_name="$1"
@@ -298,7 +282,7 @@ function test_mingw_expect()
 
   if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
-    show_dlls "${app_path}"
+    show_target_libs "${app_name}"
   fi
 
   if is_pe64 "${app_path}"
@@ -309,7 +293,7 @@ function test_mingw_expect()
       then
         local output
         # Remove the trailing CR present on Windows.
-        output="$(wine64 "${app_path}" "$@" | sed 's/\r$//')"
+        output="$(wine64 "${app_path}" "$@" | sed -e 's|\r$||')"
 
         if [ "x${output}x" == "x${expected}x" ]
         then
@@ -336,7 +320,7 @@ function test_mingw_expect()
       then
         local output
         # Remove the trailing CR present on Windows.
-        output="$(wine "${app_path}" "$@" | sed 's/\r$//')"
+        output="$(wine "${app_path}" "$@" | sed -e 's|\r$||')"
 
         if [ "x${output}x" == "x${expected}x" ]
         then
@@ -357,7 +341,7 @@ function test_mingw_expect()
     )
   else
     echo
-    echo "wine" "${app_name}" "$@" "- ${triplet} unsupported"
+    echo "running" "${app_name}" "$@" "- not unsupported"
   fi
 }
 
