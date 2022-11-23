@@ -466,6 +466,7 @@ function xbb_set_target()
   xbb_set_compiler_env
 
   xbb_set_extra_build_env
+  xbb_set_extra_host_env
   xbb_set_extra_target_env
 
   # ---------------------------------------------------------------------------
@@ -552,6 +553,26 @@ function xbb_set_extra_target_env()
   export XBB_TARGET_OBJDUMP
 
   export XBB_CURRENT_TRIPLET
+}
+
+function xbb_set_extra_host_env()
+{
+  local triplet="${1:-"${XBB_HOST_TRIPLET}"}"
+
+  if [ "${triplet}" != "${XBB_BUILD_TRIPLET}" ]
+  then
+    XBB_HOST_STRIP="$(which ${triplet}-strip)"
+    XBB_HOST_RANLIB="$(which ${triplet}-ranlib)"
+    XBB_HOST_OBJDUMP="$(which ${triplet}-objdump)"
+  else
+    XBB_HOST_STRIP="$(which strip)"
+    XBB_HOST_RANLIB="$(which ranlib)"
+    XBB_HOST_OBJDUMP="$(which objdump)"
+  fi
+
+  export XBB_HOST_STRIP
+  export XBB_HOST_RANLIB
+  export XBB_HOST_OBJDUMP
 }
 
 function xbb_unset_compiler_env()
