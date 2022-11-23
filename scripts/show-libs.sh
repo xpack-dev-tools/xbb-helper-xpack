@@ -190,7 +190,7 @@ function readelf_shared_libs()
   )
 }
 
-function show_native_libs()
+function _show_native_libs()
 {
   # Does not include the .exe extension.
   local app_path=$1
@@ -209,7 +209,7 @@ function show_native_libs()
   )
 }
 
-function show_dlls()
+function _show_dlls()
 {
   # Does include the .exe extension.
   local exe_path="$1"
