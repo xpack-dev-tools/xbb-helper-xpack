@@ -424,23 +424,26 @@ function test_mingw2_gcc()
     echo
     echo "Checking the ${triplet}-gcc shared libraries..."
 
-    show_libs "${CC}"
-    show_libs "${CXX}"
+    show_host_libs "${CC}"
+    show_host_libs "${CXX}"
     if [ -f "${F90}" ]
     then
-      show_libs "${F90}"
+      show_host_libs "${F90}"
     fi
 
-    show_libs "${AR}"
-    show_libs "${NM}"
-    show_libs "${RANLIB}"
-    show_libs "${GCOV}"
+    show_host_libs "${AR}"
+    show_host_libs "${NM}"
+    show_host_libs "${RANLIB}"
+    show_host_libs "${GCOV}"
 
-    show_libs "$(${CC} --print-prog-name=cc1)"
-    show_libs "$(${CC} --print-prog-name=cc1plus)"
-    show_libs "$(${CC} --print-prog-name=collect2)"
-    show_libs "$(${CC} --print-prog-name=lto1)"
-    show_libs "$(${CC} --print-prog-name=lto-wrapper)"
+    (
+      set +e
+      show_host_libs "$(run_app ${CC} --print-prog-name=cc1 | sed -e 's|^z:||')"
+      show_host_libs "$(run_app ${CC} --print-prog-name=cc1plus | sed -e 's|^z:||')"
+      show_host_libs "$(run_app ${CC} --print-prog-name=collect2 | sed -e 's|^z:||')"
+      show_host_libs "$(run_app ${CC} --print-prog-name=lto1 | sed -e 's|^z:||')"
+      show_host_libs "$(run_app ${CC} --print-prog-name=lto-wrapper | sed -e 's|^z:||')"
+    )
 
     echo
     echo "Testing if ${triplet}-gcc binaries start properly..."
