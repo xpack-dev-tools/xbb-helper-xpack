@@ -222,10 +222,14 @@ function build_perform_common()
   )
 
   # ---------------------------------------------------------------------------
-
   # Final checks.
 
-  tests_run_final
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
+  (
+    # Isolate the tests in a sub-shell to easily capture the output.
+
+    tests_run_final
+  ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/tests-output-$(ndate).txt"
 
   # ---------------------------------------------------------------------------
 
