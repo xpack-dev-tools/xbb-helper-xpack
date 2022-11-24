@@ -75,7 +75,7 @@ function run_app_verbose()
         )
       else
         echo
-        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     elif is_pe64 "$(realpath ${app_path}.exe)"
     then
@@ -89,7 +89,7 @@ function run_app_verbose()
         )
       else
         echo
-        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     elif is_pe32 "$(realpath ${app_path})"
     then
@@ -164,7 +164,7 @@ function run_app_verbose()
         fi
       else
         echo
-        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     )
 
@@ -196,7 +196,7 @@ function run_app()
         )
       else
         echo
-        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     elif is_pe64 "$(realpath ${app_path}.exe)"
     then
@@ -210,7 +210,7 @@ function run_app()
         )
       else
         echo
-        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     elif is_pe32 "$(realpath ${app_path})"
     then
@@ -285,7 +285,7 @@ function run_app()
         fi
       else
         echo
-        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     )
 
