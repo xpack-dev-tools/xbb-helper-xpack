@@ -425,3 +425,149 @@ function test_binutils()
 }
 
 # -----------------------------------------------------------------------------
+
+function build_binutils_ld_gold()
+{
+  local binutils_version="$1"
+
+  local binutils_src_folder_name="binutils-${binutils_version}"
+
+  local binutils_archive="${binutils_src_folder_name}.tar.xz"
+  local binutils_url="https://ftp.gnu.org/gnu/binutils/${binutils_archive}"
+
+  local binutils_folder_name="binutils-ld.gold-${binutils_version}"
+
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}"
+
+  local binutils_patch_file_name="binutils-${binutils_version}.patch"
+  local binutils_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${binutils_folder_name}-installed"
+  if [ ! -f "${binutils_stamp_file_path}" ]
+  then
+
+    mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
+    cd "${XBB_SOURCES_FOLDER_PATH}"
+
+    download_and_extract "${binutils_url}" "${binutils_archive}" \
+      "${binutils_src_folder_name}" "${binutils_patch_file_name}"
+
+    (
+      mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
+
+      # To access the newly compiled libraries.
+      xbb_activate_dependencies_dev
+
+      CPPFLAGS="${XBB_CPPFLAGS}"
+      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+
+      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+      LDFLAGS="${XBB_LDFLAGS_APP}"
+      xbb_adjust_ldflags_rpath
+
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      then
+        if [ "${XBB_TARGET_ARCH}" == "x32" -o "${XBB_TARGET_ARCH}" == "ia32" ]
+        then
+          # From MSYS2 MINGW
+          LDFLAGS+=" -Wl,--large-address-aware"
+        fi
+
+        # Used to enable wildcard; inspired from arm-none-eabi-gcc.
+        LDFLAGS+=" -Wl,${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}/lib/CRT_glob.o"
+      fi
+
+      export CPPFLAGS
+      export CFLAGS
+      export CXXFLAGS
+      export LDFLAGS
+
+      if [ ! -f "config.status" ]
+      then
+        (
+          xbb_show_env_develop
+
+          echo
+          echo "Running binutils-ld.gold configure..."
+
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          then
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/ld/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/bfd/configure" --help
+          fi
+
+          local triplet="${XBB_TARGET_TRIPLET}"
+          local program_prefix=""
+
+          # Linux
+          #  config_options+=("--disable-shared")
+          #  config_options+=("--disable-shared-libgcc")
+
+          prepare_binutils_common_options
+
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
+            "${config_options[@]}"
+
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/configure-output-$(ndate).txt"
+      fi
+
+      (
+        echo
+        echo "Running binutils-ld.gold make..."
+
+        # Build.
+        run_verbose make -j ${XBB_JOBS} all-gold
+
+        if [ "${XBB_WITH_TESTS}" == "y" ]
+        then
+          # gcctestdir/collect-ld: relocation error: gcctestdir/collect-ld: symbol _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERmm, version GLIBCXX_3.4.21 not defined in file libstdc++.so.6 with link time reference
+          : # make maybe-check-gold
+        fi
+
+        # Avoid strip here, it may interfere with patchelf.
+        # make install-strip
+        run_verbose make maybe-install-gold
+
+        # Remove the separate folder, the xPack distribution is single target.
+        rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_BUILD_TRIPLET}"
+
+        if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+        then
+          : # rm -rv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/strip"
+        fi
+
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/ld.gold"
+
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
+
+      copy_license \
+        "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}" \
+        "${binutils_folder_name}"
+
+    )
+
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
+    touch "${binutils_stamp_file_path}"
+
+  else
+    echo "Component binutils ld.gold already installed."
+  fi
+
+  tests_add "test_binutils_ld_gold" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+}
+
+function test_binutils_ld_gold()
+{
+  local test_bin_path="$1"
+
+  show_host_libs "${test_bin_path}/ld.gold"
+
+  echo
+  echo "Testing if binutils ld.gold starts properly..."
+
+  run_app "${test_bin_path}/ld.gold" --version
+}
+
+# -----------------------------------------------------------------------------
