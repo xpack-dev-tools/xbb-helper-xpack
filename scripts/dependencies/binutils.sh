@@ -10,44 +10,175 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/binutils/
+# https://ftp.gnu.org/gnu/binutils/
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/binutils/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/binutils/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
+
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-binutils
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-binutils/PKGBUILD
+
+# mingw-w64
+# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-binutils/trunk/PKGBUILD
+
+# https://github.com/msys2/MSYS2-packages/blob/master/binutils/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/binutils.rb
+
+
+# 2017-07-24, "2.29"
+# 2018-01-28, "2.30"
+# 2018-07-18, "2.31.1"
+# 2019-02-02, "2.32"
+# 2019-10-12, "2.33.1"
+# 2020-02-01, "2.34"
+# 2020-07-24, "2.35"
+# 2020-09-19, "2.35.1"
+# 2021-01-24, "2.36"
+# 2021-01-30, "2.35.2"
+# 2021-02-06, "2.36.1"
+# 2021-07-18, "2.37"
+# 2022-02-09, "2.38"
+# 2022-08-05, "2.39"
+
+# -----------------------------------------------------------------------------
+
+# triplet
+# program_prefix
+function prepare_binutils_common_options()
+{
+  config_options=()
+
+  config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
+  config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
+  config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
+  config_options+=("--htmldir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/html")
+  config_options+=("--pdfdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/pdf")
+
+  config_options+=("--build=${XBB_BUILD_TRIPLET}")
+  config_options+=("--host=${XBB_HOST_TRIPLET}")
+  config_options+=("--target=${triplet}") # Arch, HB
+
+  config_options+=("--program-prefix=${program_prefix}")
+  config_options+=("--program-suffix=")
+
+  config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
+
+  # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
+  config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
+  if [ "${XBB_HOST_PLATFORM}" != "linux" ]
+  then
+    config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+  fi
+
+  # Use the zlib compiled from sources.
+  config_options+=("--with-system-zlib") # Arch, HB
+
+  config_options+=("--with-pic") # Arch
+
+  # error: debuginfod is missing or unusable
+  # config_options+=("--with-debuginfod") # Arch
+  config_options+=("--without-debuginfod")
+
+  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+  then
+
+    config_options+=("--enable-ld")
+
+  elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+  then
+
+    if [ -z "${triplet}" ]
+    then
+      config_options+=("--enable-pgo-build=lto") # Arch
+    fi
+
+    config_options+=("--enable-ld=default") # Arch
+
+    # config_options+=("--enable-targets=x86_64-pep,bpf-unknown-none")
+
+  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  then
+
+    # Not supported by clang.
+    # config_options+=("--enable-pgo-build=lto")
+    :
+
+  else
+    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+    exit 1
+  fi
+
+  config_options+=("--enable-64-bit-bfd") # HB
+  config_options+=("--enable-build-warnings=no")
+  config_options+=("--enable-cet") # Arch
+  config_options+=("--enable-default-execstack=no") # Arch
+  config_options+=("--enable-deterministic-archives") # Arch, HB
+  config_options+=("--enable-gold") # Arch, HB
+  config_options+=("--enable-install-libiberty") # Arch
+  config_options+=("--enable-interwork") # HB
+  # config_options+=("--enable-jansson") # Arch
+  config_options+=("--enable-libssp")
+  config_options+=("--enable-lto")
+
+  if [ ! -z "${triplet}" ]
+  then
+    # The mingw binaries have architecture specific names,
+    # so multilib makes no sense.
+    config_options+=("--disable-multilib") # Arch, HB
+  else
+    if [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "x64" ]
+    then
+      # Only Intel Linux supports multilib.
+      config_options+=("--enable-multilib") # HB
+    else
+      # All other platforms do not.
+      config_options+=("--disable-multilib")
+    fi
+  fi
+
+  config_options+=("--enable-plugins") # Arch, HB
+  config_options+=("--enable-relro") # Arch
+  config_options+=("--enable-shared") # Arch
+  config_options+=("--enable-static")
+
+  if [ ! -z "${triplet}" ]
+  then
+    config_options+=("--enable-targets=${triplet}") # HB
+  else
+    config_options+=("--enable-targets=all") # HB
+  fi
+
+  config_options+=("--enable-threads") # Arch
+
+  config_options+=("--disable-debug") # HB
+  config_options+=("--disable-dependency-tracking") # HB
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  then
+    config_options+=("--disable-silent-rules")
+  fi
+
+  config_options+=("--disable-gdb") # Arch
+  config_options+=("--disable-gdbserver") # Arch
+  config_options+=("--disable-libdecnumber") # Arch
+
+  config_options+=("--disable-new-dtags")
+  config_options+=("--disable-nls") # HB
+
+  config_options+=("--disable-readline") # Arch
+  config_options+=("--disable-sim") # Arch
+  config_options+=("--disable-werror") # Arch, HB
+}
+
 # binutils should not be used on Darwin, the build is ok, but
 # there are functional issues, due to the different ld/as/etc.
 
 function build_binutils()
 {
-  # https://www.gnu.org/software/binutils/
-  # https://ftp.gnu.org/gnu/binutils/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/binutils/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/binutils/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
-
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-binutils
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-binutils/PKGBUILD
-
-  # mingw-w64
-  # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-binutils/trunk/PKGBUILD
-
-  # https://github.com/msys2/MSYS2-packages/blob/master/binutils/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/binutils.rb
-
-
-  # 2017-07-24, "2.29"
-  # 2018-01-28, "2.30"
-  # 2018-07-18, "2.31.1"
-  # 2019-02-02, "2.32"
-  # 2019-10-12, "2.33.1"
-  # 2020-02-01, "2.34"
-  # 2020-07-24, "2.35"
-  # 2020-09-19, "2.35.1"
-  # 2021-01-24, "2.36"
-  # 2021-01-30, "2.35.2"
-  # 2021-02-06, "2.36.1"
-  # 2021-07-18, "2.37"
-  # 2022-02-09, "2.38"
-  # 2022-08-05, "2.39"
-
   local binutils_version="$1"
   shift
 
@@ -147,126 +278,7 @@ function build_binutils()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/ld/configure" --help
           fi
 
-          # ? --without-python --without-curses, --with-expat
-          config_options=()
-
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-          # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
-
-          config_options+=("--program-prefix=${program_prefix}")
-          config_options+=("--program-suffix=")
-
-          config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/info")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/man")
-          config_options+=("--htmldir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/html")
-          config_options+=("--pdfdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/doc/pdf")
-
-          config_options+=("--build=${XBB_BUILD_TRIPLET}")
-          config_options+=("--host=${XBB_HOST_TRIPLET}")
-          config_options+=("--target=${triplet}") # Arch, HB
-
-          config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
-
-          if [ "${XBB_HOST_PLATFORM}" != "linux" ]
-          then
-            config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-          fi
-
-          # Use the zlib compiled from sources.
-          config_options+=("--with-system-zlib") # Arch, HB
-
-          config_options+=("--with-pic") # Arch
-
-          # error: debuginfod is missing or unusable
-          # config_options+=("--with-debuginfod") # Arch
-          config_options+=("--without-debuginfod")
-
-          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-          then
-
-            config_options+=("--enable-ld")
-
-          elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
-          then
-
-            if [ -z "${triplet}" ]
-            then
-              config_options+=("--enable-pgo-build=lto") # Arch
-            fi
-
-            config_options+=("--enable-ld=default") # Arch
-
-            # config_options+=("--enable-targets=x86_64-pep,bpf-unknown-none")
-
-          elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-          then
-
-            # Not supported by clang.
-            # config_options+=("--enable-pgo-build=lto")
-            :
-
-          else
-            echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
-            exit 1
-          fi
-
-          config_options+=("--enable-64-bit-bfd") # HB
-          config_options+=("--enable-build-warnings=no")
-          config_options+=("--enable-cet") # Arch
-          config_options+=("--enable-default-execstack=no") # Arch
-          config_options+=("--enable-deterministic-archives") # Arch, HB
-          config_options+=("--enable-gold") # Arch, HB
-          config_options+=("--enable-install-libiberty") # Arch
-          config_options+=("--enable-interwork") # HB
-          # config_options+=("--enable-jansson") # Arch
-          config_options+=("--enable-libssp")
-          config_options+=("--enable-lto")
-
-          if [ ! -z "${triplet}" ]
-          then
-            # The mingw binaries have architecture specific names,
-            # so multilib makes no sense.
-            config_options+=("--disable-multilib") # Arch, HB
-          else
-            if [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "x64" ]
-            then
-              # Only Intel Linux supports multilib.
-              config_options+=("--enable-multilib") # HB
-            else
-              # All other platforms do not.
-              config_options+=("--disable-multilib")
-            fi
-          fi
-
-          config_options+=("--enable-plugins") # Arch, HB
-          config_options+=("--enable-relro") # Arch
-          config_options+=("--enable-shared") # Arch
-          config_options+=("--enable-static")
-          config_options+=("--enable-targets=all") # HB
-          if [ ! -z "${triplet}" ]
-          then
-            config_options+=("--enable-targets=${triplet}") # HB
-          fi
-          config_options+=("--enable-threads") # Arch
-
-          config_options+=("--disable-debug") # HB
-          config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
-          then
-            config_options+=("--disable-silent-rules")
-          fi
-
-          config_options+=("--disable-gdb") # Arch
-          config_options+=("--disable-gdbserver") # Arch
-          config_options+=("--disable-libdecnumber") # Arch
-
-          config_options+=("--disable-new-dtags")
-          config_options+=("--disable-nls") # HB
-
-          config_options+=("--disable-readline") # Arch
-          config_options+=("--disable-sim") # Arch
-          config_options+=("--disable-werror") # Arch, HB
+          prepare_binutils_common_options
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
             ${config_options[@]}
