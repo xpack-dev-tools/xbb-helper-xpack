@@ -169,10 +169,10 @@ function build_cross_gcc_first()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-          config_options+=("--infodir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/info")
-          config_options+=("--mandir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/man")
-          config_options+=("--htmldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/html")
-          config_options+=("--pdfdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/pdf")
+          config_options+=("--infodir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/info")
+          config_options+=("--mandir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--htmldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/html")
+          config_options+=("--pdfdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/pdf")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
@@ -423,10 +423,10 @@ function build_cross_gcc_final()
           if [ -z "${name_suffix}" ]
           then
             config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-            config_options+=("--infodir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/info")
-            config_options+=("--mandir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/man")
-            config_options+=("--htmldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/html")
-            config_options+=("--pdfdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc/pdf")
+            config_options+=("--infodir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/info")
+            config_options+=("--mandir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/man")
+            config_options+=("--htmldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/html")
+            config_options+=("--pdfdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/pdf")
           elif [ "${name_suffix}" == "-nano" ]
           then
             config_options+=("--prefix=${APP_PREFIX_NANO}")
