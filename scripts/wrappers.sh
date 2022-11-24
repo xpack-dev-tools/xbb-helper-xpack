@@ -60,10 +60,12 @@ function run_app_verbose()
   local app_path="$1"
   shift
 
+  local realpath=$(which grealpath || which realpath || echo realpath)
+
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
     # Possibly Windows executables, run them via wine.
-    if is_pe64 "$(realpath ${app_path})"
+    if is_pe64 "$(${realpath} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -77,7 +79,7 @@ function run_app_verbose()
         echo
         echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe64 "$(realpath ${app_path}.exe)"
+    elif is_pe64 "$(${realpath} ${app_path}.exe)"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -91,7 +93,7 @@ function run_app_verbose()
         echo
         echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe32 "$(realpath ${app_path})"
+    elif is_pe32 "$(${realpath} ${app_path})"
     then
       local wine_path=$(which wine 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -105,7 +107,7 @@ function run_app_verbose()
         echo
         echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe32 "$(realpath ${app_path}.exe)"
+    elif is_pe32 "$(${realpath} ${app_path}.exe)"
     then
       local wine_path=$(which wine 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -125,7 +127,13 @@ function run_app_verbose()
     fi
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
-    run_verbose "${app_path}" "$@"
+    if is_pe "$(${realpath} ${app_path})" || is_pe "$(${realpath} ${app_path}.exe)"
+    then
+      echo
+      echo "running" "${app_path}" "$@" "- not supported in ${FUNCNAME[0]}()"
+    else
+      run_verbose "${app_path}" "$@"
+    fi
   elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
   then
     if is_elf "${app_path}"
@@ -184,7 +192,7 @@ function run_app()
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
     # Possibly Windows executables, run them via wine.
-    if is_pe64 "$(realpath ${app_path})"
+    if is_pe64 "$(${realpath} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -198,7 +206,7 @@ function run_app()
         echo
         echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe64 "$(realpath ${app_path}.exe)"
+    elif is_pe64 "$(${realpath} ${app_path}.exe)"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -212,7 +220,7 @@ function run_app()
         echo
         echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe32 "$(realpath ${app_path})"
+    elif is_pe32 "$(${realpath} ${app_path})"
     then
       local wine_path=$(which wine 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -226,7 +234,7 @@ function run_app()
         echo
         echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe32 "$(realpath ${app_path}.exe)"
+    elif is_pe32 "$(${realpath} ${app_path}.exe)"
     then
       local wine_path=$(which wine 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -381,7 +389,7 @@ function test_mingw_expect()
   local app_name="$1"
   shift
 
-  local app_path="$(realpath "${app_name}")"
+  local app_path="$(${realpath} "${app_name}")"
 
   if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
@@ -444,7 +452,7 @@ function test_mingw_expect()
     )
   else
     echo
-    echo "running" "${app_name}" "$@" "- not unsupported"
+    echo "running" "${app_name}" "$@" "- not supported in ${FUNCNAME[0]}()"
   fi
 }
 
@@ -453,7 +461,7 @@ function _run_mingw()
   local app_name="$1"
   shift
 
-  local app_path="$(realpath "${app_name}")"
+  local app_path="$(${realpath} "${app_name}")"
 
   if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
