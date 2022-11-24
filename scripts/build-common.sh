@@ -180,21 +180,29 @@ function build_perform_common()
   # Prime it early
   tests_prime_wine
 
-  # ---------------------------------------------------------------------------
-
   (
-    # Isolate the build in a sub-shell, to run the test in a clean environment.
+    # Isolate the build in a sub-shell, to run the tests in a clean environment.
+
     echo
     echo "Here we go..."
     echo
 
-    # Cannot run in a sub-shell, it sets environment variables.
+    # ---------------------------------------------------------------------------
+    # The actual build.
+
+    # It sets variables in the environment, required for post-processing,
+    # run it in the same sub-shell.
     build_application_versioned_components
 
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
+    # ---------------------------------------------------------------------------
+    # Post-processing.
 
     if [ ! "${XBB_TEST_ONLY}" == "y" ]
     then
+      # Run the final steps in the requested environment.
+      xbb_set_target
+
+      mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
       (
         if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
         then
@@ -224,6 +232,9 @@ function build_perform_common()
   # ---------------------------------------------------------------------------
   # Final checks.
 
+  # Guarantee a known environment.
+  xbb_set_target
+
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
   (
     # Isolate the tests in a sub-shell to easily capture the output.
@@ -233,11 +244,12 @@ function build_perform_common()
 
   # ---------------------------------------------------------------------------
 
-  # We're basically done, errors here should not break the build.
+  # We're basically done, from now on, errors should not break the build.
   set +e
 
   if [ "${XBB_TEST_ONLY}" != "y" ]
   then
+    mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
     (
       echo
       echo "# Build results..."
