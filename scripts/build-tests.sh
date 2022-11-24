@@ -63,6 +63,7 @@ function tests_prime_wine()
   then
     (
       echo
+      echo "Priming wine..."
 
       # When running in Docker with the home mounted, wine throws:
       # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
@@ -70,7 +71,7 @@ function tests_prime_wine()
       mkdir -pv "${HOME}/.wine"
       winecfg
 
-      echo "wine primed, testing..."
+      echo "Wine primed..."
     )
   fi
 }
