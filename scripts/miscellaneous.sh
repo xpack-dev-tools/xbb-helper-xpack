@@ -118,7 +118,7 @@ function copy_cmake_logs()
 
   echo
   echo "Preserving CMake log files..."
-  rm -rf "${XBB_LOGS_FOLDER_PATH}/${folder_name}"
+  rm -rf "${XBB_LOGS_FOLDER_PATH}/${folder_name}"/CMake*
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles"
 
   (
