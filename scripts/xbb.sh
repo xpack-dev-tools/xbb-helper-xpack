@@ -22,7 +22,7 @@ function xbb_make_writable()
       if [ -d "${project_folder_path}/build" ]
       then
         echo
-        echo "Make build folder writable by all..."
+        echo "Make the build folder writable by all..."
 
         run_verbose chmod -R a+w "${project_folder_path}/build"
       fi
@@ -31,7 +31,7 @@ function xbb_make_writable()
       if [ -d "${project_folder_path}/xpacks" ]
       then
         echo
-        echo "Make xpacks folder writable by all..."
+        echo "Make the xpacks folder writable by all..."
 
         # Non-recursive! (Recursive fails with exit code 2)
         run_verbose chmod a+w "${project_folder_path}/xpacks"
