@@ -202,7 +202,9 @@ function build_binutils()
           elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
 
-            config_options+=("--enable-pgo-build=lto")
+            # Not supported by clang.
+            # config_options+=("--enable-pgo-build=lto")
+            :
 
           else
             echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
