@@ -32,30 +32,29 @@ function tests_add()
 
 function tests_run_final()
 {
-  (
-    echo
-    echo "# Running final tests..."
+  echo
+  echo "# Running final tests..."
 
-    XBB_WHILE_RUNNING_TESTS="y"
-    export XBB_WHILE_RUNNING_TESTS
+  XBB_WHILE_RUNNING_TESTS="y"
+  export XBB_WHILE_RUNNING_TESTS
 
-    for line in $(cat ${XBB_TEST_COMMANDS_FILE_PATH})
-    do
-      if [ "${line}" != "" ]
-      then
-        # local func=$(echo ${line} | sed -e s'| .*||' | sed -e 's|-|_|g')
+  for line in $(cat ${XBB_TEST_COMMANDS_FILE_PATH})
+  do
+    if [ "${line}" != "" ]
+    then
+      # local func=$(echo ${line} | sed -e s'| .*||' | sed -e 's|-|_|g')
 
-        IFS=' '
-        read -a cmd_array <<< "${line}"
-        echo
-        echo "## Running ${cmd_array[@]}..."
-        "${cmd_array[@]}"
-      fi
-    done
+      IFS=' '
+      read -a cmd_array <<< "${line}"
+      echo
+      echo "## Running \"${cmd_array[@]}\"..."
+      "${cmd_array[@]}"
+      echo "## Running \"${cmd_array[@]}\" completed."
+    fi
+  done
 
-    echo
-    echo "Final tests completed successfuly."
-  ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/tests-output-$(ndate).txt"
+  echo
+  echo "Final tests completed successfuly."
 }
 
 function tests_prime_wine()
