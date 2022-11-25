@@ -647,3 +647,79 @@ function is_dynamic()
 }
 
 # -----------------------------------------------------------------------------
+
+function is_native()
+{
+  if [ "${XBB_BUILD_PLATFORM}" == "${XBB_HOST_PLATFORM}" ] &&
+     [ "${XBB_HOST_PLATFORM}" == "${XBB_TARGET_PLATFORM}" ]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
+function is_non_native()
+{
+  if [ "${XBB_BUILD_PLATFORM}" == "${XBB_HOST_PLATFORM}" ] &&
+     [ "${XBB_HOST_PLATFORM}" == "${XBB_TARGET_PLATFORM}" ]
+  then
+    return 1
+  else
+    return 0
+  fi
+}
+
+function is_bootstrap()
+{
+  if [ "${XBB_BUILD_PLATFORM}" == "${XBB_HOST_PLATFORM}" ] &&
+     [ "${XBB_HOST_PLATFORM}" != "${XBB_TARGET_PLATFORM}" ]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
+function is_cross()
+{
+  if [ "${XBB_BUILD_PLATFORM}" != "${XBB_HOST_PLATFORM}" ] &&
+     [ "${XBB_HOST_PLATFORM}" == "${XBB_TARGET_PLATFORM}" ]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
+function is_gcc()
+{
+  if [[ "$(basename "${CC}")" =~ .*gcc.* ]]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
+function is_mingw_gcc()
+{
+  if [[ "$(basename "${CC}")" =~ .*mingw32-gcc.* ]]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
+function is_clang()
+{
+  if [[ "$(basename "${CC}")" =~ .*clang.* ]]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# -----------------------------------------------------------------------------
