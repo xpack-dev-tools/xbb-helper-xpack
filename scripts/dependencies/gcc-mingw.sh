@@ -448,59 +448,59 @@ function test_mingw_gcc()
     echo
     echo "Testing if ${triplet}-gcc binaries start properly..."
 
-    run_app_verbose "${CC}" --version
-    run_app_verbose "${CXX}" --version
+    run_target_app_verbose "${CC}" --version
+    run_target_app_verbose "${CXX}" --version
     if [ -f "${F90}" ]
     then
-      run_app_verbose "${F90}" --version
+      run_target_app_verbose "${F90}" --version
     fi
 
     # x86_64-w64-mingw32-gcc-ar.exe: Cannot find binary 'ar'
     # x86_64-w64-mingw32-gcc-nm.exe: Cannot find binary 'nm'
     if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
-      run_app_verbose "${AR}" --version
-      run_app_verbose "${NM}" --version
-      run_app_verbose "${RANLIB}" --version
+      run_target_app_verbose "${AR}" --version
+      run_target_app_verbose "${NM}" --version
+      run_target_app_verbose "${RANLIB}" --version
     fi
 
-    run_app_verbose "${GCOV}" --version
-    run_app_verbose "${GCOV_DUMP}" --version
-    run_app_verbose "${GCOV_TOOL}" --version
+    run_target_app_verbose "${GCOV}" --version
+    run_target_app_verbose "${GCOV_DUMP}" --version
+    run_target_app_verbose "${GCOV_TOOL}" --version
 
-    run_app_verbose "${GENDEF}" --help
+    run_target_app_verbose "${GENDEF}" --help
 
     echo
     echo "Showing the ${triplet}-gcc configurations..."
 
-    run_app_verbose "${CC}" --help
-    run_app_verbose "${CC}" -v
-    run_app_verbose "${CC}" -dumpversion
-    run_app_verbose "${CC}" -dumpmachine
+    run_target_app_verbose "${CC}" --help
+    run_target_app_verbose "${CC}" -v
+    run_target_app_verbose "${CC}" -dumpversion
+    run_target_app_verbose "${CC}" -dumpmachine
 
-    run_app_verbose "${CC}" -print-search-dirs
-    run_app_verbose "${CC}" -print-libgcc-file-name
-    run_app_verbose "${CC}" -print-multi-directory
-    run_app_verbose "${CC}" -print-multi-lib
-    run_app_verbose "${CC}" -print-multi-os-directory
-    run_app_verbose "${CC}" -print-sysroot
-    run_app_verbose "${CC}" -print-file-name=libgcc_s_seh-1.dll
-    run_app_verbose "${CC}" -print-prog-name=cc1
+    run_target_app_verbose "${CC}" -print-search-dirs
+    run_target_app_verbose "${CC}" -print-libgcc-file-name
+    run_target_app_verbose "${CC}" -print-multi-directory
+    run_target_app_verbose "${CC}" -print-multi-lib
+    run_target_app_verbose "${CC}" -print-multi-os-directory
+    run_target_app_verbose "${CC}" -print-sysroot
+    run_target_app_verbose "${CC}" -print-file-name=libgcc_s_seh-1.dll
+    run_target_app_verbose "${CC}" -print-prog-name=cc1
 
-    run_app_verbose "${CXX}" --help
-    run_app_verbose "${CXX}" -v
-    run_app_verbose "${CXX}" -dumpversion
-    run_app_verbose "${CXX}" -dumpmachine
+    run_target_app_verbose "${CXX}" --help
+    run_target_app_verbose "${CXX}" -v
+    run_target_app_verbose "${CXX}" -dumpversion
+    run_target_app_verbose "${CXX}" -dumpmachine
 
-    run_app_verbose "${CXX}" -print-search-dirs
-    run_app_verbose "${CXX}" -print-libgcc-file-name
-    run_app_verbose "${CXX}" -print-multi-directory
-    run_app_verbose "${CXX}" -print-multi-lib
-    run_app_verbose "${CXX}" -print-multi-os-directory
-    run_app_verbose "${CXX}" -print-sysroot
-    run_app_verbose "${CXX}" -print-file-name=libstdc++-6.dll
-    run_app_verbose "${CXX}" -print-file-name=libwinpthread-1.dll
-    run_app_verbose "${CXX}" -print-prog-name=cc1plus
+    run_target_app_verbose "${CXX}" -print-search-dirs
+    run_target_app_verbose "${CXX}" -print-libgcc-file-name
+    run_target_app_verbose "${CXX}" -print-multi-directory
+    run_target_app_verbose "${CXX}" -print-multi-lib
+    run_target_app_verbose "${CXX}" -print-multi-os-directory
+    run_target_app_verbose "${CXX}" -print-sysroot
+    run_target_app_verbose "${CXX}" -print-file-name=libstdc++-6.dll
+    run_target_app_verbose "${CXX}" -print-file-name=libwinpthread-1.dll
+    run_target_app_verbose "${CXX}" -print-prog-name=cc1plus
 
     echo
     echo "Testing if ${triplet}-gcc compiles simple programs..."
@@ -514,14 +514,6 @@ function test_mingw_gcc()
 
     # -------------------------------------------------------------------------
 
-    # From https://wiki.winehq.org/Wine_User%27s_Guide#DLL_Overrides
-    # DLLs usually get loaded in the following order:
-    # - The directory the program was started from.
-    # - The current directory.
-    # - The Windows system directory.
-    # - The Windows directory.
-    # - The PATH variable directories.
-
     # -------------------------------------------------------------------------
 
     run_verbose cp -rv "${helper_folder_path}/tests/c-cpp" .
@@ -534,203 +526,46 @@ function test_mingw_gcc()
 
     # -------------------------------------------------------------------------
 
-    VERBOSE_FLAG=""
-    if [ "${XBB_IS_DEVELOP}" == "y" ]
-    then
-      VERBOSE_FLAG="-v"
-    fi
+    # From https://wiki.winehq.org/Wine_User%27s_Guide#DLL_Overrides
+    # DLLs usually get loaded in the following order:
+    # - The directory the program was started from.
+    # - The current directory.
+    # - The Windows system directory.
+    # - The Windows directory.
+    # - The PATH variable directories.
 
-    # Always addressed to the mingw linker, which is GNU ld.
-    GC_SECTION="-Wl,--gc-sections"
+    # Run tests in all cases.
 
-    # -------------------------------------------------------------------------
+    (
+      # For libstdc++-6.dll & co.
+      # The DLLs are available in the /lib folder.
+      export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
+      echo "WINEPATH=${WINEPATH}"
+      test_compiler_single "${test_bin_path}"
+      test_compiler_single "${test_bin_path}" --gc
+      test_compiler_single "${test_bin_path}" --lto
+      test_compiler_single "${test_bin_path}" --gc --lto
+    )
 
-    # Run tests in all 3 cases.
-    test_mingw_gcc_single "${test_bin_path}" "" ""
-    test_mingw_gcc_single "${test_bin_path}" "static-lib-" ""
-    test_mingw_gcc_single "${test_bin_path}" "static-" ""
+    (
+      # For libwinpthread-1.dll. (This is a big pain).
+      # The DLLs are available in the /lib folder.
+      export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
+      echo "WINEPATH=${WINEPATH}"
+      test_compiler_single "${test_bin_path}" --static-lib
+      test_compiler_single "${test_bin_path}" --static-lib --gc
+      test_compiler_single "${test_bin_path}" --static-lib --lto
+      test_compiler_single "${test_bin_path}" --static-lib --gc --lto
+    )
 
-    # -------------------------------------------------------------------------
-  )
-}
-
-function test_mingw_gcc_single()
-{
-  local test_bin_path="$1"
-  shift
-  local prefix="$1" # "", "static-lib-", "static-"
-  shift
-  local suffix="$1" # ""; reserved for something like "-bootstrap"
-  shift
-
-  if [ "${prefix}" == "static-lib-" ]
-  then
-    STATIC_LIBGCC="-static-libgcc"
-    # Force static libwinpthread.
-    STATIC_LIBSTD="-Wl,-Bstatic,-lstdc++,-lpthread,-Bdynamic" # -static-libstdc++"
-  elif [ "${prefix}" == "static-" ]
-  then
-    STATIC_LIBGCC="-static"
-    STATIC_LIBSTD=""
-  else
-    STATIC_LIBGCC=""
-    STATIC_LIBSTD=""
-
-    # The DLLs are available in the /lib folder.
-    export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
-    echo "WINEPATH=${WINEPATH}"
-  fi
-
-  # ---------------------------------------------------------------------------
-
-  (
-    cd c-cpp
-
-    # Test C compile and link in a single step.
-    run_app_verbose "${CC}" -v -o "${prefix}simple-hello-c1${suffix}${XBB_TARGET_DOT_EXE}" simple-hello.c ${STATIC_LIBGCC}
-    test_mingw_expect "Hello" "${prefix}simple-hello-c1${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # Test C compile and link in a single step with gc.
-    run_app_verbose "${CC}" ${VERBOSE_FLAG} -o "${prefix}gc-simple-hello-c1${suffix}${XBB_TARGET_DOT_EXE}" simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC}
-    test_mingw_expect "Hello" "${prefix}gc-simple-hello-c1${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # Test C compile and link in separate steps.
-    run_app_verbose "${CC}" -o "simple-hello-c.o" -c simple-hello.c -ffunction-sections -fdata-sections
-    run_app_verbose "${CC}" ${VERBOSE_FLAG} -o "${prefix}simple-hello-c2${suffix}${XBB_TARGET_DOT_EXE}" simple-hello-c.o ${GC_SECTION} ${STATIC_LIBGCC}
-    test_mingw_expect "Hello" "${prefix}simple-hello-c2${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # Test LTO C compile and link in a single step.
-    run_app_verbose "${CC}" ${VERBOSE_FLAG} -o "${prefix}lto-simple-hello-c1${suffix}${XBB_TARGET_DOT_EXE}" simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
-    test_mingw_expect "Hello" "${prefix}lto-simple-hello-c1${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # Test LTO C compile and link in separate steps.
-    run_app_verbose "${CC}" -o lto-simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections -flto
-    run_app_verbose "${CC}" ${VERBOSE_FLAG} -o "${prefix}lto-simple-hello-c2${suffix}${XBB_TARGET_DOT_EXE}" lto-simple-hello-c.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
-    test_mingw_expect "Hello" "${prefix}lto-simple-hello-c2${suffix}${XBB_TARGET_DOT_EXE}"
+    (
+      test_compiler_single "${test_bin_path}" --static
+      test_compiler_single "${test_bin_path}" --static --gc
+      test_compiler_single "${test_bin_path}" --static --lto
+      test_compiler_single "${test_bin_path}" --static --gc --lto
+    )
 
     # -------------------------------------------------------------------------
-
-    # Test C++ compile and link in a single step.
-    run_app_verbose "${CXX}" -v -o "${prefix}simple-hello-cpp1${suffix}${XBB_TARGET_DOT_EXE}" simple-hello.cpp ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_mingw_expect "Hello" "${prefix}simple-hello-cpp1${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # Test C++ compile and link in a single step with gc.
-    run_app_verbose "${CXX}" -v -o "${prefix}gc-simple-hello-cpp1${suffix}${XBB_TARGET_DOT_EXE}" simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_mingw_expect "Hello" "${prefix}gc-simple-hello-cpp1${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # Test C++ compile and link in separate steps.
-    run_app_verbose "${CXX}" -o simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections
-    run_app_verbose "${CXX}" ${VERBOSE_FLAG} -o "${prefix}simple-hello-cpp2${suffix}${XBB_TARGET_DOT_EXE}" simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_mingw_expect "Hello" "${prefix}simple-hello-cpp2${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # Test LTO C++ compile and link in a single step.
-    run_app_verbose "${CXX}" ${VERBOSE_FLAG} -o "${prefix}lto-simple-hello-cpp1${suffix}${XBB_TARGET_DOT_EXE}" simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_mingw_expect "Hello" "${prefix}lto-simple-hello-cpp1${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # Test LTO C++ compile and link in separate steps.
-    run_app_verbose "${CXX}" -o lto-simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections -flto
-    run_app_verbose "${CXX}" ${VERBOSE_FLAG} -o "${prefix}lto-simple-hello-cpp2${suffix}${XBB_TARGET_DOT_EXE}" lto-simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_mingw_expect "Hello" "${prefix}lto-simple-hello-cpp2${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # -------------------------------------------------------------------------
-
-    run_app_verbose "${CXX}" ${VERBOSE_FLAG} -o "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}" simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_mingw_expect "MyException" "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # -O0 is an attempt to prevent any interferences with the optimiser.
-    run_app_verbose "${CXX}" ${VERBOSE_FLAG} -o "${prefix}simple-str-exception${suffix}${XBB_TARGET_DOT_EXE}" simple-str-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_mingw_expect "MyStringException" "${prefix}simple-str-exception${suffix}${XBB_TARGET_DOT_EXE}"
-
-    run_app_verbose "${CXX}" ${VERBOSE_FLAG} -o "${prefix}simple-int-exception${suffix}${XBB_TARGET_DOT_EXE}" simple-int-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_mingw_expect "42" "${prefix}simple-int-exception${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # -------------------------------------------------------------------------
-
-    # Test a very simple Objective-C (a printf).
-    run_app_verbose "${CC}" ${VERBOSE_FLAG} -o "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}" simple-objc.m -O0 ${STATIC_LIBGCC}
-    test_mingw_expect "Hello World" "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}"
-
-    # -------------------------------------------------------------------------
-    # Tests borrowed from the llvm-mingw project.
-
-    run_app_verbose "${CC}" -o "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}" hello.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-    run_app_verbose "./${prefix}hello${suffix}"
-
-    run_app_verbose "${CC}" -o "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}" setjmp-patched.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-    run_app_verbose "./${prefix}setjmp${suffix}"
-
-    run_app_verbose "${CC}" -o "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}" hello-tls.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-    run_app_verbose "./${prefix}hello-tls${suffix}"
-
-    run_app_verbose "${CC}" -o "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}" crt-test.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-    run_app_verbose "./${prefix}crt-test${suffix}"
-
-    if [ "${prefix}" != "static-" ]
-    then
-      run_app_verbose "${CC}" -o autoimport-lib.dll autoimport-lib.c -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      show_target_libs autoimport-lib.dll
-
-      run_app_verbose "${CC}" -o "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}" autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      run_app_verbose "./${prefix}autoimport-main${suffix}"
-    fi
-
-    # The IDL output isn't arch specific, but test each arch frontend
-    run_app_verbose "${WIDL}" -o idltest.h idltest.idl -h
-    run_app_verbose "${CC}" -o "${prefix}idltest${suffix}${XBB_TARGET_DOT_EXE}" idltest.c -I. -lole32 ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-    run_app_verbose "./${prefix}idltest${suffix}"
-
-    run_app_verbose ${CXX} -o "${prefix}hello-cpp${suffix}${XBB_TARGET_DOT_EXE}" hello-cpp.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_app_verbose "./${prefix}hello-cpp${suffix}"
-
-    run_app_verbose ${CXX} -o "${prefix}hello-exception${suffix}${XBB_TARGET_DOT_EXE}" hello-exception.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_app_verbose "./${prefix}hello-exception${suffix}"
-
-    run_app_verbose ${CXX} -o "${prefix}exception-locale${suffix}${XBB_TARGET_DOT_EXE}" exception-locale.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_app_verbose "./${prefix}exception-locale${suffix}"
-
-    run_app_verbose ${CXX} -o "${prefix}exception-reduced${suffix}${XBB_TARGET_DOT_EXE}" exception-reduced.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_app_verbose "./${prefix}exception-reduced${suffix}"
-
-    run_app_verbose ${CXX} -o "${prefix}global-terminate${suffix}${XBB_TARGET_DOT_EXE}" global-terminate.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_app_verbose "./${prefix}global-terminate${suffix}"
-
-    run_app_verbose ${CXX} -o "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}" longjmp-cleanup.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_app_verbose "./${prefix}longjmp-cleanup${suffix}"
-
-    run_app_verbose ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_target_libs "tlstest-lib.dll"
-
-    run_app_verbose ${CXX} -o "${prefix}tlstest-main${suffix}${XBB_TARGET_DOT_EXE}" tlstest-main.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    run_app_verbose "./${prefix}tlstest-main${suffix}"
-
-    if [ "${prefix}" != "static-" ]
-    then
-      run_app_verbose ${CXX} -o throwcatch-lib.dll throwcatch-lib.cpp -shared -Wl,--out-implib,libthrowcatch-lib.dll.a ${VERBOSE_FLAG}
-
-      run_app_verbose ${CXX} -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" throwcatch-main.cpp -L. -lthrowcatch-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-
-      run_app_verbose "./${prefix}throwcatch-main${suffix}"
-    fi
-
-    # On Windows only the -flto linker is capable of understanding weak symbols.
-    run_app_verbose "${CC}" -c -o "${prefix}hello-weak${suffix}.c.o" hello-weak.c -flto
-    run_app_verbose "${CC}" -c -o "${prefix}hello-f-weak${suffix}.c.o" hello-f-weak.c -flto
-    run_app_verbose "${CC}" -o "${prefix}hello-weak${suffix}${XBB_TARGET_DOT_EXE}" "${prefix}hello-weak${suffix}.c.o" "${prefix}hello-f-weak${suffix}.c.o" ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC} -flto
-    test_mingw_expect "Hello World!" "${prefix}hello-weak${suffix}${XBB_TARGET_DOT_EXE}"
-  )
-
-  # ---------------------------------------------------------------------------
-
-  (
-    cd fortran
-
-    # Test a very simple Fortran (a print).
-    run_app_verbose "${F90}" ${VERBOSE_FLAG}  -o "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}" hello.f90 ${STATIC_LIBGCC}
-    # The space is expected.
-    test_mingw_expect " Hello" "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}"
-
-    run_app_verbose "${F90}" ${VERBOSE_FLAG}  -o "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}" concurrent.f90 ${STATIC_LIBGCC}
-    run_app_verbose "./${prefix}concurrent-f${suffix}"
   )
 }
 
