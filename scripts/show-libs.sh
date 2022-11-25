@@ -16,35 +16,15 @@ function show_host_libs()
   shift
 
   (
-    if [ ! -f "${app_path}" ]
+    if [ ! -f "${app_path}" ] && [ ! -f "${app_path}.exe" ]
     then
-      run_verbose file "${app_path}"
+      run_verbose file -L "${app_path}"
       return
     fi
 
-    # Does not need to include the .exe extension.
-    if is_pe "${app_path}"
+    if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
-      run_verbose ls -l "${app_path}"
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
-      then
-        run_verbose file "${app_path}"
-      fi
-      echo
-      echo "[${XBB_HOST_OBJDUMP} -x ${app_path}]"
-      "${XBB_HOST_OBJDUMP}" -x "${app_path}" | grep -i 'DLL Name' || true
-    elif is_pe "${app_path}.exe"
-    then
-      run_verbose ls -l "${app_path}.exe"
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
-      then
-        run_verbose file "${app_path}.exe"
-      fi
-      echo
-      echo "[${XBB_HOST_OBJDUMP} -x ${app_path}.exe]"
-      "${XBB_HOST_OBJDUMP}" -x "${app_path}.exe" | grep -i 'DLL Name' || true
-    else
-      if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+      if is_elf "${app_path}"
       then
         run_verbose ls -l "${app_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -60,7 +40,35 @@ function show_host_libs()
         echo "[ldd -v ${app_path}]"
         ldd -v "${app_path}" || true
         set -e
-      elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+      elif is_pe "${app_path}"
+      then
+        run_verbose ls -l "${app_path}"
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        then
+          run_verbose file "${app_path}"
+        fi
+        echo
+        echo "[${XBB_HOST_OBJDUMP} -x ${app_path}]"
+        "${XBB_HOST_OBJDUMP}" -x "${app_path}" | grep -i 'DLL Name' || true
+      elif is_pe "${app_path}.exe"
+      then
+        run_verbose ls -l "${app_path}.exe"
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        then
+          run_verbose file "${app_path}.exe"
+        fi
+        echo
+        echo "[${XBB_HOST_OBJDUMP} -x ${app_path}.exe]"
+        "${XBB_HOST_OBJDUMP}" -x "${app_path}.exe" | grep -i 'DLL Name' || true
+      else
+        run_verbose file -L "${app_path}"
+        echo
+        echo "Unsupported \"${app_path}\" in ${FUNCNAME[0]}()"
+        exit 1
+      fi
+    elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+    then
+      if is_elf "${app_path}"
       then
         run_verbose ls -l "${app_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -80,14 +88,15 @@ function show_host_libs()
         fi
         otool -L "${app_path}" | tail -n +2
       else
-        run_verbose ls -l "${app_path}"
-        if [ "${XBB_IS_DEVELOP}" == "y" ]
-        then
-          run_verbose file -L "${app_path}"
-        fi
-        echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
+        run_verbose file -L "${app_path}"
+        echo
+        echo "Unsupported \"${app_path}\" in ${FUNCNAME[0]}()"
         exit 1
       fi
+    else
+      echo
+      echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
+      exit 1
     fi
   )
 }
@@ -98,35 +107,15 @@ function show_target_libs()
   shift
 
   (
-    if [ ! -f "${app_path}" ]
+    if [ ! -f "${app_path}" ] && [ ! -f "${app_path}.exe" ]
     then
-      run_verbose file "${app_path}"
+      run_verbose file -L "${app_path}"
       return
     fi
 
-    # Does not need to include the .exe extension.
-    if is_pe "${app_path}"
+    if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
-      run_verbose ls -l "${app_path}"
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
-      then
-        run_verbose file "${app_path}"
-      fi
-      echo
-      echo "[${XBB_TARGET_OBJDUMP} -x ${app_path}]"
-      "${XBB_TARGET_OBJDUMP}" -x "${app_path}" | grep -i 'DLL Name' || true
-    elif is_pe "${app_path}.exe"
-    then
-      run_verbose ls -l "${app_path}.exe"
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
-      then
-        run_verbose file "${app_path}.exe"
-      fi
-      echo
-      echo "[${XBB_TARGET_OBJDUMP} -x ${app_path}.exe]"
-      "${XBB_TARGET_OBJDUMP}" -x "${app_path}.exe" | grep -i 'DLL Name' || true
-    else
-      if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+      if is_elf "${app_path}"
       then
         run_verbose ls -l "${app_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -142,7 +131,35 @@ function show_target_libs()
         echo "[ldd -v ${app_path}]"
         ldd -v "${app_path}" || true
         set -e
-      elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+      elif is_pe "${app_path}"
+      then
+        run_verbose ls -l "${app_path}"
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        then
+          run_verbose file "${app_path}"
+        fi
+        echo
+        echo "[${XBB_TARGET_OBJDUMP} -x ${app_path}]"
+        "${XBB_TARGET_OBJDUMP}" -x "${app_path}" | grep -i 'DLL Name' || true
+      elif is_pe "${app_path}.exe"
+      then
+        run_verbose ls -l "${app_path}.exe"
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        then
+          run_verbose file "${app_path}.exe"
+        fi
+        echo
+        echo "[${XBB_TARGET_OBJDUMP} -x ${app_path}.exe]"
+        "${XBB_TARGET_OBJDUMP}" -x "${app_path}.exe" | grep -i 'DLL Name' || true
+      else
+        run_verbose file -L "${app_path}"
+        echo
+        echo "Unsupported \"${app_path}\" in ${FUNCNAME[0]}()"
+        exit 1
+      fi
+    elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+    then
+      if is_elf "${app_path}"
       then
         run_verbose ls -l "${app_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -162,16 +179,25 @@ function show_target_libs()
         fi
         otool -L "${app_path}" | tail -n +2
       else
-        run_verbose ls -l "${app_path}"
-        if [ "${XBB_IS_DEVELOP}" == "y" ]
-        then
-          run_verbose file -L "${app_path}"
-        fi
-        echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
+        run_verbose file -L "${app_path}"
+        echo
+        echo "Unsupported \"${app_path}\" in ${FUNCNAME[0]}()"
         exit 1
       fi
+    else
+      echo
+      echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
+      exit 1
     fi
   )
+}
+
+function show_target_libs_develop()
+{
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  then
+    show_target_libs "$@"
+  fi
 }
 
 # -----------------------------------------------------------------------------
