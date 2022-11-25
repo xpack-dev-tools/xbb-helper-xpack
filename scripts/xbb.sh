@@ -763,7 +763,7 @@ function xbb_set_compiler_flags()
       exit 1
     fi
 
-    if [[ $(basename ${CC}) =~ .*clang.* ]]
+    if [[ $(basename "${CC}") =~ .*clang.* ]]
     then
       XBB_CFLAGS+=" -mmacosx-version-min=${XBB_MACOSX_DEPLOYMENT_TARGET}"
       XBB_CXXFLAGS+=" -mmacosx-version-min=${XBB_MACOSX_DEPLOYMENT_TARGET}"
@@ -780,7 +780,7 @@ function xbb_set_compiler_flags()
     XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,-dead_strip"
     XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libstdc++"
-    if [[ $(basename ${CC}) =~ .*gcc.* ]]
+    if [[ $(basename "${CC}") =~ .*gcc.* ]]
     then
       XBB_LDFLAGS_APP_STATIC_GCC+=" -static-libgcc"
     fi
@@ -1001,7 +1001,7 @@ function xbb_activate_cxx_rpath()
 
   local realpath=$(which grealpath || which realpath || echo realpath)
 
-  if [[ $(basename ${CC}) =~ .*gcc.* ]]
+  if [[ $(basename "${CC}") =~ .*gcc.* ]]
   then
     cxx_lib_path="$(${realpath} $(dirname $(${CXX} -print-file-name=libstdc++.so.6)))"
     echo_develop

@@ -85,7 +85,7 @@ function build_python3()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      if [[ $(basename ${CC}) =~ .*gcc.* ]]
+      if [[ $(basename "${CC}") =~ .*gcc.* ]]
       then
         # Inspired from Arch; not supported by clang.
         CFLAGS+=" -fno-semantic-interposition"

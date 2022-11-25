@@ -194,7 +194,7 @@ function build_python2()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
-      if [[ $(basename ${CC}) =~ .*gcc.* ]]
+      if [[ $(basename "${CC}") =~ .*gcc.* ]]
       then
         # Inspired from Arch; not supported by clang.
         CFLAGS+=" -fno-semantic-interposition"
