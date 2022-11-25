@@ -54,7 +54,32 @@ function run_verbose_timed()
   time "${app_path}" "$@" 2>&1
 }
 
+# -----------------------------------------------------------------------------
+
+# Run elf binaries via the verbose wrapper and complain about other binaries.
 function run_app_verbose()
+{
+  local app_path="$1"
+  shift
+
+  if [ "${XBB_BUILD_PLATFORM}" == "linux" ] || [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+  then
+    if is_elf "${app_path}"
+    then
+      run_verbose "${app_path}" "$@"
+    else
+      echo
+      echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
+      exit 1
+    fi
+  else
+    echo
+    echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
+    exit 1
+  fi
+}
+
+function run_target_app_verbose()
 {
   # Does not need to include the .exe extension.
   local app_path="$1"
@@ -64,8 +89,10 @@ function run_app_verbose()
 
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
-    # Possibly Windows executables, run them via wine.
-    if is_pe64 "$(${realpath} ${app_path})"
+    if is_elf "${app_path}"
+    then
+      run_verbose "${app_path}" "$@"
+    elif is_pe64 "$(${realpath} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -122,60 +149,20 @@ function run_app_verbose()
         echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     else
-      # Assume it is a Linux executable.
-      run_verbose "${app_path}" "$@"
+      echo
+      echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+      exit 1
     fi
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
-    if is_pe "$(${realpath} ${app_path})" || is_pe "$(${realpath} ${app_path}.exe)"
-    then
-      echo
-      echo "running" "${app_path}" "$@" "- not supported in ${FUNCNAME[0]}()"
-    else
-      run_verbose "${app_path}" "$@"
-    fi
-  elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-  then
     if is_elf "${app_path}"
     then
-      # When testing native variants, like llvm.
       run_verbose "${app_path}" "$@"
-      return
+    else
+      echo
+      echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+      exit 1
     fi
-
-    if [ "$(uname -o)" == "Msys" ]
-    then
-      run_verbose "${app_path}.exe" "$@"
-      return
-    fi
-
-    local wsl_path=$(which wsl.exe 2>/dev/null)
-    if [ ! -z "${wsl_path}" ]
-    then
-      run_verbose "${app_path}.exe" "$@"
-      return
-    fi
-
-    (
-      local wine_path=$(which wine64 2>/dev/null)
-      if [ ! -z "${wine_path}" ]
-      then
-        if [ -f "${app_path}.exe" ]
-        then
-          unset DISPLAY
-          export WINEDEBUG=-all
-          run_verbose wine64 "${app_path}.exe" "$@"
-        else
-          echo
-          echo "${app_path}.exe not found"
-          exit 1
-        fi
-      else
-        echo
-        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
-      fi
-    )
-
   else
     echo
     echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
@@ -183,16 +170,20 @@ function run_app_verbose()
   fi
 }
 
-function run_app()
+function run_target_app()
 {
   # Does not need to include the .exe extension.
   local app_path="$1"
   shift
 
+  local realpath=$(which grealpath || which realpath || echo realpath)
+
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
-    # Possibly Windows executables, run them via wine.
-    if is_pe64 "$(${realpath} ${app_path})"
+    if is_elf "${app_path}"
+    then
+      "${app_path}" "$@"
+    elif is_pe64 "$(${realpath} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -200,7 +191,7 @@ function run_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine64 "${app_path}" "$@" | sed -e 's|\r$||'
+          wine64 "${app_path}" "$@"
         )
       else
         echo
@@ -214,7 +205,7 @@ function run_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine64 "${app_path}.exe" "$@" | sed -e 's|\r$||'
+          wine64 "${app_path}.exe" "$@"
         )
       else
         echo
@@ -228,7 +219,7 @@ function run_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine "${app_path}" "$@" | sed -e 's|\r$||'
+          wine "${app_path}" "$@"
         )
       else
         echo
@@ -242,61 +233,27 @@ function run_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine "${app_path}.exe" "$@" | sed -e 's|\r$||'
+          wine "${app_path}.exe" "$@"
         )
       else
         echo
         echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     else
-      # Assume it is a Linux executable.
-      "${app_path}" "$@"
+      echo
+      echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+      exit 1
     fi
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
-    "${app_path}" "$@"
-  elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-  then
     if is_elf "${app_path}"
     then
-      # When testing native variants, like llvm.
       "${app_path}" "$@"
-      return
+    else
+      echo
+      echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+      exit 1
     fi
-
-    if [ "$(uname -o)" == "Msys" ]
-    then
-      "${app_path}.exe" "$@"
-      return
-    fi
-
-    local wsl_path=$(which wsl.exe 2>/dev/null)
-    if [ ! -z "${wsl_path}" ]
-    then
-      "${app_path}.exe" "$@"
-      return
-    fi
-
-    (
-      local wine_path=$(which wine64 2>/dev/null)
-      if [ ! -z "${wine_path}" ]
-      then
-        if [ -f "${app_path}.exe" ]
-        then
-          unset DISPLAY
-          export WINEDEBUG=-all
-          wine64 "${app_path}.exe" "$@" | sed -e 's|\r$||'
-        else
-          echo
-          echo "${app_path}.exe not found"
-          exit 1
-        fi
-      else
-        echo
-        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
-      fi
-    )
-
   else
     echo
     echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
@@ -304,7 +261,7 @@ function run_app()
   fi
 }
 
-function run_app_exit()
+function _run_app_exit()
 {
   local expected_exit_code="$1"
   shift
@@ -331,6 +288,8 @@ function run_app_exit()
   )
 }
 
+# -----------------------------------------------------------------------------
+
 function test_expect()
 {
   local expected="$1"
@@ -346,23 +305,23 @@ function test_expect()
     if [ "${app_path:0:1}" == "/" ]
     then
       show_host_libs "${app_path}"
-      output="$(run_app "${app_path}" "$@" | sed -e 's|\r$||')"
+      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
     elif [ "${app_path:0:2}" == "./" ]
     then
       show_host_libs "${app_path}"
-      output="$(run_app "${app_path}" "$@" | sed -e 's|\r$||')"
+      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
     elif [ -f "${app_path}.exe" ]
     then
       show_host_libs "${app_path}"
-      output="$(run_app "${app_path}" "$@" | sed -e 's|\r$||')"
+      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
     else
       if [ -x "${app_path}" ]
       then
         show_host_libs "${app_path}"
-        output="$(run_app "./${app_path}" "$@" | sed -e 's|\r$||')"
+        output="$(run_target_app "./${app_path}" "$@" | sed -e 's|\r$||')"
       else
         # bash case
-        output="$(run_app "${app_path}" "$@" | sed -e 's|\r$||')"
+        output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
       fi
     fi
 
@@ -381,7 +340,6 @@ function test_expect()
   )
 }
 
-
 function test_mingw_expect()
 {
   local expected="$1"
@@ -389,12 +347,11 @@ function test_mingw_expect()
   local app_name="$1"
   shift
 
+  local realpath=$(which grealpath || which realpath || echo realpath)
+
   local app_path="$(${realpath} "${app_name}")"
 
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
-  then
-    show_target_libs "${app_name}"
-  fi
+  show_target_libs_develop "${app_name}"
 
   if is_pe64 "${app_path}"
   then
@@ -463,10 +420,7 @@ function _run_mingw()
 
   local app_path="$(${realpath} "${app_name}")"
 
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
-  then
-    show_target_libs "${app_path}"
-  fi
+  show_target_libs_develop "${app_path}"
 
   if is_pe64 "${app_path}"
   then
