@@ -438,11 +438,11 @@ function test_mingw_gcc()
 
     (
       set +e
-      show_host_libs "$(run_app ${CC} --print-prog-name=cc1 | sed -e 's|^z:||')"
-      show_host_libs "$(run_app ${CC} --print-prog-name=cc1plus | sed -e 's|^z:||')"
-      show_host_libs "$(run_app ${CC} --print-prog-name=collect2 | sed -e 's|^z:||')"
-      show_host_libs "$(run_app ${CC} --print-prog-name=lto1 | sed -e 's|^z:||')"
-      show_host_libs "$(run_app ${CC} --print-prog-name=lto-wrapper | sed -e 's|^z:||')"
+      show_host_libs "$(run_target_app ${CC} --print-prog-name=cc1 | sed -e 's|^z:||' -e 's|\r$||')"
+      show_host_libs "$(run_target_app ${CC} --print-prog-name=cc1plus | sed -e 's|^z:||' -e 's|\r$||')"
+      show_host_libs "$(run_target_app ${CC} --print-prog-name=collect2 | sed -e 's|^z:||' -e 's|\r$||')"
+      show_host_libs "$(run_target_app ${CC} --print-prog-name=lto1 | sed -e 's|^z:||' -e 's|\r$||')"
+      show_host_libs "$(run_target_app ${CC} --print-prog-name=lto-wrapper | sed -e 's|^z:||' -e 's|\r$||')"
     )
 
     echo
