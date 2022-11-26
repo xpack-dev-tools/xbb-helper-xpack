@@ -62,12 +62,18 @@ function run_app_verbose()
   local app_path="$1"
   shift
 
+  local realpath=$(which grealpath || which realpath || echo realpath)
+
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ] || [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
-    if is_elf "${app_path}"
+    if is_elf "$(${realpath} ${app_path})"
+    then
+      run_verbose "${app_path}" "$@"
+    elif is_shell_script "$(${realpath} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
     else
+      run_verbose file "$(${realpath} ${app_path})"
       echo
       echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
       exit 1
@@ -89,7 +95,10 @@ function run_target_app_verbose()
 
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
-    if is_elf "${app_path}"
+    if is_elf "$(${realpath} ${app_path})"
+    then
+      run_verbose "${app_path}" "$@"
+    elif is_shell_script "$(${realpath} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
     elif is_pe64 "$(${realpath} ${app_path})"
@@ -155,7 +164,10 @@ function run_target_app_verbose()
     fi
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
-    if is_elf "${app_path}"
+    if is_elf "$(${realpath} ${app_path})"
+    then
+      run_verbose "${app_path}" "$@"
+    elif is_shell_script "$(${realpath} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
     else
@@ -180,7 +192,10 @@ function run_target_app()
 
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
-    if is_elf "${app_path}"
+    if is_elf "$(${realpath} ${app_path})"
+    then
+      "${app_path}" "$@"
+    elif is_shell_script "$(${realpath} ${app_path})"
     then
       "${app_path}" "$@"
     elif is_pe64 "$(${realpath} ${app_path})"
@@ -246,7 +261,10 @@ function run_target_app()
     fi
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
-    if is_elf "${app_path}"
+    if is_elf "$(${realpath} ${app_path})"
+    then
+      "${app_path}" "$@"
+    elif is_shell_script "$(${realpath} ${app_path})"
     then
       "${app_path}" "$@"
     else
@@ -595,6 +613,36 @@ function is_dynamic()
   then
     # Return 0 (true) if found.
     file ${bin_path} | egrep -q "dynamically"
+  else
+    return 1
+  fi
+}
+
+function is_shell_script()
+{
+  if [ $# -lt 1 ]
+  then
+    warning "is_shell_script: Missing arguments"
+    exit 1
+  fi
+
+  local bin_path="$1"
+
+  # Symlinks do not match.
+  if [ -L "${bin_path}" ]
+  then
+    return 1
+  fi
+
+  if [ -f "${bin_path}" ]
+  then
+    # Return 0 (true) if found.
+    if [ "${XBB_BUILD_PLATFORM}" == "linux" ] || [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+    then
+      file ${bin_path} | grep -q "shell script"
+    else
+      return 1
+    fi
   else
     return 1
   fi
