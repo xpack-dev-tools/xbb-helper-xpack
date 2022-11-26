@@ -22,9 +22,11 @@ function show_host_libs()
       return
     fi
 
+    local realpath=$(which grealpath || which realpath || echo realpath)
+
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
-      if is_elf "${app_path}"
+      if is_elf "$(${realpath} ${app_path})"
       then
         run_verbose ls -l "${app_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -68,7 +70,7 @@ function show_host_libs()
       fi
     elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
-      if is_elf "${app_path}"
+      if is_elf "$(${realpath} ${app_path})"
       then
         run_verbose ls -l "${app_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -113,9 +115,11 @@ function show_target_libs()
       return
     fi
 
+    local realpath=$(which grealpath || which realpath || echo realpath)
+
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
-      if is_elf "${app_path}"
+      if is_elf "$(${realpath} ${app_path})"
       then
         run_verbose ls -l "${app_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -159,7 +163,7 @@ function show_target_libs()
       fi
     elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
-      if is_elf "${app_path}"
+      if is_elf "$(${realpath} ${app_path})"
       then
         run_verbose ls -l "${app_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
