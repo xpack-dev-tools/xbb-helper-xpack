@@ -268,6 +268,12 @@ function test_compiler_single()
 
       if [ "${is_lto}" != "y" ] && is_non_native && is_mingw_gcc
       then
+        # With mingw-gcc bootstrap
+        # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
+        echo
+        echo "Skip hello-weak-c* without -flto with Windows binaries"
+      elif is_non_native && is_mingw_clang
+      then
         # lld-link: error: duplicate symbol: world()
         # >>> defined at hello-weak-cpp.cpp
         # >>>            lto-hello-weak-cpp.cpp.o
@@ -278,9 +284,6 @@ function test_compiler_single()
         # Test "./lto-hello-weak-cpp.exe " failed :-(
         # expected 12: "Hello World!"
         # got 11: "Hello there"
-
-        # With mingw-gcc bootstrap
-        # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
         echo
         echo "Skip hello-weak-c* without -flto with Windows binaries"
       else
@@ -389,6 +392,7 @@ function test_compiler_single()
       # Test a very simple Objective-C (a printf).
       run_target_app_verbose "${CC}" simple-objc.m -o "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}" ${CFLAGS}
       test_mingw_expect "Hello World" "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}"
+
     )
 
     # -------------------------------------------------------------------------
