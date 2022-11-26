@@ -172,6 +172,48 @@ function test_compiler_single()
 
       # -------------------------------------------------------------------------
 
+      if [ "${is_static}" != "y" ]
+      then
+        (
+          if true # [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          then
+            run_target_app_verbose "${CC}" -c "add.c" -o "${prefix}add${suffix}.c.o" ${CFLAGS}
+          else
+            run_target_app_verbose "${CC}" -c "add.c" -o "${prefix}add${suffix}.c.o" -fpic ${CFLAGS}
+          fi
+
+          rm -rf libadd-static.a
+          run_target_app_verbose "${AR}" -r "lib${prefix}add-static${suffix}.a" "${prefix}add${suffix}.c.o"
+          run_target_app_verbose "${RANLIB}" "lib${prefix}add-static${suffix}.a"
+
+          if true # [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          then
+            # The `--out-implib` creates an import library, which can be
+            # directly used with -l.
+            run_target_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.dll" -Wl,--out-implib,"lib${prefix}add-shared${suffix}.dll.a" -Wl,--subsystem,windows
+          else
+            run_target_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.${XBB_HOST_SHLIB_EXT}"
+          fi
+
+          run_target_app_verbose "${CC}" "adder.c" -o "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" -l"${prefix}add-static${suffix}" -L . ${LDFLAGS}
+
+          test_mingw_expect "42" "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" 40 2
+
+          if true # [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          then
+            # -ladd-shared is in fact libadd-shared.dll.a
+            # The library does not show as DLL, it is loaded dynamically.
+            run_target_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
+          else
+            run_target_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
+          fi
+
+          test_mingw_expect "42" "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" 40 2
+        )
+      fi
+
+      # -------------------------------------------------------------------------
+
       run_target_app_verbose "${CXX}" "simple-exception.cpp" -o "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       test_mingw_expect "MyException" "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}"
 
