@@ -113,7 +113,7 @@ function run_target_app_verbose()
         )
       else
         echo
-        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
     elif is_pe64 "$(${realpath} ${app_path}.exe)"
     then
@@ -127,7 +127,7 @@ function run_target_app_verbose()
         )
       else
         echo
-        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
     elif is_pe32 "$(${realpath} ${app_path})"
     then
@@ -141,7 +141,7 @@ function run_target_app_verbose()
         )
       else
         echo
-        echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
     elif is_pe32 "$(${realpath} ${app_path}.exe)"
     then
@@ -155,11 +155,11 @@ function run_target_app_verbose()
         )
       else
         echo
-        echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
     else
       echo
-      echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+      echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
       exit 1
     fi
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
@@ -172,7 +172,7 @@ function run_target_app_verbose()
       run_verbose "${app_path}" "$@"
     else
       echo
-      echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+      echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
       exit 1
     fi
   else
@@ -210,7 +210,7 @@ function run_target_app()
         )
       else
         echo
-        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
     elif is_pe64 "$(${realpath} ${app_path}.exe)"
     then
@@ -224,7 +224,7 @@ function run_target_app()
         )
       else
         echo
-        echo "wine64" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
     elif is_pe32 "$(${realpath} ${app_path})"
     then
@@ -238,7 +238,7 @@ function run_target_app()
         )
       else
         echo
-        echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
     elif is_pe32 "$(${realpath} ${app_path}.exe)"
     then
@@ -252,11 +252,11 @@ function run_target_app()
         )
       else
         echo
-        echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+        echo "wine ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
     else
       echo
-      echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+      echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
       exit 1
     fi
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
@@ -269,7 +269,7 @@ function run_target_app()
       "${app_path}" "$@"
     else
       echo
-      echo "wine" "${app_path}" "$@" "- not available in ${FUNCNAME[0]}()"
+      echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
       exit 1
     fi
   else
@@ -717,6 +717,16 @@ function is_mingw_gcc()
 function is_clang()
 {
   if [[ "$(basename "${CC}")" =~ .*clang.* ]]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
+function is_mingw_clang()
+{
+  if [[ "$(basename "${CC}")" =~ .*mingw32-clang.* ]]
   then
     return 0
   else
