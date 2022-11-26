@@ -21,7 +21,7 @@ function echo_develop()
 function run_verbose()
 {
   # Does not include the .exe extension.
-  local app_path=$1
+  local app_path="$1"
   shift
 
   echo
@@ -32,7 +32,7 @@ function run_verbose()
 function run_verbose_develop()
 {
   # Does not include the .exe extension.
-  local app_path=$1
+  local app_path="$1"
   shift
 
   if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -46,7 +46,7 @@ function run_verbose_develop()
 function run_verbose_timed()
 {
   # Does not include the .exe extension.
-  local app_path=$1
+  local app_path="$1"
   shift
 
   echo

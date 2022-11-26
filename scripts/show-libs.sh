@@ -12,7 +12,7 @@
 
 function show_host_libs()
 {
-  local app_path=$1
+  local app_path="$1"
   shift
 
   (
@@ -105,7 +105,7 @@ function show_host_libs()
 
 function show_target_libs()
 {
-  local app_path=$1
+  local app_path="$1"
   shift
 
   (
@@ -223,7 +223,7 @@ function readelf_shared_libs()
 function _show_native_libs()
 {
   # Does not include the .exe extension.
-  local app_path=$1
+  local app_path="$1"
   shift
 
   (
