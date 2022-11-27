@@ -163,11 +163,11 @@ function build_mingw_headers()
 
           # https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=msvc-160
           # Windows 7
-          config_options+=("--with-default-win32-winnt=0x601")
+          config_options+=("--with-default-win32-winnt=0x601") # MS
           # `ucrt` is the new Windows Universal C Runtime:
           # https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c
           # config_options_common+=("--with-default-msvcrt=${MINGW_MSVCRT:-msvcrt}")
-          config_options+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}")
+          config_options+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}") # MS
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${triplet}") # Arch
@@ -319,7 +319,7 @@ function build_mingw_widl()
           fi
 
           # Mind the sub-folder.
-          config_options+=("--with-widl-includedir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/include")
+          config_options+=("--with-widl-includedir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/include") # MS
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/widl/configure" \
             "${config_options[@]}"
@@ -657,7 +657,7 @@ function build_mingw_crt()
           # `ucrt` is the new Windows Universal C Runtime:
           # https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c
           # config_options_common+=("--with-default-msvcrt=${MINGW_MSVCRT:-msvcrt}")
-          config_options+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}")
+          config_options+=("--with-default-msvcrt=${MINGW_MSVCRT:-ucrt}") # MS
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${triplet}") # Arch
@@ -665,7 +665,7 @@ function build_mingw_crt()
 
           if [ "${triplet}" == "x86_64-w64-mingw32" ]
           then
-            config_options+=("--disable-lib32") # Arch, HB
+            config_options+=("--disable-lib32") # Arch, HB, MS
             config_options+=("--enable-lib64") # Arch, HB
           elif [ "${triplet}" == "i686-w64-mingw32" ]
           then
