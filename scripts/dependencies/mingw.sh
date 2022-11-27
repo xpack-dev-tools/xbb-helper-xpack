@@ -316,7 +316,8 @@ function build_mingw_widl()
             config_options+=("--program-prefix=${program_prefix}")
           fi
 
-          config_options+=("--with-widl-includedir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include")
+          # Mind the sub-folder.
+          config_options+=("--with-widl-includedir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/include")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/widl/configure" \
             "${config_options[@]}"
