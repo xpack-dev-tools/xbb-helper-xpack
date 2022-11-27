@@ -42,7 +42,7 @@ function show_host_libs()
         echo "[ldd -v ${app_path}]"
         ldd -v "${app_path}" || true
         set -e
-      elif is_pe "${app_path}"
+      elif is_pe "$(${realpath} ${app_path})"
       then
         run_verbose ls -l "${app_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -52,7 +52,7 @@ function show_host_libs()
         echo
         echo "[${XBB_HOST_OBJDUMP} -x ${app_path}]"
         "${XBB_HOST_OBJDUMP}" -x "${app_path}" | grep -i 'DLL Name' || true
-      elif is_pe "${app_path}.exe"
+      elif is_pe "$(${realpath} ${app_path}.exe)"
       then
         run_verbose ls -l "${app_path}.exe"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -135,7 +135,7 @@ function show_target_libs()
         echo "[ldd -v ${app_path}]"
         ldd -v "${app_path}" || true
         set -e
-      elif is_pe "${app_path}"
+      elif is_pe "$(${realpath} ${app_path})"
       then
         run_verbose ls -l "${app_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -145,7 +145,7 @@ function show_target_libs()
         echo
         echo "[${XBB_TARGET_OBJDUMP} -x ${app_path}]"
         "${XBB_TARGET_OBJDUMP}" -x "${app_path}" | grep -i 'DLL Name' || true
-      elif is_pe "${app_path}.exe"
+      elif is_pe "$(${realpath} ${app_path}.exe)"
       then
         run_verbose ls -l "${app_path}.exe"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
