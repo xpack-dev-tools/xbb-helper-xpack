@@ -177,7 +177,9 @@ function build_mingw_headers()
 
           config_options+=("--enable-sdk=all") # Arch
           config_options+=("--enable-idl") # MYSYS2
-          config_options+=("--without-widl") # MSYS2
+
+          # llvm-mingw does not define it.
+          # config_options+=("--without-widl") # MSYS2
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-headers/configure" \
             "${config_options[@]}"
