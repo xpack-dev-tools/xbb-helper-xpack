@@ -182,6 +182,12 @@ function run_target_app_verbose()
   fi
 }
 
+function run_host_app_verbose()
+{
+  # Use the same strategy as for target apps.
+  run_target_app_verbose "$@"
+}
+
 function run_target_app()
 {
   # Does not need to include the .exe extension.
