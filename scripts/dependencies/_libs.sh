@@ -310,10 +310,10 @@ function test_python2()
     echo "Testing if the python2 binary starts properly..."
 
     export LD_LIBRARY_PATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-    run_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}" --version
+    run_host_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}" --version
 
-    run_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}" -c 'import sys; print(sys.path)'
-    run_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}" -c 'import sys; print(sys.prefix)'
+    run_host_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}" -c 'import sys; print(sys.path)'
+    run_host_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}" -c 'import sys; print(sys.prefix)'
   )
 }
 
@@ -872,13 +872,13 @@ function test_libgcrypt()
     echo
     echo "Testing if libgcrypt binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/libgcrypt-config" --version
-    run_app_verbose "${test_bin_folder_path}/dumpsexp" --version
-    run_app_verbose "${test_bin_folder_path}/hmac256" --version
-    run_app_verbose "${test_bin_folder_path}/mpicalc" --version
+    run_host_app_verbose "${test_bin_folder_path}/libgcrypt-config" --version
+    run_host_app_verbose "${test_bin_folder_path}/dumpsexp" --version
+    run_host_app_verbose "${test_bin_folder_path}/hmac256" --version
+    run_host_app_verbose "${test_bin_folder_path}/mpicalc" --version
 
     # --help not available
-    # run_app_verbose "${test_bin_folder_path}/hmac256" --help
+    # run_host_app_verbose "${test_bin_folder_path}/hmac256" --help
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/libgcrypt"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/libgcrypt"; cd "${XBB_TESTS_FOLDER_PATH}/libgcrypt"
@@ -1046,7 +1046,7 @@ function test_libassuan()
     echo
     echo "Testing if libassuan binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/libassuan-config" --version
+    run_host_app_verbose "${test_bin_folder_path}/libassuan-config" --version
   )
 }
 
@@ -1208,7 +1208,7 @@ function test_libksba()
     echo
     echo "Testing if libksba binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/ksba-config" --version
+    run_host_app_verbose "${test_bin_folder_path}/ksba-config" --version
   )
 }
 
@@ -1361,7 +1361,7 @@ function test_npth()
     echo
     echo "Checking the npth shared libraries..."
 
-    run_app_verbose "${test_bin_folder_path}/npth-config" --version
+    run_host_app_verbose "${test_bin_folder_path}/npth-config" --version
   )
 }
 

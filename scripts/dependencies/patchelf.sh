@@ -181,8 +181,8 @@ function test_patchelf()
     echo
     echo "Testing if patchelf binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/patchelf" --version
-    run_app_verbose "${test_bin_folder_path}/patchelf" --help
+    run_host_app_verbose "${test_bin_folder_path}/patchelf" --version
+    run_host_app_verbose "${test_bin_folder_path}/patchelf" --help
   )
 }
 

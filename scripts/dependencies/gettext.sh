@@ -203,7 +203,7 @@ function test_gettext()
   show_host_libs "${test_bin_folder_path}/ngettext"
   show_host_libs "${test_bin_folder_path}/envsubst"
 
-  run_app_verbose "${test_bin_folder_path}/gettext" --version
+  run_host_app_verbose "${test_bin_folder_path}/gettext" --version
   test_expect "test" "${test_bin_folder_path}/gettext" test
 }
 

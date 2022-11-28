@@ -677,12 +677,12 @@ function test_cross_gcc()
       show_host_libs "$(${test_bin_path}/${XBB_GCC_TARGET}-gcc -print-prog-name=lto1)"
     fi
 
-    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" --help
-    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -dumpversion
-    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -dumpmachine
-    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -print-multi-lib
-    run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -print-search-dirs
-    # run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -dumpspecs | wc -l
+    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" --help
+    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -dumpversion
+    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -dumpmachine
+    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -print-multi-lib
+    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -print-search-dirs
+    # run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -dumpspecs | wc -l
 
     local tmp=$(mktemp /tmp/gcc-test.XXXXX)
     rm -rf "${tmp}"
@@ -719,10 +719,10 @@ main(int argc, char* argv[])
 }
 __EOF__
 
-      run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -pipe -o hello-c.elf "${specs}" hello.c -v
+      run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -pipe -o hello-c.elf "${specs}" hello.c -v
 
-      run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -pipe -o hello.c.o -c -flto hello.c
-      run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -pipe -o hello-c-lto.elf "${specs}" -flto -v hello.c.o
+      run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -pipe -o hello.c.o -c -flto hello.c
+      run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gcc" -pipe -o hello-c-lto.elf "${specs}" -flto -v hello.c.o
 
       # Note: __EOF__ is quoted to prevent substitutions here.
       cat <<'__EOF__' > hello.cpp
@@ -742,12 +742,12 @@ __sync_synchronize()
 }
 __EOF__
 
-      run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp.elf "${specs}" hello.cpp
+      run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp.elf "${specs}" hello.cpp
 
-      run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello.cpp.o -c -flto hello.cpp
-      run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp-lto.elf "${specs}" -flto -v hello.cpp.o
+      run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello.cpp.o -c -flto hello.cpp
+      run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp-lto.elf "${specs}" -flto -v hello.cpp.o
 
-      run_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp-gcov.elf "${specs}" -fprofile-arcs -ftest-coverage -lgcov hello.cpp
+      run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-g++" -pipe -o hello-cpp-gcov.elf "${specs}" -fprofile-arcs -ftest-coverage -lgcov hello.cpp
     fi
 
     cd ..

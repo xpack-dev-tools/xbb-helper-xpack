@@ -183,7 +183,7 @@ function test_m4()
     echo
     echo "Testing if m4 binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/m4" --version
+    run_host_app_verbose "${test_bin_folder_path}/m4" --version
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/m4"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/m4"; cd "${XBB_TESTS_FOLDER_PATH}/m4"

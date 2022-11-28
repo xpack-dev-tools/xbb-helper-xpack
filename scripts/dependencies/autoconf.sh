@@ -151,14 +151,14 @@ function test_autoconf()
     echo
     echo "Testing if autoconf scripts start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/autoconf" --version
+    run_host_app_verbose "${test_bin_folder_path}/autoconf" --version
 
     # Can't locate Autom4te/ChannelDefs.pm in @INC (you may need to install the Autom4te::ChannelDefs module) (@INC contains: /Users/ilg/Work/xbb-bootstrap-4.0.0/darwin-x64/install/libs/share/autoconf /Users/ilg/.local/xbb/lib/perl5/site_perl/5.34.0/darwin-thread-multi-2level /Users/ilg/.local/xbb/lib/perl5/site_perl/5.34.0 /Users/ilg/.local/xbb/lib/perl5/5.34.0/darwin-thread-multi-2level /Users/ilg/.local/xbb/lib/perl5/5.34.0) at /Users/ilg/Work/xbb-bootstrap-4.0.0/darwin-x64/install/xbb-bootstrap/bin/autoheader line 45.
     # BEGIN failed--compilation aborted at /Users/ilg/Work/xbb-bootstrap-4.0.0/darwin-x64/install/xbb-bootstrap/bin/autoheader line 45.
-    # run_app_verbose "${test_bin_folder_path}/autoheader" --version
+    # run_host_app_verbose "${test_bin_folder_path}/autoheader" --version
 
-    # run_app_verbose "${test_bin_folder_path}/autoscan" --version
-    # run_app_verbose "${test_bin_folder_path}/autoupdate" --version
+    # run_host_app_verbose "${test_bin_folder_path}/autoscan" --version
+    # run_host_app_verbose "${test_bin_folder_path}/autoupdate" --version
 
     # No ELFs, only scripts.
   )

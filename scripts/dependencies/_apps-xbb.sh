@@ -233,7 +233,7 @@ function test_scons()
     echo
     echo "Testing if scons binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/scons" --version
+    run_host_app_verbose "${test_bin_folder_path}/scons" --version
   )
 }
 
@@ -448,12 +448,12 @@ function test_curl()
     echo
     echo "Testing if curl binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/curl" --version
+    run_host_app_verbose "${test_bin_folder_path}/curl" --version
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/curl"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/curl"; cd "${XBB_TESTS_FOLDER_PATH}/curl"
 
-    run_app_verbose "${test_bin_folder_path}/curl" \
+    run_host_app_verbose "${test_bin_folder_path}/curl" \
       -L https://github.com/xpack-dev-tools/.github/raw/master/README.md \
       --insecure \
       --output test-output.md
@@ -650,26 +650,26 @@ function test_tar()
     echo
     echo "Testing if tar binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/tar" --version
+    run_host_app_verbose "${test_bin_folder_path}/tar" --version
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/tar"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/tar"; cd "${XBB_TESTS_FOLDER_PATH}/tar"
 
     echo "hello" >hello.txt
 
-    run_app_verbose "${test_bin_folder_path}/tar" -czvf hello.tar.gz hello.txt
+    run_host_app_verbose "${test_bin_folder_path}/tar" -czvf hello.tar.gz hello.txt
     (
       # TODO!
       # For xz
       xbb_activate_installed_bin
 
-      run_app_verbose "${test_bin_folder_path}/tar" -cJvf hello.tar.xz hello.txt
+      run_host_app_verbose "${test_bin_folder_path}/tar" -cJvf hello.tar.xz hello.txt
     )
 
     mv hello.txt hello.txt.orig
 
 
-    run_app_verbose "${test_bin_folder_path}/tar" -xzvf hello.tar.gz hello.txt
+    run_host_app_verbose "${test_bin_folder_path}/tar" -xzvf hello.tar.gz hello.txt
     cmp hello.txt hello.txt.orig
 
     (
@@ -678,7 +678,7 @@ function test_tar()
       xbb_activate_installed_bin
 
       rm hello.txt
-      run_app_verbose "${test_bin_folder_path}/tar" -xJvf hello.tar.xz hello.txt
+      run_host_app_verbose "${test_bin_folder_path}/tar" -xJvf hello.tar.xz hello.txt
       cmp hello.txt hello.txt.orig
     )
 
@@ -870,8 +870,8 @@ function test_guile()
     echo
     echo "Testing if guile binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/guile" --version
-    run_app_verbose "${test_bin_folder_path}/guile-config" --version
+    run_host_app_verbose "${test_bin_folder_path}/guile" --version
+    run_host_app_verbose "${test_bin_folder_path}/guile-config" --version
   )
 }
 
@@ -1058,18 +1058,18 @@ function test_autogen()
     echo
     echo "Testing if autogen binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/autogen" --version
-    run_app_verbose "${test_bin_folder_path}/autoopts-config" --version
-    run_app_verbose "${test_bin_folder_path}/columns" --version
-    run_app_verbose "${test_bin_folder_path}/getdefs" --version
+    run_host_app_verbose "${test_bin_folder_path}/autogen" --version
+    run_host_app_verbose "${test_bin_folder_path}/autoopts-config" --version
+    run_host_app_verbose "${test_bin_folder_path}/columns" --version
+    run_host_app_verbose "${test_bin_folder_path}/getdefs" --version
 
     echo
     echo "Testing if autogen binaries display help..."
 
-    run_app_verbose "${test_bin_folder_path}/autogen" --help
+    run_host_app_verbose "${test_bin_folder_path}/autogen" --help
 
     # getdefs error:  invalid option descriptor for version
-    run_app_verbose "${test_bin_folder_path}/getdefs" --help || true
+    run_host_app_verbose "${test_bin_folder_path}/getdefs" --help || true
   )
 }
 
@@ -1255,7 +1255,7 @@ function test_gawk()
     echo
     echo "Testing if gawk binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/gawk" --version
+    run_host_app_verbose "${test_bin_folder_path}/gawk" --version
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/gawk"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/gawk"; cd "${XBB_TESTS_FOLDER_PATH}/gawk"
@@ -1450,7 +1450,7 @@ function test_sed()
     echo
     echo "Testing if sed binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/sed" --version
+    run_host_app_verbose "${test_bin_folder_path}/sed" --version
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/sed"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/sed"; cd "${XBB_TESTS_FOLDER_PATH}/sed"
@@ -1611,7 +1611,7 @@ function test_patch()
     echo
     echo "Testing if patch binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/patch" --version
+    run_host_app_verbose "${test_bin_folder_path}/patch" --version
   )
 }
 
@@ -1788,10 +1788,10 @@ function test_diffutils()
     echo
     echo "Testing if diffutils binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/diff" --version
-    run_app_verbose "${test_bin_folder_path}/cmp" --version
-    run_app_verbose "${test_bin_folder_path}/diff3" --version
-    run_app_verbose "${test_bin_folder_path}/sdiff" --version
+    run_host_app_verbose "${test_bin_folder_path}/diff" --version
+    run_host_app_verbose "${test_bin_folder_path}/cmp" --version
+    run_host_app_verbose "${test_bin_folder_path}/diff3" --version
+    run_host_app_verbose "${test_bin_folder_path}/sdiff" --version
   )
 }
 
@@ -1966,8 +1966,8 @@ function test_bison()
     echo
     echo "Testing if bison binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/bison" --version
-    run_app_verbose "${test_bin_folder_path}/yacc" --version
+    run_host_app_verbose "${test_bin_folder_path}/bison" --version
+    run_host_app_verbose "${test_bin_folder_path}/yacc" --version
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/bison"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/bison"; cd "${XBB_TESTS_FOLDER_PATH}/bison"
@@ -1998,7 +1998,7 @@ __EOF__
     (
       # TODO!
       xbb_activate_installed_bin
-      run_app_verbose "${test_bin_folder_path}/bison" test.y -Wno-conflicts-sr
+      run_host_app_verbose "${test_bin_folder_path}/bison" test.y -Wno-conflicts-sr
     )
     run_verbose g++ test.tab.c -o test -w
 
@@ -2180,7 +2180,7 @@ function test_make()
     echo
     echo "Testing if make binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/gmake" --version
+    run_host_app_verbose "${test_bin_folder_path}/gmake" --version
   )
 }
 
@@ -2337,12 +2337,12 @@ function test_bash()
     echo
     echo "Testing if bash binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/bash" --version
+    run_host_app_verbose "${test_bin_folder_path}/bash" --version
 
     echo
     echo "Testing if bash binaries display help..."
 
-    run_app_verbose "${test_bin_folder_path}/bash" --help
+    run_host_app_verbose "${test_bin_folder_path}/bash" --help
   )
 }
 
@@ -2521,12 +2521,12 @@ function test_wget()
     echo
     echo "Testing if wget binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/wget" --version
+    run_host_app_verbose "${test_bin_folder_path}/wget" --version
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/wget"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/wget"; cd "${XBB_TESTS_FOLDER_PATH}/wget"
 
-    run_app_verbose "${test_bin_folder_path}/wget" \
+    run_host_app_verbose "${test_bin_folder_path}/wget" \
       -O test-output.md \
       https://github.com/xpack-dev-tools/.github/raw/master/README.md \
 
@@ -2666,8 +2666,8 @@ function test_dos2unix()
     echo
     echo "Testing if dos2unix binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/unix2dos" --version
-    run_app_verbose "${test_bin_folder_path}/dos2unix" --version
+    run_host_app_verbose "${test_bin_folder_path}/unix2dos" --version
+    run_host_app_verbose "${test_bin_folder_path}/dos2unix" --version
   )
 }
 
@@ -2874,7 +2874,7 @@ function test_flex()
     echo
     echo "Testing if flex binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/flex" --version
+    run_host_app_verbose "${test_bin_folder_path}/flex" --version
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/flex"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/flex"; cd "${XBB_TESTS_FOLDER_PATH}/flex"
@@ -2893,11 +2893,11 @@ int main()
 }
 __EOF__
 
-      run_app_verbose "${test_bin_folder_path}/flex" test.flex
+      run_host_app_verbose "${test_bin_folder_path}/flex" test.flex
 
       if [ ! -z ${XBB_LIBRARIES_INSTALL_FOLDER_PATH+x} ]
       then
-        run_app_verbose gcc lex.yy.c -L"${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib" -lfl -o test
+        run_host_app_verbose gcc lex.yy.c -L"${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib" -lfl -o test
 
         echo "Hello World" | ./test
       fi
@@ -3119,7 +3119,7 @@ function test_perl()
         : # export LD_LIBRARY_PATH="${XBB_LIBRARY_PATH}"
       fi
 
-      run_app_verbose "${test_bin_folder_path}/perl" --version
+      run_host_app_verbose "${test_bin_folder_path}/perl" --version
     )
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/perl"
@@ -3343,7 +3343,7 @@ function test_tcl()
     echo
     echo "Testing if tcl binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/tclsh"* <<< 'puts [info patchlevel]'
+    run_host_app_verbose "${test_bin_folder_path}/tclsh"* <<< 'puts [info patchlevel]'
   )
 }
 
@@ -3507,10 +3507,10 @@ function test_git()
     echo
     echo "Testing if git binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/git" --version
+    run_host_app_verbose "${test_bin_folder_path}/git" --version
 
     rm -rf content.git
-    run_app_verbose "${test_bin_folder_path}/git" clone \
+    run_host_app_verbose "${test_bin_folder_path}/git" clone \
       https://github.com/xpack-dev-tools/.github.git \
       .github.git
   )
@@ -3672,9 +3672,9 @@ function test_p7zip()
     echo
     echo "Testing if 7za binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/7z" --help
-    run_app_verbose "${test_bin_folder_path}/7za" --help
-    run_app_verbose "${test_bin_folder_path}/7zr" --help
+    run_host_app_verbose "${test_bin_folder_path}/7z" --help
+    run_host_app_verbose "${test_bin_folder_path}/7za" --help
+    run_host_app_verbose "${test_bin_folder_path}/7zr" --help
   )
 }
 
@@ -3852,7 +3852,7 @@ function test_rhash()
     echo
     echo "Testing if rhash binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/rhash" --version
+    run_host_app_verbose "${test_bin_folder_path}/rhash" --version
   )
 }
 
@@ -4032,7 +4032,7 @@ function test_re2c()
     echo
     echo "Testing if re2c binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/re2c" --version
+    run_host_app_verbose "${test_bin_folder_path}/re2c" --version
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/re2c"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/re2c"; cd "${XBB_TESTS_FOLDER_PATH}/re2c"
@@ -4055,7 +4055,7 @@ unsigned int stou (const char * s)
 }
 __EOF__
 
-    run_app_verbose "${test_bin_folder_path}/re2c" -is -o test-out.c test.c
+    run_host_app_verbose "${test_bin_folder_path}/re2c" -is -o test-out.c test.c
 
     run_verbose gcc -c test-out.c
   )
@@ -4239,27 +4239,27 @@ function test_gpg()
     echo
     echo "Testing if gpg binaries start properly..."
 
-    run_app_verbose "${test_bin_folder_path}/gpg" --version
-    run_app_verbose "${test_bin_folder_path}/gpgv" --version
-    run_app_verbose "${test_bin_folder_path}/gpgsm" --version
-    run_app_verbose "${test_bin_folder_path}/gpg-agent" --version
+    run_host_app_verbose "${test_bin_folder_path}/gpg" --version
+    run_host_app_verbose "${test_bin_folder_path}/gpgv" --version
+    run_host_app_verbose "${test_bin_folder_path}/gpgsm" --version
+    run_host_app_verbose "${test_bin_folder_path}/gpg-agent" --version
 
-    run_app_verbose "${test_bin_folder_path}/kbxutil" --version
+    run_host_app_verbose "${test_bin_folder_path}/kbxutil" --version
 
-    run_app_verbose "${test_bin_folder_path}/gpgconf" --version
-    run_app_verbose "${test_bin_folder_path}/gpg-connect-agent" --version
+    run_host_app_verbose "${test_bin_folder_path}/gpgconf" --version
+    run_host_app_verbose "${test_bin_folder_path}/gpg-connect-agent" --version
     if [ -f "${test_bin_folder_path}/symcryptrun" ]
     then
       # clang did not create it.
-      run_app_verbose "${test_bin_folder_path}/symcryptrun" --version
+      run_host_app_verbose "${test_bin_folder_path}/symcryptrun" --version
     fi
-    run_app_verbose "${test_bin_folder_path}/watchgnupg" --version
-    # run_app_verbose "${test_bin_folder_path}/gpgparsemail" --version
-    run_app_verbose "${test_bin_folder_path}/gpg-wks-server" --version
-    run_app_verbose "${test_bin_folder_path}/gpgtar" --version
+    run_host_app_verbose "${test_bin_folder_path}/watchgnupg" --version
+    # run_host_app_verbose "${test_bin_folder_path}/gpgparsemail" --version
+    run_host_app_verbose "${test_bin_folder_path}/gpg-wks-server" --version
+    run_host_app_verbose "${test_bin_folder_path}/gpgtar" --version
 
-    # run_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/sbin/addgnupghome" --version
-    # run_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/sbin/applygnupgdefaults" --version
+    # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/sbin/addgnupghome" --version
+    # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/sbin/applygnupgdefaults" --version
 
     # TODO: add functional tests from HomeBrew.
   )
@@ -4415,7 +4415,7 @@ function test_makedepend()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/makedepend"; cd "${XBB_TESTS_FOLDER_PATH}/makedepend"
 
     touch Makefile
-    run_app_verbose "${test_bin_folder_path}/makedepend"
+    run_host_app_verbose "${test_bin_folder_path}/makedepend"
   )
 }
 
