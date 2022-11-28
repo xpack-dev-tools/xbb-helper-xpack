@@ -69,7 +69,7 @@ function run_app_verbose()
     if is_elf "$(${realpath} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
-    elif is_shell_script "$(${realpath} ${app_path})"
+    elif is_executable_script "$(${realpath} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
     else
@@ -98,7 +98,7 @@ function run_target_app_verbose()
     if is_elf "$(${realpath} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
-    elif is_shell_script "$(${realpath} ${app_path})"
+    elif is_executable_script "$(${realpath} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
     elif is_pe64 "$(${realpath} ${app_path})"
@@ -167,7 +167,7 @@ function run_target_app_verbose()
     if is_elf "$(${realpath} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
-    elif is_shell_script "$(${realpath} ${app_path})"
+    elif is_executable_script "$(${realpath} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
     else
@@ -201,7 +201,7 @@ function run_target_app()
     if is_elf "$(${realpath} ${app_path})"
     then
       "${app_path}" "$@"
-    elif is_shell_script "$(${realpath} ${app_path})"
+    elif is_executable_script "$(${realpath} ${app_path})"
     then
       "${app_path}" "$@"
     elif is_pe64 "$(${realpath} ${app_path})"
@@ -270,7 +270,7 @@ function run_target_app()
     if is_elf "$(${realpath} ${app_path})"
     then
       "${app_path}" "$@"
-    elif is_shell_script "$(${realpath} ${app_path})"
+    elif is_executable_script "$(${realpath} ${app_path})"
     then
       "${app_path}" "$@"
     else
@@ -624,11 +624,11 @@ function is_dynamic()
   fi
 }
 
-function is_shell_script()
+function is_executable_script()
 {
   if [ $# -lt 1 ]
   then
-    warning "is_shell_script: Missing arguments"
+    warning "is_executable_script: Missing arguments"
     exit 1
   fi
 
@@ -645,7 +645,7 @@ function is_shell_script()
     # Return 0 (true) if found.
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ] || [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
-      file ${bin_path} | grep -q "shell script"
+      file ${bin_path} | grep -q "text executable"
     else
       return 1
     fi
