@@ -1055,7 +1055,7 @@ function test_gcc_one()
       # 'Symbol not found: __ZdlPvm' (_operator delete(void*, unsigned long))
       run_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_HOST_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
       show_host_libs ${prefix}simple-exception${suffix}
-      run_app_verbose ./${prefix}simple-exception${suffix} || echo "The test ${prefix}simple-exception${suffix} is known to fail; ignored."
+      run_target_app_verbose ./${prefix}simple-exception${suffix} || echo "The test ${prefix}simple-exception${suffix} is known to fail; ignored."
     else
       run_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_HOST_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
       test_expect "MyException" "${prefix}simple-exception${suffix}"
@@ -1079,21 +1079,21 @@ function test_gcc_one()
 
     run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}hello${suffix}${XBB_HOST_DOT_EXE} hello.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
     show_host_libs ${prefix}hello${suffix}
-    run_app_verbose ./${prefix}hello${suffix}
+    run_target_app_verbose ./${prefix}hello${suffix}
 
     run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}setjmp${suffix}${XBB_HOST_DOT_EXE} setjmp-patched.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
     show_host_libs ${prefix}setjmp${suffix}
-    run_app_verbose ./${prefix}setjmp${suffix}
+    run_target_app_verbose ./${prefix}setjmp${suffix}
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}hello-tls${suffix}.exe hello-tls.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
       show_host_libs ${prefix}hello-tls${suffix}
-      run_app_verbose ./${prefix}hello-tls${suffix}
+      run_target_app_verbose ./${prefix}hello-tls${suffix}
 
       run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}crt-test${suffix}.exe crt-test.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
       show_host_libs ${prefix}crt-test${suffix}
-      run_app_verbose ./${prefix}crt-test${suffix}
+      run_target_app_verbose ./${prefix}crt-test${suffix}
 
       if [ "${prefix}" != "static-" ]
       then
@@ -1102,39 +1102,39 @@ function test_gcc_one()
 
         run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}autoimport-main${suffix}.exe autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC}
         show_host_libs ${prefix}autoimport-main${suffix}
-        run_app_verbose ./${prefix}autoimport-main${suffix}
+        run_target_app_verbose ./${prefix}autoimport-main${suffix}
       fi
 
       # The IDL output isn't arch specific, but test each arch frontend
       run_app_verbose "${WIDL}" -o idltest.h idltest.idl -h
       run_app_verbose "${CC}" ${CFLAGS} -o ${prefix}idltest${suffix}.exe idltest.c -I. -lole32 ${VERBOSE_FLAG} ${STATIC_LIBGCC}
       show_host_libs ${prefix}idltest${suffix}
-      run_app_verbose ./${prefix}idltest${suffix}
+      run_target_app_verbose ./${prefix}idltest${suffix}
     fi
 
     run_app_verbose ${CXX} -o ${prefix}hello-cpp${suffix}${XBB_HOST_DOT_EXE} hello-cpp.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_host_libs ${prefix}hello-cpp${suffix}
-    run_app_verbose ./${prefix}hello-cpp${suffix}
+    run_target_app_verbose ./${prefix}hello-cpp${suffix}
 
     run_app_verbose ${CXX} -o ${prefix}hello-exception${suffix}${XBB_HOST_DOT_EXE} hello-exception.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_host_libs ${prefix}hello-exception${suffix}
-    run_app_verbose ./${prefix}hello-exception${suffix}
+    run_target_app_verbose ./${prefix}hello-exception${suffix}
 
     run_app_verbose ${CXX} -o ${prefix}exception-locale${suffix}${XBB_HOST_DOT_EXE} exception-locale.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_host_libs ${prefix}exception-locale${suffix}
-    run_app_verbose ./${prefix}exception-locale${suffix}
+    run_target_app_verbose ./${prefix}exception-locale${suffix}
 
     run_app_verbose ${CXX} -o ${prefix}exception-reduced${suffix}${XBB_HOST_DOT_EXE} exception-reduced.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_host_libs ${prefix}exception-reduced${suffix}
-    run_app_verbose ./${prefix}exception-reduced${suffix}
+    run_target_app_verbose ./${prefix}exception-reduced${suffix}
 
     run_app_verbose ${CXX} -o ${prefix}global-terminate${suffix}${XBB_HOST_DOT_EXE} global-terminate.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_host_libs ${prefix}global-terminate${suffix}
-    run_app_verbose ./${prefix}global-terminate${suffix}
+    run_target_app_verbose ./${prefix}global-terminate${suffix}
 
     run_app_verbose ${CXX} -o ${prefix}longjmp-cleanup${suffix}${XBB_HOST_DOT_EXE} longjmp-cleanup.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
     show_host_libs ${prefix}longjmp-cleanup${suffix}
-    run_app_verbose ./${prefix}longjmp-cleanup${suffix}
+    run_target_app_verbose ./${prefix}longjmp-cleanup${suffix}
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
@@ -1166,10 +1166,10 @@ function test_gcc_one()
           then
             echo "The test ${prefix}tlstest-main${suffix} is known to hang on GitHub Actions; ignored."
           else
-            run_app_verbose ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main${suffix} is known to fail; ignored."
+            run_target_app_verbose ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main${suffix} is known to fail; ignored."
           fi
         else
-          run_app_verbose ./${prefix}tlstest-main${suffix}
+          run_target_app_verbose ./${prefix}tlstest-main${suffix}
         fi
       )
     fi
@@ -1192,13 +1192,13 @@ function test_gcc_one()
         show_host_libs ${prefix}throwcatch-main${suffix}
         if [ "${XBB_HOST_PLATFORM}" == "win32" -a "${XBB_HOST_ARCH}" == "ia32" ]
         then
-          run_app_verbose ./${prefix}throwcatch-main${suffix} || echo "The test ${prefix}throwcatch-main${suffix} is known to fail; ignored."
+          run_target_app_verbose ./${prefix}throwcatch-main${suffix} || echo "The test ${prefix}throwcatch-main${suffix} is known to fail; ignored."
         elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${prefix}" == "" ]
         then
           # dyld: Symbol not found: __ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE5c_strEv
-          run_app_verbose ./${prefix}throwcatch-main${suffix} || echo "The test ${prefix}throwcatch-main${suffix} is known to fail; ignored."
+          run_target_app_verbose ./${prefix}throwcatch-main${suffix} || echo "The test ${prefix}throwcatch-main${suffix} is known to fail; ignored."
         else
-          run_app_verbose ./${prefix}throwcatch-main${suffix}
+          run_target_app_verbose ./${prefix}throwcatch-main${suffix}
         fi
       )
     fi
@@ -1231,7 +1231,7 @@ function test_gcc_one()
       test_expect " Hello" "./${prefix}hello-f${suffix}"
 
       run_app_verbose "${F90}" ${VERBOSE_FLAG}  -o "${prefix}concurrent-f${suffix}${XBB_HOST_DOT_EXE}" concurrent.f90 ${STATIC_LIBGCC}
-      run_app_verbose "./${prefix}concurrent-f${suffix}"
+      run_target_app_verbose "./${prefix}concurrent-f${suffix}"
     fi
 
   )
