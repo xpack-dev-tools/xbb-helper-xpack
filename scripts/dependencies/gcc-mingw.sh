@@ -448,59 +448,59 @@ function test_mingw_gcc()
     echo
     echo "Testing if ${triplet}-gcc binaries start properly..."
 
-    run_target_app_verbose "${CC}" --version
-    run_target_app_verbose "${CXX}" --version
+    run_host_app_verbose "${CC}" --version
+    run_host_app_verbose "${CXX}" --version
     if [ -f "${F90}" ]
     then
-      run_target_app_verbose "${F90}" --version
+      run_host_app_verbose "${F90}" --version
     fi
 
     # x86_64-w64-mingw32-gcc-ar.exe: Cannot find binary 'ar'
     # x86_64-w64-mingw32-gcc-nm.exe: Cannot find binary 'nm'
     if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
-      run_target_app_verbose "${AR}" --version
-      run_target_app_verbose "${NM}" --version
-      run_target_app_verbose "${RANLIB}" --version
+      run_host_app_verbose "${AR}" --version
+      run_host_app_verbose "${NM}" --version
+      run_host_app_verbose "${RANLIB}" --version
     fi
 
-    run_target_app_verbose "${GCOV}" --version
-    run_target_app_verbose "${GCOV_DUMP}" --version
-    run_target_app_verbose "${GCOV_TOOL}" --version
+    run_host_app_verbose "${GCOV}" --version
+    run_host_app_verbose "${GCOV_DUMP}" --version
+    run_host_app_verbose "${GCOV_TOOL}" --version
 
-    run_target_app_verbose "${GENDEF}" --help
+    run_host_app_verbose "${GENDEF}" --help
 
     echo
     echo "Showing the ${triplet}-gcc configurations..."
 
-    run_target_app_verbose "${CC}" --help
-    run_target_app_verbose "${CC}" -v
-    run_target_app_verbose "${CC}" -dumpversion
-    run_target_app_verbose "${CC}" -dumpmachine
+    run_host_app_verbose "${CC}" --help
+    run_host_app_verbose "${CC}" -v
+    run_host_app_verbose "${CC}" -dumpversion
+    run_host_app_verbose "${CC}" -dumpmachine
 
-    run_target_app_verbose "${CC}" -print-search-dirs
-    run_target_app_verbose "${CC}" -print-libgcc-file-name
-    run_target_app_verbose "${CC}" -print-multi-directory
-    run_target_app_verbose "${CC}" -print-multi-lib
-    run_target_app_verbose "${CC}" -print-multi-os-directory
-    run_target_app_verbose "${CC}" -print-sysroot
-    run_target_app_verbose "${CC}" -print-file-name=libgcc_s_seh-1.dll
-    run_target_app_verbose "${CC}" -print-prog-name=cc1
+    run_host_app_verbose "${CC}" -print-search-dirs
+    run_host_app_verbose "${CC}" -print-libgcc-file-name
+    run_host_app_verbose "${CC}" -print-multi-directory
+    run_host_app_verbose "${CC}" -print-multi-lib
+    run_host_app_verbose "${CC}" -print-multi-os-directory
+    run_host_app_verbose "${CC}" -print-sysroot
+    run_host_app_verbose "${CC}" -print-file-name=libgcc_s_seh-1.dll
+    run_host_app_verbose "${CC}" -print-prog-name=cc1
 
-    run_target_app_verbose "${CXX}" --help
-    run_target_app_verbose "${CXX}" -v
-    run_target_app_verbose "${CXX}" -dumpversion
-    run_target_app_verbose "${CXX}" -dumpmachine
+    run_host_app_verbose "${CXX}" --help
+    run_host_app_verbose "${CXX}" -v
+    run_host_app_verbose "${CXX}" -dumpversion
+    run_host_app_verbose "${CXX}" -dumpmachine
 
-    run_target_app_verbose "${CXX}" -print-search-dirs
-    run_target_app_verbose "${CXX}" -print-libgcc-file-name
-    run_target_app_verbose "${CXX}" -print-multi-directory
-    run_target_app_verbose "${CXX}" -print-multi-lib
-    run_target_app_verbose "${CXX}" -print-multi-os-directory
-    run_target_app_verbose "${CXX}" -print-sysroot
-    run_target_app_verbose "${CXX}" -print-file-name=libstdc++-6.dll
-    run_target_app_verbose "${CXX}" -print-file-name=libwinpthread-1.dll
-    run_target_app_verbose "${CXX}" -print-prog-name=cc1plus
+    run_host_app_verbose "${CXX}" -print-search-dirs
+    run_host_app_verbose "${CXX}" -print-libgcc-file-name
+    run_host_app_verbose "${CXX}" -print-multi-directory
+    run_host_app_verbose "${CXX}" -print-multi-lib
+    run_host_app_verbose "${CXX}" -print-multi-os-directory
+    run_host_app_verbose "${CXX}" -print-sysroot
+    run_host_app_verbose "${CXX}" -print-file-name=libstdc++-6.dll
+    run_host_app_verbose "${CXX}" -print-file-name=libwinpthread-1.dll
+    run_host_app_verbose "${CXX}" -print-prog-name=cc1plus
 
     echo
     echo "Testing if ${triplet}-gcc compiles simple programs..."
