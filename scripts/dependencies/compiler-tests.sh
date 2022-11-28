@@ -271,7 +271,7 @@ function test_compiler_single()
         # With mingw-gcc bootstrap
         # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
         echo
-        echo "Skip hello-weak-c* without -flto with Windows binaries"
+        echo "Skip hello-weak-c without -flto with Windows binaries"
       elif is_non_native && is_mingw_clang
       then
         # lld-link: error: duplicate symbol: world()
@@ -285,13 +285,35 @@ function test_compiler_single()
         # expected 12: "Hello World!"
         # got 11: "Hello there"
         echo
-        echo "Skip hello-weak-c* without -flto with Windows binaries"
+        echo "Skip hello-weak-c without -flto with Windows binaries"
       else
         run_host_app_verbose "${CC}" -c "hello-weak.c" -o "${prefix}hello-weak${suffix}.c.o" ${CFLAGS}
         run_host_app_verbose "${CC}" -c "hello-f-weak.c" -o "${prefix}hello-f-weak${suffix}.c.o" ${CFLAGS}
         run_host_app_verbose "${CC}" "${prefix}hello-weak${suffix}.c.o" "${prefix}hello-f-weak${suffix}.c.o" -o "${prefix}hello-weak${suffix}${XBB_TARGET_DOT_EXE}" -lm ${LDFLAGS}
         test_mingw_expect "Hello World!" "./${prefix}hello-weak${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
 
+      if [ "${is_lto}" != "y" ] && is_non_native && is_mingw_gcc
+      then
+        # With mingw-gcc bootstrap
+        # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
+        echo
+        echo "Skip hello-weak-cpp without -flto with Windows binaries"
+      elif is_non_native && is_clang
+      then
+        # lld-link: error: duplicate symbol: world()
+        # >>> defined at hello-weak-cpp.cpp
+        # >>>            lto-hello-weak-cpp.cpp.o
+        # >>> defined at hello-f-weak-cpp.cpp
+        # >>>            lto-hello-f-weak-cpp.cpp.o
+        # clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+        # -Wl,--allow-multiple-definition fixes this, but then
+        # Test "./lto-hello-weak-cpp.exe " failed :-(
+        # expected 12: "Hello World!"
+        # got 11: "Hello there"
+        echo
+        echo "Skip hello-weak-cpp without -flto with Windows binaries"
+      else
         run_host_app_verbose "${CXX}" -c "hello-weak-cpp.cpp" -o "${prefix}hello-weak-cpp${suffix}.cpp.o" ${CXXFLAGS}
         run_host_app_verbose "${CXX}" -c "hello-f-weak-cpp.cpp" -o "${prefix}hello-f-weak-cpp${suffix}.cpp.o"  ${CXXFLAGS}
         run_host_app_verbose "${CXX}" "${prefix}hello-weak-cpp${suffix}.cpp.o" "${prefix}hello-f-weak-cpp${suffix}.cpp.o" -o "${prefix}hello-weak-cpp${suffix}${XBB_TARGET_DOT_EXE}" -lm ${LDXXFLAGS}
