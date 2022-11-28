@@ -377,64 +377,85 @@ function test_mingw_expect()
 
   show_target_libs_develop "${app_name}"
 
-  if is_pe64 "${app_path}"
-  then
-    (
-      local wine_path=$(which wine64 2>/dev/null)
-      if [ ! -z "${wine_path}" ]
-      then
-        local output
-        # Remove the trailing CR present on Windows.
-        output="$(wine64 "${app_path}" "$@" | sed -e 's|\r$||')"
+  local output=""
 
-        if [ "x${output}x" == "x${expected}x" ]
+  if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+  then
+
+    if is_elf "${app_path}"
+    then
+      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+    elif is_executable_script "${app_path}"
+    then
+      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+    elif is_pe64 "${app_path}"
+    then
+      (
+        local wine_path=$(which wine64 2>/dev/null)
+        if [ ! -z "${wine_path}" ]
         then
-          echo
-          echo "Test \"${app_name} $@\" passed, got \"${expected}\" :-)"
+          # Remove the trailing CR present on Windows.
+          output="$(wine64 "${app_path}" "$@" | sed -e 's|\r$||')"
+
         else
           echo
-          echo "Test \"${app_name} $@\" failed :-("
-          echo "expected ${#expected}: \"${expected}\""
-          echo "got ${#output}: \"${output}\""
-          echo
-          exit 1
+          echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+          return
         fi
-      else
-        echo
-        echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
-      fi
-    )
-  elif is_pe32 "${app_path}"
-  then
-    (
-      local wine_path=$(which wine 2>/dev/null)
-      if [ ! -z "${wine_path}" ]
-      then
-        local output
-        # Remove the trailing CR present on Windows.
-        output="$(wine "${app_path}" "$@" | sed -e 's|\r$||')"
-
-        if [ "x${output}x" == "x${expected}x" ]
+      )
+    elif is_pe32 "${app_path}"
+    then
+      (
+        local wine_path=$(which wine 2>/dev/null)
+        if [ ! -z "${wine_path}" ]
         then
-          echo
-          echo "Test \"${app_name} $@\" passed, got \"${expected}\" :-)"
+          # Remove the trailing CR present on Windows.
+          output="$(wine "${app_path}" "$@" | sed -e 's|\r$||')"
+
         else
           echo
-          echo "Test \"${app_name} $@\" failed :-("
-          echo "expected ${#expected}: \"${expected}\""
-          echo "got ${#output}: \"${output}\""
-          echo
-          exit 1
+          echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+          return
         fi
-      else
-        echo
-        echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
-      fi
-    )
+      )
+    else
+      echo
+      echo "Unsupported \"${app_name} $@\" in ${FUNCNAME[0]}()"
+      exit 1
+    fi
+
+  elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+  then
+    if is_elf "${app_path}"
+    then
+      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+    elif is_executable_script "${app_path}"
+    then
+      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+    else
+      echo
+      echo "Unsupported \"${app_name} $@\" in ${FUNCNAME[0]}()"
+      exit 1
+    fi
   else
     echo
-    echo "running" "${app_name}" "$@" "- not supported in ${FUNCNAME[0]}()"
+    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+    exit 1
   fi
+
+  if [ "x${output}x" == "x${expected}x" ]
+  then
+    echo
+    echo "Test \"${app_name} $@\" passed, got \"${expected}\" :-)"
+  else
+    echo
+    echo "Test \"${app_name} $@\" failed :-("
+    echo "expected ${#expected}: \"${expected}\""
+    echo "got ${#output}: \"${output}\""
+    echo
+    exit 1
+  fi
+
 }
 
 function _run_mingw()
