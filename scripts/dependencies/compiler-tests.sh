@@ -33,6 +33,7 @@ function test_compiler_single()
     local is_crt="n"
     local is_static="n"
     local is_static_lib="n"
+    local use_libunwind="n"
 
     local prefix=""
     local suffix=""
@@ -74,6 +75,11 @@ function test_compiler_single()
           shift
           ;;
 
+        --libunwind )
+          use_libunwind="y"
+          shift
+          ;;
+
         * )
           echo "Unsupported option $1 in ${FUNCNAME[0]}()"
           exit 1
@@ -86,6 +92,12 @@ function test_compiler_single()
     CXXFLAGS=""
     LDFLAGS=""
     LDXXFLAGS=""
+
+    if [ "${use_libunwind}" == "y" ]
+    then
+      LDFLAGS+=" -lunwind"
+      LDXXFLAGS+=" -lunwind"
+    fi
 
     if [ "${is_crt}" == "y" ]
     then
