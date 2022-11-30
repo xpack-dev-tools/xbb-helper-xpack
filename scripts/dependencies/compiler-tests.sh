@@ -93,17 +93,17 @@ function test_compiler_single()
     LDFLAGS=""
     LDXXFLAGS=""
 
-    if [ "${use_libunwind}" == "y" ]
-    then
-      LDFLAGS+=" -lunwind"
-      LDXXFLAGS+=" -lunwind"
-    fi
-
     if [ "${is_crt}" == "y" ]
     then
       LDFLAGS+=" -rtlib=compiler-rt"
       LDXXFLAGS+=" -rtlib=compiler-rt"
       prefix="crt-${prefix}"
+    fi
+
+    if [ "${use_libunwind}" == "y" ]
+    then
+      LDFLAGS+=" -lunwind"
+      LDXXFLAGS+=" -lunwind"
     fi
 
     if [ "${is_lto}" == "y" ]
