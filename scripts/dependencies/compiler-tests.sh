@@ -126,7 +126,7 @@ function test_compiler_single()
       CXXFLAGS+=" -ffunction-sections -fdata-sections"
       LDFLAGS+=" -ffunction-sections -fdata-sections"
       LDXXFLAGS+=" -ffunction-sections -fdata-sections"
-      if true # [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,--gc-sections"
         LDXXFLAGS+=" -Wl,--gc-sections"
