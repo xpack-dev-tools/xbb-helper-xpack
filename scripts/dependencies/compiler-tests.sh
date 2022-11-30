@@ -187,7 +187,7 @@ function test_compiler_single()
       if [ "${is_static}" != "y" ]
       then
         (
-          if true # [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             run_host_app_verbose "${CC}" -c "add.c" -o "${prefix}add${suffix}.c.o" ${CFLAGS}
           else
@@ -198,26 +198,25 @@ function test_compiler_single()
           run_host_app_verbose "${AR}" -r "lib${prefix}add-static${suffix}.a" "${prefix}add${suffix}.c.o"
           run_host_app_verbose "${RANLIB}" "lib${prefix}add-static${suffix}.a"
 
-          if true # [ "${XBB_HOST_PLATFORM}" == "win32" ]
-          then
-            # The `--out-implib` creates an import library, which can be
-            # directly used with -l.
-            run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.dll" -Wl,--out-implib,"lib${prefix}add-shared${suffix}.dll.a" -Wl,--subsystem,windows
-          else
-            run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.${XBB_HOST_SHLIB_EXT}"
-          fi
-
           run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" -l"${prefix}add-static${suffix}" -L . ${LDFLAGS}
 
           test_mingw_expect "42" "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" 40 2
 
-          if true # [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
+            # The `--out-implib` creates an import library, which can be
+            # directly used with -l.
+            run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.dll" -Wl,--out-implib,"lib${prefix}add-shared${suffix}.dll.a" -Wl,--subsystem,windows
+
             # -ladd-shared is in fact libadd-shared.dll.a
             # The library does not show as DLL, it is loaded dynamically.
             run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
           else
+            run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.${XBB_HOST_SHLIB_EXT}" ${LDFLAGS}
+
             run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
+
+            export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
           fi
 
           test_mingw_expect "42" "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" 40 2
@@ -270,11 +269,15 @@ function test_compiler_single()
       show_target_libs_develop "${prefix}exception-reduced${suffix}${XBB_TARGET_DOT_EXE}"
       run_target_app_verbose "./${prefix}exception-reduced${suffix}"
 
-      run_host_app_verbose "${CC}" hello-tls.c -o "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
-      show_target_libs_develop "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
-      run_target_app_verbose "./${prefix}hello-tls${suffix}"
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      then
+        run_host_app_verbose "${CC}" hello-tls.c -o "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+        show_target_libs_develop "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}hello-tls${suffix}"
+      fi
 
-      run_host_app_verbose "${CC}" crt-test.c -o "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+      # This test uses math functions. On Windows -lm is not mandatory.
+      run_host_app_verbose "${CC}" crt-test.c -o "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
       show_target_libs_develop "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}"
       run_target_app_verbose "./${prefix}crt-test${suffix}"
 
@@ -352,11 +355,13 @@ function test_compiler_single()
       if [ "${is_static}" != "y" ]
       then
         (
-          if true # [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -o "throwcatch-lib.dll" -Wl,--out-implib,libthrowcatch-lib.dll.a ${LDXXFLAGS}
           else
             run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -fpic -o "libthrowcatch-lib.${XBB_HOST_SHLIB_EXT}" ${LDXXFLAGS}
+
+            export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
           fi
 
           run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS}
