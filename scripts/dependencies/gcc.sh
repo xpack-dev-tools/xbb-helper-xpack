@@ -937,7 +937,7 @@ function test_gcc()
       run_host_app_verbose "${RANLIB}" libadd-static.a
 
       run_host_app_verbose "${CC}" ${VERBOSE_FLAG} -o static-adder${XBB_HOST_DOT_EXE} adder.c -ladd-static -L . -ffunction-sections -fdata-sections ${GC_SECTION}
-      test_expect "42" "static-adder" 40 2
+      test_target_expect "42" "static-adder" 40 2
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
@@ -947,14 +947,14 @@ function test_gcc()
         # -ladd-shared is in fact libadd-shared.dll.a
         # The library does not show as DLL, it is loaded dynamically.
         run_host_app_verbose "${CC}" ${VERBOSE_FLAG} -o shared-adder${XBB_HOST_DOT_EXE} adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
-        test_expect "42" "shared-adder" 40 2
+        test_target_expect "42" "shared-adder" 40 2
       else
         run_host_app_verbose "${CC}" -o libadd-shared.${XBB_HOST_SHLIB_EXT} add.o -shared
         run_host_app_verbose "${CC}" ${VERBOSE_FLAG} -o shared-adder adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
         (
           LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-          test_expect "42" "shared-adder" 40 2
+          test_target_expect "42" "shared-adder" 40 2
         )
       fi
     )
@@ -1008,45 +1008,45 @@ function test_gcc_one()
 
     # Test C compile and link in a single step.
     run_host_app_verbose "${CC}" ${CFLAGS} -v -o ${prefix}simple-hello-c1${suffix}${XBB_HOST_DOT_EXE} simple-hello.c ${STATIC_LIBGCC}
-    test_expect "Hello" "${prefix}simple-hello-c1${suffix}"
+    test_target_expect "Hello" "${prefix}simple-hello-c1${suffix}"
 
     # Test C compile and link in a single step with gc.
     run_host_app_verbose "${CC}" ${CFLAGS} ${VERBOSE_FLAG} -o ${prefix}gc-simple-hello-c1${suffix}${XBB_HOST_DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC}
-    test_expect "Hello" "${prefix}gc-simple-hello-c1${suffix}"
+    test_target_expect "Hello" "${prefix}gc-simple-hello-c1${suffix}"
 
     # Test C compile and link in separate steps.
     run_host_app_verbose "${CC}" ${CFLAGS} -o simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections
     run_host_app_verbose "${CC}" ${CFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-hello-c2${suffix}${XBB_HOST_DOT_EXE} simple-hello-c.o ${GC_SECTION} ${STATIC_LIBGCC}
-    test_expect "Hello" "${prefix}simple-hello-c2${suffix}"
+    test_target_expect "Hello" "${prefix}simple-hello-c2${suffix}"
 
     # Test LTO C compile and link in a single step.
     run_host_app_verbose "${CC}" ${CFLAGS} ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c1${suffix}${XBB_HOST_DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
-    test_expect "Hello" "${prefix}lto-simple-hello-c1${suffix}"
+    test_target_expect "Hello" "${prefix}lto-simple-hello-c1${suffix}"
 
     # Test LTO C compile and link in separate steps.
     run_host_app_verbose "${CC}" ${CFLAGS} -o lto-simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections -flto
     run_host_app_verbose "${CC}" ${CFLAGS} ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c2${suffix}${XBB_HOST_DOT_EXE} lto-simple-hello-c.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
-    test_expect "Hello" "${prefix}lto-simple-hello-c2${suffix}"
+    test_target_expect "Hello" "${prefix}lto-simple-hello-c2${suffix}"
 
     # ---------------------------------------------------------------------------
 
     # Test C++ compile and link in a single step.
     run_host_app_verbose "${CXX}" ${CXXFLAGS} -v -o ${prefix}simple-hello-cpp1${suffix}${XBB_HOST_DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect "Hello" "${prefix}simple-hello-cpp1${suffix}"
+    test_target_expect "Hello" "${prefix}simple-hello-cpp1${suffix}"
 
     # Test C++ compile and link in separate steps.
     run_host_app_verbose "${CXX}" ${CXXFLAGS} -o simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections
     run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-hello-cpp2${suffix}${XBB_HOST_DOT_EXE} simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect "Hello" "${prefix}simple-hello-cpp2${suffix}"
+    test_target_expect "Hello" "${prefix}simple-hello-cpp2${suffix}"
 
     # Test LTO C++ compile and link in a single step.
     run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp1${suffix}${XBB_HOST_DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect "Hello" "${prefix}lto-simple-hello-cpp1${suffix}"
+    test_target_expect "Hello" "${prefix}lto-simple-hello-cpp1${suffix}"
 
     # Test LTO C++ compile and link in separate steps.
     run_host_app_verbose "${CXX}" ${CXXFLAGS} -o lto-simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections -flto
     run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp2${suffix}${XBB_HOST_DOT_EXE} lto-simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect "Hello" "${prefix}lto-simple-hello-cpp2${suffix}"
+    test_target_expect "Hello" "${prefix}lto-simple-hello-cpp2${suffix}"
 
     # ---------------------------------------------------------------------------
 
@@ -1058,21 +1058,21 @@ function test_gcc_one()
       run_target_app_verbose ./${prefix}simple-exception${suffix} || echo "The test ${prefix}simple-exception${suffix} is known to fail; ignored."
     else
       run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_HOST_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-      test_expect "MyException" "${prefix}simple-exception${suffix}"
+      test_target_expect "MyException" "${prefix}simple-exception${suffix}"
     fi
 
     # -O0 is an attempt to prevent any interferences with the optimiser.
     run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-str-exception${suffix}${XBB_HOST_DOT_EXE} simple-str-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect "MyStringException" "${prefix}simple-str-exception${suffix}"
+    test_target_expect "MyStringException" "${prefix}simple-str-exception${suffix}"
 
     run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-int-exception${suffix}${XBB_HOST_DOT_EXE} simple-int-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_expect "42" "${prefix}simple-int-exception${suffix}"
+    test_target_expect "42" "${prefix}simple-int-exception${suffix}"
 
     # ---------------------------------------------------------------------------
     # Test a very simple Objective-C (a printf).
 
     run_host_app_verbose "${CC}" ${CFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-objc${suffix}${XBB_HOST_DOT_EXE} simple-objc.m -O0 ${STATIC_LIBGCC}
-    test_expect "Hello World" "${prefix}simple-objc${suffix}"
+    test_target_expect "Hello World" "${prefix}simple-objc${suffix}"
 
     # ---------------------------------------------------------------------------
     # Tests borrowed from the llvm-mingw project.
@@ -1210,12 +1210,12 @@ function test_gcc_one()
       run_host_app_verbose "${CC}" ${CFLAGS} -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c -flto
       run_host_app_verbose "${CC}" ${CFLAGS} -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c -flto
       run_host_app_verbose "${CC}" ${CFLAGS} -o ${prefix}hello-weak${suffix}${XBB_HOST_DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC} -flto
-      test_expect "Hello World!" ./${prefix}hello-weak${suffix}
+      test_target_expect "Hello World!" ./${prefix}hello-weak${suffix}
     else
       run_host_app_verbose "${CC}" ${CFLAGS} -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c
       run_host_app_verbose "${CC}" ${CFLAGS} -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c
       run_host_app_verbose "${CC}" ${CFLAGS} -o ${prefix}hello-weak${suffix}${XBB_HOST_DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-      test_expect "Hello World!" ./${prefix}hello-weak${suffix}
+      test_target_expect "Hello World!" ./${prefix}hello-weak${suffix}
     fi
   )
 
@@ -1228,7 +1228,7 @@ function test_gcc_one()
       # Test a very simple Fortran (a print).
       run_host_app_verbose "${F90}" ${VERBOSE_FLAG}  -o "${prefix}hello-f${suffix}${XBB_HOST_DOT_EXE}" hello.f90 ${STATIC_LIBGCC}
       # The space is expected.
-      test_expect " Hello" "./${prefix}hello-f${suffix}"
+      test_target_expect " Hello" "./${prefix}hello-f${suffix}"
 
       run_host_app_verbose "${F90}" ${VERBOSE_FLAG}  -o "${prefix}concurrent-f${suffix}${XBB_HOST_DOT_EXE}" concurrent.f90 ${STATIC_LIBGCC}
       run_target_app_verbose "./${prefix}concurrent-f${suffix}"

@@ -364,7 +364,7 @@ function test_expect()
   )
 }
 
-function test_mingw_expect()
+function test_target_expect()
 {
   local expected="$1"
   shift

@@ -171,23 +171,23 @@ function test_compiler_single()
 
       # Test C compile and link in a single step.
       run_host_app_verbose "${CC}" "simple-hello.c" -o "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
-      test_mingw_expect "Hello" "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}"
+      test_target_expect "Hello" "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}"
 
       # Test C compile and link in separate steps.
       run_host_app_verbose "${CC}" -c "simple-hello.c" -o "simple-hello.c.o" ${CFLAGS}
       run_host_app_verbose "${CC}" "simple-hello.c.o" -o "${prefix}simple-hello-c-two${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
-      test_mingw_expect "Hello" "${prefix}simple-hello-c-two${suffix}${XBB_TARGET_DOT_EXE}"
+      test_target_expect "Hello" "${prefix}simple-hello-c-two${suffix}${XBB_TARGET_DOT_EXE}"
 
       # -------------------------------------------------------------------------
 
       # Test C++ compile and link in a single step.
       run_host_app_verbose "${CXX}" "simple-hello.cpp" -o "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      test_mingw_expect "Hello" "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}"
+      test_target_expect "Hello" "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}"
 
       # Test C++ compile and link in separate steps.
       run_host_app_verbose "${CXX}" -c "simple-hello.cpp" -o "${prefix}simple-hello${suffix}.cpp.o" ${CXXFLAGS}
       run_host_app_verbose "${CXX}" "${prefix}simple-hello${suffix}.cpp.o" -o "${prefix}simple-hello-cpp-two${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      test_mingw_expect "Hello" "${prefix}simple-hello-cpp-two${suffix}${XBB_TARGET_DOT_EXE}"
+      test_target_expect "Hello" "${prefix}simple-hello-cpp-two${suffix}${XBB_TARGET_DOT_EXE}"
 
       # -------------------------------------------------------------------------
 
@@ -207,7 +207,7 @@ function test_compiler_single()
 
           run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" -l"${prefix}add-static${suffix}" -L . ${LDFLAGS}
 
-          test_mingw_expect "42" "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" 40 2
+          test_target_expect "42" "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" 40 2
 
           if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
@@ -226,20 +226,20 @@ function test_compiler_single()
             export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
           fi
 
-          test_mingw_expect "42" "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" 40 2
+          test_target_expect "42" "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" 40 2
         )
       fi
 
       # -------------------------------------------------------------------------
 
       run_host_app_verbose "${CXX}" "simple-exception.cpp" -o "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      test_mingw_expect "MyException" "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}"
+      test_target_expect "MyException" "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}"
 
       run_host_app_verbose "${CXX}" "simple-str-exception.cpp" -o "${prefix}simple-str-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      test_mingw_expect "MyStringException" "${prefix}simple-str-exception${suffix}${XBB_TARGET_DOT_EXE}"
+      test_target_expect "MyStringException" "${prefix}simple-str-exception${suffix}${XBB_TARGET_DOT_EXE}"
 
       run_host_app_verbose "${CXX}" "simple-int-exception.cpp" -o "${prefix}simple-int-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      test_mingw_expect "42" "${prefix}simple-int-exception${suffix}${XBB_TARGET_DOT_EXE}"
+      test_target_expect "42" "${prefix}simple-int-exception${suffix}${XBB_TARGET_DOT_EXE}"
 
       # -----------------------------------------------------------------------
       # Tests borrowed from the llvm-mingw project.
@@ -328,7 +328,7 @@ function test_compiler_single()
         run_host_app_verbose "${CC}" -c "hello-weak.c" -o "${prefix}hello-weak${suffix}.c.o" ${CFLAGS}
         run_host_app_verbose "${CC}" -c "hello-f-weak.c" -o "${prefix}hello-f-weak${suffix}.c.o" ${CFLAGS}
         run_host_app_verbose "${CC}" "${prefix}hello-weak${suffix}.c.o" "${prefix}hello-f-weak${suffix}.c.o" -o "${prefix}hello-weak${suffix}${XBB_TARGET_DOT_EXE}" -lm ${LDFLAGS}
-        test_mingw_expect "Hello World!" "./${prefix}hello-weak${suffix}${XBB_TARGET_DOT_EXE}"
+        test_target_expect "Hello World!" "./${prefix}hello-weak${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
       if [ "${is_lto}" != "y" ] && is_non_native && is_mingw_gcc
@@ -355,7 +355,7 @@ function test_compiler_single()
         run_host_app_verbose "${CXX}" -c "hello-weak-cpp.cpp" -o "${prefix}hello-weak-cpp${suffix}.cpp.o" ${CXXFLAGS}
         run_host_app_verbose "${CXX}" -c "hello-f-weak-cpp.cpp" -o "${prefix}hello-f-weak-cpp${suffix}.cpp.o"  ${CXXFLAGS}
         run_host_app_verbose "${CXX}" "${prefix}hello-weak-cpp${suffix}.cpp.o" "${prefix}hello-f-weak-cpp${suffix}.cpp.o" -o "${prefix}hello-weak-cpp${suffix}${XBB_TARGET_DOT_EXE}" -lm ${LDXXFLAGS}
-        test_mingw_expect "Hello World!" "./${prefix}hello-weak-cpp${suffix}${XBB_TARGET_DOT_EXE}"
+        test_target_expect "Hello World!" "./${prefix}hello-weak-cpp${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
       # Test weak override.
@@ -483,7 +483,7 @@ function test_compiler_single()
 
       # Test a very simple Objective-C (a printf).
       run_host_app_verbose "${CC}" simple-objc.m -o "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
-      test_mingw_expect "Hello World" "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}"
+      test_target_expect "Hello World" "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}"
 
     )
 
@@ -497,7 +497,7 @@ function test_compiler_single()
         # Test a very simple Fortran (a print).
         run_host_app_verbose "${F90}" hello.f90 -o "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
         # The space is expected.
-        test_mingw_expect " Hello" "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}"
+        test_target_expect " Hello" "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}"
 
         # Test a concurrent computation.
         run_host_app_verbose "${F90}" concurrent.f90 -o "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
