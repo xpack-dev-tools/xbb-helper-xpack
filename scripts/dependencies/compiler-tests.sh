@@ -206,7 +206,7 @@ function test_compiler_single()
           then
             # The `--out-implib` creates an import library, which can be
             # directly used with -l.
-            run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.dll" -Wl,--out-implib,"lib${prefix}add-shared${suffix}.dll.a" -Wl,--subsystem,windows
+            run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.dll" -Wl,--out-implib,"lib${prefix}add-shared${suffix}.dll.a" -Wl,--subsystem,windows ${LDFLAGS}
 
             # -ladd-shared is in fact libadd-shared.dll.a
             # The library does not show as DLL, it is loaded dynamically.
@@ -475,7 +475,7 @@ function test_compiler_single()
       # -----------------------------------------------------------------------
 
       # Test a very simple Objective-C (a printf).
-      run_host_app_verbose "${CC}" simple-objc.m -o "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}" ${CFLAGS}
+      run_host_app_verbose "${CC}" simple-objc.m -o "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
       test_mingw_expect "Hello World" "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}"
 
     )
