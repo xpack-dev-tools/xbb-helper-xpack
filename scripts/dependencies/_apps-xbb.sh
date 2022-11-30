@@ -1261,7 +1261,7 @@ function test_gawk()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/gawk"; cd "${XBB_TESTS_FOLDER_PATH}/gawk"
 
     echo "Macro AWK" >hello.txt
-    test_expect "Hello AWK" "${test_bin_folder_path}/gawk" '{ gsub(/Macro/, "Hello"); print }' hello.txt
+    test_host_expect "Hello AWK" "${test_bin_folder_path}/gawk" '{ gsub(/Macro/, "Hello"); print }' hello.txt
   )
 }
 
@@ -1456,7 +1456,7 @@ function test_sed()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/sed"; cd "${XBB_TESTS_FOLDER_PATH}/sed"
 
     echo "Hello World" >test.txt
-    test_expect "Hello SED" "${test_bin_folder_path}/sed" 's|World|SED|' test.txt
+    test_host_expect "Hello SED" "${test_bin_folder_path}/sed" 's|World|SED|' test.txt
   )
 }
 
@@ -2002,8 +2002,8 @@ __EOF__
     )
     run_verbose g++ test.tab.c -o test -w
 
-    test_expect "pass" "bash" "-c" "(echo '((()(())))()' | ./test)"
-    test_expect "fail" "bash" "-c" "(echo '())' | ./test)"
+    test_host_expect "pass" "bash" "-c" "(echo '((()(())))()' | ./test)"
+    test_host_expect "fail" "bash" "-c" "(echo '())' | ./test)"
 
   )
 }
@@ -3126,7 +3126,7 @@ function test_perl()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/perl"; cd "${XBB_TESTS_FOLDER_PATH}/perl"
 
     echo "print 'Hello Perl';" >test.pl
-    test_expect "Hello Perl" "${test_bin_folder_path}/perl"  test.pl
+    test_host_expect "Hello Perl" "${test_bin_folder_path}/perl"  test.pl
   )
 }
 

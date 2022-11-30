@@ -884,7 +884,7 @@ function test_libgcrypt()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/libgcrypt"; cd "${XBB_TESTS_FOLDER_PATH}/libgcrypt"
 
     touch test.in
-    test_expect "0e824ce7c056c82ba63cc40cffa60d3195b5bb5feccc999a47724cc19211aef6  test.in"  "${test_bin_folder_path}/hmac256" "testing" test.in
+    test_host_expect "0e824ce7c056c82ba63cc40cffa60d3195b5bb5feccc999a47724cc19211aef6  test.in"  "${test_bin_folder_path}/hmac256" "testing" test.in
 
   )
 }

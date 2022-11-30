@@ -189,7 +189,7 @@ function test_m4()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/m4"; cd "${XBB_TESTS_FOLDER_PATH}/m4"
 
     echo "TEST M4" > hello.txt
-    test_expect  "Hello M4" "${test_bin_folder_path}/m4" -DTEST=Hello hello.txt
+    test_host_expect  "Hello M4" "${test_bin_folder_path}/m4" -DTEST=Hello hello.txt
 
   )
 }

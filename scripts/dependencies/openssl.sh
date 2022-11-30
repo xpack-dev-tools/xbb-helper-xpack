@@ -394,7 +394,7 @@ function test_openssl()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/openssl"; cd "${XBB_TESTS_FOLDER_PATH}/openssl"
 
     echo "This is a test file" >testfile.txt
-    test_expect "SHA256(testfile.txt)= c87e2ca771bab6024c269b933389d2a92d4941c848c52f155b9b84e1f109fe35" "${test_bin_folder_path}/openssl" dgst -sha256 testfile.txt
+    test_host_expect "SHA256(testfile.txt)= c87e2ca771bab6024c269b933389d2a92d4941c848c52f155b9b84e1f109fe35" "${test_bin_folder_path}/openssl" dgst -sha256 testfile.txt
   )
 }
 
