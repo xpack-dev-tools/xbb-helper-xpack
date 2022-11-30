@@ -276,10 +276,26 @@ function test_compiler_single()
         run_target_app_verbose "./${prefix}hello-tls${suffix}"
       fi
 
-      # This test uses math functions. On Windows -lm is not mandatory.
-      run_host_app_verbose "${CC}" crt-test.c -o "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
-      show_target_libs_develop "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}"
-      run_target_app_verbose "./${prefix}crt-test${suffix}"
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      then
+        # On macOS, even with the Apple compiler:
+        # crt-test.c:836: logbl(-F(NAN)) failed, expected nan, got nan
+        # crt-test.c:996: acosl(F(NAN)) failed, expected nan, got nan
+        # crt-test.c:1011: asinl(F(NAN)) failed, expected nan, got nan
+        # crt-test.c:1119: cosh(-F(NAN)) failed, expected nan, got nan
+        # crt-test.c:1120: coshf(-F(NAN)) failed, expected nan, got nan
+        # crt-test.c:1147: tanh(-F(NAN)) failed, expected nan, got nan
+        # crt-test.c:1148: tanhf(-F(NAN)) failed, expected nan, got nan
+        # 2364 tests, 7 failures
+
+        echo
+        echo "Skip crt-test on macOS"
+      else
+        # This test uses math functions. On Windows -lm is not mandatory.
+        run_host_app_verbose "${CC}" crt-test.c -o "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
+        show_target_libs_develop "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}crt-test${suffix}"
+      fi
 
       if [ "${is_lto}" != "y" ] && is_non_native && is_mingw_gcc
       then
