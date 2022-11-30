@@ -34,6 +34,7 @@ function test_compiler_single()
     local is_static="n"
     local is_static_lib="n"
     local use_libunwind="n"
+    local use_lld="n"
 
     local prefix=""
     local suffix=""
@@ -80,6 +81,11 @@ function test_compiler_single()
           shift
           ;;
 
+        --lld )
+          use_lld="y"
+          shift
+          ;;
+
         * )
           echo "Unsupported option $1 in ${FUNCNAME[0]}()"
           exit 1
@@ -106,17 +112,18 @@ function test_compiler_single()
       LDXXFLAGS+=" -lunwind"
     fi
 
+    if [ "${use_lld}" == "y" ]
+    then
+      LDFLAGS+=" -fuse-ld=lld"
+      LDXXFLAGS+=" -fuse-ld=lld"
+    fi
+
     if [ "${is_lto}" == "y" ]
     then
       CFLAGS+=" -flto"
       CXXFLAGS+=" -flto"
       LDFLAGS+=" -flto"
       LDXXFLAGS+=" -flto"
-      if false # [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      then
-        LDFLAGS+=" -fuse-ld=lld"
-        LDXXFLAGS+=" -fuse-ld=lld"
-      fi
       prefix="lto-${prefix}"
     fi
 
