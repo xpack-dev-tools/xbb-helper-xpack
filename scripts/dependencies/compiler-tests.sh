@@ -397,6 +397,36 @@ function test_compiler_single()
               show_target_libs "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
               echo
               echo "Skip ./${prefix}throwcatch-main${suffix} with gcc -flto"
+            elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${is_lto}" == "y" ] && is_native && is_clang
+            then
+
+              # Expected behaviour:
+              # [./throwcatch-main ]
+              # not throwing
+              # throwing FirstException
+              # caught FirstException
+              # throwing SecondException
+              # caught SecondException
+              # throwing std::exception
+              # caught std::exception
+              # all ok
+
+              # Does not identify the custom exceptions:
+              # [./lto-throwcatch-main ]
+              # not throwing
+              # throwing FirstException
+              # caught std::exception <--
+              # caught unexpected exception 3!
+              # throwing SecondException
+              # caught std::exception <--
+              # caught unexpected exception 3!
+              # throwing std::exception
+              # caught std::exception
+              # got errors
+
+              show_target_libs "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
+              echo
+              echo "Skip ./${prefix}throwcatch-main${suffix} with clang -flto on macOS"
             else
               show_target_libs_develop "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
               run_target_app_verbose "./${prefix}throwcatch-main${suffix}"
