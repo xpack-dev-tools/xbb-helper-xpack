@@ -296,6 +296,10 @@ function test_compiler_single()
         run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 8
         run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 9
         run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 10
+
+        run_host_app_verbose "${CC}" "cfguard-test.c" -o "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -mguard=cf
+        show_target_libs_develop "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}cfguard-test${suffix}"
       fi
 
       if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
