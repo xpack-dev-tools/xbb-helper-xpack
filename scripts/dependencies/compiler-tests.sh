@@ -283,23 +283,32 @@ function test_compiler_single()
         show_target_libs_develop "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
         run_target_app_verbose "./${prefix}hello-tls${suffix}"
 
-        run_host_app_verbose "${CC}" "bufferoverflow.c" -o "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -D_FORTIFY_SOURCE=2 -lssp
-        show_target_libs_develop "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}"
-        run_target_app_verbose "./${prefix}bufferoverflow${suffix}"
-        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 1
-        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 2
-        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 3
-        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 4
-        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 5
-        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 6
-        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 7
-        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 8
-        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 9
-        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 10
+        if false
+        then
+          # -lssp not available.
+          run_host_app_verbose "${CC}" "bufferoverflow.c" -o "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -D_FORTIFY_SOURCE=2 -lssp
+          show_target_libs_develop "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}"
+          run_target_app_verbose "./${prefix}bufferoverflow${suffix}"
+          run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 1
+          run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 2
+          run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 3
+          run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 4
+          run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 5
+          run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 6
+          run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 7
+          run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 8
+          run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 9
+          run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 10
 
-        run_host_app_verbose "${CC}" "cfguard-test.c" -o "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -mguard=cf
-        show_target_libs_develop "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}"
-        run_target_app_verbose "./${prefix}cfguard-test${suffix}"
+          # Control Flow Guard is _not_ enabled!
+          run_host_app_verbose "${CC}" "cfguard-test.c" -o "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -mguard=cf
+          show_target_libs_develop "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}"
+          run_target_app_verbose "./${prefix}cfguard-test${suffix}"
+          run_target_app_verbose "./${prefix}cfguard-test${suffix}" check_enabled
+          run_target_app_verbose "./${prefix}cfguard-test${suffix}" normal_icall
+          run_target_app_verbose "./${prefix}cfguard-test${suffix}" invalid_icall
+          run_target_app_verbose "./${prefix}cfguard-test${suffix}" invalid_icall_nocf
+        fi
       fi
 
       if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
