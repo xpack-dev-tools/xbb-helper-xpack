@@ -449,7 +449,7 @@ function xbb_set_target()
     XBB_TARGET_SHLIB_EXT="so"
   elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
   then
-    XBB_HOST_SHLIB_EXT="dylib"
+    XBB_TARGET_SHLIB_EXT="dylib"
   else
     echo "Unsupported XBB_TARGET_PLATFORM=${XBB_TARGET_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
