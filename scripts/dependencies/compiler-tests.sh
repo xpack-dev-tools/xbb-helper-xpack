@@ -311,7 +311,7 @@ function test_compiler_single()
         fi
       fi
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if false # [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         # On macOS, even with the Apple compiler:
         # crt-test.c:836: logbl(-F(NAN)) failed, expected nan, got nan
@@ -325,7 +325,7 @@ function test_compiler_single()
 
         echo
         echo "Skipping crt-test on macOS..."
-      elif [ "${XBB_TARGET_PLATFORM}" == "linux" -a "${XBB_TARGET_ARCH}" == "arm64" ]
+      elif false # [ "${XBB_TARGET_PLATFORM}" == "linux" -a "${XBB_TARGET_ARCH}" == "arm64" ]
       then
         # On Raspberry Pi OS, even with the Debian compiler:
         # crt-test.c:711: log1pl(-F(NAN)) failed, expected -nan, got nan
