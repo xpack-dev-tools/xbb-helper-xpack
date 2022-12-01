@@ -133,11 +133,11 @@ function test_compiler_single()
       CXXFLAGS+=" -ffunction-sections -fdata-sections"
       LDFLAGS+=" -ffunction-sections -fdata-sections"
       LDXXFLAGS+=" -ffunction-sections -fdata-sections"
-      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         LDFLAGS+=" -Wl,--gc-sections"
         LDXXFLAGS+=" -Wl,--gc-sections"
-      elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         LDFLAGS+=" -Wl,-dead_strip"
         LDXXFLAGS+=" -Wl,-dead_strip"
@@ -194,7 +194,7 @@ function test_compiler_single()
       if [ "${is_static}" != "y" ]
       then
         (
-          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
             run_host_app_verbose "${CC}" -c "add.c" -o "${prefix}add${suffix}.c.o" ${CFLAGS}
           else
@@ -209,7 +209,7 @@ function test_compiler_single()
 
           test_target_expect "42" "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" 40 2
 
-          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
             # The `--out-implib` creates an import library, which can be
             # directly used with -l.
@@ -219,7 +219,7 @@ function test_compiler_single()
             # The library does not show as DLL, it is loaded dynamically.
             run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
           else
-            run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.${XBB_HOST_SHLIB_EXT}" ${LDFLAGS}
+            run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.${XBB_TARGET_SHLIB_EXT}" ${LDFLAGS}
 
             run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
 
@@ -277,7 +277,7 @@ function test_compiler_single()
       show_target_libs_develop "${prefix}exception-reduced${suffix}${XBB_TARGET_DOT_EXE}"
       run_target_app_verbose "./${prefix}exception-reduced${suffix}"
 
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         run_host_app_verbose "${CC}" "hello-tls.c" -o "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
         show_target_libs_develop "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
@@ -302,7 +302,7 @@ function test_compiler_single()
         run_target_app_verbose "./${prefix}cfguard-test${suffix}"
       fi
 
-      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         # On macOS, even with the Apple compiler:
         # crt-test.c:836: logbl(-F(NAN)) failed, expected nan, got nan
@@ -316,7 +316,7 @@ function test_compiler_single()
 
         echo
         echo "Skipping crt-test on macOS..."
-      elif [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "arm64" ]
+      elif [ "${XBB_TARGET_PLATFORM}" == "linux" -a "${XBB_TARGET_ARCH}" == "arm64" ]
       then
         # On Raspberry Pi OS, even with the Debian compiler:
         # crt-test.c:711: log1pl(-F(NAN)) failed, expected -nan, got nan
@@ -405,11 +405,11 @@ function test_compiler_single()
       if [ "${is_static}" != "y" ]
       then
         (
-          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
             run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -o "throwcatch-lib.dll" -Wl,--out-implib,libthrowcatch-lib.dll.a ${LDXXFLAGS}
           else
-            run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -fpic -o "libthrowcatch-lib.${XBB_HOST_SHLIB_EXT}" ${LDXXFLAGS}
+            run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -fpic -o "libthrowcatch-lib.${XBB_TARGET_SHLIB_EXT}" ${LDXXFLAGS}
 
             export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
           fi
@@ -431,7 +431,7 @@ function test_compiler_single()
               show_target_libs "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
               echo
               echo "Skipping ${prefix}throwcatch-main${suffix} with gcc -flto..."
-            elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${is_lto}" == "y" ] && is_native && is_clang
+            elif [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${is_lto}" == "y" ] && is_native && is_clang
             then
 
               # Expected behaviour:
@@ -469,7 +469,7 @@ function test_compiler_single()
         )
       fi
 
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         # tlstest-lib.dll is dynamically loaded by tltest-main.cpp.
         run_host_app_verbose "${CXX}" tlstest-lib.cpp -o tlstest-lib.dll -shared -Wl,--out-implib,libtlstest-lib.dll.a ${LDXXFLAGS}
