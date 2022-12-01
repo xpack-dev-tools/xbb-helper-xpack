@@ -297,6 +297,13 @@ function test_compiler_single()
 
         echo
         echo "Skip crt-test on macOS"
+      elif [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "arm64" ]
+      then
+          # On Raspberry Pi OS:
+          # crt-test.c:711: log1pl(-F(NAN)) failed, expected -nan, got nan
+          # 2370 tests, 1 failures
+        echo
+        echo "Skip crt-test on Linux arm64"
       else
         # This test uses math functions. On Windows -lm is not mandatory.
         run_host_app_verbose "${CC}" crt-test.c -o "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
