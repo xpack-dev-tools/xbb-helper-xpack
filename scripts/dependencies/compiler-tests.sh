@@ -278,7 +278,7 @@ function test_compiler_single()
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
-        run_host_app_verbose "${CC}" hello-tls.c -o "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+        run_host_app_verbose "${CC}" "hello-tls.c" -o "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
         show_target_libs_develop "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
         run_target_app_verbose "./${prefix}hello-tls${suffix}"
       fi
@@ -296,14 +296,14 @@ function test_compiler_single()
         # 2364 tests, 7 failures
 
         echo
-        echo "Skip crt-test on macOS"
+        echo "Skipping crt-test on macOS..."
       elif [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "arm64" ]
       then
           # On Raspberry Pi OS:
           # crt-test.c:711: log1pl(-F(NAN)) failed, expected -nan, got nan
           # 2370 tests, 1 failures
         echo
-        echo "Skip crt-test on Linux arm64"
+        echo "Skipping crt-test on Linux arm64..."
       else
         # This test uses math functions. On Windows -lm is not mandatory.
         run_host_app_verbose "${CC}" crt-test.c -o "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
@@ -316,7 +316,7 @@ function test_compiler_single()
         # With mingw-gcc bootstrap
         # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
         echo
-        echo "Skip hello-weak-c without -flto with Windows binaries"
+        echo "Skipping hello-weak-c without -flto with Windows binaries..."
       elif is_non_native && is_mingw_clang
       then
         # lld-link: error: duplicate symbol: world()
@@ -330,7 +330,7 @@ function test_compiler_single()
         # expected 12: "Hello World!"
         # got 11: "Hello there"
         echo
-        echo "Skip hello-weak-c without -flto with Windows binaries"
+        echo "Skipping hello-weak-c without -flto with Windows binaries..."
       else
         run_host_app_verbose "${CC}" -c "hello-weak.c" -o "${prefix}hello-weak${suffix}.c.o" ${CFLAGS}
         run_host_app_verbose "${CC}" -c "hello-f-weak.c" -o "${prefix}hello-f-weak${suffix}.c.o" ${CFLAGS}
@@ -343,7 +343,7 @@ function test_compiler_single()
         # With mingw-gcc bootstrap
         # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
         echo
-        echo "Skip hello-weak-cpp without -flto with Windows binaries"
+        echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
       elif is_non_native && is_clang
       then
         # lld-link: error: duplicate symbol: world()
@@ -357,7 +357,7 @@ function test_compiler_single()
         # expected 12: "Hello World!"
         # got 11: "Hello there"
         echo
-        echo "Skip hello-weak-cpp without -flto with Windows binaries"
+        echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
       else
         run_host_app_verbose "${CXX}" -c "hello-weak-cpp.cpp" -o "${prefix}hello-weak-cpp${suffix}.cpp.o" ${CXXFLAGS}
         run_host_app_verbose "${CXX}" -c "hello-f-weak-cpp.cpp" -o "${prefix}hello-f-weak-cpp${suffix}.cpp.o"  ${CXXFLAGS}
@@ -410,7 +410,7 @@ function test_compiler_single()
             then
               show_target_libs "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
               echo
-              echo "Skip ./${prefix}throwcatch-main${suffix} with gcc -flto"
+              echo "Skipping ${prefix}throwcatch-main${suffix} with gcc -flto..."
             elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${is_lto}" == "y" ] && is_native && is_clang
             then
 
@@ -440,7 +440,7 @@ function test_compiler_single()
 
               show_target_libs "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
               echo
-              echo "Skip ./${prefix}throwcatch-main${suffix} with clang -flto on macOS"
+              echo "Skipping ${prefix}throwcatch-main${suffix} with clang -flto on macOS..."
             else
               show_target_libs_develop "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
               run_target_app_verbose "./${prefix}throwcatch-main${suffix}"
@@ -472,7 +472,7 @@ function test_compiler_single()
           then
             show_target_libs "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
             echo
-            echo "Skip ./${prefix}autoimport-main${suffix} with gcc -flto"
+            echo "Skipping ${prefix}autoimport-main${suffix} with gcc -flto..."
           else
             show_target_libs_develop "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
             run_target_app_verbose "./${prefix}autoimport-main${suffix}"
