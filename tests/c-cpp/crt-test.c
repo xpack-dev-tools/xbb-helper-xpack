@@ -29,6 +29,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <float.h>
+#include <wchar.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -137,11 +138,43 @@ const char *context = "";
         } \
     } while (0)
 
-#define F(x) strtod(#x, NULL)
-#define L(x) strtol(#x, NULL, 0)
-#define UL(x) strtoul(#x, NULL, 0)
-#define LL(x) strtoll(#x, NULL, 0)
-#define ULL(x) strtoull(#x, NULL, 0)
+char char_wrap_impl(char c) {
+    return c;
+}
+double double_wrap_impl(double f) {
+    return f;
+}
+long long_wrap_impl(long l) {
+    return l;
+}
+unsigned long ulong_wrap_impl(unsigned long u) {
+    return u;
+}
+long long longlong_wrap_impl(long long l) {
+    return l;
+}
+unsigned long long ulonglong_wrap_impl(unsigned long long u) {
+    return u;
+}
+const char *str_wrap_impl(const char *str) {
+    return str;
+}
+
+char (*char_wrap)(char c) = char_wrap_impl;
+double (*double_wrap)(double f) = double_wrap_impl;
+long (*long_wrap)(long l) = long_wrap_impl;
+unsigned long (*ulong_wrap)(unsigned long u) = ulong_wrap_impl;
+long long (*longlong_wrap)(long long l) = longlong_wrap_impl;
+unsigned long long (*ulonglong_wrap)(unsigned long long l) = ulonglong_wrap_impl;
+const char *(*str_wrap)(const char *str) = str_wrap_impl;
+
+#define C(x) char_wrap(x)
+#define F(x) double_wrap(x)
+#define L(x) long_wrap(x)
+#define UL(x) ulong_wrap(x)
+#define LL(x) longlong_wrap(x)
+#define ULL(x) ulonglong_wrap(x ## ULL)
+#define S(x) str_wrap(x)
 
 int vsscanf_wrap(const char* str, const char* fmt, ...) {
     va_list ap;
@@ -152,15 +185,184 @@ int vsscanf_wrap(const char* str, const char* fmt, ...) {
     return ret;
 }
 
+double int_to_double(uint64_t i) {
+    union {
+        uint64_t i;
+        double d;
+    } u;
+    u.i = i;
+    return u.d;
+}
+
 int main(int argc, char* argv[]) {
+    // The plain "NAN" constant in MSVC is negative, while it is positive
+    // in other environments.
+    double pNAN = int_to_double(0x7ff8000000000000ULL);
+    double nNAN = int_to_double(0xfff8000000000000ULL);
+
     char buf[200];
     int i;
     uint64_t myconst = 0xbaadf00dcafe;
+    void *retptr;
 
+    memset(buf, '#', sizeof(buf));
+    retptr = memcpy(buf, S("foo"), L(4));
+    TEST(retptr == buf);
+    TEST_STR(buf, "foo");
+    TEST_INT(buf[5], '#');
+
+#if defined(__GLIBC__) || defined(__MINGW32__)
+    memset(buf, '#', sizeof(buf));
+    retptr = mempcpy(buf, S("foo"), L(4));
+    TEST(retptr == buf + 4);
+    TEST_STR(buf, "foo");
+    TEST_INT(buf[5], '#');
+#endif
+
+    memset(buf, '#', sizeof(buf));
+    memcpy(buf, "foobar", 7);
+    retptr = memmove(buf + 2, S(buf), L(3));
+    TEST(retptr == buf + 2);
+    TEST_STR(buf, "fofoor");
+    TEST_INT(buf[8], '#');
+
+    memset(buf, '#', sizeof(buf));
+    memcpy(buf, "foobar", 7);
+    retptr = memmove(buf, S(buf + 2), L(3));
+    TEST(retptr == buf);
+    TEST_STR(buf, "obabar");
+    TEST_INT(buf[8], '#');
+
+    retptr = memset(buf, C('#'), sizeof(buf) + L(0));
+    TEST(retptr == buf);
+    TEST_INT(buf[0], '#');
+    TEST_INT(buf[sizeof(buf)-1], '#');
+
+    memset(buf, '#', sizeof(buf));
+    retptr = strcpy(buf, S("foo"));
+    TEST(retptr == buf);
+    TEST_STR(buf, "foo");
+    TEST_INT(buf[5], '#');
+
+    memset(buf, '#', sizeof(buf));
+    retptr = strncpy(buf, S("foobar"), L(3));
+    TEST(retptr == buf);
+    TEST_INT(buf[3], '#');
+    buf[3] = '\0';
+    TEST_STR(buf, "foo");
+
+    memset(buf, '#', sizeof(buf));
+    retptr = strncpy(buf, S("foobar"), sizeof(buf) + L(0));
+    TEST(retptr == buf);
+    TEST_STR(buf, "foobar");
+    TEST_INT(buf[sizeof(buf)-1], '\0');
+
+    memset(buf, '#', sizeof(buf));
+    strcpy(buf, "foo");
+    retptr = strcat(buf, S("bar"));
+    TEST(retptr == buf);
+    TEST_STR(buf, "foobar");
+
+    memset(buf, '#', sizeof(buf));
+    strcpy(buf, "foo");
+    retptr = strncat(buf, S("bar"), L(5));
+    TEST(retptr == buf);
+    TEST_STR(buf, "foobar");
+
+    memset(buf, '#', sizeof(buf));
+    strcpy(buf, "foo");
+    retptr = strncat(buf, S("bar"), L(2));
+    TEST(retptr == buf);
+    TEST_STR(buf, "fooba");
+
+    memset(buf, '#', sizeof(buf));
     snprintf(buf, sizeof(buf), "%f", 3.141592654);
     TEST_STR(buf, "3.141593");
+    TEST_INT(buf[sizeof(buf)-1], '#');
+
+    snprintf(buf, sizeof(buf), "%e", 42.0);
+    TEST_STR(buf, "4.200000e+01");
+    snprintf(buf, sizeof(buf), "%a", 42.0);
+    // Different implementations of printf differ in formatting of %a
+    // (with differing number of trailing zeros). Additionally, with
+    // __USE_MINGW_ANSI_STDIO, this produces 0xa.8p+2 instead of 0x1.5p+5,
+    // but it at least gets parsed back to the right value.
+    TEST_FLT(strtod(buf, NULL), 42.0);
+    snprintf(buf, sizeof(buf), "%g", 42.0);
+    TEST_STR(buf, "42");
+    snprintf(buf, sizeof(buf), "%g", 0.000061035156250);
+    TEST_STR(buf, "6.10352e-05");
+    const char formats[] = "feagFEAG";
+    for (int i = 0; formats[i]; i++) {
+        char formatbuf[3] = { '%', formats[i], '\0' };
+        snprintf(buf, sizeof(buf), formatbuf, INFINITY);
+        if (formats[i] >= 'A' && formats[i] <= 'Z')
+            TEST_STR(buf, "INF");
+        else
+            TEST_STR(buf, "inf");
+        snprintf(buf, sizeof(buf), formatbuf, -INFINITY);
+        if (formats[i] >= 'A' && formats[i] <= 'Z')
+            TEST_STR(buf, "-INF");
+        else
+            TEST_STR(buf, "-inf");
+#ifndef _MSC_VER
+        // MSVC prints these differently by default, printing e.g. "-nan(ind)"
+        snprintf(buf, sizeof(buf), formatbuf, NAN);
+        if (formats[i] >= 'A' && formats[i] <= 'Z')
+            TEST_STR(buf, "NAN");
+        else
+            TEST_STR(buf, "nan");
+#endif
+    }
+#if !defined(__MINGW32__) || (!defined(__i386__) && !defined(__x86_64__)) || (defined(__USE_MINGW_ANSI_STDIO) && __USE_MINGW_ANSI_STDIO)
+    // On mingw, long double formatting on x86 only works if __USE_MINGW_ANSI_STDIO is defined.
+    long double print_val_ld = 42.0L;
+    snprintf(buf, sizeof(buf), "%Lf", print_val_ld);
+    TEST_STR(buf, "42.000000");
+    snprintf(buf, sizeof(buf), "%Le", print_val_ld);
+    TEST_STR(buf, "4.200000e+01");
+    snprintf(buf, sizeof(buf), "%La", print_val_ld);
+    TEST_FLT(strtod(buf, NULL), 42.0);
+    snprintf(buf, sizeof(buf), "%Lg", print_val_ld);
+    TEST_STR(buf, "42");
+    for (int i = 0; formats[i]; i++) {
+        long double inf = INFINITY;
+        long double nan = NAN;
+        char formatbuf[4] = { '%', 'L', formats[i], '\0' };
+        snprintf(buf, sizeof(buf), formatbuf, inf);
+        if (formats[i] >= 'A' && formats[i] <= 'Z')
+            TEST_STR(buf, "INF");
+        else
+            TEST_STR(buf, "inf");
+        snprintf(buf, sizeof(buf), formatbuf, -inf);
+        if (formats[i] >= 'A' && formats[i] <= 'Z')
+            TEST_STR(buf, "-INF");
+        else
+            TEST_STR(buf, "-inf");
+#ifndef _MSC_VER
+        // MSVC prints these differently by default, printing e.g. "-nan(ind)"
+        snprintf(buf, sizeof(buf), formatbuf, nan);
+        if (formats[i] >= 'A' && formats[i] <= 'Z')
+            TEST_STR(buf, "NAN");
+        else
+            TEST_STR(buf, "nan");
+#endif
+    }
+#endif
     snprintf(buf, sizeof(buf), "%"PRIx64" %"PRIx64" %"PRIx64" %"PRIx64" %"PRIx64" %"PRIx64" %"PRIx64" %"PRIx64" %"PRIx64" %"PRIx64, myconst + 0, myconst + 1, myconst + 2, myconst + 3, myconst + 4, myconst + 5, myconst + 6, myconst + 7, myconst + 8, myconst + 9);
     TEST_STR(buf, "baadf00dcafe baadf00dcaff baadf00dcb00 baadf00dcb01 baadf00dcb02 baadf00dcb03 baadf00dcb04 baadf00dcb05 baadf00dcb06 baadf00dcb07");
+    char fmt[10] = { '%', '+', '0', '5', 'd', '\0' };
+    snprintf(buf, sizeof(buf), fmt, 42);
+    TEST_STR(buf, "+0042");
+    fmt[4] = 'u';
+    snprintf(buf, sizeof(buf), fmt, 42);
+    TEST_STR(buf, "00042");
+    fmt[4] = 'o';
+    snprintf(buf, sizeof(buf), fmt, 42);
+    TEST_STR(buf, "00052");
+    fmt[4] = 'x';
+    snprintf(buf, sizeof(buf), fmt, 42);
+    TEST_STR(buf, "0002a");
 
     uint64_t val0, val1, val2, val3, val4, val5, val6, val7, val8, val9;
     if (sscanf("baadf00dcafe baadf00dcaff baadf00dcb00 baadf00dcb01 baadf00dcb02 baadf00dcb03 baadf00dcb04 baadf00dcb05 baadf00dcb06 baadf00dcb07", "%"SCNx64" %"SCNx64" %"SCNx64" %"SCNx64" %"SCNx64" %"SCNx64" %"SCNx64" %"SCNx64" %"SCNx64" %"SCNx64, &val0, &val1, &val2, &val3, &val4, &val5, &val6, &val7, &val8, &val9) != 10) {
@@ -249,6 +451,73 @@ int main(int argc, char* argv[]) {
     errno = 0;
     TEST_INT(strtol("foo", NULL, 100), 0);
     TEST_INT(errno, EINVAL);
+
+#define TEST_STRTOD(strtod, type, prefix) do { \
+        const type *curstr = prefix ## "1.e5z"; \
+        type *end; \
+        errno = 0; \
+        TEST_FLT(strtod(curstr, &end), 1.e5); \
+        TEST_INT(errno, 0); \
+        TEST_INT((int)(end - curstr), 4); \
+        curstr = prefix ## "0x125p-1z"; \
+        errno = 0; \
+        TEST_FLT(strtod(curstr, &end), 146.5); \
+        TEST_INT(errno, 0); \
+        TEST_INT((int)(end - curstr), 8); \
+    } while (0)
+
+    TEST_STRTOD(strtod, char, );
+    TEST_STRTOD(strtof, char, );
+    TEST_STRTOD(strtold, char, );
+    TEST_STRTOD(wcstod, wchar_t, L);
+    TEST_STRTOD(wcstof, wchar_t, L);
+    TEST_STRTOD(wcstold, wchar_t, L);
+
+#define TEST_STRTOD_VALUE(strtod, prefix, val, expect) \
+    errno = 0; \
+    TEST_FLT_SIGN(strtod(prefix ## #val, NULL), expect); \
+    TEST_INT(errno, 0)
+
+#define TEST_STRTOD_RANGE_EXPECT(strtod, prefix, val, expect) \
+    errno = 0; \
+    TEST_FLT_SIGN(strtod(prefix ## #val, NULL), expect); \
+    TEST_INT(errno, ERANGE)
+
+#define TEST_STRTOD_STRTOF_RANGE_EXPECT(strtod, strtof, prefix, val, expect) \
+    TEST_STRTOD_VALUE(strtod, prefix, val, val); \
+    TEST_STRTOD_RANGE_EXPECT(strtof, prefix, val, expect)
+
+#define TEST_STRTOF_32B_RANGE(strtod, strtof, prefix) \
+    TEST_STRTOD_STRTOF_RANGE_EXPECT(strtod, strtof, prefix, 1.e40, HUGE_VALF); \
+    TEST_STRTOD_STRTOF_RANGE_EXPECT(strtod, strtof, prefix, -1.e40, -HUGE_VALF); \
+    TEST_STRTOD_STRTOF_RANGE_EXPECT(strtod, strtof, prefix, 1.e-60, 0.0); \
+    TEST_STRTOD_STRTOF_RANGE_EXPECT(strtod, strtof, prefix, -1.e-60, -0.0)
+
+    TEST_STRTOF_32B_RANGE(strtod, strtof, );
+    TEST_STRTOF_32B_RANGE(wcstod, wcstof, L);
+
+#define TEST_STRTOD_64B_RANGE(strtod, prefix) \
+    TEST_STRTOD_RANGE_EXPECT(strtod, prefix, 1.e310, HUGE_VAL); \
+    TEST_STRTOD_RANGE_EXPECT(strtod, prefix, -1.e310, -HUGE_VAL); \
+    TEST_STRTOD_RANGE_EXPECT(strtod, prefix, 1.e-400, 0.0); \
+    TEST_STRTOD_RANGE_EXPECT(strtod, prefix, -1.e-400, -0.0)
+
+    TEST_STRTOD_64B_RANGE(strtod, );
+    TEST_STRTOD_64B_RANGE(wcstod, L);
+
+#if !defined(_WIN32) || (defined(__MINGW32__) && (defined(__i386__) || defined(__x86_64__)))
+#define TEST_STRTOLD_80B_RANGE(strtold, prefix) \
+    TEST_STRTOD_VALUE(strtold, prefix, 1.e310, 1e310L); \
+    TEST_STRTOD_VALUE(strtold, prefix, -1.e310, -1e310L); \
+    TEST_STRTOD_VALUE(strtold, prefix, 1.e-310, 1e-310L); \
+    TEST_STRTOD_VALUE(strtold, prefix, -1.e-310, -1e-310L)
+
+    TEST_STRTOLD_80B_RANGE(strtold, );
+    TEST_STRTOLD_80B_RANGE(wcstold, L);
+#else
+    TEST_STRTOD_64B_RANGE(strtold, );
+    TEST_STRTOD_64B_RANGE(wcstold, L);
+#endif
 
     int env_ok = 0;
     putenv("CRT_TEST_VAR=1");
@@ -671,11 +940,7 @@ int main(int argc, char* argv[]) {
     TEST_LOG2(log2f, HUGE_VALF);
     TEST_LOG2(log2l, HUGE_VALL);
 
-#if !defined(__MINGW32__) || !defined(__arm__)
-    // In Wine on arm, the strtod() in the F() macro returns 0 instead of
-    // the actual denormal value.
     TEST_FLT_ACCURACY(log2(F(9.8813e-324)), -1073, 0.001);
-#endif
     TEST_FLT_ACCURACY(log2f(F(7.1746e-43)), -140, 0.001);
     TEST_FLT_ACCURACY(log2l(F(7.1746e-43)), -140, 0.001);
 
@@ -942,12 +1207,18 @@ int main(int argc, char* argv[]) {
     TEST_FLT_ACCURACY(cos(2*F(3.141592654)), 1.0, 0.01); \
     TEST_FLT_NAN_ANY(cos(F(INFINITY))); \
     TEST_FLT_NAN_ANY(cos(F(-INFINITY))); \
-    TEST_FLT_NAN(cos(F(NAN)), F(NAN)); \
-    TEST_FLT_NAN(cos(-F(NAN)), -F(NAN))
+    TEST_FLT_NAN(cos(F(NAN)), F(NAN))
 
     TEST_COS(cos);
     TEST_COS(cosf);
     TEST_COS(cosl);
+
+#ifndef __OPTIMIZE__
+    // GCC and Clang break this test when optimizing.
+    TEST_FLT_NAN(cos(-F(NAN)), -F(NAN));
+    TEST_FLT_NAN(cosf(-F(NAN)), -F(NAN));
+    TEST_FLT_NAN(cosl(-F(NAN)), -F(NAN));
+#endif
 
 #define TEST_SIN(sin) \
     TEST_FLT_ACCURACY(sin(F(0.0)), 0.0, 0.01); \
@@ -1155,8 +1426,8 @@ int main(int argc, char* argv[]) {
     TEST_FLT(fabs((double)F(-3.125)), 3.125); \
     TEST_FLT(fabs((double)F(INFINITY)), INFINITY); \
     TEST_FLT(fabs((double)F(-INFINITY)), INFINITY); \
-    TEST_FLT_NAN(fabs((double)F(NAN)), F(NAN)); \
-    TEST_FLT_NAN(fabs((double)-F(NAN)), F(NAN))
+    TEST_FLT_NAN(fabs((double)F(pNAN)), F(pNAN)); \
+    TEST_FLT_NAN(fabs((double)F(nNAN)), F(pNAN))
 
     TEST_FABS(fabs, double);
     TEST_FABS(fabsf, float);
@@ -1393,13 +1664,13 @@ int main(int argc, char* argv[]) {
     TEST_FLT_ACCURACY(copysign(F(3.125), F(-1)), -3.125, 0.0001); \
     TEST_FLT_ACCURACY(copysign(F(-3.125), F(-1)), -3.125, 0.0001); \
     TEST_FLT_ACCURACY(copysign(F(-3.125), F(1)), 3.125, 0.0001); \
-    TEST_FLT_ACCURACY(copysign(F(3.125), -F(NAN)), -3.125, 0.0001); \
+    TEST_FLT_ACCURACY(copysign(F(3.125), F(nNAN)), -3.125, 0.0001); \
     TEST_FLT(copysign(F(INFINITY), F(1)), INFINITY); \
     TEST_FLT(copysign(F(INFINITY), F(-1)), -INFINITY); \
     TEST_FLT(copysign(F(-INFINITY), F(-1)), -INFINITY); \
     TEST_FLT(copysign(F(-INFINITY), F(1)), INFINITY); \
-    TEST_FLT_NAN(copysign(F(NAN), F(-1)), -F(NAN)); \
-    TEST_FLT_NAN(copysign(-F(NAN), F(NAN)), F(NAN))
+    TEST_FLT_NAN(copysign(F(pNAN), F(-1)), F(nNAN)); \
+    TEST_FLT_NAN(copysign(F(nNAN), F(pNAN)), F(pNAN))
 
     TEST_COPYSIGN(copysign);
     TEST_COPYSIGN(copysignf);
@@ -1451,7 +1722,7 @@ int main(int argc, char* argv[]) {
     TEST_INT(LL(1073741824) / 357913941, 3); // __rt_sdiv64
     TEST_INT(LL(2147483647) / LL(1), 2147483647); // __rt_sdiv64
     TEST_INT(LL(2147483647) / LL(-1), -2147483647); // __rt_sdiv64
-    TEST_INT(LL(-2147483648) / LL(1), -2147483648LL); // __rt_sdiv64
+    TEST_INT(LL(-2147483648LL) / LL(1), -2147483648LL); // __rt_sdiv64
     TEST_INT(LL(0) / LL(2305843009213693952), 0); // __rt_sdiv64
     TEST_INT(LL(0) / LL(2305843009213693953), 0); // __rt_sdiv64
     TEST_INT(LL(0) / LL(2147483648), 0); // __rt_sdiv64
@@ -1537,9 +1808,9 @@ int main(int argc, char* argv[]) {
 
     TEST_INT((unsigned long long)F(4.2), 4);
     TEST_INT((signed long long)F(4.2), 4);
-    TEST_INT((unsigned long long)F(123456789012345678), 123456789012345680ULL);
-    TEST_INT((signed long long)F(123456789012345678), 123456789012345680ULL);
-    TEST_INT((signed long long)F(-123456789012345), -123456789012345LL);
+    TEST_INT((unsigned long long)F(123456789012345678.0), 123456789012345680ULL);
+    TEST_INT((signed long long)F(123456789012345678.0), 123456789012345680ULL);
+    TEST_INT((signed long long)F(-123456789012345.0), -123456789012345LL);
 
     TEST_INT((unsigned long long)(float)F(4.2), 4);
     TEST_INT((signed long long)(float)F(4.2), 4);
@@ -1547,17 +1818,65 @@ int main(int argc, char* argv[]) {
     TEST_INT((signed long long)(float)F(274877906944), 274877906944ULL);
     TEST_INT((signed long long)(float)F(-274877906944), -274877906944LL);
 
+    TEST_INT((unsigned long long)(long double)F(4.2), 4);
+    TEST_INT((signed long long)(long double)F(4.2), 4);
+    TEST_INT((unsigned long long)(long double)F(274877906944), 274877906944ULL);
+    TEST_INT((signed long long)(long double)F(274877906944), 274877906944ULL);
+    TEST_INT((signed long long)(long double)F(-274877906944), -274877906944LL);
+
     TEST_FLT((double)LL(4), 4.0);
     TEST_FLT((float)LL(4), 4.0);
+    TEST_FLT((long double)LL(4), 4.0);
     TEST_FLT((double)LL(123456789012345), 123456789012345.0);
     TEST_FLT((double)LL(-123456789012345), -123456789012345.0);
     TEST_FLT((float)LL(274877906944), 274877906944.0);
     TEST_FLT((float)LL(-274877906944), -274877906944.0);
+    TEST_FLT((long double)LL(274877906944), 274877906944.0);
+    TEST_FLT((long double)LL(-274877906944), -274877906944.0);
 
     TEST_FLT((double)ULL(4), 4.0);
     TEST_FLT((float)ULL(4), 4.0);
+    TEST_FLT((long double)ULL(4), 4.0);
     TEST_FLT((double)ULL(17293822569102704640), 17293822569102704640.0);
     TEST_FLT((float)ULL(17293822569102704640), 17293822569102704640.0);
+    TEST_FLT((long double)ULL(17293822569102704640), 17293822569102704640.0);
+
+#ifdef __SIZEOF_INT128__
+    TEST_INT((__uint128_t)F(4.2), 4);
+    TEST_INT((__int128_t)F(4.2), 4);
+    TEST_INT((__uint128_t)F(123456789012345678.0), 123456789012345680ULL);
+    TEST_INT((__int128_t)F(123456789012345678.0), 123456789012345680ULL);
+    TEST_INT((__int128_t)F(-123456789012345.0), -123456789012345LL);
+
+    TEST_INT((__uint128_t)(float)F(4.2), 4);
+    TEST_INT((__int128_t)(float)F(4.2), 4);
+    TEST_INT((__uint128_t)(float)F(274877906944), 274877906944ULL);
+    TEST_INT((__int128_t)(float)F(274877906944), 274877906944ULL);
+    TEST_INT((__int128_t)(float)F(-274877906944), -274877906944LL);
+
+    TEST_INT((__uint128_t)(long double)F(4.2), 4);
+    TEST_INT((__int128_t)(long double)F(4.2), 4);
+    TEST_INT((__uint128_t)(long double)F(274877906944), 274877906944ULL);
+    TEST_INT((__int128_t)(long double)F(274877906944), 274877906944ULL);
+    TEST_INT((__int128_t)(long double)F(-274877906944), -274877906944LL);
+
+    TEST_FLT((double)(__int128_t)LL(4), 4.0);
+    TEST_FLT((float)(__int128_t)LL(4), 4.0);
+    TEST_FLT((long double)(__int128_t)LL(4), 4.0);
+    TEST_FLT((double)(__int128_t)LL(123456789012345), 123456789012345.0);
+    TEST_FLT((double)(__int128_t)LL(-123456789012345), -123456789012345.0);
+    TEST_FLT((float)(__int128_t)LL(274877906944), 274877906944.0);
+    TEST_FLT((float)(__int128_t)LL(-274877906944), -274877906944.0);
+    TEST_FLT((long double)(__int128_t)LL(274877906944), 274877906944.0);
+    TEST_FLT((long double)(__int128_t)LL(-274877906944), -274877906944.0);
+
+    TEST_FLT((double)(__uint128_t)ULL(4), 4.0);
+    TEST_FLT((float)(__uint128_t)ULL(4), 4.0);
+    TEST_FLT((long double)(__uint128_t)ULL(4), 4.0);
+    TEST_FLT((double)(__uint128_t)ULL(17293822569102704640), 17293822569102704640.0);
+    TEST_FLT((float)(__uint128_t)ULL(17293822569102704640), 17293822569102704640.0);
+    TEST_FLT((long double)(__uint128_t)ULL(17293822569102704640), 17293822569102704640.0);
+#endif
 
 #ifdef _WIN32
     long value = 0;
@@ -1667,6 +1986,17 @@ int main(int argc, char* argv[]) {
     TEST_FUNC(_interlockedbittestandreset(&value, 0), value, 0, 1);
     TEST_FUNC(_InterlockedIncrement(&value), value, 1, 1);
     TEST_FUNC(_InterlockedDecrement(&value), value, 0, 0);
+
+    TEST_FUNC(_bittestandset(&value, 0), value, 1, 0);
+    TEST_FUNC(_bittestandset(&value, 2), value, 5, 0);
+    TEST_FUNC(_bittestandset(&value, 2), value, 5, 1);
+    TEST_INT(_bittest(&value, 0), 1);
+    TEST_INT(_bittest(&value, 1), 0);
+    TEST_FUNC(_bittestandreset(&value, 2), value, 1, 1);
+    TEST_FUNC(_bittestandreset(&value, 2), value, 1, 0);
+    TEST_FUNC(_bittestandreset(&value, 0), value, 0, 1);
+    TEST_FUNC(_bittestandcomplement(&value, 2), value, 4, 0);
+    TEST_FUNC(_bittestandcomplement(&value, 2), value, 0, 1);
 #ifdef _WIN64
     TEST_FUNC(_interlockedbittestandset64(&value64, 0), value64, 1, 0);
     TEST_FUNC(_interlockedbittestandset64(&value64, 2), value64, 5, 0);
@@ -1680,6 +2010,25 @@ int main(int argc, char* argv[]) {
     TEST_FUNC(_InterlockedIncrement64(&value64), value64, 0x20000000001, 0x20000000001);
     TEST_FUNC(_InterlockedDecrement64(&value64), value64, 0x20000000000, 0x20000000000);
     TEST_FUNC(_interlockedbittestandreset64(&value64, 41), value64, 0, 1);
+
+    TEST_FUNC(_bittestandset64(&value64, 0), value64, 1, 0);
+    TEST_FUNC(_bittestandset64(&value64, 2), value64, 5, 0);
+    TEST_FUNC(_bittestandset64(&value64, 2), value64, 5, 1);
+    TEST_FUNC(_bittestandset64(&value64, 40), value64, 0x10000000005, 0);
+    TEST_FUNC(_bittestandset64(&value64, 41), value64, 0x30000000005, 0);
+    TEST_INT(_bittest64(&value64, 0), 1);
+    TEST_INT(_bittest64(&value64, 1), 0);
+    TEST_INT(_bittest64(&value64, 41), 1);
+    TEST_INT(_bittest64(&value64, 42), 0);
+    TEST_FUNC(_bittestandreset64(&value64, 40), value64, 0x20000000005, 1);
+    TEST_FUNC(_bittestandreset64(&value64, 2), value64, 0x20000000001, 1);
+    TEST_FUNC(_bittestandreset64(&value64, 2), value64, 0x20000000001, 0);
+    TEST_FUNC(_bittestandreset64(&value64, 0), value64, 0x20000000000, 1);
+    TEST_FUNC(_bittestandcomplement64(&value64, 2), value64, 0x20000000004, 0);
+    TEST_FUNC(_bittestandcomplement64(&value64, 2), value64, 0x20000000000, 1);
+    TEST_FUNC(_bittestandcomplement64(&value64, 40), value64, 0x30000000000, 0);
+    TEST_FUNC(_bittestandcomplement64(&value64, 40), value64, 0x20000000000, 1);
+    TEST_FUNC(_bittestandreset64(&value64, 41), value64, 0, 1);
 #endif
     TEST_FUNC(_InterlockedExchangeAdd(&value, 1), value, 1, 0);
     TEST_FUNC(_InterlockedExchange(&value, 2), value, 2, 1);
