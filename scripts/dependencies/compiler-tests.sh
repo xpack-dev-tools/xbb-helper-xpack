@@ -282,6 +282,20 @@ function test_compiler_single()
         run_host_app_verbose "${CC}" "hello-tls.c" -o "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
         show_target_libs_develop "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
         run_target_app_verbose "./${prefix}hello-tls${suffix}"
+
+        run_host_app_verbose "${CC}" "bufferoverflow.c" -o "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -D_FORTIFY_SOURCE=2 -lssp
+        show_target_libs_develop "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}bufferoverflow${suffix}"
+        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 1
+        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 2
+        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 3
+        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 4
+        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 5
+        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 6
+        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 7
+        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 8
+        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 9
+        run_target_app_verbose "./${prefix}bufferoverflow${suffix}" 10
       fi
 
       if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
