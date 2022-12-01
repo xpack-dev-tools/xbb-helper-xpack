@@ -248,7 +248,8 @@ function test_compiler_single()
       show_target_libs_develop "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}"
       run_target_app_verbose "./${prefix}hello${suffix}"
 
-      run_host_app_verbose "${CC}" "setjmp-patched.c" -o "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
+      # run_host_app_verbose "${CC}" "setjmp-patched.c" -o "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
+      run_host_app_verbose "${CC}" "setjmp.c" -o "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
       show_target_libs_develop "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}"
       run_target_app_verbose "./${prefix}setjmp${suffix}"
 
@@ -302,7 +303,7 @@ function test_compiler_single()
         # On Raspberry Pi OS, even with the Debian compiler:
         # crt-test.c:711: log1pl(-F(NAN)) failed, expected -nan, got nan
         # 2370 tests, 1 failures
-        
+
         echo
         echo "Skipping crt-test on Linux arm64..."
       else
