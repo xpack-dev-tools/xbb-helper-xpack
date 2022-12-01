@@ -299,9 +299,10 @@ function test_compiler_single()
         echo "Skipping crt-test on macOS..."
       elif [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "arm64" ]
       then
-          # On Raspberry Pi OS:
-          # crt-test.c:711: log1pl(-F(NAN)) failed, expected -nan, got nan
-          # 2370 tests, 1 failures
+        # On Raspberry Pi OS, even with the Debian compiler:
+        # crt-test.c:711: log1pl(-F(NAN)) failed, expected -nan, got nan
+        # 2370 tests, 1 failures
+        
         echo
         echo "Skipping crt-test on Linux arm64..."
       else
