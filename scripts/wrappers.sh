@@ -93,7 +93,7 @@ function run_target_app_verbose()
 
   local realpath=$(which grealpath || which realpath || echo realpath)
 
-  if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+  if [ "${XBB_BUILD_PLATFORM}" == "linux" -o "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
     if is_elf "$(${realpath} ${app_path})"
     then
@@ -157,19 +157,6 @@ function run_target_app_verbose()
         echo
         echo "wine ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
-    else
-      echo
-      echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
-      exit 1
-    fi
-  elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
-  then
-    if is_elf "$(${realpath} ${app_path})"
-    then
-      run_verbose "${app_path}" "$@"
-    elif is_executable_script "$(${realpath} ${app_path})"
-    then
-      run_verbose "${app_path}" "$@"
     else
       echo
       echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
@@ -380,7 +367,7 @@ function test_target_expect()
 
     local output=""
 
-    if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+    if [ "${XBB_BUILD_PLATFORM}" == "linux" -o "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
 
       if is_elf "${app_path}"
@@ -421,19 +408,6 @@ function test_target_expect()
         exit 1
       fi
 
-    elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
-    then
-      if is_elf "${app_path}"
-      then
-        output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
-      elif is_executable_script "${app_path}"
-      then
-        output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
-      else
-        echo
-        echo "Unsupported \"${app_name} $@\" in ${FUNCNAME[0]}()"
-        exit 1
-      fi
     else
       echo
       echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
