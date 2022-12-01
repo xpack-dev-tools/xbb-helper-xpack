@@ -371,26 +371,26 @@ function test_target_expect()
   local app_name="$1"
   shift
 
-  local realpath=$(which grealpath || which realpath || echo realpath)
+  (
+    local realpath=$(which grealpath || which realpath || echo realpath)
 
-  local app_path="$(${realpath} "${app_name}")"
+    local app_path="$(${realpath} "${app_name}")"
 
-  show_target_libs_develop "${app_name}"
+    show_target_libs_develop "${app_name}"
 
-  local output=""
+    local output=""
 
-  if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
-  then
-
-    if is_elf "${app_path}"
+    if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
-      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
-    elif is_executable_script "${app_path}"
-    then
-      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
-    elif is_pe64 "${app_path}"
-    then
-      (
+
+      if is_elf "${app_path}"
+      then
+        output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+      elif is_executable_script "${app_path}"
+      then
+        output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+      elif is_pe64 "${app_path}"
+      then
         local wine_path=$(which wine64 2>/dev/null)
         if [ ! -z "${wine_path}" ]
         then
@@ -402,10 +402,8 @@ function test_target_expect()
           echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
           return
         fi
-      )
-    elif is_pe32 "${app_path}"
-    then
-      (
+      elif is_pe32 "${app_path}"
+      then
         local wine_path=$(which wine 2>/dev/null)
         if [ ! -z "${wine_path}" ]
         then
@@ -417,45 +415,44 @@ function test_target_expect()
           echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
           return
         fi
-      )
+      else
+        echo
+        echo "Unsupported \"${app_name} $@\" in ${FUNCNAME[0]}()"
+        exit 1
+      fi
+
+    elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+    then
+      if is_elf "${app_path}"
+      then
+        output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+      elif is_executable_script "${app_path}"
+      then
+        output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+      else
+        echo
+        echo "Unsupported \"${app_name} $@\" in ${FUNCNAME[0]}()"
+        exit 1
+      fi
     else
       echo
-      echo "Unsupported \"${app_name} $@\" in ${FUNCNAME[0]}()"
+      echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
       exit 1
     fi
 
-  elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
-  then
-    if is_elf "${app_path}"
+    if [ "x${output}x" == "x${expected}x" ]
     then
-      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
-    elif is_executable_script "${app_path}"
-    then
-      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+      echo
+      echo "Test \"${app_name} $@\" passed, got \"${expected}\" :-)"
     else
       echo
-      echo "Unsupported \"${app_name} $@\" in ${FUNCNAME[0]}()"
+      echo "Test \"${app_name} $@\" failed :-("
+      echo "expected ${#expected}: \"${expected}\""
+      echo "got ${#output}: \"${output}\""
+      echo
       exit 1
     fi
-  else
-    echo
-    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
-    exit 1
-  fi
-
-  if [ "x${output}x" == "x${expected}x" ]
-  then
-    echo
-    echo "Test \"${app_name} $@\" passed, got \"${expected}\" :-)"
-  else
-    echo
-    echo "Test \"${app_name} $@\" failed :-("
-    echo "expected ${#expected}: \"${expected}\""
-    echo "got ${#output}: \"${output}\""
-    echo
-    exit 1
-  fi
-
+  )
 }
 
 function _run_mingw()
