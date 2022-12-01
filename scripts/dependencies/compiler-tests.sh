@@ -423,7 +423,9 @@ function test_compiler_single()
             export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
           fi
 
-          run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS}
+          # mingw-gcc on macOS throws
+          # multiple definition of `_Unwind_Resume'
+          run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS} -Wl,--allow-multiple-definition
 
           (
             # LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
