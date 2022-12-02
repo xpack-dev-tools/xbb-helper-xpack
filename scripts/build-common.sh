@@ -171,6 +171,8 @@ function build_perform_common()
 
   xbb_set_env
 
+  xbb_prepare_pkg_config
+
   copy_build_files
 
   tests_initialize
