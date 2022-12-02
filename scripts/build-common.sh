@@ -205,7 +205,7 @@ function build_perform_common()
     then
       # Run the final steps in the requested environment.
       xbb_reset_env
-      xbb_set_target
+      xbb_set_target "requested"
 
       mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
       (
