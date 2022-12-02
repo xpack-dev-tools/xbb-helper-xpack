@@ -204,6 +204,7 @@ function build_perform_common()
     if [ ! "${XBB_TEST_ONLY}" == "y" ]
     then
       # Run the final steps in the requested environment.
+      xbb_set_env
       xbb_set_target
 
       mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
