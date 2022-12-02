@@ -191,14 +191,14 @@ function build_perform_common()
     echo "Here we go..."
     echo
 
-    # ---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # The actual build.
 
     # It sets variables in the environment, required for post-processing,
     # run it in the same sub-shell.
     build_application_versioned_components
 
-    # ---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Post-processing.
 
     if [ ! "${XBB_TEST_ONLY}" == "y" ]
