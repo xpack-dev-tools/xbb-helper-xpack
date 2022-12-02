@@ -576,8 +576,7 @@ function copy_dependencies_recursive()
 
       echo
       echo "${actual_destination_file_path}:"
-      ${XBB_REQUESTED_TARGET_TRIPLET}-objdump -x "${source_file_path}" \
-            | grep -i '  DLL Name:' || true
+      ${OBJDUMP} -x "${source_file_path}" | egrep -i '\sDLL Name:\s'  || true
 
       local source_file_name="$(basename "${source_file_path}")"
       local source_folder_path="$(dirname "${source_file_path}")"
@@ -637,8 +636,8 @@ function copy_dependencies_recursive()
 
       # echo "II. Processing ${source_file_path} dependencies..."
 
-      local libs=$(${XBB_REQUESTED_TARGET_TRIPLET}-objdump -x "${destination_folder_path}/${source_file_name}" \
-            | grep -i '  DLL Name:' \
+      local libs=$(${OBJDUMP} -x "${destination_folder_path}/${source_file_name}" \
+            | egrep -i '\sDLL Name:\s'  \
             | sed -e 's/.*DLL Name: \(.*\)/\1/' \
           )
       local lib_name
@@ -1822,10 +1821,9 @@ function check_binary_for_libraries()
       echo
       echo "${file_name}: (${file_path})"
       set +e
-      ${XBB_TARGET_TRIPLET}-objdump -x "${file_path}" | grep -i '  DLL Name'
 
-      local dll_names=$(${XBB_TARGET_TRIPLET}-objdump -x "${file_path}" \
-        | grep -i '  DLL Name' \
+      local dll_names=$("${OBJDUMP}" -x "${file_path}" \
+        | egrep -i '\sDLL Name:\s' \
         | sed -e 's/.*DLL Name: \(.*\)/\1/' \
       )
 
