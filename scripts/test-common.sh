@@ -306,7 +306,7 @@ function tests_perform_common()
   xbb_save_env
   xbb_set_requested
   xbb_reset_env
-  xbb_set_target
+  xbb_set_target "requested"
 
   if [ "${XBB_DO_TEST_VIA_XPM}" == "y" ]
   then
