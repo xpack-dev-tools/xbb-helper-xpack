@@ -295,6 +295,9 @@ function xbb_set_target()
   echo
   echo "[xbb_set_target ${kind}]"
 
+  # Set the environment to initial values.
+  xbb_set_env
+
   if [ "${kind}" == "native" ]
   then
     XBB_HOST_PLATFORM="${XBB_BUILD_PLATFORM}"
