@@ -7,8 +7,52 @@
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
+# https://gcc.gnu.org
+# https://ftp.gnu.org/gnu/gcc/
+# https://gcc.gnu.org/wiki/InstallingGCC
+# https://gcc.gnu.org/install
+# https://gcc.gnu.org/install/configure.html
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/gcc/trunk/PKGBUILD
+# https://github.com/archlinux/svntogit-community/blob/packages/gcc10/trunk/PKGBUILD
+# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
+
+# https://archlinuxarm.org/packages/aarch64/gcc/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gcc-git
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@8.rb
+
+# Mingw on Arch
+# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
+# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
+# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
+#
+# Mingw on Msys2
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD
+# https://github.com/msys2/MSYS2-packages/blob/master/gcc/PKGBUILD
+
+
+# 2018-05-02, "8.1.0"
+# 2018-07-26, "8.2.0"
+# 2018-10-30, "6.5.0" *
+# 2018-12-06, "7.4.0"
+# 2019-02-22, "8.3.0"
+# 2019-05-03, "9.1.0"
+# 2019-08-12, "9.2.0"
+# 2019-11-14, "7.5.0" *
+# 2020-03-04, "8.4.0"
+# 2020-03-12, "9.3.0"
+# 2021-04-08, "10.3.0"
+# 2021-04-27, "11.1.0" +
+# 2021-05-14, "8.5.0" *
+# 2021-07-28, "11.2.0"
+# 2022-04-21, "11.3.0"
+# 2022-05-06, "12.1.0"
+# 2022-08-19, "12.2.0"
+
 # -----------------------------------------------------------------------------
 
+# Returns GCC_SRC_FOLDER_NAME.
 function download_gcc()
 {
   local gcc_version="$1"
@@ -73,51 +117,11 @@ function download_gcc()
   fi
 }
 
+# -----------------------------------------------------------------------------
+
+# Return GCC_FOLDER_NAME
 function build_gcc()
 {
-  # https://gcc.gnu.org
-  # https://ftp.gnu.org/gnu/gcc/
-  # https://gcc.gnu.org/wiki/InstallingGCC
-  # https://gcc.gnu.org/install
-  # https://gcc.gnu.org/install/configure.html
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/gcc/trunk/PKGBUILD
-  # https://github.com/archlinux/svntogit-community/blob/packages/gcc10/trunk/PKGBUILD
-  # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
-
-  # https://archlinuxarm.org/packages/aarch64/gcc/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gcc-git
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@8.rb
-
-  # Mingw on Arch
-  # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
-  # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
-  # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
-  #
-  # Mingw on Msys2
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD
-  # https://github.com/msys2/MSYS2-packages/blob/master/gcc/PKGBUILD
-
-
-  # 2018-05-02, "8.1.0"
-  # 2018-07-26, "8.2.0"
-  # 2018-10-30, "6.5.0" *
-  # 2018-12-06, "7.4.0"
-  # 2019-02-22, "8.3.0"
-  # 2019-05-03, "9.1.0"
-  # 2019-08-12, "9.2.0"
-  # 2019-11-14, "7.5.0" *
-  # 2020-03-04, "8.4.0"
-  # 2020-03-12, "9.3.0"
-  # 2021-04-08, "10.3.0"
-  # 2021-04-27, "11.1.0" +
-  # 2021-05-14, "8.5.0" *
-  # 2021-07-28, "11.2.0"
-  # 2022-04-21, "11.3.0"
-  # 2022-05-06, "12.1.0"
-  # 2022-08-19, "12.2.0"
-
   local gcc_version="$1"
   shift
 
@@ -288,7 +292,7 @@ function build_gcc()
 
           # config_options+=("--enable-version-specific-runtime-libs")
 
-          # TODO
+          # TODO?
           # config_options+=("--enable-nls")
           config_options+=("--disable-nls") # HB
 
