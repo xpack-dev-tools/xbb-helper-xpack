@@ -303,6 +303,7 @@ function tests_perform_common()
 
   machine_detect
 
+  xbb_save_env
   xbb_set_requested
   xbb_reset_env
   xbb_set_target
