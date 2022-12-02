@@ -45,11 +45,19 @@ function xbb_make_writable()
   fi
 }
 
+function xbb_save_env()
+{
+  export XBB_SAVED_PATH="${PATH:-""}"
+  export XBB_SAVED_LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
+}
+
 function xbb_set_env()
 {
+  # Restore them to the initial values.
+  PATH="${XBB_SAVED_PATH}"
+  LD_LIBRARY_PATH="${XBB_SAVED_LD_LIBRARY_PATH}"
+
   # Defaults, to ensure the variables are defined.
-  PATH="${PATH:-""}"
-  LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
   LANG="${LANG:-"C"}"
   CI=${CI:-"false"}
 
