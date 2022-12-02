@@ -262,7 +262,7 @@ function build_perform_common()
       run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
       run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
 
-      if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ] || [ ! -z ${XBB_SHOW_DLLS+x} ]
+      if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ] || [ ! -z ${XBB_APPLICATION_SHOW_DLLS+x} ]
       then
         (
           cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
