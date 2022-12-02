@@ -504,6 +504,16 @@ function test_compiler_single()
             show_target_libs "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
             echo
             echo "Skipping ${prefix}autoimport-main${suffix} with gcc -flto..."
+          elif [ "${is_lto}" == "y" ] && is_bootstrap && is_mingw_gcc
+          then
+            # [wine64 ./lto-autoimport-main.exe]
+            # Mingw-w64 runtime failure:
+            # 32 bit pseudo relocation at 000000014000163A out of range, targeting 000000028846146C, yielding the value 000000014845FE2E.
+            # 0080:err:rpc:RpcAssoc_BindConnection receive failed with error 1726
+
+            show_target_libs "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
+            echo
+            echo "Skipping ${prefix}autoimport-main${suffix} with gcc -flto..."
           else
             show_target_libs_develop "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
             run_target_app_verbose "./${prefix}autoimport-main${suffix}"
