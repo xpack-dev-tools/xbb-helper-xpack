@@ -402,7 +402,6 @@ function test_mingw_gcc()
   xbb_set_extra_target_env "${triplet}"
 
   (
-
     CC="$(which ${test_bin_path}/${triplet}-gcc${XBB_HOST_DOT_EXE})"
     CXX="$(which ${test_bin_path}/${triplet}-g++${XBB_HOST_DOT_EXE})"
     F90="$(which ${test_bin_path}/${triplet}-gfortran${XBB_HOST_DOT_EXE})"
@@ -420,6 +419,8 @@ function test_mingw_gcc()
     DLLTOOL="$(which ${test_bin_path}/${triplet}-dlltool${XBB_HOST_DOT_EXE})"
     GENDEF="$(which ${test_bin_path}/${triplet}-gendef${XBB_HOST_DOT_EXE})"
     WIDL="$(which ${test_bin_path}/${triplet}-widl${XBB_HOST_DOT_EXE})"
+
+    xbb_show_env_develop
 
     echo
     echo "Checking the ${triplet}-gcc shared libraries..."
