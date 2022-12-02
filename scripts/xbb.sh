@@ -139,6 +139,26 @@ function xbb_set_env()
 
   # ---------------------------------------------------------------------------
 
+  if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+  then
+    # Start with the library path known by the compiler.
+    # Later this path will be added to -rpath.
+    export LD_LIBRARY_PATH="$(/usr/bin/gcc -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+  fi
+
+  # ---------------------------------------------------------------------------
+
+  # libtool fails with the old Ubuntu /bin/sh.
+  export SHELL="/bin/bash"
+  export CONFIG_SHELL="/bin/bash"
+
+  # Prevent 'configure: error: you should not run configure as root'
+  # when running inside a docker container.
+  export FORCE_UNSAFE_CONFIGURE=1
+}
+
+function xbb_prepare_pkg_config()
+{
   if [ ! -z "$(which pkg-config)" -a "${XBB_IS_DEVELOP}" == "y" ]
   then
     # Extra: pkg-config-verbose.
@@ -162,32 +182,12 @@ function xbb_set_env()
   export PKG_CONFIG
   export PKG_CONFIG_PATH
   export PKG_CONFIG_LIBDIR
-
-  # ---------------------------------------------------------------------------
-
-  if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
-  then
-    # Start with the library path known by the compiler.
-    # Later this path will be added to -rpath.
-    export LD_LIBRARY_PATH="$(/usr/bin/gcc -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
-  fi
-
-  # ---------------------------------------------------------------------------
-
-  # libtool fails with the old Ubuntu /bin/sh.
-  export SHELL="/bin/bash"
-  export CONFIG_SHELL="/bin/bash"
-
-  # Prevent 'configure: error: you should not run configure as root'
-  # when running inside a docker container.
-  export FORCE_UNSAFE_CONFIGURE=1
 }
 
 # Requires the build machine identity and the XBB_REQUESTED_TARGET variable,
 # set via --target in build_parse_options().
 function xbb_set_requested()
 {
-
   case "${XBB_REQUESTED_TARGET:-""}" in
     linux-x64 )
       XBB_REQUESTED_HOST_PLATFORM="linux"
