@@ -83,7 +83,7 @@ function make_standalone()
           copy_dependencies_recursive "${bin_path}" \
             "$(dirname "${bin_path}")"
 
-          # echo $(basename "${bin_path}") $(readelf -d "${bin_path}" | egrep '(RUNPATH|RPATH)')
+          # echo $(basename "${bin_path}") $(${READELF} -d "${bin_path}" | egrep '(RUNPATH|RPATH)')
         fi
       done
 
@@ -254,7 +254,7 @@ function copy_dependencies_recursive()
       # echo "II. Processing ${source_file_path} dependencies..."
 
       # The file must be an elf. Get its shared libraries.
-      local lib_names=$(readelf -d "${actual_destination_file_path}" \
+      local lib_names=$(${READELF} -d "${actual_destination_file_path}" \
             | grep -i 'Shared library' \
             | sed -e 's/.*Shared library: \[\(.*\)\]/\1/')
       local lib_name
@@ -1068,7 +1068,7 @@ function has_origin()
   local elf="$1"
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
   then
-    local origin=$(readelf -d ${elf} | egrep '(RUNPATH|RPATH)' | egrep '\$ORIGIN')
+    local origin=$(${READELF} -d ${elf} | egrep '(RUNPATH|RPATH)' | egrep '\$ORIGIN')
     if [ ! -z "${origin}" ]
     then
       return 0 # true
@@ -1088,7 +1088,7 @@ function has_rpath_origin()
   local elf="$1"
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
   then
-    local origin=$(readelf -d ${elf} | grep 'Library rpath: \[' | grep '\$ORIGIN')
+    local origin=$(${READELF} -d ${elf} | grep 'Library rpath: \[' | grep '\$ORIGIN')
     if [ ! -z "${origin}" ]
     then
       return 0 # true
@@ -1110,7 +1110,7 @@ function has_rpath()
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
   then
 
-    local rpath=$(readelf -d ${elf} | egrep '(RUNPATH|RPATH)')
+    local rpath=$(${READELF} -d ${elf} | egrep '(RUNPATH|RPATH)')
     if [ ! -z "${rpath}" ]
     then
       return 0 # true
@@ -1984,12 +1984,12 @@ function check_binary_for_libraries()
       set +e
       readelf_shared_libs "${file_path}"
 
-      local so_names=$(readelf -d "${file_path}" \
+      local so_names=$(${READELF} -d "${file_path}" \
         | grep -i 'Shared library' \
         | sed -e 's/.*Shared library: \[\(.*\)\]/\1/' \
       )
 
-      # local relative_path=$(readelf -d "${file_path}" | egrep '(RUNPATH|RPATH)' | sed -e 's/.*\[\$ORIGIN//' | sed -e 's/\].*//')
+      # local relative_path=$(${READELF} -d "${file_path}" | egrep '(RUNPATH|RPATH)' | sed -e 's/.*\[\$ORIGIN//' | sed -e 's/\].*//')
       # echo $relative_path
       local linux_rpaths_line=$(get_linux_rpaths_line "${file_path}")
       local origin_prefix="\$ORIGIN"
