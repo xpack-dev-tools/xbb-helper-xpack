@@ -51,7 +51,7 @@ function xbb_save_env()
   export XBB_SAVED_LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
 }
 
-function xbb_set_env()
+function xbb_reset_env()
 {
   # Restore them to the initial values.
   PATH="${XBB_SAVED_PATH}"

@@ -304,7 +304,7 @@ function tests_perform_common()
   machine_detect
 
   xbb_set_requested
-  xbb_set_env
+  xbb_reset_env
   xbb_set_target
 
   if [ "${XBB_DO_TEST_VIA_XPM}" == "y" ]

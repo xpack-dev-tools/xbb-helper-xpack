@@ -169,7 +169,7 @@ function build_perform_common()
 
   xbb_set_requested
 
-  xbb_set_env
+  xbb_reset_env
 
   xbb_prepare_pkg_config
 
@@ -204,7 +204,7 @@ function build_perform_common()
     if [ ! "${XBB_TEST_ONLY}" == "y" ]
     then
       # Run the final steps in the requested environment.
-      xbb_set_env
+      xbb_reset_env
       xbb_set_target
 
       mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
@@ -238,6 +238,7 @@ function build_perform_common()
   # Final checks.
 
   # Guarantee a known environment.
+  xbb_reset_env
   xbb_set_target
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
