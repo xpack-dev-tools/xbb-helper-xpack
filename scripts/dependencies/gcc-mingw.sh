@@ -470,23 +470,23 @@ function test_mingw_gcc()
   xbb_set_extra_target_env "${triplet}"
 
   (
-    CC="$(which ${test_bin_path}/${triplet}-gcc${XBB_HOST_DOT_EXE})"
-    CXX="$(which ${test_bin_path}/${triplet}-g++${XBB_HOST_DOT_EXE})"
-    F90="$(which ${test_bin_path}/${triplet}-gfortran${XBB_HOST_DOT_EXE})"
+    CC="${test_bin_path}/${triplet}-gcc${XBB_HOST_DOT_EXE}"
+    CXX="${test_bin_path}/${triplet}-g++${XBB_HOST_DOT_EXE}"
+    F90="${test_bin_path}/${triplet}-gfortran${XBB_HOST_DOT_EXE}"
 
-    AR="$(which ${test_bin_path}/${triplet}-gcc-ar${XBB_HOST_DOT_EXE})"
-    NM="$(which ${test_bin_path}/${triplet}-gcc-nm${XBB_HOST_DOT_EXE})"
-    RANLIB="$(which ${test_bin_path}/${triplet}-gcc-ranlib${XBB_HOST_DOT_EXE})"
+    AR="${test_bin_path}/${triplet}-gcc-ar${XBB_HOST_DOT_EXE}"
+    NM="${test_bin_path}/${triplet}-gcc-nm${XBB_HOST_DOT_EXE}"
+    RANLIB="${test_bin_path}/${triplet}-gcc-ranlib${XBB_HOST_DOT_EXE}"
 
-    OBJDUMP="$(which ${test_bin_path}/${triplet}-objdump${XBB_HOST_DOT_EXE})"
+    OBJDUMP="${test_bin_path}/${triplet}-objdump${XBB_HOST_DOT_EXE}"
 
-    GCOV="$(which ${test_bin_path}/${triplet}-gcov${XBB_HOST_DOT_EXE})"
-    GCOV_DUMP="$(which ${test_bin_path}/${triplet}-gcov-dump${XBB_HOST_DOT_EXE})"
-    GCOV_TOOL="$(which ${test_bin_path}/${triplet}-gcov-tool${XBB_HOST_DOT_EXE})"
+    GCOV="${test_bin_path}/${triplet}-gcov${XBB_HOST_DOT_EXE}"
+    GCOV_DUMP="${test_bin_path}/${triplet}-gcov-dump${XBB_HOST_DOT_EXE}"
+    GCOV_TOOL="${test_bin_path}/${triplet}-gcov-tool${XBB_HOST_DOT_EXE}"
 
-    DLLTOOL="$(which ${test_bin_path}/${triplet}-dlltool${XBB_HOST_DOT_EXE})"
-    GENDEF="$(which ${test_bin_path}/${triplet}-gendef${XBB_HOST_DOT_EXE})"
-    WIDL="$(which ${test_bin_path}/${triplet}-widl${XBB_HOST_DOT_EXE})"
+    DLLTOOL="${test_bin_path}/${triplet}-dlltool${XBB_HOST_DOT_EXE}"
+    GENDEF="${test_bin_path}/${triplet}-gendef${XBB_HOST_DOT_EXE}"
+    WIDL="${test_bin_path}/${triplet}-widl${XBB_HOST_DOT_EXE}"
 
     xbb_show_env_develop
 
