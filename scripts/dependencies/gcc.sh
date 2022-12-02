@@ -704,9 +704,9 @@ function test_gcc()
 
     if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
-      AR="ar"
-      NM="nm"
-      RANLIB="ranlib"
+      AR="$(which ar)"
+      NM="$(which nm)"
+      RANLIB="$(which ranlib)"
     else
       AR="${test_bin_path}/gcc-ar"
       NM="${test_bin_path}/gcc-nm"
