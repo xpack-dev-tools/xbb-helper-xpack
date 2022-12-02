@@ -425,7 +425,12 @@ function test_compiler_single()
 
           # mingw-gcc on macOS throws
           # multiple definition of `_Unwind_Resume'
-          run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS} -Wl,--allow-multiple-definition
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && is_clang
+          then
+            run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS}
+          else
+            run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS} -Wl,--allow-multiple-definition
+          fi
 
           (
             # LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
