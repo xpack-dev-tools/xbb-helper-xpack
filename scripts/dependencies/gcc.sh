@@ -607,8 +607,9 @@ function build_gcc()
   tests_add "test_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
+# Deprecated.
 # Currently not used, work done by build_gcc_final().
-function build_gcc_libs()
+function _build_gcc_libs()
 {
   local gcc_libs_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-libs-installed"
   if [ ! -f "${gcc_libs_stamp_file_path}" ]
