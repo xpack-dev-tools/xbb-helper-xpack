@@ -12,6 +12,34 @@
 
 # The difference is the install location, which no longer uses `/usr`.
 
+# https://gcc.gnu.org
+# https://gcc.gnu.org/wiki/InstallingGCC
+
+# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
+
+# MSYS2 uses a lot of patches.
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
+
+# https://ftp.gnu.org/gnu/gcc/
+# 2019-02-22, "8.3.0"
+# 2019-05-03, "9.1.0"
+# 2019-08-12, "9.2.0"
+# 2019-11-14, "7.5.0" *
+# 2020-03-04, "8.4.0"
+# 2020-03-12, "9.3.0"
+# 2021-04-08, "10.3.0"
+# 2021-04-27, "11.1.0" +
+# 2021-05-14, "8.5.0" *
+# 2021-07-28, "11.2.0"
+# 2022-04-21, "11.3.0"
+# 2022-05-06, "12.1.0"
+# 2022-08-19, "12.2.0"
+
+# -----------------------------------------------------------------------------
+
+
 function build_mingw_gcc_dependencies()
 {
   build_libiconv "${XBB_LIBICONV_VERSION}"
@@ -85,31 +113,6 @@ function build_mingw_gcc_all_triplets()
 # XBB_MINGW_GCC_PATCH_FILE_NAME
 function build_mingw_gcc_first()
 {
-  # https://gcc.gnu.org
-  # https://gcc.gnu.org/wiki/InstallingGCC
-
-  # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
-
-  # MSYS2 uses a lot of patches.
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
-
-  # https://ftp.gnu.org/gnu/gcc/
-  # 2019-02-22, "8.3.0"
-  # 2019-05-03, "9.1.0"
-  # 2019-08-12, "9.2.0"
-  # 2019-11-14, "7.5.0" *
-  # 2020-03-04, "8.4.0"
-  # 2020-03-12, "9.3.0"
-  # 2021-04-08, "10.3.0"
-  # 2021-04-27, "11.1.0" +
-  # 2021-05-14, "8.5.0" *
-  # 2021-07-28, "11.2.0"
-  # 2022-04-21, "11.3.0"
-  # 2022-05-06, "12.1.0"
-  # 2022-08-19, "12.2.0"
-
   export mingw_gcc_version="$1"
   shift
 
