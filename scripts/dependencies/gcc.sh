@@ -740,8 +740,8 @@ function test_gcc()
 
     if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
-      show_host_libs "$(${CC} --print-file-name=libgcc_s.so)"
-      show_host_libs "$(${CC} --print-file-name=libstdc++.so)"
+      show_host_libs "$(${CC} --print-file-name=libgcc_s.so.1)"
+      show_host_libs "$(${CC} --print-file-name=libstdc++.so.6)"
     elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       local libgcc_path="$(${CC} --print-file-name=libgcc_s.1.dylib)"
