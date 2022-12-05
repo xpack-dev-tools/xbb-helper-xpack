@@ -38,7 +38,7 @@ function test_compiler_single()
 
     local prefix=""
     local suffix=""
-
+    local bits=""
 
     while [ $# -gt 0 ]
     do
@@ -56,6 +56,16 @@ function test_compiler_single()
 
         --lto )
           is_lto="y"
+          shift
+          ;;
+
+        --64 )
+          bits="64"
+          shift
+          ;;
+
+        --32 )
+          bits="32"
           shift
           ;;
 
@@ -156,6 +166,14 @@ function test_compiler_single()
       LDFLAGS+=" -static-libgcc"
       LDXXFLAGS+=" -static-libgcc -static-libstdc++"
       prefix="static-lib-${prefix}"
+    fi
+
+    if [ "${bits}" != "" ]
+    then
+      CFLAGS+=" -m${bits}"
+      CXXFLAGS+=" -m${bits}"
+      LDFLAGS+=" -m${bits}"
+      LDXXFLAGS+=" -m${bits}"
     fi
 
     if [ "${XBB_IS_DEVELOP}" == "y" ]
