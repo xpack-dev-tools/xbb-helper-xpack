@@ -873,18 +873,18 @@ function test_gcc()
       )
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
-      (
-        export LD_LIBRARY_PATH="$(${CC} -m64 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
-        echo
-        echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-
-        test_compiler_single "${test_bin_path}" --64
-        test_compiler_single "${test_bin_path}" --64 --gc
-        test_compiler_single "${test_bin_path}" --64 --lto
-        test_compiler_single "${test_bin_path}" --64 --gc --lto
-      )
       if [ "${XBB_HOST_ARCH}" == "x64" ]
       then
+        (
+          export LD_LIBRARY_PATH="$(${CC} -m64 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+          echo
+          echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+          test_compiler_single "${test_bin_path}" --64
+          test_compiler_single "${test_bin_path}" --64 --gc
+          test_compiler_single "${test_bin_path}" --64 --lto
+          test_compiler_single "${test_bin_path}" --64 --gc --lto
+        )
         (
           export LD_LIBRARY_PATH="$(${CC} -m32 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
           echo
@@ -895,6 +895,17 @@ function test_gcc()
           test_compiler_single "${test_bin_path}" --32 --lto
           test_compiler_single "${test_bin_path}" --32 --gc --lto
         )
+      else
+        (
+          export LD_LIBRARY_PATH="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+          echo
+          echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+          test_compiler_single "${test_bin_path}"
+          test_compiler_single "${test_bin_path}" --gc
+          test_compiler_single "${test_bin_path}" --lto
+          test_compiler_single "${test_bin_path}" --gc --lto
+        )
       fi
 
       local distro=$(lsb_release -is)
@@ -904,19 +915,19 @@ function test_gcc()
         echo
         echo "Skipping all --static-lib on RedHat & derived..."
       else
-        (
-          # Mainly for libgfortran.so.
-          export LD_LIBRARY_PATH="$(${CC} -m64 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
-          echo
-          echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-
-          test_compiler_single "${test_bin_path}" --64 --static-lib
-          test_compiler_single "${test_bin_path}" --64 --static-lib --gc
-          test_compiler_single "${test_bin_path}" --64 --static-lib --lto
-          test_compiler_single "${test_bin_path}" --64 --static-lib --gc --lto
-        )
         if [ "${XBB_HOST_ARCH}" == "x64" ]
         then
+          (
+            # Mainly for libgfortran.so.
+            export LD_LIBRARY_PATH="$(${CC} -m64 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+            echo
+            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+            test_compiler_single "${test_bin_path}" --64 --static-lib
+            test_compiler_single "${test_bin_path}" --64 --static-lib --gc
+            test_compiler_single "${test_bin_path}" --64 --static-lib --lto
+            test_compiler_single "${test_bin_path}" --64 --static-lib --gc --lto
+          )
           (
             export LD_LIBRARY_PATH="$(${CC} -m32 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
             echo
@@ -926,6 +937,18 @@ function test_gcc()
             test_compiler_single "${test_bin_path}" --32 --static-lib --gc
             test_compiler_single "${test_bin_path}" --32 --static-lib --lto
             test_compiler_single "${test_bin_path}" --32 --static-lib --gc --lto
+          )
+        else
+          (
+            # Mainly for libgfortran.so.
+            export LD_LIBRARY_PATH="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+            echo
+            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+            test_compiler_single "${test_bin_path}" --static-lib
+            test_compiler_single "${test_bin_path}" --static-lib --gc
+            test_compiler_single "${test_bin_path}" --static-lib --lto
+            test_compiler_single "${test_bin_path}" --static-lib --gc --lto
           )
         fi
       fi
@@ -938,19 +961,25 @@ function test_gcc()
         echo
         echo "Skipping all --static on RedHat & derived..."
       else
-        (
-          test_compiler_single "${test_bin_path}" --64 --static
-          test_compiler_single "${test_bin_path}" --64 --static --gc
-          test_compiler_single "${test_bin_path}" --64 --static --lto
-          test_compiler_single "${test_bin_path}" --64 --static --gc --lto
-        )
         if [ "${XBB_HOST_ARCH}" == "x64" ]
         then
           (
+            test_compiler_single "${test_bin_path}" --64 --static
+            test_compiler_single "${test_bin_path}" --64 --static --gc
+            test_compiler_single "${test_bin_path}" --64 --static --lto
+            test_compiler_single "${test_bin_path}" --64 --static --gc --lto
+
             test_compiler_single "${test_bin_path}" --32 --static
             test_compiler_single "${test_bin_path}" --32 --static --gc
             test_compiler_single "${test_bin_path}" --32 --static --lto
             test_compiler_single "${test_bin_path}" --32 --static --gc --lto
+          )
+        else
+          (
+            test_compiler_single "${test_bin_path}" --static
+            test_compiler_single "${test_bin_path}" --static --gc
+            test_compiler_single "${test_bin_path}" --static --lto
+            test_compiler_single "${test_bin_path}" --static --gc --lto
           )
         fi
 
