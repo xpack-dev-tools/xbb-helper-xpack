@@ -827,21 +827,23 @@ function test_gcc()
 
     # -------------------------------------------------------------------------
 
-    VERBOSE_FLAG=""
-    if [ "${XBB_IS_DEVELOP}" == "y" ]
-    then
-      VERBOSE_FLAG="-v"
-    fi
+    # VERBOSE_FLAG=""
+    # if [ "${XBB_IS_DEVELOP}" == "y" ]
+    # then
+    #   VERBOSE_FLAG="-v"
+    # fi
 
-    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-    then
-      GC_SECTION="-Wl,--gc-sections"
-    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-    then
-      GC_SECTION="-Wl,-dead_strip"
-    else
-      GC_SECTION=""
-    fi
+    # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    # then
+    #   GC_SECTION="-Wl,--gc-sections"
+    # elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    # then
+    #   GC_SECTION="-Wl,-dead_strip"
+    # else
+    #   GC_SECTION=""
+    # fi
+
+    xbb_show_env_develop
 
     run_verbose uname
     if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
@@ -851,396 +853,122 @@ function test_gcc()
 
     # -------------------------------------------------------------------------
 
-    (
-      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      then
-        # Instruct the linker to add a RPATH pointing to the folder with the
-        # compiler shared libraries. Alternatelly -Wl,-rpath=xxx can be used
-        # explicitly on each link command.
-        # Ubuntu 14 has no realpath
-        # export LD_RUN_PATH="$(dirname $(realpath $(${CC} --print-file-name=libgcc_s.so)))"
-        export LD_RUN_PATH="$(dirname $(${CC} --print-file-name=libgcc_s.so))"
-        echo
-        echo "LD_RUN_PATH=${LD_RUN_PATH}"
-      elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
-      then
-        # For libwinpthread-1.dll, possibly other.
-        if [ "$(uname -o)" == "Msys" ]
-        then
-          export PATH="${test_bin_path}/../lib;${PATH:-}"
-          echo "PATH=${PATH}"
-        elif [ "$(uname)" == "Linux" ]
-        then
-          export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
-          echo "WINEPATH=${WINEPATH}"
-        fi
-      fi
-
-      if [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "x64" ]
-      then
-          test_gcc_one "" "-64"
-          test_gcc_one "" "-32"
-      else
-        test_gcc_one ""
-      fi
-    )
-
-    (
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-      then
-        # For libwinpthread-1.dll, possibly other.
-        if [ "$(uname -o)" == "Msys" ]
-        then
-          export PATH="${test_bin_path}/../lib;${PATH:-}"
-          echo "PATH=${PATH}"
-        elif [ "$(uname)" == "Linux" ]
-        then
-          export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
-          echo "WINEPATH=${WINEPATH}"
-        fi
-      fi
-
-      # This is the recommended use case, and it is expected to work
-      # properly on all platforms.
-      if [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "x64" ]
-      then
-        test_gcc_one "static-lib-" "-64"
-        test_gcc_one "static-lib-" "-32"
-      else
-        test_gcc_one "static-lib-"
-      fi
-    )
-
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
-      test_gcc_one "static-"
+      (
+        test_compiler_single "${test_bin_path}"
+        test_compiler_single "${test_bin_path}" --gc
+        test_compiler_single "${test_bin_path}" --lto
+        test_compiler_single "${test_bin_path}" --gc --lto
+
+        test_compiler_single "${test_bin_path}" --static-lib
+        test_compiler_single "${test_bin_path}" --static-lib --gc
+        test_compiler_single "${test_bin_path}" --static-lib --lto
+        test_compiler_single "${test_bin_path}" --static-lib --gc --lto
+
+        test_compiler_single "${test_bin_path}" --static
+        test_compiler_single "${test_bin_path}" --static --gc
+        test_compiler_single "${test_bin_path}" --static --lto
+        test_compiler_single "${test_bin_path}" --static --gc --lto
+      )
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
-      # On Linux static linking is highly discouraged
-      echo "Skip --static"
-      # test_gcc_one "static-"
-    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-    then
-      # On macOS static linking is not supported.
-      echo "Skip --static"
-    fi
+      (
+        export LD_LIBRARY_PATH="$(${CC} -m64 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+        echo
+        echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-    # -------------------------------------------------------------------------
-
-    (
-      cd c-cpp
-
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+        test_compiler_single "${test_bin_path}" --64
+        test_compiler_single "${test_bin_path}" --64 --gc
+        test_compiler_single "${test_bin_path}" --64 --lto
+        test_compiler_single "${test_bin_path}" --64 --gc --lto
+      )
+      if [ "${XBB_HOST_ARCH}" == "x64" ]
       then
-        run_host_app_verbose "${CC}" -o add.o -c add.c -ffunction-sections -fdata-sections
-      else
-        run_host_app_verbose "${CC}" -o add.o -c add.c -fpic -ffunction-sections -fdata-sections
-      fi
-
-      rm -rf libadd-static.a
-      run_host_app_verbose "${AR}" -r ${VERBOSE_FLAG} libadd-static.a add.o
-      run_host_app_verbose "${RANLIB}" libadd-static.a
-
-      run_host_app_verbose "${CC}" ${VERBOSE_FLAG} -o static-adder${XBB_HOST_DOT_EXE} adder.c -ladd-static -L . -ffunction-sections -fdata-sections ${GC_SECTION}
-      test_target_expect "42" "static-adder" 40 2
-
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-      then
-        # The `--out-implib` creates an import library, which can be
-        # directly used with -l.
-        run_host_app_verbose "${CC}" ${VERBOSE_FLAG} -o libadd-shared.dll -shared -Wl,--out-implib,libadd-shared.dll.a add.o -Wl,--subsystem,windows
-        # -ladd-shared is in fact libadd-shared.dll.a
-        # The library does not show as DLL, it is loaded dynamically.
-        run_host_app_verbose "${CC}" ${VERBOSE_FLAG} -o shared-adder${XBB_HOST_DOT_EXE} adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
-        test_target_expect "42" "shared-adder" 40 2
-      else
-        run_host_app_verbose "${CC}" -o libadd-shared.${XBB_HOST_SHLIB_EXT} add.o -shared
-        run_host_app_verbose "${CC}" ${VERBOSE_FLAG} -o shared-adder adder.c -ladd-shared -L . -ffunction-sections -fdata-sections ${GC_SECTION}
         (
-          LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
-          export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-          test_target_expect "42" "shared-adder" 40 2
+          export LD_LIBRARY_PATH="$(${CC} -m32 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+          echo
+          echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+          test_compiler_single "${test_bin_path}" --32
+          test_compiler_single "${test_bin_path}" --32 --gc
+          test_compiler_single "${test_bin_path}" --32 --lto
+          test_compiler_single "${test_bin_path}" --32 --gc --lto
         )
       fi
-    )
 
-    # -------------------------------------------------------------------------
-  )
-
-  echo
-  echo "Testing the gcc binaries completed successfuly."
-}
-
-function test_gcc_one()
-{
-  local prefix="$1" # "", "static-lib-", "static-"
-  local suffix="${2:-""}"
-
-  if [ "${prefix}" == "static-lib-" ]
-  then
-      STATIC_LIBGCC="-static-libgcc"
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      local distro=$(lsb_release -is)
+      if [[ ${distro} == CentOS ]] || [[ ${distro} == RedHat* ]] || [[ ${distro} == Fedora ]]
       then
-        # Force static libwinpthread.
-        STATIC_LIBSTD="-Wl,-Bstatic,-lstdc++,-lpthread,-Bdynamic" # -static-libstdc++"
+        # RedHat has no static libstdc++.
+        echo
+        echo "Skipping all --static-lib on RedHat & derived..."
       else
-        STATIC_LIBSTD="-static-libstdc++"
+        (
+          # Mainly for libgfortran.so.
+          export LD_LIBRARY_PATH="$(${CC} -m64 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+          echo
+          echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+          test_compiler_single "${test_bin_path}" --64 --static-lib
+          test_compiler_single "${test_bin_path}" --64 --static-lib --gc
+          test_compiler_single "${test_bin_path}" --64 --static-lib --lto
+          test_compiler_single "${test_bin_path}" --64 --static-lib --gc --lto
+        )
+        if [ "${XBB_HOST_ARCH}" == "x64" ]
+        then
+          (
+            export LD_LIBRARY_PATH="$(${CC} -m32 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+            echo
+            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+            test_compiler_single "${test_bin_path}" --32 --static-lib
+            test_compiler_single "${test_bin_path}" --32 --static-lib --gc
+            test_compiler_single "${test_bin_path}" --32 --static-lib --lto
+            test_compiler_single "${test_bin_path}" --32 --static-lib --gc --lto
+          )
+        fi
       fi
-  elif [ "${prefix}" == "static-" ]
-  then
-      STATIC_LIBGCC="-static"
-      STATIC_LIBSTD=""
-  else
-      STATIC_LIBGCC=""
-      STATIC_LIBSTD=""
-  fi
 
-  CFLAGS=""
-  CXXFLAGS=""
+      # On Linux static linking is highly discouraged.
+      # On RedHat and derived, the static libraries must be installed explicitly.
 
-  if [ "${suffix}" == "-64" ]
-  then
-    CFLAGS=" -m64"
-    CXXFLAGS=" -m64"
-  elif [ "${suffix}" == "-32" ]
-  then
-    CFLAGS=" -m32"
-    CXXFLAGS=" -m32"
-  fi
-
-  (
-    cd c-cpp
-
-    # Test C compile and link in a single step.
-    run_host_app_verbose "${CC}" ${CFLAGS} -v -o ${prefix}simple-hello-c1${suffix}${XBB_HOST_DOT_EXE} simple-hello.c ${STATIC_LIBGCC}
-    test_target_expect "Hello" "${prefix}simple-hello-c1${suffix}"
-
-    # Test C compile and link in a single step with gc.
-    run_host_app_verbose "${CC}" ${CFLAGS} ${VERBOSE_FLAG} -o ${prefix}gc-simple-hello-c1${suffix}${XBB_HOST_DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC}
-    test_target_expect "Hello" "${prefix}gc-simple-hello-c1${suffix}"
-
-    # Test C compile and link in separate steps.
-    run_host_app_verbose "${CC}" ${CFLAGS} -o simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections
-    run_host_app_verbose "${CC}" ${CFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-hello-c2${suffix}${XBB_HOST_DOT_EXE} simple-hello-c.o ${GC_SECTION} ${STATIC_LIBGCC}
-    test_target_expect "Hello" "${prefix}simple-hello-c2${suffix}"
-
-    # Test LTO C compile and link in a single step.
-    run_host_app_verbose "${CC}" ${CFLAGS} ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c1${suffix}${XBB_HOST_DOT_EXE} simple-hello.c -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
-    test_target_expect "Hello" "${prefix}lto-simple-hello-c1${suffix}"
-
-    # Test LTO C compile and link in separate steps.
-    run_host_app_verbose "${CC}" ${CFLAGS} -o lto-simple-hello-c.o -c simple-hello.c -ffunction-sections -fdata-sections -flto
-    run_host_app_verbose "${CC}" ${CFLAGS} ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-c2${suffix}${XBB_HOST_DOT_EXE} lto-simple-hello-c.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC}
-    test_target_expect "Hello" "${prefix}lto-simple-hello-c2${suffix}"
-
-    # ---------------------------------------------------------------------------
-
-    # Test C++ compile and link in a single step.
-    run_host_app_verbose "${CXX}" ${CXXFLAGS} -v -o ${prefix}simple-hello-cpp1${suffix}${XBB_HOST_DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_target_expect "Hello" "${prefix}simple-hello-cpp1${suffix}"
-
-    # Test C++ compile and link in separate steps.
-    run_host_app_verbose "${CXX}" ${CXXFLAGS} -o simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections
-    run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-hello-cpp2${suffix}${XBB_HOST_DOT_EXE} simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_target_expect "Hello" "${prefix}simple-hello-cpp2${suffix}"
-
-    # Test LTO C++ compile and link in a single step.
-    run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp1${suffix}${XBB_HOST_DOT_EXE} simple-hello.cpp -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_target_expect "Hello" "${prefix}lto-simple-hello-cpp1${suffix}"
-
-    # Test LTO C++ compile and link in separate steps.
-    run_host_app_verbose "${CXX}" ${CXXFLAGS} -o lto-simple-hello-cpp.o -c simple-hello.cpp -ffunction-sections -fdata-sections -flto
-    run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}lto-simple-hello-cpp2${suffix}${XBB_HOST_DOT_EXE} lto-simple-hello-cpp.o -ffunction-sections -fdata-sections ${GC_SECTION} -flto ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_target_expect "Hello" "${prefix}lto-simple-hello-cpp2${suffix}"
-
-    # ---------------------------------------------------------------------------
-
-    if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${prefix}" == "" ]
-    then
-      # 'Symbol not found: __ZdlPvm' (_operator delete(void*, unsigned long))
-      run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_HOST_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-      show_host_libs ${prefix}simple-exception${suffix}
-      run_target_app_verbose ./${prefix}simple-exception${suffix} || echo "The test ${prefix}simple-exception${suffix} is known to fail; ignored."
-    else
-      run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-exception${suffix}${XBB_HOST_DOT_EXE} simple-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-      test_target_expect "MyException" "${prefix}simple-exception${suffix}"
-    fi
-
-    # -O0 is an attempt to prevent any interferences with the optimiser.
-    run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-str-exception${suffix}${XBB_HOST_DOT_EXE} simple-str-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_target_expect "MyStringException" "${prefix}simple-str-exception${suffix}"
-
-    run_host_app_verbose "${CXX}" ${CXXFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-int-exception${suffix}${XBB_HOST_DOT_EXE} simple-int-exception.cpp -ffunction-sections -fdata-sections ${GC_SECTION} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    test_target_expect "42" "${prefix}simple-int-exception${suffix}"
-
-    # ---------------------------------------------------------------------------
-    # Test a very simple Objective-C (a printf).
-
-    run_host_app_verbose "${CC}" ${CFLAGS} ${VERBOSE_FLAG} -o ${prefix}simple-objc${suffix}${XBB_HOST_DOT_EXE} simple-objc.m -O0 ${STATIC_LIBGCC}
-    test_target_expect "Hello World" "${prefix}simple-objc${suffix}"
-
-    # ---------------------------------------------------------------------------
-    # Tests borrowed from the llvm-mingw project.
-
-    run_host_app_verbose "${CC}" ${CFLAGS} -o ${prefix}hello${suffix}${XBB_HOST_DOT_EXE} hello.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-    show_host_libs ${prefix}hello${suffix}
-    run_target_app_verbose ./${prefix}hello${suffix}
-
-    run_host_app_verbose "${CC}" ${CFLAGS} -o ${prefix}setjmp${suffix}${XBB_HOST_DOT_EXE} setjmp-patched.c ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-    show_host_libs ${prefix}setjmp${suffix}
-    run_target_app_verbose ./${prefix}setjmp${suffix}
-
-    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-    then
-      run_host_app_verbose "${CC}" ${CFLAGS} -o ${prefix}hello-tls${suffix}.exe hello-tls.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      show_host_libs ${prefix}hello-tls${suffix}
-      run_target_app_verbose ./${prefix}hello-tls${suffix}
-
-      run_host_app_verbose "${CC}" ${CFLAGS} -o ${prefix}crt-test${suffix}.exe crt-test.c ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      show_host_libs ${prefix}crt-test${suffix}
-      run_target_app_verbose ./${prefix}crt-test${suffix}
-
-      if [ "${prefix}" != "static-" ]
+      if [[ ${distro} == CentOS ]] || [[ ${distro} == RedHat* ]] || [[ ${distro} == Fedora ]]
       then
-        run_host_app_verbose "${CC}" ${CFLAGS} -o autoimport-lib.dll autoimport-lib.c -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-        show_host_libs autoimport-lib.dll
+        echo
+        echo "Skipping all --static on RedHat & derived..."
+      else
+        (
+          test_compiler_single "${test_bin_path}" --64 --static
+          test_compiler_single "${test_bin_path}" --64 --static --gc
+          test_compiler_single "${test_bin_path}" --64 --static --lto
+          test_compiler_single "${test_bin_path}" --64 --static --gc --lto
+        )
+        if [ "${XBB_HOST_ARCH}" == "x64" ]
+        then
+          (
+            test_compiler_single "${test_bin_path}" --32 --static
+            test_compiler_single "${test_bin_path}" --32 --static --gc
+            test_compiler_single "${test_bin_path}" --32 --static --lto
+            test_compiler_single "${test_bin_path}" --32 --static --gc --lto
+          )
+        fi
 
-        run_host_app_verbose "${CC}" ${CFLAGS} -o ${prefix}autoimport-main${suffix}.exe autoimport-main.c -L. -lautoimport-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-        show_host_libs ${prefix}autoimport-main${suffix}
-        run_target_app_verbose ./${prefix}autoimport-main${suffix}
       fi
-
-      # The IDL output isn't arch specific, but test each arch frontend
-      run_host_app_verbose "${WIDL}" -o idltest.h idltest.idl -h
-      run_host_app_verbose "${CC}" ${CFLAGS} -o ${prefix}idltest${suffix}.exe idltest.c -I. -lole32 ${VERBOSE_FLAG} ${STATIC_LIBGCC}
-      show_host_libs ${prefix}idltest${suffix}
-      run_target_app_verbose ./${prefix}idltest${suffix}
-    fi
-
-    run_host_app_verbose ${CXX} -o ${prefix}hello-cpp${suffix}${XBB_HOST_DOT_EXE} hello-cpp.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_host_libs ${prefix}hello-cpp${suffix}
-    run_target_app_verbose ./${prefix}hello-cpp${suffix}
-
-    run_host_app_verbose ${CXX} -o ${prefix}hello-exception${suffix}${XBB_HOST_DOT_EXE} hello-exception.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_host_libs ${prefix}hello-exception${suffix}
-    run_target_app_verbose ./${prefix}hello-exception${suffix}
-
-    run_host_app_verbose ${CXX} -o ${prefix}exception-locale${suffix}${XBB_HOST_DOT_EXE} exception-locale.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_host_libs ${prefix}exception-locale${suffix}
-    run_target_app_verbose ./${prefix}exception-locale${suffix}
-
-    run_host_app_verbose ${CXX} -o ${prefix}exception-reduced${suffix}${XBB_HOST_DOT_EXE} exception-reduced.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_host_libs ${prefix}exception-reduced${suffix}
-    run_target_app_verbose ./${prefix}exception-reduced${suffix}
-
-    run_host_app_verbose ${CXX} -o ${prefix}global-terminate${suffix}${XBB_HOST_DOT_EXE} global-terminate.cpp -std=c++17 ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_host_libs ${prefix}global-terminate${suffix}
-    run_target_app_verbose ./${prefix}global-terminate${suffix}
-
-    run_host_app_verbose ${CXX} -o ${prefix}longjmp-cleanup${suffix}${XBB_HOST_DOT_EXE} longjmp-cleanup.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-    show_host_libs ${prefix}longjmp-cleanup${suffix}
-    run_target_app_verbose ./${prefix}longjmp-cleanup${suffix}
-
-    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
-      run_host_app_verbose ${CXX} -o tlstest-lib.dll tlstest-lib.cpp -shared -Wl,--out-implib,libtlstest-lib.dll.a ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-      show_host_libs tlstest-lib.dll
-
-      run_host_app_verbose ${CXX} -o ${prefix}tlstest-main${suffix}.exe tlstest-main.cpp ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-      show_host_libs ${prefix}tlstest-main${suffix}
-
       (
-        # For libstdc++-6.dll
-        if [ "$(uname -o)" == "Msys" ]
-        then
-          export PATH="${test_bin_path}/lib;${PATH:-}"
-          echo "PATH=${PATH}"
-        elif [ "$(uname)" == "Linux" ]
-        then
-          export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
-          echo "WINEPATH=${WINEPATH}"
-        fi
+        # Old macOS linkers do not support LTO, thus use lld.
+        test_compiler_single "${test_bin_path}"
+        test_compiler_single "${test_bin_path}" --gc
+        test_compiler_single "${test_bin_path}" --lto --lld
+        test_compiler_single "${test_bin_path}" --gc --lto --lld
 
-        if false # [ "${XBB_HOST_ARCH}" == "ia32" ]
-        then
-          if [ "$(uname)" == "Linux" ]
-          then
-            # "lock.c: LOCKTABLEENTRY.crit" wait timed out in thread 0062, blocked by 0063, retrying (60 sec)
-            echo "The test ${prefix}tlstest-main${suffix} is known to hang on wine; ignored."
-          elif [ "$(uname -o)" == "Msys" -a "${prefix}" == "static-" ]
-          then
-            echo "The test ${prefix}tlstest-main${suffix} is known to hang on GitHub Actions; ignored."
-          else
-            run_target_app_verbose ./${prefix}tlstest-main${suffix} || echo "The test ${prefix}tlstest-main${suffix} is known to fail; ignored."
-          fi
-        else
-          run_target_app_verbose ./${prefix}tlstest-main${suffix}
-        fi
+        echo "Skipping all --static-lib on macOS..."
+        echo "Skipping all --static on macOS..."
       )
     fi
-
-    if [ "${prefix}" != "static-" ]
-    then
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-      then
-        run_host_app_verbose ${CXX} -o throwcatch-lib.dll throwcatch-lib.cpp -shared -Wl,--out-implib,libthrowcatch-lib.dll.a ${VERBOSE_FLAG}
-      else
-        run_host_app_verbose ${CXX} -o libthrowcatch-lib.${XBB_HOST_SHLIB_EXT} throwcatch-lib.cpp -shared -fpic ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-      fi
-
-      run_host_app_verbose ${CXX} -o ${prefix}throwcatch-main${suffix}${XBB_HOST_DOT_EXE} throwcatch-main.cpp -L. -lthrowcatch-lib ${VERBOSE_FLAG} ${STATIC_LIBGCC} ${STATIC_LIBSTD}
-
-      (
-        LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
-        export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-
-        show_host_libs ${prefix}throwcatch-main${suffix}
-        if [ "${XBB_HOST_PLATFORM}" == "win32" -a "${XBB_HOST_ARCH}" == "ia32" ]
-        then
-          run_target_app_verbose ./${prefix}throwcatch-main${suffix} || echo "The test ${prefix}throwcatch-main${suffix} is known to fail; ignored."
-        elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${prefix}" == "" ]
-        then
-          # dyld: Symbol not found: __ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE5c_strEv
-          run_target_app_verbose ./${prefix}throwcatch-main${suffix} || echo "The test ${prefix}throwcatch-main${suffix} is known to fail; ignored."
-        else
-          run_target_app_verbose ./${prefix}throwcatch-main${suffix}
-        fi
-      )
-    fi
-
-    # Test if the linker is able to link weak symbols.
-    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-    then
-      # On Windows only the -flto linker is capable of understanding weak symbols.
-      run_host_app_verbose "${CC}" ${CFLAGS} -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c -flto
-      run_host_app_verbose "${CC}" ${CFLAGS} -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c -flto
-      run_host_app_verbose "${CC}" ${CFLAGS} -o ${prefix}hello-weak${suffix}${XBB_HOST_DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC} -flto
-      test_target_expect "Hello World!" ./${prefix}hello-weak${suffix}
-    else
-      run_host_app_verbose "${CC}" ${CFLAGS} -c -o ${prefix}hello-weak${suffix}.c.o hello-weak.c
-      run_host_app_verbose "${CC}" ${CFLAGS} -c -o ${prefix}hello-f-weak${suffix}.c.o hello-f-weak.c
-      run_host_app_verbose "${CC}" ${CFLAGS} -o ${prefix}hello-weak${suffix}${XBB_HOST_DOT_EXE} ${prefix}hello-weak${suffix}.c.o ${prefix}hello-f-weak${suffix}.c.o ${VERBOSE_FLAG} -lm ${STATIC_LIBGCC}
-      test_target_expect "Hello World!" ./${prefix}hello-weak${suffix}
-    fi
   )
-
-  (
-    cd fortran
-
-    # There is no static Fortran library.
-    if [ "${prefix}" != "static-lib-" ]
-    then
-      # Test a very simple Fortran (a print).
-      run_host_app_verbose "${F90}" ${VERBOSE_FLAG}  -o "${prefix}hello-f${suffix}${XBB_HOST_DOT_EXE}" hello.f90 ${STATIC_LIBGCC}
-      # The space is expected.
-      test_target_expect " Hello" "./${prefix}hello-f${suffix}"
-
-      run_host_app_verbose "${F90}" ${VERBOSE_FLAG}  -o "${prefix}concurrent-f${suffix}${XBB_HOST_DOT_EXE}" concurrent.f90 ${STATIC_LIBGCC}
-      run_target_app_verbose "./${prefix}concurrent-f${suffix}"
-    fi
-
-  )
-
 }
 
 # -----------------------------------------------------------------------------
