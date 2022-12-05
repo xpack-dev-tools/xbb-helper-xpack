@@ -61,11 +61,13 @@ function test_compiler_single()
 
         --64 )
           bits="64"
+          suffix="-64"
           shift
           ;;
 
         --32 )
           bits="32"
+          suffix="-32"
           shift
           ;;
 
