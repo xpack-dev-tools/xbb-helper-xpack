@@ -456,7 +456,7 @@ function test_compiler_single()
 
           # mingw-gcc on macOS throws
           # multiple definition of `_Unwind_Resume'
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && is_clang
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
             run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS}
           else
