@@ -13,8 +13,11 @@
 # [--suffix=("" | "-bootstrap")]
 # [--lto]
 # [--gc]
+# [--32|--64]
 # [--static | --static-lib]
 # [--crt]
+# [--libunwind]
+# [--lld]
 
 function test_compiler_single()
 {
@@ -198,7 +201,7 @@ function test_compiler_single()
       run_host_app_verbose "${CC}" "simple-hello.c.o" -o "${prefix}simple-hello-c-two${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
       test_target_expect "Hello" "${prefix}simple-hello-c-two${suffix}${XBB_TARGET_DOT_EXE}"
 
-      # -------------------------------------------------------------------------
+      # -----------------------------------------------------------------------
 
       # Test C++ compile and link in a single step.
       run_host_app_verbose "${CXX}" "simple-hello.cpp" -o "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
@@ -209,7 +212,7 @@ function test_compiler_single()
       run_host_app_verbose "${CXX}" "${prefix}simple-hello${suffix}.cpp.o" -o "${prefix}simple-hello-cpp-two${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       test_target_expect "Hello" "${prefix}simple-hello-cpp-two${suffix}${XBB_TARGET_DOT_EXE}"
 
-      # -------------------------------------------------------------------------
+      # -----------------------------------------------------------------------
 
       if [ "${is_static}" != "y" ]
       then
@@ -250,7 +253,7 @@ function test_compiler_single()
         )
       fi
 
-      # -------------------------------------------------------------------------
+      # -----------------------------------------------------------------------
 
       run_host_app_verbose "${CXX}" "simple-exception.cpp" -o "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       test_target_expect "MyException" "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}"
