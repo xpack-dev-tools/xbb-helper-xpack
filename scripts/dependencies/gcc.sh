@@ -856,16 +856,24 @@ function test_gcc()
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       (
+        export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
+        echo "WINEPATH=${WINEPATH}"
+
         test_compiler_single "${test_bin_path}"
         test_compiler_single "${test_bin_path}" --gc
         test_compiler_single "${test_bin_path}" --lto
         test_compiler_single "${test_bin_path}" --gc --lto
+      )
+      (
+        export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
+        echo "WINEPATH=${WINEPATH}"
 
         test_compiler_single "${test_bin_path}" --static-lib
         test_compiler_single "${test_bin_path}" --static-lib --gc
         test_compiler_single "${test_bin_path}" --static-lib --lto
         test_compiler_single "${test_bin_path}" --static-lib --gc --lto
-
+      )
+      (
         test_compiler_single "${test_bin_path}" --static
         test_compiler_single "${test_bin_path}" --static --gc
         test_compiler_single "${test_bin_path}" --static --lto
