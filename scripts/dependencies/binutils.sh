@@ -210,9 +210,8 @@ function build_binutils()
 
   if [ "${has_program_prefix}" == "y" ]
   then
+    # The explicit program prefix takes precendence on the triplet.
     name_prefix="${program_prefix}"
-  else
-    program_prefix="${triplet}-"
   fi
 
   local binutils_src_folder_name="binutils-${binutils_version}"

@@ -13,8 +13,11 @@
 # [--suffix=("" | "-bootstrap")]
 # [--lto]
 # [--gc]
+# [--32|--64]
 # [--static | --static-lib]
 # [--crt]
+# [--libunwind]
+# [--lld]
 
 function test_compiler_single()
 {
@@ -38,7 +41,7 @@ function test_compiler_single()
 
     local prefix=""
     local suffix=""
-
+    local bits=""
 
     while [ $# -gt 0 ]
     do
@@ -56,6 +59,18 @@ function test_compiler_single()
 
         --lto )
           is_lto="y"
+          shift
+          ;;
+
+        --64 )
+          bits="64"
+          suffix="-64"
+          shift
+          ;;
+
+        --32 )
+          bits="32"
+          suffix="-32"
           shift
           ;;
 
@@ -158,6 +173,14 @@ function test_compiler_single()
       prefix="static-lib-${prefix}"
     fi
 
+    if [ "${bits}" != "" ]
+    then
+      CFLAGS+=" -m${bits}"
+      CXXFLAGS+=" -m${bits}"
+      LDFLAGS+=" -m${bits}"
+      LDXXFLAGS+=" -m${bits}"
+    fi
+
     if [ "${XBB_IS_DEVELOP}" == "y" ]
     then
       CFLAGS+=" -v"
@@ -178,7 +201,7 @@ function test_compiler_single()
       run_host_app_verbose "${CC}" "simple-hello.c.o" -o "${prefix}simple-hello-c-two${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
       test_target_expect "Hello" "${prefix}simple-hello-c-two${suffix}${XBB_TARGET_DOT_EXE}"
 
-      # -------------------------------------------------------------------------
+      # -----------------------------------------------------------------------
 
       # Test C++ compile and link in a single step.
       run_host_app_verbose "${CXX}" "simple-hello.cpp" -o "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
@@ -189,7 +212,7 @@ function test_compiler_single()
       run_host_app_verbose "${CXX}" "${prefix}simple-hello${suffix}.cpp.o" -o "${prefix}simple-hello-cpp-two${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       test_target_expect "Hello" "${prefix}simple-hello-cpp-two${suffix}${XBB_TARGET_DOT_EXE}"
 
-      # -------------------------------------------------------------------------
+      # -----------------------------------------------------------------------
 
       if [ "${is_static}" != "y" ]
       then
@@ -230,7 +253,7 @@ function test_compiler_single()
         )
       fi
 
-      # -------------------------------------------------------------------------
+      # -----------------------------------------------------------------------
 
       run_host_app_verbose "${CXX}" "simple-exception.cpp" -o "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       test_target_expect "MyException" "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}"
@@ -360,6 +383,10 @@ function test_compiler_single()
         # got 11: "Hello there"
         echo
         echo "Skipping hello-weak-c without -flto with Windows binaries..."
+      elif is_cross && is_gcc
+      then
+        echo
+        echo "Skipping hello-weak-c without -flto with Windows binaries..."
       else
         run_host_app_verbose "${CC}" -c "hello-weak.c" -o "${prefix}hello-weak${suffix}.c.o" ${CFLAGS}
         run_host_app_verbose "${CC}" -c "hello-f-weak.c" -o "${prefix}hello-f-weak${suffix}.c.o" ${CFLAGS}
@@ -387,9 +414,13 @@ function test_compiler_single()
         # got 11: "Hello there"
         echo
         echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
+      elif is_cross && is_gcc
+      then
+        echo
+        echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
       else
         run_host_app_verbose "${CXX}" -c "hello-weak-cpp.cpp" -o "${prefix}hello-weak-cpp${suffix}.cpp.o" ${CXXFLAGS}
-        run_host_app_verbose "${CXX}" -c "hello-f-weak-cpp.cpp" -o "${prefix}hello-f-weak-cpp${suffix}.cpp.o"  ${CXXFLAGS}
+        run_host_app_verbose "${CXX}" -c "hello-f-weak-cpp.cpp" -o "${prefix}hello-f-weak-cpp${suffix}.cpp.o" ${CXXFLAGS}
         run_host_app_verbose "${CXX}" "${prefix}hello-weak-cpp${suffix}.cpp.o" "${prefix}hello-f-weak-cpp${suffix}.cpp.o" -o "${prefix}hello-weak-cpp${suffix}${XBB_TARGET_DOT_EXE}" -lm ${LDXXFLAGS}
         test_target_expect "Hello World!" "./${prefix}hello-weak-cpp${suffix}${XBB_TARGET_DOT_EXE}"
       fi
@@ -425,7 +456,7 @@ function test_compiler_single()
 
           # mingw-gcc on macOS throws
           # multiple definition of `_Unwind_Resume'
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && is_clang
+          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
           then
             run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS}
           else
@@ -444,6 +475,13 @@ function test_compiler_single()
             # It happens with both bootstrap & cross.
             if [ "${is_lto}" == "y" ] && is_non_native && is_mingw_gcc
             then
+              show_target_libs "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
+              echo
+              echo "Skipping ${prefix}throwcatch-main${suffix} with gcc -flto..."
+            elif [ "${is_lto}" == "y" ] && is_cross && is_gcc
+            then
+              # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 0138), starting debugger...
+              # Unhandled exception: page fault on execute access to 0x122b1157c in 64-bit code (0x0000000122b1157c).
               show_target_libs "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
               echo
               echo "Skipping ${prefix}throwcatch-main${suffix} with gcc -flto..."
@@ -516,6 +554,13 @@ function test_compiler_single()
             # 32 bit pseudo relocation at 000000014000163A out of range, targeting 000000028846146C, yielding the value 000000014845FE2E.
             # 0080:err:rpc:RpcAssoc_BindConnection receive failed with error 1726
 
+            show_target_libs "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
+            echo
+            echo "Skipping ${prefix}autoimport-main${suffix} with gcc -flto..."
+          elif [ "${is_lto}" == "y" ] && is_cross && is_gcc
+          then
+            # Mingw-w64 runtime failure:
+            # 32 bit pseudo relocation at 000000014000152A out of range, targeting 000000028846135C, yielding the value 000000014845FE2E.
             show_target_libs "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
             echo
             echo "Skipping ${prefix}autoimport-main${suffix} with gcc -flto..."
