@@ -236,7 +236,7 @@ function build_perform_common()
 
   # Guarantee a known environment.
   xbb_reset_env
-  xbb_set_target
+  xbb_set_target "requested"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
   (
