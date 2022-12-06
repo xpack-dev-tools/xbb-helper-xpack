@@ -1,3 +1,6 @@
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/xpack-dev-tools/xbb-helper-xpack)](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/package.json)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xpack-dev-tools/xbb-helper-xpack)](https://github.com/xpack-dev-tools/xbb-helper-xpack/releases/)
+[![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/xbb-helper.svg?color=blue)](https://www.npmjs.com/package/@xpack-dev-tools/xbb-helper/)
 [![license](https://img.shields.io/github/license/xpack-dev-tools/xbb-helper-xpack)](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/LICENSE)
 
 # A source xPack with helper files for the XBB builds
@@ -5,16 +8,28 @@
 This project provides common scripts and other files useful during
 **xPack Build Box (XBB)** builds.
 
-The project is hosted on GitHub as
-[xpack-dev-tools/xbb-helper-xpack](https://github.com/xpack-dev-tools/xbb-helper-xpack).
+This open source project is hosted on GitHub as
+[`xpack-dev-tools/xbb-helper-xpack`](https://github.com/xpack-dev-tools/xbb-helper-xpack).
+
+## Overview
+
+This projects includes:
+
+- shell scripts to build various projects as dependencies
+(see the `scripts/dependencies`)
+- templates used to generate project configurations
+- tests
+- patches
+- other files
 
 ## Maintainer info
 
-This page is addressed to developers who plan to include this package into their own projects.
+This page is addressed to developers who plan to include this package
+into their own projects.
 
 For maintainer info, please see:
 
-- [How to publish](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/README-RELEASE.md)
+- [How to publish](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/README-MAINTAINER.md)
 
 ## Install
 
@@ -25,6 +40,12 @@ As a source xPack, the easiest way to add it to a project is via
 
 A recent [xpm](https://xpack.github.io/xpm/),
 which is a portable [Node.js](https://nodejs.org/) command line application.
+
+It is recommended to update to the latest version with:
+
+```sh
+npm install --global xpm@latest
+```
 
 For details please follow the instructions in the
 [xPack install](https://xpack.github.io/install/) page.
@@ -73,96 +94,46 @@ into `xpack`.
 
 ## Developer info
 
-### Overview
-
 This project includes several bash scripts with functions that can be
 used for common jobs in application builds.
 
 ### Integration info
 
-There are multiple scripts, but the easiest way is to include
-`scripts/helper.sh`.
+A typical use case is to define an xPack action that copies, among
+other things, the build scripts from the helper templates:
 
-For common operations, like builds, include `scripts/common-build.sh`.
+```json
+  ...
+  "cp xpacks/xpack-dev-tools-xbb-helper/templates/build.sh scripts/",
+  "cp xpacks/xpack-dev-tools-xbb-helper/templates/test.sh scripts/"
+```
+
+The resulting `scripts/build.sh` requires two application scripts:
+
+- `scripts/application.sh` - with common definitions
+- `scripts.versioning.sh` - with details how to build different versions
+
+The resulting `scripts/test.sh` requires:
+
+- `scripts/application.sh` - with common definitions
+- `tests/run.sh` - the code to run the validation tests
+- `tests/update.sh` - optional updates for different docker environments
 
 ### Known problems
 
 - none
 
+### Tests
+
+There are currently no CI tests specific for this package.
+
+The files in the `tests` folder are used during native compilers tests.
+
 ### Examples
 
-A typical use case is to source the helper and the `common-*.sh` and
-invoke it like:
+Please see any of the existing projects, like:
 
-```sh
-#!/usr/bin/env bash
-# -----------------------------------------------------------------------------
-# This file is part of the xPack distribution.
-#   (https://xpack.github.io)
-# Copyright (c) 2022 Liviu Ionescu.
-#
-# Permission to use, copy, modify, and/or distribute this software
-# for any purpose is hereby granted, under the terms of the MIT license.
-# -----------------------------------------------------------------------------
-
-# -----------------------------------------------------------------------------
-# Safety settings (see https://gist.github.com/ilg-ul/383869cbb01f61a51c4d).
-
-if [[ ! -z ${DEBUG} ]]
-then
-  set ${DEBUG} # Activate the expand mode if DEBUG is anything but empty.
-else
-  DEBUG=""
-fi
-
-set -o errexit # Exit if command failed.
-set -o pipefail # Exit if pipe failed.
-set -o nounset # Exit if variable not set.
-
-# Remove the initial space and instead use '\n'.
-IFS=$'\n\t'
-
-# -----------------------------------------------------------------------------
-# Identify the script location, to reach, for example, the helper scripts.
-
-build_script_path="$0"
-if [[ "${build_script_path}" != /* ]]
-then
-  # Make relative path absolute.
-  build_script_path="$(pwd)/$0"
-fi
-
-script_folder_path="$(dirname "${build_script_path}")"
-script_folder_name="$(basename "${script_folder_path}")"
-
-# =============================================================================
-
-scripts_folder_path="${script_folder_path}"
-project_folder_path="$(dirname ${script_folder_path})"
-helper_folder_path="${project_folder_path}/xpacks/xpack-dev-tools-xbb-helper"
-
-# -----------------------------------------------------------------------------
-
-source "${scripts_folder_path}/application.sh"
-
-# Common definitions.
-source "${helper_folder_path}/scripts/common-build.sh"
-
-source "${scripts_folder_path}/versioning.sh"
-
-source "${scripts_folder_path}/dependencies/ninja.sh"
-
-# -----------------------------------------------------------------------------
-
-machine_detect
-
-help_message="    bash $0 [--win] [--debug] [--develop] [--jobs N] [--help]"
-host_parse_options "${help_message}" "$@"
-
-common_build
-
-exit 0
-```
+- <https://github.com/xpack-dev-tools/gcc-xpack/>
 
 ## Change log - incompatible changes
 
