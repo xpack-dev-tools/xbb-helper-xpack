@@ -9,26 +9,59 @@
 
 # -----------------------------------------------------------------------------
 
-# Environment variables:
-# XBB_BINUTILS_VERSION
-# XBB_BINUTILS_SRC_FOLDER_NAME
-# XBB_BINUTILS_ARCHIVE_NAME
-# XBB_BINUTILS_URL
+# https://ftp.gnu.org/gnu/binutils/
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=binutils-git
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
 
 # https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-binutils/trunk/PKGBUILD
 # https://github.com/archlinux/svntogit-community/blob/packages/riscv32-elf-binutils/trunk/PKGBUILD
 
+# 2022-02-09, "2.38"
+# 2022-08-05, "2.39"
+
+# Environment variables:
+#
+# XBB_BINUTILS_SRC_FOLDER_NAME
+# XBB_BINUTILS_ARCHIVE_NAME
+# XBB_BINUTILS_URL
+# XBB_BINUTILS_PATCH_FILE_NAME
+
 function build_binutils_cross()
 {
-  # https://ftp.gnu.org/gnu/binutils/
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=binutils-git
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
+  local binutils_version="$1"
+  shift
 
-  local binutils_folder_name="binutils-${XBB_BINUTILS_VERSION}"
+  local triplet="$1"
+  shift
+
+  local name_prefix="${triplet}-"
+
+  local name_suffix=""
+  local is_nano="n"
+  local nano_option=""
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --nano )
+        is_nano="y"
+        nano_option="--nano"
+        name_suffix="-nano"
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
+
+
+  local binutils_folder_name="${name_prefix}binutils-${binutils_version}${name_suffix}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}"
 
-  local binutils_patch="${binutils_folder_name}.patch"
   local binutils_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${binutils_folder_name}-installed"
   if [ ! -f "${binutils_stamp_file_path}" ]
   then
@@ -36,8 +69,9 @@ function build_binutils_cross()
     # Download binutils.
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
     cd "${XBB_SOURCES_FOLDER_PATH}"
+
     download_and_extract "${XBB_BINUTILS_ARCHIVE_URL}" "${XBB_BINUTILS_ARCHIVE_NAME}" \
-        "${XBB_BINUTILS_SRC_FOLDER_NAME}" "${binutils_patch}"
+        "${XBB_BINUTILS_SRC_FOLDER_NAME}" "${XBB_BINUTILS_PATCH_FILE_NAME}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
@@ -54,7 +88,9 @@ function build_binutils_cross()
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
-        LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/mingw/lib/CRT_glob.o"
+        # TODO
+        :
+        # LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/mingw/lib/CRT_glob.o"
       fi
 
       export CPPFLAGS
@@ -68,9 +104,12 @@ function build_binutils_cross()
           xbb_show_env_develop
 
           echo
-          echo "Running cross binutils configure..."
+          echo "Running cross ${name_prefix}binutils${name_suffix} configure..."
 
-          bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_BINUTILS_SRC_FOLDER_NAME}/configure" --help
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          then
+            bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_BINUTILS_SRC_FOLDER_NAME}/configure" --help
+          fi
 
           # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
           # binutils_configure='--enable-initfini-array --disable-nls
@@ -90,14 +129,18 @@ function build_binutils_cross()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-          config_options+=("--infodir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/info")
-          config_options+=("--mandir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/man")
-          config_options+=("--htmldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/html")
-          config_options+=("--pdfdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/pdf")
+
+          config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--htmldir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/html")
+          config_options+=("--pdfdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/pdf")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
-          config_options+=("--target=${XBB_GCC_TARGET}")
+          config_options+=("--target=${triplet}")
+
+          config_options+=("--program-prefix=${name_prefix}")
+          config_options+=("--program-suffix=")
 
           config_options+=("--disable-nls") # Arm, AArch64
           config_options+=("--disable-gdb") # Arm, AArch64
@@ -111,7 +154,7 @@ function build_binutils_cross()
           config_options+=("--enable-plugins") # Arm, AArch64
           config_options+=("--enable-build-warnings=no")
 
-          if [ "${XBB_GCC_TARGET}" == "aarch64-none-elf" ]
+          if [ "${triplet}" == "aarch64-none-elf" ]
           then
             config_options+=("--enable-64-bit-bfd") # AArch64
             config_options+=("--enable-targets=arm-none-eabi,aarch64-none-linux-gnu,aarch64-none-elf") # AArch64
@@ -136,7 +179,7 @@ function build_binutils_cross()
 
       (
         echo
-        echo "Running cross binutils make..."
+        echo "Running cross ${name_prefix}binutils${name_suffix} make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -156,68 +199,75 @@ function build_binutils_cross()
         # make install-strip
         run_verbose make install
 
-        if [ -n "${APP_PREFIX_NANO:-}" ]
-        then
-          # Without this copy, the build for the nano version of the GCC second
-          # step fails with unexpected errors, like "cannot compute suffix of
-          # object files: cannot compile".
-          copy_dir "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" "${APP_PREFIX_NANO}"
-        fi
-
-        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ar"
-        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-as"
-        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ld"
-        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-nm"
-        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-objcopy"
-        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-objdump"
-        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-ranlib"
-        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-size"
-        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strings"
-        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-strip"
+        test_binutils_cross_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}" "${triplet}"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
         "${XBB_SOURCES_FOLDER_PATH}/${XBB_BINUTILS_SRC_FOLDER_NAME}" \
-        "${binutils_folder_name}"
+        "binutils-${binutils_version}"
     )
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${binutils_stamp_file_path}"
 
   else
-    echo "Component cross binutils already installed."
+    echo "Component cross ${name_prefix}binutils${name_suffix} already installed."
   fi
 
-  tests_add "test_binutils_cross" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "test_binutils_cross" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"
+}
+
+function test_binutils_cross_libs()
+{
+  local test_bin_path="$1"
+  local triplet="$2"
+
+  show_host_libs "${test_bin_path}/${triplet}-ar"
+  show_host_libs "${test_bin_path}/${triplet}-as"
+  show_host_libs "${test_bin_path}/${triplet}-ld"
+  show_host_libs "${test_bin_path}/${triplet}-nm"
+  show_host_libs "${test_bin_path}/${triplet}-objcopy"
+  show_host_libs "${test_bin_path}/${triplet}-objdump"
+  show_host_libs "${test_bin_path}/${triplet}-ranlib"
+  show_host_libs "${test_bin_path}/${triplet}-size"
+  show_host_libs "${test_bin_path}/${triplet}-strings"
+  show_host_libs "${test_bin_path}/${triplet}-strip"
 }
 
 function test_binutils_cross()
 {
   local test_bin_path="$1"
+  local triplet="$2"
+
   (
+    echo
+    echo "Checking the ${triplet}-binutils shared libraries..."
 
-    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-ar"
-    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-as"
-    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-ld"
-    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-nm"
-    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-objcopy"
-    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-objdump"
-    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-ranlib"
-    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-size"
-    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-strings"
-    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-strip"
+    show_host_libs "${test_bin_path}/${triplet}-ar"
+    show_host_libs "${test_bin_path}/${triplet}-as"
+    show_host_libs "${test_bin_path}/${triplet}-ld"
+    show_host_libs "${test_bin_path}/${triplet}-nm"
+    show_host_libs "${test_bin_path}/${triplet}-objcopy"
+    show_host_libs "${test_bin_path}/${triplet}-objdump"
+    show_host_libs "${test_bin_path}/${triplet}-ranlib"
+    show_host_libs "${test_bin_path}/${triplet}-size"
+    show_host_libs "${test_bin_path}/${triplet}-strings"
+    show_host_libs "${test_bin_path}/${triplet}-strip"
 
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-ar" --version
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-as" --version
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-ld" --version
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-nm" --version
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-objcopy" --version
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-objdump" --version
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-ranlib" --version
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-size" --version
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-strings" --version
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-strip" --version
+    echo
+    echo "Testing if ${triplet}-binutils start properly..."
+
+    run_host_app_verbose "${test_bin_path}/${triplet}-ar" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-as" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-ld" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-nm" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-objcopy" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-objdump" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-ranlib" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-size" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-strings" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-strip" --version
   )
 }
 

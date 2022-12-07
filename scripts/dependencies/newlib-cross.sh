@@ -10,7 +10,6 @@
 # -----------------------------------------------------------------------------
 
 # Environment variables:
-# XBB_NEWLIB_VERSION
 # XBB_NEWLIB_SRC_FOLDER_NAME
 # XBB_NEWLIB_ARCHIVE_URL
 # XBB_NEWLIB_ARCHIVE_NAME
@@ -22,8 +21,36 @@
 # $1="" or $1="-nano"
 function build_cross_newlib()
 {
-  local name_suffix="${1:-""}"
-  local newlib_folder_name="newlib-${XBB_NEWLIB_VERSION}${name_suffix}"
+  local newlib_version="$1"
+  shift
+
+  local triplet="$1"
+  shift
+
+  local name_prefix="${triplet}-"
+
+  local name_suffix=""
+  local is_nano="n"
+  local nano_option=""
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --nano )
+        is_nano="y"
+        nano_option="--nano"
+        name_suffix="-nano"
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+    shift
+  done
+
+  local newlib_folder_name="${name_prefix}newlib-${newlib_version}${name_suffix}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${newlib_folder_name}"
 
@@ -71,15 +98,14 @@ function build_cross_newlib()
 
       xbb_activate_dependencies_dev
 
-      # TODO!
       # Add the gcc first stage binaries to the path.
-      PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin:${PATH}"
+      xbb_activate_application_bin
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      define_flags_for_target "${name_suffix}"
+      define_flags_for_target "${nano_option}"
 
       export CPPFLAGS
       export CFLAGS
@@ -114,13 +140,27 @@ function build_cross_newlib()
           # --enable-newlib-retargetable-locking ???
 
           echo
-          echo "Running cross newlib${name_suffix} configure..."
+          echo "Running cross ${name_prefix}newlib${name_suffix} configure..."
 
-          bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/configure" --help
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          then
+            bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/configure" --help
+          fi
 
           config_options=()
 
-          if [ "${name_suffix}" == "" ]
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
+          config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
+          config_options+=("--htmldir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/html")
+          config_options+=("--pdfdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/pdf")
+
+          config_options+=("--build=${XBB_BUILD_TRIPLET}")
+          config_options+=("--host=${XBB_HOST_TRIPLET}")
+          config_options+=("--target=${triplet}")
+
+          if [ "${is_nano}" != "y" ]
           then
 
             # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
@@ -135,16 +175,6 @@ function build_cross_newlib()
             # --enable-newlib-mb --enable-newlib-reent-check-verify
             # --target=aarch64-none-elf --prefix=/'
 
-            config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-            config_options+=("--infodir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/info")
-            config_options+=("--mandir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/man")
-            config_options+=("--htmldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/html")
-            config_options+=("--pdfdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/pdf")
-
-            config_options+=("--build=${XBB_BUILD_TRIPLET}")
-            config_options+=("--host=${XBB_HOST_TRIPLET}")
-            config_options+=("--target=${XBB_GCC_TARGET}")
-
             config_options+=("--disable-newlib-supplied-syscalls") # Arm, AArch64
 
             config_options+=("--enable-newlib-io-c99-formats") # Arm, AArch64
@@ -157,11 +187,7 @@ function build_cross_newlib()
 
             config_options+=("--enable-newlib-retargetable-locking") # Arm
 
-            run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/configure" \
-              "${config_options[@]}"
-
-          elif [ "${name_suffix}" == "-nano" ]
-          then
+          else
 
             # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
             # newlib_nano_configure=' --disable-newlib-supplied-syscalls
@@ -176,12 +202,6 @@ function build_cross_newlib()
             # --enable-newlib-io-long-long and --enable-newlib-io-c99-formats
             # are currently ignored if --enable-newlib-nano-formatted-io.
             # --enable-newlib-register-fini is debatable, was removed.
-
-            config_options+=("--prefix=${APP_PREFIX_NANO}")
-
-            config_options+=("--build=${XBB_BUILD_TRIPLET}")
-            config_options+=("--host=${XBB_HOST_TRIPLET}")
-            config_options+=("--target=${XBB_GCC_TARGET}")
 
             config_options+=("--disable-newlib-fseek-optimization") # Arm
             config_options+=("--disable-newlib-fvwrite-in-streamio") # Arm
@@ -199,13 +219,10 @@ function build_cross_newlib()
 
             config_options+=("--enable-newlib-retargetable-locking") # Arm
 
-            run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/configure" \
-              "${config_options[@]}"
-
-          else
-            echo "Unsupported build_cross_newlib name_suffix '${name_suffix}' in ${FUNCNAME[0]}()"
-            exit 1
           fi
+
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/configure" \
+            "${config_options[@]}"
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${newlib_folder_name}/config-log-$(ndate).txt"
         ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${newlib_folder_name}/configure-output-$(ndate).txt"
@@ -214,7 +231,7 @@ function build_cross_newlib()
       (
         # Partial build, without documentation.
         echo
-        echo "Running cross newlib${name_suffix} make..."
+        echo "Running cross ${name_prefix}newlib${name_suffix} make..."
 
         # Parallel builds may fail.
         run_verbose make -j ${XBB_JOBS}
@@ -225,12 +242,9 @@ function build_cross_newlib()
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${newlib_folder_name}/make-output-$(ndate).txt"
 
-      if [ "${name_suffix}" == "" ]
-      then
-        copy_license \
-          "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}" \
-          "${newlib_folder_name}"
-      fi
+      copy_license \
+        "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}" \
+        "newlib-${newlib_version}"
 
     )
 
@@ -238,13 +252,13 @@ function build_cross_newlib()
     touch "${newlib_stamp_file_path}"
 
   else
-    echo "Component cross newlib$1 already installed."
+    echo "Component cross ${name_prefix}newlib${name_suffix} already installed."
   fi
 }
 
 # -----------------------------------------------------------------------------
 
-function copy_cross_nano_libs()
+function cross_newlib_copy_nano_libs()
 {
   local src_folder="$1"
   local dst_folder="$2"

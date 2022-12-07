@@ -23,6 +23,9 @@
 # $1="" or $1="-py" or $1="-py3"
 function build_cross_gdb()
 {
+  local triplet="$1"
+  shift
+
   local name_suffix="${1:-""}"
 
   # GDB Text User Interface
@@ -175,9 +178,9 @@ function build_cross_gdb()
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
-          config_options+=("--target=${XBB_GCC_TARGET}")
+          config_options+=("--target=${triplet}")
 
-          config_options+=("--program-prefix=${XBB_GCC_TARGET}-")
+          config_options+=("--program-prefix=${triplet}-")
           config_options+=("--program-suffix=${name_suffix}")
 
           config_options+=("--disable-binutils") # Arm, AArch64
@@ -196,7 +199,7 @@ function build_cross_gdb()
           config_options+=("--enable-build-warnings=no")
           config_options+=("--enable-plugins") # Arm, AArch64
 
-          if [ "${XBB_GCC_TARGET}" == "aarch64-none-elf" ]
+          if [ "${triplet}" == "aarch64-none-elf" ]
           then
             config_options+=("--enable-64-bit-bfd") # AArch64
             config_options+=("--enable-targets=arm-none-eabi,aarch64-none-linux-gnu,aarch64-none-elf") # AArch64
@@ -214,7 +217,7 @@ function build_cross_gdb()
           config_options+=("--without-xxhash") # Arm, AArch64
 
           config_options+=("--with-expat") # Arm
-          config_options+=("--with-gdb-datadir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/share/gdb")
+          config_options+=("--with-gdb-datadir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/share/gdb")
 
           # No need to, we keep track of paths to shared libraries.
           # Plus that if fails the build:
@@ -232,7 +235,7 @@ function build_cross_gdb()
           # config_options+=("--with-libmpfr-type=static") # Arm, AArch64
 
           config_options+=("--with-pkgversion=${XBB_BRANDING}")
-          config_options+=("--with-system-gdbinit=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_GCC_TARGET}/lib/gdbinit")
+          config_options+=("--with-system-gdbinit=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib/gdbinit")
 
           # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib")
@@ -281,7 +284,7 @@ function build_cross_gdb()
 
         rm -rfv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/pyconfig.h"
 
-        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_GCC_TARGET}-gdb${name_suffix}"
+        show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${triplet}-gdb${name_suffix}"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}/make-output-$(ndate).txt"
 
@@ -300,36 +303,23 @@ function build_cross_gdb()
     echo "Component cross gdb${name_suffix} already installed."
   fi
 
-  tests_add "test_cross_gdb${name_suffix}" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-}
-
-function test_cross_gdb_py()
-{
-  local test_bin_path="$1"
-
-  test_cross_gdb "${test_bin_path}" "-py"
-}
-
-function test_cross_gdb_py3()
-{
-  local test_bin_path="$1"
-
-  test_cross_gdb "${test_bin_path}" "-py3"
+  tests_add "test_cross_gdb" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}" "${name_suffix}"
 }
 
 function test_cross_gdb()
 {
   local test_bin_path="$1"
-  local suffix="${2:-}"
+  local triplet="$2"
+  local suffix="${3:-}"
 
   (
-    show_host_libs "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}"
+    show_host_libs "${test_bin_path}/${triplet}-gdb${suffix}"
 
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" --version
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" --config
+    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${suffix}" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${suffix}" --config
 
     # This command is known to fail with 'Abort trap: 6' (SIGABRT)
-    run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" \
+    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${suffix}" \
       --nh \
       --nx \
       -ex='show language' \
@@ -339,7 +329,7 @@ function test_cross_gdb()
     if [ "${suffix}" == "-py3" ]
     then
       # Show Python paths.
-      run_host_app_verbose "${test_bin_path}/${XBB_GCC_TARGET}-gdb${suffix}" \
+      run_host_app_verbose "${test_bin_path}/${triplet}-gdb${suffix}" \
         --nh \
         --nx \
         -ex='set pagination off' \
