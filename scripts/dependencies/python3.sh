@@ -246,7 +246,7 @@ function test_python3()
 # -----------------------------------------------------------------------------
 
 # Download the Windows Python 3 libraries and headers.
-function download_python3_win()
+function python3_download_win()
 {
   # https://www.python.org/downloads/windows/
   # https://www.python.org/downloads/release/python-372/
@@ -304,7 +304,7 @@ function download_python3_win()
 
 # Used by gdb-py3 on Windows. The default paths on Windows are different
 # from POSIX.
-function add_python3_win_syslibs()
+function python3_add_win_syslibs()
 {
   if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
@@ -324,7 +324,7 @@ function add_python3_win_syslibs()
 
 # Used by gdb-py3 on POSIX and by packages with full
 # control over path (like meson) on all platforms.
-function add_python3_syslibs()
+function python3_add_syslibs()
 {
   local python_with_version="python${XBB_PYTHON3_VERSION_MAJOR}.${XBB_PYTHON3_VERSION_MINOR}"
   if [ ! -d "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" ]
