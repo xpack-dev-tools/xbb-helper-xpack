@@ -322,6 +322,11 @@ function build_mingw_gcc_first()
         run_verbose make install-strip-gcc
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}/make-step1-output-$(ndate).txt"
+
+      copy_license \
+        "${XBB_SOURCES_FOLDER_PATH}/${mingw_gcc_src_folder_name}" \
+        "gcc-${mingw_gcc_version}"
+
     )
 
     hash -r
