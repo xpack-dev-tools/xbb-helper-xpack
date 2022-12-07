@@ -20,7 +20,7 @@ mingw-w64, based on the configuration used.
 On macOS and Linux this is always the native target.
 
 On Windows, if there are native dependencies to build before the Windows
-binaries, the folowing variable can be set in `application.sh`:
+binaries, the following variable can be set in `application.sh`:
 
 ```sh
 XBB_APPLICATION_INITIAL_TARGET="native"
