@@ -48,8 +48,6 @@ function build_python3()
   local python3_version_major=$(echo ${python3_version} | sed -e 's|\([0-9]\)\..*|\1|')
   local python3_version_minor=$(echo ${python3_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
 
-  # extern used in add_python3_syslibs()
-
   local python3_src_folder_name="${XBB_PYTHON3_SRC_FOLDER_NAME:-Python-${python3_version}}"
 
   local python3_archive="${python3_src_folder_name}.tar.xz"
@@ -129,6 +127,7 @@ function build_python3()
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           # Exception: use BINS_INSTALL_*.
           config_options+=("--libdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib")
+
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
