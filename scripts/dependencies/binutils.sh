@@ -321,7 +321,7 @@ function build_binutils()
 
       copy_license \
         "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}" \
-        "${binutils_folder_name}"
+        "binutils-${binutils_version}"
 
     )
 
