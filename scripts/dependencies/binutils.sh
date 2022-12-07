@@ -378,7 +378,7 @@ function test_binutils()
     show_host_libs "${test_bin_path}/${name_prefix}strip"
 
     echo
-    echo "Testing if ${name_prefix}binutils starts properly..."
+    echo "Testing if ${name_prefix}binutils start properly..."
 
     run_host_app_verbose "${test_bin_path}/${name_prefix}ar" --version
     run_host_app_verbose "${test_bin_path}/${name_prefix}as" --version
