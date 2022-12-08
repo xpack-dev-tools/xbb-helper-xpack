@@ -306,7 +306,7 @@ function python3_download_win()
 
 # Used by gdb-py3 on Windows. The default paths on Windows are different
 # from POSIX.
-function python3_add_win_syslibs()
+function python3_copy_win_syslibs()
 {
   if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
@@ -326,7 +326,7 @@ function python3_add_win_syslibs()
 
 # Used by gdb-py3 on POSIX and by packages with full
 # control over path (like meson) on all platforms.
-function python3_add_syslibs()
+function python3_copy_syslibs()
 {
   local python_with_version="python${XBB_PYTHON3_VERSION_MAJOR}.${XBB_PYTHON3_VERSION_MINOR}"
   if [ ! -d "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" ]
