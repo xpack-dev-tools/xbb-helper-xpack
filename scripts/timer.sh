@@ -21,6 +21,7 @@ function timer_stop()
 {
   local script_end_second=$(date +%s)
   echo
+  echo "The ${XBB_APPLICATION_DISTRO_NAME} ${XBB_APPLICATION_NAME} (${XBB_APPLICATION_LOWER_CASE_NAME}) project"
   echo "Script \"$0\" completed at $(date)."
   local delta_seconds=$((script_end_second-XBB_SCRIPT_BEGIN_SECOND))
   if [ ${delta_seconds} -lt 100 ]
