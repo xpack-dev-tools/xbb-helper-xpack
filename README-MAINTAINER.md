@@ -42,6 +42,12 @@ Link it to the central xPacks store:
 xpm link -C ~/Work/xbb-helper-xpack.git
 ```
 
+Further updates can be done with:
+
+```sh
+git -C ~/Work/xbb-helper-xpack.git pull
+```
+
 ## Prerequisites
 
 A recent [xpm](https://xpack.github.io/xpm/), which is a portable
