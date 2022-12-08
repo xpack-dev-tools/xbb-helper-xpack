@@ -257,8 +257,6 @@ function build_perform_common()
       echo
       echo "# Build results..."
 
-      run_verbose ls -l "${XBB_DEPLOY_FOLDER_PATH}"
-
       # When testing the bootstrap, the application folder is not there.
       mkdir -pv "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
 
@@ -280,6 +278,9 @@ function build_perform_common()
         echo "package.json xpack.bin definitions:"
         ls -1 | sed -e 's|\.exe$||' | sed -e '/\.dll$/d' | sort | sed -e 's|\(.*\)|      "\1": "./.content/bin/\1",|'
       )
+
+      run_verbose ls -l "${XBB_DEPLOY_FOLDER_PATH}"
+
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/post-lists-output-$(ndate).txt"
   fi
 
