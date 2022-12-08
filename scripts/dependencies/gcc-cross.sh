@@ -790,7 +790,7 @@ function cross_gcc_copy_nano_multilibs()
   shift
 
   echo
-  echo "# Copying nano libraries..."
+  echo "# Copying newlib-nano libraries..."
 
   # local name_prefix="${triplet}-"
 
