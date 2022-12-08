@@ -174,7 +174,7 @@ function build_mpfr()
     touch "${mpfr_stamp_file_path}"
 
   else
-    echo "Library mpfr${name_suffix} already installed."
+    echo "Library mpfr${name_suffix} already installed"
   fi
 }
 

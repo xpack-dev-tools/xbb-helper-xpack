@@ -187,7 +187,7 @@ function build_isl()
     touch "${isl_stamp_file_path}"
 
   else
-    echo "Library isl${name_suffix} already installed."
+    echo "Library isl${name_suffix} already installed"
   fi
 }
 

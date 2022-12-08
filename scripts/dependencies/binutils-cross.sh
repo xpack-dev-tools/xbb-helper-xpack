@@ -212,7 +212,7 @@ function build_binutils_cross()
     touch "${binutils_stamp_file_path}"
 
   else
-    echo "Component cross ${name_prefix}binutils${name_suffix} already installed."
+    echo "Component cross ${name_prefix}binutils${name_suffix} already installed"
   fi
 
   tests_add "test_binutils_cross" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"

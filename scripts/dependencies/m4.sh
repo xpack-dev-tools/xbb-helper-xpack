@@ -164,7 +164,7 @@ function build_m4()
     touch "${m4_stamp_file_path}"
 
   else
-    echo "Component m4 already installed."
+    echo "Component m4 already installed"
   fi
 
   tests_add "test_m4" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

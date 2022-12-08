@@ -230,7 +230,7 @@ function build_mingw_headers()
     touch "${mingw_headers_stamp_file_path}"
 
   else
-    echo "Component ${name_prefix}headers already installed."
+    echo "Component ${name_prefix}headers already installed"
   fi
 }
 
@@ -346,7 +346,7 @@ function build_mingw_widl()
     touch "${mingw_widl_stamp_file_path}"
 
   else
-    echo "Component ${name_prefix}widl already installed."
+    echo "Component ${name_prefix}widl already installed"
   fi
 }
 
@@ -443,7 +443,7 @@ function build_mingw_libmangle()
     touch "${mingw_libmangle_stamp_file_path}"
 
   else
-    echo "Component ${name_prefix}libmangle already installed."
+    echo "Component ${name_prefix}libmangle already installed"
   fi
 }
 
@@ -557,7 +557,7 @@ function build_mingw_gendef()
     touch "${mingw_gendef_stamp_file_path}"
 
   else
-    echo "Component ${name_prefix}gendef already installed."
+    echo "Component ${name_prefix}gendef already installed"
   fi
 }
 
@@ -711,7 +711,7 @@ function build_mingw_crt()
     touch "${mingw_crt_stamp_file_path}"
 
   else
-    echo "Component ${name_prefix}crt already installed."
+    echo "Component ${name_prefix}crt already installed"
   fi
 }
 
@@ -851,7 +851,7 @@ function build_mingw_winpthreads()
     touch "${mingw_winpthreads_stamp_file_path}"
 
   else
-    echo "Component ${name_prefix}winpthreads already installed."
+    echo "Component ${name_prefix}winpthreads already installed"
   fi
 }
 
@@ -955,7 +955,7 @@ function build_mingw_winstorecompat()
     touch "${mingw_winstorecompat_stamp_file_path}"
 
   else
-    echo "Component ${name_prefix}winstorecompat already installed."
+    echo "Component ${name_prefix}winstorecompat already installed"
   fi
 }
 

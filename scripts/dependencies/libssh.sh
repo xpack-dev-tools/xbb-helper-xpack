@@ -138,7 +138,7 @@ function build_libssh()
     touch "${libssh_stamp_file_path}"
 
   else
-    echo "Library libssh already installed."
+    echo "Library libssh already installed"
   fi
 }
 

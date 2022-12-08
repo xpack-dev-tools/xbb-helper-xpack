@@ -291,7 +291,7 @@ function build_cross_gcc_first()
     touch "${gcc_first_stamp_file_path}"
 
   else
-    echo "Component cross ${name_prefix}gcc first stage already installed."
+    echo "Component cross ${name_prefix}gcc first stage already installed"
   fi
 }
 
@@ -660,7 +660,7 @@ function build_cross_gcc_final()
     touch "${gcc_final_stamp_file_path}"
 
   else
-    echo "Component cross ${name_prefix}gcc${name_suffix} final stage already installed."
+    echo "Component cross ${name_prefix}gcc${name_suffix} final stage already installed"
   fi
 
   if [ "${is_nano}" != "y" ]

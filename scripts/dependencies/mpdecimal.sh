@@ -144,7 +144,7 @@ function build_mpdecimal()
     touch "${mpdecimal_stamp_file_path}"
 
   else
-    echo "Library mpdecimal already installed."
+    echo "Library mpdecimal already installed"
   fi
 }
 

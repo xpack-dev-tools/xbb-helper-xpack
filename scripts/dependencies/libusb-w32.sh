@@ -132,7 +132,7 @@ function build_libusb_w32()
     touch "${libusb_w32_stamp_file_path}"
 
   else
-    echo "Library libusb-w32 already installed."
+    echo "Library libusb-w32 already installed"
   fi
 }
 

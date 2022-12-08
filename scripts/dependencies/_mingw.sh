@@ -239,7 +239,7 @@ function build_mingw_headers()
     touch "${mingw_headers_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-headers${XBB_MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-headers${XBB_MINGW_NAME_SUFFIX} already installed"
   fi
 }
 
@@ -354,7 +354,7 @@ function build_mingw_crt()
     touch "${mingw_crt_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-crt${XBB_MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-crt${XBB_MINGW_NAME_SUFFIX} already installed"
   fi
 }
 
@@ -443,7 +443,7 @@ function build_mingw_winpthreads()
     touch "${mingw_winpthreads_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-winpthreads${XBB_MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-winpthreads${XBB_MINGW_NAME_SUFFIX} already installed"
   fi
 }
 
@@ -521,7 +521,7 @@ function build_mingw_winstorecompat()
     touch "${mingw_winstorecompat_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-winstorecompat${XBB_MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-winstorecompat${XBB_MINGW_NAME_SUFFIX} already installed"
   fi
 }
 
@@ -599,7 +599,7 @@ function build_mingw_libmangle()
     touch "${mingw_libmangle_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-libmangle${XBB_MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-libmangle${XBB_MINGW_NAME_SUFFIX} already installed"
   fi
 }
 
@@ -679,7 +679,7 @@ function build_mingw_gendef()
     touch "${mingw_gendef_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-gendef${XBB_MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-gendef${XBB_MINGW_NAME_SUFFIX} already installed"
   fi
 }
 
@@ -764,7 +764,7 @@ function build_mingw_widl()
     touch "${mingw_widl_stamp_file_path}"
 
   else
-    echo "Component mingw-w64-widl${XBB_MINGW_NAME_SUFFIX} already installed."
+    echo "Component mingw-w64-widl${XBB_MINGW_NAME_SUFFIX} already installed"
   fi
 }
 

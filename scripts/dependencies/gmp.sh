@@ -223,7 +223,7 @@ function build_gmp()
     touch "${gmp_stamp_file_path}"
 
   else
-    echo "Library gmp${name_suffix} already installed."
+    echo "Library gmp${name_suffix} already installed"
   fi
 }
 

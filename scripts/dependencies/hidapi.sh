@@ -239,7 +239,7 @@ function build_hidapi()
     touch "${hidapi_stamp_file_path}"
 
   else
-    echo "Library hidapi already installed."
+    echo "Library hidapi already installed"
   fi
 }
 

@@ -240,7 +240,7 @@ function build_glib()
     touch "${glib_stamp_file_path}"
 
   else
-    echo "Library glib already installed."
+    echo "Library glib already installed"
   fi
 }
 

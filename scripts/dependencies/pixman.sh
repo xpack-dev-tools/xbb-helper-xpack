@@ -142,7 +142,7 @@ function build_pixman()
     touch "${pixman_stamp_file_path}"
 
   else
-    echo "Library pixman already installed."
+    echo "Library pixman already installed"
   fi
 }
 

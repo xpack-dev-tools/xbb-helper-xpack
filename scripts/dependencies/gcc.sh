@@ -601,7 +601,7 @@ function build_gcc()
     touch "${gcc_stamp_file_path}"
 
   else
-    echo "Component gcc already installed."
+    echo "Component gcc already installed"
   fi
 
   tests_add "test_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -645,7 +645,7 @@ function _build_gcc_libs()
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gcc_libs_stamp_file_path}"
   else
-    echo "Component gcc-libs already installed."
+    echo "Component gcc-libs already installed"
   fi
 }
 
@@ -685,7 +685,7 @@ function build_gcc_final()
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gcc_final_stamp_file_path}"
   else
-    echo "Component gcc-final already installed."
+    echo "Component gcc-final already installed"
   fi
 
   tests_add "test_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

@@ -186,7 +186,7 @@ function build_gettext()
     touch "${gettext_stamp_file_path}"
 
   else
-    echo "Library gettext already installed."
+    echo "Library gettext already installed"
   fi
 
   tests_add "test_gettext" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

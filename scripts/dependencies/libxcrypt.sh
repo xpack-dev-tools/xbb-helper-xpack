@@ -185,7 +185,7 @@ function build_libxcrypt()
     touch "${libxcrypt_stamp_file_path}"
 
   else
-    echo "Library libxcrypt already installed."
+    echo "Library libxcrypt already installed"
   fi
 }
 

@@ -116,7 +116,7 @@ function build_libftdi()
     touch "${libftdi_stamp_file_path}"
 
   else
-    echo "Library libftdi already installed."
+    echo "Library libftdi already installed"
   fi
 }
 

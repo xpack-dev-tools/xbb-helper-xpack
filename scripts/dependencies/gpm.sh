@@ -169,7 +169,7 @@ function build_gpm()
     touch "${gpm_stamp_file_path}"
 
   else
-    echo "Library gpm already installed."
+    echo "Library gpm already installed"
   fi
 }
 

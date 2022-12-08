@@ -117,7 +117,7 @@ function build_libpcap()
     touch "${libpcap_stamp_file_path}"
 
   else
-    echo "Library libpcap already installed."
+    echo "Library libpcap already installed"
   fi
 }
 

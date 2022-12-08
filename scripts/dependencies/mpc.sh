@@ -166,7 +166,7 @@ function build_mpc()
     touch "${mpc_stamp_file_path}"
 
   else
-    echo "Library mpc${name_suffix} already installed."
+    echo "Library mpc${name_suffix} already installed"
   fi
 }
 

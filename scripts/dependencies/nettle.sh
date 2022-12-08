@@ -155,7 +155,7 @@ function build_nettle()
     touch "${nettle_stamp_file_path}"
 
   else
-    echo "Library nettle already installed."
+    echo "Library nettle already installed"
   fi
 }
 

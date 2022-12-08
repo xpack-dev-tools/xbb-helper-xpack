@@ -148,7 +148,7 @@ function build_automake()
     touch "${automake_stamp_file_path}"
 
   else
-    echo "Component automake already installed."
+    echo "Component automake already installed"
   fi
 
   tests_add "test_automake" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

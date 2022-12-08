@@ -273,7 +273,7 @@ function build_ncurses()
     touch "${ncurses_stamp_file_path}"
 
   else
-    echo "Library ncurses already installed."
+    echo "Library ncurses already installed"
   fi
 }
 

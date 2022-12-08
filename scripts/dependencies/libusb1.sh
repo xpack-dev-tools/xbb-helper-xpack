@@ -119,7 +119,7 @@ function build_libusb1()
     touch "${libusb1_stamp_file_path}"
 
   else
-    echo "Library libusb1 already installed."
+    echo "Library libusb1 already installed"
   fi
 }
 

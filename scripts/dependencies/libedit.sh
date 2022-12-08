@@ -152,7 +152,7 @@ function build_libedit()
     touch "${libedit_stamp_file_path}"
 
   else
-    echo "Library libedit already installed."
+    echo "Library libedit already installed"
   fi
 }
 

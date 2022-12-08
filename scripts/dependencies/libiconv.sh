@@ -156,7 +156,7 @@ function build_libiconv()
     touch "${libiconv_stamp_file_path}"
 
   else
-    echo "Library libiconv${name_suffix} already installed."
+    echo "Library libiconv${name_suffix} already installed"
   fi
 }
 

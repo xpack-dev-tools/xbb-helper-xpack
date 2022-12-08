@@ -152,7 +152,7 @@ function build_texinfo()
     touch "${texinfo_stamp_file_path}"
 
   else
-    echo "Component texinfo already installed."
+    echo "Component texinfo already installed"
   fi
 
   tests_add "test_texinfo" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

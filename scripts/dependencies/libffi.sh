@@ -151,7 +151,7 @@ function build_libffi()
     touch "${libffi_stamp_file_path}"
 
   else
-    echo "Library libffi already installed."
+    echo "Library libffi already installed"
   fi
 }
 

@@ -173,7 +173,7 @@ function build_gdb()
     touch "${gdb_stamp_file_path}"
 
   else
-    echo "Component gdb already installed."
+    echo "Component gdb already installed"
   fi
 
   tests_add "test_gdb" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

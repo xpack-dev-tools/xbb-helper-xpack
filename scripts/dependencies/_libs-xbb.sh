@@ -137,7 +137,7 @@ function build_libtasn1()
     touch "${libtasn1_stamp_file_path}"
 
   else
-    echo "Library libtasn1 already installed."
+    echo "Library libtasn1 already installed"
   fi
 }
 
@@ -268,7 +268,7 @@ function build_libunistring()
     touch "${libunistring_stamp_file_path}"
 
   else
-    echo "Library libunistring already installed."
+    echo "Library libunistring already installed"
   fi
 }
 
@@ -436,7 +436,7 @@ function build_gc()
     touch "${gc_stamp_file_path}"
 
   else
-    echo "Library gc already installed."
+    echo "Library gc already installed"
   fi
 
   # tests_add "test_gc"
@@ -634,7 +634,7 @@ function build_gnutls()
     touch "${gnutls_stamp_file_path}"
 
   else
-    echo "Library gnutls already installed."
+    echo "Library gnutls already installed"
   fi
 
   tests_add "test_gnutls" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -789,7 +789,7 @@ function build_xorg_util_macros()
     touch "${xorg_util_macros_stamp_file_path}"
 
   else
-    echo "Library xorg_util_macros already installed."
+    echo "Library xorg_util_macros already installed"
   fi
 }
 
@@ -921,7 +921,7 @@ function build_xorg_xproto()
     touch "${xorg_xproto_stamp_file_path}"
 
   else
-    echo "Library xorg_xproto already installed."
+    echo "Library xorg_xproto already installed"
   fi
 }
 

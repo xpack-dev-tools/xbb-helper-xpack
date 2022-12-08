@@ -94,7 +94,7 @@ function _build_realpath()
     touch "${realpath_stamp_file_path}"
 
   else
-    echo "Component realpath already installed."
+    echo "Component realpath already installed"
   fi
 
   tests_add "test_realpath" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -219,7 +219,7 @@ function build_scons()
     touch "${scons_stamp_file_path}"
 
   else
-    echo "Component scons already installed."
+    echo "Component scons already installed"
   fi
 
   tests_add "test_scons" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -429,7 +429,7 @@ function build_curl()
     touch "${curl_stamp_file_path}"
 
   else
-    echo "Component curl already installed."
+    echo "Component curl already installed"
   fi
 
   tests_add "test_curl" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -631,7 +631,7 @@ function build_tar()
     touch "${tar_stamp_file_path}"
 
   else
-    echo "Component tar already installed."
+    echo "Component tar already installed"
   fi
 
   tests_add "test_tar" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -842,7 +842,7 @@ function build_guile()
     touch "${guile_stamp_file_path}"
 
   else
-    echo "Component guile already installed."
+    echo "Component guile already installed"
   fi
 
   tests_add "test_guile" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -1032,7 +1032,7 @@ function build_autogen()
     touch "${autogen_stamp_file_path}"
 
   else
-    echo "Component autogen already installed."
+    echo "Component autogen already installed"
   fi
 
   tests_add "test_autogen" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -1236,7 +1236,7 @@ function build_gawk()
     touch "${gawk_stamp_file_path}"
 
   else
-    echo "Component gawk already installed."
+    echo "Component gawk already installed"
   fi
 
   tests_add "test_gawk" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -1431,7 +1431,7 @@ function build_sed()
     touch "${sed_stamp_file_path}"
 
   else
-    echo "Component sed already installed."
+    echo "Component sed already installed"
   fi
 
   tests_add "test_sed" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -1592,7 +1592,7 @@ function build_patch()
     touch "${patch_stamp_file_path}"
 
   else
-    echo "Component patch already installed."
+    echo "Component patch already installed"
   fi
 
   tests_add "test_patch" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -1766,7 +1766,7 @@ function build_diffutils()
     touch "${diffutils_stamp_file_path}"
 
   else
-    echo "Component diffutils already installed."
+    echo "Component diffutils already installed"
   fi
 
   tests_add "test_diffutils" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -1946,7 +1946,7 @@ function build_bison()
     touch "${bison_stamp_file_path}"
 
   else
-    echo "Component bison already installed."
+    echo "Component bison already installed"
   fi
 
   tests_add "test_bison" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -2161,7 +2161,7 @@ function build_make()
     touch "${make_stamp_file_path}"
 
   else
-    echo "Component make already installed."
+    echo "Component make already installed"
   fi
 
   tests_add "test_make" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -2318,7 +2318,7 @@ function build_bash()
     touch "${bash_stamp_file_path}"
 
   else
-    echo "Component bash already installed."
+    echo "Component bash already installed"
   fi
 
   tests_add "test_bash" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -2502,7 +2502,7 @@ function build_wget()
     touch "${wget_stamp_file_path}"
 
   else
-    echo "Component wget already installed."
+    echo "Component wget already installed"
   fi
 
   tests_add "test_wget" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -2646,7 +2646,7 @@ function build_dos2unix()
     touch "${dos2unix_stamp_file_path}"
 
   else
-    echo "Component dos2unix already installed."
+    echo "Component dos2unix already installed"
   fi
 
   tests_add "test_dos2unix" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -2847,7 +2847,7 @@ function build_flex()
     touch "${flex_stamp_file_path}"
 
   else
-    echo "Component flex already installed."
+    echo "Component flex already installed"
   fi
 
   tests_add "test_flex" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -3092,7 +3092,7 @@ function build_perl()
     touch "${perl_stamp_file_path}"
 
   else
-    echo "Component perl already installed."
+    echo "Component perl already installed"
   fi
 
   tests_add "test_perl" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -3295,7 +3295,7 @@ function build_tcl()
     touch "${tcl_stamp_file_path}"
 
   else
-    echo "Component tcl already installed."
+    echo "Component tcl already installed"
   fi
 
   tests_add "test_tcl" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -3488,7 +3488,7 @@ function build_git()
     touch "${git_stamp_file_path}"
 
   else
-    echo "Component git already installed."
+    echo "Component git already installed"
   fi
 
   tests_add "test_git" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -3651,7 +3651,7 @@ function build_p7zip()
     touch "${p7zip_stamp_file_path}"
 
   else
-    echo "Component p7zip already installed."
+    echo "Component p7zip already installed"
   fi
 
   tests_add "test_p7zip" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -3820,7 +3820,7 @@ function build_rhash()
     touch "${rhash_stamp_file_path}"
 
   else
-    echo "Component rhash already installed."
+    echo "Component rhash already installed"
   fi
 
   # tests_add "test_rhash" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -4013,7 +4013,7 @@ function build_re2c()
     touch "${re2c_stamp_file_path}"
 
   else
-    echo "Component re2c already installed."
+    echo "Component re2c already installed"
   fi
 
   tests_add "test_re2c" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -4220,7 +4220,7 @@ function build_gnupg()
     touch "${gnupg_stamp_file_path}"
 
   else
-    echo "Component gnupg already installed."
+    echo "Component gnupg already installed"
   fi
 
   tests_add "test_gpg" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -4397,7 +4397,7 @@ function build_makedepend()
     touch "${makedepend_stamp_file_path}"
 
   else
-    echo "Component makedepend already installed."
+    echo "Component makedepend already installed"
   fi
 
   tests_add "test_makedepend" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

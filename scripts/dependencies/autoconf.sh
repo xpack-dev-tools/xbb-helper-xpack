@@ -137,7 +137,7 @@ function build_autoconf()
     touch "${autoconf_stamp_file_path}"
 
   else
-    echo "Component autoconf already installed."
+    echo "Component autoconf already installed"
   fi
 
   tests_add "test_autoconf" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

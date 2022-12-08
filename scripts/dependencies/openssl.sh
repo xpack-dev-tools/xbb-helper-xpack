@@ -350,7 +350,7 @@ function build_openssl()
     touch "${openssl_stamp_file_path}"
 
   else
-    echo "Component openssl already installed."
+    echo "Component openssl already installed"
   fi
 
   tests_add test_openssl "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

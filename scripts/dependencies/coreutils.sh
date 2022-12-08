@@ -191,7 +191,7 @@ function build_coreutils()
     touch "${coreutils_stamp_file_path}"
 
   else
-    echo "Component coreutils already installed."
+    echo "Component coreutils already installed"
   fi
 
   if [ "${XBB_COREUTILS_INSTALL_REALPATH_ONLY:-}" == "y" ]

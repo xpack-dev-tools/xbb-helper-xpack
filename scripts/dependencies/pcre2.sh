@@ -130,7 +130,7 @@ function build_pcre2()
     touch "${pcre2_stamp_file_path}"
 
   else
-    echo "Library pcre2 already installed."
+    echo "Library pcre2 already installed"
   fi
 }
 

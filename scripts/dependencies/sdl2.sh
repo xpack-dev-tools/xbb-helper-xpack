@@ -141,7 +141,7 @@ function build_sdl2()
     touch "${sdl2_stamp_file_path}"
 
   else
-    echo "Library sdl2 already installed."
+    echo "Library sdl2 already installed"
   fi
 }
 
@@ -298,7 +298,7 @@ function build_sdl2_image()
     touch "${sdl2_image_stamp_file_path}"
 
   else
-    echo "Library sdl2-image already installed."
+    echo "Library sdl2-image already installed"
   fi
 }
 

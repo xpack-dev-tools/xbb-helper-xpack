@@ -228,7 +228,7 @@ function build_qemu()
     touch "${qemu_stamp_file_path}"
 
   else
-    echo "Component qemu ${qemu_target} already installed."
+    echo "Component qemu ${qemu_target} already installed"
   fi
 
   # Define this function at package level.

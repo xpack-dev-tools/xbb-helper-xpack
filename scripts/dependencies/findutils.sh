@@ -134,7 +134,7 @@ function build_findutils()
     touch "${findutils_stamp_file_path}"
 
   else
-    echo "Component findutils already installed."
+    echo "Component findutils already installed"
   fi
 }
 

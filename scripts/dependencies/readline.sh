@@ -138,7 +138,7 @@ function build_readline()
     touch "${readline_stamp_file_path}"
 
   else
-    echo "Library readline already installed."
+    echo "Library readline already installed"
   fi
 }
 

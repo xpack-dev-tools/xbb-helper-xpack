@@ -139,7 +139,7 @@ function build_vde()
     touch "${vde_stamp_file_path}"
 
   else
-    echo "Library vde already installed."
+    echo "Library vde already installed"
   fi
 }
 

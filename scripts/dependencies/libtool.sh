@@ -168,7 +168,7 @@ function build_libtool()
     touch "${libtool_stamp_file_path}"
 
   else
-    echo "Component libtool already installed."
+    echo "Component libtool already installed"
   fi
 
   if [ -z "${step}" ]

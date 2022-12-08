@@ -329,7 +329,7 @@ function build_binutils()
     touch "${binutils_stamp_file_path}"
 
   else
-    echo "Component ${name_prefix}binutils already installed."
+    echo "Component ${name_prefix}binutils already installed"
   fi
 
   tests_add "test_binutils" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${name_prefix}"
@@ -551,7 +551,7 @@ function build_binutils_ld_gold()
     touch "${binutils_stamp_file_path}"
 
   else
-    echo "Component binutils ld.gold already installed."
+    echo "Component binutils ld.gold already installed"
   fi
 
   tests_add "test_binutils_ld_gold" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

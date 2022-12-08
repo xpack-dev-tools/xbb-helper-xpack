@@ -246,7 +246,7 @@ function build_bzip2()
     touch "${bzip2_stamp_file_path}"
 
   else
-    echo "Library bzip2 already installed."
+    echo "Library bzip2 already installed"
   fi
 }
 

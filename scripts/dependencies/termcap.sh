@@ -120,7 +120,7 @@ function build_termcap()
     touch "${termcap_stamp_file_path}"
 
   else
-    echo "Library termcap already installed."
+    echo "Library termcap already installed"
   fi
 }
 

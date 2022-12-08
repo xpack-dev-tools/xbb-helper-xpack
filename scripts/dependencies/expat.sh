@@ -134,7 +134,7 @@ function build_expat()
     touch "${expat_stamp_file_path}"
 
   else
-    echo "Library expat already installed."
+    echo "Library expat already installed"
   fi
 }
 

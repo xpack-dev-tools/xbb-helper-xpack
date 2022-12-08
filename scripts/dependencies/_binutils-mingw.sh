@@ -200,7 +200,7 @@ function build_mingw_binutils()
     touch "${mingw_binutils_stamp_file_path}"
 
   else
-    echo "Component ${mingw_triplet} binutils already installed."
+    echo "Component ${mingw_triplet} binutils already installed"
   fi
 
   if [ -z "${name_suffix}" ]

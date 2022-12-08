@@ -162,7 +162,7 @@ function build_zlib()
     touch "${zlib_stamp_file_path}"
 
   else
-    echo "Library zlib${name_suffix} already installed."
+    echo "Library zlib${name_suffix} already installed"
   fi
 }
 

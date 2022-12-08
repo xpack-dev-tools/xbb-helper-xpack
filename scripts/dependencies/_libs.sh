@@ -133,7 +133,7 @@ function build_libelf()
     touch "${libelf_stamp_file_path}"
 
   else
-    echo "Library libelf already installed."
+    echo "Library libelf already installed"
   fi
 }
 
@@ -292,7 +292,7 @@ function build_python2()
     touch "${python2_stamp_file_path}"
 
   else
-    echo "Component python2 already installed."
+    echo "Component python2 already installed"
   fi
 }
 
@@ -527,7 +527,7 @@ function build_xar()
     touch "${xar_stamp_file_path}"
 
   else
-    echo "Library xar already installed."
+    echo "Library xar already installed"
   fi
 }
 
@@ -664,7 +664,7 @@ function build_libgpg_error()
     touch "${libgpg_error_stamp_file_path}"
 
   else
-    echo "Library libgpg-error already installed."
+    echo "Library libgpg-error already installed"
   fi
 }
 
@@ -837,7 +837,7 @@ function build_libgcrypt()
     touch "${libgcrypt_stamp_file_path}"
 
   else
-    echo "Library libgcrypt already installed."
+    echo "Library libgcrypt already installed"
   fi
 
   tests_add "test_libgcrypt" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -1023,7 +1023,7 @@ function build_libassuan()
     touch "${libassuan_stamp_file_path}"
 
   else
-    echo "Library libassuan already installed."
+    echo "Library libassuan already installed"
   fi
 
   tests_add "test_libassuan" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -1185,7 +1185,7 @@ function build_libksba()
     touch "${libksba_stamp_file_path}"
 
   else
-    echo "Library libksba already installed."
+    echo "Library libksba already installed"
   fi
 
   tests_add "test_libksba" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -1339,7 +1339,7 @@ function build_npth()
     touch "${npth_stamp_file_path}"
 
   else
-    echo "Library npth already installed."
+    echo "Library npth already installed"
   fi
 
   tests_add "test_npth" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
@@ -1489,7 +1489,7 @@ function _build_libusb()
     touch "${libusb_stamp_file_path}"
 
   else
-    echo "Library libusb already installed."
+    echo "Library libusb already installed"
   fi
 }
 

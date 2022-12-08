@@ -126,7 +126,7 @@ function build_lzo()
     touch "${lzo_stamp_file_path}"
 
   else
-    echo "Library lzo already installed."
+    echo "Library lzo already installed"
   fi
 }
 

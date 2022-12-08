@@ -252,7 +252,7 @@ function build_cross_newlib()
     touch "${newlib_stamp_file_path}"
 
   else
-    echo "Component cross ${name_prefix}newlib${name_suffix} already installed."
+    echo "Component cross ${name_prefix}newlib${name_suffix} already installed"
   fi
 }
 

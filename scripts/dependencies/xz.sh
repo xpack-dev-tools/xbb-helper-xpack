@@ -138,7 +138,7 @@ function build_xz()
     touch "${xz_stamp_file_path}"
 
   else
-    echo "Library xz already installed."
+    echo "Library xz already installed"
   fi
 }
 

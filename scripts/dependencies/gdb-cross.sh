@@ -300,7 +300,7 @@ function build_cross_gdb()
     touch "${gdb_stamp_file_path}"
 
   else
-    echo "Component cross gdb${name_suffix} already installed."
+    echo "Component cross gdb${name_suffix} already installed"
   fi
 
   tests_add "test_cross_gdb" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}" "${name_suffix}"

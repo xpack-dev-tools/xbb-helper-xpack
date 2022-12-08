@@ -145,7 +145,7 @@ function build_pkg_config()
     touch "${pkg_config_stamp_file_path}"
 
   else
-    echo "Component pkg_config already installed."
+    echo "Component pkg_config already installed"
   fi
 
   tests_add "test_pkg_config" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

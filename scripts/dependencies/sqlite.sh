@@ -187,7 +187,7 @@ function build_sqlite()
     touch "${sqlite_stamp_file_path}"
 
   else
-    echo "Library sqlite already installed."
+    echo "Library sqlite already installed"
   fi
 }
 

@@ -211,7 +211,7 @@ function build_python3()
     touch "${python3_stamp_file_path}"
 
   else
-    echo "Component python3 already installed."
+    echo "Component python3 already installed"
   fi
 
   tests_add "test_python3" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

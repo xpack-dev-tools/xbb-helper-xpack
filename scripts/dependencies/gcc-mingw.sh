@@ -339,7 +339,7 @@ function build_mingw_gcc_first()
     touch "${mingw_gcc_step1_stamp_file_path}"
 
   else
-    echo "Component ${name_prefix}gcc first already installed."
+    echo "Component ${name_prefix}gcc first already installed"
   fi
 }
 
@@ -468,7 +468,7 @@ function build_mingw_gcc_final()
     touch "${mingw_gcc_final_stamp_file_path}"
 
   else
-    echo "Component ${name_prefix}gcc final already installed."
+    echo "Component ${name_prefix}gcc final already installed"
   fi
 
   tests_add "test_mingw_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"

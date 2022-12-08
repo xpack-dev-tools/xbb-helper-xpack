@@ -185,7 +185,7 @@ function build_zstd()
     touch "${zstd_stamp_file_path}"
 
   else
-    echo "Library zstd already installed."
+    echo "Library zstd already installed"
   fi
 }
 

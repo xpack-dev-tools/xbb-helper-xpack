@@ -162,7 +162,7 @@ function build_patchelf()
     touch "${patchelf_stamp_file_path}"
 
   else
-    echo "Component patchelf already installed."
+    echo "Component patchelf already installed"
   fi
 
   tests_add "test_patchelf" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

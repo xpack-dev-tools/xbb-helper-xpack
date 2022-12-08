@@ -134,7 +134,7 @@ function build_libpng()
     touch "${libpng_stamp_file_path}"
 
   else
-    echo "Library libpng already installed."
+    echo "Library libpng already installed"
   fi
 }
 

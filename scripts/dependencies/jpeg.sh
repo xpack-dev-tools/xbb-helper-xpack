@@ -126,7 +126,7 @@ function build_jpeg()
     touch "${jpeg_stamp_file_path}"
 
   else
-    echo "Library jpeg already installed."
+    echo "Library jpeg already installed"
   fi
 }
 
