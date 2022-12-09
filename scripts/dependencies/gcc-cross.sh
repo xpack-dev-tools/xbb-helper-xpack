@@ -440,13 +440,13 @@ function build_cross_gcc_final()
       then
         add_cross_linux_install_path "${triplet}"
 
-        export AR_FOR_TARGET=${name_prefix}ar
-        export NM_FOR_TARGET=${name_prefix}nm
-        export OBJDUMP_FOR_TARET=${name_prefix}objdump
-        export STRIP_FOR_TARGET=${name_prefix}strip
-        export CC_FOR_TARGET=${name_prefix}gcc
-        export GCC_FOR_TARGET=${name_prefix}gcc
-        export CXX_FOR_TARGET=${name_prefix}g++
+        export AR_FOR_TARGET="$(which ${name_prefix}ar)"
+        export NM_FOR_TARGET="$(which ${name_prefix}nm)"
+        export OBJDUMP_FOR_TARET="$(which ${name_prefix}objdump)"
+        export STRIP_FOR_TARGET="$(which ${name_prefix}strip)"
+        export CC_FOR_TARGET="$(which ${name_prefix}gcc)"
+        export GCC_FOR_TARGET="$(which ${name_prefix}gcc)"
+        export CXX_FOR_TARGET="$(which ${name_prefix}g++)"
       fi
 
       if [ ! -f "config.status" ]
