@@ -297,21 +297,22 @@ function build_cross_gcc_first()
 
 # -----------------------------------------------------------------------------
 
-function _copy_cross_linux_libs()
+function cross_gcc_copy_linux_libs()
 {
   local triplet="$1"
 
-  local copy_linux_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-copy-linux-completed"
+  local copy_linux_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-copy-linux-libs-completed"
   if [ ! -f "${copy_linux_stamp_file_path}" ]
   then
 
-    local linux_path="${LINUX_INSTALL_RELATIVE_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}"
+    local linux_path="${XBB_LINUX_WORK_FOLDER_PATH}"
 
     (
       cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
       copy_dir "${linux_path}/${triplet}/lib" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib"
       copy_dir "${linux_path}/${triplet}/include" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/include"
+
       copy_dir "${linux_path}/include" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include"
       copy_dir "${linux_path}/lib" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
       copy_dir "${linux_path}/share" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share"
@@ -334,15 +335,15 @@ function _copy_cross_linux_libs()
 
 # -----------------------------------------------------------------------------
 
-function _add_cross_linux_install_path()
+function cross_gcc_add_linux_install_path()
 {
   local triplet="$1"
 
   # Verify that the compiler is there.
-  "${XBB_TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}/bin/${triplet}-gcc" --version
+  "${XBB_LINUX_WORK_FOLDER_PATH}/bin/${triplet}-gcc" --version
 
-  export PATH="${XBB_TARGET_WORK_FOLDER_PATH}/${LINUX_INSTALL_RELATIVE_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}/bin:${PATH}"
-  echo ${PATH}
+  export PATH="${XBB_LINUX_WORK_FOLDER_PATH}/bin:${PATH}"
+  echo "PATH=${PATH}"
 }
 
 # Environment variables:
