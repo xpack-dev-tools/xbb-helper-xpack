@@ -95,7 +95,7 @@ echo '```'  >> "${post_file_path}"
 
 cat "scripts/templates/body-jekyll-release-post-part-2-liquid.md" | liquidjs "{ \"XBB_RELEASE_VERSION\": \"${version}\", \"RELEASE_DATE\": \"${release_date}\" }" >> "${post_file_path}"
 
-echo "Don't forget to manually solve the two TODO action points."
+echo "Don't forget to manually solve the two TODO action points!"
 
 echo
 echo "Done."
