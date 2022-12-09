@@ -543,9 +543,24 @@ function xbb_set_extra_target_env()
 
   if [ "${triplet}" != "${XBB_BUILD_TRIPLET}" ]
   then
-    XBB_TARGET_STRIP="$(which ${triplet}-strip)"
-    XBB_TARGET_RANLIB="$(which ${triplet}-ranlib)"
-    XBB_TARGET_OBJDUMP="$(which ${triplet}-objdump)"
+    if [ ! -z "$(which ${triplet}-strip)" ]
+    then
+      XBB_TARGET_STRIP="$(which ${triplet}-strip)"
+    else
+      XBB_TARGET_STRIP="${triplet}-strip"
+    fi
+    if [ ! -z "$(which ${triplet}-ranlib)" ]
+    then
+      XBB_TARGET_RANLIB="$(which ${triplet}-ranlib)"
+    else
+      XBB_TARGET_RANLIB="${triplet}-ranlib"
+    fi
+    if [ ! -z "$(which ${triplet}-objdump)" ]
+    then
+      XBB_TARGET_OBJDUMP="$(which ${triplet}-objdump)"
+    else
+      XBB_TARGET_OBJDUMP="${triplet}-objdump"
+    fi
 
     XBB_CURRENT_TRIPLET="${triplet}"
   else
