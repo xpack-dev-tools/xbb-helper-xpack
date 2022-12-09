@@ -328,7 +328,7 @@ function python3_copy_win_syslibs()
     echo
     echo "Copying .pyd & .dll files from the embedded Python distribution..."
     mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-    cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}/python${XBB_PYTHON3_VERSION_MAJOR_MINOR}.zip"\
+    cp -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}/python${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}.zip"\
       "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
     mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/DLLs"
