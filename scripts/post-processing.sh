@@ -1708,11 +1708,14 @@ function copy_custom_files()
 
 # -----------------------------------------------------------------------------
 
-# Copy one folder to another
+# Copy one folder to another.
 function copy_dir()
 {
   local from_path="$1"
   local to_path="$2"
+
+  echo
+  echo "# Copying ${from_path}..."
 
   set +u
   # rm -rf "${to_path}"
