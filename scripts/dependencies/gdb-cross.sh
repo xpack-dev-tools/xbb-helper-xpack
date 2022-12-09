@@ -26,12 +26,13 @@ function build_cross_gdb()
   local triplet="$1"
   shift
 
+  local name_prefix="${triplet}-"
   local name_suffix="${1:-""}"
 
   # GDB Text User Interface
   # https://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_19.html#SEC197
 
-  local gdb_folder_name="gdb-${XBB_GDB_VERSION}${name_suffix}"
+  local gdb_folder_name="${name_prefix}gdb-${XBB_GDB_VERSION}${name_suffix}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}"
 
@@ -134,7 +135,7 @@ function build_cross_gdb()
           xbb_show_env_develop
 
           echo
-          echo "Running cross gdb${name_suffix} configure..."
+          echo "Running cross ${name_prefix}gdb${name_suffix} configure..."
 
           bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/configure" --help
 
@@ -269,7 +270,7 @@ function build_cross_gdb()
 
       (
         echo
-        echo "Running cross gdb${name_suffix} make..."
+        echo "Running cross ${name_prefix}gdb${name_suffix} make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS} all-gdb
@@ -300,7 +301,7 @@ function build_cross_gdb()
     touch "${gdb_stamp_file_path}"
 
   else
-    echo "Component cross gdb${name_suffix} already installed"
+    echo "Component cross ${name_prefix}gdb${name_suffix} already installed"
   fi
 
   tests_add "test_cross_gdb" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}" "${name_suffix}"
