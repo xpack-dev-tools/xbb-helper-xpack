@@ -917,7 +917,7 @@ function cross_gcc_final_tunings()
           then
             cp -v "${plugin_path}" "${XBB_LTO_PLUGIN_BFD_PATH}"
           else
-            echo "${XBB_LTO_PLUGIN_ORIGINAL_NAME} not found."
+            echo "${XBB_LTO_PLUGIN_ORIGINAL_NAME} not found"
             exit 1
           fi
         fi
@@ -933,7 +933,7 @@ function cross_gcc_final_tunings()
           then
             ln -s -v "../../${plugin_path}" "${XBB_LTO_PLUGIN_BFD_PATH}"
           else
-            echo "${XBB_LTO_PLUGIN_ORIGINAL_NAME} not found."
+            echo "${XBB_LTO_PLUGIN_ORIGINAL_NAME} not found"
             exit 1
           fi
         fi
