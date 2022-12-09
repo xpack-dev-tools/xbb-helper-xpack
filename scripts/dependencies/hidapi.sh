@@ -83,7 +83,7 @@ function build_hidapi()
         export LDFLAGS
 
         run_verbose make -f Makefile.mingw \
-          CC=${XBB_TARGET_TRIPLET}-gcc \
+          CC="$(which ${XBB_TARGET_TRIPLET}-gcc)" \
           "${hidapi_OBJECT}"
 
         # Make just compiles the file. Create the archive and convert it to library.
