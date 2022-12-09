@@ -10,12 +10,12 @@ set -o errexit # Exit if command failed.
 set -o pipefail # Exit if pipe failed.
 set -o nounset # Exit if variable not set.
 
-if [ ! -d "${SOURCES_FOLDER_PATH}/${PYTHON3_SRC_FOLDER_NAME}" ]
+if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_SRC_FOLDER_NAME}" ]
 then
   exit 1
 fi
 
-if [ ! -d "${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}" ]
+if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}" ]
 then
   exit 1
 fi
@@ -26,7 +26,7 @@ do
   case ${opt} in
 
     --prefix|--exec-prefix)
-      # prefix="${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME}"
+      # prefix="${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
       # Must have a common part to force PYTHON_PATH_RELOCATABLE
       prefix="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
       echo "${opt} -> [${prefix}]" >&2
@@ -34,7 +34,7 @@ do
       ;;
 
     --includes|--cflags)
-      cflags="-I${SOURCES_FOLDER_PATH}/${PYTHON3_SRC_FOLDER_NAME}/Include"
+      cflags="-I${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_SRC_FOLDER_NAME}/Include"
 
       if [ "${opt}" == "--cflags" ]
       then
@@ -47,7 +47,7 @@ do
     --libs|--ldflags)
       # Options to link to static libpython2.7 archive so as to avoid  an
       # external dependency on python
-      libs="-L${SOURCES_FOLDER_PATH}/${PYTHON3_WIN_SRC_FOLDER_NAME} -lpython${PYTHON3_VERSION_MAJOR_MINOR}"
+      libs="-L${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME} -lpython${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}"
       echo "${opt} -> [${libs}]" >&2
       echo "${libs}"
       ;;
