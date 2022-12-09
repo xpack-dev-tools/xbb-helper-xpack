@@ -1720,7 +1720,7 @@ function copy_dir()
 
   (
     cd "${from_path}"
-    if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
+    if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
       find . -xdev -print0 | cpio -oa0 | (cd "${to_path}" && cpio -im)
     else
