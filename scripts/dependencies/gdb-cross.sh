@@ -290,12 +290,9 @@ function build_cross_gdb()
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gdb_folder_name}/make-output-$(ndate).txt"
 
-      if [ "${name_suffix}" == "" ]
-      then
-        copy_license \
-          "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}" \
-          "${gdb_folder_name}"
-      fi
+      copy_license \
+        "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}" \
+        "gdb-${XBB_GDB_VERSION}"
     )
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
