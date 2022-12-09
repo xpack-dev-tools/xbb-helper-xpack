@@ -309,26 +309,26 @@ function test_cross_gdb()
 {
   local test_bin_path="$1"
   local triplet="$2"
-  local suffix="${3:-}"
+  local name_suffix="${3:-}"
 
   (
-    show_host_libs "${test_bin_path}/${triplet}-gdb${suffix}"
+    show_host_libs "${test_bin_path}/${triplet}-gdb${name_suffix}"
 
-    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${suffix}" --version
-    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${suffix}" --config
+    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" --config
 
     # This command is known to fail with 'Abort trap: 6' (SIGABRT)
-    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${suffix}" \
+    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" \
       --nh \
       --nx \
       -ex='show language' \
       -ex='set language auto' \
       -ex='quit'
 
-    if [ "${suffix}" == "-py3" ]
+    if [ "${name_suffix}" == "-py3" ]
     then
       # Show Python paths.
-      run_host_app_verbose "${test_bin_path}/${triplet}-gdb${suffix}" \
+      run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" \
         --nh \
         --nx \
         -ex='set pagination off' \
