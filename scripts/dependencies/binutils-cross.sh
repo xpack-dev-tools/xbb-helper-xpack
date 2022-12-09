@@ -199,7 +199,7 @@ function build_binutils_cross()
         # make install-strip
         run_verbose make install
 
-        test_binutils_cross_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}" "${triplet}"
+        test_binutils_cross_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin" "${triplet}"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
 
