@@ -287,11 +287,13 @@ function python3_download_win()
       cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
       run_verbose_develop unzip "${XBB_DOWNLOAD_FOLDER_PATH}/${python3_win_embed_pack}"
     else
-      echo "Folder ${XBB_PYTHON3_WIN_SRC_FOLDER_NAME} already present."
+      echo
+      echo "Folder ${XBB_PYTHON3_WIN_SRC_FOLDER_NAME} already present"
     fi
 
     cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
-    echo "Copying python${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}.dll..."
+    echo
+    echo "# Copying python${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}.dll..."
     # From here it'll be copied as dependency.
     mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
     install -v -c -m 644 "python${XBB_PYTHON3_VERSION_MAJOR}.dll" \
