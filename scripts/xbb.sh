@@ -287,10 +287,10 @@ function xbb_set_requested()
 # - XBB_HOST|TARGET_MACHINE={x86_64,arm64,aarch64,armv7l,armv8l}
 # - XBB_HOST|TARGET_TRIPLET={*,x86_64-w64-mingw32}
 
-# "" (requested), "native", "mingw-w64-native", "mingw-w64-cross"
+# "requested", "native", "mingw-w64-native", "mingw-w64-cross"
 function xbb_set_target()
 {
-  local kind="${1:-"requested"}"
+  local kind="$1"
 
   echo
   echo "[xbb_set_target ${kind}]"
