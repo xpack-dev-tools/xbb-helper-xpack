@@ -167,7 +167,7 @@ function tests_good_bye()
 {
   (
     echo
-    echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} tests completed successfully."
+    echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} tests completed successfully"
 
     run_verbose uname -a
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]

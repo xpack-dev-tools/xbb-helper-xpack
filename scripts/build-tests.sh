@@ -49,12 +49,12 @@ function tests_run_final()
       echo
       echo "## Running \"${cmd_array[@]}\"..."
       "${cmd_array[@]}"
-      echo "## Running \"${cmd_array[@]}\" completed."
+      echo "## Running \"${cmd_array[@]}\" completed"
     fi
   done
 
   echo
-  echo "Final tests completed successfuly."
+  echo "Final tests completed successfuly"
 }
 
 function tests_prime_wine()

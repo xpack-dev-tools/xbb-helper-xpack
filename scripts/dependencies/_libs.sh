@@ -376,7 +376,8 @@ function download_python2_win()
         )
       fi
     else
-      echo "Folder ${XBB_PYTHON2_WIN_SRC_FOLDER_NAME} already present."
+      echo
+      echo "Folder ${XBB_PYTHON2_WIN_SRC_FOLDER_NAME} already present"
     fi
 
     echo "Copying python${XBB_PYTHON2_VERSION_MAJOR_MINOR}.dll..."

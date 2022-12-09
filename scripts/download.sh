@@ -76,7 +76,8 @@ function download()
       mv "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.download" "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}"
     )
   else
-    echo "File \"${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}\" already downloaded."
+    echo
+    echo "File \"${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}\" already downloaded"
   fi
 }
 
@@ -113,7 +114,8 @@ function extract()
       fi
     )
   else
-    echo "Folder \"${pwd}/${folder_name}\" already present."
+    echo
+    echo "Folder \"${pwd}/${folder_name}\" already present"
   fi
 }
 

@@ -65,7 +65,7 @@ function build_libedit()
         then
           CPPFLAGS+=" -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
         else
-          echo "No include/ncurses folder."
+          echo "No include/ncurses folder"
           exit 1
         fi
       fi

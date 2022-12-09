@@ -328,7 +328,7 @@ function _copy_cross_linux_libs()
     touch "${copy_linux_stamp_file_path}"
 
   else
-    echo "Component copy-linux-libs already processed."
+    echo "Component copy-linux-libs already processed"
   fi
 }
 

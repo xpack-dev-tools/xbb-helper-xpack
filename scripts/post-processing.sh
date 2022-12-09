@@ -156,7 +156,7 @@ function copy_dependencies_recursive()
 {
   if [ $# -lt 2 ]
   then
-    echo "copy_dependencies_recursive requires at least 2 arg."
+    echo "copy_dependencies_recursive requires at least 2 arg"
     exit 1
   fi
 
@@ -1130,7 +1130,7 @@ function patch_macos_elf_add_rpath()
 {
   if [ $# -lt 2 ]
   then
-    echo "patch_macos_elf_add_rpath requires 2 args."
+    echo "patch_macos_elf_add_rpath requires 2 args"
     exit 1
   fi
 
@@ -1147,7 +1147,7 @@ function patch_macos_elf_add_rpath()
 
   if [ -z "${new_rpath}" ]
   then
-    echo "patch_macos_elf_add_rpath new path cannot be empty."
+    echo "patch_macos_elf_add_rpath new path cannot be empty"
     exit 1
   fi
 
@@ -1268,7 +1268,7 @@ function patch_linux_elf_origin()
 {
   if [ $# -lt 1 ]
   then
-    echo "patch_linux_elf_origin requires 1 args."
+    echo "patch_linux_elf_origin requires 1 args"
     exit 1
   fi
 
@@ -1345,7 +1345,7 @@ function patch_linux_elf_set_rpath()
 {
   if [ $# -lt 2 ]
   then
-    echo "patch_linux_elf_set_rpath requires 2 args."
+    echo "patch_linux_elf_set_rpath requires 2 args"
     exit 1
   fi
 
@@ -1422,7 +1422,7 @@ function patch_linux_elf_add_rpath()
 {
   if [ $# -lt 2 ]
   then
-    echo "patch_linux_elf_add_rpath requires 2 args."
+    echo "patch_linux_elf_add_rpath requires 2 args"
     exit 1
   fi
 
@@ -1443,7 +1443,7 @@ function patch_linux_elf_add_rpath()
   else
     if [ -z "${new_rpath}" ]
     then
-      echo "patch_linux_elf_add_rpath new path cannot be empty."
+      echo "patch_linux_elf_add_rpath new path cannot be empty"
       exit 1
     fi
 
@@ -1519,7 +1519,7 @@ function compute_origin_relative_to_libexec()
 {
   if [ $# -lt 1 ]
   then
-    echo "compute_origin_relative_to_libexec requires 1 arg."
+    echo "compute_origin_relative_to_libexec requires 1 arg"
     exit 1
   fi
 
@@ -1537,7 +1537,7 @@ function compute_origin_relative_to_path()
 {
   if [ $# -lt 2 ]
   then
-    echo "compute_origin_relative_to_path requires 2 args."
+    echo "compute_origin_relative_to_path requires 2 args"
     exit 1
   fi
 

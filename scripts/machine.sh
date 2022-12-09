@@ -91,7 +91,7 @@ function machine_detect()
     local lsb_path=$(which lsb_release)
     if [ -z "${lsb_path}" ]
     then
-      echo "Please install the lsb core package and rerun."
+      echo "Please install the lsb core package and rerun"
       exit 1
     fi
 
