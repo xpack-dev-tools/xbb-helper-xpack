@@ -305,7 +305,7 @@ function cross_gcc_copy_linux_libs()
   if [ ! -f "${copy_linux_stamp_file_path}" ]
   then
 
-    local linux_path="${XBB_LINUX_WORK_FOLDER_PATH}"
+    local linux_path="${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
     (
       cd "${XBB_TARGET_WORK_FOLDER_PATH}"
