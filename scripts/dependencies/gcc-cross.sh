@@ -64,6 +64,8 @@ function build_cross_gcc_all()
   if [ ! -z ${XBB_NEWLIB_NANO_SUFFIX+x} ]
   then
     (
+      local saved_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+      
       # Temporarily set a distinct output folder and build again.
       xbb_set_executables_install_path "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_NEWLIB_NANO_SUFFIX}"
 
@@ -75,7 +77,8 @@ function build_cross_gcc_all()
         # Add the gcc first stage binaries to the path.
         # For macOS and Linux, the compiler is installed in the application folder.
         # For Windows, it is in the native dependencies folder.
-        xbb_activate_installed_bin
+        # Also add the non-nano path, since this is where the compiler is.
+        xbb_activate_installed_bin "${saved_path}/bin"
 
         build_cross_newlib "${XBB_NEWLIB_VERSION}" "${triplet}" --nano
       )
