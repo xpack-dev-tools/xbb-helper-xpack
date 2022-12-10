@@ -788,10 +788,9 @@ __EOF__
 function cross_gcc_copy_nano_multilibs()
 {
   local triplet="$1"
-  shift
 
   echo
-  echo "# Copying newlib-nano libraries..."
+  echo "# Copying newlib${XBB_NEWLIB_NANO_SUFFIX} libraries..."
 
   # local name_prefix="${triplet}-"
 
@@ -813,9 +812,9 @@ function cross_gcc_copy_nano_multilibs()
 
   # Copy the libraries after appending the `_nano` suffix.
   # Iterate through all multilib names.
-  local src_folder="${XBB_APPLICATION_NANO_INSTALL_FOLDER_PATH}/${triplet}/lib" \
-  local dst_folder="${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${triplet}/lib" \
-  local target_gcc="${XBB_APPLICATION_NANO_INSTALL_FOLDER_PATH}/bin/${triplet}-gcc"
+  local src_folder="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_NEWLIB_NANO_SUFFIX}/${triplet}/lib" \
+  local dst_folder="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib" \
+  local target_gcc="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_NEWLIB_NANO_SUFFIX}/bin/${triplet}-gcc"
 
   echo ${target_gcc}
   multilibs=( $("${target_gcc}" -print-multi-lib 2>/dev/null) )
@@ -833,10 +832,9 @@ function cross_gcc_copy_nano_multilibs()
 
   # Copy the nano configured newlib.h file into the location that nano.specs
   # expects it to be.
-  mkdir -pv "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${triplet}/include/newlib-nano"
-  cp -v -f "${XBB_APPLICATION_NANO_INSTALL_FOLDER_PATH}/${triplet}/include/newlib.h" \
-    "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${triplet}/include/newlib-nano/newlib.h"
-
+  mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/include/newlib${XBB_NEWLIB_NANO_SUFFIX}"
+  cp -v -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_NEWLIB_NANO_SUFFIX}/${triplet}/include/newlib.h" \
+    "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/include/newlib${XBB_NEWLIB_NANO_SUFFIX}/newlib.h"
 }
 
 function cross_gcc_tidy_up()
