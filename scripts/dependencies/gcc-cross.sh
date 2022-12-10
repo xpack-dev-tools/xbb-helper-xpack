@@ -137,7 +137,7 @@ function cross_gcc_define_flags_for_target()
 
 # -----------------------------------------------------------------------------
 
-function download_cross_gcc()
+function cross_gcc_download()
 {
   if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}" ]
   then
@@ -182,7 +182,7 @@ function build_cross_gcc_first()
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
     cd "${XBB_SOURCES_FOLDER_PATH}"
 
-    download_cross_gcc
+    cross_gcc_download
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gcc_first_folder_name}"
@@ -203,7 +203,7 @@ function build_cross_gcc_first()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
-      define_flags_for_target ""
+      cross_gcc_define_flags_for_target
 
       export CPPFLAGS
       export CFLAGS
@@ -460,7 +460,7 @@ function build_cross_gcc_final()
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
     cd "${XBB_SOURCES_FOLDER_PATH}"
 
-    download_cross_gcc
+    cross_gcc_download
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gcc_final_folder_name}"
@@ -492,7 +492,7 @@ function build_cross_gcc_final()
       # Do not add CRT_glob.o here, it will fail with already defined,
       # since it is already handled by --enable-mingw-wildcard.
 
-      define_flags_for_target "${nano_option}"
+      cross_gcc_define_flags_for_target "${nano_option}"
 
       export CPPFLAGS
       export CFLAGS
