@@ -901,6 +901,8 @@ function xbb_set_libraries_install_path()
 # Add the freshly built binaries.
 function xbb_activate_installed_bin()
 {
+  local folder_path="${1:-}"
+
   echo_develop
   echo_develop "[xbb_activate_installed_bin]"
 
@@ -925,6 +927,11 @@ function xbb_activate_installed_bin()
     then
       PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin:${PATH}"
     fi
+  fi
+
+  if [ ! -z "${folder_path}" ]
+  then
+    PATH="${folder_path}:${PATH}"
   fi
 
   if [ ! -z ${XBB_TEST_BIN_PATH+x} ]
