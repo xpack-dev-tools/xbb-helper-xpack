@@ -401,17 +401,6 @@ function cross_gcc_copy_linux_libs()
 
 # -----------------------------------------------------------------------------
 
-function cross_gcc_add_linux_install_path()
-{
-  local triplet="$1"
-
-  # Verify that the compiler is there.
-  "${XBB_LINUX_WORK_FOLDER_PATH}/bin/${triplet}-gcc" --version
-
-  export PATH="${XBB_LINUX_WORK_FOLDER_PATH}/bin:${PATH}"
-  echo "PATH=${PATH}"
-}
-
 # Environment variables:
 # XBB_GCC_SRC_FOLDER_NAME
 # XBB_GCC_ARCHIVE_URL
