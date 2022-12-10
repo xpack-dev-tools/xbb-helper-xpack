@@ -66,6 +66,13 @@ function build_cross_newlib()
       download_and_extract "${XBB_NEWLIB_ARCHIVE_URL}" "${XBB_NEWLIB_ARCHIVE_NAME}" \
       "${XBB_NEWLIB_SRC_FOLDER_NAME}"
 
+      if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+      then
+        # macOS 10.13 sed is very old and does not understand 'r'; use 'E'.
+        run_verbose sed -i.bak -e 's|sed -re "|sed -E -e "|' \
+          "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/libgloss/multi-build.in"
+      fi
+
       if [ "${XBB_ENABLE_NEWLIB_RISCV_NANO_CXX_PATCH:-""}" == "y" ]
       then
         echo
