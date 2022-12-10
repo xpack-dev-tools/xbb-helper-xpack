@@ -904,7 +904,7 @@ function xbb_activate_installed_bin()
   local folder_path="${1:-}"
 
   echo_develop
-  echo_develop "[xbb_activate_installed_bin]"
+  echo_develop "[xbb_activate_installed_bin $@]"
 
   if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
