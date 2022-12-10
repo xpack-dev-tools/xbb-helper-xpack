@@ -93,6 +93,9 @@ function build_cross_gdb()
         # Workaround for undefined reference to `__strcpy_chk' in GCC 9.
         # https://sourceforge.net/p/mingw-w64/bugs/818/
         LIBS="-lssp -liconv"
+        # https://stackoverflow.com/questions/29046724/undefined-reference-to-imp-gmpz-init-building-gmp-program-on-cygwin
+        # undefined reference to `__imp___gmpz_init'
+        LIBS+=" -lgmp"
       fi
 
       CONFIG_PYTHON_PREFIX=""
