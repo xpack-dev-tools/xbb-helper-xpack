@@ -47,7 +47,14 @@ function build_cross_gcc_all()
 
   build_cross_gcc_first "${XBB_GCC_VERSION}" "${triplet}"
 
-  build_cross_newlib "${XBB_NEWLIB_VERSION}" "${triplet}"
+  (
+    # Add the gcc first stage binaries to the path.
+    # For macOS and Linux, the compiler is installed in the application folder.
+    # For Windows, it is in the native dependencies folder.
+    xbb_activate_installed_bin
+
+    build_cross_newlib "${XBB_NEWLIB_VERSION}" "${triplet}"
+  )
   build_cross_gcc_final "${XBB_GCC_VERSION}" "${triplet}"
 
   # ---------------------------------------------------------------------
@@ -64,7 +71,14 @@ function build_cross_gcc_all()
       # to do it again.
       build_binutils_cross "${XBB_BINUTILS_VERSION}" "${triplet}" --nano
 
-      build_cross_newlib "${XBB_NEWLIB_VERSION}" "${triplet}" --nano
+      (
+        # Add the gcc first stage binaries to the path.
+        # For macOS and Linux, the compiler is installed in the application folder.
+        # For Windows, it is in the native dependencies folder.
+        xbb_activate_installed_bin
+
+        build_cross_newlib "${XBB_NEWLIB_VERSION}" "${triplet}" --nano
+      )
       build_cross_gcc_final "${XBB_GCC_VERSION}" "${triplet}" --nano
     )
     # Outside the sub-shell, since it uses the initial
