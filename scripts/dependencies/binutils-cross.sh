@@ -88,8 +88,8 @@ function build_binutils_cross()
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
-        # TODO
         :
+        # TODO: find a solution with XBB v5.x
         # LDFLAGS+=" -Wl,${XBB_FOLDER_PATH}/mingw/lib/CRT_glob.o"
       fi
 

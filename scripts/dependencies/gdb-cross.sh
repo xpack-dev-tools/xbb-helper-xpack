@@ -89,7 +89,9 @@ function build_cross_gdb()
         export DEBUGINFOD_LIBS="-lbcrypt"
 
         # From Arm script.
-        LDFLAGS+=" -v -Wl,${XBB_FOLDER_PATH}/mingw/lib/CRT_glob.o"
+        # TODO: find a solution with XBB v5.x
+        # LDFLAGS+=" -v -Wl,${XBB_FOLDER_PATH}/mingw/lib/CRT_glob.o"
+        
         # Workaround for undefined reference to `__strcpy_chk' in GCC 9.
         # https://sourceforge.net/p/mingw-w64/bugs/818/
         LIBS="-lssp -liconv"
