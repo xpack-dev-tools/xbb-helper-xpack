@@ -97,16 +97,7 @@ function build_cross_newlib()
       cd "${XBB_BUILD_FOLDER_PATH}/${newlib_folder_name}"
 
       xbb_activate_dependencies_dev
-
-      # Add the gcc first stage binaries to the path.
-      if is_native
-      then
-        # For macOS and Linux, the compiler is installed in the application folder.
-        xbb_activate_application_bin
-      else
-        # For Windows, it is in the native dependencies folder.
-        xbb_activate_installed_bin
-      fi
+      # xbb_activate_*_bin moved outside.
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
