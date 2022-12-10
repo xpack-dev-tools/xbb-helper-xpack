@@ -129,6 +129,10 @@ function cross_gcc_define_flags_for_target()
   # fi
 
   LDFLAGS_FOR_TARGET="--specs=nosys.specs"
+
+  export CFLAGS_FOR_TARGET
+  export CXXFLAGS_FOR_TARGET
+  export LDFLAGS_FOR_TARGET
 }
 
 # -----------------------------------------------------------------------------
@@ -205,10 +209,6 @@ function build_cross_gcc_first()
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
-
-      export CFLAGS_FOR_TARGET
-      export CXXFLAGS_FOR_TARGET
-      export LDFLAGS_FOR_TARGET
 
       if [ ! -f "config.status" ]
       then
@@ -498,10 +498,6 @@ function build_cross_gcc_final()
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
-
-      export CFLAGS_FOR_TARGET
-      export CXXFLAGS_FOR_TARGET
-      export LDFLAGS_FOR_TARGET
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
