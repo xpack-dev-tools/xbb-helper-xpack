@@ -501,7 +501,8 @@ function build_cross_gcc_final()
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
-        add_cross_linux_install_path "${triplet}"
+        # Moved outside.
+        # xbb_activate_installed_bin
 
         export AR_FOR_TARGET="$(which ${name_prefix}ar)"
         export NM_FOR_TARGET="$(which ${name_prefix}nm)"
