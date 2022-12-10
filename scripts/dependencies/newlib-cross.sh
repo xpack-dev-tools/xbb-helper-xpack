@@ -103,8 +103,7 @@ function build_cross_newlib()
       then
         # For macOS and Linux, the compiler is installed in the application folder.
         xbb_activate_application_bin
-      elif is_cross
-      then
+      else
         # For Windows, it is in the native dependencies folder.
         xbb_activate_installed_bin
       fi
