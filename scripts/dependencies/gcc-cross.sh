@@ -9,7 +9,73 @@
 
 # -----------------------------------------------------------------------------
 
-function define_flags_for_target()
+function build_cross_gcc_dependencies()
+{
+  build_libiconv "${XBB_LIBICONV_VERSION}"
+
+  # New zlib, used in most of the tools.
+  # For better control, without it some components pick the lib packed
+  # inside the archive.
+  # depends=('glibc')
+  build_zlib "${XBB_ZLIB_VERSION}"
+
+  # Libraries, required by gcc & other.
+  # depends=('gcc-libs' 'sh')
+  build_gmp "${XBB_GMP_VERSION}"
+
+  # depends=('gmp>=5.0')
+  build_mpfr "${XBB_MPFR_VERSION}"
+
+  # depends=('mpfr')
+  build_mpc "${XBB_MPC_VERSION}"
+
+  # depends=('gmp')
+  build_isl "${XBB_ISL_VERSION}"
+
+  # depends=('sh')
+  build_xz "${XBB_XZ_VERSION}"
+
+  # depends on zlib, xz, (lz4)
+  # build_zstd "${XBB_ZSTD_VERSION}"
+}
+
+function build_cross_gcc_all()
+{
+  local triplet="$1"
+
+  build_binutils_cross "${XBB_BINUTILS_VERSION}" "${triplet}"
+
+  build_cross_gcc_first "${XBB_GCC_VERSION}" "${triplet}"
+
+  build_cross_newlib "${XBB_NEWLIB_VERSION}" "${triplet}"
+  build_cross_gcc_final "${XBB_GCC_VERSION}" "${triplet}"
+
+  # ---------------------------------------------------------------------
+  # The nano version is practically a new build installed in a
+  # separate folder. Only the libraries are relevant; they are
+  # copied in a separate step.
+  if [ ! -z ${XBB_NEWLIB_NANO_SUFFIX+x} ]
+  then
+    (
+      # Temporarily set a distinct output folder and build again.
+      xbb_set_executables_install_path "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_NEWLIB_NANO_SUFFIX}"
+
+      # Although in the initial versions this was a copy, it is cleaner
+      # to do it again.
+      build_binutils_cross "${XBB_BINUTILS_VERSION}" "${triplet}" --nano
+
+      build_cross_newlib "${XBB_NEWLIB_VERSION}" "${triplet}" --nano
+      build_cross_gcc_final "${XBB_GCC_VERSION}" "${triplet}" --nano
+    )
+    # Outside the sub-shell, since it uses the initial
+    # XBB_EXECUTABLES_INSTALL_FOLDER_PATH.
+    cross_gcc_copy_nano_multilibs "${triplet}"
+  fi
+}
+
+# -----------------------------------------------------------------------------
+
+function cross_gcc_define_flags_for_target()
 {
   local is_nano="n"
 
