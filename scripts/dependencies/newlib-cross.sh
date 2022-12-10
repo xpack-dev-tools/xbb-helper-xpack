@@ -105,7 +105,7 @@ function build_cross_newlib()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      define_flags_for_target "${nano_option}"
+      cross_gcc_define_flags_for_target "${nano_option}"
 
       export CPPFLAGS
       export CFLAGS
