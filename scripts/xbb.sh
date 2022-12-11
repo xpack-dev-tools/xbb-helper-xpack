@@ -1045,7 +1045,7 @@ function xbb_activate_cxx_rpath()
 {
   local cxx_lib_path=""
 
-  local realpath=$(which grealpath || which realpath || echo realpath)
+  local realpath=$(which grealpath || which realpath || echo pyrealpath)
 
   if [[ $(basename "${CC}") =~ .*gcc.* ]]
   then
