@@ -49,6 +49,8 @@ function xbb_save_env()
 {
   export XBB_SAVED_PATH="${PATH:-""}"
   export XBB_SAVED_LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
+
+  export PYTHON=$(which python || python)
 }
 
 function xbb_reset_env()
