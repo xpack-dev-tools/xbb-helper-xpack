@@ -78,6 +78,9 @@ function run_app_verbose()
       echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
       exit 1
     fi
+  elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+  then
+    run_verbose "${app_path}" "$@"
   else
     echo
     echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
@@ -162,6 +165,9 @@ function run_target_app_verbose()
       echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
       exit 1
     fi
+  elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+  then
+    run_verbose "${app_path}" "$@"
   else
     echo
     echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
@@ -265,6 +271,9 @@ function run_target_app()
       echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
       exit 1
     fi
+  elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+  then
+    "${app_path}" "$@"
   else
     echo
     echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
