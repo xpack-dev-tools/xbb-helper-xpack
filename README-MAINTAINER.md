@@ -110,9 +110,7 @@ TBD
 
 - select the `xpack-develop` branch
 - commit all changes
-- `npm pack` and check the content of the archive, which should list
-  only `package.json`, `README.md`, `LICENSE`, `CHANGELOG.md`,
-  the `config`, `scripts` folders;
+- `npm pack` and check the content of the archive;
   possibly adjust `.npmignore`
 - `npm version patch`, `npm version minor`, `npm version major`
 - push the `xpack-develop` branch to GitHub
