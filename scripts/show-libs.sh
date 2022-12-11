@@ -95,6 +95,10 @@ function show_host_libs()
         echo "Unsupported \"${app_path}\" in ${FUNCNAME[0]}()"
         exit 1
       fi
+    elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+    then
+      echo
+      echo "show_host_libs \"${app_path}\" not implemented on Windows"
     else
       echo
       echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
