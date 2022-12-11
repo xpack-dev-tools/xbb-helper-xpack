@@ -733,3 +733,12 @@ function is_mingw_clang()
 }
 
 # -----------------------------------------------------------------------------
+
+# Last resort realpath.
+# Required during running tests on macOS.
+function pyrealpath()
+{
+  "${PYTHON}" -c 'import os, sys; print(os.path.realpath(os.path.abspath(sys.argv[1])))' "$1"
+}
+
+# -----------------------------------------------------------------------------
