@@ -222,7 +222,7 @@ function tests_update_system_common()
   elif [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${image_name} == *raspbian* ]]
   then
     run_verbose apt-get -qq update
-    run_verbose apt-get -qq install -y git-core curl tar gzip lsb-release binutils
+    run_verbose apt-get -qq install -y git-core curl tar gzip lsb-release binutils file
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
     run_verbose yum install -y -q git curl tar gzip redhat-lsb-core binutils which
