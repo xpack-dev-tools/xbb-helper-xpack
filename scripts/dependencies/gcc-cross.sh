@@ -65,7 +65,7 @@ function build_cross_gcc_all()
   then
     (
       local saved_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
-      
+
       # Temporarily set a distinct output folder and build again.
       xbb_set_executables_install_path "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_NEWLIB_NANO_SUFFIX}"
 
@@ -393,12 +393,12 @@ function cross_gcc_copy_linux_libs()
     (
       cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
-      copy_dir "${linux_path}/${triplet}/lib" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib"
-      copy_dir "${linux_path}/${triplet}/include" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/include"
+      copy_folder "${linux_path}/${triplet}/lib" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib"
+      copy_folder "${linux_path}/${triplet}/include" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/include"
 
-      copy_dir "${linux_path}/include" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include"
-      copy_dir "${linux_path}/lib" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-      copy_dir "${linux_path}/share" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share"
+      copy_folder "${linux_path}/include" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include"
+      copy_folder "${linux_path}/lib" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+      copy_folder "${linux_path}/share" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share"
     )
 
     (

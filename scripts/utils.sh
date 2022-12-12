@@ -11,7 +11,7 @@
 # -----------------------------------------------------------------------------
 
 # Copy one folder to another.
-function copy_dir()
+function copy_folder()
 {
   local from_path="$1"
   local to_path="$2"
