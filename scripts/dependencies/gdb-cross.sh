@@ -91,7 +91,7 @@ function build_cross_gdb()
         # From Arm script.
         # TODO: find a solution with XBB v5.x
         # LDFLAGS+=" -v -Wl,${XBB_FOLDER_PATH}/mingw/lib/CRT_glob.o"
-        
+
         # Workaround for undefined reference to `__strcpy_chk' in GCC 9.
         # https://sourceforge.net/p/mingw-w64/bugs/818/
         LIBS="-lssp -liconv"
@@ -323,7 +323,10 @@ function test_cross_gdb()
     run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" --config
 
     # This command is known to fail with 'Abort trap: 6' (SIGABRT)
+    # Early turn off pagination to avoid:
+    # "Type <return> to continue, or q <return> to quit"
     run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" \
+      -eiex='set pagination off' \
       --nh \
       --nx \
       -ex='show language' \
@@ -334,6 +337,7 @@ function test_cross_gdb()
     then
       # Show Python paths.
       run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" \
+        -eiex='set pagination off' \
         --nh \
         --nx \
         -ex='set pagination off' \
