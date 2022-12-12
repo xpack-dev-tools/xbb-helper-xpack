@@ -417,6 +417,9 @@ function test_target_expect()
         exit 1
       fi
 
+    elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+    then
+      output="$("${app_path}" "$@")"
     else
       echo
       echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
