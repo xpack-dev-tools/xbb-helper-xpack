@@ -62,7 +62,7 @@ function run_app_verbose()
   local app_path="$1"
   shift
 
-  local realpath=$(which grealpath || which realpath || echo pyrealpath)
+  local realpath=$(which_realpath)
 
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ] || [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
@@ -94,7 +94,7 @@ function run_target_app_verbose()
   local app_path="$1"
   shift
 
-  local realpath=$(which grealpath || which realpath || echo pyrealpath)
+  local realpath=$(which_realpath)
 
   if [ "${XBB_BUILD_PLATFORM}" == "linux" -o "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
@@ -187,7 +187,7 @@ function run_target_app()
   local app_path="$1"
   shift
 
-  local realpath=$(which grealpath || which realpath || echo pyrealpath)
+  local realpath=$(which_realpath)
 
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
@@ -368,7 +368,7 @@ function test_target_expect()
   shift
 
   (
-    local realpath=$(which grealpath || which realpath || echo pyrealpath)
+    local realpath=$(which_realpath)
 
     local app_path="$(${realpath} "${app_name}")"
 
