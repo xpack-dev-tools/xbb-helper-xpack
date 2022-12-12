@@ -39,14 +39,14 @@ function copy_dir()
 # -----------------------------------------------------------------------------
 
 # Output the result of a filtered otool.
-function get_darwin_lc_rpaths()
+function darwin_get_lc_rpaths()
 {
   local file_path="$1"
 
   otool -l "${file_path}" | grep LC_RPATH -A2 | grep '(offset ' | sed -e 's|.*path \(.*\) (offset.*)|\1|'
 }
 
-function get_darwin_dylibs()
+function darwin_get_dylibs()
 {
   local file_path="$1"
 
@@ -66,7 +66,7 @@ function get_darwin_dylibs()
   fi
 }
 
-function get_linux_rpaths_line()
+function linux_get_rpaths_line()
 {
   local file_path="$1"
 

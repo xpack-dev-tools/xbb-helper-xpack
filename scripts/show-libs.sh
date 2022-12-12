@@ -80,7 +80,7 @@ function show_host_libs()
         echo
         echo "[otool -L ${app_path}]"
         set +e
-        local lc_rpaths=$(get_darwin_lc_rpaths "${app_path}")
+        local lc_rpaths=$(darwin_get_lc_rpaths "${app_path}")
         local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
         if [ ! -z "${lc_rpaths_line}" ]
         then
@@ -177,7 +177,7 @@ function show_target_libs()
         echo
         echo "[otool -L ${app_path}]"
         set +e
-        local lc_rpaths=$(get_darwin_lc_rpaths "${app_path}")
+        local lc_rpaths=$(darwin_get_lc_rpaths "${app_path}")
         local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
         if [ ! -z "${lc_rpaths_line}" ]
         then

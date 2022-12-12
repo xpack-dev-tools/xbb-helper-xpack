@@ -259,7 +259,7 @@ function copy_dependencies_recursive()
             | sed -e 's/.*Shared library: \[\(.*\)\]/\1/')
       local lib_name
 
-      local linux_rpaths_line=$(get_linux_rpaths_line "${actual_destination_file_path}")
+      local linux_rpaths_line=$(linux_get_rpaths_line "${actual_destination_file_path}")
 
       # On Linux the references are library names.
       for lib_name in ${lib_names}
@@ -373,7 +373,7 @@ function copy_dependencies_recursive()
 
       # echo "II. Processing ${source_file_path} dependencies..."
 
-      local lc_rpaths=$(get_darwin_lc_rpaths "${actual_destination_file_path}")
+      local lc_rpaths=$(darwin_get_lc_rpaths "${actual_destination_file_path}")
       local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
 
       echo
@@ -384,7 +384,7 @@ function copy_dependencies_recursive()
         otool -L "${actual_destination_file_path}"
       fi
 
-      local lib_paths=$(get_darwin_dylibs "${actual_destination_file_path}")
+      local lib_paths=$(darwin_get_dylibs "${actual_destination_file_path}")
 
       local executable_prefix="@executable_path/"
       local loader_prefix="@loader_path/"
@@ -559,7 +559,7 @@ function copy_dependencies_recursive()
       (
         set +e
 
-        lc_rpaths=$(get_darwin_lc_rpaths "${actual_destination_file_path}")
+        lc_rpaths=$(darwin_get_lc_rpaths "${actual_destination_file_path}")
         lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
 
         echo
@@ -1113,7 +1113,7 @@ function patch_macos_elf_add_rpath()
     exit 1
   fi
 
-  local lc_rpaths=$(get_darwin_lc_rpaths "${file_path}")
+  local lc_rpaths=$(darwin_get_lc_rpaths "${file_path}")
   for lc_rpath in ${lc_rpaths}
   do
     if [ "${new_rpath}" == "${lc_rpath}" ]
@@ -1139,7 +1139,7 @@ function clean_rpaths()
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
   then
     (
-      local lc_rpaths=$(get_darwin_lc_rpaths "${file_path}")
+      local lc_rpaths=$(darwin_get_lc_rpaths "${file_path}")
       if [ -z "${lc_rpaths}" ]
       then
         return
@@ -1157,7 +1157,7 @@ function clean_rpaths()
           # May be empty.
           local rpath_relative_path="${lc_rpath:${#loader_prefix}}"
 
-          local lib_paths=$(get_darwin_dylibs "${file_path}")
+          local lib_paths=$(darwin_get_dylibs "${file_path}")
           for lib_path in ${lib_paths}
           do
             if [ "${lib_path:0:${#rpath_prefix}}" == "${rpath_prefix}" ]
@@ -1190,7 +1190,7 @@ function clean_rpaths()
       local origin_prefix="\$ORIGIN"
       local new_rpath=""
 
-      local linux_rpaths_line=$(get_linux_rpaths_line "${file_path}")
+      local linux_rpaths_line=$(linux_get_rpaths_line "${file_path}")
 
       if [ -z "${linux_rpaths_line}" ]
       then
@@ -1409,7 +1409,7 @@ function patch_linux_elf_add_rpath()
       exit 1
     fi
 
-    local linux_rpaths_line=$(get_linux_rpaths_line "${file_path}")
+    local linux_rpaths_line=$(linux_get_rpaths_line "${file_path}")
 
     if [ -z "${linux_rpaths_line}" ]
     then
@@ -1783,7 +1783,7 @@ function check_binary_for_libraries()
       set -e
     elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
     then
-      local lc_rpaths=$(get_darwin_lc_rpaths "${file_path}")
+      local lc_rpaths=$(darwin_get_lc_rpaths "${file_path}")
 
       echo
       (
@@ -1925,7 +1925,7 @@ function check_binary_for_libraries()
 
       # local relative_path=$(${READELF} -d "${file_path}" | egrep '(RUNPATH|RPATH)' | sed -e 's/.*\[\$ORIGIN//' | sed -e 's/\].*//')
       # echo $relative_path
-      local linux_rpaths_line=$(get_linux_rpaths_line "${file_path}")
+      local linux_rpaths_line=$(linux_get_rpaths_line "${file_path}")
       local origin_prefix="\$ORIGIN"
 
       for so_name in ${so_names}
