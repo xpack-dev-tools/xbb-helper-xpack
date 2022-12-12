@@ -50,9 +50,10 @@ function xbb_save_env()
   export XBB_SAVED_PATH="${PATH:-""}"
   export XBB_SAVED_LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
 
-  export M4=$(which gm4 || which m4 || echo m4)
-  export PYTHON=$(which python || echo python)
-  export SED=$(which gsed || which sed || echo sed)
+  # On MSYS2, which complains about the missing file.
+  export M4=$(which gm4 2>/dev/null || which m4 2>/dev/null || echo m4)
+  export PYTHON=$(which python 2>/dev/null || echo python)
+  export SED=$(which gsed 2>/dev/null || which sed 2>/dev/null || echo sed)
 }
 
 function xbb_reset_env()
@@ -291,7 +292,7 @@ function xbb_set_requested()
 # - XBB_HOST|TARGET_MACHINE={x86_64,arm64,aarch64,armv7l,armv8l}
 # - XBB_HOST|TARGET_TRIPLET={*,x86_64-w64-mingw32}
 
-# "requested", "native", "mingw-w64-native", "mingw-w64-cross"
+# "requested", "native", "mingw-w64-native", "mingw-w64-cross"which_realpath
 function xbb_set_target()
 {
   local kind="$1"
@@ -514,8 +515,8 @@ function xbb_set_compiler_env()
   if [ "${XBB_HOST_PLATFORM}" == "win32" -a "${XBB_TARGET_TRIPLET}" == "${XBB_HOST_TRIPLET}" ]
   then
     # Windows cross build case.
-    export XBB_NATIVE_CC="$(which gcc)"
-    export XBB_NATIVE_CXX="$(which g++)"
+    export XBB_NATIVE_CC="$(which gcc 2>/dev/null || echo gcc)"
+    export XBB_NATIVE_CXX="$(which g++ 2>/dev/null || echo g++)"
 
     xbb_prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
@@ -532,9 +533,9 @@ function xbb_set_compiler_env()
 
 function xbb_set_extra_build_env()
 {
-  XBB_BUILD_STRIP="$(which strip)"
-  XBB_BUILD_RANLIB="$(which ranlib)"
-  XBB_BUILD_OBJDUMP="$(which objdump)"
+  XBB_BUILD_STRIP="$(which strip 2>/dev/null || echo strip)"
+  XBB_BUILD_RANLIB="$(which ranlib 2>/dev/null || echo ranlib)"
+  XBB_BUILD_OBJDUMP="$(which objdump 2>/dev/null || echo objdump)"
 
   export XBB_BUILD_STRIP
   export XBB_BUILD_RANLIB
@@ -547,19 +548,19 @@ function xbb_set_extra_target_env()
 
   if [ "${triplet}" != "${XBB_BUILD_TRIPLET}" ]
   then
-    if [ ! -z "$(which ${triplet}-strip)" ]
+    if [ ! -z "$(which ${triplet}-strip 2>/dev/null)" ]
     then
       XBB_TARGET_STRIP="$(which ${triplet}-strip)"
     else
       XBB_TARGET_STRIP="${triplet}-strip"
     fi
-    if [ ! -z "$(which ${triplet}-ranlib)" ]
+    if [ ! -z "$(which ${triplet}-ranlib 2>/dev/null)" ]
     then
       XBB_TARGET_RANLIB="$(which ${triplet}-ranlib)"
     else
       XBB_TARGET_RANLIB="${triplet}-ranlib"
     fi
-    if [ ! -z "$(which ${triplet}-objdump)" ]
+    if [ ! -z "$(which ${triplet}-objdump 2>/dev/null)" ]
     then
       XBB_TARGET_OBJDUMP="$(which ${triplet}-objdump)"
     else
@@ -568,9 +569,9 @@ function xbb_set_extra_target_env()
 
     XBB_CURRENT_TRIPLET="${triplet}"
   else
-    XBB_TARGET_STRIP="$(which strip)"
-    XBB_TARGET_RANLIB="$(which ranlib)"
-    XBB_TARGET_OBJDUMP="$(which objdump)"
+    XBB_TARGET_STRIP="$(which strip 2>/dev/null || echo strip)"
+    XBB_TARGET_RANLIB="$(which ranlib 2>/dev/null || echo ranlib)"
+    XBB_TARGET_OBJDUMP="$(which objdump 2>/dev/null || echo objdump)"
 
     XBB_CURRENT_TRIPLET=""
   fi
@@ -588,13 +589,13 @@ function xbb_set_extra_host_env()
 
   if [ "${triplet}" != "${XBB_BUILD_TRIPLET}" ]
   then
-    XBB_HOST_STRIP="$(which ${triplet}-strip)"
-    XBB_HOST_RANLIB="$(which ${triplet}-ranlib)"
-    XBB_HOST_OBJDUMP="$(which ${triplet}-objdump)"
+    XBB_HOST_STRIP="$(which ${triplet}-strip 2>/dev/null || echo ${triplet}-strip)"
+    XBB_HOST_RANLIB="$(which ${triplet}-ranlib 2>/dev/null || echo ${triplet}-ranlib)"
+    XBB_HOST_OBJDUMP="$(which ${triplet}-objdump 2>/dev/null || echo ${triplet}-objdump)"
   else
-    XBB_HOST_STRIP="$(which strip)"
-    XBB_HOST_RANLIB="$(which ranlib)"
-    XBB_HOST_OBJDUMP="$(which objdump)"
+    XBB_HOST_STRIP="$(which strip 2>/dev/null || echo strip)"
+    XBB_HOST_RANLIB="$(which ranlib 2>/dev/null || echo ranlib)"
+    XBB_HOST_OBJDUMP="$(which objdump 2>/dev/null || echo objdump)"
   fi
 
   export XBB_HOST_STRIP
@@ -645,44 +646,44 @@ function xbb_prepare_gcc_env()
 
   xbb_unset_compiler_env
 
-  export CC="$(which ${prefix}gcc${suffix})"
-  export CXX="$(which ${prefix}g++${suffix})"
+  export CC="$(which ${prefix}gcc${suffix} 2>/dev/null || echo ${prefix}gcc${suffix})"
+  export CXX="$(which ${prefix}g++${suffix} 2>/dev/null || echo ${prefix}g++${suffix})"
 
   # These are the special GCC versions, not the binutils ones.
-  export AR="$(which ${prefix}gcc-ar${suffix})"
-  export NM="$(which ${prefix}gcc-nm${suffix})"
-  export RANLIB="$(which ${prefix}gcc-ranlib${suffix})"
+  export AR="$(which ${prefix}gcc-ar${suffix} 2>/dev/null || echo ${prefix}gcc-ar${suffix})"
+  export NM="$(which ${prefix}gcc-nm${suffix} 2>/dev/null || echo ${prefix}gcc-nm${suffix})"
+  export RANLIB="$(which ${prefix}gcc-ranlib${suffix} 2>/dev/null || echo ${prefix}gcc-ranlib${suffix})"
 
   # From binutils.
-  export AS="$(which ${prefix}as)"
-  if [ ! -z "$(which ${prefix}dlltool)" ]
+  export AS="$(which ${prefix}as 2>/dev/null || echo ${prefix}as)"
+  if [ ! -z "$(which ${prefix}dlltool 2>/dev/null)" ]
   then
     export DLLTOOL="$(which ${prefix}dlltool)"
   fi
-  export LD="$(which ${prefix}ld)"
-  if [ ! -z "$(which ${prefix}objcopy)" ]
+  export LD="$(which ${prefix}ld 2>/dev/null || echo ${prefix}ld)"
+  if [ ! -z "$(which ${prefix}objcopy 2>/dev/null)" ]
   then
     export OBJCOPY="$(which ${prefix}objcopy)"
   fi
-  if [ ! -z "$(which ${prefix}objdump)" ]
+  if [ ! -z "$(which ${prefix}objdump 2>/dev/null)" ]
   then
     export OBJDUMP="$(which ${prefix}objdump)"
   fi
-  if [ ! -z "$(which ${prefix}readelf)" ]
+  if [ ! -z "$(which ${prefix}readelf 2>/dev/null)" ]
   then
     export READELF="$(which ${prefix}readelf)"
   fi
-  export SIZE="$(which ${prefix}size)"
-  export STRIP="$(which ${prefix}strip)"
-  if [ ! -z "$(which ${prefix}windres)" ]
+  export SIZE="$(which ${prefix}size 2>/dev/null || echo ${prefix}size)"
+  export STRIP="$(which ${prefix}strip 2>/dev/null || echo ${prefix}strip)"
+  if [ ! -z "$(which ${prefix}windres 2>/dev/null)" ]
   then
     export WINDRES="$(which ${prefix}windres)"
   fi
-  if [ ! -z "$(which ${prefix}windmc)" ]
+  if [ ! -z "$(which ${prefix}windmc 2>/dev/null)" ]
   then
     export WINDMC="$(which ${prefix}windmc)"
   fi
-  if [ ! -z "$(which ${prefix}windres)" ]
+  if [ ! -z "$(which ${prefix}windres 2>/dev/null)" ]
   then
     export RC="$(which ${prefix}windres)"
   fi
@@ -700,41 +701,41 @@ function xbb_prepare_clang_env()
 
   xbb_unset_compiler_env
 
-  export CC="$(which ${prefix}clang${suffix})"
-  export CXX="$(which ${prefix}clang++${suffix})"
+  export CC="$(which ${prefix}clang${suffix} 2>/dev/null || echo ${prefix}clang${suffix})"
+  export CXX="$(which ${prefix}clang++${suffix} 2>/dev/null || echo ${prefix}clang++${suffix})"
 
-  export AR="$(which ${prefix}ar)"
-  export AS="$(which ${prefix}as)"
-  if [ ! -z "$(which ${prefix}dlltool)" ]
+  export AR="$(which ${prefix}ar 2>/dev/null || echo ${prefix}ar)"
+  export AS="$(which ${prefix}as 2>/dev/null || echo ${prefix}as)"
+  if [ ! -z "$(which ${prefix}dlltool 2>/dev/null)" ]
   then
     export DLLTOOL="$(which ${prefix}dlltool)"
   fi
-  export LD="$(which ${prefix}ld)"
-  export NM="$(which ${prefix}nm)"
-  if [ ! -z "$(which ${prefix}objcopy)" ]
+  export LD="$(which ${prefix}ld 2>/dev/null || echo ${prefix}ld)"
+  export NM="$(which ${prefix}nm 2>/dev/null || echo ${prefix}nm)"
+  if [ ! -z "$(which ${prefix}objcopy 2>/dev/null)" ]
   then
     export OBJCOPY="$(which ${prefix}objcopy)"
   fi
-  if [ ! -z "$(which ${prefix}objdump)" ]
+  if [ ! -z "$(which ${prefix}objdump 2>/dev/null)" ]
   then
   export OBJDUMP="$(which ${prefix}objdump)"
   fi
-  export RANLIB="$(which ${prefix}ranlib)"
-  if [ ! -z "$(which ${prefix}readelf)" ]
+  export RANLIB="$(which ${prefix}ranlib 2>/dev/null || echo ${prefix}ranlib)"
+  if [ ! -z "$(which ${prefix}readelf 2>/dev/null)" ]
   then
     export READELF="$(which ${prefix}readelf)"
   fi
-  export SIZE="$(which ${prefix}size)"
-  export STRIP="$(which ${prefix}strip)"
-  if [ ! -z "$(which ${prefix}windres)" ]
+  export SIZE="$(which ${prefix}size 2>/dev/null || echo ${prefix}size)"
+  export STRIP="$(which ${prefix}strip 2>/dev/null || echo ${prefix}strip)"
+  if [ ! -z "$(which ${prefix}windres 2>/dev/null)" ]
   then
     export WINDRES="$(which ${prefix}windres)"
   fi
-  if [ ! -z "$(which ${prefix}windmc)" ]
+  if [ ! -z "$(which ${prefix}windmc 2>/dev/null)" ]
   then
     export WINDMC="$(which ${prefix}windmc)"
   fi
-  if [ ! -z "$(which ${prefix}windres)" ]
+  if [ ! -z "$(which ${prefix}windres 2>/dev/null)" ]
   then
     export RC="$(which ${prefix}windres)"
   fi
