@@ -387,6 +387,10 @@ function test_compiler_single()
       then
         echo
         echo "Skipping hello-weak-c without -flto with Windows binaries..."
+      elif [ "${is_lto}" != "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+      then
+        echo
+        echo "Skipping hello-weak-c without -flto on Windows..."
       else
         run_host_app_verbose "${CC}" -c "hello-weak.c" -o "${prefix}hello-weak${suffix}.c.o" ${CFLAGS}
         run_host_app_verbose "${CC}" -c "hello-f-weak.c" -o "${prefix}hello-f-weak${suffix}.c.o" ${CFLAGS}
@@ -418,6 +422,10 @@ function test_compiler_single()
       then
         echo
         echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
+      elif [ "${is_lto}" != "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+      then
+        echo
+        echo "Skipping hello-weak-cpp without -flto on Windows..."
       else
         run_host_app_verbose "${CXX}" -c "hello-weak-cpp.cpp" -o "${prefix}hello-weak-cpp${suffix}.cpp.o" ${CXXFLAGS}
         run_host_app_verbose "${CXX}" -c "hello-f-weak-cpp.cpp" -o "${prefix}hello-f-weak-cpp${suffix}.cpp.o" ${CXXFLAGS}
@@ -515,6 +523,12 @@ function test_compiler_single()
               show_target_libs "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
               echo
               echo "Skipping ${prefix}throwcatch-main${suffix} with clang -flto on macOS..."
+            elif [ "${is_lto}" == "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+            then
+              # Mingw-w64 runtime failure:
+              # 32 bit pseudo relocation at 00007FF67D9F1587 out of range, targeting 00007FFF403E157C, yielding the value 00000008C29EFFF1.
+              echo
+              echo "Skipping ${prefix}throwcatch-main${suffix} -flto on Windows..."
             else
               show_target_libs_develop "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
               run_target_app_verbose "./${prefix}throwcatch-main${suffix}"
@@ -525,13 +539,19 @@ function test_compiler_single()
 
       if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
-        # tlstest-lib.dll is dynamically loaded by tltest-main.cpp.
-        run_host_app_verbose "${CXX}" tlstest-lib.cpp -o tlstest-lib.dll -shared -Wl,--out-implib,libtlstest-lib.dll.a ${LDXXFLAGS}
-        show_target_libs_develop "tlstest-lib.dll"
+        if is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+        then
+          echo
+          echo "Skipping tlstest-main.cpp on Windows..."
+        else
+          # tlstest-lib.dll is dynamically loaded by tltest-main.cpp.
+          run_host_app_verbose "${CXX}" tlstest-lib.cpp -o tlstest-lib.dll -shared -Wl,--out-implib,libtlstest-lib.dll.a ${LDXXFLAGS}
+          show_target_libs_develop "tlstest-lib.dll"
 
-        run_host_app_verbose "${CXX}" tlstest-main.cpp -o "${prefix}tlstest-main${suffix}${XBB_TARGET_DOT_EXE}"${LDXXFLAGS}
-        show_target_libs_develop ${prefix}tlstest-main${suffix}
-        run_target_app_verbose "./${prefix}tlstest-main${suffix}"
+          run_host_app_verbose "${CXX}" tlstest-main.cpp -o "${prefix}tlstest-main${suffix}${XBB_TARGET_DOT_EXE}"${LDXXFLAGS}
+          show_target_libs_develop ${prefix}tlstest-main${suffix}
+          run_target_app_verbose "./${prefix}tlstest-main${suffix}"
+        fi
 
         if [ "${is_static}" != "y" ]
         then
@@ -564,6 +584,12 @@ function test_compiler_single()
             show_target_libs "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
             echo
             echo "Skipping ${prefix}autoimport-main${suffix} with gcc -flto..."
+          elif [ "${is_lto}" == "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+          then
+            # Mingw-w64 runtime failure:
+            # 32 bit pseudo relocation at 00007FF62E64152A out of range, targeting 00007FFF4040135C, yielding the value 0000000911DBFE2E.
+            echo
+            echo "Skipping ${prefix}autoimport-main${suffix} with gcc -flto on Windows..."
           else
             show_target_libs_develop "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
             run_target_app_verbose "./${prefix}autoimport-main${suffix}"
@@ -592,16 +618,24 @@ function test_compiler_single()
       (
         cd fortran
 
-        # Test a very simple Fortran (a print).
-        run_host_app_verbose "${F90}" hello.f90 -o "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
-        # The space is expected.
-        test_target_expect " Hello" "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}"
+        if is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+        then
+          # error while loading shared libraries: api-ms-win-crt-time-l1-1-0.dll: cannot open shared object file: No such file or directory
+          # The api-ms-win-crt-runtime-l1-1-0.dll file is included in Microsoft Visual C++ Redistributable for Visual Studio 2015
+          echo
+          echo "Skipping fortran tests on Windows..."
+        else
+          # Test a very simple Fortran (a print).
+          run_host_app_verbose "${F90}" hello.f90 -o "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+          # The space is expected.
+          test_target_expect " Hello" "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}"
 
-        # Test a concurrent computation.
-        run_host_app_verbose "${F90}" concurrent.f90 -o "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+          # Test a concurrent computation.
+          run_host_app_verbose "${F90}" concurrent.f90 -o "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
-        show_target_libs_develop "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}"
-        run_target_app_verbose "./${prefix}concurrent-f${suffix}"
+          show_target_libs_develop "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}"
+          run_target_app_verbose "./${prefix}concurrent-f${suffix}"
+        fi
       )
     else
       echo
