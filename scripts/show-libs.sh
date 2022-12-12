@@ -22,7 +22,7 @@ function show_host_libs()
       return
     fi
 
-    local realpath=$(which grealpath || which realpath || echo pyrealpath)
+    local realpath=$(which_realpath)
 
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
@@ -119,7 +119,7 @@ function show_target_libs()
       return
     fi
 
-    local realpath=$(which grealpath || which realpath || echo pyrealpath)
+    local realpath=$(which_realpath)
 
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
