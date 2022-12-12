@@ -334,28 +334,14 @@ function test_compiler_single()
         fi
       fi
 
-      if false # [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [ "${XBB_TARGET_ARCH}" == "x64" ]
       then
-        # On macOS, even with the Apple compiler:
-        # crt-test.c:836: logbl(-F(NAN)) failed, expected nan, got nan
-        # crt-test.c:996: acosl(F(NAN)) failed, expected nan, got nan
-        # crt-test.c:1011: asinl(F(NAN)) failed, expected nan, got nan
-        # crt-test.c:1119: cosh(-F(NAN)) failed, expected nan, got nan
-        # crt-test.c:1120: coshf(-F(NAN)) failed, expected nan, got nan
-        # crt-test.c:1147: tanh(-F(NAN)) failed, expected nan, got nan
-        # crt-test.c:1148: tanhf(-F(NAN)) failed, expected nan, got nan
-        # 2364 tests, 7 failures
-
+        # On macOS 10.13
+        # crt-test.c:1531: lgamma(F(-0.0)) failed, expected inf, got -inf
+        # crt-test.c:1532: lgammaf(F(-0.0)) failed, expected inf, got -inf
+        # 2592 tests, 2 failures
         echo
         echo "Skipping crt-test on macOS..."
-      elif false # [ "${XBB_TARGET_PLATFORM}" == "linux" -a "${XBB_TARGET_ARCH}" == "arm64" ]
-      then
-        # On Raspberry Pi OS, even with the Debian compiler:
-        # crt-test.c:711: log1pl(-F(NAN)) failed, expected -nan, got nan
-        # 2370 tests, 1 failures
-
-        echo
-        echo "Skipping crt-test on Linux arm64..."
       else
         # This test uses math functions. On Windows -lm is not mandatory.
         run_host_app_verbose "${CC}" crt-test.c -o "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
