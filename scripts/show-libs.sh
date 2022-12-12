@@ -97,8 +97,12 @@ function show_host_libs()
       fi
     elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
     then
-      echo
-      echo "show_host_libs \"${app_path}\" not implemented on Windows"
+      run_verbose ls -l "${app_path}"
+      if [ "${XBB_IS_DEVELOP}" == "y" ]
+      then
+        run_verbose file -L "${app_path}"
+      fi
+      echo "${FUNCNAME[0]}() cannot show DLLs on Windows"
     else
       echo
       echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
@@ -212,6 +216,14 @@ function show_target_libs()
         echo "Unsupported \"${app_path}\" in ${FUNCNAME[0]}()"
         exit 1
       fi
+    elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+    then
+      run_verbose ls -l "${app_path}"
+      if [ "${XBB_IS_DEVELOP}" == "y" ]
+      then
+        run_verbose file -L "${app_path}"
+      fi
+      echo "${FUNCNAME[0]}() cannot show DLLs on Windows"
     else
       echo
       echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
