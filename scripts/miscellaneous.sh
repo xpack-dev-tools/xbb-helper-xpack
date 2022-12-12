@@ -278,3 +278,10 @@ function pyrealpath()
 }
 
 # -----------------------------------------------------------------------------
+
+function which_realpath()
+{
+  # On Windows, 'which' complains about the missing file; silence it.
+  which grealpath 2>/dev/null || which realpath 2>/dev/null || echo pyrealpath
+}
+# -----------------------------------------------------------------------------
