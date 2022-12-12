@@ -13,6 +13,7 @@
 
 source "${helper_folder_path}/scripts/machine.sh"
 source "${helper_folder_path}/scripts/wrappers.sh"
+source "${helper_folder_path}/scripts/misc.sh"
 source "${helper_folder_path}/scripts/xbb.sh"
 source "${helper_folder_path}/scripts/show-libs.sh"
 
