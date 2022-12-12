@@ -13,9 +13,10 @@
 
 source "${helper_folder_path}/scripts/machine.sh"
 source "${helper_folder_path}/scripts/wrappers.sh"
-source "${helper_folder_path}/scripts/misc.sh"
+source "${helper_folder_path}/scripts/is-something.sh"
 source "${helper_folder_path}/scripts/xbb.sh"
 source "${helper_folder_path}/scripts/show-libs.sh"
+source "${helper_folder_path}/scripts/miscellaneous.sh"
 
 # -----------------------------------------------------------------------------
 # Functions used when running separate tests.

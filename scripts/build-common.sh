@@ -13,7 +13,7 @@
 
 source "${helper_folder_path}/scripts/timer.sh"
 source "${helper_folder_path}/scripts/machine.sh"
-source "${helper_folder_path}/scripts/misc.sh"
+source "${helper_folder_path}/scripts/is-something.sh"
 source "${helper_folder_path}/scripts/wrappers.sh"
 source "${helper_folder_path}/scripts/xbb.sh"
 source "${helper_folder_path}/scripts/build-tests.sh"

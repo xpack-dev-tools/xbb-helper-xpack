@@ -201,3 +201,80 @@ function copy_libudev_with_links()
 }
 
 # -----------------------------------------------------------------------------
+
+# Copy one folder to another.
+function copy_folder()
+{
+  local from_path="$1"
+  local to_path="$2"
+
+  echo
+  echo "# Copying ${from_path}..."
+
+  set +u
+  # rm -rf "${to_path}"
+  mkdir -pv "${to_path}"
+
+  (
+    cd "${from_path}"
+    if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+    then
+      find . -xdev -print0 | cpio -oa0 | (cd "${to_path}" && cpio -im)
+    else
+      find . -xdev -print0 | cpio -oa0V | (cd "${to_path}" && cpio -imuV)
+    fi
+  )
+
+  set -u
+}
+
+# -----------------------------------------------------------------------------
+
+# Output the result of a filtered otool.
+function darwin_get_lc_rpaths()
+{
+  local file_path="$1"
+
+  otool -l "${file_path}" | grep LC_RPATH -A2 | grep '(offset ' | sed -e 's|.*path \(.*\) (offset.*)|\1|'
+}
+
+function darwin_get_dylibs()
+{
+  local file_path="$1"
+
+  if is_darwin_dylib "${file_path}"
+  then
+    # Skip the extra line with the library name.
+    otool -L "${file_path}" \
+          | sed '1d' \
+          | sed '1d' \
+          | sed -e 's|[[:space:]]*\(.*\) (.*)|\1|' \
+
+  else
+    otool -L "${file_path}" \
+          | sed '1d' \
+          | sed -e 's|[[:space:]]*\(.*\) (.*)|\1|' \
+
+  fi
+}
+
+function linux_get_rpaths_line()
+{
+  local file_path="$1"
+
+  readelf -d "${file_path}" \
+    | egrep '(RUNPATH|RPATH)' \
+    | sed -e 's|.*\[\(.*\)\]|\1|'
+
+}
+
+# -----------------------------------------------------------------------------
+
+# Last resort realpath.
+# Required during running tests on macOS.
+function pyrealpath()
+{
+  "${PYTHON}" -c 'import os, sys; print(os.path.realpath(os.path.abspath(sys.argv[1])))' "$1"
+}
+
+# -----------------------------------------------------------------------------
