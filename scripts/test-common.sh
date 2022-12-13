@@ -32,6 +32,7 @@ function tests_parse_options()
   XBB_RELEASE_VERSION="${XBB_RELEASE_VERSION:-$(xbb_get_current_version)}"
   XBB_BASE_URL="${XBB_BASE_URL:-}"
   XBB_DO_TEST_VIA_XPM="n"
+  XBB_OUTPUT_FILE_NAME="tests"
 
   while [ $# -gt 0 ]
   do
@@ -44,6 +45,7 @@ function tests_parse_options()
 
       --32 )
         XBB_FORCE_32_BIT="y"
+        XBB_OUTPUT_FILE_NAME+="-32"
         shift
         ;;
 
@@ -62,11 +64,13 @@ function tests_parse_options()
 
       --base-url )
         XBB_BASE_URL="$2"
+        XBB_OUTPUT_FILE_NAME+="-base-url"
         shift 2
         ;;
 
       --xpm )
         XBB_DO_TEST_VIA_XPM="y"
+        XBB_OUTPUT_FILE_NAME+="-xpm"
         shift
         ;;
 
@@ -91,6 +95,7 @@ function tests_parse_options()
   export XBB_IMAGE_NAME
   export XBB_FORCE_32_BIT
   export XBB_DO_TEST_VIA_XPM
+  export XBB_OUTPUT_FILE_NAME
 
   if false
   then
@@ -100,6 +105,7 @@ function tests_parse_options()
     echo "XBB_FORCE_32_BIT=${XBB_FORCE_32_BIT}"
     echo "XBB_IMAGE_NAME=${XBB_IMAGE_NAME}"
     echo "XBB_DO_TEST_VIA_XPM=${XBB_DO_TEST_VIA_XPM}"
+    echo "XBB_OUTPUT_FILE_NAME=${XBB_OUTPUT_FILE_NAME}"
   fi
 }
 
@@ -311,22 +317,27 @@ function tests_perform_common()
   xbb_reset_env
   xbb_set_target "requested"
 
-  if [ "${XBB_DO_TEST_VIA_XPM}" == "y" ]
-  then
-    tests_install_via_xpm "${XBB_TESTS_FOLDER_PATH}"
-    tests_run_all "${XBB_XPACK_FOLDER_PATH}/xpacks/.bin"
-  elif [ ! -z "${XBB_BASE_URL}" ]
-  then
-    # Download archive and test its binaries.
-    tests_install_archive "${XBB_TESTS_FOLDER_PATH}"
-    tests_run_all "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}/bin"
-  else
-    # Test the locally built binaries.
-    tests_run_all "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
-  fi
+  # The XBB_LOGS_FOLDER_PATH must be set at this point.
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
+  (
+    if [ "${XBB_DO_TEST_VIA_XPM}" == "y" ]
+    then
+      tests_install_via_xpm "${XBB_TESTS_FOLDER_PATH}"
+      tests_run_all "${XBB_XPACK_FOLDER_PATH}/xpacks/.bin"
+    elif [ ! -z "${XBB_BASE_URL}" ]
+    then
+      # Download archive and test its binaries.
+      tests_install_archive "${XBB_TESTS_FOLDER_PATH}"
+      tests_run_all "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}/bin"
+    else
+      # Test the locally built binaries.
+      tests_run_all "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
+    fi
 
     tests_good_bye
     timer_stop
+
+  ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${XBB_OUTPUT_FILE_NAME}-output-$(ndate).txt"
 }
 
 # Called by xbb_set_target.
