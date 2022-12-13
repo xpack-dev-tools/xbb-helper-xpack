@@ -1,5 +1,4 @@
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/xpack-dev-tools/xbb-helper-xpack)](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/package.json)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xpack-dev-tools/xbb-helper-xpack)](https://github.com/xpack-dev-tools/xbb-helper-xpack/releases/)
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/xbb-helper.svg?color=blue)](https://www.npmjs.com/package/@xpack-dev-tools/xbb-helper/)
 [![license](https://img.shields.io/github/license/xpack-dev-tools/xbb-helper-xpack)](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/LICENSE)
 
@@ -103,7 +102,6 @@ A typical use case is to define an xPack action that copies, among
 other things, the build scripts from the helper templates:
 
 ```json
-  ...
   "cp xpacks/xpack-dev-tools-xbb-helper/templates/build.sh scripts/",
   "cp xpacks/xpack-dev-tools-xbb-helper/templates/test.sh scripts/"
 ```
