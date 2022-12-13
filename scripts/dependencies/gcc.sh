@@ -1013,6 +1013,10 @@ function test_gcc()
     elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       (
+        export DYLD_LIBRARY_PATH="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+        echo
+        echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
+
         # Old macOS linkers do not support LTO, thus use lld.
         test_compiler_single "${test_bin_path}"
         test_compiler_single "${test_bin_path}" --gc
