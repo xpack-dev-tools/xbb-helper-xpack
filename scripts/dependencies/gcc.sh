@@ -1024,7 +1024,9 @@ function test_gcc()
         test_compiler_single "${test_bin_path}" --lto --lld
         test_compiler_single "${test_bin_path}" --gc --lto --lld
 
+        echo
         echo "Skipping all --static-lib on macOS..."
+        echo
         echo "Skipping all --static on macOS..."
       )
     fi
