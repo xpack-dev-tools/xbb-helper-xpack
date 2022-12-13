@@ -10,6 +10,11 @@
 
 # -----------------------------------------------------------------------------
 
+function ndate()
+{
+  date -u +%Y%m%d-%H%M%S
+}
+
 function echo_develop()
 {
   if [ "${XBB_IS_DEVELOP}" == "y" ]
