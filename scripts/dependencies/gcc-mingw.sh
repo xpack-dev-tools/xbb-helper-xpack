@@ -102,7 +102,7 @@ function build_mingw_gcc_all_triplets()
       )
 
       # With the run-time available, build the C/C++ libraries and the rest.
-      build_mingw_gcc_final --triplet="${triplet}" # "${XBB_BOOTSTRAP_SUFFIX}"
+      build_mingw_gcc_final --triplet="${triplet}"
     )
 
   done

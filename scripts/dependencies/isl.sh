@@ -61,28 +61,14 @@ function build_isl()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${isl_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${isl_folder_name}"
 
-      if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
-      then
+      xbb_activate_dependencies_dev
 
-        # Otherwise `configure: error: gmp.h header not found`.`
-        CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include"
-        CFLAGS="${XBB_CFLAGS_NO_W}"
-        CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+      CPPFLAGS="${XBB_CPPFLAGS}"
+      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-        LDFLAGS="${XBB_LDFLAGS_LIB}"
-
-      else
-
-        xbb_activate_dependencies_dev
-
-        CPPFLAGS="${XBB_CPPFLAGS}"
-        CFLAGS="${XBB_CFLAGS_NO_W}"
-        CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-        LDFLAGS="${XBB_LDFLAGS_LIB}"
-        xbb_adjust_ldflags_rpath
-
-      fi
+      LDFLAGS="${XBB_LDFLAGS_LIB}"
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
@@ -110,20 +96,9 @@ function build_isl()
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
-          if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
-          then
-
-            config_options+=("--build=${XBB_BUILD_TRIPLET}")
-            config_options+=("--host=${XBB_BUILD_TRIPLET}")
-            config_options+=("--target=${XBB_BUILD_TRIPLET}")
-
-          else
-
-            config_options+=("--build=${XBB_BUILD_TRIPLET}")
-            config_options+=("--host=${XBB_HOST_TRIPLET}")
-            config_options+=("--target=${XBB_TARGET_TRIPLET}")
-
-          fi
+          config_options+=("--build=${XBB_BUILD_TRIPLET}")
+          config_options+=("--host=${XBB_HOST_TRIPLET}")
+          config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
 
@@ -174,13 +149,9 @@ function build_isl()
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${isl_folder_name}/make-output-$(ndate).txt"
 
-      if [ -z "${name_suffix}" ]
-      then
-        copy_license \
-          "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}" \
-          "${isl_folder_name}"
-      fi
-
+      copy_license \
+        "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}" \
+        "${isl_folder_name}"
     )
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"

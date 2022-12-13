@@ -146,12 +146,9 @@ function build_zlib()
         ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${zlib_folder_name}/make-output-$(ndate).txt"
       fi
 
-      if [ -z "${name_suffix}" ]
-      then
-        copy_license \
-          "${XBB_BUILD_FOLDER_PATH}/${zlib_folder_name}" \
-          "${zlib_folder_name}"
-      fi
+      copy_license \
+        "${XBB_BUILD_FOLDER_PATH}/${zlib_folder_name}" \
+        "${zlib_folder_name}"
     )
 
     (

@@ -52,35 +52,22 @@ function build_gmp()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gmp_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${gmp_folder_name}"
 
-      if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
+      xbb_activate_dependencies_dev
+      # For the local M4; remove it when available as dependency.
+      # xbb_activate_installed_bin
+
+      # Exceptions used by Arm GCC script and by mingw-w64.
+      CPPFLAGS="${XBB_CPPFLAGS} -fexceptions"
+      # Test fail with -Ofast, revert to -O2
+      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+
+      LDFLAGS="${XBB_LDFLAGS_LIB}"
+      xbb_adjust_ldflags_rpath
+
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
-
-        CPPFLAGS="${XBB_CPPFLAGS}"
-        CFLAGS="${XBB_CFLAGS_NO_W}"
-        CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-        LDFLAGS="${XBB_LDFLAGS_LIB}"
-
-      else
-
-        xbb_activate_dependencies_dev
-        # For the local M4; remove it when available as dependency.
-        # xbb_activate_installed_bin
-
-        # Exceptions used by Arm GCC script and by mingw-w64.
-        CPPFLAGS="${XBB_CPPFLAGS} -fexceptions"
-        # Test fail with -Ofast, revert to -O2
-        CFLAGS="${XBB_CFLAGS_NO_W}"
-        CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-        LDFLAGS="${XBB_LDFLAGS_LIB}"
-        xbb_adjust_ldflags_rpath
-
-        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-        then
-          export CC_FOR_BUILD="${XBB_NATIVE_CC}"
-        fi
-
+        export CC_FOR_BUILD="${XBB_NATIVE_CC}"
       fi
 
       export CPPFLAGS
@@ -119,42 +106,31 @@ function build_gmp()
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
 
-          if [ "${name_suffix}" == "${XBB_BOOTSTRAP_SUFFIX}" ]
+          config_options+=("--build=${XBB_BUILD_TRIPLET}")
+          config_options+=("--host=${XBB_HOST_TRIPLET}")
+          # config_options+=("--target=${XBB_TARGET_TRIPLET}")
+
+          config_options+=("--enable-cxx")
+          config_options+=("--enable-fat") # Arch
+
+          # From Arm.
+          config_options+=("--enable-fft")
+
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
+            # mpfr asks for this explicitly during configure.
+            # (although the message is confusing)
+            config_options+=("--enable-shared")
+            config_options+=("--disable-static")
+          elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+          then
+            # Enable --with-pic to avoid linking issues with the static library
+            config_options+=("--with-pic") # HB
+          fi
 
-            config_options+=("--build=${XBB_BUILD_TRIPLET}")
-            config_options+=("--host=${XBB_BUILD_TRIPLET}")
-            config_options+=("--target=${XBB_BUILD_TRIPLET}")
-
-          else
-
-            config_options+=("--build=${XBB_BUILD_TRIPLET}")
-            config_options+=("--host=${XBB_HOST_TRIPLET}")
-            # config_options+=("--target=${XBB_TARGET_TRIPLET}")
-
-            config_options+=("--enable-cxx")
-            config_options+=("--enable-fat") # Arch
-
-            # From Arm.
-            config_options+=("--enable-fft")
-
-            if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-            then
-              # mpfr asks for this explicitly during configure.
-              # (although the message is confusing)
-              config_options+=("--enable-shared")
-              config_options+=("--disable-static")
-            elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-            then
-              # Enable --with-pic to avoid linking issues with the static library
-              config_options+=("--with-pic") # HB
-            fi
-
-            if [ "${XBB_HOST_ARCH}" == "ia32" -o "${XBB_HOST_ARCH}" == "arm" ]
-            then
-              config_options+=("ABI=32")
-            fi
-
+          if [ "${XBB_HOST_ARCH}" == "ia32" -o "${XBB_HOST_ARCH}" == "arm" ]
+          then
+            config_options+=("ABI=32")
           fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure" \
@@ -210,13 +186,9 @@ function build_gmp()
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gmp_folder_name}/make-output-$(ndate).txt"
 
-      if [ -z "${name_suffix}" ]
-      then
-        copy_license \
-          "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}" \
-          "${gmp_folder_name}"
-      fi
-
+      copy_license \
+        "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}" \
+        "${gmp_folder_name}"
     )
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
