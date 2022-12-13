@@ -269,12 +269,11 @@ function tests_perform_common()
     # Inside a Docker container.
     if [ -n "${XBB_IMAGE_NAME}" ]
     then
-      (
-        # When running in a Docker container, the system may be minimal; update it.
-        export LANG="C"
-        tests_update_system_common "${XBB_IMAGE_NAME}"
-        tests_update_system "${XBB_IMAGE_NAME}"
-      )
+      # When running in a Docker container, the system may be minimal; update it.
+      export LANG="C"
+      tests_update_system_common "${XBB_IMAGE_NAME}"
+      tests_update_system "${XBB_IMAGE_NAME}"
+      # Do not run this in a sub-shell!
     fi
 
     # The first XBB docker images have nvm installed in the /root folder;
@@ -292,12 +291,11 @@ function tests_perform_common()
     # Not inside a Docker; perhaps a GitHub Actions VM.
     if [ "${GITHUB_ACTIONS:-""}" == "true" -a "${RUNNER_OS:-""}" == "Linux" ]
     then
-      (
-        # Currently "ubuntu20".
-        export LANG="C"
-        tests_update_system_common "${XBB_IMAGE_NAME}"
-        tests_update_system "github-actions-${ImageOS}"
-      )
+      # Currently "ubuntu20".
+      export LANG="C"
+      tests_update_system_common "${XBB_IMAGE_NAME}"
+      tests_update_system "github-actions-${ImageOS}"
+      # Do not run this in a sub-shell!
     fi
   fi
 
