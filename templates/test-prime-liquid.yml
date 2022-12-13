@@ -56,7 +56,7 @@ jobs:
           fetch-depth: 1
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
-        run: bash scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+        run: bash scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %} --image github-actions-ubuntu-latest
   {% when "linux-arm64" %}
   linux-arm64:
     name: 'Linux arm64 {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -94,7 +94,7 @@ jobs:
         uses: docker://ubuntu:latest
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/scripts/test.sh --image ubuntu:latest --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+          args: /github/workspace/scripts/test.sh --image ubuntu:latest --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}  --image docker://ubuntu:latest
   {% when "linux-arm" %}
   linux-arm32:
     name: 'Linux arm32 {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -132,7 +132,7 @@ jobs:
         uses: docker://arm32v7/ubuntu:latest
         with:
           entrypoint: /bin/bash # /usr/bin/linux32
-          args: /github/workspace/scripts/test.sh --image arm32v7/ubuntu:latest --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+          args: /github/workspace/scripts/test.sh --image arm32v7/ubuntu:latest --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %} --image docker://arm32v7/ubuntu:latest
   {% when "darwin-x64" %}
   macos-x64:
     name: 'macOS x64 {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
