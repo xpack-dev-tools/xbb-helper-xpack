@@ -17,6 +17,7 @@ source "${helper_folder_path}/scripts/is-something.sh"
 source "${helper_folder_path}/scripts/xbb.sh"
 source "${helper_folder_path}/scripts/show-libs.sh"
 source "${helper_folder_path}/scripts/miscellaneous.sh"
+source "${helper_folder_path}/scripts/timer.sh"
 
 # -----------------------------------------------------------------------------
 # Functions used when running separate tests.
@@ -262,6 +263,8 @@ function tests_perform_common()
   # Avoid leaving files that cannot be removed by users.
   trap xbb_make_writable EXIT
 
+  timer_start
+
   # ---------------------------------------------------------------------------
 
   if [ -f "/.dockerenv" ]
@@ -322,7 +325,8 @@ function tests_perform_common()
     tests_run_all "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
   fi
 
-  tests_good_bye
+    tests_good_bye
+    timer_stop
 }
 
 # Called by xbb_set_target.
