@@ -43,6 +43,12 @@ function tests_parse_options()
         exit 0
         ;;
 
+      --develop )
+        XBB_IS_DEVELOP="y"
+        XBB_OUTPUT_FILE_NAME+="-develop"
+        shift
+        ;;
+
       --32 )
         XBB_FORCE_32_BIT="y"
         XBB_OUTPUT_FILE_NAME+="-32"
