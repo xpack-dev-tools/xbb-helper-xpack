@@ -893,16 +893,22 @@ function test_gcc()
           test_compiler_single "${test_bin_path}" --64 --lto
           test_compiler_single "${test_bin_path}" --64 --gc --lto
         )
-        (
-          export LD_LIBRARY_PATH="$(${CC} -m32 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+        if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
+        then
           echo
-          echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+          echo "Skipping -m32 tests..."
+        else
+          (
+            export LD_LIBRARY_PATH="$(${CC} -m32 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+            echo
+            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-          test_compiler_single "${test_bin_path}" --32
-          test_compiler_single "${test_bin_path}" --32 --gc
-          test_compiler_single "${test_bin_path}" --32 --lto
-          test_compiler_single "${test_bin_path}" --32 --gc --lto
-        )
+            test_compiler_single "${test_bin_path}" --32
+            test_compiler_single "${test_bin_path}" --32 --gc
+            test_compiler_single "${test_bin_path}" --32 --lto
+            test_compiler_single "${test_bin_path}" --32 --gc --lto
+          )
+        fi
       else
         (
           export LD_LIBRARY_PATH="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
@@ -936,16 +942,22 @@ function test_gcc()
             test_compiler_single "${test_bin_path}" --64 --static-lib --lto
             test_compiler_single "${test_bin_path}" --64 --static-lib --gc --lto
           )
-          (
-            export LD_LIBRARY_PATH="$(${CC} -m32 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+          if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
+          then
             echo
-            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+            echo "Skipping -m32 --static-lib tests..."
+          else
+            (
+              export LD_LIBRARY_PATH="$(${CC} -m32 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+              echo
+              echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-            test_compiler_single "${test_bin_path}" --32 --static-lib
-            test_compiler_single "${test_bin_path}" --32 --static-lib --gc
-            test_compiler_single "${test_bin_path}" --32 --static-lib --lto
-            test_compiler_single "${test_bin_path}" --32 --static-lib --gc --lto
-          )
+              test_compiler_single "${test_bin_path}" --32 --static-lib
+              test_compiler_single "${test_bin_path}" --32 --static-lib --gc
+              test_compiler_single "${test_bin_path}" --32 --static-lib --lto
+              test_compiler_single "${test_bin_path}" --32 --static-lib --gc --lto
+            )
+          fi
         else
           (
             # Mainly for libgfortran.so.
@@ -977,10 +989,16 @@ function test_gcc()
             test_compiler_single "${test_bin_path}" --64 --static --lto
             test_compiler_single "${test_bin_path}" --64 --static --gc --lto
 
-            test_compiler_single "${test_bin_path}" --32 --static
-            test_compiler_single "${test_bin_path}" --32 --static --gc
-            test_compiler_single "${test_bin_path}" --32 --static --lto
-            test_compiler_single "${test_bin_path}" --32 --static --gc --lto
+            if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
+            then
+              echo
+              echo "Skipping -m32 --static tests..."
+            else
+              test_compiler_single "${test_bin_path}" --32 --static
+              test_compiler_single "${test_bin_path}" --32 --static --gc
+              test_compiler_single "${test_bin_path}" --32 --static --lto
+              test_compiler_single "${test_bin_path}" --32 --static --gc --lto
+            fi
           )
         else
           (
