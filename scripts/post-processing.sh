@@ -298,16 +298,17 @@ function copy_dependencies_recursive()
               # If outside XBB_APPLICATION_INSTALL_FOLDER_PATH, copy it to libexec,
               # otherwise leave it in place and add a new $ORIGIN.
               local rpath_relative_to_app_prefix="$(${realpath} --relative-to="${XBB_APPLICATION_INSTALL_FOLDER_PATH}" "${rpath}")"
-              echo_develop "relative to XBB_APPLICATION_INSTALL_FOLDER_PATH ${rpath_relative_to_app_prefix}"
               # If the relative path starts with `..`, it is outside.
               if [ "${rpath_relative_to_app_prefix:0:2}" == ".." ]
               then
+                echo_develop "not relative to XBB_APPLICATION_INSTALL_FOLDER_PATH ${rpath_relative_to_app_prefix}"
                 copy_dependencies_recursive \
                   "${rpath}/${lib_name}" \
                   "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec"
 
                 must_add_origin="$(compute_origin_relative_to_libexec "${actual_destination_folder_path}")"
               else
+                echo_develop "relative to XBB_APPLICATION_INSTALL_FOLDER_PATH ${rpath_relative_to_app_prefix}"
                 echo_develop "no need to copy to libexec"
                 must_add_origin="$(compute_origin_relative_to_path ${rpath} "${actual_destination_folder_path}")"
               fi
@@ -517,6 +518,7 @@ function copy_dependencies_recursive()
         if [ "${rpath_relative_to_app_prefix:0:2}" == ".." ]
         then
 
+          echo_develop "not relative to XBB_APPLICATION_INSTALL_FOLDER_PATH ${rpath_relative_to_app_prefix}"
           # For consistency reasons, update rpath first, before dependencies.
           local relative_folder_path="$(${realpath} --relative-to="${actual_destination_folder_path}" "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec")"
           patch_macos_elf_add_rpath \
@@ -538,6 +540,7 @@ function copy_dependencies_recursive()
 
         else
 
+          echo_develop "relative to XBB_APPLICATION_INSTALL_FOLDER_PATH ${rpath_relative_to_app_prefix}"
           echo_develop "no need to copy to libexec"
           local relative_lc_rpath="$(${realpath} --relative-to="${actual_destination_folder_path}" "$(dirname ${from_path})")"
 
