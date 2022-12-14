@@ -288,7 +288,7 @@ function test_compiler_single()
       show_target_libs_develop "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
       run_target_app_verbose "./${prefix}longjmp-cleanup${suffix}"
 
-      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [ "${XBB_TARGET_ARCH}" == "x64" ] && is_gcc
+      if false # [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [ "${XBB_TARGET_ARCH}" == "x64" ] && is_gcc
       then
 
         # /Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../libexec/gcc/x86_64-apple-darwin17.7.0/12.2.0/collect2 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/ -dynamic -arch x86_64 -macosx_version_min 12.0.0 -o hello-exception -L/Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../lib/gcc/x86_64-apple-darwin17.7.0/12.2.0 -L/Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../lib/gcc -L/Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../lib/gcc/x86_64-apple-darwin17.7.0/12.2.0/../../.. /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//cc9bpKXa.o -lstdc++ -lemutls_w -lgcc -lSystem -no_compact_unwind
