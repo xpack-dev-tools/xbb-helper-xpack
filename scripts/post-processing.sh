@@ -1684,6 +1684,11 @@ function check_binaries()
     echo
     echo "# Checking binaries for unwanted libraries..."
 
+    if [ -d "${folder_path}/libexec" ]
+    then
+      run_verbose ls -l "${folder_path}/libexec"
+    fi
+
     # Otherwise `find` may fail.
     cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
