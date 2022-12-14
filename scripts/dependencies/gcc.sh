@@ -1024,10 +1024,10 @@ function test_gcc()
     elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       (
-        # https://stackoverflow.com/questions/3146274/is-it-ok-to-use-dyld-library-path-on-mac-os-x-and-whats-the-dynamic-library-s
-        export DYLD_FALLBACK_LIBRARY_PATH="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
-        echo
-        echo "DYLD_FALLBACK_LIBRARY_PATH=${DYLD_FALLBACK_LIBRARY_PATH}"
+        # # https://stackoverflow.com/questions/3146274/is-it-ok-to-use-dyld-library-path-on-mac-os-x-and-whats-the-dynamic-library-s
+        # export DYLD_FALLBACK_LIBRARY_PATH="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+        # echo
+        # echo "DYLD_FALLBACK_LIBRARY_PATH=${DYLD_FALLBACK_LIBRARY_PATH}"
 
         # Old macOS linkers do not support LTO, thus use lld.
         test_compiler_single "${test_bin_path}"
