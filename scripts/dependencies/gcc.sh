@@ -319,7 +319,9 @@ function build_gcc()
           then
 
             # DO NOT DISABLE, otherwise 'ld: library not found for -lgcc_ext.10.5'.
-            config_options+=("--enable-shared")
+            # Apparently it works with 12.2.
+            # config_options+=("--enable-shared")
+            config_options+=("--disable-shared")
 
             # This distribution expects the SDK to be installed
             # with the Command Line Tools, which have a fixed location,
