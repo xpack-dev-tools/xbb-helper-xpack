@@ -23,86 +23,88 @@ function show_host_libs()
     fi
 
     local realpath=$(which_realpath)
+    local abs_path="$(${realpath} ${app_path})"
+    local abs_exe_path="$(${realpath} ${app_path}.exe)"
 
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
-      if is_elf "$(${realpath} ${app_path})"
+      if is_elf "${abs_path}"
       then
-        run_verbose ls -l "${app_path}"
+        run_verbose ls -l "${abs_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
-          run_verbose file -L "${app_path}"
+          run_verbose file -L "${abs_path}"
         fi
         echo
-        echo "[readelf -d ${app_path} | egrep ...]"
+        echo "[readelf -d ${abs_path} | egrep ...]"
         # Ignore errors in case it is not using shared libraries.
         set +e
-        readelf_shared_libs "${app_path}"
+        readelf_shared_libs "${abs_path}"
         echo
-        echo "[ldd -v ${app_path}]"
-        ldd -v "${app_path}" || true
+        echo "[ldd -v ${abs_path}]"
+        ldd -v "${abs_path}" || true
         set -e
-      elif is_pe "$(${realpath} ${app_path})"
+      elif is_pe "${abs_path}"
       then
-        run_verbose ls -l "${app_path}"
+        run_verbose ls -l "${abs_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
-          run_verbose file "${app_path}"
+          run_verbose file "${abs_path}"
         fi
         echo
-        echo "[${XBB_HOST_OBJDUMP} -x ${app_path}]"
-        "${XBB_HOST_OBJDUMP}" -x "${app_path}" | grep -i 'DLL Name' || true
-      elif is_pe "$(${realpath} ${app_path}.exe)"
+        echo "[${XBB_HOST_OBJDUMP} -x ${abs_path}]"
+        "${XBB_HOST_OBJDUMP}" -x "${abs_path}" | grep -i 'DLL Name' || true
+      elif is_pe "${abs_exe_path}"
       then
-        run_verbose ls -l "${app_path}.exe"
+        run_verbose ls -l "${abs_exe_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
-          run_verbose file "${app_path}.exe"
+          run_verbose file "${abs_exe_path}"
         fi
         echo
-        echo "[${XBB_HOST_OBJDUMP} -x ${app_path}.exe]"
-        "${XBB_HOST_OBJDUMP}" -x "${app_path}.exe" | grep -i 'DLL Name' || true
+        echo "[${XBB_HOST_OBJDUMP} -x ${abs_exe_path}]"
+        "${XBB_HOST_OBJDUMP}" -x "${abs_exe_path}" | grep -i 'DLL Name' || true
       else
-        run_verbose file -L "${app_path}"
+        run_verbose file -L "${abs_path}"
         echo
-        echo "Unsupported \"${app_path}\" in ${FUNCNAME[0]}()"
+        echo "Unsupported \"${abs_path}\" in ${FUNCNAME[0]}()"
         exit 1
       fi
     elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
-      if is_elf "$(${realpath} ${app_path})"
+      if is_elf "${abs_path}"
       then
-        run_verbose ls -l "${app_path}"
+        run_verbose ls -l "${abs_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
-          run_verbose file -L "${app_path}"
+          run_verbose file -L "${abs_path}"
         fi
         echo
-        # echo "[otool -L ${app_path}]"
-        echo "[objdump --macho --dylibs-used ${app_path}]"
+        # echo "[otool -L ${abs_path}]"
+        echo "[objdump --macho --dylibs-used ${abs_path}]"
         set +e
-        local lc_rpaths=$(darwin_get_lc_rpaths "${app_path}")
+        local lc_rpaths=$(darwin_get_lc_rpaths "${abs_path}")
         local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
         if [ ! -z "${lc_rpaths_line}" ]
         then
-          echo "${app_path}: (LC_RPATH=${lc_rpaths_line})"
+          echo "${abs_path}: (LC_RPATH=${lc_rpaths_line})"
         else
-          echo "${app_path}:"
+          echo "${abs_path}:"
         fi
-        # otool -L "${app_path}" | tail -n +2
-        objdump --macho --dylibs-used "${app_path}" | tail -n +3
+        # otool -L "${abs_path}" | tail -n +2
+        objdump --macho --dylibs-used "${abs_path}" | tail -n +3
       else
-        run_verbose file -L "${app_path}"
+        run_verbose file -L "${abs_path}"
         echo
-        echo "Unsupported \"${app_path}\" in ${FUNCNAME[0]}()"
+        echo "Unsupported \"${abs_path}\" in ${FUNCNAME[0]}()"
         exit 1
       fi
     elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
     then
-      run_verbose ls -l "${app_path}"
+      run_verbose ls -l "${abs_path}"
       if [ "${XBB_IS_DEVELOP}" == "y" ]
       then
-        run_verbose file -L "${app_path}"
+        run_verbose file -L "${abs_path}"
       fi
       echo "${FUNCNAME[0]}() cannot show DLLs on Windows"
     else
@@ -126,106 +128,108 @@ function show_target_libs()
     fi
 
     local realpath=$(which_realpath)
+    local abs_path="$(${realpath} ${app_path})"
+    local abs_exe_path="$(${realpath} ${app_path}.exe)"
 
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
-      if is_elf "$(${realpath} ${app_path})"
+      if is_elf "${abs_path}"
       then
-        run_verbose ls -l "${app_path}"
+        run_verbose ls -l "${abs_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
-          run_verbose file -L "${app_path}"
+          run_verbose file -L "${abs_path}"
         fi
         echo
-        echo "[readelf -d ${app_path} | egrep ...]"
+        echo "[readelf -d ${abs_path} | egrep ...]"
         # Ignore errors in case it is not using shared libraries.
         set +e
-        readelf_shared_libs "${app_path}"
+        readelf_shared_libs "${abs_path}"
         echo
-        echo "[ldd -v ${app_path}]"
-        ldd -v "${app_path}" || true
+        echo "[ldd -v ${abs_path}]"
+        ldd -v "${abs_path}" || true
         set -e
-      elif is_pe "$(${realpath} ${app_path})"
+      elif is_pe "${abs_path}"
       then
-        run_verbose ls -l "${app_path}"
+        run_verbose ls -l "${abs_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
-          run_verbose file "${app_path}"
+          run_verbose file "${abs_path}"
         fi
         echo
-        echo "[${XBB_TARGET_OBJDUMP} -x ${app_path}]"
-        "${XBB_TARGET_OBJDUMP}" -x "${app_path}" | grep -i 'DLL Name' || true
-      elif is_pe "$(${realpath} ${app_path}.exe)"
+        echo "[${XBB_TARGET_OBJDUMP} -x ${abs_path}]"
+        "${XBB_TARGET_OBJDUMP}" -x "${abs_path}" | grep -i 'DLL Name' || true
+      elif is_pe "${abs_exe_path}"
       then
-        run_verbose ls -l "${app_path}.exe"
+        run_verbose ls -l "${abs_exe_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
-          run_verbose file "${app_path}.exe"
+          run_verbose file "${abs_exe_path}"
         fi
         echo
-        echo "[${XBB_TARGET_OBJDUMP} -x ${app_path}.exe]"
-        "${XBB_TARGET_OBJDUMP}" -x "${app_path}.exe" | grep -i 'DLL Name' || true
+        echo "[${XBB_TARGET_OBJDUMP} -x ${abs_exe_path}]"
+        "${XBB_TARGET_OBJDUMP}" -x "${abs_exe_path}" | grep -i 'DLL Name' || true
       else
-        run_verbose file -L "${app_path}"
+        run_verbose file -L "${abs_path}"
         echo
-        echo "Unsupported \"${app_path}\" in ${FUNCNAME[0]}()"
+        echo "Unsupported \"${abs_path}\" in ${FUNCNAME[0]}()"
         exit 1
       fi
     elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
-      if is_elf "$(${realpath} ${app_path})"
+      if is_elf "${abs_path}"
       then
-        run_verbose ls -l "${app_path}"
+        run_verbose ls -l "${abs_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
-          run_verbose file -L "${app_path}"
+          run_verbose file -L "${abs_path}"
         fi
         echo
-        # echo "[otool -L ${app_path}]"
-        echo "[objdump --macho --dylibs-used ${app_path}]"
+        # echo "[otool -L ${abs_path}]"
+        echo "[objdump --macho --dylibs-used ${abs_path}]"
         set +e
-        local lc_rpaths=$(darwin_get_lc_rpaths "${app_path}")
+        local lc_rpaths=$(darwin_get_lc_rpaths "${abs_path}")
         local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
         if [ ! -z "${lc_rpaths_line}" ]
         then
-          echo "${app_path}: (LC_RPATH=${lc_rpaths_line})"
+          echo "${abs_path}: (LC_RPATH=${lc_rpaths_line})"
         else
-          echo "${app_path}:"
+          echo "${abs_path}:"
         fi
-        # otool -L "${app_path}" | tail -n +2
-        objdump --macho --dylibs-used "${app_path}" | tail -n +3
-      elif is_pe "$(${realpath} ${app_path})"
+        # otool -L "${abs_path}" | tail -n +2
+        objdump --macho --dylibs-used "${abs_path}" | tail -n +3
+      elif is_pe "${abs_path}"
       then
-        run_verbose ls -l "${app_path}"
+        run_verbose ls -l "${abs_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
-          run_verbose file "${app_path}"
+          run_verbose file "${abs_path}"
         fi
         echo
-        echo "[${XBB_TARGET_OBJDUMP} -x ${app_path}]"
-        "${XBB_TARGET_OBJDUMP}" -x "${app_path}" | grep -i 'DLL Name' || true
-      elif is_pe "$(${realpath} ${app_path}.exe)"
+        echo "[${XBB_TARGET_OBJDUMP} -x ${abs_path}]"
+        "${XBB_TARGET_OBJDUMP}" -x "${abs_path}" | grep -i 'DLL Name' || true
+      elif is_pe "${abs_exe_path}"
       then
-        run_verbose ls -l "${app_path}.exe"
+        run_verbose ls -l "${abs_exe_path}"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
-          run_verbose file "${app_path}.exe"
+          run_verbose file "${abs_exe_path}"
         fi
         echo
-        echo "[${XBB_TARGET_OBJDUMP} -x ${app_path}.exe]"
-        "${XBB_TARGET_OBJDUMP}" -x "${app_path}.exe" | grep -i 'DLL Name' || true
+        echo "[${XBB_TARGET_OBJDUMP} -x ${abs_exe_path}]"
+        "${XBB_TARGET_OBJDUMP}" -x "${abs_exe_path}" | grep -i 'DLL Name' || true
       else
-        run_verbose file -L "${app_path}"
+        run_verbose file -L "${abs_path}"
         echo
-        echo "Unsupported \"${app_path}\" in ${FUNCNAME[0]}()"
+        echo "Unsupported \"${abs_path}\" in ${FUNCNAME[0]}()"
         exit 1
       fi
     elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
     then
-      run_verbose ls -l "${app_path}"
+      run_verbose ls -l "${abs_path}"
       if [ "${XBB_IS_DEVELOP}" == "y" ]
       then
-        run_verbose file -L "${app_path}"
+        run_verbose file -L "${abs_path}"
       fi
       echo "${FUNCNAME[0]}() cannot show DLLs on Windows"
     else
