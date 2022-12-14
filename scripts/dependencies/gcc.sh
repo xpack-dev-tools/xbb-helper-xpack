@@ -182,6 +182,11 @@ function build_gcc()
         # Hack to prevent "too many sections", "File too big" etc in insn-emit.c
         CXXFLAGS=$(echo ${CXXFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')
         CXXFLAGS+=" -D__USE_MINGW_ACCESS"
+      elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      then
+        # HomeBrew mentiones this:
+        # GCC will suffer build errors if forced to use a particular linker.
+        unset LD
       fi
 
       if [ "${XBB_HOST_PLATFORM}" == "linux" -o "${XBB_HOST_PLATFORM}" == "darwin" ]
