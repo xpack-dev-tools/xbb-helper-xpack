@@ -78,7 +78,8 @@ function show_host_libs()
           run_verbose file -L "${app_path}"
         fi
         echo
-        echo "[otool -L ${app_path}]"
+        # echo "[otool -L ${app_path}]"
+        echo "[objdump --macho --dylibs-used ${app_path}]"
         set +e
         local lc_rpaths=$(darwin_get_lc_rpaths "${app_path}")
         local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
@@ -88,7 +89,8 @@ function show_host_libs()
         else
           echo "${app_path}:"
         fi
-        otool -L "${app_path}" | tail -n +2
+        # otool -L "${app_path}" | tail -n +2
+        objdump --macho --dylibs-used "${app_path}" | tail -n +3
       else
         run_verbose file -L "${app_path}"
         echo
@@ -179,7 +181,8 @@ function show_target_libs()
           run_verbose file -L "${app_path}"
         fi
         echo
-        echo "[otool -L ${app_path}]"
+        # echo "[otool -L ${app_path}]"
+        echo "[objdump --macho --dylibs-used ${app_path}]"
         set +e
         local lc_rpaths=$(darwin_get_lc_rpaths "${app_path}")
         local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
@@ -189,7 +192,8 @@ function show_target_libs()
         else
           echo "${app_path}:"
         fi
-        otool -L "${app_path}" | tail -n +2
+        # otool -L "${app_path}" | tail -n +2
+        objdump --macho --dylibs-used "${app_path}" | tail -n +3
       elif is_pe "$(${realpath} ${app_path})"
       then
         run_verbose ls -l "${app_path}"
