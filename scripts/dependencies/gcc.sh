@@ -1025,9 +1025,18 @@ function test_gcc()
     then
       (
         # # https://stackoverflow.com/questions/3146274/is-it-ok-to-use-dyld-library-path-on-mac-os-x-and-whats-the-dynamic-library-s
-        # export DYLD_FALLBACK_LIBRARY_PATH="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+        # Note: do not simply override DYLD_FALLBACK_LIBRARY_PATH,
+        # it must include the system lcoations.
+        # export DYLD_LIBRARY_PATH="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
         # echo
-        # echo "DYLD_FALLBACK_LIBRARY_PATH=${DYLD_FALLBACK_LIBRARY_PATH}"
+        # echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
+
+        # Normally this is not needed, the resulting binaries use rpath:
+        # [objdump --macho --dylibs-used /Users/ilg/Work/gcc-12.2.0-2/darwin-x64/x86_64-apple-darwin21.6.0/tests/gcc/c-cpp/throwcatch-main]
+        # /Users/ilg/Work/gcc-12.2.0-2/darwin-x64/x86_64-apple-darwin21.6.0/tests/gcc/c-cpp/throwcatch-main: (LC_RPATH=@loader_path:/Users/ilg/Work/gcc-12.2.0-2/darwin-x64/application/lib/gcc/x86_64-apple-darwin21.6.0/12.2.0:/Users/ilg/Work/gcc-12.2.0-2/darwin-x64/application/lib)
+        # 	@rpath/libstdc++.6.dylib (compatibility version 7.0.0, current version 7.30.0)
+        # 	@rpath/libgcc_s.1.1.dylib (compatibility version 1.0.0, current version 1.1.0)
+        # 	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1319.0.0)
 
         # Old macOS linkers do not support LTO, thus use lld.
         test_compiler_single "${test_bin_path}"
