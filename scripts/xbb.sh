@@ -489,7 +489,7 @@ function xbb_set_target()
   # ---------------------------------------------------------------------------
 
   echo
-  echo "XBB environment..."
+  echo "# The XBB environment..."
   xbb_show_env
 }
 
