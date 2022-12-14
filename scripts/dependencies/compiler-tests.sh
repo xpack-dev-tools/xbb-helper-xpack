@@ -288,9 +288,33 @@ function test_compiler_single()
       show_target_libs_develop "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
       run_target_app_verbose "./${prefix}longjmp-cleanup${suffix}"
 
-      run_host_app_verbose "${CXX}" "hello-exception.cpp" -o "${prefix}hello-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      show_target_libs_develop "${prefix}hello-exception${suffix}${XBB_TARGET_DOT_EXE}"
-      run_target_app_verbose "./${prefix}hello-exception${suffix}"
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [ "${XBB_TARGET_ARCH}" == "x64" ] && is_gcc
+      then
+
+        # /Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../libexec/gcc/x86_64-apple-darwin17.7.0/12.2.0/collect2 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/ -dynamic -arch x86_64 -macosx_version_min 12.0.0 -o hello-exception -L/Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../lib/gcc/x86_64-apple-darwin17.7.0/12.2.0 -L/Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../lib/gcc -L/Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../lib/gcc/x86_64-apple-darwin17.7.0/12.2.0/../../.. /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//cc9bpKXa.o -lstdc++ -lemutls_w -lgcc -lSystem -no_compact_unwind
+        # 0  0x10b5f0ffa  __assert_rtn + 139
+        # 1  0x10b42428d  mach_o::relocatable::Parser<x86_64>::parse(mach_o::relocatable::ParserOptions const&) + 4989
+        # 2  0x10b414f8f  mach_o::relocatable::Parser<x86_64>::parse(unsigned char const*, unsigned long long, char const*, long, ld::File::Ordinal, mach_o::relocatable::ParserOptions const&) + 207
+        # 3  0x10b48b9d4  ld::tool::InputFiles::makeFile(Options::FileInfo const&, bool) + 2036
+        # 4  0x10b48efa0  ___ZN2ld4tool10InputFilesC2ER7Options_block_invoke + 48
+        # 5  0x7ff81d0b634a  _dispatch_client_callout2 + 8
+        # 6  0x7ff81d0c8c45  _dispatch_apply_invoke_and_wait + 213
+        # 7  0x7ff81d0c8161  _dispatch_apply_with_attr_f + 1178
+        # 8  0x7ff81d0c8327  dispatch_apply + 45
+        # 9  0x10b48ee2d  ld::tool::InputFiles::InputFiles(Options&) + 669
+        # 10  0x10b3ffd48  main + 840
+        # A linker snapshot was created at:
+        # 	/tmp/hello-exception-2022-12-14-082452.ld-snapshot
+        # ld: Assertion failed: (_file->_atomsArrayCount == computedAtomCount && "more atoms allocated than expected"), function parse, file macho_relocatable_file.cpp, line 2061.
+        # collect2: error: ld returned 1 exit status
+
+        echo
+        echo "Skipping hello-exception.cpp for macOS gcc..."
+      else
+        run_host_app_verbose "${CXX}" "hello-exception.cpp" -o "${prefix}hello-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        show_target_libs_develop "${prefix}hello-exception${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}hello-exception${suffix}"
+      fi
 
       run_host_app_verbose "${CXX}" "exception-locale.cpp" -o "${prefix}exception-locale${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       show_target_libs_develop "${prefix}exception-locale${suffix}${XBB_TARGET_DOT_EXE}"
