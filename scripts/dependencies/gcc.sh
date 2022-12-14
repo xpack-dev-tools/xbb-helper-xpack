@@ -72,10 +72,11 @@ function download_gcc()
   local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
   local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
 
-  if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "12.2.0" ]
+
+  if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${gcc_version}" == "12.2.0" ]
   then
     # https://raw.githubusercontent.com/Homebrew/formula-patches/1d184289/gcc/gcc-12.2.0-arm.diff
-    local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.patch.diff"
+    local gcc_patch_file_name="gcc-${gcc_version}-darwin.patch.diff"
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "12.1.0" ]
   then
     # https://raw.githubusercontent.com/Homebrew/formula-patches/d61235ed/gcc/gcc-12.1.0-arm.diff
