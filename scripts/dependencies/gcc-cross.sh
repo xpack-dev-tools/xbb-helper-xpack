@@ -237,7 +237,7 @@ function build_cross_gcc_first()
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
           fi
 
           # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
@@ -529,7 +529,7 @@ function build_cross_gcc_final()
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
           fi
 
           # https://gcc.gnu.org/install/configure.html

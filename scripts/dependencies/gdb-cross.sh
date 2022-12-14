@@ -142,7 +142,10 @@ function build_cross_gdb()
           echo
           echo "Running cross ${name_prefix}gdb${name_suffix} configure..."
 
-          bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/configure" --help
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          then
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/configure" --help
+          fi
 
           # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
           # gdb_configure='--enable-initfini-array --disable-nls --without-x

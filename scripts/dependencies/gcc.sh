@@ -204,11 +204,14 @@ function build_gcc()
           echo
           echo "Running gcc configure..."
 
-          bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" --help
-          bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/gcc/configure" --help
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          then
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/gcc/configure" --help
 
-          bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/libgcc/configure" --help
-          bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/libstdc++-v3/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/libgcc/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/libstdc++-v3/configure" --help
+          fi
 
           config_options=()
 

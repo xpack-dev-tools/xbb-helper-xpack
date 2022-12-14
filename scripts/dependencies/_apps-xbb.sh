@@ -539,7 +539,7 @@ function build_tar()
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-          run_verbose bash "configure" --help
+            run_verbose bash "configure" --help
           fi
 
           if [ "${HOME}" == "/root" ]
@@ -762,7 +762,7 @@ function build_guile()
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-          run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${guile_src_folder_name}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${guile_src_folder_name}/configure" --help
           fi
 
           config_options=()
@@ -2805,7 +2805,7 @@ function build_perl()
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-          run_verbose bash "./Configure" --help || true
+            run_verbose bash "./Configure" --help || true
           fi
 
           # -Uusedl prevents building libperl.so and so there is no need

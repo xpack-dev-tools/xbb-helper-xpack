@@ -94,7 +94,10 @@ function build_gdb()
           echo
           echo "Running gdb configure..."
 
-          bash "${XBB_SOURCES_FOLDER_PATH}/${gdb_src_folder_name}/gdb/configure" --help
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          then
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${gdb_src_folder_name}/gdb/configure" --help
+          fi
 
           config_options=()
 

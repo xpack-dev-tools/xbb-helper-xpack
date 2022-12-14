@@ -150,7 +150,7 @@ function build_cross_newlib()
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/configure" --help
           fi
 
           config_options=()
