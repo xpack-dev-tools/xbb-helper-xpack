@@ -240,25 +240,27 @@ function tests_update_system_common()
     run_verbose apt-get -qq install -y git-core curl tar gzip lsb-release binutils file
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
-    run_verbose yum install -y -q git curl tar gzip redhat-lsb-core binutils which
+    run_verbose yum update --assumeyes --quiet
+    run_verbose yum install --assumeyes --quiet git curl tar gzip redhat-lsb-core binutils which
   elif [[ ${image_name} == *suse* ]]
   then
-    run_verbose zypper -q --no-gpg-checks in -y git-core curl tar gzip lsb-release binutils findutils util-linux
+    run_verbose zypper --quiet --no-gpg-checks update
+    run_verbose zypper --quiet --no-gpg-checks install --no-confirm git-core curl tar gzip lsb-release binutils findutils util-linux
   elif [[ ${image_name} == *manjaro* ]]
   then
     # run_verbose pacman-mirrors -g
-    run_verbose pacman -S -y -q --noconfirm
+    run_verbose pacman -S --noconfirm --quiet --noconfirm --sysupgrade
 
     # Update even if up to date (-yy) & upgrade (-u).
     # pacman -S -yy -u -q --noconfirm
-    run_verbose pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
+    run_verbose pacman -S --quiet --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
   elif [[ ${image_name} == *archlinux* ]]
   then
-    run_verbose pacman -S -y -q --noconfirm
+    run_verbose pacman -S --refresh --quiet --noconfirm --sysupgrade
 
     # Update even if up to date (-yy) & upgrade (-u).
     # pacman -S -yy -u -q --noconfirm
-    run_verbose pacman -S -q --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
+    run_verbose pacman -S --quiet --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
   fi
 }
 
