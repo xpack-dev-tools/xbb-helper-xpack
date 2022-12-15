@@ -595,8 +595,6 @@ function test_mingw_gcc()
 
     # -------------------------------------------------------------------------
 
-    # -------------------------------------------------------------------------
-
     run_verbose cp -rv "${helper_folder_path}/tests/c-cpp" .
     chmod -R a+w c-cpp
     run_verbose cp -rv "${helper_folder_path}/tests/wine"/* c-cpp
