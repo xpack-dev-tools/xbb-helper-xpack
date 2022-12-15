@@ -117,7 +117,7 @@ function build_bzip2()
             LDFLAGS=${LDFLAGS} \
 
           mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
-          install -v -c -m 644 "libbz2.so.${bzip2_version}" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
+          run_verbose ${INSTALL} -v -c -m 644 "libbz2.so.${bzip2_version}" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
           (
             cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
@@ -168,7 +168,7 @@ function build_bzip2()
             LDFLAGS=${LDFLAGS} \
 
           mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
-          install -v -c -m 644 "libbz2.${bzip2_version}.dylib" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
+          run_verbose ${INSTALL} -v -c -m 644 "libbz2.${bzip2_version}.dylib" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
           (
             cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"

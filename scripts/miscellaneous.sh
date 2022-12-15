@@ -33,9 +33,9 @@ function copy_license()
       then
         if [[ $f =~ AUTHORS.*|NEWS.*|COPYING.*|README.*|LICENSE.*|Copyright.*|COPYRIGHT.*|FAQ.*|DEPENDENCIES.*|THANKS.*|CHANGES.* ]]
         then
-          install -d -m 0755 \
+          run_verbose ${INSTALL} -d -m 0755 \
             "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2"
-          install -v -c -m 644 "$f" \
+          run_verbose ${INSTALL} -v -c -m 644 "$f" \
             "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2"
         fi
       elif [ -d "$f" ] && [[ $f =~ [Ll][Ii][Cc][Ee][Nn][Ss][Ee]* ]]
@@ -45,9 +45,9 @@ function copy_license()
           local files=$(find . -type f)
           for file in ${files}
           do
-            install -d -m 0755 \
+            run_verbose ${INSTALL} -d -m 0755 \
               "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
-            install -v -c -m 644 "$file" \
+            run_verbose ${INSTALL} -v -c -m 644 "$file" \
               "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/licenses/$2/$(dirname ${file})"
           done
         )
@@ -78,32 +78,32 @@ function copy_build_files()
 
     # Ignore hidden folders/files (like .DS_Store).
     find scripts -type d ! -iname '.*' \
-      -exec install -d -m 0755 \
+      -exec ${INSTALL} -d -m 0755 \
         "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"/'{}' ';'
 
     find scripts -type f ! -iname '.*' \
-      -exec install -v -c -m 644 \
+      -exec ${INSTALL} -v -c -m 644 \
         '{}' "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"/'{}' ';'
 
     if [ -d patches ]
     then
       find patches -type d ! -iname '.*' \
-        -exec install -d -m 0755 \
+        -exec ${INSTALL} -d -m 0755 \
           "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"/'{}' ';'
 
       find patches -type f ! -iname '.*' \
-        -exec install -v -c -m 644 \
+        -exec ${INSTALL} -v -c -m 644 \
           '{}' "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"/'{}' ';'
     fi
 
     if [ -f CHANGELOG.txt ]
     then
-      install -v -c -m 644 \
+      run_verbose ${INSTALL} -v -c -m 644 \
           CHANGELOG.txt "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"
     fi
     if [ -f CHANGELOG.md ]
     then
-      install -v -c -m 644 \
+      run_verbose ${INSTALL} -v -c -m 644 \
           CHANGELOG.md "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"
     fi
   )

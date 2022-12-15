@@ -308,7 +308,7 @@ function build_binutils()
           libiberty_file_path="$(find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" -name libiberty.a)"
           if [ -n "${libiberty_file_path}" ]
           then
-            run_verbose install -v -c -m 644 libiberty/pic/libiberty.a \
+            run_verbose ${INSTALL} -v -c -m 644 libiberty/pic/libiberty.a \
               "$(dirname ${libiberty_file_path})"
           fi
         fi

@@ -383,11 +383,11 @@ function download_python2_win()
     echo "Copying python${XBB_PYTHON2_VERSION_MAJOR_MINOR}.dll..."
     # From here it'll be copied as dependency.
     mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
-    install -v -c -m 644 "${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}/python${XBB_PYTHON2_VERSION_MAJOR_MINOR}.dll" \
+    run_verbose ${INSTALL} -v -c -m 644 "${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}/python${XBB_PYTHON2_VERSION_MAJOR_MINOR}.dll" \
       "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
 
     mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
-    install -v -c -m 644 "${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}/python${XBB_PYTHON2_VERSION_MAJOR_MINOR}.lib" \
+    run_verbose ${INSTALL} -v -c -m 644 "${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}/python${XBB_PYTHON2_VERSION_MAJOR_MINOR}.lib" \
       "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
   )
 }

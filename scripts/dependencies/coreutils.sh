@@ -141,11 +141,11 @@ function build_coreutils()
 
         if [ "${XBB_COREUTILS_INSTALL_REALPATH_ONLY:-}" == "y" ]
         then
-          run_verbose install -v -d \
+          run_verbose ${INSTALL} -v -d \
             "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-          run_verbose install -v -c -m 755 src/realpath \
+          run_verbose ${INSTALL} -v -c -m 755 src/realpath \
             "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/grealpath"
-          run_verbose install -v -c -m 755 src/readlink \
+          run_verbose ${INSTALL} -v -c -m 755 src/readlink \
             "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/greadlink"
         else
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]

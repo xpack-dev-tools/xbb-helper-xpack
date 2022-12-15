@@ -322,15 +322,15 @@ function build_openssl()
 
           if [ -f "${XBB_FOLDER_PATH}/openssl/cert.pem" ]
           then
-            install -v -c -m 644 "${XBB_FOLDER_PATH}/openssl/ca-bundle.crt" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
-            install -v -c -m 644 "${XBB_FOLDER_PATH}/openssl/cert.pem" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
+            run_verbose ${INSTALL} -v -c -m 644 "${XBB_FOLDER_PATH}/openssl/ca-bundle.crt" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
+            run_verbose ${INSTALL} -v -c -m 644 "${XBB_FOLDER_PATH}/openssl/cert.pem" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
           elif [ -f "/private/etc/ssl/cert.pem" ]
           then
-            install -v -c -m 644 "/private/etc/ssl/cert.pem" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
+            run_verbose ${INSTALL} -v -c -m 644 "/private/etc/ssl/cert.pem" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
           fi
 
           curl --location http://curl.haxx.se/ca/cacert.pem -o cacert.pem
-          install -v -c -m 644 cacert.pem "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
+          run_verbose ${INSTALL} -v -c -m 644 cacert.pem "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
         fi
 
         if [ "${XBB_WITH_TESTS}" == "y" ]

@@ -296,9 +296,9 @@ function python3_download_win()
     echo "# Copying python${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}.dll..."
     # From here it'll be copied as dependency.
     mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
-    install -v -c -m 644 "python${XBB_PYTHON3_VERSION_MAJOR}.dll" \
+    run_verbose ${INSTALL} -v -c -m 644 "python${XBB_PYTHON3_VERSION_MAJOR}.dll" \
       "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
-    install -v -c -m 644 "python${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}.dll" \
+    run_verbose ${INSTALL} -v -c -m 644 "python${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}.dll" \
       "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/"
   )
 

@@ -78,8 +78,8 @@ function _build_realpath()
 
         run_verbose make
 
-        install -v -d "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-        install -v -c -m 644 realpath "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+        run_verbose ${INSTALL} -v -d "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+        run_verbose ${INSTALL} -v -c -m 644 realpath "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${realpath_folder_name}/make-output-$(ndate).txt"
     )
@@ -3436,9 +3436,9 @@ function build_p7zip()
         run_verbose make -j1 test test_7z test_7zr # all_test
       fi
 
-      run_verbose install -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7z" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-      run_verbose install -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7za" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-      run_verbose install -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7zr" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      run_verbose ${INSTALL} -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7z" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      run_verbose ${INSTALL} -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7za" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      run_verbose ${INSTALL} -c -m 755 "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/7zr" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${p7zip_folder_name}/install-output-$(ndate).txt"
 

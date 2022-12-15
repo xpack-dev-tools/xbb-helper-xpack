@@ -610,9 +610,9 @@ function copy_dependencies_recursive()
         then
           if [ ! -d "$(dirname "${copied_file_path}")" ]
           then
-            run_verbose install -d -m 755 "$(dirname "${copied_file_path}")"
+            run_verbose ${INSTALL} -d -m 755 "$(dirname "${copied_file_path}")"
           fi
-          run_verbose install -c -m 755 "${actual_source_file_path}" "${copied_file_path}"
+          run_verbose ${INSTALL} -c -m 755 "${actual_source_file_path}" "${copied_file_path}"
         fi
       else
         actual_source_file_path="${source_file_path}"
@@ -708,9 +708,9 @@ function install_elf()
   then
     if [ ! -d "$(dirname "${destination_file_path}")" ]
     then
-      run_verbose install -d -m 755 "$(dirname "${destination_file_path}")"
+      run_verbose ${INSTALL} -d -m 755 "$(dirname "${destination_file_path}")"
     fi
-    run_verbose install -c -m 755 "${source_file_path}" "${destination_file_path}"
+    run_verbose ${INSTALL} -c -m 755 "${source_file_path}" "${destination_file_path}"
   fi
 }
 
@@ -1660,7 +1660,7 @@ function copy_distro_files()
 
     cd "${XBB_BUILD_GIT_PATH}"
     local readme_out_file_name="${readme_out_file_name:-README-OUT.md}"
-    install -v -c -m 644 "scripts/${readme_out_file_name}" \
+    run_verbose ${INSTALL} -v -c -m 644 "scripts/${readme_out_file_name}" \
       "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/README.md"
   )
 }

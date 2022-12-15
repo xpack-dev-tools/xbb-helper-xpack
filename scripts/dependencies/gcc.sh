@@ -594,13 +594,13 @@ function build_gcc()
           then
             # For unknown reasons, `libstdc++-6.dll` is installed only in
             # the `bin` folder. Copy it to `lib` too.
-            run_verbose install -c -m 755 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libstdc++-6.dll" \
+            run_verbose ${INSTALL} -c -m 755 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libstdc++-6.dll" \
                 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
           fi
           if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libgfortran-5.dll" ]
           then
             # Same for `libgfortran-5.dll`.
-            run_verbose install -c -m 755 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libgfortran-5.dll" \
+            run_verbose ${INSTALL} -c -m 755 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libgfortran-5.dll" \
                 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
           fi
         fi

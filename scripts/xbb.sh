@@ -168,8 +168,8 @@ function xbb_prepare_pkg_config()
   if [ ! -z "$(which pkg-config)" -a "${XBB_IS_DEVELOP}" == "y" ]
   then
     # Extra: pkg-config-verbose.
-    run_verbose install -d -m 0755 "${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
-    run_verbose install -v -c -m 755 "${helper_folder_path}/extras/pkg-config-verbose" \
+    run_verbose ${INSTALL} -d -m 0755 "${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
+    run_verbose ${INSTALL} -v -c -m 755 "${helper_folder_path}/extras/pkg-config-verbose" \
       "${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
 
     PKG_CONFIG="${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/pkg-config-verbose"
