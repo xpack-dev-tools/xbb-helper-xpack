@@ -244,7 +244,7 @@ function tests_update_system_common()
     run_verbose yum install --assumeyes --quiet git curl tar gzip redhat-lsb-core binutils which
   elif [[ ${image_name} == *suse* ]]
   then
-    run_verbose zypper --quiet --no-gpg-checks update
+    run_verbose zypper --quiet --no-gpg-checks update --no-confirm 
     run_verbose zypper --quiet --no-gpg-checks install --no-confirm git-core curl tar gzip lsb-release binutils findutils util-linux
   elif [[ ${image_name} == *manjaro* ]]
   then
