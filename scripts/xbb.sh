@@ -54,6 +54,7 @@ function xbb_save_env()
   export M4=$(which gm4 2>/dev/null || which m4 2>/dev/null || echo m4)
   export PYTHON=$(which python 2>/dev/null || echo python)
   export SED=$(which gsed 2>/dev/null || which sed 2>/dev/null || echo sed)
+  export INSTALL=$(which install 2>/dev/null || echo install)
 }
 
 function xbb_reset_env()
