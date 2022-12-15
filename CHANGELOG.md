@@ -4,34 +4,25 @@ Entries in this file are in reverse chronological order.
 
 ## 2022-12-15
 
+* v0.11.28 released
 * v0.11.27 released
-* v0.11.26 released
-* v0.11.25 released
 
 ## 2022-12-14
 
-* v0.11.24 released
-* v0.11.23 released
-* v0.11.22 released
-* v0.11.21 released
-* v0.11.20 released
+* v0.11.24 released (deleted)
 
 ## 2022-12-13
 
-* v0.11.19 released
-* v0.11.18 released
+* v0.11.19 released (deleted)
 
 ## 2022-12-12
 
 * v0.11.17 released
-* v0.11.16 released
 
 ## 2022-12-11
 
 * v0.11.15 released
 * v0.11.14 released
-* v0.11.13 released
-* v0.11.12 released
 
 ## 2022-11-14
 
