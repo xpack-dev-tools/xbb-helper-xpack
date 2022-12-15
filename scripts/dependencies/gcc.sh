@@ -838,22 +838,6 @@ function test_gcc()
 
     # -------------------------------------------------------------------------
 
-    # VERBOSE_FLAG=""
-    # if [ "${XBB_IS_DEVELOP}" == "y" ]
-    # then
-    #   VERBOSE_FLAG="-v"
-    # fi
-
-    # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-    # then
-    #   GC_SECTION="-Wl,--gc-sections"
-    # elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-    # then
-    #   GC_SECTION="-Wl,-dead_strip"
-    # else
-    #   GC_SECTION=""
-    # fi
-
     xbb_show_env_develop
 
     run_verbose uname
