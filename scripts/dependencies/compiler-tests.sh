@@ -633,7 +633,7 @@ function test_compiler_single()
           # error while loading shared libraries: api-ms-win-crt-time-l1-1-0.dll: cannot open shared object file: No such file or directory
           # The api-ms-win-crt-runtime-l1-1-0.dll file is included in Microsoft Visual C++ Redistributable for Visual Studio 2015
           echo
-          echo "Skipping fortran tests on Windows..."
+          echo "Skipping Fortran tests on Windows..."
         else
           # Test a very simple Fortran (a print).
           run_host_app_verbose "${F90}" hello.f90 -o "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
@@ -649,7 +649,7 @@ function test_compiler_single()
       )
     else
       echo
-      echo "Fortran tests skipped, compiler not available"
+      echo "Skipping Fortran tests, compiler not available..."
     fi
 
   )
