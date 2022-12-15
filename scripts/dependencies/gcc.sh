@@ -922,7 +922,7 @@ function test_gcc()
       then
         # RedHat has no static libstdc++.
         echo
-        echo "Skipping all --static-lib on RedHat & derived..."
+        echo "Skipping all --static-lib on ${distro}..."
       else
         if [ "${XBB_HOST_ARCH}" == "x64" ]
         then
@@ -971,10 +971,10 @@ function test_gcc()
       # On Linux static linking is highly discouraged.
       # On RedHat and derived, the static libraries must be installed explicitly.
 
-      if [[ ${distro} == CentOS ]] || [[ ${distro} == RedHat* ]] || [[ ${distro} == Fedora ]]
+      if [[ ${distro} == CentOS ]] || [[ ${distro} == RedHat* ]] || [[ ${distro} == Fedora ]] || [[ ${distro} == openSUSE ]]
       then
         echo
-        echo "Skipping all --static on RedHat & derived..."
+        echo "Skipping all --static on ${distro}..."
       else
         if [ "${XBB_HOST_ARCH}" == "x64" ]
         then
