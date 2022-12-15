@@ -373,34 +373,42 @@ function test_compiler_single()
         run_target_app_verbose "./${prefix}crt-test${suffix}"
       fi
 
-      if [ "${is_lto}" != "y" ] && is_non_native && is_mingw_gcc
-      then
-        # With mingw-gcc bootstrap
-        # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
-        echo
-        echo "Skipping hello-weak-c without -flto with Windows binaries..."
-      elif is_non_native && is_mingw_clang
-      then
-        # lld-link: error: duplicate symbol: world()
-        # >>> defined at hello-weak-cpp.cpp
-        # >>>            lto-hello-weak-cpp.cpp.o
-        # >>> defined at hello-f-weak-cpp.cpp
-        # >>>            lto-hello-f-weak-cpp.cpp.o
-        # clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
-        # -Wl,--allow-multiple-definition fixes this, but then
-        # Test "./lto-hello-weak-cpp.exe " failed :-(
-        # expected 12: "Hello World!"
-        # got 11: "Hello there"
-        echo
-        echo "Skipping hello-weak-c without -flto with Windows binaries..."
-      elif is_cross && is_gcc
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         echo
-        echo "Skipping hello-weak-c without -flto with Windows binaries..."
-      elif [ "${is_lto}" != "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-      then
-        echo
-        echo "Skipping hello-weak-c without -flto on Windows..."
+        echo "Skipping hello-weak-c with Windows binaries..."
+      # elif [ "${is_lto}" != "y" ] && is_non_native && is_mingw_gcc
+      # then
+      #   # With mingw-gcc bootstrap
+      #   # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
+      #   echo
+      #   echo "Skipping hello-weak-c without -flto with Windows binaries..."
+      # elif is_non_native && is_mingw_clang
+      # then
+      #   # lld-link: error: duplicate symbol: world()
+      #   # >>> defined at hello-weak-cpp.cpp
+      #   # >>>            lto-hello-weak-cpp.cpp.o
+      #   # >>> defined at hello-f-weak-cpp.cpp
+      #   # >>>            lto-hello-f-weak-cpp.cpp.o
+      #   # clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+      #   # -Wl,--allow-multiple-definition fixes this, but then
+      #   # Test "./lto-hello-weak-cpp.exe " failed :-(
+      #   # expected 12: "Hello World!"
+      #   # got 11: "Hello there"
+      #   echo
+      #   echo "Skipping hello-weak-c without -flto with Windows binaries..."
+      # elif is_cross && is_gcc
+      # then
+      #   echo
+      #   echo "Skipping hello-weak-c without -flto with Windows binaries..."
+      # elif [ "${is_lto}" != "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+      # then
+      #   echo
+      #   echo "Skipping hello-weak-c without -flto on Windows..."
+      # elif [ "${is_lto}" == "y" ] && is_clang && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+      # then
+      #   echo
+      #   echo "Skipping hello-weak-c with clang -flto on Windows..."
       else
         run_host_app_verbose "${CC}" -c "hello-weak.c" -o "${prefix}hello-weak${suffix}.c.o" ${CFLAGS}
         run_host_app_verbose "${CC}" -c "hello-f-weak.c" -o "${prefix}hello-f-weak${suffix}.c.o" ${CFLAGS}
@@ -408,34 +416,42 @@ function test_compiler_single()
         test_target_expect "Hello World!" "./${prefix}hello-weak${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
-      if [ "${is_lto}" != "y" ] && is_non_native && is_mingw_gcc
-      then
-        # With mingw-gcc bootstrap
-        # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
-        echo
-        echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
-      elif is_non_native && is_clang
-      then
-        # lld-link: error: duplicate symbol: world()
-        # >>> defined at hello-weak-cpp.cpp
-        # >>>            lto-hello-weak-cpp.cpp.o
-        # >>> defined at hello-f-weak-cpp.cpp
-        # >>>            lto-hello-f-weak-cpp.cpp.o
-        # clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
-        # -Wl,--allow-multiple-definition fixes this, but then
-        # Test "./lto-hello-weak-cpp.exe " failed :-(
-        # expected 12: "Hello World!"
-        # got 11: "Hello there"
-        echo
-        echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
-      elif is_cross && is_gcc
+      if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
         echo
-        echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
-      elif [ "${is_lto}" != "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-      then
-        echo
-        echo "Skipping hello-weak-cpp without -flto on Windows..."
+        echo "Skipping hello-weak-cpp with Windows binaries..."
+      # elif [ "${is_lto}" != "y" ] && is_non_native && is_mingw_gcc
+      # then
+      #   # With mingw-gcc bootstrap
+      #   # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
+      #   echo
+      #   echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
+      # elif is_non_native && is_clang
+      # then
+      #   # lld-link: error: duplicate symbol: world()
+      #   # >>> defined at hello-weak-cpp.cpp
+      #   # >>>            lto-hello-weak-cpp.cpp.o
+      #   # >>> defined at hello-f-weak-cpp.cpp
+      #   # >>>            lto-hello-f-weak-cpp.cpp.o
+      #   # clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
+      #   # -Wl,--allow-multiple-definition fixes this, but then
+      #   # Test "./lto-hello-weak-cpp.exe " failed :-(
+      #   # expected 12: "Hello World!"
+      #   # got 11: "Hello there"
+      #   echo
+      #   echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
+      # elif is_cross && is_gcc
+      # then
+      #   echo
+      #   echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
+      # elif [ "${is_lto}" != "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+      # then
+      #   echo
+      #   echo "Skipping hello-weak-cpp without -flto on Windows..."
+      # elif [ "${is_lto}" == "y" ] && is_clang && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+      # then
+      #   echo
+      #   echo "Skipping hello-weak-cpp with clang -flto on Windows..."
       else
         run_host_app_verbose "${CXX}" -c "hello-weak-cpp.cpp" -o "${prefix}hello-weak-cpp${suffix}.cpp.o" ${CXXFLAGS}
         run_host_app_verbose "${CXX}" -c "hello-f-weak-cpp.cpp" -o "${prefix}hello-f-weak-cpp${suffix}.cpp.o" ${CXXFLAGS}
