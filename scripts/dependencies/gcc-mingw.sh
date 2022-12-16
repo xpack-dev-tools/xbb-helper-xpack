@@ -15,12 +15,19 @@
 # https://gcc.gnu.org
 # https://gcc.gnu.org/wiki/InstallingGCC
 
+# The DLLs are moved to bin
+# mv "$pkgdir"/usr/${_arch}/lib/*.dll "$pkgdir"/usr/${_arch}/bin/
 # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
 
 # MSYS2 uses a lot of patches.
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
+# arch_dir = "#{prefix}/toolchain-#{arch}"
+# target = "#{arch}-w64-mingw32"
+#
+# binutils & gcc --prefix=#{arch_dir} --with-sysroot=#{arch_dir}
+# mingw-headers --prefix=#{arch_dir}/#{target}
+# mingw-libs --prefix=#{arch_dir}/#{target} --with-sysroot=#{arch_dir}/## https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
 
 # https://ftp.gnu.org/gnu/gcc/
 # 2019-02-22, "8.3.0"
