@@ -191,6 +191,28 @@ function build_mingw_gcc_first()
       export CXXFLAGS
       export LDFLAGS
 
+      if true
+      then
+        # mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}"
+        # (
+        #   cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}"
+        #   run_verbose ln -sv ../include include
+        # )
+
+        # HB: Create a mingw symlink, expected by GCC
+        # ln_s "#{arch_dir}/#{target}", "#{arch_dir}/mingw"
+        # Otherwise:
+        # The directory that should contain system headers does not exist:
+        #   /home/ilg/Work/mingw-w64-gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/install/mingw/include
+        # Makefile:3271: recipe for target 'stmp-fixinc' failed
+
+        rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/mingw"
+        (
+          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+          run_verbose ln -sv "${XBB_TARGET_TRIPLET}" "mingw"
+        )
+      fi
+
       if [ ! -f "config.status" ]
       then
         (
@@ -466,6 +488,9 @@ function build_mingw_gcc_final()
         set -e
 
       fi
+
+      rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/mingw"
+
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}/strip-final-output-$(ndate).txt"
 
     hash -r

@@ -201,25 +201,6 @@ function build_mingw_headers()
         # make install-strip
         run_verbose make install-strip
 
-        if false # [ -z "${mingw_triplet}" ]
-        then
-          mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}"
-          (
-            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}"
-            run_verbose ln -sv ../include include
-          )
-
-          # This is this needed by the GCC bootstrap; otherwise:
-          # The directory that should contain system headers does not exist:
-          # /Host/home/ilg/Work/gcc-11.1.0-1/win32-x64/install/gcc-bootstrap/mingw/include
-
-          rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/mingw"
-          (
-            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
-            run_verbose ln -sv "${XBB_TARGET_TRIPLET}" "mingw"
-          )
-        fi
-
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_headers_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
