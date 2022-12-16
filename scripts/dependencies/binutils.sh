@@ -68,7 +68,7 @@ function prepare_binutils_common_options()
   config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
 
   # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
-  config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+  config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB mingw
 
   if [ "${XBB_HOST_PLATFORM}" != "linux" ]
   then
@@ -179,6 +179,9 @@ function prepare_binutils_common_options()
 
 function build_binutils()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local binutils_version="$1"
   shift
 
