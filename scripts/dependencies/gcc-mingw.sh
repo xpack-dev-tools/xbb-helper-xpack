@@ -113,6 +113,9 @@ function build_mingw_gcc_all_triplets()
 # XBB_MINGW_GCC_PATCH_FILE_NAME
 function build_mingw_gcc_first()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   export mingw_gcc_version="$1"
   shift
 
@@ -345,6 +348,9 @@ function build_mingw_gcc_first()
 
 function build_mingw_gcc_final()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix
 
