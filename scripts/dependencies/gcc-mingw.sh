@@ -264,7 +264,7 @@ function build_mingw_gcc_first()
             config_options+=("--disable-symvers")
           fi
 
-          # config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
           config_options+=("--with-pkgversion=${XBB_GCC_BRANDING}")
 
           config_options+=("--with-default-libstdcxx-abi=new")
