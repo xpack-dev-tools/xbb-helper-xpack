@@ -161,7 +161,7 @@ function build_mingw_headers()
           config_options=()
 
           # Use architecture subfolders.
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}")  # Arch
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}")  # Arch, HB
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           # https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=msvc-160
@@ -648,7 +648,7 @@ function build_mingw_crt()
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}")  # Arch
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}") # HB
 
           # `ucrt` is the new Windows Universal C Runtime:
           # https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c
@@ -794,7 +794,7 @@ function build_mingw_winpthreads()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}") # Arch /usr
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
-          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}") # HB
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${triplet}") # Arch
