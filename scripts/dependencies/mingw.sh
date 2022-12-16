@@ -111,6 +111,9 @@ function build_mingw_headers()
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-headers-git/PKGBUILD
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
 
@@ -238,6 +241,9 @@ function build_mingw_headers()
 
 function build_mingw_widl()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
   local program_prefix=""
@@ -353,6 +359,9 @@ function build_mingw_widl()
 # Fails on macOS, due to <malloc.h>.
 function build_mingw_libmangle()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
 
@@ -449,6 +458,9 @@ function build_mingw_libmangle()
 
 function build_mingw_gendef()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
   local program_prefix=""
@@ -568,6 +580,9 @@ function build_mingw_crt()
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-crt-git/PKGBUILD
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
@@ -724,6 +739,9 @@ function build_mingw_winpthreads()
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-winpthreads-git/PKGBUILD
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
   local disable_shared="n"
@@ -861,6 +879,9 @@ function build_mingw_winpthreads()
 
 function build_mingw_winstorecompat()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
 
