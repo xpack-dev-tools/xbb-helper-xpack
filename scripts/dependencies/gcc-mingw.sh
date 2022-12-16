@@ -620,6 +620,13 @@ function test_mingw_gcc()
       # The DLLs are available in the /lib folder.
       export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
       echo "WINEPATH=${WINEPATH}"
+      # export PATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib:${PATH:-}"
+      # echo "PATH=${PATH}"
+
+      # run_verbose cp -v "${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib"/*.dll .
+      # file libgcc_s_dw2-1.dll
+      # file libstdc++-6.dll
+
       test_compiler_single "${test_bin_path}"
       test_compiler_single "${test_bin_path}" --gc
       test_compiler_single "${test_bin_path}" --lto
