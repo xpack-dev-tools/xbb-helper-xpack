@@ -33,6 +33,7 @@ function tests_parse_options()
   XBB_BASE_URL="${XBB_BASE_URL:-}"
   XBB_DO_TEST_VIA_XPM="n"
   XBB_OUTPUT_FILE_NAME="tests"
+  XBB_USE_CACHED_ARCHIVE="n"
 
   while [ $# -gt 0 ]
   do
@@ -80,6 +81,11 @@ function tests_parse_options()
         shift
         ;;
 
+      --cache )
+        XBB_USE_CACHED_ARCHIVE="y"
+        shift
+        ;;
+
       --* )
         echo "Unsupported option $1 in ${FUNCNAME[0]}()"
         exit 1
@@ -102,8 +108,9 @@ function tests_parse_options()
   export XBB_FORCE_32_BIT
   export XBB_DO_TEST_VIA_XPM
   export XBB_OUTPUT_FILE_NAME
+  export XBB_USE_CACHED_ARCHIVE
 
-  if false
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
     echo
     echo "XBB_RELEASE_VERSION=${XBB_RELEASE_VERSION}"
@@ -153,15 +160,21 @@ function tests_install_archive()
       XBB_BASE_URL=https://github.com/xpack-dev-tools/${XBB_APPLICATION_LOWER_CASE_NAME}-xpack/releases/download/${XBB_RELEASE_VERSION}
     fi
 
-    echo
-    echo "Downloading ${archive_name}..."
-    run_verbose curl \
-      --fail \
-      --location \
-      --output "${tests_folder_path}/${archive_name}" \
-      "${XBB_BASE_URL}/${archive_name}"
+    if [ "${XBB_USE_CACHED_ARCHIVE}" == "y" ] && [ -f "${tests_folder_path}/../${archive_name}" ]
+    then
+      echo
+      echo "Using cached ${archive_name}..."
+    else
+      echo
+      echo "Downloading ${archive_name}..."
+      run_verbose curl \
+        --fail \
+        --location \
+        --output "${tests_folder_path}/../${archive_name}" \
+        "${XBB_BASE_URL}/${archive_name}"
 
-    echo
+      echo
+    fi
 
     run_verbose cd "${tests_folder_path}"
 
@@ -169,9 +182,9 @@ function tests_install_archive()
     echo "Extracting ${archive_name}..."
     if [[ "${archive_name}" == *.zip ]]
     then
-      run_verbose unzip -q "${tests_folder_path}/${archive_name}"
+      run_verbose unzip -q "${tests_folder_path}/../${archive_name}"
     else
-      run_verbose tar xf "${tests_folder_path}/${archive_name}"
+      run_verbose tar xf "${tests_folder_path}/../${archive_name}"
     fi
 
     run_verbose ls -lL "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}"
