@@ -833,9 +833,10 @@ function build_mingw_winpthreads()
         # GCC installs all DLLs in lib; for consistency, copy
         # libwinpthread-1.dll there too. Normally not needed, as
         # shared is disabled.
-        if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" ]
+        if [ ! -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib/libwinpthread-1.dll" ] \
+        && [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" ]
         then
-          run_verbose cp -v "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" \
+          run_verbose ${INSTALL} -v -c -m 644 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" \
             "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib/"
 
           run_verbose ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib"
