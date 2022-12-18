@@ -216,7 +216,7 @@ function build_mingw_gcc_first()
         rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/mingw"
         (
           cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
-          run_verbose ln -sv "${XBB_TARGET_TRIPLET}" "mingw"
+          run_verbose ln -sv "${triplet}" "mingw"
         )
       fi
 
@@ -496,6 +496,7 @@ function build_mingw_gcc_final()
 
       fi
 
+      # The mingw link was created in gcc_first; no longer needed.
       rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/mingw"
 
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}/strip-final-output-$(ndate).txt"
