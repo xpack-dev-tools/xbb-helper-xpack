@@ -590,7 +590,8 @@ function build_gcc()
           show_host_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.dylib)"
         elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
-          if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libstdc++-6.dll" ]
+          if [ ! -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/libstdc++-6.dll" ] \
+          && [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libstdc++-6.dll" ]
           then
             # For unknown reasons, `libstdc++-6.dll` is installed only in
             # the `bin` folder. Copy it to `lib` too.
