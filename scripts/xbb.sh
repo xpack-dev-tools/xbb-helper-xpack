@@ -1180,6 +1180,7 @@ function xbb_show_tools_versions()
 
 function xbb_show_env()
 {
+  echo "pwd: $(pwd)"
   env | sort | egrep '^[^ \t]+='
 }
 
