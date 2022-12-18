@@ -453,8 +453,9 @@ function build_mingw_gcc_final()
       (
         cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
         run_verbose find . -name '*.dll'
+
         # The DLLs are expected to be in the /${triplet}/lib folder.
-        run_verbose find bin lib -name '*.dll' -exec cp -v '{}' "${triplet}/lib" ';'
+        # run_verbose find bin lib -name '*.dll' -exec cp -v '{}' "${triplet}/lib" ';'
       )
 
       # Remove weird files like x86_64-w64-mingw32-x86_64-w64-mingw32-c++.exe
