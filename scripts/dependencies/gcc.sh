@@ -614,7 +614,7 @@ function build_gcc()
 }
 
 # Deprecated.
-# Currently not used, work done by build_gcc_final().
+# Currently not used, work done by build_gcc().
 function _build_gcc_libs()
 {
   local gcc_libs_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-libs-installed"
@@ -655,7 +655,9 @@ function _build_gcc_libs()
   fi
 }
 
-function build_gcc_final()
+# Deprecated.
+# Currently not used, work done by build_gcc().
+function _build_gcc_final()
 {
   local gcc_final_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-final-installed"
   if [ ! -f "${gcc_final_stamp_file_path}" ]
