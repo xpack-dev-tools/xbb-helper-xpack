@@ -193,6 +193,9 @@ function build_mingw_gcc_first()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
+      CFLAGS_FOR_TARGET="-g -ffunction-sections -fdata-sections -pipe -O2 -D__USE_MINGW_ACCESS -w"
+      CXXFLAGS_FOR_TARGET="-g -ffunction-sections -fdata-sections -pipe -O2 -D__USE_MINGW_ACCESS -w"
+
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
