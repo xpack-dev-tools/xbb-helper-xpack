@@ -452,11 +452,18 @@ function build_mingw_gcc_final()
       run_verbose make install-strip
 
       (
+        # The DLLs are expected to be in the /${triplet}/lib folder.
+        # When building for Windows, the `x86_64-w64-mingw32/lib` folder
+        # is not properly populated; manually copy the DLLs.
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+        then
+          cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
+          run_verbose find "${triplet}" -name '*.dll' ! -iname 'liblto*' \
+            -exec cp -v '{}' "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib" ';'
+        fi
+
         cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
         run_verbose find . -name '*.dll'
-
-        # The DLLs are expected to be in the /${triplet}/lib folder.
-        # run_verbose find bin lib -name '*.dll' -exec cp -v '{}' "${triplet}/lib" ';'
       )
 
       # Remove weird files like x86_64-w64-mingw32-x86_64-w64-mingw32-c++.exe
