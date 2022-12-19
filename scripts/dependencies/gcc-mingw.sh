@@ -243,6 +243,7 @@ function build_mingw_gcc_first()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # Arch /usr
           config_options+=("--libexecdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib") # Arch /usr/lib
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
 
           config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
@@ -272,7 +273,6 @@ function build_mingw_gcc_first()
             config_options+=("--disable-symvers")
           fi
 
-          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
           config_options+=("--with-pkgversion=${XBB_GCC_BRANDING}")
 
           config_options+=("--with-default-libstdcxx-abi=new")
