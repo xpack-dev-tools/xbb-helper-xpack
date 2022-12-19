@@ -23,6 +23,8 @@
 # mingw-w64
 # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-binutils/trunk/PKGBUILD
 
+# MSYS2
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-binutils/PKGBUILD
 # https://github.com/msys2/MSYS2-packages/blob/master/binutils/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/binutils.rb
@@ -52,6 +54,8 @@ function prepare_binutils_common_options()
   config_options=()
 
   config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+  config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB mingw
+  # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
 
   config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
   config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
@@ -67,8 +71,6 @@ function prepare_binutils_common_options()
 
   config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
 
-  # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
-  config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB mingw
 
   if [ "${XBB_HOST_PLATFORM}" != "linux" ]
   then
@@ -113,7 +115,7 @@ function prepare_binutils_common_options()
     exit 1
   fi
 
-  config_options+=("--enable-64-bit-bfd") # HB
+  config_options+=("--enable-64-bit-bfd") # HB, mingw
   config_options+=("--enable-build-warnings=no")
   config_options+=("--enable-cet") # Arch
   config_options+=("--enable-default-execstack=no") # Arch
