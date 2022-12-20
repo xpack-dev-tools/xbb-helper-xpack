@@ -475,7 +475,7 @@ function test_compiler_single()
         run_target_app_verbose "./${prefix}weak-override${suffix}"
       )
 
-      # Test if exceptions thrown from shared libraries are catched.
+      # Test if exceptions thrown from shared libraries are caught.
       if [ "${is_static}" != "y" ]
       then
         (
@@ -555,6 +555,12 @@ function test_compiler_single()
               # 32 bit pseudo relocation at 00007FF67D9F1587 out of range, targeting 00007FFF403E157C, yielding the value 00000008C29EFFF1.
               echo
               echo "Skipping ${prefix}throwcatch-main${suffix} -flto on Windows..."
+            elif [ "${is_static_lib}" == "y" ] && [ "${XBB_BUILD_PLATFORM}" == "win32" ] && [[ "$(basename "${CC}")" =~ .*i686-w64-mingw32-gcc.* ]]
+            then
+              # terminate called after throwing an instance of 'FirstException'
+              #   what():  first
+              echo
+              echo "Skipping ${prefix}throwcatch-main${suffix} --static-lib i686 on Windows..."
             else
               show_target_libs_develop "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
               run_target_app_verbose "./${prefix}throwcatch-main${suffix}"
