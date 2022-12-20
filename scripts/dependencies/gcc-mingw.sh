@@ -618,14 +618,14 @@ function test_mingw_gcc()
     (
       # For libstdc++-6.dll & co.
       # The DLLs are available in the /lib folder.
-      export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
-      echo "WINEPATH=${WINEPATH}"
-      # export PATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib:${PATH:-}"
-      # echo "PATH=${PATH}"
-
-      # run_verbose cp -v "${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib"/*.dll .
-      # file libgcc_s_dw2-1.dll
-      # file libstdc++-6.dll
+      if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+      then 
+        export PATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib:${PATH:-}"
+        echo "PATH=${PATH}"
+      else
+        export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
+        echo "WINEPATH=${WINEPATH}"
+      fi
 
       test_compiler_single "${test_bin_path}"
       test_compiler_single "${test_bin_path}" --gc
@@ -636,8 +636,15 @@ function test_mingw_gcc()
     (
       # For libwinpthread-1.dll. (This is a big pain).
       # The DLLs are available in the /lib folder.
-      export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
-      echo "WINEPATH=${WINEPATH}"
+      if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+      then 
+        export PATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib:${PATH:-}"
+        echo "PATH=${PATH}"
+      else
+        export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
+        echo "WINEPATH=${WINEPATH}"
+      fi
+
       test_compiler_single "${test_bin_path}" --static-lib
       test_compiler_single "${test_bin_path}" --static-lib --gc
       test_compiler_single "${test_bin_path}" --static-lib --lto
