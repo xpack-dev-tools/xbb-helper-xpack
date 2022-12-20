@@ -15,12 +15,19 @@
 # https://gcc.gnu.org
 # https://gcc.gnu.org/wiki/InstallingGCC
 
+# The DLLs are moved to bin
+# mv "$pkgdir"/usr/${_arch}/lib/*.dll "$pkgdir"/usr/${_arch}/bin/
 # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
 
 # MSYS2 uses a lot of patches.
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
+# arch_dir = "#{prefix}/toolchain-#{arch}"
+# target = "#{arch}-w64-mingw32"
+#
+# binutils & gcc --prefix=#{arch_dir} --with-sysroot=#{arch_dir}
+# mingw-headers --prefix=#{arch_dir}/#{target}
+# mingw-libs --prefix=#{arch_dir}/#{target} --with-sysroot=#{arch_dir}/## https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
 
 # https://ftp.gnu.org/gnu/gcc/
 # 2019-02-22, "8.3.0"
@@ -76,7 +83,7 @@ function build_mingw_gcc_all_triplets()
     # Set XBB_TARGET_STRIP, _RANLIB & _OBJDUMP
     xbb_set_extra_target_env "${triplet}"
 
-    build_binutils "${XBB_BINUTILS_VERSION}" --triplet="${triplet}" --program-prefix="${triplet}"
+    build_binutils "${XBB_BINUTILS_VERSION}" --triplet="${triplet}" --program-prefix="${triplet}-"
 
     # Deploy the headers, they are needed by the compiler.
     build_mingw_headers --triplet="${triplet}"
@@ -113,6 +120,9 @@ function build_mingw_gcc_all_triplets()
 # XBB_MINGW_GCC_PATCH_FILE_NAME
 function build_mingw_gcc_first()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   export mingw_gcc_version="$1"
   shift
 
@@ -183,10 +193,33 @@ function build_mingw_gcc_first()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
+      CFLAGS_FOR_TARGET="-g -ffunction-sections -fdata-sections -pipe -O2 -D__USE_MINGW_ACCESS -w"
+      CXXFLAGS_FOR_TARGET="-g -ffunction-sections -fdata-sections -pipe -O2 -D__USE_MINGW_ACCESS -w"
+
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
+
+      # HB: Create a mingw symlink, expected by GCC
+      # ln_s "#{arch_dir}/#{target}", "#{arch_dir}/mingw"
+      # Otherwise:
+      # The directory that should contain system headers does not exist:
+      #   /home/ilg/Work/mingw-w64-gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/install/mingw/include
+      # Makefile:3271: recipe for target 'stmp-fixinc' failed
+
+      rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/mingw"
+      (
+        cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+        run_verbose ln -sv "${triplet}" "mingw"
+      )
+
+      # rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/mingw"
+      # (
+      #   mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/mingw"
+      #   cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/mingw"
+      #   run_verbose ln -sv "../include" "include"
+      # )
 
       if [ ! -f "config.status" ]
       then
@@ -210,6 +243,7 @@ function build_mingw_gcc_first()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # Arch /usr
           config_options+=("--libexecdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib") # Arch /usr/lib
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
 
           config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
@@ -239,7 +273,6 @@ function build_mingw_gcc_first()
             config_options+=("--disable-symvers")
           fi
 
-          # config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-pkgversion=${XBB_GCC_BRANDING}")
 
           config_options+=("--with-default-libstdcxx-abi=new")
@@ -345,6 +378,9 @@ function build_mingw_gcc_first()
 
 function build_mingw_gcc_final()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix
 
@@ -416,10 +452,18 @@ function build_mingw_gcc_final()
       run_verbose make install-strip
 
       (
+        # The DLLs are expected to be in the /${triplet}/lib folder.
+        # When building for Windows, the `x86_64-w64-mingw32/lib` folder
+        # is not properly populated; manually copy the DLLs.
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+        then
+          cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
+          run_verbose find "${triplet}" -name '*.dll' ! -iname 'liblto*' \
+            -exec cp -v '{}' "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib" ';'
+        fi
+
         cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
         run_verbose find . -name '*.dll'
-        # The DLLs are expected to be in the /${triplet}/lib folder.
-        run_verbose find bin lib -name '*.dll' -exec cp -v '{}' "${triplet}/lib" ';'
       )
 
       # Remove weird files like x86_64-w64-mingw32-x86_64-w64-mingw32-c++.exe
@@ -460,6 +504,10 @@ function build_mingw_gcc_final()
         set -e
 
       fi
+
+      # The mingw link was created in gcc_first; no longer needed.
+      rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/mingw"
+
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}/strip-final-output-$(ndate).txt"
 
     hash -r

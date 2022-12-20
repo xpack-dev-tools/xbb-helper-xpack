@@ -299,7 +299,7 @@ function xbb_set_target()
   local kind="$1"
 
   echo
-  echo "[xbb_set_target ${kind}]"
+  echo "[${FUNCNAME[0]} $@]"
 
   if [ "${kind}" == "native" ]
   then
@@ -534,6 +534,9 @@ function xbb_set_compiler_env()
 
 function xbb_set_extra_build_env()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]}]"
+
   XBB_BUILD_STRIP="$(which strip 2>/dev/null || echo strip)"
   XBB_BUILD_RANLIB="$(which ranlib 2>/dev/null || echo ranlib)"
   XBB_BUILD_OBJDUMP="$(which objdump 2>/dev/null || echo objdump)"
@@ -541,11 +544,21 @@ function xbb_set_extra_build_env()
   export XBB_BUILD_STRIP
   export XBB_BUILD_RANLIB
   export XBB_BUILD_OBJDUMP
+
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  then
+    echo "XBB_BUILD_STRIP=${XBB_BUILD_STRIP}"
+    echo "XBB_BUILD_RANLIB=${XBB_BUILD_RANLIB}"
+    echo "XBB_BUILD_OBJDUMP=${XBB_BUILD_OBJDUMP}"
+  fi
 }
 
 function xbb_set_extra_target_env()
 {
   local triplet="${1:-"${XBB_TARGET_TRIPLET}"}"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   if [ "${triplet}" != "${XBB_BUILD_TRIPLET}" ]
   then
@@ -582,11 +595,23 @@ function xbb_set_extra_target_env()
   export XBB_TARGET_OBJDUMP
 
   export XBB_CURRENT_TRIPLET
+
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  then
+    echo "XBB_BUILD_STRIP=${XBB_BUILD_STRIP}"
+    echo "XBB_BUILD_RANLIB=${XBB_BUILD_RANLIB}"
+    echo "XBB_BUILD_OBJDUMP=${XBB_BUILD_OBJDUMP}"
+
+    echo "XBB_CURRENT_TRIPLET=${XBB_CURRENT_TRIPLET}"
+  fi
 }
 
 function xbb_set_extra_host_env()
 {
   local triplet="${1:-"${XBB_HOST_TRIPLET}"}"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   if [ "${triplet}" != "${XBB_BUILD_TRIPLET}" ]
   then
@@ -602,6 +627,13 @@ function xbb_set_extra_host_env()
   export XBB_HOST_STRIP
   export XBB_HOST_RANLIB
   export XBB_HOST_OBJDUMP
+
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  then
+    echo "XBB_HOST_STRIP=${XBB_HOST_STRIP}"
+    echo "XBB_HOST_RANLIB=${XBB_HOST_RANLIB}"
+    echo "XBB_HOST_OBJDUMP=${XBB_HOST_OBJDUMP}"
+  fi
 }
 
 function xbb_unset_compiler_env()
@@ -643,7 +675,7 @@ function xbb_prepare_gcc_env()
   local suffix="${2:-}"
 
   echo_develop
-  echo_develop "[xbb_prepare_gcc_env $@]"
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   xbb_unset_compiler_env
 
@@ -698,7 +730,7 @@ function xbb_prepare_clang_env()
   local suffix="${2:-}"
 
   echo_develop
-  echo_develop "[xbb_prepare_clang_env $@]"
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   xbb_unset_compiler_env
 
@@ -896,12 +928,22 @@ function xbb_set_compiler_flags()
 
 function xbb_set_executables_install_path()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   export XBB_EXECUTABLES_INSTALL_FOLDER_PATH="$1"
+
+  echo_develop "XBB_EXECUTABLES_INSTALL_FOLDER_PATH=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
 }
 
 function xbb_set_libraries_install_path()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   export XBB_LIBRARIES_INSTALL_FOLDER_PATH="$1"
+
+  echo_develop "XBB_LIBRARIES_INSTALL_FOLDER_PATH=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 }
 
 # Add the freshly built binaries.
@@ -910,7 +952,7 @@ function xbb_activate_installed_bin()
   local folder_path="${1:-}"
 
   echo_develop
-  echo_develop "[xbb_activate_installed_bin $@]"
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
@@ -967,7 +1009,7 @@ function xbb_activate_installed_bin()
 function xbb_activate_application_bin()
 {
   echo_develop
-  echo_develop "[xbb_activate_application_bin]"
+  echo_develop "[${FUNCNAME[0]}]"
 
   if [ ! -z ${XBB_APPLICATION_INSTALL_FOLDER_PATH+x} ]
   then
@@ -987,7 +1029,7 @@ function xbb_activate_dependencies_dev()
   local name_suffix="${1:-""}" # Deprecated, do not use.
 
   echo_develop
-  echo_develop "[xbb_activate_dependencies_dev${name_suffix} $@]"
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   # Add XBB include in front of XBB_CPPFLAGS.
   XBB_CPPFLAGS="-I${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/include ${XBB_CPPFLAGS}"
@@ -1138,6 +1180,7 @@ function xbb_show_tools_versions()
 
 function xbb_show_env()
 {
+  echo "pwd: $(pwd)"
   env | sort | egrep '^[^ \t]+='
 }
 

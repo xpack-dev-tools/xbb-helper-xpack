@@ -111,6 +111,9 @@ function build_mingw_headers()
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-headers-git/PKGBUILD
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
 
@@ -158,7 +161,7 @@ function build_mingw_headers()
           config_options=()
 
           # Use architecture subfolders.
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}")  # Arch
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}")  # Arch, HB
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           # https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=msvc-160
@@ -198,25 +201,6 @@ function build_mingw_headers()
         # make install-strip
         run_verbose make install-strip
 
-        if false # [ -z "${mingw_triplet}" ]
-        then
-          mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}"
-          (
-            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}"
-            run_verbose ln -sv ../include include
-          )
-
-          # This is this needed by the GCC bootstrap; otherwise:
-          # The directory that should contain system headers does not exist:
-          # /Host/home/ilg/Work/gcc-11.1.0-1/win32-x64/install/gcc-bootstrap/mingw/include
-
-          rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/mingw"
-          (
-            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
-            run_verbose ln -sv "${XBB_TARGET_TRIPLET}" "mingw"
-          )
-        fi
-
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_headers_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
@@ -238,6 +222,9 @@ function build_mingw_headers()
 
 function build_mingw_widl()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
   local program_prefix=""
@@ -353,6 +340,9 @@ function build_mingw_widl()
 # Fails on macOS, due to <malloc.h>.
 function build_mingw_libmangle()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
 
@@ -449,6 +439,9 @@ function build_mingw_libmangle()
 
 function build_mingw_gendef()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
   local program_prefix=""
@@ -569,6 +562,9 @@ function build_mingw_crt()
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-crt-git/PKGBUILD
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
 
@@ -652,7 +648,7 @@ function build_mingw_crt()
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}")  # Arch
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}") # HB
 
           # `ucrt` is the new Windows Universal C Runtime:
           # https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c
@@ -723,6 +719,9 @@ function build_mingw_winpthreads()
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-winpthreads/trunk/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-winpthreads-git/PKGBUILD
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
@@ -795,7 +794,7 @@ function build_mingw_winpthreads()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}") # Arch /usr
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
-          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}") # HB
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${triplet}") # Arch
@@ -834,9 +833,10 @@ function build_mingw_winpthreads()
         # GCC installs all DLLs in lib; for consistency, copy
         # libwinpthread-1.dll there too. Normally not needed, as
         # shared is disabled.
-        if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" ]
+        if [ ! -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib/libwinpthread-1.dll" ] \
+        && [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" ]
         then
-          run_verbose cp -v "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" \
+          run_verbose ${INSTALL} -v -c -m 644 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" \
             "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib/"
 
           run_verbose ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib"
@@ -861,6 +861,9 @@ function build_mingw_winpthreads()
 
 function build_mingw_winstorecompat()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix="mingw-w64-"
 

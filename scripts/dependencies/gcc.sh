@@ -590,19 +590,14 @@ function build_gcc()
           show_host_libs "$(${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc --print-file-name=libstdc++.dylib)"
         elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
-          if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libstdc++-6.dll" ]
-          then
-            # For unknown reasons, `libstdc++-6.dll` is installed only in
-            # the `bin` folder. Copy it to `lib` too.
-            run_verbose ${INSTALL} -c -m 755 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libstdc++-6.dll" \
-                "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-          fi
-          if [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libgfortran-5.dll" ]
-          then
-            # Same for `libgfortran-5.dll`.
-            run_verbose ${INSTALL} -c -m 755 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/libgfortran-5.dll" \
-                "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-          fi
+          (
+            cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
+            run_verbose find "${XBB_TARGET_TRIPLET}" -name '*.dll' ! -iname 'liblto*' \
+              -exec cp -v '{}' "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib" ';'
+
+            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+            run_verbose find . -name '*.dll'
+          )
         fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-output-$(ndate).txt"
@@ -619,7 +614,7 @@ function build_gcc()
 }
 
 # Deprecated.
-# Currently not used, work done by build_gcc_final().
+# Currently not used, work done by build_gcc().
 function _build_gcc_libs()
 {
   local gcc_libs_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-libs-installed"
@@ -660,7 +655,9 @@ function _build_gcc_libs()
   fi
 }
 
-function build_gcc_final()
+# Deprecated.
+# Currently not used, work done by build_gcc().
+function _build_gcc_final()
 {
   local gcc_final_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-final-installed"
   if [ ! -f "${gcc_final_stamp_file_path}" ]
