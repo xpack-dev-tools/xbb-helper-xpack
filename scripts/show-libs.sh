@@ -110,14 +110,14 @@ function show_host_libs()
       then
         echo "${FUNCNAME[0]}() cannot show DLLs on Windows (no objdump)"
       else
-        if [ -f "${abs_path}" ]
-        then
-          echo "[${XBB_HOST_OBJDUMP} -x ${abs_path}]"
-          "${XBB_HOST_OBJDUMP}" -x "${abs_path}" | grep -i 'DLL Name' || true
-        elif [ -f "${abs_exe_path}" ]
+        if [ -f "${abs_exe_path}" ]
         then
           echo "[${XBB_HOST_OBJDUMP} -x ${abs_exe_path}]"
           "${XBB_HOST_OBJDUMP}" -x "${abs_exe_path}" | grep -i 'DLL Name' || true
+        elif [ -f "${abs_path}" ]
+        then
+          echo "[${XBB_HOST_OBJDUMP} -x ${abs_path}]"
+          "${XBB_HOST_OBJDUMP}" -x "${abs_path}" | grep -i 'DLL Name' || true
         fi
       fi
     else
@@ -248,14 +248,14 @@ function show_target_libs()
       then
         echo "${FUNCNAME[0]}() cannot show DLLs on Windows (no objdump)"
       else
-        if [ -f "${abs_path}" ]
-        then
-          echo "[${XBB_TARGET_OBJDUMP} -x ${abs_path}]"
-          "${XBB_TARGET_OBJDUMP}" -x "${abs_path}" | grep -i 'DLL Name' || true
-        elif [ -f "${abs_exe_path}" ]
+        if [ -f "${abs_exe_path}" ]
         then
           echo "[${XBB_TARGET_OBJDUMP} -x ${abs_exe_path}]"
           "${XBB_TARGET_OBJDUMP}" -x "${abs_exe_path}" | grep -i 'DLL Name' || true
+        elif [ -f "${abs_path}" ]
+        then
+          echo "[${XBB_TARGET_OBJDUMP} -x ${abs_path}]"
+          "${XBB_TARGET_OBJDUMP}" -x "${abs_path}" | grep -i 'DLL Name' || true
         fi
       fi
     else
