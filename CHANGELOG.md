@@ -8,11 +8,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2022-12-20
 
-* v0.11.30 released
+* v0.11.30 released (deleted)
 
 ## 2022-12-19
 
-* v0.11.29 released
+* v0.11.29 released (deleted)
 
 ## 2022-12-15
 
