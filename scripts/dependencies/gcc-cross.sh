@@ -820,7 +820,7 @@ main(int argc, char* argv[])
 __EOF__
 
       VERBOSE=""
-      if [ "${IS_DEVELOP}" == "y" ]
+      if [ "${XBB_IS_DEVELOP}" == "y" ]
       then
         VERBOSE="-v"
       fi
