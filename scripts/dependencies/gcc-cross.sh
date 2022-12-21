@@ -825,10 +825,10 @@ __EOF__
         VERBOSE="-v"
       fi
 
-      run_host_app_verbose "${CC}" -pipe -o hello-c.elf "${specs}" hello.c -v
+      run_host_app_verbose "${CC}" hello.c -o hello-c.elf "${specs}" -v
 
-      run_host_app_verbose "${CC}" -pipe -o hello.c.o -c -flto ${VERBOSE} hello.c
-      run_host_app_verbose "${CC}" -pipe -o hello-c-lto.elf "${specs}" -flto ${VERBOSE} hello.c.o
+      run_host_app_verbose "${CC}" -c hello.c -o hello.c.o -flto ${VERBOSE}
+      run_host_app_verbose "${CC}" hello.c.o -o hello-c-lto.elf "${specs}" -flto ${VERBOSE}
 
       # Note: __EOF__ is quoted to prevent substitutions here.
       cat <<'__EOF__' > hello.cpp
@@ -848,12 +848,12 @@ __sync_synchronize()
 }
 __EOF__
 
-      run_host_app_verbose "${CXX}" -pipe -o hello-cpp.elf "${specs}" ${VERBOSE} hello.cpp
+      run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp.elf "${specs}" ${VERBOSE}
 
-      run_host_app_verbose "${CXX}" -pipe -o hello.cpp.o -c -flto hello.cpp
-      run_host_app_verbose "${CXX}" -pipe -o hello-cpp-lto.elf "${specs}" -flto ${VERBOSE} hello.cpp.o
+      run_host_app_verbose "${CXX}" -c hello.cpp -o hello.cpp.o  -flto
+      run_host_app_verbose "${CXX}" hello.cpp.o -o hello-cpp-lto.elf "${specs}" -flto ${VERBOSE}
 
-      run_host_app_verbose "${CXX}" -pipe -o hello-cpp-gcov.elf "${specs}" -fprofile-arcs -ftest-coverage -lgcov ${VERBOSE} hello.cpp
+      run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp-gcov.elf "${specs}" -fprofile-arcs -ftest-coverage -lgcov ${VERBOSE}
     fi
   )
 }
