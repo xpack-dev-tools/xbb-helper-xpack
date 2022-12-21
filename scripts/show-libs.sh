@@ -106,7 +106,13 @@ function show_host_libs()
       then
         run_verbose file -L "${abs_path}"
       fi
-      echo "${FUNCNAME[0]}() cannot show DLLs on Windows"
+      if [ -z "$(which ${XBB_HOST_OBJDUMP} 2>/dev/null)" ]
+      then
+        echo "${FUNCNAME[0]}() cannot show DLLs on Windows (no objdump)"
+      else
+        echo "[${XBB_HOST_OBJDUMP} -x ${abs_path}]"
+        "${XBB_HOST_OBJDUMP}" -x "${abs_path}" | grep -i 'DLL Name' || true
+      fi
     else
       echo
       echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
@@ -231,7 +237,13 @@ function show_target_libs()
       then
         run_verbose file -L "${abs_path}"
       fi
-      echo "${FUNCNAME[0]}() cannot show DLLs on Windows"
+      if [ -z "$(which ${XBB_TARGET_OBJDUMP} 2>/dev/null)" ]
+      then
+        echo "${FUNCNAME[0]}() cannot show DLLs on Windows (no objdump)"
+      else
+        echo "[${XBB_TARGET_OBJDUMP} -x ${abs_path}]"
+        "${XBB_TARGET_OBJDUMP}" -x "${abs_path}" | grep -i 'DLL Name' || true
+      fi
     else
       echo
       echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
