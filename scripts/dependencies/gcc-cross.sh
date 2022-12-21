@@ -970,37 +970,44 @@ function cross_gcc_final_tunings()
       cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
 
       echo
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
       then
+        xbb_lto_plugin_original_name="${XBB_LTO_PLUGIN_ORIGINAL_NAME:-liblto_plugin.dll}"
+        xbb_lto_plugin_bfd_path="${XBB_LTO_PLUGIN_BFD_PATH:-lib/bfd-plugins/liblto_plugin.dll}"
+
         echo
-        echo "Copying ${XBB_LTO_PLUGIN_ORIGINAL_NAME}..."
+        echo "Copying ${xbb_lto_plugin_original_name}..."
 
-        mkdir -pv "$(dirname ${XBB_LTO_PLUGIN_BFD_PATH})"
+        mkdir -pv "$(dirname ${xbb_lto_plugin_bfd_path})"
 
-        if [ ! -f "${XBB_LTO_PLUGIN_BFD_PATH}" ]
+        if [ ! -f "${xbb_lto_plugin_bfd_path}" ]
         then
-          local plugin_path="$(find * -type f -name ${XBB_LTO_PLUGIN_ORIGINAL_NAME})"
+          local plugin_path="$(find * -type f -name ${xbb_lto_plugin_original_name})"
           if [ ! -z "${plugin_path}" ]
           then
-            cp -v "${plugin_path}" "${XBB_LTO_PLUGIN_BFD_PATH}"
+            cp -v "${plugin_path}" "${xbb_lto_plugin_bfd_path}"
           else
-            echo "${XBB_LTO_PLUGIN_ORIGINAL_NAME} not found"
+            echo "${xbb_lto_plugin_original_name} not found"
             exit 1
           fi
         fi
       else
-        echo
-        echo "Creating ${XBB_LTO_PLUGIN_ORIGINAL_NAME} link..."
+        # macOS or Linux
+        xbb_lto_plugin_original_name="${XBB_LTO_PLUGIN_ORIGINAL_NAME:-liblto_plugin.so}"
+        xbb_lto_plugin_bfd_path="${XBB_LTO_PLUGIN_BFD_PATH:-lib/bfd-plugins/liblto_plugin.so}"
 
-        mkdir -pv "$(dirname ${XBB_LTO_PLUGIN_BFD_PATH})"
-        if [ ! -f "${XBB_LTO_PLUGIN_BFD_PATH}" ]
+        echo
+        echo "Creating ${xbb_lto_plugin_original_name} link..."
+
+        mkdir -pv "$(dirname ${xbb_lto_plugin_bfd_path})"
+        if [ ! -f "${xbb_lto_plugin_bfd_path}" ]
         then
-          local plugin_path="$(find * -type f -name ${XBB_LTO_PLUGIN_ORIGINAL_NAME})"
+          local plugin_path="$(find * -type f -name ${xbb_lto_plugin_original_name})"
           if [ ! -z "${plugin_path}" ]
           then
-            ln -s -v "../../${plugin_path}" "${XBB_LTO_PLUGIN_BFD_PATH}"
+            ln -s -v "../../${plugin_path}" "${xbb_lto_plugin_bfd_path}"
           else
-            echo "${XBB_LTO_PLUGIN_ORIGINAL_NAME} not found"
+            echo "${xbb_lto_plugin_original_name} not found"
             exit 1
           fi
         fi
