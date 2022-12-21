@@ -203,7 +203,7 @@ jobs:
   {% when "win32-x64" %}
   windows-x64:
     name: 'Windows 64-bit {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    runs-on: windows-latest
+    runs-on: windows-2022
     defaults:
       run:
         # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
