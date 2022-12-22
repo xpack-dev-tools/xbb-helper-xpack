@@ -366,8 +366,8 @@ function build_cross_gcc_first()
             fi
           elif [ "${triplet}" == "riscv-none-elf" ]
           then
-            config_options+=("--with-abi=${XBB_GCC_ABI}")
-            config_options+=("--with-arch=${XBB_GCC_ARCH}")
+            config_options+=("--with-abi=${XBB_APPLICATION_GCC_ABI}")
+            config_options+=("--with-arch=${XBB_APPLICATION_GCC_ARCH}")
 
             if [ "${XBB_WITHOUT_MULTILIB}" == "y" ]
             then
@@ -644,8 +644,8 @@ function build_cross_gcc_final()
             fi
           elif [ "${triplet}" == "riscv-none-elf" ]
           then
-            config_options+=("--with-abi=${XBB_GCC_ABI}")
-            config_options+=("--with-arch=${XBB_GCC_ARCH}")
+            config_options+=("--with-abi=${XBB_APPLICATION_GCC_ABI}")
+            config_options+=("--with-arch=${XBB_APPLICATION_GCC_ARCH}")
 
             if [ "${XBB_WITHOUT_MULTILIB}" == "y" ]
             then
