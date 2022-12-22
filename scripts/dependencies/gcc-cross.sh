@@ -169,6 +169,38 @@ function cross_gcc_download()
   fi
 }
 
+function cross_gcc_generate_riscv_multilib_file()
+{
+  # Not inside the previous if to allow multilib changes after download.
+  if [ "${XBB_APPLICATION_WITHOUT_MULTILIB}" != "y" ]
+  then
+    (
+      echo
+      echo "Running the multilib generator..."
+
+      cd "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/gcc/config/riscv"
+
+      xbb_activate_dependencies_dev
+
+      GCC_MULTILIB_FILE=${GCC_MULTILIB_FILE:-"t-elf-multilib"}
+
+      # Be sure the ${XBB_GCC_MULTILIB_LIST} has no quotes, since it defines
+      # multiple strings.
+
+      # Change IFS temporarily so that we can pass a simple string of
+      # whitespace delimited multilib tokens to multilib-generator
+      local IFS=$' '
+      echo
+      echo "[python3 ./multilib-generator ${XBB_GCC_MULTILIB_LIST}]"
+      python3 ./multilib-generator ${XBB_GCC_MULTILIB_LIST} > "${GCC_MULTILIB_FILE}"
+
+      echo "----------------------------------------------------------------"
+      cat "${GCC_MULTILIB_FILE}"
+      echo "----------------------------------------------------------------"
+    )
+  fi
+}
+
 # Environment variables:
 # XBB_GCC_SRC_FOLDER_NAME
 # XBB_GCC_ARCHIVE_URL
