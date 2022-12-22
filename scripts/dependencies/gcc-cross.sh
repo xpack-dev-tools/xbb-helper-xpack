@@ -1014,7 +1014,7 @@ function cross_gcc_final_tunings()
         xbb_lto_plugin_bfd_path="${XBB_LTO_PLUGIN_BFD_PATH:-lib/bfd-plugins/liblto_plugin.dll}"
 
         echo
-        echo "Copying ${xbb_lto_plugin_original_name}..."
+        echo "# Copying ${xbb_lto_plugin_original_name}..."
 
         mkdir -pv "$(dirname ${xbb_lto_plugin_bfd_path})"
 
@@ -1035,7 +1035,7 @@ function cross_gcc_final_tunings()
         xbb_lto_plugin_bfd_path="${XBB_LTO_PLUGIN_BFD_PATH:-lib/bfd-plugins/liblto_plugin.so}"
 
         echo
-        echo "Creating ${xbb_lto_plugin_original_name} link..."
+        echo "# Creating ${xbb_lto_plugin_original_name} link..."
 
         mkdir -pv "$(dirname ${xbb_lto_plugin_bfd_path})"
         if [ ! -f "${xbb_lto_plugin_bfd_path}" ]
