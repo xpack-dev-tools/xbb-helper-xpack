@@ -146,6 +146,25 @@ function _do_patch()
   fi
 }
 
+function check_patch()
+{
+  local patch_file_name="$1"
+
+  local patch_path="${XBB_BUILD_GIT_PATH}/patches/${patch_file_name}"
+  if [ ! -f "${patch_path}" ]
+  then
+    # If not local in the project, try in the common helper.
+    patch_path="${helper_folder_path}/patches/${patch_file_name}"
+  fi
+
+  if [ ! -f "${patch_path}" ]
+  then
+    echo
+    echo "Patch \"${patch_file_name}\" not found"
+    exit 1
+  fi
+}
+
 function update_config_sub()
 {
   local folder_path="$1"
