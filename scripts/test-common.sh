@@ -133,67 +133,65 @@ function tests_install_archive()
 
   export XBB_ARCHIVE_INSTALL_FOLDER_PATH="${tests_folder_path}/${archive_folder_name}"
 
-  (
-    local archive_extension
-    local archive_architecture="${XBB_BUILD_ARCH}"
-    if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+  local archive_extension
+  local archive_architecture="${XBB_BUILD_ARCH}"
+  if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+  then
+    archive_extension="zip"
+    if [ "${XBB_FORCE_32_BIT}" == "y" ]
     then
-      archive_extension="zip"
-      if [ "${XBB_FORCE_32_BIT}" == "y" ]
-      then
-        archive_architecture="ia32"
-      fi
-    else
-      archive_extension="tar.gz"
+      archive_architecture="ia32"
     fi
-    local archive_name="${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}-${XBB_BUILD_PLATFORM}-${archive_architecture}.${archive_extension}"
+  else
+    archive_extension="tar.gz"
+  fi
+  local archive_name="${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}-${XBB_BUILD_PLATFORM}-${archive_architecture}.${archive_extension}"
 
-    run_verbose rm -rf "${tests_folder_path}"
+  run_verbose rm -rf "${tests_folder_path}"
 
-    run_verbose mkdir -pv "${tests_folder_path}"
+  run_verbose mkdir -pv "${tests_folder_path}"
 
-    if [ "${XBB_BASE_URL}" == "pre-release" ]
-    then
-      XBB_BASE_URL=https://github.com/xpack-dev-tools/pre-releases/releases/download/test
-    elif [ "${XBB_BASE_URL}" == "release" ]
-    then
-      XBB_BASE_URL=https://github.com/xpack-dev-tools/${XBB_APPLICATION_LOWER_CASE_NAME}-xpack/releases/download/${XBB_RELEASE_VERSION}
-    fi
+  if [ "${XBB_BASE_URL}" == "pre-release" ]
+  then
+    XBB_BASE_URL=https://github.com/xpack-dev-tools/pre-releases/releases/download/test
+  elif [ "${XBB_BASE_URL}" == "release" ]
+  then
+    XBB_BASE_URL=https://github.com/xpack-dev-tools/${XBB_APPLICATION_LOWER_CASE_NAME}-xpack/releases/download/${XBB_RELEASE_VERSION}
+  fi
 
-    if [ "${XBB_USE_CACHED_ARCHIVE}" == "y" ] && [ -f "${tests_folder_path}/../${archive_name}" ]
-    then
-      echo
-      echo "Using cached ${archive_name}..."
-    else
-      echo
-      echo "Downloading ${archive_name}..."
-      run_verbose curl \
-        --fail \
-        --location \
-        --output "${tests_folder_path}/../${archive_name}" \
-        "${XBB_BASE_URL}/${archive_name}"
-
-      echo
-    fi
-
-    run_verbose cd "${tests_folder_path}"
+  if [ "${XBB_USE_CACHED_ARCHIVE}" == "y" ] && [ -f "${tests_folder_path}/../${archive_name}" ]
+  then
+    echo
+    echo "Using cached ${archive_name}..."
+  else
+    echo
+    echo "Downloading ${archive_name}..."
+    run_verbose curl \
+      --fail \
+      --location \
+      --output "${tests_folder_path}/../${archive_name}" \
+      "${XBB_BASE_URL}/${archive_name}"
 
     echo
-    echo "Extracting ${archive_name}..."
-    if [[ "${archive_name}" == *.zip ]]
-    then
-      run_verbose unzip -q "${tests_folder_path}/../${archive_name}"
+  fi
 
-      # Shorten path to avoid weird error like
-      # fatal error: bits/gthr-default.h: No such file or directory
-      run_verbose mv "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}" "${tests_folder_path}/archive"
-      export XBB_ARCHIVE_INSTALL_FOLDER_PATH="${tests_folder_path}/archive"
-    else
-      run_verbose tar xf "${tests_folder_path}/../${archive_name}"
-    fi
+  run_verbose cd "${tests_folder_path}"
 
-    run_verbose ls -lL "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}"
-  )
+  echo
+  echo "Extracting ${archive_name}..."
+  if [[ "${archive_name}" == *.zip ]]
+  then
+    run_verbose unzip -q "${tests_folder_path}/../${archive_name}"
+
+    # Shorten path to avoid weird error like
+    # fatal error: bits/gthr-default.h: No such file or directory
+    run_verbose mv "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}" "${tests_folder_path}/archive"
+    export XBB_ARCHIVE_INSTALL_FOLDER_PATH="${tests_folder_path}/archive"
+  else
+    run_verbose tar xf "${tests_folder_path}/../${archive_name}"
+  fi
+
+  run_verbose ls -lL "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}"
 }
 
 function tests_good_bye()
