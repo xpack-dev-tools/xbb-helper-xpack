@@ -183,6 +183,11 @@ function tests_install_archive()
     if [[ "${archive_name}" == *.zip ]]
     then
       run_verbose unzip -q "${tests_folder_path}/../${archive_name}"
+
+      # Shorten path to avoid weird error like
+      # fatal error: bits/gthr-default.h: No such file or directory
+      run_verbose mv "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}" "${tests_folder_path}/archive"
+      export XBB_ARCHIVE_INSTALL_FOLDER_PATH="${tests_folder_path}/archive"
     else
       run_verbose tar xf "${tests_folder_path}/../${archive_name}"
     fi
@@ -257,7 +262,7 @@ function tests_update_system_common()
     run_verbose yum install --assumeyes --quiet git curl tar gzip redhat-lsb-core binutils which
   elif [[ ${image_name} == *suse* ]]
   then
-    run_verbose zypper --quiet --no-gpg-checks update --no-confirm 
+    run_verbose zypper --quiet --no-gpg-checks update --no-confirm
     run_verbose zypper --quiet --no-gpg-checks install --no-confirm git-core curl tar gzip lsb-release binutils findutils util-linux
   elif [[ ${image_name} == *manjaro* ]]
   then
