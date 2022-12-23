@@ -513,18 +513,24 @@ function xbb_get_current_version()
 
 function xbb_set_compiler_env()
 {
-  if [ "${XBB_HOST_PLATFORM}" == "win32" -a "${XBB_TARGET_TRIPLET}" == "${XBB_HOST_TRIPLET}" ]
+  if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
-    # Windows cross build case.
-    export XBB_NATIVE_CC="$(which gcc 2>/dev/null || echo gcc)"
-    export XBB_NATIVE_CXX="$(which g++ 2>/dev/null || echo g++)"
+    if [ "${XBB_HOST_PLATFORM}" == "win32" -a "${XBB_TARGET_TRIPLET}" == "${XBB_HOST_TRIPLET}" ]
+    then
+      # Windows cross build case.
+      export XBB_NATIVE_CC="$(which gcc 2>/dev/null || echo gcc)"
+      export XBB_NATIVE_CXX="$(which g++ 2>/dev/null || echo g++)"
 
-    xbb_prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
+      xbb_prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
+    else
+      xbb_prepare_gcc_env
+    fi
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
     xbb_prepare_clang_env
-  elif [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+  elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
   then
+    # Basically for running tests on Windows.
     xbb_prepare_gcc_env
   else
     echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM}, XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
