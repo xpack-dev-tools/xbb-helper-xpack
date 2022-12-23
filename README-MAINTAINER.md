@@ -104,7 +104,7 @@ but in the version specific release page.
 
 ### Manual tests
 
-TBD
+- none
 
 ### Publish on the npmjs.com server
 
