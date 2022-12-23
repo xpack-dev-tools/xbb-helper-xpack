@@ -155,8 +155,8 @@ function xbb_reset_env()
   # ---------------------------------------------------------------------------
 
   # libtool fails with the old Ubuntu /bin/sh.
-  export SHELL="/bin/bash"
-  export CONFIG_SHELL="/bin/bash"
+  export SHELL="$(which bash 2>/dev/null || echo "/bin/bash")"
+  export CONFIG_SHELL="$(which bash 2>/dev/null || echo "/bin/bash")"
 
   # Prevent 'configure: error: you should not run configure as root'
   # when running inside a docker container.
