@@ -70,7 +70,7 @@
 # Continue the GCC build (C++)
 # $ make && make install
 
-function download_mingw()
+function mingw_download()
 {
   # The original SourceForge location.
   export XBB_MINGW_SRC_FOLDER_NAME="mingw-w64-v${XBB_MINGW_VERSION}"
@@ -106,7 +106,7 @@ function download_mingw()
 }
 
 
-function build_mingw_headers()
+function mingw_build_headers()
 {
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-headers-git/PKGBUILD
@@ -220,7 +220,7 @@ function build_mingw_headers()
 
 # -----------------------------------------------------------------------------
 
-function build_mingw_widl()
+function mingw_build_widl()
 {
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
@@ -338,7 +338,7 @@ function build_mingw_widl()
 }
 
 # Fails on macOS, due to <malloc.h>.
-function build_mingw_libmangle()
+function mingw_build_libmangle()
 {
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
@@ -437,7 +437,7 @@ function build_mingw_libmangle()
   fi
 }
 
-function build_mingw_gendef()
+function mingw_build_gendef()
 {
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
@@ -556,7 +556,7 @@ function build_mingw_gendef()
 
 # -----------------------------------------------------------------------------
 
-function build_mingw_crt()
+function mingw_build_crt()
 {
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-crt-git/PKGBUILD
@@ -626,7 +626,7 @@ function build_mingw_crt()
       # Without it, apparently a bug in autoconf/c.m4, function AC_PROG_CC, results in:
       # checking for _mingw_mac.h... no
       # configure: error: Please check if the mingw-w64 header set and the build/host option are set properly.
-      # (https://github.com/henry0312/build_gcc/issues/1)
+      # (https://github.com/henry0312/gcc_build/issues/1)
       export CC=""
 
       if [ ! -f "config.status" ]
@@ -714,7 +714,7 @@ function build_mingw_crt()
 # -----------------------------------------------------------------------------
 
 
-function build_mingw_winpthreads()
+function mingw_build_winpthreads()
 {
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-winpthreads/trunk/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-winpthreads-git/PKGBUILD
@@ -857,9 +857,9 @@ function build_mingw_winpthreads()
 
 
 # configure: error: C compiler cannot create executables
-# build_mingw_winstorecompat "${triplet}"
+# mingw_build_winstorecompat "${triplet}"
 
-function build_mingw_winstorecompat()
+function mingw_build_winstorecompat()
 {
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"

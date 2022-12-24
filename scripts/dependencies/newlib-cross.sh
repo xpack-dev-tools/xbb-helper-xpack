@@ -19,7 +19,7 @@
 
 # For the nano build, call it with "-nano".
 # $1="" or $1="-nano"
-function build_cross_newlib()
+function newlib_cross_build()
 {
   local newlib_version="$1"
   shift
@@ -111,7 +111,7 @@ function build_cross_newlib()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      cross_gcc_define_flags_for_target "${nano_option}"
+      gcc_cross_define_flags_for_target "${nano_option}"
 
       export CPPFLAGS
       export CFLAGS
@@ -264,7 +264,7 @@ function build_cross_newlib()
 
 # -----------------------------------------------------------------------------
 
-function cross_newlib_copy_nano_libs()
+function newlib_cross_copy_nano_libs()
 {
   local src_folder="$1"
   local dst_folder="$2"

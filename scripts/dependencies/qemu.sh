@@ -14,7 +14,7 @@
 # XBB_QEMU_GIT_BRANCH
 # XBB_QEMU_GIT_COMMIT
 
-function build_qemu()
+function qemu_build()
 {
   # Stick to upstream as long as possible.
   # https://github.com/qemu/qemu/tags

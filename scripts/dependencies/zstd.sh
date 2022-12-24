@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_zstd()
+function zstd_build()
 {
   # Zstandard is a real-time compression algorithm
   # https://facebook.github.io/zstd/

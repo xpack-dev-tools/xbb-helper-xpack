@@ -315,7 +315,7 @@ function _run_app_exit()
 
 # -----------------------------------------------------------------------------
 
-function test_host_expect()
+function expect_host_output()
 {
   local expected="$1"
   shift
@@ -365,7 +365,7 @@ function test_host_expect()
   )
 }
 
-function test_target_expect()
+function expect_target_output()
 {
   local expected="$1"
   shift

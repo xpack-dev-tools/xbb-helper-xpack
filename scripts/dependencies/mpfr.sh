@@ -11,7 +11,7 @@
 # -----------------------------------------------------------------------------
 
 # Depends on gmp.
-function build_mpfr()
+function mpfr_build()
 {
   # http://www.mpfr.org
   # http://www.mpfr.org/history.html

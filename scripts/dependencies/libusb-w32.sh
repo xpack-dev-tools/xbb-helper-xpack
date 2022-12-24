@@ -10,7 +10,7 @@
 # -----------------------------------------------------------------------------
 
 # Required by Windows.
-function build_libusb_w32()
+function libusb_w32_build()
 {
   # https://sourceforge.net/projects/libusb-win32/files/libusb-win32-releases/
   # 2012-01-17, 1.2.6.0

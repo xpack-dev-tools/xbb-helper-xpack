@@ -9,43 +9,43 @@
 
 # -----------------------------------------------------------------------------
 
-function build_cross_gcc_dependencies()
+function gcc_cross_build_dependencies()
 {
-  build_libiconv "${XBB_LIBICONV_VERSION}"
+  libiconv_build "${XBB_LIBICONV_VERSION}"
 
   # New zlib, used in most of the tools.
   # For better control, without it some components pick the lib packed
   # inside the archive.
   # depends=('glibc')
-  build_zlib "${XBB_ZLIB_VERSION}"
+  zlib_build "${XBB_ZLIB_VERSION}"
 
   # Libraries, required by gcc & other.
   # depends=('gcc-libs' 'sh')
-  build_gmp "${XBB_GMP_VERSION}"
+  gmp_build "${XBB_GMP_VERSION}"
 
   # depends=('gmp>=5.0')
-  build_mpfr "${XBB_MPFR_VERSION}"
+  mpfr_build "${XBB_MPFR_VERSION}"
 
   # depends=('mpfr')
-  build_mpc "${XBB_MPC_VERSION}"
+  mpc_build "${XBB_MPC_VERSION}"
 
   # depends=('gmp')
-  build_isl "${XBB_ISL_VERSION}"
+  isl_build "${XBB_ISL_VERSION}"
 
   # depends=('sh')
-  build_xz "${XBB_XZ_VERSION}"
+  xz_build "${XBB_XZ_VERSION}"
 
   # depends on zlib, xz, (lz4)
-  # build_zstd "${XBB_ZSTD_VERSION}"
+  # zstd_build "${XBB_ZSTD_VERSION}"
 }
 
-function build_cross_gcc_all()
+function gcc_cross_build_all()
 {
   local triplet="$1"
 
-  build_binutils_cross "${XBB_BINUTILS_VERSION}" "${triplet}"
+  binutils_cross_build "${XBB_BINUTILS_VERSION}" "${triplet}"
 
-  build_cross_gcc_first "${XBB_GCC_VERSION}" "${triplet}"
+  gcc_cross_build_first "${XBB_GCC_VERSION}" "${triplet}"
 
   (
     # Add the gcc first stage binaries to the path.
@@ -53,9 +53,9 @@ function build_cross_gcc_all()
     # For Windows, it is in the native dependencies folder.
     xbb_activate_installed_bin
 
-    build_cross_newlib "${XBB_NEWLIB_VERSION}" "${triplet}"
+    newlib_cross_build "${XBB_NEWLIB_VERSION}" "${triplet}"
   )
-  build_cross_gcc_final "${XBB_GCC_VERSION}" "${triplet}"
+  gcc_cross_build_final "${XBB_GCC_VERSION}" "${triplet}"
 
   # ---------------------------------------------------------------------
   # The nano version is practically a new build installed in a
@@ -71,7 +71,7 @@ function build_cross_gcc_all()
 
       # Although in the initial versions this was a copy, it is cleaner
       # to do it again.
-      build_binutils_cross "${XBB_BINUTILS_VERSION}" "${triplet}" --nano
+      binutils_cross_build "${XBB_BINUTILS_VERSION}" "${triplet}" --nano
 
       (
         # Add the gcc first stage binaries to the path.
@@ -80,19 +80,19 @@ function build_cross_gcc_all()
         # Also add the non-nano path, since this is where the compiler is.
         xbb_activate_installed_bin "${saved_path}/bin"
 
-        build_cross_newlib "${XBB_NEWLIB_VERSION}" "${triplet}" --nano
+        newlib_cross_build "${XBB_NEWLIB_VERSION}" "${triplet}" --nano
       )
-      build_cross_gcc_final "${XBB_GCC_VERSION}" "${triplet}" --nano
+      gcc_cross_build_final "${XBB_GCC_VERSION}" "${triplet}" --nano
     )
     # Outside the sub-shell, since it uses the initial
     # XBB_EXECUTABLES_INSTALL_FOLDER_PATH.
-    cross_gcc_copy_nano_multilibs "${triplet}"
+    gcc_cross_copy_nano_multilibs "${triplet}"
   fi
 }
 
 # -----------------------------------------------------------------------------
 
-function cross_gcc_define_flags_for_target()
+function gcc_cross_define_flags_for_target()
 {
   local is_nano="n"
 
@@ -154,7 +154,7 @@ function cross_gcc_define_flags_for_target()
 
 # -----------------------------------------------------------------------------
 
-function cross_gcc_download()
+function gcc_cross_download()
 {
   if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}" ]
   then
@@ -169,7 +169,7 @@ function cross_gcc_download()
   fi
 }
 
-function cross_gcc_generate_riscv_multilib_file()
+function gcc_cross_generate_riscv_multilib_file()
 {
   # Not inside the previous if to allow multilib changes after download.
   if [ "${XBB_APPLICATION_WITHOUT_MULTILIB}" != "y" ]
@@ -210,7 +210,7 @@ function cross_gcc_generate_riscv_multilib_file()
 # https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-gcc/trunk/PKGBUILD
 # https://github.com/archlinux/svntogit-community/blob/packages/riscv64-elf-gcc/trunk/PKGBUILD
 
-function build_cross_gcc_first()
+function gcc_cross_build_first()
 {
   local gcc_version="$1"
   shift
@@ -231,7 +231,7 @@ function build_cross_gcc_first()
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
     cd "${XBB_SOURCES_FOLDER_PATH}"
 
-    cross_gcc_download
+    gcc_cross_download
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gcc_first_folder_name}"
@@ -252,7 +252,7 @@ function build_cross_gcc_first()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
-      cross_gcc_define_flags_for_target
+      gcc_cross_define_flags_for_target
 
       export CPPFLAGS
       export CFLAGS
@@ -412,7 +412,7 @@ function build_cross_gcc_first()
 
 # -----------------------------------------------------------------------------
 
-function cross_gcc_copy_linux_libs()
+function gcc_cross_copy_linux_libs()
 {
   local triplet="$1"
 
@@ -456,7 +456,7 @@ function cross_gcc_copy_linux_libs()
 # XBB_GCC_ARCHIVE_NAME
 # XBB_GCC_PATCH_FILE_NAME
 
-function build_cross_gcc_final()
+function gcc_cross_build_final()
 {
   local gcc_version="$1"
   shift
@@ -498,7 +498,7 @@ function build_cross_gcc_final()
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
     cd "${XBB_SOURCES_FOLDER_PATH}"
 
-    cross_gcc_download
+    gcc_cross_download
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gcc_final_folder_name}"
@@ -530,7 +530,7 @@ function build_cross_gcc_final()
       # Do not add CRT_glob.o here, it will fail with already defined,
       # since it is already handled by --enable-mingw-wildcard.
 
-      cross_gcc_define_flags_for_target "${nano_option}"
+      gcc_cross_define_flags_for_target "${nano_option}"
 
       export CPPFLAGS
       export CFLAGS
@@ -767,11 +767,11 @@ function build_cross_gcc_final()
 
   if [ "${is_nano}" != "y" ]
   then
-    tests_add "test_cross_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"
+    tests_add "gcc_cross_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"
   fi
 }
 
-function test_cross_gcc()
+function gcc_cross_test()
 {
   local test_bin_path="$1"
   local triplet="$2"
@@ -892,7 +892,7 @@ __EOF__
 
 # -----------------------------------------------------------------------------
 
-function cross_gcc_copy_nano_multilibs()
+function gcc_cross_copy_nano_multilibs()
 {
   local triplet="$1"
 
@@ -930,11 +930,11 @@ function cross_gcc_copy_nano_multilibs()
     for multilib in "${multilibs[@]}"
     do
       multi_folder="${multilib%%;*}"
-      cross_newlib_copy_nano_libs "${src_folder}/${multi_folder}" \
+      newlib_cross_copy_nano_libs "${src_folder}/${multi_folder}" \
         "${dst_folder}/${multi_folder}"
     done
   else
-    cross_newlib_copy_nano_libs "${src_folder}" "${dst_folder}"
+    newlib_cross_copy_nano_libs "${src_folder}" "${dst_folder}"
   fi
 
   # Copy the nano configured newlib.h file into the location that nano.specs
@@ -944,7 +944,7 @@ function cross_gcc_copy_nano_multilibs()
     "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/include/newlib${XBB_NEWLIB_NANO_SUFFIX}/newlib.h"
 }
 
-function cross_gcc_tidy_up()
+function gcc_cross_tidy_up()
 {
   (
     echo
@@ -964,7 +964,7 @@ function cross_gcc_tidy_up()
   )
 }
 
-function cross_gcc_strip_libs()
+function gcc_cross_strip_libs()
 {
   local triplet="$1"
 
@@ -997,7 +997,7 @@ function cross_gcc_strip_libs()
   fi
 }
 
-function cross_gcc_final_tunings()
+function gcc_cross_final_tunings()
 {
   # Create the missing LTO plugin links.
   # For `ar` to work with LTO objects, it needs the plugin in lib/bfd-plugins,

@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_sdl2()
+function sdl2_build()
 {
   # https://www.libsdl.org/
   # https://www.libsdl.org/release
@@ -145,7 +145,7 @@ function build_sdl2()
   fi
 }
 
-function build_sdl2_image()
+function sdl2_image_build()
 {
   # https://www.libsdl.org/projects/SDL_image/
   # https://www.libsdl.org/projects/SDL_image/release

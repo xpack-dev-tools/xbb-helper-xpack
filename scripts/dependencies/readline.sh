@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_readline()
+function readline_build()
 {
   # https://tiswww.case.edu/php/chet/readline/rltop.html
   # https://ftp.gnu.org/gnu/readline/
@@ -131,7 +131,7 @@ function build_readline()
     )
 
     (
-      test_readline
+      readline_test
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${readline_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -142,7 +142,7 @@ function build_readline()
   fi
 }
 
-function test_readline()
+function readline_test()
 {
   (
     echo

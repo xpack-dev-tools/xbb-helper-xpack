@@ -203,7 +203,7 @@ function sed_test()
     cd "${XBB_TESTS_FOLDER_PATH}/sed"
 
     echo "Hello World" >test.txt
-    test_host_expect "Hello SED" "${test_bin_folder_path}/sed" 's|World|SED|' test.txt
+    expect_host_output "Hello SED" "${test_bin_folder_path}/sed" 's|World|SED|' test.txt
   )
 }
 

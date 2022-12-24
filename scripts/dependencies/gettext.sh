@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_gettext()
+function gettext_build()
 {
   # https://www.gnu.org/software/gettext/
   # http://ftp.gnu.org/pub/gnu/gettext/
@@ -179,7 +179,7 @@ function build_gettext()
     )
 
     (
-      test_gettext "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      gettext_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gettext_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -189,10 +189,10 @@ function build_gettext()
     echo "Library gettext already installed"
   fi
 
-  tests_add "test_gettext" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "gettext_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_gettext()
+function gettext_test()
 {
   local test_bin_folder_path="$1"
 
@@ -204,7 +204,7 @@ function test_gettext()
   show_host_libs "${test_bin_folder_path}/envsubst"
 
   run_host_app_verbose "${test_bin_folder_path}/gettext" --version
-  test_host_expect "test" "${test_bin_folder_path}/gettext" test
+  expect_host_output "test" "${test_bin_folder_path}/gettext" test
 }
 
 # -----------------------------------------------------------------------------

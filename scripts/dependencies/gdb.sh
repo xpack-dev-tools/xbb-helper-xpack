@@ -11,7 +11,7 @@
 
 # Called multile times, with and without python support.
 # $1="" or $1="-py3"
-function build_gdb()
+function gdb_build()
 {
   # https://www.gnu.org/software/gdb/
   # https://ftp.gnu.org/gnu/gdb/
@@ -179,10 +179,10 @@ function build_gdb()
     echo "Component gdb already installed"
   fi
 
-  tests_add "test_gdb" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "gdb_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_gdb()
+function gdb_test()
 {
   local test_bin_path="$1"
 

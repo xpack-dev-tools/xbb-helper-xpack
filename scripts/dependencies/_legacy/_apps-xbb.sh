@@ -9,112 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-# Minimalistic realpath to be used on macOS; does not support `--relative-to`.
-# Deprecated, use the more elaborate coreutils one.
-
-function _build_realpath()
-{
-  # https://github.com/harto/realpath-osx
-  # https://github.com/harto/realpath-osx/archive/1.0.0.tar.gz
-
-  # 18 Oct 2012 "1.0.0"
-
-  local realpath_version="$1"
-
-  local realpath_src_folder_name="realpath-osx-${realpath_version}"
-
-  local realpath_archive="${realpath_src_folder_name}.tar.gz"
-  # GitHub release archive.
-  local realpath_url="https://github.com/harto/realpath-osx/archive/${realpath_version}.tar.gz"
-
-  local realpath_folder_name="${realpath_src_folder_name}"
-
-  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${realpath_folder_name}"
-
-  local realpath_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${realpath_folder_name}-installed"
-  if [ ! -f "${realpath_stamp_file_path}" ]
-  then
-
-    echo
-    echo "realpath in-source building..."
-
-    mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
-
-    if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${realpath_folder_name}" ]
-    then
-      download_and_extract "${realpath_url}" "${realpath_archive}" \
-        "${realpath_src_folder_name}"
-
-      if [ "${realpath_src_folder_name}" != "${realpath_folder_name}" ]
-      then
-        mv -v "${realpath_src_folder_name}" "${realpath_folder_name}"
-      fi
-    fi
-
-    (
-      cd "${XBB_BUILD_FOLDER_PATH}/${realpath_folder_name}"
-
-      # xbb_activate_dependencies_dev
-
-      CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
-      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
-      LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
-
-      export CPPFLAGS
-      export CFLAGS
-      export CXXFLAGS
-      export LDFLAGS
-
-      (
-        xbb_show_env_develop
-
-        echo
-        echo "Running realpath make..."
-
-        run_verbose make
-
-        run_verbose ${INSTALL} -v -d "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-        run_verbose ${INSTALL} -v -c -m 644 realpath "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${realpath_folder_name}/make-output-$(ndate).txt"
-    )
-
-    (
-      test_realpath "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${realpath_folder_name}/test-output-$(ndate).txt"
-
-    hash -r
-
-    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
-    touch "${realpath_stamp_file_path}"
-
-  else
-    echo "Component realpath already installed"
-  fi
-
-  tests_add "test_realpath" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-}
-
-function test_realpath()
-{
-  local test_bin_folder_path="$1"
-
-  (
-    echo
-    echo "Checking the realpath binaries shared libraries..."
-
-    show_host_libs "${test_bin_folder_path}/realpath"
-  )
-}
-
-# -----------------------------------------------------------------------------
-
-function build_scons()
+function scons_build()
 {
   # http://scons.org
   # http://prdownloads.sourceforge.net/scons/
@@ -210,7 +105,7 @@ function build_scons()
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${scons_folder_name}/install-output-$(ndate).txt"
 
     (
-      test_scons "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      scons_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${scons_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -222,10 +117,10 @@ function build_scons()
     echo "Component scons already installed"
   fi
 
-  tests_add "test_scons" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "scons_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_scons()
+function scons_test()
 {
   local test_bin_folder_path="$1"
 
@@ -240,7 +135,7 @@ function test_scons()
 # -----------------------------------------------------------------------------
 
 
-function build_curl()
+function curl_build()
 {
   # https://curl.haxx.se
   # https://curl.haxx.se/download/
@@ -422,7 +317,7 @@ function build_curl()
     )
 
     (
-      test_curl "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      curl_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${curl_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -432,10 +327,10 @@ function build_curl()
     echo "Component curl already installed"
   fi
 
-  tests_add "test_curl" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "curl_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_curl()
+function curl_test()
 {
   local test_bin_folder_path="$1"
 
@@ -462,7 +357,7 @@ function test_curl()
 
 # -----------------------------------------------------------------------------
 
-function build_tar()
+function tar_build()
 {
   # https://www.gnu.org/software/tar/
   # https://ftp.gnu.org/gnu/tar/
@@ -622,7 +517,7 @@ function build_tar()
     )
 
     (
-      test_tar "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      tar_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${tar_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -634,10 +529,10 @@ function build_tar()
     echo "Component tar already installed"
   fi
 
-  tests_add "test_tar" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "tar_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_tar()
+function tar_test()
 {
   local test_bin_folder_path="$1"
 
@@ -688,7 +583,7 @@ function test_tar()
 # -----------------------------------------------------------------------------
 
 
-function build_guile()
+function guille_build()
 {
   # https://www.gnu.org/software/guile/
   # https://ftp.gnu.org/gnu/guile/
@@ -832,8 +727,8 @@ function build_guile()
     )
 
     (
-      test_guile_libs
-      test_guile "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      guile_test_libs
+      guile_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${guile_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -845,10 +740,10 @@ function build_guile()
     echo "Component guile already installed"
   fi
 
-  tests_add "test_guile" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "guile_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_guile_libs()
+function guile_test_libs()
 {
   echo
   echo "Checking the guile shared libraries..."
@@ -857,7 +752,7 @@ function test_guile_libs()
   show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/guile/2.2/extensions/guile-readline.so"
 }
 
-function test_guile()
+function guile_test()
 {
   local test_bin_folder_path="$1"
 
@@ -877,7 +772,7 @@ function test_guile()
 
 # -----------------------------------------------------------------------------
 
-function build_autogen()
+function autogen_build()
 {
   # https://www.gnu.org/software/autogen/
   # https://ftp.gnu.org/gnu/autogen/
@@ -1024,8 +919,8 @@ function build_autogen()
     )
 
     (
-      test_autogen_libs
-      test_autogen "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      autogen_test_libs
+      autogen_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${autogen_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -1035,15 +930,15 @@ function build_autogen()
     echo "Component autogen already installed"
   fi
 
-  tests_add "test_autogen" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "autogen_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_autogen_libs()
+function autogen_test_libs()
 {
   show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libopts.${XBB_HOST_SHLIB_EXT}"
 }
 
-function test_autogen()
+function autogen_test()
 {
   local test_bin_folder_path="$1"
 
@@ -1076,7 +971,7 @@ function test_autogen()
 # -----------------------------------------------------------------------------
 
 
-function build_gawk()
+function gawk_build()
 {
   # https://www.gnu.org/software/gawk/
   # https://ftp.gnu.org/gnu/gawk/
@@ -1227,7 +1122,7 @@ function build_gawk()
     )
 
     (
-      test_gawk "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      gawk_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gawk_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -1239,10 +1134,10 @@ function build_gawk()
     echo "Component gawk already installed"
   fi
 
-  tests_add "test_gawk" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "gawk_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_gawk()
+function gawk_test()
 {
   local test_bin_folder_path="$1"
 
@@ -1261,14 +1156,14 @@ function test_gawk()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/gawk"; cd "${XBB_TESTS_FOLDER_PATH}/gawk"
 
     echo "Macro AWK" >hello.txt
-    test_host_expect "Hello AWK" "${test_bin_folder_path}/gawk" '{ gsub(/Macro/, "Hello"); print }' hello.txt
+    expect_host_output "Hello AWK" "${test_bin_folder_path}/gawk" '{ gsub(/Macro/, "Hello"); print }' hello.txt
   )
 }
 
 # -----------------------------------------------------------------------------
 
 
-function build_patch()
+function patch_build()
 {
   # https://www.gnu.org/software/patch/
   # https://ftp.gnu.org/gnu/patch/
@@ -1388,7 +1283,7 @@ function build_patch()
     )
 
     (
-      test_patch "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      patch_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${patch_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -1400,10 +1295,10 @@ function build_patch()
     echo "Component patch already installed"
   fi
 
-  tests_add "test_patch" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "patch_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_patch()
+function patch_test()
 {
   local test_bin_folder_path="$1"
 
@@ -1422,7 +1317,7 @@ function test_patch()
 
 # -----------------------------------------------------------------------------
 
-function build_diffutils()
+function diffutils_build()
 {
   # https://www.gnu.org/software/diffutils/
   # https://ftp.gnu.org/gnu/diffutils/
@@ -1562,7 +1457,7 @@ function build_diffutils()
     )
 
     (
-      test_diffutils "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      diffutils_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${diffutils_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -1574,10 +1469,10 @@ function build_diffutils()
     echo "Component diffutils already installed"
   fi
 
-  tests_add "test_diffutils" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "diffutils_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_diffutils()
+function diffutils_test()
 {
   local test_bin_folder_path="$1"
 
@@ -1602,7 +1497,7 @@ function test_diffutils()
 
 # -----------------------------------------------------------------------------
 
-function build_bison()
+function bison_build()
 {
   # https://www.gnu.org/software/bison/
   # https://ftp.gnu.org/gnu/bison/
@@ -1742,7 +1637,7 @@ function build_bison()
     )
 
     (
-      test_bison "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      bison_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${bison_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -1754,10 +1649,10 @@ function build_bison()
     echo "Component bison already installed"
   fi
 
-  tests_add "test_bison" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "bison_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_bison()
+function bison_test()
 {
   local test_bin_folder_path="$1"
 
@@ -1807,15 +1702,15 @@ __EOF__
     )
     run_verbose g++ test.tab.c -o test -w
 
-    test_host_expect "pass" "bash" "-c" "(echo '((()(())))()' | ./test)"
-    test_host_expect "fail" "bash" "-c" "(echo '())' | ./test)"
+    expect_host_output "pass" "bash" "-c" "(echo '((()(())))()' | ./test)"
+    expect_host_output "fail" "bash" "-c" "(echo '())' | ./test)"
 
   )
 }
 
 # -----------------------------------------------------------------------------
 
-function build_make()
+function make_build()
 {
   # https://www.gnu.org/software/make/
   # https://ftp.gnu.org/gnu/make/
@@ -1957,7 +1852,7 @@ function build_make()
     )
 
     (
-      test_make "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      make_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${make_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -1969,10 +1864,10 @@ function build_make()
     echo "Component make already installed"
   fi
 
-  tests_add "test_make" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "make_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_make()
+function make_test()
 {
   local test_bin_folder_path="$1"
 
@@ -1991,7 +1886,7 @@ function test_make()
 
 # -----------------------------------------------------------------------------
 
-function build_bash()
+function bash_build()
 {
   # https://www.gnu.org/software/bash/
   # https://ftp.gnu.org/gnu/bash/
@@ -2114,7 +2009,7 @@ function build_bash()
     )
 
     (
-      test_bash "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      bash_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${bash_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -2126,10 +2021,10 @@ function build_bash()
     echo "Component bash already installed"
   fi
 
-  tests_add "test_bash" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "bash_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_bash()
+function bash_test()
 {
   local test_bin_folder_path="$1"
 
@@ -2153,7 +2048,7 @@ function test_bash()
 
 # -----------------------------------------------------------------------------
 
-function build_wget()
+function wget_build()
 {
   # https://www.gnu.org/software/wget/
   # https://ftp.gnu.org/gnu/wget/
@@ -2298,7 +2193,7 @@ function build_wget()
     )
 
     (
-      test_wget "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      wget_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${wget_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -2310,10 +2205,10 @@ function build_wget()
     echo "Component wget already installed"
   fi
 
-  tests_add "test_wget" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "wget_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_wget()
+function wget_test()
 {
   local test_bin_folder_path="$1"
 
@@ -2341,7 +2236,7 @@ function test_wget()
 # -----------------------------------------------------------------------------
 
 
-function build_dos2unix()
+function dos2unix_build()
 {
   # https://waterlan.home.xs4all.nl/dos2unix.html
   # http://dos2unix.sourceforge.net
@@ -2442,7 +2337,7 @@ function build_dos2unix()
     )
 
     (
-      test_dos2unix "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      dos2unix_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${dos2unix_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -2454,10 +2349,10 @@ function build_dos2unix()
     echo "Component dos2unix already installed"
   fi
 
-  tests_add "test_dos2unix" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "dos2unix_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_dos2unix()
+function dos2unix_test()
 {
   local test_bin_folder_path="$1"
 
@@ -2478,7 +2373,7 @@ function test_dos2unix()
 
 # -----------------------------------------------------------------------------
 
-function build_flex()
+function flex_build()
 {
   # https://www.gnu.org/software/flex/
   # https://github.com/westes/flex/releases
@@ -2642,8 +2537,8 @@ function build_flex()
     )
 
     (
-      test_flex_libs
-      test_flex "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      flex_test_libs
+      flex_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${flex_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -2655,10 +2550,10 @@ function build_flex()
     echo "Component flex already installed"
   fi
 
-  tests_add "test_flex" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "flex_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_flex_libs()
+function flex_test_libs()
 {
   echo
   echo "Checking the flex shared libraries..."
@@ -2666,7 +2561,7 @@ function test_flex_libs()
   show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libfl.${XBB_HOST_SHLIB_EXT}"
 }
 
-function test_flex()
+function flex_test()
 {
   local test_bin_folder_path="$1"
 
@@ -2711,7 +2606,7 @@ __EOF__
 
 # -----------------------------------------------------------------------------
 
-function build_perl()
+function perl_build()
 {
   # https://www.cpan.org
   # http://www.cpan.org/src/
@@ -2888,7 +2783,7 @@ function build_perl()
     )
 
     (
-      test_perl "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      perl_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${perl_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -2900,10 +2795,10 @@ function build_perl()
     echo "Component perl already installed"
   fi
 
-  tests_add "test_perl" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "perl_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_perl()
+function perl_test()
 {
   local test_bin_folder_path="$1"
 
@@ -2931,13 +2826,13 @@ function test_perl()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/perl"; cd "${XBB_TESTS_FOLDER_PATH}/perl"
 
     echo "print 'Hello Perl';" >test.pl
-    test_host_expect "Hello Perl" "${test_bin_folder_path}/perl"  test.pl
+    expect_host_output "Hello Perl" "${test_bin_folder_path}/perl"  test.pl
   )
 }
 
 # -----------------------------------------------------------------------------
 
-function build_tcl()
+function tcl_build()
 {
   # https://www.tcl.tk/
   # https://sourceforge.net/projects/tcl/files/Tcl/
@@ -3090,8 +2985,8 @@ function build_tcl()
     )
 
     (
-      test_tcl_libs
-      test_tcl "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      tcl_test_libs
+      tcl_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${tcl_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -3103,10 +2998,10 @@ function build_tcl()
     echo "Component tcl already installed"
   fi
 
-  tests_add "test_tcl" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "tcl_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_tcl_libs()
+function tcl_test_libs()
 {
   (
     echo
@@ -3137,7 +3032,7 @@ function test_tcl_libs()
   )
 }
 
-function test_tcl()
+function tcl_test()
 {
   local test_bin_folder_path="$1"
 
@@ -3154,7 +3049,7 @@ function test_tcl()
 
 # -----------------------------------------------------------------------------
 
-function build_git()
+function git_build()
 {
   # https://git-scm.com/
   # https://www.kernel.org/pub/software/scm/git/
@@ -3284,7 +3179,7 @@ function build_git()
     )
 
     (
-      test_git "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      git_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${git_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -3296,10 +3191,10 @@ function build_git()
     echo "Component git already installed"
   fi
 
-  tests_add "test_git" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "git_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_git()
+function git_test()
 {
   local test_bin_folder_path="$1"
 
@@ -3323,7 +3218,7 @@ function test_git()
 
 # -----------------------------------------------------------------------------
 
-function build_p7zip()
+function p7zip_build()
 {
   # For future versions use the fork:
   # https://github.com/jinfeihan57/p7zip
@@ -3447,7 +3342,7 @@ function build_p7zip()
       "${p7zip_folder_name}"
 
     (
-      test_p7zip "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      p7zip_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${p7zip_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -3459,10 +3354,10 @@ function build_p7zip()
     echo "Component p7zip already installed"
   fi
 
-  tests_add "test_p7zip" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "p7zip_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_p7zip()
+function p7zip_test()
 {
   local test_bin_folder_path="$1"
 
@@ -3485,7 +3380,7 @@ function test_p7zip()
 
 # -----------------------------------------------------------------------------
 
-function build_rhash()
+function rhash_build()
 {
   # https://github.com/rhash/RHash
   # https://github.com/rhash/RHash/releases
@@ -3614,9 +3509,9 @@ function build_rhash()
     )
 
     (
-      test_rhash_libs
+      rhash_test_libs
 
-      test_rhash "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      rhash_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${rhash_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -3628,10 +3523,10 @@ function build_rhash()
     echo "Component rhash already installed"
   fi
 
-  # tests_add "test_rhash" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  # tests_add "rhash_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_rhash_libs()
+function rhash_test_libs()
 {
   echo
   echo "Checking the flex shared libraries..."
@@ -3644,7 +3539,7 @@ function test_rhash_libs()
   fi
 }
 
-function test_rhash()
+function rhash_test()
 {
   local test_bin_folder_path="$1"
 
@@ -3663,7 +3558,7 @@ function test_rhash()
 
 # -----------------------------------------------------------------------------
 
-function build_re2c()
+function re2c_build()
 {
   # https://github.com/skvadrik/re2c
   # https://github.com/skvadrik/re2c/releases
@@ -3809,7 +3704,7 @@ function build_re2c()
     )
 
     (
-      test_re2c "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      re2c_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${re2c_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -3821,10 +3716,10 @@ function build_re2c()
     echo "Component re2c already installed"
   fi
 
-  tests_add "test_re2c" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "re2c_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_re2c()
+function re2c_test()
 {
   local test_bin_folder_path="$1"
 
@@ -3869,7 +3764,7 @@ __EOF__
 # -----------------------------------------------------------------------------
 
 
-function build_gnupg()
+function gnupg_build()
 {
   # https://www.gnupg.org
   # https://www.gnupg.org/ftp/gcrypt/gnupg/gnupg-2.2.19.tar.bz2
@@ -4016,7 +3911,7 @@ function build_gnupg()
     )
 
     (
-      test_gpg "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      gpg_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gnupg_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -4028,10 +3923,10 @@ function build_gnupg()
     echo "Component gnupg already installed"
   fi
 
-  tests_add "test_gpg" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "gpg_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_gpg()
+function gpg_test()
 {
   local test_bin_folder_path="$1"
 
@@ -4072,7 +3967,7 @@ function test_gpg()
 
 # -----------------------------------------------------------------------------
 
-function build_makedepend()
+function makedepend_build()
 {
   # http://www.linuxfromscratch.org/blfs/view/7.4/x/makedepend.html
   # http://xorg.freedesktop.org/archive/individual/util
@@ -4193,7 +4088,7 @@ function build_makedepend()
     )
 
     (
-      test_makedepend "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      makedepend_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${makedepend_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -4205,10 +4100,10 @@ function build_makedepend()
     echo "Component makedepend already installed"
   fi
 
-  tests_add "test_makedepend" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "makedepend_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_makedepend()
+function makedepend_test()
 {
   local test_bin_folder_path="$1"
 

@@ -11,7 +11,7 @@
 
 # Note: the build fails on Ubuntu/Debian!
 
-function build_libiconv()
+function libiconv_build()
 {
   # https://www.gnu.org/software/libiconv/
   # https://ftp.gnu.org/pub/gnu/libiconv/

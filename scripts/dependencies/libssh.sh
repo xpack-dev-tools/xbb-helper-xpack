@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_libssh()
+function libssh_build()
 {
   # C library SSHv1/SSHv2 client and server protocols
   # https://www.libssh.org/

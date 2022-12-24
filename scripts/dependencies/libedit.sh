@@ -10,7 +10,7 @@
 # -----------------------------------------------------------------------------
 
 # depends=('glibc' 'ncurses' 'libncursesw.so')
-function build_libedit()
+function libedit_build()
 {
   # https://www.thrysoee.dk/editline/
   # https://www.thrysoee.dk/editline/libedit-20221030-3.1.tar.gz

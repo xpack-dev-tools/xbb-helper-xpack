@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_libftdi()
+function libftdi_build()
 {
   # http://www.intra2net.com/en/developer/libftdi/download.php
   # https://www.intra2net.com/en/developer/libftdi/download/libftdi1-1.4.tar.bz2

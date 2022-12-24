@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_expat()
+function expat_build()
 {
   # https://libexpat.github.io
   # https://github.com/libexpat/libexpat/releases

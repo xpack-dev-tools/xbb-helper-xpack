@@ -191,7 +191,7 @@ function xbb_prepare_pkg_config()
 }
 
 # Requires the build machine identity and the XBB_REQUESTED_TARGET variable,
-# set via --target in build_parse_options().
+# set via --target in build_common_parse_options().
 function xbb_set_requested()
 {
   case "${XBB_REQUESTED_TARGET:-""}" in

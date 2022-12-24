@@ -16,26 +16,26 @@ do
   source "${helper_folder_path}/scripts/dependencies/${dependency}.sh"
 done
 
-function build_autotools()
+function autotools_build()
 {
   # https://ftp.gnu.org/pub/gnu/libiconv/
-  build_libiconv "1.17" # "1.16"
+  libiconv_build "1.17" # "1.16"
 
   # https://ftp.gnu.org/gnu/autoconf/
   # depends on m4.
-  build_autoconf "2.71"
+  autoconf_build "2.71"
 
   # https://ftp.gnu.org/gnu/automake/
   # depends on autoconf.
-  build_automake "1.16.5"
+  automake_build "1.16.5"
 
   # http://ftpmirror.gnu.org/libtool/
-  build_libtool "2.4.7"
+  libtool_build "2.4.7"
 
   # configure.ac:34: error: Macro PKG_PROG_PKG_CONFIG is not available. It is usually defined in file pkg.m4 provided by package pkg-config.
   # https://pkgconfig.freedesktop.org/releases/
   # depends on libiconv
-  build_pkg_config "0.29.2"
+  pkg_config_build "0.29.2"
 }
 
 # -----------------------------------------------------------------------------

@@ -11,7 +11,7 @@
 # -----------------------------------------------------------------------------
 
 # Could not make it work on Windows.
-function build_ncurses()
+function ncurses_build()
 {
   # https://ftp.gnu.org/gnu/ncurses/
   # https://ftp.gnu.org/gnu/ncurses/ncurses-6.3.tar.gz

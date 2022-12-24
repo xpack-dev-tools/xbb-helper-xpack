@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_gmp()
+function gmp_build()
 {
   # https://gmplib.org
   # https://gmplib.org/download/gmp/

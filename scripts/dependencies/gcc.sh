@@ -53,7 +53,7 @@
 # -----------------------------------------------------------------------------
 
 # Returns GCC_SRC_FOLDER_NAME.
-function download_gcc()
+function gcc_download()
 {
   local gcc_version="$1"
 
@@ -121,7 +121,7 @@ function download_gcc()
 # -----------------------------------------------------------------------------
 
 # Return GCC_FOLDER_NAME
-function build_gcc()
+function gcc_build()
 {
   local gcc_version="$1"
   shift
@@ -610,12 +610,12 @@ function build_gcc()
     echo "Component gcc already installed"
   fi
 
-  tests_add "test_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "gcc_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 # Deprecated.
-# Currently not used, work done by build_gcc().
-function _build_gcc_libs()
+# Currently not used, work done by gcc_build().
+function _gcc_build_libs()
 {
   local gcc_libs_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-libs-installed"
   if [ ! -f "${gcc_libs_stamp_file_path}" ]
@@ -656,8 +656,8 @@ function _build_gcc_libs()
 }
 
 # Deprecated.
-# Currently not used, work done by build_gcc().
-function _build_gcc_final()
+# Currently not used, work done by gcc_build().
+function _gcc_build_final()
 {
   local gcc_final_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-final-installed"
   if [ ! -f "${gcc_final_stamp_file_path}" ]
@@ -696,11 +696,11 @@ function _build_gcc_final()
     echo "Component gcc-final already installed"
   fi
 
-  tests_add "test_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "gcc_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 
-function test_gcc()
+function gcc_test()
 {
   local test_bin_path="$1"
 
@@ -851,25 +851,25 @@ function test_gcc()
         export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
         echo "WINEPATH=${WINEPATH}"
 
-        test_compiler_single "${test_bin_path}"
-        test_compiler_single "${test_bin_path}" --gc
-        test_compiler_single "${test_bin_path}" --lto
-        test_compiler_single "${test_bin_path}" --gc --lto
+        compiler-tests-single "${test_bin_path}"
+        compiler-tests-single "${test_bin_path}" --gc
+        compiler-tests-single "${test_bin_path}" --lto
+        compiler-tests-single "${test_bin_path}" --gc --lto
       )
       (
         export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
         echo "WINEPATH=${WINEPATH}"
 
-        test_compiler_single "${test_bin_path}" --static-lib
-        test_compiler_single "${test_bin_path}" --static-lib --gc
-        test_compiler_single "${test_bin_path}" --static-lib --lto
-        test_compiler_single "${test_bin_path}" --static-lib --gc --lto
+        compiler-tests-single "${test_bin_path}" --static-lib
+        compiler-tests-single "${test_bin_path}" --static-lib --gc
+        compiler-tests-single "${test_bin_path}" --static-lib --lto
+        compiler-tests-single "${test_bin_path}" --static-lib --gc --lto
       )
       (
-        test_compiler_single "${test_bin_path}" --static
-        test_compiler_single "${test_bin_path}" --static --gc
-        test_compiler_single "${test_bin_path}" --static --lto
-        test_compiler_single "${test_bin_path}" --static --gc --lto
+        compiler-tests-single "${test_bin_path}" --static
+        compiler-tests-single "${test_bin_path}" --static --gc
+        compiler-tests-single "${test_bin_path}" --static --lto
+        compiler-tests-single "${test_bin_path}" --static --gc --lto
       )
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
@@ -880,10 +880,10 @@ function test_gcc()
           echo
           echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-          test_compiler_single "${test_bin_path}" --64
-          test_compiler_single "${test_bin_path}" --64 --gc
-          test_compiler_single "${test_bin_path}" --64 --lto
-          test_compiler_single "${test_bin_path}" --64 --gc --lto
+          compiler-tests-single "${test_bin_path}" --64
+          compiler-tests-single "${test_bin_path}" --64 --gc
+          compiler-tests-single "${test_bin_path}" --64 --lto
+          compiler-tests-single "${test_bin_path}" --64 --gc --lto
         )
         if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
         then
@@ -895,10 +895,10 @@ function test_gcc()
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-            test_compiler_single "${test_bin_path}" --32
-            test_compiler_single "${test_bin_path}" --32 --gc
-            test_compiler_single "${test_bin_path}" --32 --lto
-            test_compiler_single "${test_bin_path}" --32 --gc --lto
+            compiler-tests-single "${test_bin_path}" --32
+            compiler-tests-single "${test_bin_path}" --32 --gc
+            compiler-tests-single "${test_bin_path}" --32 --lto
+            compiler-tests-single "${test_bin_path}" --32 --gc --lto
           )
         fi
       else
@@ -907,10 +907,10 @@ function test_gcc()
           echo
           echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-          test_compiler_single "${test_bin_path}"
-          test_compiler_single "${test_bin_path}" --gc
-          test_compiler_single "${test_bin_path}" --lto
-          test_compiler_single "${test_bin_path}" --gc --lto
+          compiler-tests-single "${test_bin_path}"
+          compiler-tests-single "${test_bin_path}" --gc
+          compiler-tests-single "${test_bin_path}" --lto
+          compiler-tests-single "${test_bin_path}" --gc --lto
         )
       fi
 
@@ -929,10 +929,10 @@ function test_gcc()
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-            test_compiler_single "${test_bin_path}" --64 --static-lib
-            test_compiler_single "${test_bin_path}" --64 --static-lib --gc
-            test_compiler_single "${test_bin_path}" --64 --static-lib --lto
-            test_compiler_single "${test_bin_path}" --64 --static-lib --gc --lto
+            compiler-tests-single "${test_bin_path}" --64 --static-lib
+            compiler-tests-single "${test_bin_path}" --64 --static-lib --gc
+            compiler-tests-single "${test_bin_path}" --64 --static-lib --lto
+            compiler-tests-single "${test_bin_path}" --64 --static-lib --gc --lto
           )
           if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
           then
@@ -944,10 +944,10 @@ function test_gcc()
               echo
               echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-              test_compiler_single "${test_bin_path}" --32 --static-lib
-              test_compiler_single "${test_bin_path}" --32 --static-lib --gc
-              test_compiler_single "${test_bin_path}" --32 --static-lib --lto
-              test_compiler_single "${test_bin_path}" --32 --static-lib --gc --lto
+              compiler-tests-single "${test_bin_path}" --32 --static-lib
+              compiler-tests-single "${test_bin_path}" --32 --static-lib --gc
+              compiler-tests-single "${test_bin_path}" --32 --static-lib --lto
+              compiler-tests-single "${test_bin_path}" --32 --static-lib --gc --lto
             )
           fi
         else
@@ -957,10 +957,10 @@ function test_gcc()
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-            test_compiler_single "${test_bin_path}" --static-lib
-            test_compiler_single "${test_bin_path}" --static-lib --gc
-            test_compiler_single "${test_bin_path}" --static-lib --lto
-            test_compiler_single "${test_bin_path}" --static-lib --gc --lto
+            compiler-tests-single "${test_bin_path}" --static-lib
+            compiler-tests-single "${test_bin_path}" --static-lib --gc
+            compiler-tests-single "${test_bin_path}" --static-lib --lto
+            compiler-tests-single "${test_bin_path}" --static-lib --gc --lto
           )
         fi
       fi
@@ -976,28 +976,28 @@ function test_gcc()
         if [ "${XBB_HOST_ARCH}" == "x64" ]
         then
           (
-            test_compiler_single "${test_bin_path}" --64 --static
-            test_compiler_single "${test_bin_path}" --64 --static --gc
-            test_compiler_single "${test_bin_path}" --64 --static --lto
-            test_compiler_single "${test_bin_path}" --64 --static --gc --lto
+            compiler-tests-single "${test_bin_path}" --64 --static
+            compiler-tests-single "${test_bin_path}" --64 --static --gc
+            compiler-tests-single "${test_bin_path}" --64 --static --lto
+            compiler-tests-single "${test_bin_path}" --64 --static --gc --lto
 
             if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
             then
               echo
               echo "Skipping -m32 --static tests..."
             else
-              test_compiler_single "${test_bin_path}" --32 --static
-              test_compiler_single "${test_bin_path}" --32 --static --gc
-              test_compiler_single "${test_bin_path}" --32 --static --lto
-              test_compiler_single "${test_bin_path}" --32 --static --gc --lto
+              compiler-tests-single "${test_bin_path}" --32 --static
+              compiler-tests-single "${test_bin_path}" --32 --static --gc
+              compiler-tests-single "${test_bin_path}" --32 --static --lto
+              compiler-tests-single "${test_bin_path}" --32 --static --gc --lto
             fi
           )
         else
           (
-            test_compiler_single "${test_bin_path}" --static
-            test_compiler_single "${test_bin_path}" --static --gc
-            test_compiler_single "${test_bin_path}" --static --lto
-            test_compiler_single "${test_bin_path}" --static --gc --lto
+            compiler-tests-single "${test_bin_path}" --static
+            compiler-tests-single "${test_bin_path}" --static --gc
+            compiler-tests-single "${test_bin_path}" --static --lto
+            compiler-tests-single "${test_bin_path}" --static --gc --lto
           )
         fi
 
@@ -1020,10 +1020,10 @@ function test_gcc()
         # 	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1319.0.0)
 
         # Old macOS linkers do not support LTO, thus use lld.
-        test_compiler_single "${test_bin_path}"
-        test_compiler_single "${test_bin_path}" --gc
-        test_compiler_single "${test_bin_path}" --lto --lld
-        test_compiler_single "${test_bin_path}" --gc --lto --lld
+        compiler-tests-single "${test_bin_path}"
+        compiler-tests-single "${test_bin_path}" --gc
+        compiler-tests-single "${test_bin_path}" --lto --lld
+        compiler-tests-single "${test_bin_path}" --gc --lto --lld
 
         echo
         echo "Skipping all --static-lib on macOS..."

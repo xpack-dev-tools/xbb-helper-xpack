@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_sqlite()
+function sqlite_build()
 {
   # https://www.sqlite.org/
   # https://sqlite.org/chronology.html

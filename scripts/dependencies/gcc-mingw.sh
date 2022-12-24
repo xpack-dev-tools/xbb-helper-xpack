@@ -47,35 +47,35 @@
 # -----------------------------------------------------------------------------
 
 
-function build_mingw_gcc_dependencies()
+function gcc_mingw_build_dependencies()
 {
-  build_libiconv "${XBB_LIBICONV_VERSION}"
+  libiconv_build "${XBB_LIBICONV_VERSION}"
 
   # New zlib, used in most of the tools.
   # depends=('glibc')
-  build_zlib "${XBB_ZLIB_VERSION}"
+  zlib_build "${XBB_ZLIB_VERSION}"
 
   # Libraries, required by gcc & other.
   # depends=('gcc-libs' 'sh')
-  build_gmp "${XBB_GMP_VERSION}"
+  gmp_build "${XBB_GMP_VERSION}"
 
   # depends=('gmp>=5.0')
-  build_mpfr "${XBB_MPFR_VERSION}"
+  mpfr_build "${XBB_MPFR_VERSION}"
 
   # depends=('mpfr')
-  build_mpc "${XBB_MPC_VERSION}"
+  mpc_build "${XBB_MPC_VERSION}"
 
   # depends=('gmp')
-  build_isl "${XBB_ISL_VERSION}"
+  isl_build "${XBB_ISL_VERSION}"
 
   # depends=('sh')
-  build_xz "${XBB_XZ_VERSION}"
+  xz_build "${XBB_XZ_VERSION}"
 
   # depends on zlib, xz, (lz4)
-  build_zstd "${XBB_ZSTD_VERSION}"
+  zstd_build "${XBB_ZSTD_VERSION}"
 }
 
-function build_mingw_gcc_all_triplets()
+function gcc_mingw_build_all_triplets()
 {
   for triplet in "${XBB_MINGW_TRIPLETS[@]}"
   do
@@ -83,20 +83,20 @@ function build_mingw_gcc_all_triplets()
     # Set XBB_TARGET_STRIP, _RANLIB & _OBJDUMP
     xbb_set_extra_target_env "${triplet}"
 
-    build_binutils "${XBB_BINUTILS_VERSION}" --triplet="${triplet}" --program-prefix="${triplet}-"
+    binutils_build "${XBB_BINUTILS_VERSION}" --triplet="${triplet}" --program-prefix="${triplet}-"
 
     # Deploy the headers, they are needed by the compiler.
-    build_mingw_headers --triplet="${triplet}"
+    mingw_build_headers --triplet="${triplet}"
 
     # Build only the compiler, without libraries.
-    build_mingw_gcc_first "${XBB_GCC_VERSION}" --triplet="${triplet}"
+    gcc_mingw_build_first "${XBB_GCC_VERSION}" --triplet="${triplet}"
 
     # Refers to mingw headers.
-    build_mingw_widl --triplet="${triplet}"
+    mingw_build_widl --triplet="${triplet}"
 
     # Build some native tools.
-    build_mingw_libmangle --triplet="${triplet}"
-    build_mingw_gendef --triplet="${triplet}"
+    mingw_build_libmangle --triplet="${triplet}"
+    mingw_build_gendef --triplet="${triplet}"
 
     (
       xbb_activate_installed_bin
@@ -104,12 +104,12 @@ function build_mingw_gcc_all_triplets()
         # Fails if CC is defined to a native compiler.
         xbb_prepare_gcc_env "${triplet}-"
 
-        build_mingw_crt --triplet="${triplet}"
-        build_mingw_winpthreads --triplet="${triplet}"
+        mingw_build_crt --triplet="${triplet}"
+        mingw_build_winpthreads --triplet="${triplet}"
       )
 
       # With the run-time available, build the C/C++ libraries and the rest.
-      build_mingw_gcc_final --triplet="${triplet}"
+      gcc_mingw_build_final --triplet="${triplet}"
     )
 
   done
@@ -118,7 +118,7 @@ function build_mingw_gcc_all_triplets()
 # -----------------------------------------------------------------------------
 
 # XBB_MINGW_GCC_PATCH_FILE_NAME
-function build_mingw_gcc_first()
+function gcc_mingw_build_first()
 {
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
@@ -376,7 +376,7 @@ function build_mingw_gcc_first()
   fi
 }
 
-function build_mingw_gcc_final()
+function gcc_mingw_build_final()
 {
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
@@ -519,10 +519,10 @@ function build_mingw_gcc_final()
     echo "Component ${name_prefix}gcc final already installed"
   fi
 
-  tests_add "test_mingw_gcc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"
+  tests_add "gcc_mingw_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"
 }
 
-function test_mingw_gcc()
+function gcc_mingw_test()
 {
   local test_bin_path="$1"
   local triplet="$2"
@@ -667,7 +667,7 @@ function test_mingw_gcc()
       # For libstdc++-6.dll & co.
       # The DLLs are available in the /lib folder.
       if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-      then 
+      then
         export PATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib:${PATH:-}"
         echo "PATH=${PATH}"
       else
@@ -675,17 +675,17 @@ function test_mingw_gcc()
         echo "WINEPATH=${WINEPATH}"
       fi
 
-      test_compiler_single "${test_bin_path}"
-      test_compiler_single "${test_bin_path}" --gc
-      test_compiler_single "${test_bin_path}" --lto
-      test_compiler_single "${test_bin_path}" --gc --lto
+      compiler-tests-single "${test_bin_path}"
+      compiler-tests-single "${test_bin_path}" --gc
+      compiler-tests-single "${test_bin_path}" --lto
+      compiler-tests-single "${test_bin_path}" --gc --lto
     )
 
     (
       # For libwinpthread-1.dll. (This is a big pain).
       # The DLLs are available in the /lib folder.
       if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-      then 
+      then
         export PATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib:${PATH:-}"
         echo "PATH=${PATH}"
       else
@@ -693,17 +693,17 @@ function test_mingw_gcc()
         echo "WINEPATH=${WINEPATH}"
       fi
 
-      test_compiler_single "${test_bin_path}" --static-lib
-      test_compiler_single "${test_bin_path}" --static-lib --gc
-      test_compiler_single "${test_bin_path}" --static-lib --lto
-      test_compiler_single "${test_bin_path}" --static-lib --gc --lto
+      compiler-tests-single "${test_bin_path}" --static-lib
+      compiler-tests-single "${test_bin_path}" --static-lib --gc
+      compiler-tests-single "${test_bin_path}" --static-lib --lto
+      compiler-tests-single "${test_bin_path}" --static-lib --gc --lto
     )
 
     (
-      test_compiler_single "${test_bin_path}" --static
-      test_compiler_single "${test_bin_path}" --static --gc
-      test_compiler_single "${test_bin_path}" --static --lto
-      test_compiler_single "${test_bin_path}" --static --gc --lto
+      compiler-tests-single "${test_bin_path}" --static
+      compiler-tests-single "${test_bin_path}" --static --gc
+      compiler-tests-single "${test_bin_path}" --static --lto
+      compiler-tests-single "${test_bin_path}" --static --gc --lto
     )
 
     # -------------------------------------------------------------------------

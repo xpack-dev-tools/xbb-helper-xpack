@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_nettle()
+function nettle_build()
 {
   # https://www.lysator.liu.se/~nisse/nettle/
   # https://ftp.gnu.org/gnu/nettle/

@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_mpdecimal()
+function mpdecimal_build()
 {
   # http://www.bytereef.org/mpdecimal/index.html
   # https://www.bytereef.org/mpdecimal/download.html

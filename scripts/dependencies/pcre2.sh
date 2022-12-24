@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_pcre2()
+function pcre2_build()
 {
   # https://github.com/PCRE2Project/pcre2
   # https://github.com/PCRE2Project/pcre2/releases

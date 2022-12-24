@@ -10,7 +10,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_xz()
+function xz_build()
 {
   # https://tukaani.org/xz/
   # https://sourceforge.net/projects/lzmautils/files/

@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_patchelf()
+function patchelf_build()
 {
   # https://nixos.org/patchelf.html
   # https://github.com/NixOS/patchelf
@@ -153,7 +153,7 @@ function build_patchelf()
     )
 
     (
-      test_patchelf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      patchelf_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${patchelf_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -165,10 +165,10 @@ function build_patchelf()
     echo "Component patchelf already installed"
   fi
 
-  tests_add "test_patchelf" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "patchelf_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_patchelf()
+function patchelf_test()
 {
   local test_bin_folder_path="$1"
 

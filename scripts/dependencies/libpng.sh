@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_libpng()
+function libpng_build()
 {
   # To ensure builds stability, use slightly older releases.
   # https://sourceforge.net/projects/libpng/files/libpng16/

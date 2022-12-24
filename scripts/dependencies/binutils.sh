@@ -49,7 +49,7 @@
 
 # triplet
 # program_prefix
-function prepare_binutils_common_options()
+function binutils_prepare_common_options()
 {
   config_options=()
 
@@ -179,7 +179,7 @@ function prepare_binutils_common_options()
 # binutils should not be used on Darwin, the build is ok, but
 # there are functional issues, due to the different ld/as/etc.
 
-function build_binutils()
+function binutils_build()
 {
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
@@ -282,7 +282,7 @@ function build_binutils()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/ld/configure" --help
           fi
 
-          prepare_binutils_common_options
+          binutils_prepare_common_options
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
             ${config_options[@]}
@@ -320,7 +320,7 @@ function build_binutils()
 
         run_verbose rm -rf "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}/doc"
 
-        test_binutils_libs
+        binutils_test_libs
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
 
@@ -337,10 +337,10 @@ function build_binutils()
     echo "Component ${name_prefix}binutils already installed"
   fi
 
-  tests_add "test_binutils" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${name_prefix}"
+  tests_add "binutils_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${name_prefix}"
 }
 
-function test_binutils_libs()
+function binutils_test_libs()
 {
   show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ar"
   show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}as"
@@ -354,7 +354,7 @@ function test_binutils_libs()
   show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}strip"
 }
 
-function test_binutils()
+function binutils_test()
 {
   local test_bin_path="$1"
   local name_prefix="${2:-""}"
@@ -430,7 +430,7 @@ function test_binutils()
 
 # -----------------------------------------------------------------------------
 
-function build_binutils_ld_gold()
+function binutils_build_ld_gold()
 {
   local binutils_version="$1"
 
@@ -508,7 +508,7 @@ function build_binutils_ld_gold()
           #  config_options+=("--disable-shared")
           #  config_options+=("--disable-shared-libgcc")
 
-          prepare_binutils_common_options
+          binutils_prepare_common_options
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
             "${config_options[@]}"
@@ -559,10 +559,10 @@ function build_binutils_ld_gold()
     echo "Component binutils ld.gold already installed"
   fi
 
-  tests_add "test_binutils_ld_gold" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "binutils_test_ld_gold" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_binutils_ld_gold()
+function binutils_test_ld_gold()
 {
   local test_bin_path="$1"
 

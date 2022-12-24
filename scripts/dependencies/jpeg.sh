@@ -13,7 +13,7 @@
 # See also
 # https://archlinuxarm.org/packages/aarch64/libjpeg-turbo/files/PKGBUILD
 
-function build_jpeg()
+function jpeg_build()
 {
   # http://www.ijg.org
   # http://www.ijg.org/files/

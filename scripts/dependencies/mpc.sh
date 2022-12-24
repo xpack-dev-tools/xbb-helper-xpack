@@ -10,7 +10,7 @@
 # -----------------------------------------------------------------------------
 
 # Depends on gmp, mpfr.
-function build_mpc()
+function mpc_build()
 {
   # http://www.multiprecision.org/
   # ftp://ftp.gnu.org/gnu/mpc

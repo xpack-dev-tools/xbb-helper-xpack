@@ -11,7 +11,7 @@
 
 # TODO: check before use.
 
-function build_findutils()
+function findutils_build()
 {
   # https://www.gnu.org/software/findutils/
   # https://ftp.gnu.org/gnu/findutils/
@@ -127,7 +127,7 @@ function build_findutils()
     )
 
     (
-      test_findutils
+      findutils_test
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${findutils_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -138,7 +138,7 @@ function build_findutils()
   fi
 }
 
-function test_findutils()
+function findutils_test()
 {
   (
     echo

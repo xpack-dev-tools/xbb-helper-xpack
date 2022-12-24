@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_gpm()
+function gpm_build()
 {
   # General purpose mouse. Used by ncurses.
   # https://www.nico.schottelius.org/software/gpm/

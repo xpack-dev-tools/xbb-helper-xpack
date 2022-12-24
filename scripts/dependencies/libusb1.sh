@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_libusb1()
+function libusb1_build()
 {
   # https://sourceforge.net/projects/libusb/files/libusb-1.0/
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libusb

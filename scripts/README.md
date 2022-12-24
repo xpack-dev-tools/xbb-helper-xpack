@@ -4,7 +4,7 @@ There are multiple scripts, most of them being included with `source`.
 
 ## `scripts/common-build.sh`
 
-A script that defines the `build_perform_common()` function, which can be
+A script that defines the `build_common_run()` function, which can be
 called in the application build scripts to perform the full build.
 
 ## `scripts/test-common.sh`

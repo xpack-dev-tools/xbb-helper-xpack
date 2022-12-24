@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_libtool()
+function libtool_build()
 {
   # https://www.gnu.org/software/libtool/
   # http://ftpmirror.gnu.org/libtool/
@@ -158,8 +158,8 @@ function build_libtool()
     )
 
     (
-      test_libtool_libs
-      test_libtool "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      libtool_test_libs
+      libtool_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libtool_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -173,11 +173,11 @@ function build_libtool()
 
   if [ -z "${step}" ]
   then
-    tests_add "test_libtool" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+    tests_add "libtool_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
   fi
 }
 
-function test_libtool_libs()
+function libtool_test_libs()
 {
   echo
   echo "Checking the libtool shared libraries..."
@@ -185,7 +185,7 @@ function test_libtool_libs()
   show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libltdl.${XBB_HOST_SHLIB_EXT}"
 }
 
-function test_libtool()
+function libtool_test()
 {
   local test_bin_folder_path="$1"
 

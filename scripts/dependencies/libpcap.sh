@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_libpcap()
+function libpcap_build()
 {
   # Portable library for network traffic capture
   # https://www.tcpdump.org/

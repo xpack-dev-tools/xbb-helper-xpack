@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_zlib()
+function zlib_build()
 {
   # http://zlib.net
   # http://zlib.net/fossils/
@@ -152,7 +152,7 @@ function build_zlib()
     )
 
     (
-      test_zlib_libs "${name_suffix}"
+      zlib_test_libs "${name_suffix}"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${zlib_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -163,7 +163,7 @@ function build_zlib()
   fi
 }
 
-function test_zlib_libs()
+function zlib_test_libs()
 {
   local name_suffix="${1:-""}"
 

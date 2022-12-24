@@ -24,7 +24,7 @@ source "${helper_folder_path}/scripts/miscellaneous.sh"
 
 # -----------------------------------------------------------------------------
 
-function build_parse_options()
+function build_common_parse_options()
 {
   local help_message="$1"
   shift
@@ -156,7 +156,7 @@ function build_parse_options()
 
 # =============================================================================
 
-function build_perform_common()
+function build_common_run()
 {
   # Avoid leaving files that cannot be removed by users.
   trap xbb_make_writable EXIT
@@ -194,7 +194,7 @@ function build_perform_common()
 
     # It sets variables in the environment, required for post-processing,
     # run it in the same sub-shell.
-    build_application_versioned_components
+    application_build_versioned_components
 
     # -------------------------------------------------------------------------
     # Post-processing.

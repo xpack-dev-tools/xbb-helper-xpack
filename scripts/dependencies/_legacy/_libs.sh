@@ -10,7 +10,7 @@
 # -----------------------------------------------------------------------------
 
 
-function build_libelf()
+function libelf_build()
 {
   # https://sourceware.org/elfutils/
   # ftp://sourceware.org/pub/elfutils/
@@ -140,7 +140,7 @@ function build_libelf()
 # -----------------------------------------------------------------------------
 
 
-function build_python2()
+function python2_build()
 {
   # https://www.python.org
   # https://www.python.org/downloads/source/
@@ -281,7 +281,7 @@ function build_python2()
     )
 
     (
-      test_python2
+      python2_test
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${python2_folder_name}/test-output-$(ndate).txt"
 
     copy_license \
@@ -297,7 +297,7 @@ function build_python2()
 }
 
 
-function test_python2()
+function python2_test()
 {
   (
     echo
@@ -398,7 +398,7 @@ function download_python2_win()
 
 
 # Not yet functional.
-function build_xar()
+function xar_build()
 {
   # https://github.com/mackyle/xar
   # https://github.com/mackyle/xar/archive/refs/tags/xar-1.6.1.tar.gz
@@ -534,7 +534,7 @@ function build_xar()
 
 # -----------------------------------------------------------------------------
 
-function build_libgpg_error()
+function libgpg_error_build()
 {
   # https://gnupg.org/ftp/gcrypt/libgpg-error
 
@@ -658,7 +658,7 @@ function build_libgpg_error()
     )
 
     (
-      test_libgpg_error_libs
+      libgpg_error_test_libs
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libgpg_error_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -669,7 +669,7 @@ function build_libgpg_error()
   fi
 }
 
-function test_libgpg_error_libs()
+function libgpg_error_test_libs()
 {
   echo
   echo "Checking the libpng_error shared libraries..."
@@ -679,7 +679,7 @@ function test_libgpg_error_libs()
 
 # -----------------------------------------------------------------------------
 
-function build_libgcrypt()
+function libgcrypt_build()
 {
   # https://gnupg.org/ftp/gcrypt/libgcrypt
   # https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.5.tar.bz2
@@ -830,8 +830,8 @@ function build_libgcrypt()
     )
 
     (
-      test_libgcrypt_libs
-      test_libgcrypt "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      libgcrypt_test_libs
+      libgcrypt_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -841,10 +841,10 @@ function build_libgcrypt()
     echo "Library libgcrypt already installed"
   fi
 
-  tests_add "test_libgcrypt" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "libgcrypt_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_libgcrypt_libs()
+function libgcrypt_test_libs()
 {
   echo
   echo "Checking the libgcrypt shared libraries..."
@@ -857,7 +857,7 @@ function test_libgcrypt_libs()
   show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgcrypt.${XBB_HOST_SHLIB_EXT}"
 }
 
-function test_libgcrypt()
+function libgcrypt_test()
 {
   local test_bin_folder_path="$1"
 
@@ -885,14 +885,14 @@ function test_libgcrypt()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/libgcrypt"; cd "${XBB_TESTS_FOLDER_PATH}/libgcrypt"
 
     touch test.in
-    test_host_expect "0e824ce7c056c82ba63cc40cffa60d3195b5bb5feccc999a47724cc19211aef6  test.in"  "${test_bin_folder_path}/hmac256" "testing" test.in
+    expect_host_output "0e824ce7c056c82ba63cc40cffa60d3195b5bb5feccc999a47724cc19211aef6  test.in"  "${test_bin_folder_path}/hmac256" "testing" test.in
 
   )
 }
 
 # -----------------------------------------------------------------------------
 
-function build_libassuan()
+function libassuan_build()
 {
   # https://gnupg.org/ftp/gcrypt/libassuan
   # https://gnupg.org/ftp/gcrypt/libassuan/libassuan-2.5.3.tar.bz2
@@ -1015,8 +1015,8 @@ function build_libassuan()
     )
 
     (
-      test_libassuan_libs
-      test_libassuan "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      libassuan_test_libs
+      libassuan_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libassuan_folder_name}/test-output-$(ndate).txt"
 
@@ -1027,10 +1027,10 @@ function build_libassuan()
     echo "Library libassuan already installed"
   fi
 
-  tests_add "test_libassuan" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "libassuan_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_libassuan_libs()
+function libassuan_test_libs()
 {
   echo
   echo "Checking the libassuan shared libraries..."
@@ -1039,7 +1039,7 @@ function test_libassuan_libs()
   show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libassuan.${XBB_HOST_SHLIB_EXT}"
 }
 
-function test_libassuan()
+function libassuan_test()
 {
   local test_bin_folder_path="$1"
 
@@ -1053,7 +1053,7 @@ function test_libassuan()
 
 # -----------------------------------------------------------------------------
 
-function build_libksba()
+function libksba_build()
 {
   # https://gnupg.org/ftp/gcrypt/libksba
   # https://gnupg.org/ftp/gcrypt/libksba/libksba-1.3.5.tar.bz2
@@ -1178,8 +1178,8 @@ function build_libksba()
     )
 
     (
-      test_libksba_libs
-      test_libksba "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      libksba_test_libs
+      libksba_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libksba_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -1189,10 +1189,10 @@ function build_libksba()
     echo "Library libksba already installed"
   fi
 
-  tests_add "test_libksba" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "libksba_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_libksba_libs()
+function libksba_test_libs()
 {
   echo
   echo "Checking the libksba shared libraries..."
@@ -1201,7 +1201,7 @@ function test_libksba_libs()
   show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libksba.${XBB_HOST_SHLIB_EXT}"
 }
 
-function test_libksba()
+function libksba_test()
 {
   local test_bin_folder_path="$1"
 
@@ -1215,7 +1215,7 @@ function test_libksba()
 
 # -----------------------------------------------------------------------------
 
-function build_npth()
+function npth_build()
 {
   # https://gnupg.org/ftp/gcrypt/npth
   # https://gnupg.org/ftp/gcrypt/npth/npth-1.6.tar.bz2
@@ -1332,8 +1332,8 @@ function build_npth()
     )
 
     (
-      test_npth_libs
-      test_npth "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      npth_test_libs
+      npth_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${npth_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -1343,10 +1343,10 @@ function build_npth()
     echo "Library npth already installed"
   fi
 
-  tests_add "test_npth" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "npth_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_npth_libs()
+function npth_test_libs()
 {
   echo
   echo "Checking the npth shared libraries..."
@@ -1354,7 +1354,7 @@ function test_npth_libs()
   show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libnpth.${XBB_HOST_SHLIB_EXT}"
 }
 
-function test_npth()
+function npth_test()
 {
   local test_bin_folder_path="$1"
 
@@ -1369,7 +1369,7 @@ function test_npth()
 # -----------------------------------------------------------------------------
 
 # used by qemu, in fact it should have been libusb1.
-function _build_libusb()
+function _libusb_build()
 {
   # https://libusb.info/
   # https://github.com/libusb/libusb/releases/

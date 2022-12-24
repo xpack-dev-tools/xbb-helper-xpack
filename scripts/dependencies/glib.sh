@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_glib()
+function glib_build()
 {
   # http://ftp.gnome.org/pub/GNOME/sources/glib
 

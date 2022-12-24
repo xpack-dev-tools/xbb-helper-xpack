@@ -26,7 +26,7 @@
 # XBB_BINUTILS_URL
 # XBB_BINUTILS_PATCH_FILE_NAME
 
-function build_binutils_cross()
+function binutils_cross_build()
 {
   local binutils_version="$1"
   shift
@@ -199,7 +199,7 @@ function build_binutils_cross()
         # make install-strip
         run_verbose make install
 
-        test_binutils_cross_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin" "${triplet}"
+        binutils_cross_test_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}/bin" "${triplet}"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}/make-output-$(ndate).txt"
 
@@ -215,10 +215,10 @@ function build_binutils_cross()
     echo "Component cross ${name_prefix}binutils${name_suffix} already installed"
   fi
 
-  tests_add "test_binutils_cross" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"
+  tests_add "binutils_cross_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"
 }
 
-function test_binutils_cross_libs()
+function binutils_cross_test_libs()
 {
   local test_bin_path="$1"
   local triplet="$2"
@@ -235,7 +235,7 @@ function test_binutils_cross_libs()
   show_host_libs "${test_bin_path}/${triplet}-strip"
 }
 
-function test_binutils_cross()
+function binutils_cross_test()
 {
   local test_bin_path="$1"
   local triplet="$2"

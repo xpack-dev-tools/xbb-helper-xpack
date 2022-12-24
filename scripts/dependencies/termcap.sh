@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_termcap()
+function termcap_build()
 {
   # https://www.gnu.org/software/termutils/
   # https://ftp.gnu.org/gnu/termcap/

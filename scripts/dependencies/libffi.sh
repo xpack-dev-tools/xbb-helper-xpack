@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_libffi()
+function libffi_build()
 {
   # http://www.sourceware.org/libffi/
   # ftp://sourceware.org/pub/libffi/

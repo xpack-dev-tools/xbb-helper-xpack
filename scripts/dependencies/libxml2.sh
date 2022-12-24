@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_libxml2()
+function libxml2_build()
 {
   # http://www.xmlsoft.org
   # ftp://xmlsoft.org/libxml2/

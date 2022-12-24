@@ -10,7 +10,7 @@
 # -----------------------------------------------------------------------------
 
 # Required by GNU/Linux and macOS.
-function build_libusb0()
+function libusb0_build()
 {
   # https://sourceforge.net/projects/libusb/files/libusb-compat-0.1/
 

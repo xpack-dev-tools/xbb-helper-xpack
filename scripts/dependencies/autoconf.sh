@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_autoconf()
+function autoconf_build()
 {
   # https://www.gnu.org/software/autoconf/
   # https://ftp.gnu.org/gnu/autoconf/
@@ -128,7 +128,7 @@ function build_autoconf()
     )
 
     (
-      test_autoconf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      autoconf_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${autoconf_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -140,10 +140,10 @@ function build_autoconf()
     echo "Component autoconf already installed"
   fi
 
-  tests_add "test_autoconf" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "autoconf_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_autoconf()
+function autoconf_test()
 {
   local test_bin_folder_path="$1"
 

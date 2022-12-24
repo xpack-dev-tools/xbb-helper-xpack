@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_libxcrypt()
+function libxcrypt_build()
 {
   # Replacement for the old libcrypt.so.1.
 
@@ -178,7 +178,7 @@ function build_libxcrypt()
     )
 
     (
-      test_libxcrypt
+      libxcrypt_test
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -189,7 +189,7 @@ function build_libxcrypt()
   fi
 }
 
-function test_libxcrypt()
+function libxcrypt_test()
 {
   (
     echo

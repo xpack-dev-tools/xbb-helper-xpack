@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_pkg_config()
+function pkg_config_build()
 {
   # https://www.freedesktop.org/wiki/Software/pkg-config/
   # https://pkgconfig.freedesktop.org/releases/
@@ -136,7 +136,7 @@ function build_pkg_config()
     )
 
     (
-      test_pkg_config "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      pkg_config_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${pkg_config_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -148,10 +148,10 @@ function build_pkg_config()
     echo "Component pkg_config already installed"
   fi
 
-  tests_add "test_pkg_config" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "pkg_config_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_pkg_config()
+function pkg_config_test()
 {
   local test_bin_folder_path="$1"
 

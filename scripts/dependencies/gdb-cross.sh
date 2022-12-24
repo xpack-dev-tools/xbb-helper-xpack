@@ -19,39 +19,39 @@
 # https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-gdb/trunk/PKGBUILD
 # https://github.com/archlinux/svntogit-community/blob/packages/riscv32-elf-gdb/trunk/PKGBUILD
 
-function build_cross_gdb_dependencies()
+function gdb_cross_build_dependencies()
 {
   # https://github.com/libexpat/libexpat/releases
   # Arm: from release notes
   # https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/downloads-1
-  build_expat "${XBB_EXPAT_VERSION}"
+  expat_build "${XBB_EXPAT_VERSION}"
 
   # Fails on mingw. 0.8.13 is deprecated. Not used anyway.
-  # build_libelf "0.8.13"
+  # libelf_build "0.8.13"
 
   # http://ftp.gnu.org/pub/gnu/gettext/
-  build_gettext "${XBB_GETTEXT_VERSION}"
+  gettext_build "${XBB_GETTEXT_VERSION}"
 
   # Used by ncurses. Fails on macOS.
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
   then
     # https://github.com/telmich/gpm/tags
     # https://github.com/xpack-dev-tools/gpm/tags
-    build_gpm "${XBB_GPM_VERSION}"
+    gpm_build "${XBB_GPM_VERSION}"
   fi
 
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -o "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
   then
     # https://ftp.gnu.org/gnu/ncurses/
-    build_ncurses "${XBB_NCURSES_VERSION}"
+    ncurses_build "${XBB_NCURSES_VERSION}"
 
     # https://ftp.gnu.org/gnu/readline/
-    build_readline "${XBB_READLINE_VERSION}" # requires ncurses
+    readline_build "${XBB_READLINE_VERSION}" # requires ncurses
 
     # https://sourceware.org/pub/bzip2/
-    build_bzip2 "${XBB_BZIP2_VERSION}"
+    bzip2_build "${XBB_BZIP2_VERSION}"
     # https://github.com/libffi/libffi/releases
-    build_libffi  "${XBB_LIBFFI_VERSION}"
+    libffi_build  "${XBB_LIBFFI_VERSION}"
   fi
 
   if [ "${XBB_WITH_GDB_PY3}" == "y" ]
@@ -62,30 +62,30 @@ function build_cross_gdb_dependencies()
       # the custom build from sources does not have one.
 
       # https://www.bytereef.org/mpdecimal/download.html
-      build_mpdecimal "${XBB_MPDECIMAL_VERSION}" # Used by Python
+      mpdecimal_build "${XBB_MPDECIMAL_VERSION}" # Used by Python
 
       # Required by a Python 3 module.
       # https://www.sqlite.org/download.html
-      build_sqlite  "${XBB_SQLITE_VERSION}"
+      sqlite_build  "${XBB_SQLITE_VERSION}"
 
       # Replacement for the old libcrypt.so.1; required by Python 3.
       # https://github.com/besser82/libxcrypt/releases
-      build_libxcrypt "${XBB_LIBXCRYPT_VERSION}"
+      libxcrypt_build "${XBB_LIBXCRYPT_VERSION}"
 
       # https://www.openssl.org/source/
-      build_openssl "${XBB_OPENSSL_VERSION}"
+      openssl_build "${XBB_OPENSSL_VERSION}"
 
       # Since the executables are not needed,
       # Python is built as a dependency, then the libraries
       # are copied to the application folder.
-      build_python3 "${XBB_PYTHON3_VERSION}"
+      python3_build "${XBB_PYTHON3_VERSION}"
     fi
   fi
 }
 
 # Called multile times, with and without python support.
 # $1="" or $1="-py" or $1="-py3"
-function build_cross_gdb()
+function gdb_cross_build()
 {
   local triplet="$1"
   shift
@@ -374,10 +374,10 @@ function build_cross_gdb()
     echo "Component cross ${name_prefix}gdb${name_suffix} already installed"
   fi
 
-  tests_add "test_cross_gdb" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}" "${name_suffix}"
+  tests_add "gdb_cross_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}" "${name_suffix}"
 }
 
-function test_cross_gdb()
+function gdb_cross_test()
 {
   local test_bin_path="$1"
   local triplet="$2"

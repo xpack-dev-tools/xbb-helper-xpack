@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_vde()
+function vde_build()
 {
   # Ethernet compliant virtual network
   # https://github.com/virtualsquare/vde-2

@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_m4()
+function m4_build()
 {
   # https://www.gnu.org/software/m4/
   # https://ftp.gnu.org/gnu/m4/
@@ -155,7 +155,7 @@ function build_m4()
     )
 
     (
-      test_m4 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      m4_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${m4_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -167,10 +167,10 @@ function build_m4()
     echo "Component m4 already installed"
   fi
 
-  tests_add "test_m4" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "m4_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_m4()
+function m4_test()
 {
   local test_bin_folder_path="$1"
 
@@ -189,7 +189,7 @@ function test_m4()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/m4"; cd "${XBB_TESTS_FOLDER_PATH}/m4"
 
     echo "TEST M4" > hello.txt
-    test_host_expect  "Hello M4" "${test_bin_folder_path}/m4" -DTEST=Hello hello.txt
+    expect_host_output  "Hello M4" "${test_bin_folder_path}/m4" -DTEST=Hello hello.txt
 
   )
 }

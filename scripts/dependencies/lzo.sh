@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_lzo()
+function lzo_build()
 {
   # Real-time data compression library
   # https://www.oberhumer.com/opensource/lzo/

@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_texinfo()
+function texinfo_build()
 {
   # https://www.gnu.org/software/texinfo/
   # https://ftp.gnu.org/gnu/texinfo/
@@ -143,7 +143,7 @@ function build_texinfo()
     )
 
     (
-      test_texinfo "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      texinfo_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${texinfo_folder_name}/test-output-$(ndate).txt"
 
     hash -r
@@ -155,10 +155,10 @@ function build_texinfo()
     echo "Component texinfo already installed"
   fi
 
-  tests_add "test_texinfo" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "texinfo_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_texinfo()
+function texinfo_test()
 {
   local test_bin_folder_path="$1"
 

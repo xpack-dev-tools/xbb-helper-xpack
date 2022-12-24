@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_openssl()
+function openssl_build()
 {
   # https://www.openssl.org
   # https://www.openssl.org/source/
@@ -341,8 +341,8 @@ function build_openssl()
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${openssl_folder_name}/make-output-$(ndate).txt"
 
       (
-        test_openssl_libs
-        test_openssl "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+        openssl_test_libs
+        openssl_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${openssl_folder_name}/test-output-$(ndate).txt"
     )
 
@@ -353,10 +353,10 @@ function build_openssl()
     echo "Component openssl already installed"
   fi
 
-  tests_add test_openssl "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add openssl_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_openssl_libs()
+function openssl_test_libs()
 {
   (
     echo
@@ -380,7 +380,7 @@ function test_openssl_libs()
   )
 }
 
-function test_openssl()
+function openssl_test()
 {
   local test_bin_folder_path="$1"
 
@@ -394,7 +394,7 @@ function test_openssl()
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/openssl"; cd "${XBB_TESTS_FOLDER_PATH}/openssl"
 
     echo "This is a test file" >testfile.txt
-    test_host_expect "SHA256(testfile.txt)= c87e2ca771bab6024c269b933389d2a92d4941c848c52f155b9b84e1f109fe35" "${test_bin_folder_path}/openssl" dgst -sha256 testfile.txt
+    expect_host_output "SHA256(testfile.txt)= c87e2ca771bab6024c269b933389d2a92d4941c848c52f155b9b84e1f109fe35" "${test_bin_folder_path}/openssl" dgst -sha256 testfile.txt
   )
 }
 

@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_pixman()
+function pixman_build()
 {
   # http://www.pixman.org
   # http://cairographics.org/releases/

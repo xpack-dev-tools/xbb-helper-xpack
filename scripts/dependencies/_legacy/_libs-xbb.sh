@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_libtasn1()
+function libtasn1_build()
 {
   # https://www.gnu.org/software/libtasn1/
   # http://ftp.gnu.org/gnu/libtasn1/
@@ -143,7 +143,7 @@ function build_libtasn1()
 
 # -----------------------------------------------------------------------------
 
-function build_libunistring()
+function libunistring_build()
 {
   # https://www.gnu.org/software/libunistring/
   # https://ftp.gnu.org/gnu/libunistring/
@@ -274,7 +274,7 @@ function build_libunistring()
 
 # -----------------------------------------------------------------------------
 
-function build_gc()
+function gc_build()
 {
   # https://www.hboehm.info/gc
   # https://github.com/ivmai/bdwgc/releases/
@@ -429,7 +429,7 @@ function build_gc()
     )
 
     (
-      test_gc_libs
+      gc_test_libs
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gc_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -442,7 +442,7 @@ function build_gc()
   # tests_add "test_gc"
 }
 
-function test_gc_libs()
+function gc_test_libs()
 {
   (
     echo
@@ -456,7 +456,7 @@ function test_gc_libs()
 
 # -----------------------------------------------------------------------------
 
-function build_gnutls()
+function gnutls_build()
 {
   # http://www.gnutls.org/
   # https://www.gnupg.org/ftp/gcrypt/gnutls/
@@ -627,7 +627,7 @@ function build_gnutls()
     )
 
     (
-      test_gnutls "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      gnutls_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gnutls_folder_name}/test-output-$(ndate).txt"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
@@ -637,10 +637,10 @@ function build_gnutls()
     echo "Library gnutls already installed"
   fi
 
-  tests_add "test_gnutls" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "gnutls_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_gnutls()
+function gnutls_test()
 {
   local test_bin_folder_path="$1"
 
@@ -666,7 +666,7 @@ function test_gnutls()
 
 # -----------------------------------------------------------------------------
 
-function build_xorg_util_macros()
+function xorg_util_macros_build()
 {
   # http://www.linuxfromscratch.org/blfs/view/
   # http://www.linuxfromscratch.org/blfs/view/7.4/x/util-macros.html
@@ -795,7 +795,7 @@ function build_xorg_util_macros()
 
 # -----------------------------------------------------------------------------
 
-function build_xorg_xproto()
+function xorg_xproto_build()
 {
   # https://www.x.org/releases/individual/proto/
   # https://www.x.org/releases/individual/proto/xproto-7.0.31.tar.bz2

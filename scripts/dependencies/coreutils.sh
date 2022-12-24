@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_coreutils()
+function coreutils_build()
 {
   # https://www.gnu.org/software/coreutils/
   # https://ftp.gnu.org/gnu/coreutils/
@@ -179,9 +179,9 @@ function build_coreutils()
     (
       if [ "${XBB_COREUTILS_INSTALL_REALPATH_ONLY:-}" == "y" ]
       then
-        test_coreutils_realpath "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+        coreutils_test_realpath "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
       else
-        test_coreutils "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+        coreutils_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
       fi
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${coreutils_folder_name}/test-output-$(ndate).txt"
 
@@ -196,13 +196,13 @@ function build_coreutils()
 
   if [ "${XBB_COREUTILS_INSTALL_REALPATH_ONLY:-}" == "y" ]
   then
-    tests_add "test_coreutils_realpath" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+    tests_add "coreutils_test_realpath" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
   else
-    tests_add "test_coreutils" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+    tests_add "coreutils_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
   fi
 }
 
-function test_coreutils()
+function coreutils_test()
 {
   local test_bin_folder_path="$1"
 
@@ -258,7 +258,7 @@ function test_coreutils()
   )
 }
 
-function test_coreutils_realpath()
+function coreutils_test_realpath()
 {
   local test_bin_folder_path="$1"
 

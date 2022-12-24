@@ -10,7 +10,7 @@
 # -----------------------------------------------------------------------------
 
 # Depends on gmp.
-function build_isl()
+function isl_build()
 {
   # http://isl.gforge.inria.fr - deprecated
   # https://sourceforge.net/projects/libisl/files/

@@ -10,7 +10,7 @@
 # -----------------------------------------------------------------------------
 
 # TODO: add support for dylib
-function build_bzip2()
+function bzip2_build()
 {
   # https://sourceware.org/bzip2/
   # https://sourceware.org/pub/bzip2/
@@ -128,7 +128,7 @@ function build_bzip2()
             ln -sv "libbz2.so.${bzip2_version}" libbz2.so
           )
 
-          create_bzip2_pc
+          bzip2_create_pc
 
         elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
@@ -179,7 +179,7 @@ function build_bzip2()
             ln -sv "libbz2.${bzip2_version}.dylib" libbz2.dylib
           )
 
-          create_bzip2_pc
+          bzip2_create_pc
 
         elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
@@ -250,7 +250,7 @@ function build_bzip2()
   fi
 }
 
-function create_bzip2_pc()
+function bzip2_create_pc()
 {
   mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig"
   # Note: __EOF__ is NOT quoted to allow substitutions.

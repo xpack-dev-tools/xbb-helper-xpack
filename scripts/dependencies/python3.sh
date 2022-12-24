@@ -14,7 +14,7 @@
 
 # https://stackoverflow.com/questions/44150871/embeded-python3-6-with-mingw-in-c-fail-on-linking
 
-function build_python3()
+function python3_build()
 {
   # https://www.python.org
   # https://www.python.org/downloads/source/
@@ -200,7 +200,7 @@ function build_python3()
     )
 
     (
-      test_python3 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+      python3_test "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${python3_folder_name}/test-output-$(ndate).txt"
 
     copy_license \
@@ -214,10 +214,10 @@ function build_python3()
     echo "Component python3 already installed"
   fi
 
-  tests_add "test_python3" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "python3_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_python3()
+function python3_test()
 {
   local test_bin_folder_path="$1"
 
@@ -383,7 +383,7 @@ function python3_copy_syslibs()
       )
 
       echo "Replacing .py files with .pyc files..."
-      move_pyc "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}"
+      meson_move_pyc "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}"
 
       mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
 
@@ -408,7 +408,7 @@ function python3_copy_syslibs()
   fi
 }
 
-function process_pyc()
+function meson_process_pyc()
 {
   local file_path="$1"
 
@@ -427,13 +427,13 @@ function process_pyc()
   fi
 }
 
-export -f process_pyc
+export -f meson_process_pyc
 
-function process_pycache()
+function meson_process_pycache()
 {
   local folder_path="$1"
 
-  find ${folder_path} -name '*.pyc' -type f -print0 | xargs -0 -L 1 -I {} bash -c 'process_pyc "{}"'
+  find ${folder_path} -name '*.pyc' -type f -print0 | xargs -0 -L 1 -I {} bash -c 'meson_process_pyc "{}"'
 
   if [ $(ls -1 "${folder_path}" | wc -l) -eq 0 ]
   then
@@ -441,13 +441,13 @@ function process_pycache()
   fi
 }
 
-export -f process_pycache
+export -f meson_process_pycache
 
-function move_pyc()
+function meson_move_pyc()
 {
   local folder_path="$1"
 
-  find ${folder_path} -name '__pycache__' -type d -print0 | xargs -0 -L 1 -I {} bash -c 'process_pycache "{}"'
+  find ${folder_path} -name '__pycache__' -type d -print0 | xargs -0 -L 1 -I {} bash -c 'meson_process_pycache "{}"'
 }
 
 # -----------------------------------------------------------------------------
