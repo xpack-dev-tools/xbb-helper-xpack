@@ -299,7 +299,7 @@ function xbb_set_target()
   local kind="$1"
 
   echo
-  echo "[${FUNCNAME[0]} $@]"
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   if [ "${kind}" == "native" ]
   then
