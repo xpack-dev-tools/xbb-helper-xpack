@@ -8,7 +8,7 @@
 
 There are no scheduled releases, the project is updated when necessary.
 
-## Project repository
+## Get project sources
 
 The project is hosted on GitHub:
 
