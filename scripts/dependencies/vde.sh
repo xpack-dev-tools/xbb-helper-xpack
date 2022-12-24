@@ -31,7 +31,7 @@ function vde_build()
   local vde_url="https://downloads.sourceforge.net/project/vde/vde2/${vde_version}/${vde_archive}"
 
   local vde_folder_name="${vde_src_folder_name}"
-  local vde_patch_file_patch="${vde_folder_name}.patch.diff"
+  local vde_patch_file_patch="${vde_folder_name}.git.patch"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${vde_folder_name}"
 

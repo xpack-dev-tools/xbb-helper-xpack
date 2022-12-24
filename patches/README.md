@@ -2,7 +2,7 @@
 
 Note: prefer `.git.patch`.
 
-## gdb-X.Y.patch.diff
+## gdb-X.Y.git.patch
 
 Patches `gdb/python/python-config.py` to return `CONFIG_PYTHON_PREFIX`
 as `--prefix`.

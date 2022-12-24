@@ -306,7 +306,7 @@ function gc_build()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gc_folder_name}"
 
-  local gc_patch_file_name="${gc_folder_name}.patch.diff"
+  local gc_patch_file_name="${gc_folder_name}.git.patch"
   local gc_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${gc_folder_name}-installed"
   if [ ! -f "${gc_stamp_file_path}" ]
   then

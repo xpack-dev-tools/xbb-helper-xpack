@@ -70,21 +70,21 @@ function gcc_download()
 
   local gcc_archive="${GCC_SRC_FOLDER_NAME}.tar.xz"
   local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
-  local gcc_patch_file_name="gcc-${gcc_version}.patch.diff"
+  local gcc_patch_file_name="gcc-${gcc_version}.git.patch"
 
 
   if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${gcc_version}" == "12.2.0" ]
   then
     # https://raw.githubusercontent.com/Homebrew/formula-patches/1d184289/gcc/gcc-12.2.0-arm.diff
-    local gcc_patch_file_name="gcc-${gcc_version}-darwin.patch.diff"
+    local gcc_patch_file_name="gcc-${gcc_version}-darwin.git.patch"
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "12.1.0" ]
   then
     # https://raw.githubusercontent.com/Homebrew/formula-patches/d61235ed/gcc/gcc-12.1.0-arm.diff
-    local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.patch.diff"
+    local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.git.patch"
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "11.3.0" ]
   then
     # https://raw.githubusercontent.com/Homebrew/formula-patches/22dec3fc/gcc/gcc-11.3.0-arm.diff
-    local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.patch.diff"
+    local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.git.patch"
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "11.2.0" ]
   then
     # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.2.0-arm-20211201.tar.gz
