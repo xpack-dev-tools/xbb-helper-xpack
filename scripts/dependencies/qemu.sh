@@ -232,7 +232,7 @@ function qemu_build()
   fi
 
   # Define this function at package level.
-  tests_add "test_qemu_${qemu_target}" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "qemu_${qemu_target}_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
 # -----------------------------------------------------------------------------
