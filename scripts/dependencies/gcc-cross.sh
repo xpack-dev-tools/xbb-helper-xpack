@@ -539,9 +539,6 @@ function gcc_cross_build_final()
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
-        # Moved outside.
-        # xbb_activate_installed_bin
-
         export AR_FOR_TARGET="$(which ${name_prefix}ar)"
         export NM_FOR_TARGET="$(which ${name_prefix}nm)"
         export OBJDUMP_FOR_TARET="$(which ${name_prefix}objdump)"
