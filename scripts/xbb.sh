@@ -293,6 +293,10 @@ function xbb_set_requested()
 # - XBB_HOST|TARGET_MACHINE={x86_64,arm64,aarch64,armv7l,armv8l}
 # - XBB_HOST|TARGET_TRIPLET={*,x86_64-w64-mingw32}
 
+# DO NOT explicitly set the executable path again!, since for mingw
+# the XBB_DEPENDENCIES_INSTALL_FOLDER_PATH variable is adjusted for
+# the target libraries.
+
 # "requested", "native", "mingw-w64-native", "mingw-w64-cross"which_realpath
 function xbb_set_target()
 {
