@@ -177,7 +177,8 @@ function gcc_build()
         # --enable-mingw-wildcard already does this, enabling it results in:
         # multiple definition of `_dowildcard'
         # Used to enable wildcard; inspired from arm-none-eabi-gcc.
-        # LDFLAGS+=" -Wl,${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}/lib/CRT_glob.o"
+        # local crt_clob_file_path="$(${CC} --print-file-name=CRT_glob.o)"
+        # LDFLAGS+=" -Wl,${crt_clob_file_path}"
 
         # Hack to prevent "too many sections", "File too big" etc in insn-emit.c
         CXXFLAGS=$(echo ${CXXFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')

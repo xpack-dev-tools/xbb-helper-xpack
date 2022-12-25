@@ -256,7 +256,8 @@ function binutils_build()
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         # Used to enable wildcard; inspired from arm-none-eabi-gcc.
-        LDFLAGS+=" -Wl,${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}/lib/CRT_glob.o"
+        local crt_clob_file_path="$(${CC} --print-file-name=CRT_glob.o)"
+        LDFLAGS+=" -Wl,${crt_clob_file_path}"
       fi
 
       export CPPFLAGS
@@ -477,8 +478,8 @@ function binutils_build_ld_gold()
           LDFLAGS+=" -Wl,--large-address-aware"
         fi
 
-        # Used to enable wildcard; inspired from arm-none-eabi-gcc.
-        LDFLAGS+=" -Wl,${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}/lib/CRT_glob.o"
+        local crt_clob_file_path="$(${CC} --print-file-name=CRT_glob.o)"
+        LDFLAGS+=" -Wl,${crt_clob_file_path}"
       fi
 
       export CPPFLAGS

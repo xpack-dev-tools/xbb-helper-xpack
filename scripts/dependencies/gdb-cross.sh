@@ -152,9 +152,9 @@ function gdb_cross_build()
         # Using LIBS does not work, the order is important.
         export DEBUGINFOD_LIBS="-lbcrypt"
 
-        # From Arm script.
-        # TODO: find a solution with XBB v5.x
-        # LDFLAGS+=" -v -Wl,${XBB_FOLDER_PATH}/mingw/lib/CRT_glob.o"
+        # Used to enable wildcard; inspired from arm-none-eabi-gcc.
+        local crt_clob_file_path="$(${CC} --print-file-name=CRT_glob.o)"
+        LDFLAGS+=" -Wl,${crt_clob_file_path}"
 
         # Workaround for undefined reference to `__strcpy_chk' in GCC 9.
         # https://sourceforge.net/p/mingw-w64/bugs/818/
