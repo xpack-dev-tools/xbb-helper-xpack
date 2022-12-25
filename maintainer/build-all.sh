@@ -117,7 +117,7 @@ else
 fi
 
 names=()
-names+=( gcc clang mingw-w64-gcc )
+names+=( gcc mingw-w64-gcc clang )
 names+=( cmake meson-build ninja-build )
 names+=( openocd qemu-arm qemu-riscv )
 names+=( arm-none-eabi-gcc aarch64-none-elf-gcc riscv-none-elf-gcc )
