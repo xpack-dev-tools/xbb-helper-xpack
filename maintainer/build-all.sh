@@ -43,7 +43,8 @@ script_folder_name="$(basename "${script_folder_path}")"
 # Maintenance script used to build all packages available on a given platform.
 # To run it, clone the helper project and then run:
 #
-# ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh
+# bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh
+# bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh --windows
 
 # -----------------------------------------------------------------------------
 
