@@ -53,8 +53,6 @@ function gmp_build()
       cd "${XBB_BUILD_FOLDER_PATH}/${gmp_folder_name}"
 
       xbb_activate_dependencies_dev
-      # For the local M4; remove it when available as dependency.
-      # xbb_activate_installed_bin
 
       # Exceptions used by Arm GCC script and by mingw-w64.
       CPPFLAGS="${XBB_CPPFLAGS} -fexceptions"

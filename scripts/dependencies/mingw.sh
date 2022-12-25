@@ -596,9 +596,6 @@ function mingw_build_crt()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mingw_crt_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${mingw_crt_folder_name}"
 
-      # To use the new toolchain.
-      # xbb_activate_installed_bin
-
       # Overwrite the flags, -ffunction-sections -fdata-sections result in
       # {standard input}: Assembler messages:
       # {standard input}:693: Error: CFI instruction used without previous .cfi_startproc
@@ -758,9 +755,6 @@ function mingw_build_winpthreads()
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mingw_build_winpthreads_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${mingw_build_winpthreads_folder_name}"
-
-      # To use the new toolchain.
-      # xbb_activate_installed_bin
 
       CPPFLAGS=""
       CFLAGS="-O2 -pipe -w"

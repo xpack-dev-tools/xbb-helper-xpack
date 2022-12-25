@@ -810,7 +810,6 @@ function autogen_build()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}"
 
-      # xbb_activate_installed_bin
       xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS} -D_POSIX_C_SOURCE"

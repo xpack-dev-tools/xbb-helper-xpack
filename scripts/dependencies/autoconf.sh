@@ -47,10 +47,6 @@ function autoconf_build()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${autoconf_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${autoconf_folder_name}"
 
-      # xbb_activate_dependencies_dev
-      # For the local M4; remove it when available as dependency.
-      # xbb_activate_installed_bin
-
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
