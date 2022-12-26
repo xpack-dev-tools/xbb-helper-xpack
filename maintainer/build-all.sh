@@ -142,8 +142,7 @@ else
   if [ "$(uname)" == "Linux" ]
   then
     # Linux only packages.
-    # names+=( wine )
-    echo "wine is not yet ready"
+    names+=( wine )
   fi
 fi
 
