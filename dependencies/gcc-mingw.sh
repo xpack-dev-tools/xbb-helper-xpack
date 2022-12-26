@@ -476,7 +476,8 @@ function gcc_mingw_build_final()
       if true
       then
 
-        # TODO!
+        # Exception to the rule, it would be too complicated to express
+        # as absolute paths.
         # For *-w64-mingw32-strip
         xbb_activate_installed_bin
 
