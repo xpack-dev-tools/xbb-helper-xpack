@@ -136,8 +136,6 @@ function libxcrypt_build()
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}/configure" \
             "${config_options[@]}"
 
-          # patch_all_libtool_rpath
-
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/config-log-$(ndate).txt"
         ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libxcrypt_folder_name}/configure-output-$(ndate).txt"
       fi
