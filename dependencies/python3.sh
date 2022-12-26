@@ -229,9 +229,6 @@ function python3_test()
     echo "Checking the python3 binary shared libraries..."
 
     (
-      # TODO!
-      xbb_activate_installed_bin
-
       local realpath=$(which_realpath)
       show_host_libs "$(dirname $(${realpath} ${test_bin_folder_path}/python3))/../lib/libpython3"*."${XBB_HOST_SHLIB_EXT}"
     )

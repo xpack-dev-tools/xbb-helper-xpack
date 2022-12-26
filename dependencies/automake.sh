@@ -61,10 +61,6 @@ function automake_build()
 
       # xbb_activate_dependencies_dev
 
-      # TODO!
-      # To pick autoconf
-      xbb_activate_installed_bin
-
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"

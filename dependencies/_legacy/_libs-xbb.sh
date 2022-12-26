@@ -503,10 +503,6 @@ function gnutls_build()
 
       xbb_activate_dependencies_dev
 
-      # TODO!
-      # For guile.
-      xbb_activate_installed_bin
-
       CPPFLAGS="${XBB_CPPFLAGS}"
       if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then

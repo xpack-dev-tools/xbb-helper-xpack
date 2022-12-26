@@ -71,10 +71,6 @@ function scons_build()
 
       xbb_activate_dependencies_dev
 
-      # TODO!
-      # For Python
-      xbb_activate_installed_bin
-
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
@@ -553,13 +549,7 @@ function tar_test()
     echo "hello" >hello.txt
 
     run_host_app_verbose "${test_bin_folder_path}/tar" -czvf hello.tar.gz hello.txt
-    (
-      # TODO!
-      # For xz
-      xbb_activate_installed_bin
-
-      run_host_app_verbose "${test_bin_folder_path}/tar" -cJvf hello.tar.xz hello.txt
-    )
+    run_host_app_verbose "${test_bin_folder_path}/tar" -cJvf hello.tar.xz hello.txt
 
     mv hello.txt hello.txt.orig
 
@@ -568,10 +558,6 @@ function tar_test()
     cmp hello.txt hello.txt.orig
 
     (
-      # TODO!
-      # For xz
-      xbb_activate_installed_bin
-
       rm hello.txt
       run_host_app_verbose "${test_bin_folder_path}/tar" -xJvf hello.tar.xz hello.txt
       cmp hello.txt hello.txt.orig
@@ -1694,11 +1680,8 @@ int yylex () { cin.get(c); return c; }
 int main() { yyparse(); }
 __EOF__
 
-    (
-      # TODO!
-      xbb_activate_installed_bin
-      run_host_app_verbose "${test_bin_folder_path}/bison" test.y -Wno-conflicts-sr
-    )
+    run_host_app_verbose "${test_bin_folder_path}/bison" test.y -Wno-conflicts-sr
+
     run_verbose g++ test.tab.c -o test -w
 
     expect_host_output "pass" "bash" "-c" "(echo '((()(())))()' | ./test)"
