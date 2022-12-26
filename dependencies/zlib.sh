@@ -9,20 +9,21 @@
 
 # -----------------------------------------------------------------------------
 
+# http://zlib.net
+# http://zlib.net/fossils/
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/zlib/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/zlib/files/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/zlib.rb
+
+# 2013-04-28 "1.2.8"
+# 2017-01-15 "1.2.11"
+# 2022-03-27, "1.2.12"
+# 2022-10-12, "1.2.13"
+
 function zlib_build()
 {
-  # http://zlib.net
-  # http://zlib.net/fossils/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/zlib/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/zlib/files/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/zlib.rb
-
-  # 2013-04-28 "1.2.8"
-  # 2017-01-15 "1.2.11"
-  # 2022-03-27, "1.2.12"
-
   local zlib_version="$1"
   local name_suffix="${2:-""}"
 
