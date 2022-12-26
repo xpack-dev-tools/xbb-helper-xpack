@@ -9,28 +9,30 @@
 
 # -----------------------------------------------------------------------------
 
+# To ensure builds stability, use slightly older releases.
+# https://sourceforge.net/projects/libpng/files/libpng16/
+# https://sourceforge.net/projects/libpng/files/libpng16/older-releases/
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/libpng/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/libpng/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libpng-git
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libpng
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libpng.rb
+
+# libpng_version="1.2.53"
+# libpng_version="1.6.17"
+# libpng_version="1.6.23" # 2016-06-09
+# libpng_version="1.6.36" # 2018-12-01
+# 2019-04-15, "1.6.37"
+# libpng_SFOLDER="libpng12"
+# libpng_SFOLDER="libpng16"
+# 2022-09-16, "1.6.38"
+
+# -----------------------------------------------------------------------------
+
 function libpng_build()
 {
-  # To ensure builds stability, use slightly older releases.
-  # https://sourceforge.net/projects/libpng/files/libpng16/
-  # https://sourceforge.net/projects/libpng/files/libpng16/older-releases/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libpng/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/libpng/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libpng-git
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libpng
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libpng.rb
-
-  # libpng_version="1.2.53"
-  # libpng_version="1.6.17"
-  # libpng_version="1.6.23" # 2016-06-09
-  # libpng_version="1.6.36" # 2018-12-01
-  # 2019-04-15, "1.6.37"
-  # libpng_SFOLDER="libpng12"
-  # libpng_SFOLDER="libpng16"
-  # 2022-09-16, "1.6.38"
-
   local libpng_version="$1"
   local libpng_major_minor_version="$(echo ${libpng_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.[0-9].*|\1\2|')"
 

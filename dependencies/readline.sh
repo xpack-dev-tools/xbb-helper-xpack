@@ -9,25 +9,27 @@
 
 # -----------------------------------------------------------------------------
 
+# https://tiswww.case.edu/php/chet/readline/rltop.html
+# https://ftp.gnu.org/gnu/readline/
+# https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/readline/trunk/PKGBUILD
+
+# depends=(glibc gcc-libs)
+# https://archlinuxarm.org/packages/aarch64/readline/files/PKGBUILD
+
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-readline/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/readline.rb
+
+# 2019-01-07, "8.0"
+# 2020-12-06, "8.1"
+# 2022-01-05, "8.1.2"
+
+# -----------------------------------------------------------------------------
+
 function readline_build()
 {
-  # https://tiswww.case.edu/php/chet/readline/rltop.html
-  # https://ftp.gnu.org/gnu/readline/
-  # https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/readline/trunk/PKGBUILD
-
-  # depends=(glibc gcc-libs)
-  # https://archlinuxarm.org/packages/aarch64/readline/files/PKGBUILD
-
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-readline/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/readline.rb
-
-  # 2019-01-07, "8.0"
-  # 2020-12-06, "8.1"
-  # 2022-01-05, "8.1.2"
-
   local readline_version="$1"
   local readline_version_major="$(echo ${readline_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)|\1|')"
   local readline_version_minor="$(echo ${readline_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)|\2|')"

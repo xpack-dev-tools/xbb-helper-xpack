@@ -9,32 +9,34 @@
 
 # -----------------------------------------------------------------------------
 
+# http://ftp.gnome.org/pub/GNOME/sources/glib
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/glib2/trunk/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=glib2-git
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-glib2
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/glib.rb
+
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-glib2/PKGBUILD
+
+# 2015-May-13, "2.44.1"
+# 2017-Mar-13, "2.51.5"
+# 2018-Sep-21, "2.56.3"
+# 2018-Dec-18, "2.56.4"
+# --- Starting with 2.57, the build was migrated to meson (TODO) ---
+# 2018-Aug-23, "2.57.3"
+# 2019-Sep-02, "2.60.7"
+# 2021-May-11, "2.68.4"
+# 2021-Sep-17, "2.70.0"
+# 2021-Dec-03, "2.70.2"
+# 2022-Apr-14, "2.72.1"
+# 2022-Aug-05, "2.73.3"
+# 2022-Oct-25, "2.74.1"
+
+# -----------------------------------------------------------------------------
+
 function glib_build()
 {
-  # http://ftp.gnome.org/pub/GNOME/sources/glib
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/glib2/trunk/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=glib2-git
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-glib2
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/glib.rb
-
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-glib2/PKGBUILD
-
-  # 2015-May-13, "2.44.1"
-  # 2017-Mar-13, "2.51.5"
-  # 2018-Sep-21, "2.56.3"
-  # 2018-Dec-18, "2.56.4"
-  # --- Starting with 2.57, the build was migrated to meson (TODO) ---
-  # 2018-Aug-23, "2.57.3"
-  # 2019-Sep-02, "2.60.7"
-  # 2021-May-11, "2.68.4"
-  # 2021-Sep-17, "2.70.0"
-  # 2021-Dec-03, "2.70.2"
-  # 2022-Apr-14, "2.72.1"
-  # 2022-Aug-05, "2.73.3"
-  # 2022-Oct-25, "2.74.1"
-
   local glib_version="$1"
   local glib_major_version=$(echo ${glib_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.[0-9].*|\1|')
   local glib_minor_version=$(echo ${glib_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.[0-9].*|\2|')

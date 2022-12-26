@@ -9,13 +9,15 @@
 
 # -----------------------------------------------------------------------------
 
+# https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-newlib/trunk/PKGBUILD
+# https://github.com/archlinux/svntogit-community/blob/packages/riscv32-elf-newlib/trunk/PKGBUILD
+
+# -----------------------------------------------------------------------------
+
 # Environment variables:
 # XBB_NEWLIB_SRC_FOLDER_NAME
 # XBB_NEWLIB_ARCHIVE_URL
 # XBB_NEWLIB_ARCHIVE_NAME
-
-# https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-newlib/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/riscv32-elf-newlib/trunk/PKGBUILD
 
 # For the nano build, call it with "-nano".
 # $1="" or $1="-nano"

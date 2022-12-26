@@ -9,23 +9,25 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.lysator.liu.se/~nisse/nettle/
+# https://ftp.gnu.org/gnu/nettle/
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/nettle/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/nettle/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=nettle-git
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/nettle.rb
+
+# 2017-11-19, "3.4"
+# 2018-12-04, "3.4.1"
+# 2019-06-27, "3.5.1"
+# 2021-06-07, "3.7.3"
+# 2022-07-27, "3.8.1"
+
+# -----------------------------------------------------------------------------
+
 function nettle_build()
 {
-  # https://www.lysator.liu.se/~nisse/nettle/
-  # https://ftp.gnu.org/gnu/nettle/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/nettle/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/nettle/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=nettle-git
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/nettle.rb
-
-  # 2017-11-19, "3.4"
-  # 2018-12-04, "3.4.1"
-  # 2019-06-27, "3.5.1"
-  # 2021-06-07, "3.7.3"
-  # 2022-07-27, "3.8.1"
-
   local nettle_version="$1"
 
   local nettle_src_folder_name="nettle-${nettle_version}"

@@ -9,28 +9,32 @@
 
 # -----------------------------------------------------------------------------
 
+# Replacement for the old libcrypt.so.1.
+
+# https://github.com/besser82/libxcrypt
+# https://github.com/besser82/libxcrypt/archive/v4.4.15.tar.gz
+# https://github.com/besser82/libxcrypt/releases/download/v4.4.28/libxcrypt-4.4.28.tar.xz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/libxcrypt/trunk/PKGBUILD
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libxcrypt.rb
+
+# 26 Jul 2018, "4.1.1"
+# 26 Oct 2018, "4.2.3"
+# 14 Nov 2018, "4.3.4"
+# Requires new autotools.
+# m4/ax_valgrind_check.m4:80: warning: macro `AM_EXTRA_RECURSIVE_TARGETS' not found in library
+# Feb 25 2020, "4.4.15"
+# 23 Aug 2020, "4.4.17"
+# 1 May 2021, "4.4.20"
+# 18 Sep 2021, "4.4.26"
+# 02 Feb 2022, "4.4.28"
+
+# Fails on Windows.
+
+# -----------------------------------------------------------------------------
+
 function libxcrypt_build()
 {
-  # Replacement for the old libcrypt.so.1.
-
-  # https://github.com/besser82/libxcrypt
-  # https://github.com/besser82/libxcrypt/archive/v4.4.15.tar.gz
-  # https://github.com/besser82/libxcrypt/releases/download/v4.4.28/libxcrypt-4.4.28.tar.xz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libxcrypt/trunk/PKGBUILD
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libxcrypt.rb
-
-  # 26 Jul 2018, "4.1.1"
-  # 26 Oct 2018, "4.2.3"
-  # 14 Nov 2018, "4.3.4"
-  # Requires new autotools.
-  # m4/ax_valgrind_check.m4:80: warning: macro `AM_EXTRA_RECURSIVE_TARGETS' not found in library
-  # Feb 25 2020, "4.4.15"
-  # 23 Aug 2020, "4.4.17"
-  # 1 May 2021, "4.4.20"
-  # 18 Sep 2021, "4.4.26"
-  # 02 Feb 2022, "4.4.28"
-
   local libxcrypt_version="$1"
 
   local libxcrypt_src_folder_name="libxcrypt-${libxcrypt_version}"

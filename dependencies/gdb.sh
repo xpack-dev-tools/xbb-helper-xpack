@@ -9,25 +9,27 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/gdb/
+# https://ftp.gnu.org/gnu/gdb/
+# https://ftp.gnu.org/gnu/gdb/gdb-10.2.tar.xz
+
+# GDB Text User Interface
+# https://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_19.html#SEC197
+
+# 2019-05-11, "8.3"
+# 2020-02-08, "9.1"
+# 2020-05-23, "9.2"
+# 2020-10-24, "10.1"
+# 2021-04-25, "10.2"
+# 2022-01-16, "11.2"
+# 2022-05-01, "12.1"
+
+# -----------------------------------------------------------------------------
+
 # Called multile times, with and without python support.
 # $1="" or $1="-py3"
 function gdb_build()
 {
-  # https://www.gnu.org/software/gdb/
-  # https://ftp.gnu.org/gnu/gdb/
-  # https://ftp.gnu.org/gnu/gdb/gdb-10.2.tar.xz
-
-  # GDB Text User Interface
-  # https://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_19.html#SEC197
-
-  # 2019-05-11, "8.3"
-  # 2020-02-08, "9.1"
-  # 2020-05-23, "9.2"
-  # 2020-10-24, "10.1"
-  # 2021-04-25, "10.2"
-  # 2022-01-16, "11.2"
-  # 2022-05-01, "12.1"
-
   local gdb_version="$1"
 
   local gdb_src_folder_name="gdb-${gdb_version}"

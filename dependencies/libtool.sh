@@ -9,20 +9,22 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/libtool/
+# http://ftpmirror.gnu.org/libtool/
+# http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz
+
+# https://archlinuxarm.org/packages/aarch64/libtool/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libtool-git
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libtool.rb
+
+# 15-Feb-2015, "2.4.6" # Fails on macOS 12.6
+# 2022-03-17, "2.4.7"
+
+# -----------------------------------------------------------------------------
+
 function libtool_build()
 {
-  # https://www.gnu.org/software/libtool/
-  # http://ftpmirror.gnu.org/libtool/
-  # http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz
-
-  # https://archlinuxarm.org/packages/aarch64/libtool/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libtool-git
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libtool.rb
-
-  # 15-Feb-2015, "2.4.6" # Fails on macOS 12.6
-  # 2022-03-17, "2.4.7"
-
   local libtool_version="$1"
 
   local step="${2:-}"

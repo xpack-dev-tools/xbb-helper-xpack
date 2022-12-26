@@ -9,25 +9,27 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.libsdl.org/
+# https://www.libsdl.org/release
+
+# https://archlinuxarm.org/packages/aarch64/sdl2/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=sdl2-hg
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-sdl2
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/sdl2.rb
+
+# sdl2_version="2.0.3" # 2014-03-16
+# sdl2_version="2.0.5" # 2016-10-20
+# sdl2_version="2.0.9" # 2018-10-31
+# 2021-11-30, "2.0.18"
+# 2022-04-25, "2.0.22"
+# 2022-08-19, "2.24.0" # Fails on arm linux with xbb v5.0.0
+# 2022-11-01, "2.24.2"
+
+# -----------------------------------------------------------------------------
+
 function sdl2_build()
 {
-  # https://www.libsdl.org/
-  # https://www.libsdl.org/release
-
-  # https://archlinuxarm.org/packages/aarch64/sdl2/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=sdl2-hg
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-sdl2
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/sdl2.rb
-
-  # sdl2_version="2.0.3" # 2014-03-16
-  # sdl2_version="2.0.5" # 2016-10-20
-  # sdl2_version="2.0.9" # 2018-10-31
-  # 2021-11-30, "2.0.18"
-  # 2022-04-25, "2.0.22"
-  # 2022-08-19, "2.24.0" # Fails on arm linux with xbb v5.0.0
-  # 2022-11-01, "2.24.2"
-
   local sdl2_version="$1"
 
   local sdl2_src_folder_name="SDL2-${sdl2_version}"

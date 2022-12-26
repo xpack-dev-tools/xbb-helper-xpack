@@ -9,18 +9,20 @@
 
 # -----------------------------------------------------------------------------
 
+# https://github.com/PCRE2Project/pcre2
+# https://github.com/PCRE2Project/pcre2/releases
+# https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.40/pcre2-10.40.tar.bz2
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/pcre2/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/pcre2/files/PKGBUILD
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/pcre2.rb
+
+# 15 Apr 2022, "10.40"
+
+# -----------------------------------------------------------------------------
+
 function pcre2_build()
 {
-  # https://github.com/PCRE2Project/pcre2
-  # https://github.com/PCRE2Project/pcre2/releases
-  # https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.40/pcre2-10.40.tar.bz2
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/pcre2/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/pcre2/files/PKGBUILD
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/pcre2.rb
-
-  # 15 Apr 2022, "10.40"
-
   local pcre2_version="$1"
 
   local pcre2_src_folder_name="pcre2-${pcre2_version}"

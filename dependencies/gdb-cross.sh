@@ -9,15 +9,10 @@
 
 # -----------------------------------------------------------------------------
 
-# Environment variables:
-# XBB_GDB_VERSION
-# XBB_GDB_SRC_FOLDER_NAME
-# XBB_GDB_ARCHIVE_URL
-# XBB_GDB_ARCHIVE_NAME
-# XBB_GDB_PATCH_FILE_NAME
-
 # https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-gdb/trunk/PKGBUILD
 # https://github.com/archlinux/svntogit-community/blob/packages/riscv32-elf-gdb/trunk/PKGBUILD
+
+# -----------------------------------------------------------------------------
 
 function gdb_cross_build_dependencies()
 {
@@ -82,6 +77,13 @@ function gdb_cross_build_dependencies()
     fi
   fi
 }
+
+# Environment variables:
+# XBB_GDB_VERSION
+# XBB_GDB_SRC_FOLDER_NAME
+# XBB_GDB_ARCHIVE_URL
+# XBB_GDB_ARCHIVE_NAME
+# XBB_GDB_PATCH_FILE_NAME
 
 # Called multile times, with and without python support.
 # $1="" or $1="-py" or $1="-py3"

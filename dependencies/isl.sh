@@ -9,25 +9,28 @@
 
 # -----------------------------------------------------------------------------
 
+# http://isl.gforge.inria.fr - deprecated
+# https://sourceforge.net/projects/libisl/files/
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/libisl/trunk/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/isl.rb
+
+# 2015-06-12 "0.15"
+# 2016-01-15 "0.16.1"
+# 2016-12-20 "0.18"
+# 2019-03-26 "0.21"
+# 2020-01-16 "0.22"
+# 2020-11-11 "0.23"
+# 2021-05-01 "0.24"
+# 2022-07-02 "0.25"
+
 # Depends on gmp.
+
+# -----------------------------------------------------------------------------
+
 function isl_build()
 {
-  # http://isl.gforge.inria.fr - deprecated
-  # https://sourceforge.net/projects/libisl/files/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libisl/trunk/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/isl.rb
-
-  # 2015-06-12 "0.15"
-  # 2016-01-15 "0.16.1"
-  # 2016-12-20 "0.18"
-  # 2019-03-26 "0.21"
-  # 2020-01-16 "0.22"
-  # 2020-11-11 "0.23"
-  # 2021-05-01 "0.24"
-  # 2022-07-02 "0.25"
-
   local isl_version="$1"
   local name_suffix="${2:-""}"
 

@@ -9,22 +9,24 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/coreutils/
+# https://ftp.gnu.org/gnu/coreutils/
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/coreutils/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/coreutils/files/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/coreutils.rb
+
+# 2018-07-01, "8.30"
+# 2019-03-10 "8.31"
+# 2020-03-05, "8.32"
+# 2021-09-24, "9.0"
+# 2022-04-15, "9.1"
+
+# -----------------------------------------------------------------------------
+
 function coreutils_build()
 {
-  # https://www.gnu.org/software/coreutils/
-  # https://ftp.gnu.org/gnu/coreutils/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/coreutils/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/coreutils/files/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/coreutils.rb
-
-  # 2018-07-01, "8.30"
-  # 2019-03-10 "8.31"
-  # 2020-03-05, "8.32"
-  # 2021-09-24, "9.0"
-  # 2022-04-15, "9.1"
-
   local coreutils_version="$1"
 
   local coreutils_src_folder_name="coreutils-${coreutils_version}"

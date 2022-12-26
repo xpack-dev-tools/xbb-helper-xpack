@@ -10,37 +10,40 @@
 
 # -----------------------------------------------------------------------------
 
+# https://ftp.gnu.org/gnu/ncurses/
+# https://ftp.gnu.org/gnu/ncurses/ncurses-6.3.tar.gz
+
+# https://invisible-island.net/ncurses/
+# https://invisible-mirror.net/archives/ncurses/
+# https://invisible-mirror.net/archives/ncurses/ncurses-6.2.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/ncurses/trunk/PKGBUILD
+# depends=(glibc gcc-libs)
+# https://archlinuxarm.org/packages/aarch64/ncurses/files/PKGBUILD
+# http://deb.debian.org/debian/pool/main/n/ncurses/ncurses_6.1+20181013.orig.tar.gz.asc
+
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-ncurses/PKGBUILD
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-ncurses/001-use-libsystre.patch
+# https://github.com/msys2/MSYS2-packages/blob/master/ncurses/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/ncurses.rb
+
+# _4421.c:1364:15: error: expected ‘)’ before ‘int’
+# ../include/curses.h:1906:56: note: in definition of macro ‘mouse_trafo’
+# 1906 | #define mouse_trafo(y,x,to_screen) wmouse_trafo(stdscr,y,x,to_screen)
+
+# 26 Feb 2011, "5.8" # build fails
+# 27 Jan 2018, "5.9" # build fails
+# 27 Jan 2018, "6.1"
+# 12 Feb 2020, "6.2"
+# 2021-11-08, "6.3"
+
 # Could not make it work on Windows.
+
+# -----------------------------------------------------------------------------
+
 function ncurses_build()
 {
-  # https://ftp.gnu.org/gnu/ncurses/
-  # https://ftp.gnu.org/gnu/ncurses/ncurses-6.3.tar.gz
-
-  # https://invisible-island.net/ncurses/
-  # https://invisible-mirror.net/archives/ncurses/
-  # https://invisible-mirror.net/archives/ncurses/ncurses-6.2.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/ncurses/trunk/PKGBUILD
-  # depends=(glibc gcc-libs)
-  # https://archlinuxarm.org/packages/aarch64/ncurses/files/PKGBUILD
-  # http://deb.debian.org/debian/pool/main/n/ncurses/ncurses_6.1+20181013.orig.tar.gz.asc
-
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-ncurses/PKGBUILD
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-ncurses/001-use-libsystre.patch
-  # https://github.com/msys2/MSYS2-packages/blob/master/ncurses/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/ncurses.rb
-
-  # _4421.c:1364:15: error: expected ‘)’ before ‘int’
-  # ../include/curses.h:1906:56: note: in definition of macro ‘mouse_trafo’
-  # 1906 | #define mouse_trafo(y,x,to_screen) wmouse_trafo(stdscr,y,x,to_screen)
-
-  # 26 Feb 2011, "5.8" # build fails
-  # 27 Jan 2018, "5.9" # build fails
-  # 27 Jan 2018, "6.1"
-  # 12 Feb 2020, "6.2"
-  # 2021-11-08, "6.3"
-
   local ncurses_version="$1"
   local ncurses_version_major="$(echo ${ncurses_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)|\1|')"
   local ncurses_version_minor="$(echo ${ncurses_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)|\2|')"

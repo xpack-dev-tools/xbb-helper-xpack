@@ -9,16 +9,18 @@
 
 # -----------------------------------------------------------------------------
 
+# http://www.intra2net.com/en/developer/libftdi/download.php
+# https://www.intra2net.com/en/developer/libftdi/download/libftdi1-1.4.tar.bz2
+
+# 1.2 (no date)
+# libftdi_version="1.2" # +PATCH!
+# 1.4 +PATCH
+# 1.5 +PATCH
+
+# -----------------------------------------------------------------------------
+
 function libftdi_build()
 {
-  # http://www.intra2net.com/en/developer/libftdi/download.php
-  # https://www.intra2net.com/en/developer/libftdi/download/libftdi1-1.4.tar.bz2
-
-  # 1.2 (no date)
-  # libftdi_version="1.2" # +PATCH!
-  # 1.4 +PATCH
-  # 1.5 +PATCH
-
   local libftdi_version="$1"
 
   local libftdi_src_folder_name="libftdi1-${libftdi_version}"

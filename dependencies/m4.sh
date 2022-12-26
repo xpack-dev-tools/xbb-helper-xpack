@@ -9,20 +9,22 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/m4/
+# https://ftp.gnu.org/gnu/m4/
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/m4/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/m4/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=m4-git
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/m4.rb
+
+# 2016-12-31, "1.4.18"
+# 2021-05-28, "1.4.19"
+
+# -----------------------------------------------------------------------------
+
 function m4_build()
 {
-  # https://www.gnu.org/software/m4/
-  # https://ftp.gnu.org/gnu/m4/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/m4/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/m4/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=m4-git
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/m4.rb
-
-  # 2016-12-31, "1.4.18"
-  # 2021-05-28, "1.4.19"
-
   local m4_version="$1"
 
   local m4_src_folder_name="m4-${m4_version}"

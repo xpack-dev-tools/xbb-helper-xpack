@@ -9,23 +9,25 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/libiconv/
+# https://ftp.gnu.org/pub/gnu/libiconv/
+
+# https://github.com/archlinux/svntogit-community/blob/packages/libiconv/trunk/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libiconv
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libiconv.rb
+
+# 2011-08-07 1.14"
+# 2017-02-02 "1.15"
+# 2019-04-26 "1.16"
+# 2022-05-15 "1.17"
+
 # Note: the build fails on Ubuntu/Debian!
+
+# -----------------------------------------------------------------------------
 
 function libiconv_build()
 {
-  # https://www.gnu.org/software/libiconv/
-  # https://ftp.gnu.org/pub/gnu/libiconv/
-
-  # https://github.com/archlinux/svntogit-community/blob/packages/libiconv/trunk/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libiconv
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libiconv.rb
-
-  # 2011-08-07 1.14"
-  # 2017-02-02 "1.15"
-  # 2019-04-26 "1.16"
-  # 2022-05-15 "1.17"
-
   local libiconv_version="$1"
   local name_suffix="${2:-""}"
 

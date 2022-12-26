@@ -10,21 +10,23 @@
 
 # -----------------------------------------------------------------------------
 
+# https://tukaani.org/xz/
+# https://sourceforge.net/projects/lzmautils/files/
+
+# https://archlinuxarm.org/packages/aarch64/xz/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=xz-git
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/xz.rb
+
+# 2016-12-30 "5.2.3"
+# 2018-04-29 "5.2.4"
+# 2020-03-17 "5.2.5"
+# 2022-08-12 "5.2.6"
+
+# -----------------------------------------------------------------------------
+
 function xz_build()
 {
-  # https://tukaani.org/xz/
-  # https://sourceforge.net/projects/lzmautils/files/
-
-  # https://archlinuxarm.org/packages/aarch64/xz/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=xz-git
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/xz.rb
-
-  # 2016-12-30 "5.2.3"
-  # 2018-04-29 "5.2.4"
-  # 2020-03-17 "5.2.5"
-  # 2022-08-12 "5.2.6"
-
   local xz_version="$1"
 
   local xz_src_folder_name="xz-${xz_version}"

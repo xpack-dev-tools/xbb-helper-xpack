@@ -9,26 +9,28 @@
 
 # -----------------------------------------------------------------------------
 
+# Oct 26, 2011, "0.7.0"
+
+# https://github.com/signal11/hidapi/archive/hidapi-0.8.0-rc1.zip
+# Oct 7, 2013, "0.8.0-rc1", latest on signal11's repository
+
+# https://github.com/libusb/hidapi/releases
+# https://github.com/libusb/hidapi/archive/hidapi-0.9.0.zip
+# Jun 19 2019 "hidapi-0.9.0", maintained releases by libusb
+
+# https://github.com/archlinux/svntogit-community/blob/packages/hidapi/trunk/PKGBUILD
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/hidapi.rb
+
+# Nov 24, 2020, 0.10.1
+# 27 Sep 2021, "0.11.0"
+# 23 Dec 2021, "0.11.1"
+# 3 Jan, 2022, "0.11.2"
+# 25 May 2022, "0.12.0"
+
+# -----------------------------------------------------------------------------
+
 function hidapi_build()
 {
-  # Oct 26, 2011, "0.7.0"
-
-  # https://github.com/signal11/hidapi/archive/hidapi-0.8.0-rc1.zip
-  # Oct 7, 2013, "0.8.0-rc1", latest on signal11's repository
-
-  # https://github.com/libusb/hidapi/releases
-  # https://github.com/libusb/hidapi/archive/hidapi-0.9.0.zip
-  # Jun 19 2019 "hidapi-0.9.0", maintained releases by libusb
-
-  # https://github.com/archlinux/svntogit-community/blob/packages/hidapi/trunk/PKGBUILD
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/hidapi.rb
-
-  # Nov 24, 2020, 0.10.1
-  # 27 Sep 2021, "0.11.0"
-  # 23 Dec 2021, "0.11.1"
-  # 3 Jan, 2022, "0.11.2"
-  # 25 May 2022, "0.12.0"
-
   local hidapi_version="$1"
 
   local hidapi_src_folder_name="hidapi-hidapi-${hidapi_version}"

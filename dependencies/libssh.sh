@@ -9,23 +9,25 @@
 
 # -----------------------------------------------------------------------------
 
+# C library SSHv1/SSHv2 client and server protocols
+# https://www.libssh.org/
+# https://www.libssh.org/files/
+# https://www.libssh.org/files/0.9/libssh-0.9.6.tar.xz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/libssh/trunk/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libssh
+
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-libssh/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libssh.rb
+
+# 2021-08-26 "0.9.6"
+# 2022-08-30, "0.10.1"
+
+# -----------------------------------------------------------------------------
+
 function libssh_build()
 {
-  # C library SSHv1/SSHv2 client and server protocols
-  # https://www.libssh.org/
-  # https://www.libssh.org/files/
-  # https://www.libssh.org/files/0.9/libssh-0.9.6.tar.xz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libssh/trunk/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libssh
-
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-libssh/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libssh.rb
-
-  # 2021-08-26 "0.9.6"
-  # 2022-08-30, "0.10.1"
-
   local libssh_version="$1"
   local libssh_major_minor_version="$(echo ${libssh_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.[0-9].*|\1.\2|')"
 

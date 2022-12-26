@@ -9,6 +9,21 @@
 
 # -----------------------------------------------------------------------------
 
+# Stick to upstream as long as possible.
+# https://github.com/qemu/qemu/tags
+
+# The second choice is the xPack fork.
+# https://github.com/xpack-dev-tools/qemu
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/qemu/trunk/PKGBUILD
+# https://github.com/archlinux/svntogit-community/blob/packages/libvirt/trunk/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/qemu.rb
+
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-qemu/PKGBUILD
+
+# -----------------------------------------------------------------------------
+
 # Environment variables:
 # XBB_QEMU_GIT_URL
 # XBB_QEMU_GIT_BRANCH
@@ -16,19 +31,6 @@
 
 function qemu_build()
 {
-  # Stick to upstream as long as possible.
-  # https://github.com/qemu/qemu/tags
-
-  # The second choice is the xPack fork.
-  # https://github.com/xpack-dev-tools/qemu
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/qemu/trunk/PKGBUILD
-  # https://github.com/archlinux/svntogit-community/blob/packages/libvirt/trunk/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/qemu.rb
-
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-qemu/PKGBUILD
-
   local qemu_version="$1"
   local qemu_target="$2" # arm, riscv, tools
 

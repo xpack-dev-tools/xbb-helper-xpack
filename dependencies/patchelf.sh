@@ -9,29 +9,31 @@
 
 # -----------------------------------------------------------------------------
 
+# https://nixos.org/patchelf.html
+# https://github.com/NixOS/patchelf
+# https://github.com/NixOS/patchelf/releases/
+# https://github.com/NixOS/patchelf/releases/download/0.12/patchelf-0.12.tar.bz2
+# https://github.com/NixOS/patchelf/archive/0.12.tar.gz
+# https://github.com/NixOS/patchelf/releases/download/0.14.5/patchelf-0.14.5.tar.bz2
+
+# https://github.com/archlinux/svntogit-community/blob/packages/patchelf/trunk/PKGBUILD
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/patchelf.rb
+
+
+# 2016-02-29, "0.9"
+# 2019-03-28, "0.10"
+# 2020-06-09, "0.11"
+# 2020-08-27, "0.12"
+# 05 Aug 2021, "0.13"
+# 05 Dec 2021, "0.14.3"
+# 16 Jul 2022, "0.14.4"
+# 21 Feb 2022, "0.14.5"
+# 16 Jul 2022, "0.15.0"
+
+# -----------------------------------------------------------------------------
+
 function patchelf_build()
 {
-  # https://nixos.org/patchelf.html
-  # https://github.com/NixOS/patchelf
-  # https://github.com/NixOS/patchelf/releases/
-  # https://github.com/NixOS/patchelf/releases/download/0.12/patchelf-0.12.tar.bz2
-  # https://github.com/NixOS/patchelf/archive/0.12.tar.gz
-  # https://github.com/NixOS/patchelf/releases/download/0.14.5/patchelf-0.14.5.tar.bz2
-
-  # https://github.com/archlinux/svntogit-community/blob/packages/patchelf/trunk/PKGBUILD
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/patchelf.rb
-
-
-  # 2016-02-29, "0.9"
-  # 2019-03-28, "0.10"
-  # 2020-06-09, "0.11"
-  # 2020-08-27, "0.12"
-  # 05 Aug 2021, "0.13"
-  # 05 Dec 2021, "0.14.3"
-  # 16 Jul 2022, "0.14.4"
-  # 21 Feb 2022, "0.14.5"
-  # 16 Jul 2022, "0.15.0"
-
   local patchelf_version="$1"
 
   local patchelf_src_folder_name="patchelf-${patchelf_version}"

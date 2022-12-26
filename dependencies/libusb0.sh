@@ -9,13 +9,16 @@
 
 # -----------------------------------------------------------------------------
 
+# https://sourceforge.net/projects/libusb/files/libusb-compat-0.1/
+
+# 2013-05-21, 0.1.5, latest
+
 # Required by GNU/Linux and macOS.
+
+# -----------------------------------------------------------------------------
+
 function libusb0_build()
 {
-  # https://sourceforge.net/projects/libusb/files/libusb-compat-0.1/
-
-  # 2013-05-21, 0.1.5, latest
-
   local libusb0_version="$1"
 
   local libusb0_src_folder_name="libusb-compat-${libusb0_version}"

@@ -9,21 +9,24 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.thrysoee.dk/editline/
+# https://www.thrysoee.dk/editline/libedit-20221030-3.1.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/libedit/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/libedit/files/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libedit.rb
+
+# 2021-05-22, "20210522-3.1"
+# 2021-09-10, "20210910-3.1"
+# 2022-10-30, "20211030-3.1"
+
 # depends=('glibc' 'ncurses' 'libncursesw.so')
+
+# -----------------------------------------------------------------------------
+
 function libedit_build()
 {
-  # https://www.thrysoee.dk/editline/
-  # https://www.thrysoee.dk/editline/libedit-20221030-3.1.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libedit/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/libedit/files/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libedit.rb
-
-  # 2021-05-22, "20210522-3.1"
-  # 2021-09-10, "20210910-3.1"
-  # 2022-10-30, "20211030-3.1"
-
   local libedit_version="$1"
   local libedit_version_short="$(echo ${libedit_version} | sed -e 's|[0-9]*-||')"
 

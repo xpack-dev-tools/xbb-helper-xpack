@@ -9,16 +9,18 @@
 
 # -----------------------------------------------------------------------------
 
+# https://sourceforge.net/projects/libusb/files/libusb-1.0/
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libusb
+
+# 2015-09-14, 1.0.20
+# 2018-03-25, 1.0.22
+# 2020-12-11, 1.0.24
+# 2022-04-10, "1.0.26"
+
+# -----------------------------------------------------------------------------
+
 function libusb1_build()
 {
-  # https://sourceforge.net/projects/libusb/files/libusb-1.0/
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libusb
-
-  # 2015-09-14, 1.0.20
-  # 2018-03-25, 1.0.22
-  # 2020-12-11, 1.0.24
-  # 2022-04-10, "1.0.26"
-
   local libusb1_version="$1"
 
   local libusb1_src_folder_name="libusb-${libusb1_version}"

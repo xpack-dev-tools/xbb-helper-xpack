@@ -9,22 +9,25 @@
 
 # -----------------------------------------------------------------------------
 
+# http://www.multiprecision.org/
+# ftp://ftp.gnu.org/gnu/mpc
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/mpc/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/mpc/files/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mpc.rb
+
+# 20 Feb 2015 "1.0.3"
+# 2018-01-11 "1.1.0"
+# 2020-08 "1.2.0"
+# 2020-10 "1.2.1"
+
 # Depends on gmp, mpfr.
+
+# -----------------------------------------------------------------------------
+
 function mpc_build()
 {
-  # http://www.multiprecision.org/
-  # ftp://ftp.gnu.org/gnu/mpc
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/mpc/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/mpc/files/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mpc.rb
-
-  # 20 Feb 2015 "1.0.3"
-  # 2018-01-11 "1.1.0"
-  # 2020-08 "1.2.0"
-  # 2020-10 "1.2.1"
-
   local mpc_version="$1"
   local name_suffix="${2:-""}"
 

@@ -19,8 +19,9 @@
 # 2022-02-09, "2.38"
 # 2022-08-05, "2.39"
 
+# -----------------------------------------------------------------------------
+
 # Environment variables:
-#
 # XBB_BINUTILS_SRC_FOLDER_NAME
 # XBB_BINUTILS_ARCHIVE_NAME
 # XBB_BINUTILS_URL

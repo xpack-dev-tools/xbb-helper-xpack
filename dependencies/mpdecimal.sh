@@ -9,21 +9,23 @@
 
 # -----------------------------------------------------------------------------
 
+# http://www.bytereef.org/mpdecimal/index.html
+# https://www.bytereef.org/mpdecimal/download.html
+# https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-2.4.2.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/mpdecimal/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/mpdecimal/files/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mpdecimal.rb
+
+# 2016-02-28, "2.4.2"
+# 2020-06-28, "2.5.0"
+# 2021-01-28, "2.5.1"
+
+# -----------------------------------------------------------------------------
+
 function mpdecimal_build()
 {
-  # http://www.bytereef.org/mpdecimal/index.html
-  # https://www.bytereef.org/mpdecimal/download.html
-  # https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-2.4.2.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/mpdecimal/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/mpdecimal/files/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mpdecimal.rb
-
-  # 2016-02-28, "2.4.2"
-  # 2020-06-28, "2.5.0"
-  # 2021-01-28, "2.5.1"
-
   local mpdecimal_version="$1"
 
   local mpdecimal_src_folder_name="mpdecimal-${mpdecimal_version}"

@@ -9,6 +9,11 @@
 
 # -----------------------------------------------------------------------------
 
+# https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-gcc/trunk/PKGBUILD
+# https://github.com/archlinux/svntogit-community/blob/packages/riscv64-elf-gcc/trunk/PKGBUILD
+
+# -----------------------------------------------------------------------------
+
 function gcc_cross_build_dependencies()
 {
   libiconv_build "${XBB_LIBICONV_VERSION}"
@@ -207,9 +212,6 @@ function gcc_cross_generate_riscv_multilib_file()
 # XBB_GCC_ARCHIVE_URL
 # XBB_GCC_ARCHIVE_NAME
 # XBB_GCC_PATCH_FILE_NAME
-
-# https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-gcc/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/riscv64-elf-gcc/trunk/PKGBUILD
 
 function gcc_cross_build_first()
 {

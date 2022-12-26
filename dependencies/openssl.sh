@@ -9,37 +9,39 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.openssl.org
+# https://www.openssl.org/source/
+
+# https://www.openssl.org/source/openssl-1.1.1n.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/openssl/trunk/PKGBUILD
+
+# https://archlinuxarm.org/packages/aarch64/openssl/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=openssl-static
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=openssl-git
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/openssl@1.1.rb
+
+# 2017-Nov-02
+# XBB_OPENSSL_VERSION="1.1.0g"
+# The new version deprecated CRYPTO_set_locking_callback, and yum fails with
+# /usr/lib64/python2.6/site-packages/pycurl.so: undefined symbol: CRYPTO_set_locking_callback
+
+# 2017-Dec-07, "1.0.2n"
+# 2019-Feb-26, "1.0.2r"
+# 2019-Feb-26, "1.1.1b"
+# 2019-Sep-10, "1.1.1d"
+# 2019-Dec-20, "1.0.2u"
+# 2020-Sep-22, "1.1.1h"
+# 2021-Mar-25, "1.1.1k"
+# 2021-Aug-24, "1.1.1l"
+# 2022-Mar-15, "1.1.1n"
+# 2022-Jul-05, "1.1.1q"
+
+# -----------------------------------------------------------------------------
+
 function openssl_build()
 {
-  # https://www.openssl.org
-  # https://www.openssl.org/source/
-
-  # https://www.openssl.org/source/openssl-1.1.1n.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/openssl/trunk/PKGBUILD
-
-  # https://archlinuxarm.org/packages/aarch64/openssl/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=openssl-static
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=openssl-git
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/openssl@1.1.rb
-
-  # 2017-Nov-02
-  # XBB_OPENSSL_VERSION="1.1.0g"
-  # The new version deprecated CRYPTO_set_locking_callback, and yum fails with
-  # /usr/lib64/python2.6/site-packages/pycurl.so: undefined symbol: CRYPTO_set_locking_callback
-
-  # 2017-Dec-07, "1.0.2n"
-  # 2019-Feb-26, "1.0.2r"
-  # 2019-Feb-26, "1.1.1b"
-  # 2019-Sep-10, "1.1.1d"
-  # 2019-Dec-20, "1.0.2u"
-  # 2020-Sep-22, "1.1.1h"
-  # 2021-Mar-25, "1.1.1k"
-  # 2021-Aug-24, "1.1.1l"
-  # 2022-Mar-15, "1.1.1n"
-  # "1.1.1q"
-
   local openssl_version="$1"
   # Numbers
   local openssl_version_major=$(echo ${openssl_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)\..*|\1|')

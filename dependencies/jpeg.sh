@@ -13,21 +13,23 @@
 # See also
 # https://archlinuxarm.org/packages/aarch64/libjpeg-turbo/files/PKGBUILD
 
+# http://www.ijg.org
+# http://www.ijg.org/files/
+
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libjpeg9
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/jpeg.rb
+
+# Jan 19 10:26 2014 "9a"
+# Jan 17 10:46 2016 "9b"
+# Jan 14 10:10 2018 "9c"
+# Jan 12 10:07 2020 "9d"
+# Jan 16 10:12 2022 "9e"
+
+# -----------------------------------------------------------------------------
+
 function jpeg_build()
 {
-  # http://www.ijg.org
-  # http://www.ijg.org/files/
-
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libjpeg9
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/jpeg.rb
-
-  # Jan 19 10:26 2014 "9a"
-  # Jan 17 10:46 2016 "9b"
-  # Jan 14 10:10 2018 "9c"
-  # Jan 12 10:07 2020 "9d"
-  # Jan 16 10:12 2022 "9e"
-
   local jpeg_version="$1"
 
   local jpeg_src_folder_name="jpeg-${jpeg_version}"

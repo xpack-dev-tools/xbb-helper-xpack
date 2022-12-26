@@ -9,22 +9,25 @@
 
 # -----------------------------------------------------------------------------
 
+# https://sourceware.org/bzip2/
+# https://sourceware.org/pub/bzip2/
+# https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/bzip2/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/bzip2/files/PKGBUILD
+
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-bzip2/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/bzip2.rb
+
+# 2019-07-13 "1.0.8"
+
 # TODO: add support for dylib
+
+# -----------------------------------------------------------------------------
+
 function bzip2_build()
 {
-  # https://sourceware.org/bzip2/
-  # https://sourceware.org/pub/bzip2/
-  # https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/bzip2/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/bzip2/files/PKGBUILD
-
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-bzip2/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/bzip2.rb
-
-  # 2019-07-13 "1.0.8"
-
   local bzip2_version="$1"
 
   local bzip2_src_folder_name="bzip2-${bzip2_version}"

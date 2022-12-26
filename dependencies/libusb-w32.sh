@@ -9,13 +9,16 @@
 
 # -----------------------------------------------------------------------------
 
+# https://sourceforge.net/projects/libusb-win32/files/libusb-win32-releases/
+# 2012-01-17, 1.2.6.0
+# libusb_w32_version="1.2.6.0" # +PATCH!
+
 # Required by Windows.
+
+# -----------------------------------------------------------------------------
+
 function libusb_w32_build()
 {
-  # https://sourceforge.net/projects/libusb-win32/files/libusb-win32-releases/
-  # 2012-01-17, 1.2.6.0
-  # libusb_w32_version="1.2.6.0" # +PATCH!
-
   local libusb_w32_version="$1"
 
   local libusb_w32_prefix="libusb-win32"

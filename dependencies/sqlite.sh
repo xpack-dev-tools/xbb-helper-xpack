@@ -9,27 +9,29 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.sqlite.org/
+# https://sqlite.org/chronology.html
+# https://www.sqlite.org/download.html
+# https://www.sqlite.org/2020/sqlite-src-3330000.zip
+# https://www.sqlite.org/2021/sqlite-src-3360000.zip
+# https://www.sqlite.org/2022/sqlite-src-3380200.zip
+# https://www.sqlite.org/src/tarball/7ebdfa80/SQLite-7ebdfa80.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/sqlite/trunk/PKGBUILD
+
+# https://archlinuxarm.org/packages/aarch64/sqlite/files/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/sqlite.rb
+
+# 2020-06-18 "3.32.3" 7ebdfa80
+# 2021-06-18 "3360000"
+# 2022 "3380200"
+# "3390200"
+
+# -----------------------------------------------------------------------------
+
 function sqlite_build()
 {
-  # https://www.sqlite.org/
-  # https://sqlite.org/chronology.html
-  # https://www.sqlite.org/download.html
-  # https://www.sqlite.org/2020/sqlite-src-3330000.zip
-  # https://www.sqlite.org/2021/sqlite-src-3360000.zip
-  # https://www.sqlite.org/2022/sqlite-src-3380200.zip
-  # https://www.sqlite.org/src/tarball/7ebdfa80/SQLite-7ebdfa80.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/sqlite/trunk/PKGBUILD
-
-  # https://archlinuxarm.org/packages/aarch64/sqlite/files/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/sqlite.rb
-
-  # 2020-06-18 "3.32.3" 7ebdfa80
-  # 2021-06-18 "3360000"
-  # 2022 "3380200"
-  # "3390200"
-
   local sqlite_version="$1"
 
   local sqlite_src_folder_name="sqlite-src-${sqlite_version}"

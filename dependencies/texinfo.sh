@@ -9,22 +9,24 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/texinfo/
+# https://ftp.gnu.org/gnu/texinfo/
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/texinfo/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/texinfo/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=texinfo-svn
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/texinfo.rb
+
+# 2017-09-12, "6.5"
+# 2019-02-16, "6.6"
+# 2019-09-23, "6.7"
+# 2021-07-03, "6.8"
+
+# -----------------------------------------------------------------------------
+
 function texinfo_build()
 {
-  # https://www.gnu.org/software/texinfo/
-  # https://ftp.gnu.org/gnu/texinfo/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/texinfo/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/texinfo/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=texinfo-svn
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/texinfo.rb
-
-  # 2017-09-12, "6.5"
-  # 2019-02-16, "6.6"
-  # 2019-09-23, "6.7"
-  # 2021-07-03, "6.8"
-
   local texinfo_version="$1"
 
   local texinfo_src_folder_name="texinfo-${texinfo_version}"

@@ -9,20 +9,22 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.freedesktop.org/wiki/Software/pkg-config/
+# https://pkgconfig.freedesktop.org/releases/
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/pkgconf/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/pkgconf/files/PKGBUILD
+
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=pkg-config-git
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/pkg-config.rb
+
+# 2017-03-20, "0.29.2", latest
+
+# -----------------------------------------------------------------------------
+
 function pkg_config_build()
 {
-  # https://www.freedesktop.org/wiki/Software/pkg-config/
-  # https://pkgconfig.freedesktop.org/releases/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/pkgconf/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/pkgconf/files/PKGBUILD
-
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=pkg-config-git
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/pkg-config.rb
-
-  # 2017-03-20, "0.29.2", latest
-
   local pkg_config_version="$1"
 
   local pkg_config_src_folder_name="pkg-config-${pkg_config_version}"

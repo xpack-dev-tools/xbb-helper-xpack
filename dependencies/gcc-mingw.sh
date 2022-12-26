@@ -7,6 +7,8 @@
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------
+
 # The configurations generally follow the Linux Arch configurations, but
 # also MSYS2 and HomeBrew were considered.
 
@@ -45,7 +47,6 @@
 # 2022-08-19, "12.2.0"
 
 # -----------------------------------------------------------------------------
-
 
 function gcc_mingw_build_dependencies()
 {

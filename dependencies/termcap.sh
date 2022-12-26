@@ -9,16 +9,18 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/termutils/
+# https://ftp.gnu.org/gnu/termcap/
+# https://ftp.gnu.org/gnu/termcap/termcap-1.3.1.tar.gz
+
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-termcap/PKGBUILD
+
+# 2002-03-13, "1.3.1"
+
+# -----------------------------------------------------------------------------
+
 function termcap_build()
 {
-  # https://www.gnu.org/software/termutils/
-  # https://ftp.gnu.org/gnu/termcap/
-  # https://ftp.gnu.org/gnu/termcap/termcap-1.3.1.tar.gz
-
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-termcap/PKGBUILD
-
-  # 2002-03-13, "1.3.1"
-
   local termcap_version="$1"
 
   local termcap_src_folder_name="termcap-${termcap_version}"

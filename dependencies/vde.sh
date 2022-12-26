@@ -9,20 +9,22 @@
 
 # -----------------------------------------------------------------------------
 
+# Ethernet compliant virtual network
+# https://github.com/virtualsquare/vde-2
+# https://vde.sourceforge.io/
+# https://sourceforge.net/projects/vde/files/vde2/
+# https://downloads.sourceforge.net/project/vde/vde2/2.3.2/vde2-2.3.2.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/vde2/trunk/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/vde.rb
+
+# 2011-11-23 "2.3.2"
+
+# -----------------------------------------------------------------------------
+
 function vde_build()
 {
-  # Ethernet compliant virtual network
-  # https://github.com/virtualsquare/vde-2
-  # https://vde.sourceforge.io/
-  # https://sourceforge.net/projects/vde/files/vde2/
-  # https://downloads.sourceforge.net/project/vde/vde2/2.3.2/vde2-2.3.2.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/vde2/trunk/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/vde.rb
-
-  # 2011-11-23 "2.3.2"
-
   local vde_version="$1"
 
   local vde_src_folder_name="vde2-${vde_version}"

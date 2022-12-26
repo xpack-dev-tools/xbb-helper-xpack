@@ -9,21 +9,23 @@
 
 # -----------------------------------------------------------------------------
 
+# https://gmplib.org
+# https://gmplib.org/download/gmp/
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/gmp/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/gmp/files/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/gmp.rb
+
+# 01-Nov-2015 "6.1.0"
+# 16-Dec-2016 "6.1.2"
+# 17-Jan-2020 "6.2.0"
+# 14-Nov-2020, "6.2.1"
+
+# -----------------------------------------------------------------------------
+
 function gmp_build()
 {
-  # https://gmplib.org
-  # https://gmplib.org/download/gmp/
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/gmp/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/gmp/files/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gmp.rb
-
-  # 01-Nov-2015 "6.1.0"
-  # 16-Dec-2016 "6.1.2"
-  # 17-Jan-2020 "6.2.0"
-  # 14-Nov-2020, "6.2.1"
-
   local gmp_version="$1"
   local name_suffix="${2:-""}"
 

@@ -9,36 +9,37 @@
 
 # -----------------------------------------------------------------------------
 
+# http://www.xmlsoft.org
+# ftp://xmlsoft.org/libxml2/
+# https://download.gnome.org/sources/libxml2
+# https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.14.tar.xz
+
+# https://gitlab.gnome.org/GNOME/libxml2/-/releases
+# https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.9.14/libxml2-v2.9.14.tar.bz2
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/libxml2/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/libxml2/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libxml2-git
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libxml2
+
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-libxml2/PKGBUILD
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-readline/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libxml2.rb
+
+# Mar 05 2018, "2.9.8"
+# Jan 03 2019, "2.9.9"
+# Oct 30 2019, "2.9.10"
+# May 13 2021, "2.9.11"
+# May 2, 2022, "2.9.14"
+# Aug 29, 2022, "2.10.2"
+
+# -----------------------------------------------------------------------------
+
 function libxml2_build()
 {
-  # http://www.xmlsoft.org
-  # ftp://xmlsoft.org/libxml2/
-  # https://download.gnome.org/sources/libxml2
-  # https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.14.tar.xz
-
-  # https://gitlab.gnome.org/GNOME/libxml2/-/releases
-  # https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.9.14/libxml2-v2.9.14.tar.bz2
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libxml2/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/libxml2/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libxml2-git
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libxml2
-
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-libxml2/PKGBUILD
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-readline/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libxml2.rb
-
-  # Mar 05 2018, "2.9.8"
-  # Jan 03 2019, "2.9.9"
-  # Oct 30 2019, "2.9.10"
-  # May 13 2021, "2.9.11"
-  # May 2, 2022, "2.9.14"
-  # Aug 29, 2022, "2.10.2"
-
   local libxml2_version="$1"
   local libxml2_version_major_minor="$(echo ${libxml2_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.[0-9].*|\1.\2|')"
-
 
   local libxml2_src_folder_name="libxml2-${libxml2_version}"
 

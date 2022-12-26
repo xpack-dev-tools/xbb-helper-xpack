@@ -9,24 +9,26 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/automake/
+# https://ftp.gnu.org/gnu/automake/
+
+# https://github.com/archlinux/svntogit-packages/tree/packages/automake/trunk
+# https://archlinuxarm.org/packages/any/automake/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=automake-git
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/automake.rb
+
+# 2015-01-05, "1.15"
+# 2018-02-25, "1.16"
+# 2020-03-21, "1.16.2"
+# 2020-11-18, "1.16.3"
+# 2021-07-26, "1.16.4"
+# 2021-10-03, "1.16.5"
+
+# -----------------------------------------------------------------------------
+
 function automake_build()
 {
-  # https://www.gnu.org/software/automake/
-  # https://ftp.gnu.org/gnu/automake/
-
-  # https://github.com/archlinux/svntogit-packages/tree/packages/automake/trunk
-  # https://archlinuxarm.org/packages/any/automake/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=automake-git
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/automake.rb
-
-  # 2015-01-05, "1.15"
-  # 2018-02-25, "1.16"
-  # 2020-03-21, "1.16.2"
-  # 2020-11-18, "1.16.3"
-  # 2021-07-26, "1.16.4"
-  # 2021-10-03, "1.16.5"
-
   local automake_version="$1"
 
   local automake_src_folder_name="automake-${automake_version}"

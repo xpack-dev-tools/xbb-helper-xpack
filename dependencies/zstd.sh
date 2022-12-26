@@ -9,24 +9,26 @@
 
 # -----------------------------------------------------------------------------
 
+# Zstandard is a real-time compression algorithm
+# https://facebook.github.io/zstd/
+# https://github.com/facebook/zstd/releases
+# https://github.com/facebook/zstd/archive/v1.4.4.tar.gz
+# https://github.com/facebook/zstd/releases/download/v1.5.0/zstd-1.5.0.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/zstd/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/zstd/files/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/zstd.rb
+
+# 5 Nov 2019 "1.4.4"
+# 3 Mar 2021 "1.4.9"
+# 14 May 2021 "1.5.0"
+# 20 Jan 2022 "1.5.2"
+
+# -----------------------------------------------------------------------------
+
 function zstd_build()
 {
-  # Zstandard is a real-time compression algorithm
-  # https://facebook.github.io/zstd/
-  # https://github.com/facebook/zstd/releases
-  # https://github.com/facebook/zstd/archive/v1.4.4.tar.gz
-  # https://github.com/facebook/zstd/releases/download/v1.5.0/zstd-1.5.0.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/zstd/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/zstd/files/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/zstd.rb
-
-  # 5 Nov 2019 "1.4.4"
-  # 3 Mar 2021 "1.4.9"
-  # 14 May 2021 "1.5.0"
-  # 20 Jan 2022 "1.5.2"
-
   local zstd_version="$1"
 
   # The folder name as resulted after being extracted from the archive.

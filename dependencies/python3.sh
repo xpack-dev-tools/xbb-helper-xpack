@@ -9,40 +9,43 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.python.org
+# https://www.python.org/downloads/source/
+# https://www.python.org/ftp/python/
+# https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tar.xz
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/python@3.10.rb
+
+## https://github.com/archlinux/svntogit-packages/blob/packages/python/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/python/files/PKGBUILD
+# https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python
+# https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python-pip
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/python@3.9.rb
+
+# 2018-12-24, "3.7.2"
+# March 25, 2019, "3.7.3"
+# Dec. 18, 2019, "3.8.1"
+# 17-Aug-2020, "3.7.9"
+# 23-Sep-2020, "3.8.6"
+# May 3, 2021 "3.8.10"
+# May 3, 2021 "3.9.5"
+# Aug. 30, 2021, "3.8.12"
+# Aug. 30, 2021, "3.9.7"
+# Sept. 4, 2021, "3.7.12"
+# 24-Mar-2022, "3.9.12"
+# 23-Mar-2022, "3.10.4"
+
+
 # TODO:
 # Check why some modules (like openssl) are not built
 
 # https://stackoverflow.com/questions/44150871/embeded-python3-6-with-mingw-in-c-fail-on-linking
 
+# -----------------------------------------------------------------------------
+
 function python3_build()
 {
-  # https://www.python.org
-  # https://www.python.org/downloads/source/
-  # https://www.python.org/ftp/python/
-  # https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tar.xz
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/python@3.10.rb
-
-  ## https://github.com/archlinux/svntogit-packages/blob/packages/python/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/python/files/PKGBUILD
-  # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python
-  # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python-pip
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/python@3.9.rb
-
-  # 2018-12-24, "3.7.2"
-  # March 25, 2019, "3.7.3"
-  # Dec. 18, 2019, "3.8.1"
-  # 17-Aug-2020, "3.7.9"
-  # 23-Sep-2020, "3.8.6"
-  # May 3, 2021 "3.8.10"
-  # May 3, 2021 "3.9.5"
-  # Aug. 30, 2021, "3.8.12"
-  # Aug. 30, 2021, "3.9.7"
-  # Sept. 4, 2021, "3.7.12"
-  # 24-Mar-2022, "3.9.12"
-  # 23-Mar-2022, "3.10.4"
-
   local python3_version="$1"
 
   local python3_version_major=$(echo ${python3_version} | sed -e 's|\([0-9]\)\..*|\1|')

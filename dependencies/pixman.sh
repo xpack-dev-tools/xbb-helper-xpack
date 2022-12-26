@@ -9,23 +9,25 @@
 
 # -----------------------------------------------------------------------------
 
+# http://www.pixman.org
+# http://cairographics.org/releases/
+
+# https://archlinuxarm.org/packages/aarch64/pixman/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=pixman-git
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-pixman
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/pixman.rb
+
+# pixman_version="0.32.6"
+# pixman_version="0.34.0" # 2016-01-31
+# pixman_version="0.38.0" # 2019-02-11
+# 2019-04-10, "0.38.4"
+# 2020-04-19, "0.40.0"
+
+# -----------------------------------------------------------------------------
+
 function pixman_build()
 {
-  # http://www.pixman.org
-  # http://cairographics.org/releases/
-
-  # https://archlinuxarm.org/packages/aarch64/pixman/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=pixman-git
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-pixman
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/pixman.rb
-
-  # pixman_version="0.32.6"
-  # pixman_version="0.34.0" # 2016-01-31
-  # pixman_version="0.38.0" # 2019-02-11
-  # 2019-04-10, "0.38.4"
-  # 2020-04-19, "0.40.0"
-
   local pixman_version="$1"
 
   local pixman_src_folder_name="pixman-${pixman_version}"

@@ -9,21 +9,23 @@
 
 # -----------------------------------------------------------------------------
 
+# General purpose mouse. Used by ncurses.
+# https://www.nico.schottelius.org/software/gpm/
+# https://github.com/telmich/gpm
+# https://github.com/telmich/gpm/tags
+# https://github.com/telmich/gpm/releases/tag/1.20.7
+# https://github.com/telmich/gpm/archive/1.20.7.tar.gz
+# https://github.com/xpack-dev-tools/gpm/archive/refs/tags/v1.20.7-1.tar.gz
+
+# https://archlinuxarm.org/packages/aarch64/gpm/files/PKGBUILD
+
+# 27 Oct 2012 "1.20.7"
+# 25 Apr 2022 "1.20.7-1" xPack
+
+# -----------------------------------------------------------------------------
+
 function gpm_build()
 {
-  # General purpose mouse. Used by ncurses.
-  # https://www.nico.schottelius.org/software/gpm/
-  # https://github.com/telmich/gpm
-  # https://github.com/telmich/gpm/tags
-  # https://github.com/telmich/gpm/releases/tag/1.20.7
-  # https://github.com/telmich/gpm/archive/1.20.7.tar.gz
-  # https://github.com/xpack-dev-tools/gpm/archive/refs/tags/v1.20.7-1.tar.gz
-
-  # https://archlinuxarm.org/packages/aarch64/gpm/files/PKGBUILD
-
-  # 27 Oct 2012 "1.20.7"
-  # 25 Apr 2022 "1.20.7-1" xPack
-
   local gpm_version="$1"
 
   local gpm_src_folder_name="gpm-${gpm_version}"

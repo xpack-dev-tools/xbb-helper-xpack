@@ -9,18 +9,20 @@
 
 # -----------------------------------------------------------------------------
 
+# Real-time data compression library
+# https://www.oberhumer.com/opensource/lzo/
+# https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/lzo/trunk/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/lzo.rb
+
+# 01 Mar 2017 "2.10"
+
+# -----------------------------------------------------------------------------
+
 function lzo_build()
 {
-  # Real-time data compression library
-  # https://www.oberhumer.com/opensource/lzo/
-  # https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/lzo/trunk/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/lzo.rb
-
-  # 01 Mar 2017 "2.10"
-
   local lzo_version="$1"
 
   local lzo_src_folder_name="lzo-${lzo_version}"

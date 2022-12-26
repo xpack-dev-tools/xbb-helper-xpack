@@ -9,17 +9,19 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/findutils/
+# https://ftp.gnu.org/gnu/findutils/
+# https://ftp.gnu.org/gnu/findutils/findutils-4.8.0.tar.xz
+
+# 2021-01-09, "4.8.0"
+# 2022-02-01, "4.9.0"
+
 # TODO: check before use.
+
+# -----------------------------------------------------------------------------
 
 function findutils_build()
 {
-  # https://www.gnu.org/software/findutils/
-  # https://ftp.gnu.org/gnu/findutils/
-  # https://ftp.gnu.org/gnu/findutils/findutils-4.8.0.tar.xz
-
-  # 2021-01-09, "4.8.0"
-  # 2022-02-01, "4.9.0"
-
   local findutils_version="$1"
 
   local findutils_src_folder_name="findutils-${findutils_version}"

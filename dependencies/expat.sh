@@ -9,25 +9,27 @@
 
 # -----------------------------------------------------------------------------
 
+# https://libexpat.github.io
+# https://github.com/libexpat/libexpat/releases
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/expat/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/expat/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=expat-git
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/expat.rb
+
+# Oct 21, 2017 "2.1.1"
+# Nov 1, 2017 "2.2.5"
+# 26 Sep 2019 "2.2.9"
+# 3 Oct 2020, "2.2.10"
+# 25 Mar 2021 "2.3.0"
+# 23 May 2021, "2.4.1"
+# 29 Mar 2022, "2.4.8"
+
+# -----------------------------------------------------------------------------
+
 function expat_build()
 {
-  # https://libexpat.github.io
-  # https://github.com/libexpat/libexpat/releases
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/expat/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/expat/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=expat-git
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/expat.rb
-
-  # Oct 21, 2017 "2.1.1"
-  # Nov 1, 2017 "2.2.5"
-  # 26 Sep 2019 "2.2.9"
-  # 3 Oct 2020, "2.2.10"
-  # 25 Mar 2021 "2.3.0"
-  # 23 May 2021, "2.4.1"
-  # 29 Mar 2022, "2.4.8"
-
   local expat_version="$1"
 
   local expat_src_folder_name="expat-${expat_version}"

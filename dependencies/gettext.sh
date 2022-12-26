@@ -9,23 +9,25 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/gettext/
+# http://ftp.gnu.org/pub/gnu/gettext/
+
+# https://archlinuxarm.org/packages/aarch64/gettext/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gettext-git
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-gettext
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/gettext.rb
+
+# 2015-07-14 "0.19.5.1"
+# 2016-06-11 "0.19.8.1"
+# 2020-04-14 "0.20.2"
+# 2020-07-26 "0.21"
+# 2022-10-09, "0.21.1"
+
+# -----------------------------------------------------------------------------
+
 function gettext_build()
 {
-  # https://www.gnu.org/software/gettext/
-  # http://ftp.gnu.org/pub/gnu/gettext/
-
-  # https://archlinuxarm.org/packages/aarch64/gettext/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gettext-git
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-gettext
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gettext.rb
-
-  # 2015-07-14 "0.19.5.1"
-  # 2016-06-11 "0.19.8.1"
-  # 2020-04-14 "0.20.2"
-  # 2020-07-26 "0.21"
-  # 2022-10-09, "0.21.1"
-
   local gettext_version="$1"
 
   local gettext_src_folder_name="gettext-${gettext_version}"

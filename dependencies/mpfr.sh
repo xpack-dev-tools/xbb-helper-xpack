@@ -10,22 +10,25 @@
 
 # -----------------------------------------------------------------------------
 
+# http://www.mpfr.org
+# http://www.mpfr.org/history.html
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/mpfr/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/mpfr/files/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mpfr.rb
+
+# 6 March 2016 "3.1.4"
+# 7 September 2017 "3.1.6"
+# 31 January 2019 "4.0.2"
+# 10 July 2020 "4.1.0"
+
 # Depends on gmp.
+
+# -----------------------------------------------------------------------------
+
 function mpfr_build()
 {
-  # http://www.mpfr.org
-  # http://www.mpfr.org/history.html
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/mpfr/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/mpfr/files/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mpfr.rb
-
-  # 6 March 2016 "3.1.4"
-  # 7 September 2017 "3.1.6"
-  # 31 January 2019 "4.0.2"
-  # 10 July 2020 "4.1.0"
-
   local mpfr_version="$1"
   local name_suffix="${2:-""}"
 

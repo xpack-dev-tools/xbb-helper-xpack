@@ -9,27 +9,29 @@
 
 # -----------------------------------------------------------------------------
 
+# http://www.sourceware.org/libffi/
+# ftp://sourceware.org/pub/libffi/
+# https://github.com/libffi/libffi
+# https://github.com/libffi/libffi/releases
+# https://github.com/libffi/libffi/releases/download/v3.4.2/libffi-3.4.2.tar.gz
+# https://github.com/libffi/libffi/archive/v3.2.1.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/libffi/trunk/PKGBUILD
+# https://archlinuxarm.org/packages/aarch64/libffi/files/PKGBUILD
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libffi-git
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libffi
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libffi.rb
+
+# 12-Nov-2014, "3.2.1"
+# 23 Nov 2019, "3.3"
+# 29 Jun 2021, "3.4.2"
+# 19 Sep 2022, "3.4.3"
+
+# -----------------------------------------------------------------------------
+
 function libffi_build()
 {
-  # http://www.sourceware.org/libffi/
-  # ftp://sourceware.org/pub/libffi/
-  # https://github.com/libffi/libffi
-  # https://github.com/libffi/libffi/releases
-  # https://github.com/libffi/libffi/releases/download/v3.4.2/libffi-3.4.2.tar.gz
-  # https://github.com/libffi/libffi/archive/v3.2.1.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libffi/trunk/PKGBUILD
-  # https://archlinuxarm.org/packages/aarch64/libffi/files/PKGBUILD
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libffi-git
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libffi
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libffi.rb
-
-  # 12-Nov-2014, "3.2.1"
-  # 23 Nov 2019, "3.3"
-  # 29 Jun 2021, "3.4.2"
-  # 19 Sep 2022, "3.4.3"
-
   local libffi_version="$1"
 
   local libffi_src_folder_name="libffi-${libffi_version}"

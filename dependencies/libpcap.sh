@@ -9,19 +9,21 @@
 
 # -----------------------------------------------------------------------------
 
+# Portable library for network traffic capture
+# https://www.tcpdump.org/
+# https://www.tcpdump.org/release/
+# https://www.tcpdump.org/release/libpcap-1.10.1.tar.gz
+
+# https://github.com/archlinux/svntogit-packages/blob/packages/libpcap/trunk/PKGBUILD
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libpcap.rb
+
+# June 9, 2021 "1.10.1"
+
+# -----------------------------------------------------------------------------
+
 function libpcap_build()
 {
-  # Portable library for network traffic capture
-  # https://www.tcpdump.org/
-  # https://www.tcpdump.org/release/
-  # https://www.tcpdump.org/release/libpcap-1.10.1.tar.gz
-
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libpcap/trunk/PKGBUILD
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libpcap.rb
-
-  # June 9, 2021 "1.10.1"
-
   local libpcap_version="$1"
 
   local libpcap_src_folder_name="libpcap-${libpcap_version}"
