@@ -121,7 +121,6 @@ names=()
 # All-platform packages.
 names+=( gcc )
 names+=( mingw-w64-gcc )
-names+=( clang )
 names+=( cmake )
 names+=( meson-build )
 names+=( ninja-build )
@@ -147,6 +146,9 @@ else
     echo "wine is not yet ready"
   fi
 fi
+
+# At the end, as the longest.
+names+=( clang )
 
 if [ "${do_clone}" == "y" ]
 then
