@@ -61,54 +61,54 @@ function build_common_parse_options()
   do
     case "$1" in
 
-      --win|--windows)
+      --win | --windows )
         XBB_REQUEST_TARGET_BE_WINDOWS="y"
         shift
         ;;
 
-      --debug)
+      --debug )
         XBB_IS_DEBUG="y"
         shift
         ;;
 
-      --develop)
+      --develop )
         XBB_IS_DEVELOP="y"
         shift
         ;;
 
-      --jobs)
+      --jobs )
         shift
         XBB_JOBS=$1
         shift
         ;;
 
-      --disable-strip)
+      --disable-strip )
         XBB_WITH_STRIP="n"
         shift
         ;;
 
-      --disable-tests)
+      --disable-tests )
         XBB_WITH_TESTS="n"
         shift
         ;;
 
-      --test-only|--tests-only)
+      --test-only | --tests-only )
         XBB_TEST_ONLY="y"
         shift
         ;;
 
-      --disable-multilib)
+      --disable-multilib )
         XBB_WITHOUT_MULTILIB="y"
         shift
         ;;
 
-      --target)
+      --target )
         shift
         XBB_REQUESTED_TARGET="$1"
         shift
         ;;
 
-      --build-folder)
+      --build-folder )
         shift
         if [ "${1:0:1}" == "/" ]
         then
@@ -119,14 +119,14 @@ function build_common_parse_options()
         shift
         ;;
 
-      --help)
+      --help )
         echo "Usage:"
         echo "${help_message}"
         echo
         exit 0
         ;;
 
-      *)
+      * )
         echo "Unsupported option $1 in ${FUNCNAME[0]}()"
         exit 1
         ;;

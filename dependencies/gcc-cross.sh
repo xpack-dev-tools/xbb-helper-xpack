@@ -101,9 +101,11 @@ function gcc_cross_define_flags_for_target()
     case "$1" in
       --nano )
         is_nano="y"
+        shift
         ;;
 
       "" )
+        shift
         ;;
 
       * )
@@ -111,7 +113,6 @@ function gcc_cross_define_flags_for_target()
         exit 1
         ;;
     esac
-    shift
   done
 
   local optimize="${XBB_CFLAGS_OPTIMIZATIONS_FOR_TARGET}"
@@ -477,6 +478,7 @@ function gcc_cross_build_final()
         is_nano="y"
         nano_option="--nano"
         name_suffix="-nano"
+        shift
         ;;
 
       * )
@@ -484,7 +486,6 @@ function gcc_cross_build_final()
         exit 1
         ;;
     esac
-    shift
   done
 
   local gcc_final_folder_name="${name_prefix}gcc-${gcc_version}-final${name_suffix}"

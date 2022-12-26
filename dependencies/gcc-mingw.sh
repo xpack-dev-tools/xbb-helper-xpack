@@ -134,6 +134,7 @@ function gcc_mingw_build_first()
     case "$1" in
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
+        shift
         ;;
 
       * )
@@ -141,7 +142,6 @@ function gcc_mingw_build_first()
         exit 1
         ;;
     esac
-    shift
   done
 
   name_prefix="${triplet}-"
@@ -389,6 +389,7 @@ function gcc_mingw_build_final()
     case "$1" in
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
+        shift
         ;;
 
       * )
@@ -396,7 +397,6 @@ function gcc_mingw_build_final()
         exit 1
         ;;
     esac
-    shift
   done
 
   name_prefix="${triplet}-"

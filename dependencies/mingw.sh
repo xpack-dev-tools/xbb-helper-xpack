@@ -123,6 +123,7 @@ function mingw_build_headers()
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
         name_prefix="${triplet}-"
+        shift
         ;;
 
       * )
@@ -130,7 +131,6 @@ function mingw_build_headers()
         exit 1
         ;;
     esac
-    shift
   done
 
   local mingw_headers_folder_name="${name_prefix}headers-${XBB_MINGW_VERSION}"
@@ -236,11 +236,13 @@ function mingw_build_widl()
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
         name_prefix="${triplet}-"
+        shift
         ;;
 
       --program-prefix=* )
         program_prefix=$(xbb_parse_option "$1")
         has_program_prefix="y"
+        shift
         ;;
 
       * )
@@ -248,7 +250,6 @@ function mingw_build_widl()
         exit 1
         ;;
     esac
-    shift
   done
 
   local mingw_widl_folder_name="${name_prefix}widl-${XBB_MINGW_VERSION}"
@@ -352,6 +353,7 @@ function mingw_build_libmangle()
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
         name_prefix="${triplet}-"
+        shift
         ;;
 
       * )
@@ -359,7 +361,6 @@ function mingw_build_libmangle()
         exit 1
         ;;
     esac
-    shift
   done
 
   local mingw_libmangle_folder_name="${name_prefix}libmangle-${XBB_MINGW_VERSION}"
@@ -453,11 +454,13 @@ function mingw_build_gendef()
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
         name_prefix="${triplet}-"
+        shift
         ;;
 
       --program-prefix=* )
         program_prefix=$(xbb_parse_option "$1")
         has_program_prefix="y"
+        shift
         ;;
 
       * )
@@ -465,7 +468,6 @@ function mingw_build_gendef()
         exit 1
         ;;
     esac
-    shift
   done
 
   if [ "${has_program_prefix}" != "y" ]
@@ -574,6 +576,7 @@ function mingw_build_crt()
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
         name_prefix="${triplet}-"
+        shift
         ;;
 
       * )
@@ -581,7 +584,6 @@ function mingw_build_crt()
         exit 1
         ;;
     esac
-    shift
   done
 
   local mingw_crt_folder_name="${name_prefix}crt-${XBB_MINGW_VERSION}"
@@ -730,10 +732,12 @@ function mingw_build_winpthreads()
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
         name_prefix="${triplet}-"
+        shift
         ;;
 
       --disable-shared )
         disable_shared="y"
+        shift
         ;;
 
       * )
@@ -741,7 +745,6 @@ function mingw_build_winpthreads()
         exit 1
         ;;
     esac
-    shift
   done
 
   local mingw_build_winpthreads_folder_name="${name_prefix}winpthreads-${XBB_MINGW_VERSION}"
@@ -867,6 +870,7 @@ function mingw_build_winstorecompat()
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
         name_prefix="${triplet}-"
+        shift
         ;;
 
       * )
@@ -874,7 +878,6 @@ function mingw_build_winstorecompat()
         exit 1
         ;;
     esac
-    shift
   done
 
   local mingw_build_winstorecompat_folder_name="${name_prefix}winstorecompat-${XBB_MINGW_VERSION}"

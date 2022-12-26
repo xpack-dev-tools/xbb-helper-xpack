@@ -198,11 +198,13 @@ function binutils_build()
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
         name_prefix="${triplet}-"
+        shift
         ;;
 
       --program-prefix=* )
         program_prefix=$(xbb_parse_option "$1")
         has_program_prefix="y"
+        shift
         ;;
 
       * )
@@ -210,7 +212,6 @@ function binutils_build()
         exit 1
         ;;
     esac
-    shift
   done
 
   if [ "${has_program_prefix}" == "y" ]

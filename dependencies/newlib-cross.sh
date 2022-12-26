@@ -40,6 +40,7 @@ function newlib_cross_build()
         is_nano="y"
         nano_option="--nano"
         name_suffix="-nano"
+        shift
         ;;
 
       * )
@@ -47,7 +48,6 @@ function newlib_cross_build()
         exit 1
         ;;
     esac
-    shift
   done
 
   local newlib_folder_name="${name_prefix}newlib-${newlib_version}${name_suffix}"

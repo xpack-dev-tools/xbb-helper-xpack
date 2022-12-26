@@ -25,15 +25,16 @@ do
   opt="$1"
   case ${opt} in
 
-    --prefix|--exec-prefix)
+    --prefix | --exec-prefix )
       # prefix="${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
       # Must have a common part to force PYTHON_PATH_RELOCATABLE
       prefix="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
       echo "${opt} -> [${prefix}]" >&2
       echo "${prefix}"
+      shift
       ;;
 
-    --includes|--cflags)
+    --includes | --cflags )
       cflags="-I${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_SRC_FOLDER_NAME}/Include"
 
       if [ "${opt}" == "--cflags" ]
@@ -42,28 +43,30 @@ do
       fi
       echo "${opt} -> [${cflags}]" >&2
       echo "${cflags}"
+      shift
       ;;
 
-    --libs|--ldflags)
+    --libs | --ldflags )
       # Options to link to static libpython2.7 archive so as to avoid  an
       # external dependency on python
       libs="-L${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME} -lpython${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}"
       echo "${opt} -> [${libs}]" >&2
       echo "${libs}"
+      shift
       ;;
 
-    --*)
+    --* )
       echo "Unsupported option: ${opt}" >&2
       exit 1
       ;;
 
-    *)
+    * )
       # Ignore non options since we are called with gdb provided
       # python-config.py as first parameter
+      shift
       ;;
 
   esac
-  shift
 done
 
 exit 0

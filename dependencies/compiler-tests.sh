@@ -26,7 +26,6 @@ function compiler-tests-single()
 
   local test_bin_path="$1"
   shift
-  # shift
 
   (
     unset IFS

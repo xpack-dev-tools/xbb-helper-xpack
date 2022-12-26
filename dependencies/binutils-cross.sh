@@ -47,6 +47,7 @@ function binutils_cross_build()
         is_nano="y"
         nano_option="--nano"
         name_suffix="-nano"
+        shift
         ;;
 
       * )
@@ -54,7 +55,6 @@ function binutils_cross_build()
         exit 1
         ;;
     esac
-    shift
   done
 
 

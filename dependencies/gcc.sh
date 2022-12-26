@@ -133,6 +133,7 @@ function gcc_build()
     case "$1" in
       --disable-shared )
         disable_shared="y"
+        shift
         ;;
 
       * )
@@ -140,7 +141,6 @@ function gcc_build()
         exit 1
         ;;
     esac
-    shift
   done
 
   local gcc_version_major=$(echo ${gcc_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
