@@ -485,23 +485,26 @@ function gcc_mingw_build_final()
 
         cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" # ! usr
 
+        strip="$(which ${triplet}-strip)"
+        ranlib="$(which ${triplet}-ranlib)"
+
         set +e
         find ${triplet} \
           -name '*.so' -type f \
           -print \
-          -exec "${triplet}-strip" --strip-debug '{}' ';'
+          -exec "${strip}" --strip-debug '{}' ';'
         find ${triplet} \
           -name '*.so.*'  \
           -type f \
           -print \
-          -exec "${triplet}-strip" --strip-debug '{}' ';'
+          -exec "${strip}" --strip-debug '{}' ';'
         # Note: without ranlib, windows builds failed.
         find ${triplet} lib/gcc/${triplet} \
           -name '*.a'  \
           -type f  \
           -print \
-          -exec "${triplet}-strip" --strip-debug '{}' ';' \
-          -exec "${triplet}-ranlib" '{}' ';'
+          -exec "${strip}" --strip-debug '{}' ';' \
+          -exec "${ranlib}" '{}' ';'
         set -e
 
       fi
