@@ -117,16 +117,35 @@ else
 fi
 
 names=()
-names+=( gcc mingw-w64-gcc clang )
-names+=( cmake meson-build ninja-build )
-names+=( openocd qemu-arm qemu-riscv )
-names+=( arm-none-eabi-gcc aarch64-none-elf-gcc riscv-none-elf-gcc )
+
+# All-platform packages.
+names+=( gcc )
+names+=( mingw-w64-gcc )
+names+=( clang )
+names+=( cmake )
+names+=( meson-build )
+names+=( ninja-build )
+names+=( openocd )
+names+=( qemu-arm )
+names+=( qemu-riscv )
+names+=( arm-none-eabi-gcc )
+names+=( aarch64-none-elf-gcc )
+names+=( riscv-none-elf-gcc )
 
 if [ "${do_windows}" == "y" ]
 then
-  echo "Skip Linux only packages"
+  # Windows only packages.
+  names+=( windows-build-tools )
 else
+  # Linux & macOS only packages (no Windows).
   names+=( patchelf pkg-config realpath m4 sed )
+
+  if [ "$(uname)" == "Linux" ]
+  then
+    # Linux only packages.
+    # names+=( wine )
+    echo "wine is not yet ready"
+  fi
 fi
 
 if [ "${do_clone}" == "y" ]
