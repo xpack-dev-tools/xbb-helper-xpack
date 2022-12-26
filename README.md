@@ -15,7 +15,7 @@ This open source project is hosted on GitHub as
 This projects includes:
 
 - shell scripts to build various projects as dependencies
-(see the `scripts/dependencies`)
+(see the `dependencies` folder)
 - templates used to generate project configurations
 - tests
 - patches

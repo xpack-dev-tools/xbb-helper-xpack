@@ -12,8 +12,8 @@
 
 for dependency in libiconv autoconf automake libtool pkg-config
 do
-  echo "Including ${helper_folder_path}/scripts/dependencies/${dependency}.sh..."
-  source "${helper_folder_path}/scripts/dependencies/${dependency}.sh"
+  echo "Including ${helper_folder_path}/dependencies/${dependency}.sh..."
+  source "${helper_folder_path}/dependencies/${dependency}.sh"
 done
 
 function autotools_build()
