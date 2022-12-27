@@ -487,7 +487,7 @@ function gnutls_build()
 
   local gnutls_version="$1"
   # The first two digits.
-  local gnutls_version_major_minor="$(echo ${gnutls_version} | sed -e 's|\([0-9][0-9]*\.[0-9][0-9]*\)\.[0-9].*|\1|')"
+  local gnutls_version_major_minor="$(echo ${gnutls_version} | sed -e 's|\([0-9][0-9]*[.][0-9][0-9]*\)[.][0-9].*|\1|')"
 
   local gnutls_src_folder_name="gnutls-${gnutls_version}"
 

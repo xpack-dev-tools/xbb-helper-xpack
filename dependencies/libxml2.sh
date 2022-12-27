@@ -42,7 +42,7 @@ function libxml2_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local libxml2_version="$1"
-  local libxml2_version_major_minor="$(echo ${libxml2_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.[0-9].*|\1.\2|')"
+  local libxml2_version_major_minor="$(echo ${libxml2_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.][0-9].*|\1.\2|')"
 
   local libxml2_src_folder_name="libxml2-${libxml2_version}"
 

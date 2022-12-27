@@ -277,7 +277,7 @@ function build_common_run()
 
         echo
         echo "package.json xpack.bin definitions:"
-        ls -1 | sed -e 's|\.exe$||' | sed -e '/\.dll$/d' | sed -e '/\.zip$/d' | sed -e '/DLLs$/d' | sort | sed -e 's|\(.*\)|      "\1": "./.content/bin/\1",|'
+        ls -1 | sed -e 's|[.]exe$||' | sed -e '/[.]dll$/d' | sed -e '/[.]zip$/d' | sed -e '/DLLs$/d' | sort | sed -e 's|\(.*\)|      "\1": "./.content/bin/\1",|'
       )
 
       run_verbose ls -l "${XBB_DEPLOY_FOLDER_PATH}"

@@ -37,7 +37,7 @@ function expat_build()
 
   local expat_src_folder_name="expat-${expat_version}"
   local expat_archive="${expat_src_folder_name}.tar.bz2"
-  if [[ ${expat_version} =~ 2\.0\.* ]]
+  if [[ ${expat_version} =~ 2[.]0[.].* ]]
   then
     expat_archive="${expat_src_folder_name}.tar.gz"
   fi

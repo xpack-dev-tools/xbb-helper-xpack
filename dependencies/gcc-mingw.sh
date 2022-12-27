@@ -148,7 +148,7 @@ function gcc_mingw_build_first()
   name_prefix="${triplet}-"
 
   # Number
-  local mingw_gcc_version_major=$(echo ${mingw_gcc_version} | sed -e 's|\([0-9][0-9]*\)\..*|\1|')
+  local mingw_gcc_version_major=$(echo ${mingw_gcc_version} | sed -e 's|\([0-9][0-9]*\)[.].*|\1|')
 
   local mingw_gcc_src_folder_name="gcc-${mingw_gcc_version}"
 

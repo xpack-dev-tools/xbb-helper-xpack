@@ -51,8 +51,8 @@ function python3_build()
 
   local python3_version="$1"
 
-  local python3_version_major=$(echo ${python3_version} | sed -e 's|\([0-9]\)\..*|\1|')
-  local python3_version_minor=$(echo ${python3_version} | sed -e 's|\([0-9]\)\.\([0-9][0-9]*\)\..*|\2|')
+  local python3_version_major=$(echo ${python3_version} | sed -e 's|\([0-9]\)[.].*|\1|')
+  local python3_version_minor=$(echo ${python3_version} | sed -e 's|\([0-9]\)[.]\([0-9][0-9]*\)[.].*|\2|')
 
   local python3_src_folder_name="${XBB_PYTHON3_SRC_FOLDER_NAME:-Python-${python3_version}}"
 
@@ -427,7 +427,7 @@ function python3_process_pyc()
   # echo bbb "${file_path}"
 
   local file_full_name="$(basename "${file_path}")"
-  local file_name="$(echo "${file_full_name}" | sed -e 's|\.cpython-[0-9]*\.pyc||')"
+  local file_name="$(echo "${file_full_name}" | sed -e 's|[.]cpython-[0-9]*[.]pyc||')"
   local folder_path="$(dirname $(dirname "${file_path}"))"
 
   # echo "${folder_path}" "${file_name}"

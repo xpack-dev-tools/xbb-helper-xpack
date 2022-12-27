@@ -40,7 +40,7 @@ function isl_build()
   local isl_src_folder_name="isl-${isl_version}"
 
   local isl_archive="${isl_src_folder_name}.tar.xz"
-  if [[ ${isl_version} =~ 0\.1[24]\.* ]]
+  if [[ ${isl_version} =~ 0[.]1[24][.].* ]]
   then
     isl_archive="${isl_src_folder_name}.tar.gz"
   fi
