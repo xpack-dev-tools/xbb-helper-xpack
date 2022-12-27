@@ -184,7 +184,7 @@ do
   then
     xpm run deep-clean --config ${config}  -C ~/Work/${name}-xpack.git
     xpm install --config ${config} -C ~/Work/${name}-xpack.git
-    
+
     if [ "${do_dry}" == "y" ]
     then
       echo "Skipping real action for ${name}..."
