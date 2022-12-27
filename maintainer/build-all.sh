@@ -177,18 +177,18 @@ do
   git -C ~/Work/${name}-xpack.git pull
 
   xpm run deep-clean -C ~/Work/${name}-xpack.git
+  xpm install -C ~/Work/${name}-xpack.git
+  xpm run link-deps -C ~/Work/${name}-xpack.git
 
   if [ "$(uname)" == "Darwin" ]
   then
-    xpm install -C ~/Work/${name}-xpack.git
-    xpm run link-deps -C ~/Work/${name}-xpack.git
-
+    xpm run deep-clean --config ${config}  -C ~/Work/${name}-xpack.git
+    xpm install --config ${config} -C ~/Work/${name}-xpack.git
+    
     if [ "${do_dry}" == "y" ]
     then
       echo "Skipping real action for ${name}..."
     else
-      xpm run deep-clean --config ${config}  -C ~/Work/${name}-xpack.git
-      xpm install --config ${config} -C ~/Work/${name}-xpack.git
       xpm run build-develop --config ${config} -C ~/Work/${name}-xpack.git
     fi
   elif [ "$(uname)" == "Linux" ]
