@@ -33,7 +33,6 @@ function mpfr_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local mpfr_version="$1"
-  local name_suffix="${2:-""}"
 
   # The folder name as resulted after being extracted from the archive.
   local mpfr_src_folder_name="mpfr-${mpfr_version}"
@@ -42,7 +41,7 @@ function mpfr_build()
   local mpfr_url="http://www.mpfr.org/${mpfr_src_folder_name}/${mpfr_archive}"
 
   # The folder name for build, licenses, etc.
-  local mpfr_folder_name="${mpfr_src_folder_name}${name_suffix}"
+  local mpfr_folder_name="${mpfr_src_folder_name}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${mpfr_folder_name}"
 
@@ -80,7 +79,7 @@ function mpfr_build()
           xbb_show_env_develop
 
           echo
-          echo "Running mpfr${name_suffix} configure..."
+          echo "Running mpfr configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -89,17 +88,17 @@ function mpfr_build()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
-          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
-          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           config_options+=("--enable-shared") # Arch
           config_options+=("--enable-thread-safe") # Arch
@@ -123,7 +122,7 @@ function mpfr_build()
 
       (
         echo
-        echo "Running mpfr${name_suffix} make..."
+        echo "Running mpfr make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -152,7 +151,7 @@ function mpfr_build()
     touch "${mpfr_stamp_file_path}"
 
   else
-    echo "Library mpfr${name_suffix} already installed"
+    echo "Library mpfr already installed"
   fi
 }
 
