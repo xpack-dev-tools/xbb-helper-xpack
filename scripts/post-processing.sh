@@ -390,6 +390,7 @@ function copy_dependencies_recursive()
       local executable_prefix="@executable_path/"
       local loader_prefix="@loader_path/"
       local rpath_prefix="@rpath/"
+      local install_name_tool="$(which install_name_tool || echo "install_name_tool")"
 
       # On macOS 10.13 the references to dynamic libraries use full paths;
       # on 11.6 the paths are relative to @rpath.
@@ -528,7 +529,7 @@ function copy_dependencies_recursive()
           if [ "${lib_path}" != "@rpath/$(basename "${from_path}")" ]
           then
             chmod +w "${actual_destination_file_path}"
-            run_verbose install_name_tool \
+            run_verbose "${install_name_tool}" \
               -change "${lib_path}" \
               "@rpath/$(basename "${from_path}")" \
               "${actual_destination_file_path}"
@@ -548,7 +549,7 @@ function copy_dependencies_recursive()
 
           patch_macos_elf_add_rpath "${actual_destination_file_path}" "@loader_path/${relative_lc_rpath}"
 
-          run_verbose install_name_tool \
+          run_verbose "${install_name_tool}" \
             -change "${lib_path}" \
             "@rpath/$(basename "${from_path}")" \
             "${actual_destination_file_path}"
@@ -1126,8 +1127,10 @@ function patch_macos_elf_add_rpath()
     fi
   done
 
+  local install_name_tool="$(which install_name_tool || echo "install_name_tool")"
+
   chmod +w "${file_path}"
-  run_verbose install_name_tool \
+  run_verbose "${install_name_tool}" \
     -add_rpath "${new_rpath}" \
     "${file_path}"
 
@@ -1150,6 +1153,8 @@ function clean_rpaths()
 
       local loader_prefix="@loader_path/"
       local rpath_prefix="@rpath/"
+
+      local install_name_tool="$(which install_name_tool || echo "install_name_tool")"
 
       for lc_rpath in ${lc_rpaths}
       do
@@ -1181,7 +1186,7 @@ function clean_rpaths()
         if [ "${is_found}" != "y" ]
         then
           # Not recognized, deleted.
-          run_verbose install_name_tool \
+          run_verbose "${install_name_tool}" \
             -delete_rpath "${lc_rpath}" \
             "${file_path}"
         fi
