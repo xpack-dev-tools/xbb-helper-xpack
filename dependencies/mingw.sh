@@ -105,15 +105,11 @@ function mingw_download()
   )
 }
 
+# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-headers-git/PKGBUILD
 
 function mingw_build_headers()
 {
-  echo_develop
-  echo_develop "[${FUNCNAME[0]} $@]"
-
-  # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-headers-git/PKGBUILD
-
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
@@ -561,12 +557,12 @@ function mingw_build_gendef()
 
 # -----------------------------------------------------------------------------
 
+# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-crt-git/PKGBUILD
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
+
 function mingw_build_crt()
 {
-  # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-crt-git/PKGBUILD
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
-
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
@@ -715,13 +711,12 @@ function mingw_build_crt()
 
 # -----------------------------------------------------------------------------
 
+# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-winpthreads/trunk/PKGBUILD
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-winpthreads-git/PKGBUILD
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
 
 function mingw_build_winpthreads()
 {
-  # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-winpthreads/trunk/PKGBUILD
-  # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-winpthreads-git/PKGBUILD
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
-
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
