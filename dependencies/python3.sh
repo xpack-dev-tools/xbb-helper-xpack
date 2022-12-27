@@ -392,7 +392,7 @@ function python3_copy_syslibs()
       )
 
       echo "Replacing .py files with .pyc files..."
-      meson_move_pyc "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}"
+      python3_move_pyc "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}"
 
       mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
 
@@ -417,7 +417,7 @@ function python3_copy_syslibs()
   fi
 }
 
-function meson_process_pyc()
+function python3_process_pyc()
 {
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
@@ -439,16 +439,16 @@ function meson_process_pyc()
   fi
 }
 
-export -f meson_process_pyc
+export -f python3_process_pyc
 
-function meson_process_pycache()
+function python3_process_pycache()
 {
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local folder_path="$1"
 
-  find ${folder_path} -name '*.pyc' -type f -print0 | xargs -0 -L 1 -I {} bash -c 'meson_process_pyc "{}"'
+  find ${folder_path} -name '*.pyc' -type f -print0 | xargs -0 -L 1 -I {} bash -c 'python3_process_pyc "{}"'
 
   if [ $(ls -1 "${folder_path}" | wc -l) -eq 0 ]
   then
@@ -456,16 +456,16 @@ function meson_process_pycache()
   fi
 }
 
-export -f meson_process_pycache
+export -f python3_process_pycache
 
-function meson_move_pyc()
+function python3_move_pyc()
 {
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local folder_path="$1"
 
-  find ${folder_path} -name '__pycache__' -type d -print0 | xargs -0 -L 1 -I {} bash -c 'meson_process_pycache "{}"'
+  find ${folder_path} -name '__pycache__' -type d -print0 | xargs -0 -L 1 -I {} bash -c 'python3_process_pycache "{}"'
 }
 
 # -----------------------------------------------------------------------------
