@@ -32,14 +32,13 @@ function libiconv_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local libiconv_version="$1"
-  local name_suffix="${2:-""}"
 
   local libiconv_src_folder_name="libiconv-${libiconv_version}"
 
   local libiconv_archive="${libiconv_src_folder_name}.tar.gz"
   local libiconv_url="https://ftp.gnu.org/pub/gnu/libiconv/${libiconv_archive}"
 
-  local libiconv_folder_name="${libiconv_src_folder_name}${name_suffix}"
+  local libiconv_folder_name="${libiconv_src_folder_name}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libiconv_folder_name}"
 
@@ -79,7 +78,7 @@ function libiconv_build()
           xbb_show_env_develop
 
           echo
-          echo "Running libiconv${name_suffix} configure..."
+          echo "Running libiconv configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -88,11 +87,11 @@ function libiconv_build()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
-          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
-          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
@@ -123,7 +122,7 @@ function libiconv_build()
 
       (
         echo
-        echo "Running libiconv${name_suffix} make..."
+        echo "Running libiconv make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -151,7 +150,7 @@ function libiconv_build()
     touch "${libiconv_stamp_file_path}"
 
   else
-    echo "Library libiconv${name_suffix} already installed"
+    echo "Library libiconv already installed"
   fi
 }
 
