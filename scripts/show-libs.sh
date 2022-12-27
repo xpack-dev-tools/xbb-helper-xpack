@@ -81,7 +81,7 @@ function show_host_libs()
         fi
         echo
         # echo "[otool -L ${abs_path}]"
-        echo "[objdump --macho --dylibs-used ${abs_path}]"
+        echo "[${XBB_HOST_OBJDUMP} --macho --dylibs-used ${abs_path}]"
         set +e
         local lc_rpaths=$(darwin_get_lc_rpaths "${abs_path}")
         local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
@@ -92,7 +92,7 @@ function show_host_libs()
           echo "${abs_path}:"
         fi
         # otool -L "${abs_path}" | tail -n +2
-        objdump --macho --dylibs-used "${abs_path}" | tail -n +3
+        "${XBB_HOST_OBJDUMP}" --macho --dylibs-used "${abs_path}" | tail -n +3
       else
         run_verbose file -L "${abs_path}"
         echo
@@ -199,7 +199,7 @@ function show_target_libs()
         fi
         echo
         # echo "[otool -L ${abs_path}]"
-        echo "[objdump --macho --dylibs-used ${abs_path}]"
+        echo "[${XBB_TARGET_OBJDUMP} --macho --dylibs-used ${abs_path}]"
         set +e
         local lc_rpaths=$(darwin_get_lc_rpaths "${abs_path}")
         local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
@@ -210,7 +210,7 @@ function show_target_libs()
           echo "${abs_path}:"
         fi
         # otool -L "${abs_path}" | tail -n +2
-        objdump --macho --dylibs-used "${abs_path}" | tail -n +3
+        "${XBB_TARGET_OBJDUMP}" --macho --dylibs-used "${abs_path}" | tail -n +3
       elif is_pe "${abs_path}"
       then
         run_verbose ls -l "${abs_path}"
