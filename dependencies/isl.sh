@@ -35,7 +35,6 @@ function isl_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local isl_version="$1"
-  local name_suffix="${2:-""}"
 
   # The folder name as resulted after being extracted from the archive.
   local isl_src_folder_name="isl-${isl_version}"
@@ -49,7 +48,7 @@ function isl_build()
   local isl_url="https://sourceforge.net/projects/libisl/files/${isl_archive}"
 
   # The folder name for build, licenses, etc.
-  local isl_folder_name="${isl_src_folder_name}${name_suffix}"
+  local isl_folder_name="${isl_src_folder_name}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${isl_folder_name}"
 
@@ -87,7 +86,7 @@ function isl_build()
           xbb_show_env_develop
 
           echo
-          echo "Running isl${name_suffix} configure..."
+          echo "Running isl configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -96,17 +95,17 @@ function isl_build()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
-          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
-          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
+          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
@@ -124,7 +123,7 @@ function isl_build()
 
       (
         echo
-        echo "Running isl${name_suffix} make..."
+        echo "Running isl make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -164,7 +163,7 @@ function isl_build()
     touch "${isl_stamp_file_path}"
 
   else
-    echo "Library isl${name_suffix} already installed"
+    echo "Library isl already installed"
   fi
 }
 
