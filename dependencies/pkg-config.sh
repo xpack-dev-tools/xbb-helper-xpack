@@ -25,6 +25,9 @@
 
 function pkg_config_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local pkg_config_version="$1"
 
   local pkg_config_src_folder_name="pkg-config-${pkg_config_version}"

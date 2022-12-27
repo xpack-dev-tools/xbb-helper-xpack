@@ -28,6 +28,9 @@
 
 function gettext_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local gettext_version="$1"
 
   local gettext_src_folder_name="gettext-${gettext_version}"

@@ -27,6 +27,9 @@ function libtasn1_build()
   # 2021-05-13, "4.17.0"
   # 2021-11-09, "4.18.0"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libtasn1_version="$1"
 
   local libtasn1_src_folder_name="libtasn1-${libtasn1_version}"
@@ -155,6 +158,9 @@ function libunistring_build()
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libunistring.rb
 
   # 2018-05-25 "0.9.10"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local libunistring_version="$1"
 
@@ -286,7 +292,6 @@ function gc_build()
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/bdw-gc.rb
 
-
   # 2 Mar 2019 "8.0.4"
   # 28 Sep 2021, "8.0.6"
   # 29 Sep 2021, "8.2.0"
@@ -294,6 +299,9 @@ function gc_build()
   # On linux 8.2.0 fails with
   # extra/../pthread_support.c:365:13: error: too few arguments to function 'pthread_setname_np'
   # 365 |       (void)pthread_setname_np(name_buf);
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local gc_version="$1"
 
@@ -473,6 +481,9 @@ function gnutls_build()
   # 2019-03-27, "3.6.7"
   # 2019-12-02, "3.6.11.1"
   # 2021-05-29, "3.7.2"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local gnutls_version="$1"
   # The first two digits.
@@ -679,6 +690,9 @@ function xorg_util_macros_build()
   # 2018-03-05, "1.19.2"
   # 2021-01-24, "1.19.3"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local xorg_util_macros_version="$1"
 
   local xorg_util_macros_src_folder_name="util-macros-${xorg_util_macros_version}"
@@ -802,6 +816,9 @@ function xorg_xproto_build()
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/xorgproto.rb
 
   # 2016-09-23, "7.0.31" (latest)
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local xorg_xproto_version="$1"
 

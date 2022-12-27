@@ -25,6 +25,9 @@
 
 function m4_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local m4_version="$1"
 
   local m4_src_folder_name="m4-${m4_version}"

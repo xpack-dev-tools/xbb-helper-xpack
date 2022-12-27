@@ -28,6 +28,9 @@
 
 function bzip2_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local bzip2_version="$1"
 
   local bzip2_src_folder_name="bzip2-${bzip2_version}"

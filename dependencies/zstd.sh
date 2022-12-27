@@ -29,6 +29,9 @@
 
 function zstd_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local zstd_version="$1"
 
   # The folder name as resulted after being extracted from the archive.

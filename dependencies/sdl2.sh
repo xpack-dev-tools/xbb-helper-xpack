@@ -26,10 +26,28 @@
 # 2022-08-19, "2.24.0" # Fails on arm linux with xbb v5.0.0
 # 2022-11-01, "2.24.2"
 
+# https://www.libsdl.org/projects/SDL_image/
+# https://www.libsdl.org/projects/SDL_image/release
+
+# https://archlinuxarm.org/packages/aarch64/sdl2_image/files
+# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-sdl2_image
+
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/sdl2_image.rb
+
+# sdl2_image_version="1.1"
+# sdl2_image_version="2.0.1" # 2016-01-03
+# sdl2_image_version="2.0.3" # 2018-03-01
+# sdl2_image_version="2.0.4" # 2018-10-31
+# 2019-07-01, "2.0.5"
+# 2022-08-19, "2.6.2"
+
 # -----------------------------------------------------------------------------
 
 function sdl2_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local sdl2_version="$1"
 
   local sdl2_src_folder_name="SDL2-${sdl2_version}"
@@ -149,20 +167,8 @@ function sdl2_build()
 
 function sdl2_image_build()
 {
-  # https://www.libsdl.org/projects/SDL_image/
-  # https://www.libsdl.org/projects/SDL_image/release
-
-  # https://archlinuxarm.org/packages/aarch64/sdl2_image/files
-  # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-sdl2_image
-
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/sdl2_image.rb
-
-  # sdl2_image_version="1.1"
-  # sdl2_image_version="2.0.1" # 2016-01-03
-  # sdl2_image_version="2.0.3" # 2018-03-01
-  # sdl2_image_version="2.0.4" # 2018-10-31
-  # 2019-07-01, "2.0.5"
-  # 2022-08-19, "2.6.2"
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local sdl2_image_version="$1"
 

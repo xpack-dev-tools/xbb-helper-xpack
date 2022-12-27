@@ -28,6 +28,9 @@
 
 function mpc_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local mpc_version="$1"
   local name_suffix="${2:-""}"
 

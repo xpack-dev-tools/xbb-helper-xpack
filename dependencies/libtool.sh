@@ -25,6 +25,9 @@
 
 function libtool_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libtool_version="$1"
 
   local step="${2:-}"

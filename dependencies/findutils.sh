@@ -22,6 +22,9 @@
 
 function findutils_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local findutils_version="$1"
 
   local findutils_src_folder_name="findutils-${findutils_version}"

@@ -27,6 +27,9 @@
 
 function texinfo_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local texinfo_version="$1"
 
   local texinfo_src_folder_name="texinfo-${texinfo_version}"

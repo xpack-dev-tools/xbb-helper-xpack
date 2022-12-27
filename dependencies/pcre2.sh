@@ -23,6 +23,9 @@
 
 function pcre2_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local pcre2_version="$1"
 
   local pcre2_src_folder_name="pcre2-${pcre2_version}"

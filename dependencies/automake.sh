@@ -29,6 +29,9 @@
 
 function automake_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local automake_version="$1"
 
   local automake_src_folder_name="automake-${automake_version}"

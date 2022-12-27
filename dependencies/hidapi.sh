@@ -31,6 +31,9 @@
 
 function hidapi_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local hidapi_version="$1"
 
   local hidapi_src_folder_name="hidapi-hidapi-${hidapi_version}"

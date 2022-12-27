@@ -123,6 +123,9 @@ function gcc_download()
 # Return GCC_FOLDER_NAME
 function gcc_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local gcc_version="$1"
   shift
 
@@ -618,6 +621,9 @@ function gcc_build()
 # Currently not used, work done by gcc_build().
 function _gcc_build_libs()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local gcc_libs_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-libs-installed"
   if [ ! -f "${gcc_libs_stamp_file_path}" ]
   then
@@ -660,6 +666,9 @@ function _gcc_build_libs()
 # Currently not used, work done by gcc_build().
 function _gcc_build_final()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local gcc_final_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-final-installed"
   if [ ! -f "${gcc_final_stamp_file_path}" ]
   then

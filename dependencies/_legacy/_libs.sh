@@ -27,6 +27,9 @@ function libelf_build()
   # 2021-02-07, "0.183"
   # 2021-05-10, "0.184"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libelf_version="$1"
 
   local libelf_src_folder_name="libelf-${libelf_version}"
@@ -152,6 +155,9 @@ function python2_build()
   # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python-pip
 
   # 19-Apr-2020, "2.7.18"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local python2_version="$1"
 
@@ -405,6 +411,9 @@ function xar_build()
 
   # 18 Sep 2012, "1.6.1"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local xar_version="$1"
 
   local xar_src_folder_name="xar-xar-${xar_version}"
@@ -546,6 +555,9 @@ function libgpg_error_build()
   # 2020-02-07, "1.37"
   # 2021-03-22, "1.42"
   # 2021-11-03, "1.43"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local libgpg_error_version="$1"
 
@@ -693,6 +705,9 @@ function libgcrypt_build()
   # 2021-06-02, "1.8.8"
   # 2021-04-19, "1.9.3" Fails many tests on macOS 10.13
   # 2021-08-22, "1.9.4"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local libgcrypt_version="$1"
 
@@ -905,6 +920,9 @@ function libassuan_build()
   # 2019-02-11, "2.5.3"
   # 2021-03-22, "2.5.5"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libassuan_version="$1"
 
   local libassuan_src_folder_name="libassuan-${libassuan_version}"
@@ -1066,6 +1084,9 @@ function libksba_build()
   # 2016-08-22, "1.3.5"
   # 2021-06-10, "1.6.0"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libksba_version="$1"
 
   local libksba_src_folder_name="libksba-${libksba_version}"
@@ -1226,6 +1247,9 @@ function npth_build()
 
   # 2018-07-16, "1.6"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local npth_version="$1"
 
   local npth_src_folder_name="npth-${npth_version}"
@@ -1382,6 +1406,9 @@ function _libusb_build()
   # 2018-03-25, 1.0.22
   # 2020-12-11, 1.0.24
   # 2022-04-10, "1.0.26"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local libusb_version="$1"
 

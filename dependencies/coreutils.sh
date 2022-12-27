@@ -27,6 +27,9 @@
 
 function coreutils_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local coreutils_version="$1"
 
   local coreutils_src_folder_name="coreutils-${coreutils_version}"

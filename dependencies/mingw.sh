@@ -108,6 +108,9 @@ function mingw_download()
 
 function mingw_build_headers()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
   # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-headers-git/PKGBUILD
 

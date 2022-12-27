@@ -30,6 +30,9 @@
 # $1="" or $1="-py3"
 function gdb_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local gdb_version="$1"
 
   local gdb_src_folder_name="gdb-${gdb_version}"

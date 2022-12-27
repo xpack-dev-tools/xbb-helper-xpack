@@ -23,6 +23,9 @@
 
 function sed_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local sed_version="$1"
 
   local sed_src_folder_name="sed-${sed_version}"

@@ -24,6 +24,9 @@
 
 function autoconf_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local autoconf_version="$1"
 
   local autoconf_src_folder_name="autoconf-${autoconf_version}"

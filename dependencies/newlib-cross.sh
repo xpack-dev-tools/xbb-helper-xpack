@@ -23,6 +23,9 @@
 # $1="" or $1="-nano"
 function newlib_cross_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local newlib_version="$1"
   shift
 
@@ -268,6 +271,9 @@ function newlib_cross_build()
 
 function newlib_cross_copy_nano_libs()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local src_folder="$1"
   local dst_folder="$2"
 

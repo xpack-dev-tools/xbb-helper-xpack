@@ -184,6 +184,9 @@ function binutils_build()
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local binutils_version="$1"
   shift
 
@@ -434,6 +437,9 @@ function binutils_test()
 
 function binutils_build_ld_gold()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local binutils_version="$1"
 
   local binutils_src_folder_name="binutils-${binutils_version}"

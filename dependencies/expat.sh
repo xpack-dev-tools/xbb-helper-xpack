@@ -30,6 +30,9 @@
 
 function expat_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local expat_version="$1"
 
   local expat_src_folder_name="expat-${expat_version}"

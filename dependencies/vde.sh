@@ -25,6 +25,9 @@
 
 function vde_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local vde_version="$1"
 
   local vde_src_folder_name="vde2-${vde_version}"

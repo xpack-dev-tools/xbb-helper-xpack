@@ -29,6 +29,9 @@
 
 function binutils_cross_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local binutils_version="$1"
   shift
 

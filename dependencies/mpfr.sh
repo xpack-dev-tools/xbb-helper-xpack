@@ -29,6 +29,9 @@
 
 function mpfr_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local mpfr_version="$1"
   local name_suffix="${2:-""}"
 

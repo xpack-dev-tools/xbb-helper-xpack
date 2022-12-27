@@ -32,6 +32,9 @@
 
 function libffi_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libffi_version="$1"
 
   local libffi_src_folder_name="libffi-${libffi_version}"

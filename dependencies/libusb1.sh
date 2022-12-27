@@ -21,6 +21,9 @@
 
 function libusb1_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libusb1_version="$1"
 
   local libusb1_src_folder_name="libusb-${libusb1_version}"

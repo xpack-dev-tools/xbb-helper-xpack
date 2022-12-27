@@ -21,6 +21,9 @@
 
 function libftdi_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libftdi_version="$1"
 
   local libftdi_src_folder_name="libftdi1-${libftdi_version}"

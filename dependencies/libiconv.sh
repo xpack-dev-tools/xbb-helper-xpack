@@ -28,6 +28,9 @@
 
 function libiconv_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libiconv_version="$1"
   local name_suffix="${2:-""}"
 

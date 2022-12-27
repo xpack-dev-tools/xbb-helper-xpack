@@ -177,6 +177,9 @@ function gcc_cross_download()
 
 function gcc_cross_generate_riscv_multilib_file()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   # Not inside the previous if to allow multilib changes after download.
   if [ "${XBB_APPLICATION_WITHOUT_MULTILIB}" != "y" ]
   then
@@ -215,6 +218,9 @@ function gcc_cross_generate_riscv_multilib_file()
 
 function gcc_cross_build_first()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local gcc_version="$1"
   shift
 
@@ -417,6 +423,9 @@ function gcc_cross_build_first()
 
 function gcc_cross_copy_linux_libs()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="$1"
 
   local copy_linux_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-copy-linux-libs-completed"
@@ -461,6 +470,9 @@ function gcc_cross_copy_linux_libs()
 
 function gcc_cross_build_final()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local gcc_version="$1"
   shift
 
@@ -894,6 +906,9 @@ __EOF__
 
 function gcc_cross_copy_nano_multilibs()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="$1"
 
   echo
@@ -946,6 +961,9 @@ function gcc_cross_copy_nano_multilibs()
 
 function gcc_cross_tidy_up()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   (
     echo
     echo "# Tidying up..."
@@ -966,6 +984,9 @@ function gcc_cross_tidy_up()
 
 function gcc_cross_strip_libs()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="$1"
 
   if [ "${XBB_WITH_STRIP}" == "y" ]
@@ -999,6 +1020,9 @@ function gcc_cross_strip_libs()
 
 function gcc_cross_final_tunings()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   # Create the missing LTO plugin links.
   # For `ar` to work with LTO objects, it needs the plugin in lib/bfd-plugins,
   # but the build leaves it where `ld` needs it. On POSIX, make a soft link.

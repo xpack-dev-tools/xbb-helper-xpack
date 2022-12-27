@@ -31,6 +31,9 @@
 
 function isl_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local isl_version="$1"
   local name_suffix="${2:-""}"
 

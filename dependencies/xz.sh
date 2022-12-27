@@ -27,6 +27,9 @@
 
 function xz_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local xz_version="$1"
 
   local xz_src_folder_name="xz-${xz_version}"

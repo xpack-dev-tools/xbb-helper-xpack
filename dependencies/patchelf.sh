@@ -34,6 +34,9 @@
 
 function patchelf_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local patchelf_version="$1"
 
   local patchelf_src_folder_name="patchelf-${patchelf_version}"

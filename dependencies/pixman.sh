@@ -28,6 +28,9 @@
 
 function pixman_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local pixman_version="$1"
 
   local pixman_src_folder_name="pixman-${pixman_version}"

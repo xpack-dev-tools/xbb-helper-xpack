@@ -21,6 +21,9 @@
 
 function termcap_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local termcap_version="$1"
 
   local termcap_src_folder_name="termcap-${termcap_version}"

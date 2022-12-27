@@ -24,6 +24,9 @@
 
 function libpcap_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libpcap_version="$1"
 
   local libpcap_src_folder_name="libpcap-${libpcap_version}"

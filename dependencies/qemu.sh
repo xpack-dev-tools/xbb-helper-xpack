@@ -31,6 +31,9 @@
 
 function qemu_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local qemu_version="$1"
   local qemu_target="$2" # arm, riscv, tools
 

@@ -89,6 +89,9 @@ function gdb_cross_build_dependencies()
 # $1="" or $1="-py" or $1="-py3"
 function gdb_cross_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local triplet="$1"
   shift
 

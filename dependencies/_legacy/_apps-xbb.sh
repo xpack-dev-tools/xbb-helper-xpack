@@ -28,6 +28,9 @@ function scons_build()
   # 2021-08-01, "4.2.0"
   # 2021-11-17, "4.3.0"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local scons_version="$1"
 
   # Previous versions used lower case.
@@ -150,6 +153,9 @@ function curl_build()
   # 2020-01-08, "7.68.0"
   # May 26 2021, "7.77.0"
   # Nov 10, 2021, "7.80.0"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local curl_version="$1"
 
@@ -369,6 +375,9 @@ function tar_build()
   # 2019-02-23 "1.32"
   # 2021-02-13, "1.34"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local tar_version="$1"
 
   local tar_src_folder_name="tar-${tar_version}"
@@ -584,6 +593,9 @@ function guille_build()
   # 2020-03-08, "3.0.1"
   # 2021-05-10, "3.0.7"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local guile_version="$1"
 
   local guile_src_folder_name="guile-${guile_version}"
@@ -770,6 +782,9 @@ function autogen_build()
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/autogen.rb
 
   # 2018-08-26, "5.18.16"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local autogen_version="$1"
 
@@ -973,6 +988,9 @@ function gawk_build()
   # 2020-04-14, "5.1.0"
   # 2021-10-28, "5.1.1"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local gawk_version="$1"
 
   local gawk_src_folder_name="gawk-${gawk_version}"
@@ -1162,6 +1180,9 @@ function patch_build()
   # 2015-03-06, "2.7.5"
   # 2018-02-06, "2.7.6" (latest)
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local patch_version="$1"
 
   local patch_src_folder_name="patch-${patch_version}"
@@ -1316,6 +1337,9 @@ function diffutils_build()
   # 2017-05-21, "3.6"
   # 2018-12-31, "3.7"
   # 2021-08-01, "3.8"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local diffutils_version="$1"
 
@@ -1499,6 +1523,9 @@ function bison_build()
   # 2019-12-11, "3.5"
   # 2020-07-23, "3.7"
   # 2021-09-25, "3.8.2"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local bison_version="$1"
 
@@ -1706,6 +1733,9 @@ function make_build()
   # 2016-06-10, "4.2.1"
   # 2020-01-19, "4.3"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local make_version="$1"
 
   local make_src_folder_name="make-${make_version}"
@@ -1884,6 +1914,9 @@ function bash_build()
   # 2020-12-06, "5.1"
   # 2021-06-15, "5.1.8"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local bash_version="$1"
 
   local bash_src_folder_name="bash-${bash_version}"
@@ -2051,6 +2084,9 @@ function wget_build()
   # 195 | __nonnull ((1))
   # 2021-01-09, "1.21.1"
   # 2021-09-07, "1.21.2"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local wget_version="$1"
 
@@ -2233,6 +2269,9 @@ function dos2unix_build()
   # 2019-09-24, "7.4.1"
   # 2020-10-12, "7.4.2"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local dos2unix_version="$1"
 
   local dos2unix_src_folder_name="dos2unix-${dos2unix_version}"
@@ -2381,6 +2420,9 @@ function flex_build()
   # make[2]: *** [Makefile:1696: stage1scan.c] Segmentation fault (core dumped)
   # The patch from Arch should fix it.
   # https://archlinuxarm.org/packages/aarch64/flex/files/flex-pie.patch
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local flex_version="$1"
 
@@ -2610,6 +2652,9 @@ function perl_build()
   # 2019-11-10, "5.30.1"
   # 2021-05-20, "5.34.0"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   XBB_PERL_VERSION="$1"
   local perl_version_major="$(echo "${XBB_PERL_VERSION}" | sed -e 's/\([0-9]*\)\..*/\1.0/')"
 
@@ -2832,6 +2877,9 @@ function tcl_build()
   # 2021-01-02, "8.6.11"
   # 2021-11-05, "8.6.12"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local tcl_version="$1"
 
   TCL_VERSION_MAJOR="$(echo ${tcl_version} | sed -e 's|\([0-9][0-9]*\)\.\([0-9][0-9]*\)\..*|\1|')"
@@ -3047,6 +3095,9 @@ function git_build()
   # 12-Oct-2021, "2.33.1"
   # 24-Nov-2021, "2.34.1"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local git_version="$1"
 
   local git_src_folder_name="git-${git_version}"
@@ -3219,6 +3270,9 @@ function p7zip_build()
   # 2016-07-14, "16.02"
   # 04 Apr 2021, "17.04"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local p7zip_version="$1"
 
   # local p7zip_src_folder_name="p7zip_${p7zip_version}"
@@ -3377,6 +3431,9 @@ function rhash_build()
   # Jan 7, 2021, "1.4.1"
   # Jul 15, 2021, "1.4.2"
   # 14 Jun 2022, "1.4.3" # Apple Silicon support added
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local rhash_version="$1"
 
@@ -3554,6 +3611,9 @@ function re2c_build()
   # 14 Dec 2019, "1.3"
   # Mar 27, 2021, "2.1.1"
   # 01 Aug 2021, "2.2"
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local re2c_version="$1"
 
@@ -3760,6 +3820,9 @@ function gnupg_build()
   # 2021-04-20, "2.3.1" fails on macOS
   # 2021-10-12, "2.3.3"
 
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local gnupg_version="$1"
 
   local gnupg_src_folder_name="gnupg-${gnupg_version}"
@@ -3961,6 +4024,9 @@ function makedepend_build()
 
   # 2013-07-23, 1.0.5
   # 2019-03-16, 1.0.6
+
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local makedepend_version="$1"
 

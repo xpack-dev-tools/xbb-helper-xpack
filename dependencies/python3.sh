@@ -46,6 +46,9 @@
 
 function python3_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local python3_version="$1"
 
   local python3_version_major=$(echo ${python3_version} | sed -e 's|\([0-9]\)\..*|\1|')
@@ -325,6 +328,9 @@ function python3_download_win()
 # from POSIX.
 function python3_copy_win_syslibs()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
     echo
@@ -345,6 +351,9 @@ function python3_copy_win_syslibs()
 # control over path (like meson) on all platforms.
 function python3_copy_syslibs()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local python_with_version="python${XBB_PYTHON3_VERSION_MAJOR}.${XBB_PYTHON3_VERSION_MINOR}"
   if [ ! -d "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" ]
   then
@@ -410,6 +419,9 @@ function python3_copy_syslibs()
 
 function meson_process_pyc()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local file_path="$1"
 
   # echo bbb "${file_path}"
@@ -431,6 +443,9 @@ export -f meson_process_pyc
 
 function meson_process_pycache()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local folder_path="$1"
 
   find ${folder_path} -name '*.pyc' -type f -print0 | xargs -0 -L 1 -I {} bash -c 'meson_process_pyc "{}"'
@@ -445,6 +460,9 @@ export -f meson_process_pycache
 
 function meson_move_pyc()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local folder_path="$1"
 
   find ${folder_path} -name '__pycache__' -type d -print0 | xargs -0 -L 1 -I {} bash -c 'meson_process_pycache "{}"'

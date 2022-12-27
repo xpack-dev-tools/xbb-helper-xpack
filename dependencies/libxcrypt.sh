@@ -35,6 +35,9 @@
 
 function libxcrypt_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libxcrypt_version="$1"
 
   local libxcrypt_src_folder_name="libxcrypt-${libxcrypt_version}"

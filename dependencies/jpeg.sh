@@ -30,6 +30,9 @@
 
 function jpeg_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local jpeg_version="$1"
 
   local jpeg_src_folder_name="jpeg-${jpeg_version}"

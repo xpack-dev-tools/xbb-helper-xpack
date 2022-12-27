@@ -32,6 +32,9 @@
 
 function sqlite_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local sqlite_version="$1"
 
   local sqlite_src_folder_name="sqlite-src-${sqlite_version}"

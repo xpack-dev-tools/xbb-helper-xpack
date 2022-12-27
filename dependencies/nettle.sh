@@ -28,6 +28,9 @@
 
 function nettle_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local nettle_version="$1"
 
   local nettle_src_folder_name="nettle-${nettle_version}"

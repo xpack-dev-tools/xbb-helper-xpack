@@ -26,6 +26,9 @@
 
 function gpm_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local gpm_version="$1"
 
   local gpm_src_folder_name="gpm-${gpm_version}"

@@ -23,6 +23,9 @@
 
 function lzo_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local lzo_version="$1"
 
   local lzo_src_folder_name="lzo-${lzo_version}"

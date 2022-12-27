@@ -27,6 +27,9 @@
 
 function libedit_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libedit_version="$1"
   local libedit_version_short="$(echo ${libedit_version} | sed -e 's|[0-9]*-||')"
 

@@ -19,6 +19,9 @@
 
 function libusb_w32_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local libusb_w32_version="$1"
 
   local libusb_w32_prefix="libusb-win32"

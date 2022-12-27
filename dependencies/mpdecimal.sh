@@ -26,6 +26,9 @@
 
 function mpdecimal_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local mpdecimal_version="$1"
 
   local mpdecimal_src_folder_name="mpdecimal-${mpdecimal_version}"
