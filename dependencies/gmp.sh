@@ -30,7 +30,6 @@ function gmp_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local gmp_version="$1"
-  local name_suffix="${2:-""}"
 
   # The folder name as resulted after being extracted from the archive.
   local gmp_src_folder_name="gmp-${gmp_version}"
@@ -39,7 +38,7 @@ function gmp_build()
   local gmp_url="https://gmplib.org/download/gmp/${gmp_archive}"
 
   # The folder name for build, licenses, etc.
-  local gmp_folder_name="${gmp_src_folder_name}${name_suffix}"
+  local gmp_folder_name="${gmp_src_folder_name}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${gmp_folder_name}"
 
@@ -91,7 +90,7 @@ function gmp_build()
           xbb_show_env_develop
 
           echo
-          echo "Running gmp${name_suffix} configure..."
+          echo "Running gmp configure..."
 
           # ABI is mandatory, otherwise configure fails on 32-bit.
           # (see https://gmplib.org/manual/ABI-and-ISA.html)
@@ -103,11 +102,11 @@ function gmp_build()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${name_suffix}")
-          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/lib")
-          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/include")
-          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share")
-          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}/share/man")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+          # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
+          config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
@@ -153,7 +152,7 @@ function gmp_build()
 
       (
         echo
-        echo "Running gmp${name_suffix} make..."
+        echo "Running gmp make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -198,7 +197,7 @@ function gmp_build()
     touch "${gmp_stamp_file_path}"
 
   else
-    echo "Library gmp${name_suffix} already installed"
+    echo "Library gmp already installed"
   fi
 }
 
