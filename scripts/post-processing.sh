@@ -1909,7 +1909,7 @@ function check_binary_for_libraries()
         # More or less deprecated by the above, but kept for just in case.
         set +e
         local unxp
-        if [[ "${file_name}" == .*[.]dylib ]]
+        if [[ "${file_name}" =~ .*[.]dylib ]]
         then
           unxp=$(otool -L "${file_path}" | sed '1d' | sed '1d' | grep -v "${file_name}" | egrep -e "(macports|homebrew|opt|install)/")
         else
