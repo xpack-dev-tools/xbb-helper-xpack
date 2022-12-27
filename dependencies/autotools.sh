@@ -18,6 +18,9 @@ done
 
 function autotools_build()
 {
+  # For tools to access their dependencies.
+  xbb_activate_installed_bin
+
   # https://ftp.gnu.org/pub/gnu/libiconv/
   libiconv_build "1.17" # "1.16"
 
