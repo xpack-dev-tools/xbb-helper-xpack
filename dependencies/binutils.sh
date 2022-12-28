@@ -51,6 +51,8 @@
 # program_prefix
 function binutils_prepare_common_options()
 {
+  local triplet="$1"
+
   config_options=()
 
   config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
@@ -287,7 +289,7 @@ function binutils_build()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/ld/configure" --help
           fi
 
-          binutils_prepare_common_options
+          binutils_prepare_common_options "${triplet}"
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
             ${config_options[@]}
@@ -516,7 +518,7 @@ function binutils_build_ld_gold()
           #  config_options+=("--disable-shared")
           #  config_options+=("--disable-shared-libgcc")
 
-          binutils_prepare_common_options
+          binutils_prepare_common_options "${triplet}"
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
             "${config_options[@]}"
