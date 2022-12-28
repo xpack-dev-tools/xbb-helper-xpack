@@ -117,7 +117,10 @@ function binutils_prepare_common_options()
     exit 1
   fi
 
-  config_options+=("--enable-64-bit-bfd") # HB, mingw
+  if [ "${triplet}" != "i686-w64-mingw32" ]
+  then
+    config_options+=("--enable-64-bit-bfd") # HB, mingw
+  fi
   config_options+=("--enable-build-warnings=no")
   config_options+=("--enable-cet") # Arch
   config_options+=("--enable-default-execstack=no") # Arch
