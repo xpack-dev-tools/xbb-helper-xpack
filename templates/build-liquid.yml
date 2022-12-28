@@ -14,6 +14,14 @@ on:
         description: 'The semver of the release'
         required: false
         default: 'current'
+      xpm-version:
+        description: 'The version of xpm to install'
+        required: false
+        default: 'latest'
+      xpm-install-verbosity:
+        description: 'Optional switches to pass to xpm install'
+        required: false
+        default: ''
 
 jobs:
 {% for platform in platforms -%}
@@ -50,16 +58,16 @@ jobs:
 
       - name: 'Install xpm'
         timeout-minutes: 1440
-        run: npm install --location=global xpm@latest
+        run: npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm-version }}{% endraw %}
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install
+        run: xpm install {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
 
       - name: 'Build Linux x64 binary'
         timeout-minutes: 1440
         run: |
-          xpm install --config linux-x64
+          xpm install --config linux-x64 {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
           xpm run build --config linux-x64
 
       - name: 'Publish pre-release'
@@ -122,16 +130,16 @@ jobs:
 
       - name: 'Install xpm'
         timeout-minutes: 1440
-        run: npm install --location=global xpm@latest
+        run: npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm-version }}{% endraw %}
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install
+        run: xpm install {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
 
       - name: 'Build Windows x64 binary'
         timeout-minutes: 1440
         run: |
-          xpm install --config win32-x64
+          xpm install --config win32-x64 {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
           xpm run build --config win32-x64
 
       - name: 'Publish pre-release'
@@ -194,16 +202,16 @@ jobs:
 
       - name: 'Install xpm'
         timeout-minutes: 1440
-        run: npm install --location=global xpm@latest
+        run: npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm-version }}{% endraw %}
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install
+        run: xpm install {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
 
       - name: 'Build Linux arm32 binary'
         timeout-minutes: 1440
         run: |
-          xpm install --config linux-arm
+          xpm install --config linux-arm {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
           xpm run build --config linux-arm
 
       - name: 'Publish pre-release'
@@ -266,16 +274,16 @@ jobs:
 
       - name: 'Install xpm'
         timeout-minutes: 1440
-        run: npm install --location=global xpm@latest
+        run: npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm-version }}{% endraw %}
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install
+        run: xpm install {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
 
       - name: 'Build Linux arm64 binary'
         timeout-minutes: 1440
         run: |
-          xpm install --config linux-arm64
+          xpm install --config linux-arm64 {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
           xpm run build --config linux-arm64
 
       - name: 'Publish pre-release'
@@ -336,11 +344,11 @@ jobs:
 
       - name: 'Install xpm'
         timeout-minutes: 1440
-        run: npm install --location=global xpm@latest
+        run: npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm-version }}{% endraw %}
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install
+        run: xpm install {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
 
 {% for platform in platforms -%}
   {% case platform -%}
@@ -348,7 +356,7 @@ jobs:
       - name: 'Build macOS x64 binary'
         timeout-minutes: 1440
         run: |
-          xpm install --config darwin-x64
+          xpm install --config darwin-x64 {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
           xpm run build --config darwin-x64
   {% endcase -%}
 {% endfor %}
@@ -410,11 +418,11 @@ jobs:
 
       - name: 'Install xpm'
         timeout-minutes: 1440
-        run: npm install --location=global xpm@latest
+        run: npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm-version }}{% endraw %}
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install
+        run: xpm install {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
 
 {% for platform in platforms -%}
   {% case platform -%}
@@ -422,7 +430,7 @@ jobs:
       - name: 'Build macOS arm64 binary'
         timeout-minutes: 1440
         run: |
-          xpm install --config darwin-arm64
+          xpm install --config darwin-arm64 {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
           xpm run build --config darwin-arm64
 
   {% endcase -%}
