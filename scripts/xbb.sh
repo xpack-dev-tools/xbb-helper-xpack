@@ -307,6 +307,10 @@ function xbb_set_target()
 
   if [ "${kind}" == "native" ]
   then
+    # is_native=true
+    # is_non_native=false
+    # is_bootstrap=false
+    # is_cross=false
     XBB_HOST_PLATFORM="${XBB_BUILD_PLATFORM}"
     XBB_HOST_ARCH="${XBB_BUILD_ARCH}"
     XBB_HOST_BITS="${XBB_BUILD_BITS}"
@@ -321,6 +325,10 @@ function xbb_set_target()
     XBB_TARGET_TRIPLET="${XBB_BUILD_TRIPLET}"
   elif [ "${kind}" == "mingw-w64-native" ]
   then
+    # is_native=false (on Unix)
+    # is_non_native=true (on Unix)
+    # is_bootstrap=true
+    # is_cross=false
     XBB_HOST_PLATFORM="${XBB_BUILD_PLATFORM}"
     XBB_HOST_ARCH="${XBB_BUILD_ARCH}"
     XBB_HOST_BITS="${XBB_BUILD_BITS}"
@@ -334,6 +342,10 @@ function xbb_set_target()
     XBB_TARGET_TRIPLET="x86_64-w64-mingw32"
   elif [ "${kind}" == "mingw-w64-cross" ]
   then
+    # is_native=false (on Unix)
+    # is_non_native=true (on Unix)
+    # is_bootstrap=false
+    # is_cross=true
     XBB_HOST_PLATFORM="win32"
     XBB_HOST_ARCH="x64"
     XBB_HOST_BITS="64"
@@ -348,6 +360,7 @@ function xbb_set_target()
   elif [ "${kind}" == "requested" ]
   then
     # Set the actual to the requested.
+    # It is either native or cross (on Unix).
     XBB_HOST_PLATFORM="${XBB_REQUESTED_HOST_PLATFORM}"
     XBB_HOST_ARCH="${XBB_REQUESTED_HOST_ARCH}"
     XBB_HOST_BITS="${XBB_REQUESTED_HOST_BITS}"
