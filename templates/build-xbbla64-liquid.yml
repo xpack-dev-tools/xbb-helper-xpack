@@ -33,7 +33,7 @@ on:
         - verbose
         - debug
         - trace
-      xpm-install-verbosity:
+      xpm-install-options:
         description: 'Optional switches to pass to xpm install'
         required: false
         type: string
@@ -78,12 +78,12 @@ jobs:
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
+        run: xpm install {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
 
       - name: 'Build Linux arm64 binary'
         timeout-minutes: 1440
         run: |
-          xpm install --config linux-arm64 {% raw %}${{ github.event.inputs.xpm-install-verbosity }}{% endraw %}
+          xpm install --config linux-arm64 {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
           xpm run build --config linux-arm64
 
       - name: 'Publish pre-release'
