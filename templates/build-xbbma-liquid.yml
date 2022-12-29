@@ -76,14 +76,14 @@ jobs:
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
+        run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm-install-loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
 {% for platform in platforms -%}
   {% case platform -%}
     {% when "darwin-arm64" %}
       - name: 'Build macOS arm64 binary'
         timeout-minutes: 1440
         run: |
-          xpm install --config darwin-arm64 {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
+          xpm install --config darwin-arm64 --loglevel {% raw %}${{ github.event.inputs.xpm-install-loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
           xpm run build --config darwin-arm64
   {% endcase -%}
 {% endfor %}

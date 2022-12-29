@@ -78,12 +78,12 @@ jobs:
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
+        run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm-install-loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
 
       - name: 'Build Linux arm32 binary'
         timeout-minutes: 1440
         run: |
-          xpm install --config linux-arm {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
+          xpm install --config linux-arm --loglevel {% raw %}${{ github.event.inputs.xpm-install-loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
           xpm run build --config linux-arm
 
       - name: 'Publish pre-release'
