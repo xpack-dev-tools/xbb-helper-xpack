@@ -364,7 +364,6 @@ function gcc_mingw_build_first()
         echo "Running ${name_prefix}gcc first make..."
 
         # Build.
-#        XBB_JOBS=1
         run_verbose make -j ${XBB_JOBS} all-gcc
 
         run_verbose make install-strip-gcc
