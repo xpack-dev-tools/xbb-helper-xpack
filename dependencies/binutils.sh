@@ -251,6 +251,12 @@ function binutils_build()
       # To access the newly compiled libraries.
       xbb_activate_dependencies_dev
 
+      if [ "${has_program_prefix}" == "y" ]
+      then
+        LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${LD_LIBRARY_PATH}"
+        echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+      fi
+
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
