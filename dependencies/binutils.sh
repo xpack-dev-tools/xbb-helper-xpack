@@ -265,6 +265,9 @@ function binutils_build()
       elif [ "${has_program_prefix}" == "y" ]
       then
         LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${LD_LIBRARY_PATH}"
+      elif is_cross
+      then
+        :
       else
         echo "TODO in ${FUNCNAME[0]} $@"
         exit 1
@@ -501,6 +504,9 @@ function binutils_build_ld_gold()
       elif [ "${has_program_prefix}" == "y" ]
       then
         LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${LD_LIBRARY_PATH}"
+      elif is_cross
+      then
+        :
       else
         echo "TODO in ${FUNCNAME[0]} $@"
         exit 1
