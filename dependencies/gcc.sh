@@ -364,7 +364,7 @@ function gcc_build()
 
             #  fails on aarch64 with
             # gcc/lto-compress.cc:135: undefined reference to `ZSTD_compressBound'
-            if true # [ "${XBB_IS_DEVELOP}" == "y" ]
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
             then
               config_options+=("--disable-bootstrap")
             else
