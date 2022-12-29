@@ -149,7 +149,11 @@ function xbb_reset_env()
   then
     # Start with the library path known by the compiler.
     # Later this path will be added to -rpath.
-    export LD_LIBRARY_PATH="$(/usr/bin/gcc -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+    local realpath=$(which_realpath)
+    export LD_LIBRARY_PATH="$(${realpath} $(dirname $(/usr/bin/g++ -print-file-name=libstdc++.so.6)))"
+
+    # This is maximal, it adds lots of folders.
+    # export LD_LIBRARY_PATH="$(/usr/bin/gcc -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
   fi
 
   # ---------------------------------------------------------------------------
