@@ -190,6 +190,8 @@ function gcc_mingw_build_first()
         CXXFLAGS+=" -D__USE_MINGW_ACCESS"
       fi
 
+      LIBS="-lzstd -lpthread"
+
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
@@ -201,6 +203,7 @@ function gcc_mingw_build_first()
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
+      export LIBS
 
       # HB: Create a mingw symlink, expected by GCC
       # ln_s "#{arch_dir}/#{target}", "#{arch_dir}/mingw"
@@ -355,6 +358,7 @@ function gcc_mingw_build_first()
         echo "Running ${name_prefix}gcc first make..."
 
         # Build.
+#        XBB_JOBS=1
         run_verbose make -j ${XBB_JOBS} all-gcc
 
         run_verbose make install-strip-gcc
