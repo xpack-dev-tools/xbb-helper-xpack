@@ -705,7 +705,9 @@ function install_file()
       run_verbose ${INSTALL} -d -m 755 "$(dirname "${destination_file_path}")"
     fi
     run_verbose ${INSTALL} -c -m 755 "${source_file_path}" "${destination_file_path}"
-    echo "${source_file_path} => ${destination_file_path}" >>"${XBB_LOGS_COPIED_FILES_FILE_PATH}"
+
+    local realpath=$(which_realpath)
+    echo "$(${realpath} ${source_file_path}) => ${destination_file_path}" >>"${XBB_LOGS_COPIED_FILES_FILE_PATH}"
   fi
 }
 
