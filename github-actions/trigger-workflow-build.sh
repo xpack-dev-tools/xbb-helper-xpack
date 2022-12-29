@@ -67,6 +67,7 @@ message="Build ${XBB_APPLICATION_NAME}"
 branch="xpack-develop"
 version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 workflow_id="build-all.yml"
+loglevel="info"
 
 while [ $# -gt 0 ]
 do
@@ -87,6 +88,11 @@ do
       shift 2
       ;;
 
+    --loglevel )
+      loglevel="$2"
+      shift 2
+      ;;
+
     --* )
       echo "Unsupported option $1 in ${FUNCNAME[0]}()"
       exit 1
@@ -103,7 +109,8 @@ cat <<__EOF__ > "${data_file_path}"
 {
   "ref": "${branch}",
   "inputs": {
-    "version": "${version}"
+    "version": "${version}",
+    "xpm-install-loglevel": "${loglevel}"
   }
 }
 __EOF__
