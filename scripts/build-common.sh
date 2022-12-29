@@ -177,6 +177,12 @@ function build_common_run()
 
   xbb_set_target "native"
 
+  # Leave a trace of copied files for later inspection.
+  # (XBB_LOGS_FOLDER_PATH is set in xbb_set_target).
+  export XBB_LOGS_COPIED_FILES_FILE_PATH="${XBB_LOGS_FOLDER_PATH}/copied-files-$(ndate).txt"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
+  touch "${XBB_LOGS_COPIED_FILES_FILE_PATH}"
+
   xbb_show_tools_versions
 
   # Prime it early
@@ -263,6 +269,10 @@ function build_common_run()
 
       run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
       run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
+
+      echo
+      echo "# Copied files..."
+      cat  "${XBB_LOGS_COPIED_FILES_FILE_PATH}" | sort
 
       if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ] || [ ! -z ${XBB_APPLICATION_SHOW_DLLS+x} ]
       then
