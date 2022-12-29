@@ -145,15 +145,20 @@ function xbb_reset_env()
 
   # ---------------------------------------------------------------------------
 
-  if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+  # This must be used with caution, since it may result in unwanted shared
+  # libraries copied from the system folders to the archive.
+  if [ "${XBB_APPLICATION_ADD_SYS_FOLDER_TO_RPATH:-""}" == "y" ]
   then
-    # Start with the library path known by the compiler.
-    # Later this path will be added to -rpath.
-    local realpath=$(which_realpath)
-    export LD_LIBRARY_PATH="$(${realpath} $(dirname $(/usr/bin/g++ -print-file-name=libstdc++.so.6)))"
+    if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+    then
+      # Start with the library path known by the compiler.
+      # Later this path will be added to -rpath.
+      local realpath=$(which_realpath)
+      export LD_LIBRARY_PATH="$(${realpath} $(dirname $(/usr/bin/g++ -print-file-name=libstdc++.so.6)))"
 
-    # This is maximal, it adds lots of folders.
-    # export LD_LIBRARY_PATH="$(/usr/bin/gcc -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+      # This is maximal, it adds lots of folders.
+      # export LD_LIBRARY_PATH="$(/usr/bin/gcc -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+    fi
   fi
 
   # ---------------------------------------------------------------------------
