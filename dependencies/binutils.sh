@@ -251,15 +251,25 @@ function binutils_build()
       # To access the newly compiled libraries.
       xbb_activate_dependencies_dev
 
-      if [ "${has_program_prefix}" == "y" ]
-      then
-        LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${LD_LIBRARY_PATH}"
-        echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-      fi
-
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+
+      # Trick!
+      # Be sure that the local libraries are prefered to compiler libraries.
+      # The build script adds the local folder at the end of the rpath,
+      # which is too late.
+      if is_native
+      then
+        LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${LD_LIBRARY_PATH}"
+      elif [ "${has_program_prefix}" == "y" ]
+      then
+        LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${LD_LIBRARY_PATH}"
+      else
+        echo "TODO in ${FUNCNAME[0]} $@"
+        exit 1
+      fi
+      echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
@@ -480,6 +490,22 @@ function binutils_build_ld_gold()
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+
+      # Trick!
+      # Be sure that the local libraries are prefered to compiler libraries.
+      # The build script adds the local folder at the end of the rpath,
+      # which is too late.
+      if is_native
+      then
+        LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${LD_LIBRARY_PATH}"
+      elif [ "${has_program_prefix}" == "y" ]
+      then
+        LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${LD_LIBRARY_PATH}"
+      else
+        echo "TODO in ${FUNCNAME[0]} $@"
+        exit 1
+      fi
+      echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
