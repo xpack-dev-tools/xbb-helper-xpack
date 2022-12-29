@@ -171,7 +171,8 @@ function gcc_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      if is_native || is_bootstrap
+      # Still problematic, temporarily disabled.
+      if false # is_native || is_bootstrap
       then
         # Hack to avoid missing ZSTD_* symbols
         # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
@@ -260,7 +261,10 @@ function gcc_build()
           config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-mpc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+
+          # Still problematic, temporarily disabled.
+          # config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--without-zstd")
 
           # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib") # HB, Arch
