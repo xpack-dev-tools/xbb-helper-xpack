@@ -206,7 +206,7 @@ function copy_dependencies_recursive()
           actual_destination_file_path="$(${realpath} "${actual_destination_file_path}")"
         fi
 
-        install_elf "${actual_source_file_path}" "${actual_destination_file_path}"
+        install_file "${actual_source_file_path}" "${actual_destination_file_path}"
 
         (
           cd "${destination_folder_path}"
@@ -219,7 +219,7 @@ function copy_dependencies_recursive()
         # The file is definitelly an elf, not a link.
         echo_develop "is_elf ${source_file_name}"
 
-        install_elf "${source_file_path}" "${destination_file_path}"
+        install_file "${source_file_path}" "${destination_file_path}"
 
       else
 
@@ -607,14 +607,7 @@ function copy_dependencies_recursive()
 
       if [ ! -z "${actual_source_file_path}" ]
       then
-        if [ ! -f "${copied_file_path}" ]
-        then
-          if [ ! -d "$(dirname "${copied_file_path}")" ]
-          then
-            run_verbose ${INSTALL} -d -m 755 "$(dirname "${copied_file_path}")"
-          fi
-          run_verbose ${INSTALL} -c -m 755 "${actual_source_file_path}" "${copied_file_path}"
-        fi
+        install_file "${actual_source_file_path}" "${copied_file_path}"
       else
         actual_source_file_path="${source_file_path}"
       fi
@@ -700,7 +693,7 @@ function copy_dependencies_recursive()
   )
 }
 
-function install_elf()
+function install_file()
 {
   local source_file_path="$1"
   local destination_file_path="$2"
