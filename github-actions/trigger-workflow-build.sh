@@ -67,6 +67,7 @@ message="Build ${XBB_APPLICATION_NAME}"
 branch="xpack-develop"
 version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 workflow_id="build-all.yml"
+xpm_version="latest"
 loglevel="info"
 
 while [ $# -gt 0 ]
@@ -85,6 +86,11 @@ do
 
     --machine )
       workflow_id="build-${2}.yml"
+      shift 2
+      ;;
+
+    --xpm-version )
+      xpm_version="$2"
       shift 2
       ;;
 
@@ -110,6 +116,7 @@ cat <<__EOF__ > "${data_file_path}"
   "ref": "${branch}",
   "inputs": {
     "version": "${version}",
+    "xpm-version": "${xpm_version},
     "xpm-install-loglevel": "${loglevel}"
   }
 }
