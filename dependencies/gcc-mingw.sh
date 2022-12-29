@@ -190,7 +190,11 @@ function gcc_mingw_build_first()
         CXXFLAGS+=" -D__USE_MINGW_ACCESS"
       fi
 
-      LIBS="-lzstd -lpthread"
+      if is_native || is_bootstrap
+      then
+        # Hack to avoid missing ZSTD_* symbols
+        export LIBS="-lzstd -lpthread"
+      fi
 
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
@@ -203,7 +207,6 @@ function gcc_mingw_build_first()
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
-      export LIBS
 
       # HB: Create a mingw symlink, expected by GCC
       # ln_s "#{arch_dir}/#{target}", "#{arch_dir}/mingw"
