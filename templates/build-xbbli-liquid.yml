@@ -9,14 +9,17 @@ name: 'Build xPack {{ XBB_APPLICATION_NAME }} xbbli'
 
 on:
   workflow_dispatch:
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputs
     inputs:
       version:
         description: 'The semver of the release'
         required: false
+        type: string
         default: 'current'
       xpm-version:
         description: 'The version of xpm to install'
         required: false
+        type: string
         default: 'latest'
       xpm-install-loglevel:
         description: 'Optional loglevel for xpm install'
@@ -33,6 +36,7 @@ on:
       xpm-install-verbosity:
         description: 'Optional switches to pass to xpm install'
         required: false
+        type: string
         default: ''
 
 jobs:
