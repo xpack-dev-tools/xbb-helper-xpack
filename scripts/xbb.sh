@@ -1041,6 +1041,10 @@ function xbb_activate_dependencies_dev()
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
+  # Must be done before, so that the deps path comes in front of it,
+  # otherwise compiler libraries may take precedence.
+  xbb_activate_cxx_rpath
+
   # Add XBB include in front of XBB_CPPFLAGS.
   XBB_CPPFLAGS="-I${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/include ${XBB_CPPFLAGS}"
 
@@ -1084,6 +1088,8 @@ function xbb_activate_dependencies_dev()
     fi
   fi
 
+  # The order is important, it must be:
+  # dev-path:gcc-path:system-path
   echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
   export XBB_CPPFLAGS
@@ -1135,7 +1141,6 @@ function xbb_adjust_ldflags_rpath()
 {
   if [ "${XBB_HOST_PLATFORM}" == "linux" -o "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
-    xbb_activate_cxx_rpath
     LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
   fi
 }
