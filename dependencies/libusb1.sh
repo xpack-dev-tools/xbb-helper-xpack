@@ -61,6 +61,12 @@ function libusb1_build()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       xbb_adjust_ldflags_rpath
 
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      then
+        # undefined reference to `clock_gettime' on docker
+        export LIBS="-lrt -lpthread"
+      fi
+
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
