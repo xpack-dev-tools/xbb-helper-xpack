@@ -43,8 +43,8 @@ script_folder_name="$(basename "${script_folder_path}")"
 # Maintenance script used to build all packages available on a given platform.
 # To run it, clone the helper project and then run:
 #
-# bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh
-# bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh --windows
+# bash ${HOME}/Work/xbb-helper-xpack.git/maintainer/build-all.sh
+# bash ${HOME}/Work/xbb-helper-xpack.git/maintainer/build-all.sh --windows
 
 # -----------------------------------------------------------------------------
 
@@ -156,66 +156,66 @@ then
   for name in ${names[@]}
   do
 
-    rm -rf ~/Work/${name}-xpack.git && \
-    mkdir -p ~/Work && \
+    rm -rf ${HOME}/Work/${name}-xpack.git && \
+    mkdir -p ${HOME}/Work && \
     git clone \
       --branch xpack-develop \
       https://github.com/xpack-dev-tools/${name}-xpack.git \
-      ~/Work/${name}-xpack.git
+      ${HOME}/Work/${name}-xpack.git
 
   done
 
   exit 0
 fi
 
-git -C ~/Work/xbb-helper-xpack.git pull
-xpm link -C ~/Work/xbb-helper-xpack.git
+git -C ${HOME}/Work/xbb-helper-xpack.git pull
+xpm link -C ${HOME}/Work/xbb-helper-xpack.git
 
 for name in ${names[@]}
 do
 
-  if [ -d "~/Work/${name}-xpack.git" ]
+  if [ -d "${HOME}/Work/${name}-xpack.git" ]
   then
-    git -C ~/Work/${name}-xpack.git pull
+    git -C ${HOME}/Work/${name}-xpack.git pull
   else
     git clone \
       --branch xpack-develop \
       https://github.com/xpack-dev-tools/${name}-xpack.git \
-      ~/Work/${name}-xpack.git
+      ${HOME}/Work/${name}-xpack.git
   fi
 
-  # xpm run deep-clean -C ~/Work/${name}-xpack.git
-  
-  xpm run install -C ~/Work/${name}-xpack.git
-  xpm run link-deps -C ~/Work/${name}-xpack.git
+  # xpm run deep-clean -C ${HOME}/Work/${name}-xpack.git
+
+  xpm run install -C ${HOME}/Work/${name}-xpack.git
+  xpm run link-deps -C ${HOME}/Work/${name}-xpack.git
 
   if [ "$(uname)" == "Darwin" ]
   then
-    xpm run deep-clean --config ${config}  -C ~/Work/${name}-xpack.git
-    xpm install --config ${config} -C ~/Work/${name}-xpack.git
+    xpm run deep-clean --config ${config}  -C ${HOME}/Work/${name}-xpack.git
+    xpm install --config ${config} -C ${HOME}/Work/${name}-xpack.git
 
     if [ "${do_dry}" == "y" ]
     then
       echo "Skipping real action for ${name}..."
     else
-      xpm run build-develop --config ${config} -C ~/Work/${name}-xpack.git
+      xpm run build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
     fi
   elif [ "$(uname)" == "Linux" ]
   then
-    xpm run deep-clean --config ${config} -C ~/Work/${name}-xpack.git
-    xpm run docker-prepare --config ${config} -C ~/Work/${name}-xpack.git
-    xpm run docker-link-deps --config ${config} -C ~/Work/${name}-xpack.git
+    xpm run deep-clean --config ${config} -C ${HOME}/Work/${name}-xpack.git
+    xpm run docker-prepare --config ${config} -C ${HOME}/Work/${name}-xpack.git
+    xpm run docker-link-deps --config ${config} -C ${HOME}/Work/${name}-xpack.git
 
     if [ "${do_dry}" == "y" ]
     then
       echo "Skipping real action for ${name}..."
     else
-      xpm run docker-build-develop --config ${config} -C ~/Work/${name}-xpack.git
+      xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
     fi
   fi
 
 done
 
-find ~/Work -name 'duration-*-*.txt' -print -exec cat '{}' ';'
+find ${HOME}/Work -name 'duration-*-*.txt' -print -exec cat '{}' ';'
 
 # -----------------------------------------------------------------------------
