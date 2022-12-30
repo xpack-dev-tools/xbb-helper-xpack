@@ -174,9 +174,18 @@ xpm link -C ~/Work/xbb-helper-xpack.git
 for name in ${names[@]}
 do
 
-  git -C ~/Work/${name}-xpack.git pull
+  if [ -d "~/Work/${name}-xpack.git" ]
+  then
+    git -C ~/Work/${name}-xpack.git pull
+  else
+    git clone \
+      --branch xpack-develop \
+      https://github.com/xpack-dev-tools/${name}-xpack.git \
+      ~/Work/${name}-xpack.git
+  fi
 
-  xpm run deep-clean -C ~/Work/${name}-xpack.git
+  # xpm run deep-clean -C ~/Work/${name}-xpack.git
+  
   xpm run install -C ~/Work/${name}-xpack.git
   xpm run link-deps -C ~/Work/${name}-xpack.git
 
