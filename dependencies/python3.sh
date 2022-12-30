@@ -419,9 +419,6 @@ function python3_copy_syslibs()
 
 function python3_process_pyc()
 {
-  echo_develop
-  echo_develop "[${FUNCNAME[0]} $@]"
-
   local file_path="$1"
 
   # echo bbb "${file_path}"
@@ -443,9 +440,6 @@ export -f python3_process_pyc
 
 function python3_process_pycache()
 {
-  echo_develop
-  echo_develop "[${FUNCNAME[0]} $@]"
-
   local folder_path="$1"
 
   find ${folder_path} -name '*.pyc' -type f -print0 | xargs -0 -L 1 -I {} bash -c 'python3_process_pyc "{}"'
