@@ -142,6 +142,10 @@ function sqlite_build()
           config_options+=("--enable-fts5") # Arch
           config_options+=("--enable-rtree") # Arch
 
+          # config_options+=("--with-readline-inc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/readline")
+          # config_options+=("--with-readline-lib=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+          config_options+=("--disable-readline")
+
           # For readline, see CPPFLAGS.
 
           # Fails on macOS & Linux.
