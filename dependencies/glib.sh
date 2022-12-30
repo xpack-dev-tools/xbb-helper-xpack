@@ -216,7 +216,8 @@ function glib_build()
 
             run_verbose meson setup \
               "${config_options[@]}" \
-              "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}"
+              "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}" \
+              "${XBB_SOURCES_FOLDER_PATH}/${glib_src_folder_name}"
 
           ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${glib_folder_name}/meson-setup-output-$(ndate).txt"
         fi
@@ -226,9 +227,9 @@ function glib_build()
           echo "Running glib meson compile..."
 
           # Build.
-          run_verbose meson compile -C "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}"
+          run_verbose meson compile -C "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}"
 
-          run_verbose meson install -C "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${glib_folder_name}"
+          run_verbose meson install -C "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}"
 
         ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${glib_folder_name}/meson-compile-output-$(ndate).txt"
 
