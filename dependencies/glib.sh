@@ -112,6 +112,13 @@ function glib_build()
         # LIBS="-liconv"
       fi
 
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      then
+        # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: glib/libglib-2.0.so.0.7400.1: undefined reference to `pthread_setspecific@GLIBC_2.2.5'
+        # LIBS=" -lpthread -ldl -lresolv"
+        LDFLAGS+=" -lpthread -ldl -lresolv"
+      fi
+
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
