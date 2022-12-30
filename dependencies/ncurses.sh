@@ -86,6 +86,11 @@ function ncurses_build()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       xbb_adjust_ldflags_rpath
 
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      then
+        LDFLAGS+=" -ldl"
+      fi
+
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
