@@ -236,7 +236,7 @@ do
 
     if [ "${do_dry_run}" == "y" ]
     then
-      echo "Skipping real action for ${name}..."
+      echo "would run [xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git]"
     else
       xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
     fi
