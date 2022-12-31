@@ -236,8 +236,15 @@ do
 
 done
 
+echo
+echo "# Durations summary:"
 find ${HOME}/Work -name 'duration-*-*.txt' -print -exec cat '{}' ';' -exec echo ';'
 
+echo
+echo "# Copied files summary:"
+find ${HOME}/Work -name 'copied-files-*-*.txt' -print -exec cat '{}' ';' -exec echo ';'
+
+echo "Done"
 exit 0
 
 # -----------------------------------------------------------------------------
