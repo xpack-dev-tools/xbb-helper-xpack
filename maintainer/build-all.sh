@@ -236,7 +236,7 @@ do
 
 done
 
-find ${HOME}/Work -name 'duration-*-*.txt' -print -exec cat '{}' ';'
+find ${HOME}/Work -name 'duration-*-*.txt' -print -exec cat '{}' ';' -exec echo ';'
 
 exit 0
 
