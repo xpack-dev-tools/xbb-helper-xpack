@@ -50,7 +50,7 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 do_windows=""
 do_clone=""
-do_dry=""
+do_dry_run=""
 do_status=""
 do_deep_clean=""
 
@@ -67,8 +67,8 @@ do
       shift
       ;;
 
-    --dry )
-      do_dry="y"
+    --dry-run )
+      do_dry_run="y"
       shift
       ;;
 
@@ -222,7 +222,7 @@ do
     xpm run deep-clean --config ${config}  -C ${HOME}/Work/${name}-xpack.git
     xpm install --config ${config} -C ${HOME}/Work/${name}-xpack.git
 
-    if [ "${do_dry}" == "y" ]
+    if [ "${do_dry_run}" == "y" ]
     then
       echo "Skipping real action for ${name}..."
     else
@@ -234,7 +234,7 @@ do
     xpm run docker-prepare --config ${config} -C ${HOME}/Work/${name}-xpack.git
     xpm run docker-link-deps --config ${config} -C ${HOME}/Work/${name}-xpack.git
 
-    if [ "${do_dry}" == "y" ]
+    if [ "${do_dry_run}" == "y" ]
     then
       echo "Skipping real action for ${name}..."
     else
