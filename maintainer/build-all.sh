@@ -52,6 +52,7 @@ do_windows=""
 do_clone=""
 do_dry=""
 do_status=""
+do_deep_clean=""
 
 while [ $# -gt 0 ]
 do
@@ -73,6 +74,11 @@ do
 
     --status )
       do_status="y"
+      shift
+      ;;
+
+    --deep-clean )
+      do_deep_clean="y"
       shift
       ;;
 
@@ -203,7 +209,10 @@ do
       ${HOME}/Work/${name}-xpack.git
   fi
 
-  # xpm run deep-clean -C ${HOME}/Work/${name}-xpack.git
+  if [ "${do_deep_clean}" == "y" ]
+  then
+    xpm run deep-clean -C ${HOME}/Work/${name}-xpack.git
+  fi
 
   xpm run install -C ${HOME}/Work/${name}-xpack.git
   xpm run link-deps -C ${HOME}/Work/${name}-xpack.git
