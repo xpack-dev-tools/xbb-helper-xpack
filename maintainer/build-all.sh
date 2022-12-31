@@ -212,6 +212,7 @@ do
     else
       xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
     fi
+    xpm run docker-remove --config ${config} -C ${HOME}/Work/${name}-xpack.git
   fi
 
 done
