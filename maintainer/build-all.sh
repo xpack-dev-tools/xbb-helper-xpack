@@ -145,7 +145,7 @@ else
   # Linux & macOS only packages (no Windows).
   names+=( patchelf pkg-config realpath m4 sed )
 
-  if [ "$(uname)" == "Linux" ]
+  if [ "${config}" == "linux-x64" ]
   then
     # Linux only packages.
     names+=( wine )
