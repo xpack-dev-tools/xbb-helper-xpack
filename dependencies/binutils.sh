@@ -264,7 +264,10 @@ function binutils_build()
         LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${LD_LIBRARY_PATH}"
       elif [ "${has_program_prefix}" == "y" ]
       then
-        LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${LD_LIBRARY_PATH}"
+        # The `application/lib` must be also added before the toolchain path,
+        # since the libctf*.so is located here, and there might be another one
+        # in the toolchain path.
+        LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${LD_LIBRARY_PATH}"
       elif is_cross
       then
         :
@@ -503,7 +506,10 @@ function binutils_build_ld_gold()
         LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${LD_LIBRARY_PATH}"
       elif [ "${has_program_prefix}" == "y" ]
       then
-        LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${LD_LIBRARY_PATH}"
+        # The `application/lib` must be also added before the toolchain path,
+        # since the libctf*.so is located here, and there might be another one
+        # in the toolchain path.
+        LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${LD_LIBRARY_PATH}"
       elif is_cross
       then
         :
