@@ -51,6 +51,7 @@ script_folder_name="$(basename "${script_folder_path}")"
 do_windows=""
 do_clone=""
 do_dry=""
+do_status=""
 
 while [ $# -gt 0 ]
 do
@@ -67,6 +68,11 @@ do
 
     --dry )
       do_dry="y"
+      shift
+      ;;
+
+    --status )
+      do_status="y"
       shift
       ;;
 
@@ -148,6 +154,19 @@ fi
 
 # At the end, as the longest.
 names+=( clang )
+
+if [ "${do_status}" == "y" ]
+then
+  names+=( xbb-helper )
+  for name in ${names[@]}
+  do
+    echo
+    echo "[git -C ${HOME}/Work/${name}-xpack.git status]"
+    git -C ${HOME}/Work/${name}-xpack.git status
+  done
+
+  exit 0
+fi
 
 if [ "${do_clone}" == "y" ]
 then
