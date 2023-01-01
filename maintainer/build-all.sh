@@ -54,7 +54,7 @@ do_dry_run=""
 do_status=""
 do_deep_clean=""
 # https://www.gnu.org/software/bash/manual/html_node/Arrays.html
-declare -A excluded
+declare -a excluded
 
 while [ $# -gt 0 ]
 do
@@ -85,7 +85,7 @@ do
       ;;
 
     --exclude )
-      excluded+=([$2]="y")
+      excluded+=( "$2" )
       shift 2
       ;;
 
@@ -206,8 +206,9 @@ fi
 for name in ${names[@]}
 do
 
-  # if [ "${excluded["${name}"]}" == "y" ]
-  if [[ -v excluded[${name}] ]]
+  # if [ "${excluded["${name}"]}" == "y" ] # not functional
+  # if [[ -v excluded[${name}] ]] # bash 4.x only
+  if [[ " ${excluded[*]} " =~ " ${name} " ]]
   then
     echo
     echo "Skipping ${name}..."
