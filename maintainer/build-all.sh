@@ -98,6 +98,18 @@ done
 
 # -----------------------------------------------------------------------------
 
+function run_verbose()
+{
+  local app_path="$1"
+  shift
+
+  echo
+  echo "[${app_path} $@]"
+  "${app_path}" "$@" 2>&1
+}
+
+# -----------------------------------------------------------------------------
+
 if [ "$(uname)" == "Darwin" ]
 then
   if [ "$(uname -m)" == "x86_64" ]
@@ -173,9 +185,7 @@ then
   names+=( xbb-helper )
   for name in ${names[@]}
   do
-    echo
-    echo "[git -C ${HOME}/Work/${name}-xpack.git status]"
-    git -C ${HOME}/Work/${name}-xpack.git status
+    run_verbose git -C ${HOME}/Work/${name}-xpack.git status
   done
 
   exit 0
@@ -188,9 +198,9 @@ then
   for name in ${names[@]}
   do
 
-    rm -rf ${HOME}/Work/${name}-xpack.git && \
-    mkdir -p ${HOME}/Work && \
-    git clone \
+    run_verbose rm -rf ${HOME}/Work/${name}-xpack.git && \
+    run_verbose mkdir -p ${HOME}/Work && \
+    run_verbose git clone \
       --branch xpack-develop \
       https://github.com/xpack-dev-tools/${name}-xpack.git \
       ${HOME}/Work/${name}-xpack.git
@@ -215,9 +225,9 @@ do
   else
     if [ -d "${HOME}/Work/${name}-xpack.git" ]
     then
-      git -C ${HOME}/Work/${name}-xpack.git pull
+      run_verbose git -C ${HOME}/Work/${name}-xpack.git pull
     else
-      git clone \
+      run_verbose git clone \
         --branch xpack-develop \
         https://github.com/xpack-dev-tools/${name}-xpack.git \
         ${HOME}/Work/${name}-xpack.git
@@ -262,13 +272,13 @@ done
 
 echo
 echo "# Durations summary:"
-echo
-find ${HOME}/Work -name 'duration-*-*.txt' -exec echo '[cat {}]' ';' -exec cat '{}' ';' -exec echo ';'
+
+run_verbose find ${HOME}/Work -name 'duration-*-*.txt' -exec echo '[cat {}]' ';' -exec cat '{}' ';' -exec echo ';'
 
 echo
 echo "# Copied files summary:"
-echo
-find ${HOME}/Work -name 'copied-files-*-*.txt' -exec echo '[sort {}]' ';' -exec echo ';' -exec sort '{}' ';' -exec echo ';'
+
+run_verbose find ${HOME}/Work -name 'copied-files-*-*.txt' -exec echo '[sort {}]' ';' -exec echo ';' -exec sort '{}' ';' -exec echo ';'
 
 echo "Done"
 exit 0
