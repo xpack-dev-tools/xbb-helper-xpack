@@ -85,6 +85,7 @@ function termcap_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          
           # No --libdir, --includedir, --datarootdir, --mandir
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")

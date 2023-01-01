@@ -73,7 +73,6 @@ function binutils_prepare_common_options()
 
   config_options+=("--with-pkgversion=${XBB_BINUTILS_BRANDING}")
 
-
   if [ "${XBB_HOST_PLATFORM}" != "linux" ]
   then
     config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
