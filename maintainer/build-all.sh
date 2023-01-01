@@ -213,12 +213,13 @@ fi
 # git -C ${HOME}/Work/xbb-helper-xpack.git pull
 # xpm link -C ${HOME}/Work/xbb-helper-xpack.git
 
+IFS="|"
 for name in ${names[@]}
 do
 
   # if [ "${excluded["${name}"]}" == "y" ] # not functional
   # if [[ -v excluded[${name}] ]] # bash 4.x only
-  if [[ " ${excluded[*]} " =~ " ${name} " ]]
+  if [[ "${IFS}${excluded[*]}${IFS}" =~ "${IFS}${name}${IFS}" ]]
   then
     echo
     echo "Skipping ${name}..."
