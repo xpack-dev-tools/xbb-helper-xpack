@@ -566,6 +566,20 @@ function gcc_cross_build_final()
       # Do not add CRT_glob.o here, it will fail with already defined,
       # since it is already handled by --enable-mingw-wildcard.
 
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      then
+        if is_native || is_bootstrap
+        then
+          # Hack to avoid missing ZSTD_* symbols
+          # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
+          # lto-compress.cc:(.text._Z19lto_end_compressionP22lto_compression_stream+0x33): undefined reference to `ZSTD_compressBound'
+
+          # Testing -lzstd alone fails since it depends on -lpthread.
+          LDFLAGS+=" -lpthread"
+          # export LIBS="-lzstd -lpthread"
+        fi
+      fi
+
       gcc_cross_define_flags_for_target "${nano_option}"
 
       export CPPFLAGS
