@@ -1013,9 +1013,6 @@ function gcc_cross_strip_libs()
   if [ "${XBB_WITH_STRIP}" == "y" ]
   then
     (
-      # TODO!?
-      # PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin:${PATH}"
-
       echo
       echo "# Stripping libraries..."
 
