@@ -116,6 +116,7 @@ function ncurses_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -124,6 +125,8 @@ function ncurses_build()
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
+
+          config_options+=("--program-prefix=")
 
           # Not yet functional on windows.
           if [ "${XBB_HOST_PLATFORM}" == "win32" ]
@@ -215,8 +218,6 @@ function ncurses_build()
           else
             config_options+=("--enable-widec")
           fi
-
-          config_options+=("--program-prefix=")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${ncurses_src_folder_name}/configure" \
             "${config_options[@]}"

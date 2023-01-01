@@ -130,6 +130,7 @@ function python3_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          
           # Exception: use BINS_INSTALL_*.
           config_options+=("--libdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib")
 

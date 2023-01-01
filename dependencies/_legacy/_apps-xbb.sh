@@ -216,6 +216,7 @@ function curl_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -449,6 +450,7 @@ function tar_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -657,6 +659,7 @@ function guille_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -851,6 +854,7 @@ function autogen_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -860,6 +864,8 @@ function autogen_build()
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
+          config_options+=("--program-prefix=")
+
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
           if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -868,8 +874,6 @@ function autogen_build()
           fi
 
           config_options+=("--disable-nls")
-
-          config_options+=("--program-prefix=")
 
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
@@ -1060,6 +1064,7 @@ function gawk_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1232,6 +1237,7 @@ function patch_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1396,6 +1402,7 @@ function diffutils_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1582,6 +1589,7 @@ function bison_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1789,6 +1797,7 @@ function make_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1962,6 +1971,7 @@ function bash_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           # config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -2135,6 +2145,7 @@ function wget_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -2486,6 +2497,7 @@ function flex_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -2918,6 +2930,7 @@ function tcl_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -3155,6 +3168,7 @@ function git_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -3484,6 +3498,7 @@ function rhash_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           # Does not support these options.
           # config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
@@ -3676,6 +3691,7 @@ function re2c_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -3858,6 +3874,7 @@ function gnupg_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -4064,6 +4081,7 @@ function makedepend_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")

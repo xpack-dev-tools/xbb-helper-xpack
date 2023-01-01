@@ -85,6 +85,7 @@ function libtasn1_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -217,6 +218,7 @@ function libunistring_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -359,6 +361,7 @@ function gc_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -545,6 +548,7 @@ function gnutls_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -746,6 +750,7 @@ function xorg_util_macros_build()
           fi
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -877,6 +882,7 @@ function xorg_xproto_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")

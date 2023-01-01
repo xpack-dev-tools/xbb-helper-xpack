@@ -257,8 +257,9 @@ function gcc_mingw_build_first()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # Arch /usr
-          config_options+=("--libexecdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib") # Arch /usr/lib
           config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB
+
+          config_options+=("--libexecdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib") # Arch /usr/lib
 
           config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")

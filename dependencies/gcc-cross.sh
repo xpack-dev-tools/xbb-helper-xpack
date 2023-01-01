@@ -631,6 +631,12 @@ function gcc_cross_build_final()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+          # `${with_sysroot}${native_system_header_dir}/stdio.h`
+          # is checked for presence; if not present `inhibit_libc=true` and
+          # libgcov.a is compiled with empty functions.
+          # https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/issues/1
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}")
+          config_options+=("--with-native-system-header-dir=/include")
 
           config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
@@ -670,13 +676,6 @@ function gcc_cross_build_final()
 
           # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib")
-
-          # `${with_sysroot}${native_system_header_dir}/stdio.h`
-          # is checked for presence; if not present `inhibit_libc=true` and
-          # libgcov.a is compiled with empty functions.
-          # https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/issues/1
-          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}")
-          config_options+=("--with-native-system-header-dir=/include")
 
           if [ "${triplet}" == "arm-none-eabi" ]
           then

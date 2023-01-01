@@ -87,6 +87,7 @@ function libelf_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -237,6 +238,7 @@ function python2_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -489,6 +491,7 @@ function xar_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -614,6 +617,7 @@ function libgpg_error_build()
 
           # Exception: use LIBS_INSTALL_*.
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -764,6 +768,7 @@ function libgcrypt_build()
 
           # Exception: use LIBS_INSTALL_*.
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -978,6 +983,7 @@ function libassuan_build()
 
           # Exception: use LIBS_INSTALL_*.
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1146,6 +1152,7 @@ function libksba_build()
 
           # Exception: use LIBS_INSTALL_*.
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1305,6 +1312,7 @@ function npth_build()
 
           # Exception: use LIBS_INSTALL_*.
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")
@@ -1465,6 +1473,7 @@ function _libusb_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
           config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
           # config_options+=("--datarootdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share")

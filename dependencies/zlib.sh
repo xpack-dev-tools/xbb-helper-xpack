@@ -121,6 +121,7 @@ function zlib_build()
             config_options=()
 
             config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+            
             config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
             config_options+=("--sharedlibdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
             config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
