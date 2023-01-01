@@ -253,7 +253,7 @@ find ${HOME}/Work -name 'duration-*-*.txt' -exec echo '[cat {}]' ';' -exec cat '
 echo
 echo "# Copied files summary:"
 echo
-find ${HOME}/Work -name 'copied-files-*-*.txt' -exec echo '[cat {}]' ';' -exec echo ';' -exec cat '{}' ';' -exec echo ';'
+find ${HOME}/Work -name 'copied-files-*-*.txt' -exec echo '[sort {}]' ';' -exec echo ';' -exec sort '{}' ';' -exec echo ';'
 
 echo "Done"
 exit 0
