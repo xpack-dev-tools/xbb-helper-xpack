@@ -74,7 +74,7 @@ function gcc_mingw_build_dependencies()
 
   # depends on zlib, xz, (lz4)
   # Still problematic, temporarily disabled.
-  # zstd_build "${XBB_ZSTD_VERSION}"
+  zstd_build "${XBB_ZSTD_VERSION}"
 }
 
 function gcc_mingw_build_all_triplets()
@@ -299,9 +299,7 @@ function gcc_mingw_build_first()
           config_options+=("--with-isl=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
-          # Still problematic, temporarily disabled.
           config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--without-zstd")
 
           # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib")
