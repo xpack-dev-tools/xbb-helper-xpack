@@ -234,39 +234,39 @@ do
         ${HOME}/Work/${name}-xpack.git
     fi
 
-    # if [ "${do_deep_clean}" == "y" ]
-    # then
-    #   xpm run deep-clean -C ${HOME}/Work/${name}-xpack.git
-    # fi
+    if [ "${do_deep_clean}" == "y" ]
+    then
+      xpm run deep-clean -C ${HOME}/Work/${name}-xpack.git
+    fi
 
-    # xpm run install -C ${HOME}/Work/${name}-xpack.git
-    # xpm run link-deps -C ${HOME}/Work/${name}-xpack.git
+    xpm run install -C ${HOME}/Work/${name}-xpack.git
+    xpm run link-deps -C ${HOME}/Work/${name}-xpack.git
 
-    # if [ "$(uname)" == "Darwin" ]
-    # then
-    #   xpm run deep-clean --config ${config}  -C ${HOME}/Work/${name}-xpack.git
-    #   xpm install --config ${config} -C ${HOME}/Work/${name}-xpack.git
+    if [ "$(uname)" == "Darwin" ]
+    then
+      xpm run deep-clean --config ${config}  -C ${HOME}/Work/${name}-xpack.git
+      xpm install --config ${config} -C ${HOME}/Work/${name}-xpack.git
 
-    #   if [ "${do_dry_run}" == "y" ]
-    #   then
-    #     echo "Skipping real action for ${name}..."
-    #   else
-    #     xpm run build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
-    #   fi
-    # elif [ "$(uname)" == "Linux" ]
-    # then
-    #   xpm run deep-clean --config ${config} -C ${HOME}/Work/${name}-xpack.git
-    #   xpm run docker-prepare --config ${config} -C ${HOME}/Work/${name}-xpack.git
-    #   xpm run docker-link-deps --config ${config} -C ${HOME}/Work/${name}-xpack.git
+      if [ "${do_dry_run}" == "y" ]
+      then
+        echo "Skipping real action for ${name}..."
+      else
+        xpm run build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
+      fi
+    elif [ "$(uname)" == "Linux" ]
+    then
+      xpm run deep-clean --config ${config} -C ${HOME}/Work/${name}-xpack.git
+      xpm run docker-prepare --config ${config} -C ${HOME}/Work/${name}-xpack.git
+      xpm run docker-link-deps --config ${config} -C ${HOME}/Work/${name}-xpack.git
 
-    #   if [ "${do_dry_run}" == "y" ]
-    #   then
-    #     echo "would run [xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git]"
-    #   else
-    #     xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
-    #   fi
-    #   xpm run docker-remove --config ${config} -C ${HOME}/Work/${name}-xpack.git
-    # fi
+      if [ "${do_dry_run}" == "y" ]
+      then
+        echo "would run [xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git]"
+      else
+        xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
+      fi
+      xpm run docker-remove --config ${config} -C ${HOME}/Work/${name}-xpack.git
+    fi
   fi
 
 done
