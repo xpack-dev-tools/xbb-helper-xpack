@@ -54,7 +54,7 @@ do_dry_run=""
 do_status=""
 do_deep_clean=""
 # https://www.gnu.org/software/bash/manual/html_node/Arrays.html
-declare -a excluded
+declare -a excluded=( )
 
 while [ $# -gt 0 ]
 do
