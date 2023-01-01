@@ -53,6 +53,7 @@ do_clone=""
 do_dry_run=""
 do_status=""
 do_deep_clean=""
+# https://www.gnu.org/software/bash/manual/html_node/Arrays.html
 declare -A excluded
 
 while [ $# -gt 0 ]
@@ -84,7 +85,7 @@ do
       ;;
 
     --exclude )
-      excluded[$2]="y"
+      excluded+=([$2]="y")
       shift 2
       ;;
 
@@ -199,13 +200,14 @@ then
   exit 0
 fi
 
-git -C ${HOME}/Work/xbb-helper-xpack.git pull
-xpm link -C ${HOME}/Work/xbb-helper-xpack.git
+# git -C ${HOME}/Work/xbb-helper-xpack.git pull
+# xpm link -C ${HOME}/Work/xbb-helper-xpack.git
 
 for name in ${names[@]}
 do
 
-  if [ excluded[${name}] == "y" ]
+  # if [ "${excluded["${name}"]}" == "y" ]
+  if [[ -v excluded[${name}] ]]
   then
     echo
     echo "Skipping ${name}..."
@@ -220,39 +222,39 @@ do
         ${HOME}/Work/${name}-xpack.git
     fi
 
-    if [ "${do_deep_clean}" == "y" ]
-    then
-      xpm run deep-clean -C ${HOME}/Work/${name}-xpack.git
-    fi
+    # if [ "${do_deep_clean}" == "y" ]
+    # then
+    #   xpm run deep-clean -C ${HOME}/Work/${name}-xpack.git
+    # fi
 
-    xpm run install -C ${HOME}/Work/${name}-xpack.git
-    xpm run link-deps -C ${HOME}/Work/${name}-xpack.git
+    # xpm run install -C ${HOME}/Work/${name}-xpack.git
+    # xpm run link-deps -C ${HOME}/Work/${name}-xpack.git
 
-    if [ "$(uname)" == "Darwin" ]
-    then
-      xpm run deep-clean --config ${config}  -C ${HOME}/Work/${name}-xpack.git
-      xpm install --config ${config} -C ${HOME}/Work/${name}-xpack.git
+    # if [ "$(uname)" == "Darwin" ]
+    # then
+    #   xpm run deep-clean --config ${config}  -C ${HOME}/Work/${name}-xpack.git
+    #   xpm install --config ${config} -C ${HOME}/Work/${name}-xpack.git
 
-      if [ "${do_dry_run}" == "y" ]
-      then
-        echo "Skipping real action for ${name}..."
-      else
-        xpm run build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
-      fi
-    elif [ "$(uname)" == "Linux" ]
-    then
-      xpm run deep-clean --config ${config} -C ${HOME}/Work/${name}-xpack.git
-      xpm run docker-prepare --config ${config} -C ${HOME}/Work/${name}-xpack.git
-      xpm run docker-link-deps --config ${config} -C ${HOME}/Work/${name}-xpack.git
+    #   if [ "${do_dry_run}" == "y" ]
+    #   then
+    #     echo "Skipping real action for ${name}..."
+    #   else
+    #     xpm run build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
+    #   fi
+    # elif [ "$(uname)" == "Linux" ]
+    # then
+    #   xpm run deep-clean --config ${config} -C ${HOME}/Work/${name}-xpack.git
+    #   xpm run docker-prepare --config ${config} -C ${HOME}/Work/${name}-xpack.git
+    #   xpm run docker-link-deps --config ${config} -C ${HOME}/Work/${name}-xpack.git
 
-      if [ "${do_dry_run}" == "y" ]
-      then
-        echo "would run [xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git]"
-      else
-        xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
-      fi
-      xpm run docker-remove --config ${config} -C ${HOME}/Work/${name}-xpack.git
-    fi
+    #   if [ "${do_dry_run}" == "y" ]
+    #   then
+    #     echo "would run [xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git]"
+    #   else
+    #     xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
+    #   fi
+    #   xpm run docker-remove --config ${config} -C ${HOME}/Work/${name}-xpack.git
+    # fi
   fi
 
 done
