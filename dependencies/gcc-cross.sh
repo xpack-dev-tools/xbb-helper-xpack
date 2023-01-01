@@ -41,7 +41,7 @@ function gcc_cross_build_dependencies()
   xz_build "${XBB_XZ_VERSION}"
 
   # depends on zlib, xz, (lz4)
-  # zstd_build "${XBB_ZSTD_VERSION}"
+  zstd_build "${XBB_ZSTD_VERSION}"
 }
 
 function gcc_cross_build_all()
