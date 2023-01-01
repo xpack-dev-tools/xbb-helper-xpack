@@ -171,8 +171,7 @@ function gcc_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      # Still problematic, temporarily disabled.
-      if false # is_native || is_bootstrap
+      if is_native || is_bootstrap
       then
         # Hack to avoid missing ZSTD_* symbols
         # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
