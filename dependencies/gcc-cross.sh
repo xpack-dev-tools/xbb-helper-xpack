@@ -356,6 +356,13 @@ function gcc_cross_build_first()
           config_options+=("--with-gnu-ld") # Arm, ABE
 
           config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}") # AArch64
+          config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-mpc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-isl=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+
+          config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          
           config_options+=("--with-pkgversion=${XBB_BRANDING}")
           config_options+=("--with-newlib") # Arm, AArch64
 
