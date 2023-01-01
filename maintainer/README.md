@@ -21,3 +21,5 @@ To show the repos status:
 ```sh
 bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh --status
 ```
+
+To exclude some projects, use multiple `--exclude xyz`.
