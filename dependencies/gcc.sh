@@ -171,15 +171,6 @@ function gcc_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      if is_native || is_bootstrap
-      then
-        # Hack to avoid missing ZSTD_* symbols
-        # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
-        # lto-compress.cc:(.text._Z19lto_end_compressionP22lto_compression_stream+0x33): undefined reference to `ZSTD_compressBound'
-
-        export LIBS="-lzstd -lpthread"
-      fi
-
       # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
@@ -200,13 +191,29 @@ function gcc_build()
         # HomeBrew mentiones this:
         # GCC will suffer build errors if forced to use a particular linker.
         unset LD
-      fi
 
-      if [ "${XBB_HOST_PLATFORM}" == "linux" -o "${XBB_HOST_PLATFORM}" == "darwin" ]
-      then
         export LDFLAGS_FOR_TARGET="${LDFLAGS}"
         export LDFLAGS_FOR_BUILD="${LDFLAGS}"
         export BOOT_LDFLAGS="${LDFLAGS}"
+      elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      then
+        if is_native || is_bootstrap
+        then
+          # Hack to avoid missing ZSTD_* symbols
+          # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
+          # lto-compress.cc:(.text._Z19lto_end_compressionP22lto_compression_stream+0x33): undefined reference to `ZSTD_compressBound'
+
+          # Testing -lzstd alone fails since it depends on -lpthread.
+          LDFLAGS+=" -lpthread"
+        fi
+
+        LDFLAGS_FOR_TARGET="${LDFLAGS}"
+        LDFLAGS_FOR_BUILD="${LDFLAGS}"
+        BOOT_LDFLAGS="${LDFLAGS}"
+
+        export LDFLAGS_FOR_TARGET
+        export LDFLAGS_FOR_BUILD
+        export BOOT_LDFLAGS
       fi
 
       export CPPFLAGS
