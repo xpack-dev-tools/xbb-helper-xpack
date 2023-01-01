@@ -106,7 +106,6 @@ function openssl_build()
         CXXFLAGS+=" -Wa,-mbig-obj"
       fi
 
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 

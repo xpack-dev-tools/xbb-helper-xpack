@@ -277,7 +277,6 @@ function binutils_build()
       fi
       echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
@@ -519,7 +518,6 @@ function binutils_build_ld_gold()
       fi
       echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 

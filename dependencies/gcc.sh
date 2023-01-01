@@ -171,7 +171,6 @@ function gcc_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
@@ -652,7 +651,6 @@ function _gcc_build_libs()
     CFLAGS="${XBB_CFLAGS_NO_W}"
     CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-    # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
     LDFLAGS="${XBB_LDFLAGS_APP} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
 
     export CPPFLAGS
@@ -697,7 +695,6 @@ function _gcc_build_final()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      # LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
       LDFLAGS="${XBB_LDFLAGS_APP} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
 
       export CPPFLAGS
