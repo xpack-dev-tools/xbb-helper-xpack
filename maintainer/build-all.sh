@@ -219,7 +219,7 @@ do
 
   # if [ "${excluded["${name}"]}" == "y" ] # not functional
   # if [[ -v excluded[${name}] ]] # bash 4.x only
-  if [[ "${IFS}${excluded[*]}${IFS}" =~ "${IFS}${name}${IFS}" ]]
+  if [ ${#excluded[@]} -gt 0 ] && [[ "${IFS}${excluded[*]}${IFS}" =~ "${IFS}${name}${IFS}" ]]
   then
     echo
     echo "Skipping ${name}..."
