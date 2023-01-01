@@ -74,9 +74,9 @@ function libftdi_build()
 
         config_options=()
 
-        config_options+=("-DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG}")
-
         config_options+=("-DCMAKE_INSTALL_PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+
+        config_options+=("-DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG}")
         config_options+=("-DBUILD_TESTS:BOOL=off")
         config_options+=("-DEXAMPLES:BOOL=off")
         config_options+=("-DDOCUMENTATION:BOOL=off")
