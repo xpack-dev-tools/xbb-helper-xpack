@@ -262,9 +262,7 @@ function gcc_build()
           config_options+=("--with-mpc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
-          # Still problematic, temporarily disabled.
           config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--without-zstd")
 
           # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib") # HB, Arch
