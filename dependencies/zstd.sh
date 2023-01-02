@@ -130,6 +130,9 @@ function zstd_build()
             config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${XBB_MACOSX_DEPLOYMENT_TARGET}")
 
             config_options+=("-DCMAKE_INSTALL_RPATH=${LD_LIBRARY_PATH}")
+          elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          then
+            config_options+=("-DCMAKE_SYSTEM_NAME=Windows")
           fi
 
           run_verbose cmake \
