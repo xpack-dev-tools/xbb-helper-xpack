@@ -16,6 +16,14 @@ git -C ~/Work/xbb-helper-xpack.git pull
 time bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh --windows
 ```
 
+The full builds may take more than 1 day to complete:
+
+- `xbbmi`: 7h (vm)
+- `xbbma`: 4h
+- `xbbli`: Linux 5h, Windows 6h
+- `xbbla64`: 19h + 9h clang
+- `xbbla32`: 18h + 8h clang
+
 To show the repos status:
 
 ```sh
