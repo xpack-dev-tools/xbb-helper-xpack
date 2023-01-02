@@ -72,7 +72,7 @@ run_verbose xpm-dev binaries-update \
   "${HOME}/Downloads/xpack-binaries/${XBB_APPLICATION_LOWER_CASE_NAME}"
 
 echo
-echo "Done."
+echo "Done"
 
 # Completed successfully.
 exit 0

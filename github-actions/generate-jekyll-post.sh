@@ -98,7 +98,7 @@ cat "scripts/templates/body-jekyll-release-post-part-2-liquid.md" | liquidjs "{ 
 echo "Don't forget to manually solve the two TODO action points!"
 
 echo
-echo "Done."
+echo "Done"
 
 # Completed successfully.
 exit 0

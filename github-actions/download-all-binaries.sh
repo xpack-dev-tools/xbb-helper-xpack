@@ -72,7 +72,7 @@ echo
 ls -lL "${destination_folder_path}"
 
 echo
-echo "Done."
+echo "Done"
 
 # Completed successfully.
 exit 0

@@ -130,6 +130,6 @@ trigger_github_workflow \
   "${GITHUB_API_DISPATCH_TOKEN}"
 
 echo
-echo "Done."
+echo "Done"
 
 # -----------------------------------------------------------------------------
