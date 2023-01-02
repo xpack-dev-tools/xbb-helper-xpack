@@ -4,7 +4,8 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-01-03
 
-* v1.1.1 released
+* v1.1.2 released
+* 9bbc384 trigger-workflow-build.sh: fix json syntax
 * 3d85765 workflow inputs require underscore
 
 ## 2023-01-02
