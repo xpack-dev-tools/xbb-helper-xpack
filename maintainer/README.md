@@ -33,7 +33,7 @@ To exclude all:
 
 ```sh
 git -C ~/Work/xbb-helper-xpack.git pull
-time bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh --deep-clean \
+time bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh \
 --exclude gcc \
 --exclude mingw-w64-gcc \
 --exclude cmake \
@@ -53,5 +53,7 @@ time bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh --deep-clean \
 --exclude sed \
 --exclude wine \
 --exclude clang \
+--windows \
+--deep-clean \
 
 ```
