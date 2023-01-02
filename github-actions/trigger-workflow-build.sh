@@ -116,8 +116,8 @@ cat <<__EOF__ > "${data_file_path}"
   "ref": "${branch}",
   "inputs": {
     "version": "${version}",
-    "xpm-version": "${xpm_version},
-    "xpm-install-loglevel": "${loglevel}"
+    "xpm_version": "${xpm_version},
+    "xpm_install_loglevel": "${loglevel}"
   }
 }
 __EOF__

@@ -16,12 +16,12 @@ on:
         required: false
         type: string
         default: 'current'
-      xpm-version:
+      xpm_version:
         description: 'The version of xpm to install'
         required: false
         type: string
         default: 'latest'
-      xpm-install-loglevel:
+      xpm_install_loglevel:
         description: 'Optional loglevel for xpm install'
         required: false
         default: 'info'
@@ -33,7 +33,7 @@ on:
         - verbose
         - debug
         - trace
-      xpm-install-options:
+      xpm_install_options:
         description: 'Optional switches to pass to xpm install'
         required: false
         type: string
@@ -72,18 +72,18 @@ jobs:
 
       - name: 'Install xpm'
         timeout-minutes: 1440
-        run: npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm-version }}{% endraw %}
+        run: npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm_version }}{% endraw %}
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm-install-loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
+        run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
 {% for platform in platforms -%}
   {% case platform -%}
     {% when "darwin-x64" %}
       - name: 'Build macOS x64 binary'
         timeout-minutes: 1440
         run: |
-          xpm install --config darwin-x64 --loglevel {% raw %}${{ github.event.inputs.xpm-install-loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm-install-options }}{% endraw %}
+          xpm install --config darwin-x64 --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
           xpm run build --config darwin-x64
   {% endcase -%}
 {% endfor %}
