@@ -2,6 +2,11 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-01-03
+
+* v1.1.1 released
+* 3d85765 workflow inputs require underscore
+
 ## 2023-01-02
 
 * v1.0.0 released
