@@ -823,22 +823,25 @@ function gcc_cross_test()
   local triplet="$2"
 
   (
-    CC="${test_bin_path}/${triplet}-gcc${XBB_HOST_DOT_EXE}"
-    CXX="${test_bin_path}/${triplet}-g++${XBB_HOST_DOT_EXE}"
+    CC="${test_bin_path}/${triplet}-gcc"
+    CXX="${test_bin_path}/${triplet}-g++"
 
-    echo
-    echo "Checking the ${triplet}-gcc shared libraries..."
-
-    show_host_libs "${CC}"
-    show_host_libs "${CXX}"
-
-    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+    if [ "${XBB_BUILD_PLATFORM}" != "win32" ]
     then
-      show_host_libs "$(${CC} -print-prog-name=cc1)"
-      show_host_libs "$(${CC} -print-prog-name=cc1plus)"
-      show_host_libs "$(${CC} -print-prog-name=collect2)"
-      show_host_libs "$(${CC} -print-prog-name=lto-wrapper)"
-      show_host_libs "$(${CC} -print-prog-name=lto1)"
+      echo
+      echo "Checking the ${triplet}-gcc shared libraries..."
+
+      show_host_libs "${CC}"
+      show_host_libs "${CXX}"
+
+      if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+      then
+        show_host_libs "$(${CC} -print-prog-name=cc1)"
+        show_host_libs "$(${CC} -print-prog-name=cc1plus)"
+        show_host_libs "$(${CC} -print-prog-name=collect2)"
+        show_host_libs "$(${CC} -print-prog-name=lto-wrapper)"
+        show_host_libs "$(${CC} -print-prog-name=lto1)"
+      fi
     fi
 
     echo
