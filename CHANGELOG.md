@@ -4,6 +4,13 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-01-03
 
+* v1.1.4 released
+* 3471e71 gcc.sh: use cxx_lib_path in PATH on windows
+* 758369f gcc-mingw.sh: use cxx_lib_path in PATH on windows
+* fb4d2fe gcc-mingw.sh: update tests when running on windows
+* 651ae9b gcc-cross.sh: update tests when running on windows
+* 2f8ebfa binutils.sh: update tests when running on windows
+* 2f68746 README update
 * v1.1.3 released
 * b27b4a9 Revert "wrappers.sh: use wine64 to run 32-bit exe"
 * 89e542e timer.sh: replace missing XBB_REQUESTED_TARGET
