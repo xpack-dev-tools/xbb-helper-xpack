@@ -550,49 +550,54 @@ function gcc_mingw_test()
   xbb_set_extra_target_env "${triplet}"
 
   (
-    CC="${test_bin_path}/${triplet}-gcc${XBB_HOST_DOT_EXE}"
-    CXX="${test_bin_path}/${triplet}-g++${XBB_HOST_DOT_EXE}"
-    F90="${test_bin_path}/${triplet}-gfortran${XBB_HOST_DOT_EXE}"
+    CC="${test_bin_path}/${triplet}-gcc"
+    CXX="${test_bin_path}/${triplet}-g++"
+    F90="${test_bin_path}/${triplet}-gfortran"
 
-    AR="${test_bin_path}/${triplet}-gcc-ar${XBB_HOST_DOT_EXE}"
-    NM="${test_bin_path}/${triplet}-gcc-nm${XBB_HOST_DOT_EXE}"
-    RANLIB="${test_bin_path}/${triplet}-gcc-ranlib${XBB_HOST_DOT_EXE}"
+    AR="${test_bin_path}/${triplet}-gcc-ar"
+    NM="${test_bin_path}/${triplet}-gcc-nm"
+    RANLIB="${test_bin_path}/${triplet}-gcc-ranlib"
 
-    OBJDUMP="${test_bin_path}/${triplet}-objdump${XBB_HOST_DOT_EXE}"
+    OBJDUMP="${test_bin_path}/${triplet}-objdump"
 
-    GCOV="${test_bin_path}/${triplet}-gcov${XBB_HOST_DOT_EXE}"
-    GCOV_DUMP="${test_bin_path}/${triplet}-gcov-dump${XBB_HOST_DOT_EXE}"
-    GCOV_TOOL="${test_bin_path}/${triplet}-gcov-tool${XBB_HOST_DOT_EXE}"
+    GCOV="${test_bin_path}/${triplet}-gcov"
+    GCOV_DUMP="${test_bin_path}/${triplet}-gcov-dump"
+    GCOV_TOOL="${test_bin_path}/${triplet}-gcov-tool"
 
-    DLLTOOL="${test_bin_path}/${triplet}-dlltool${XBB_HOST_DOT_EXE}"
-    GENDEF="${test_bin_path}/${triplet}-gendef${XBB_HOST_DOT_EXE}"
-    WIDL="${test_bin_path}/${triplet}-widl${XBB_HOST_DOT_EXE}"
+    DLLTOOL="${test_bin_path}/${triplet}-dlltool"
+    GENDEF="${test_bin_path}/${triplet}-gendef"
+    WIDL="${test_bin_path}/${triplet}-widl"
 
     xbb_show_env_develop
 
-    echo
-    echo "Checking the ${triplet}-gcc shared libraries..."
-
-    show_host_libs "${CC}"
-    show_host_libs "${CXX}"
-    if [ -f "${F90}" ]
+    if [ "${XBB_BUILD_PLATFORM}" != "win32" ]
     then
-      show_host_libs "${F90}"
+      echo
+      echo "Checking the ${triplet}-gcc shared libraries..."
+
+      # When running on Windows, the executable may not be directly available,
+      # it is behind a script or a .cmd shim.
+      show_host_libs "${CC}"
+      show_host_libs "${CXX}"
+      if [ -f "${F90}" -o -f "${F90}${XBB_HOST_DOT_EXE}" ]
+      then
+        show_host_libs "${F90}"
+      fi
+
+      show_host_libs "${AR}"
+      show_host_libs "${NM}"
+      show_host_libs "${RANLIB}"
+      show_host_libs "${GCOV}"
+
+      (
+        set +e
+        show_host_libs "$(run_target_app ${CC} --print-prog-name=cc1 | sed -e 's|^z:||' -e 's|\r$||')"
+        show_host_libs "$(run_target_app ${CC} --print-prog-name=cc1plus | sed -e 's|^z:||' -e 's|\r$||')"
+        show_host_libs "$(run_target_app ${CC} --print-prog-name=collect2 | sed -e 's|^z:||' -e 's|\r$||')"
+        show_host_libs "$(run_target_app ${CC} --print-prog-name=lto1 | sed -e 's|^z:||' -e 's|\r$||')"
+        show_host_libs "$(run_target_app ${CC} --print-prog-name=lto-wrapper | sed -e 's|^z:||' -e 's|\r$||')"
+      )
     fi
-
-    show_host_libs "${AR}"
-    show_host_libs "${NM}"
-    show_host_libs "${RANLIB}"
-    show_host_libs "${GCOV}"
-
-    (
-      set +e
-      show_host_libs "$(run_target_app ${CC} --print-prog-name=cc1 | sed -e 's|^z:||' -e 's|\r$||')"
-      show_host_libs "$(run_target_app ${CC} --print-prog-name=cc1plus | sed -e 's|^z:||' -e 's|\r$||')"
-      show_host_libs "$(run_target_app ${CC} --print-prog-name=collect2 | sed -e 's|^z:||' -e 's|\r$||')"
-      show_host_libs "$(run_target_app ${CC} --print-prog-name=lto1 | sed -e 's|^z:||' -e 's|\r$||')"
-      show_host_libs "$(run_target_app ${CC} --print-prog-name=lto-wrapper | sed -e 's|^z:||' -e 's|\r$||')"
-    )
 
     echo
     echo "Testing if ${triplet}-gcc binaries start properly..."
