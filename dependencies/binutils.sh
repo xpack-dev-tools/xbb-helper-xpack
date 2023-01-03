@@ -387,27 +387,31 @@ function binutils_test()
   local name_prefix="${2:-""}"
 
   (
-    echo
-    echo "Checking the ${name_prefix}binutils shared libraries..."
-
-    show_host_libs "${test_bin_path}/${name_prefix}ar"
-    show_host_libs "${test_bin_path}/${name_prefix}as"
-    show_host_libs "${test_bin_path}/${name_prefix}elfedit"
-    show_host_libs "${test_bin_path}/${name_prefix}gprof"
-    show_host_libs "${test_bin_path}/${name_prefix}ld"
-    if [ -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
+    if [ "${XBB_BUILD_PLATFORM}" != "win32" ]
     then
-      # No ld.gold on Windows.
-      show_host_libs "${test_bin_path}/${name_prefix}ld.gold"
+      echo
+      echo "Checking the ${name_prefix}binutils shared libraries..."
+
+      show_host_libs "${test_bin_path}/${name_prefix}ar"
+      show_host_libs "${test_bin_path}/${name_prefix}as"
+      show_host_libs "${test_bin_path}/${name_prefix}elfedit"
+      show_host_libs "${test_bin_path}/${name_prefix}gprof"
+      show_host_libs "${test_bin_path}/${name_prefix}ld"
+      if [ -f  "${test_bin_path}/${name_prefix}ld.gold" -o \
+           -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
+      then
+        # No ld.gold on Windows.
+        show_host_libs "${test_bin_path}/${name_prefix}ld.gold"
+      fi
+      show_host_libs "${test_bin_path}/${name_prefix}nm"
+      show_host_libs "${test_bin_path}/${name_prefix}objcopy"
+      show_host_libs "${test_bin_path}/${name_prefix}objdump"
+      show_host_libs "${test_bin_path}/${name_prefix}ranlib"
+      show_host_libs "${test_bin_path}/${name_prefix}readelf"
+      show_host_libs "${test_bin_path}/${name_prefix}size"
+      show_host_libs "${test_bin_path}/${name_prefix}strings"
+      show_host_libs "${test_bin_path}/${name_prefix}strip"
     fi
-    show_host_libs "${test_bin_path}/${name_prefix}nm"
-    show_host_libs "${test_bin_path}/${name_prefix}objcopy"
-    show_host_libs "${test_bin_path}/${name_prefix}objdump"
-    show_host_libs "${test_bin_path}/${name_prefix}ranlib"
-    show_host_libs "${test_bin_path}/${name_prefix}readelf"
-    show_host_libs "${test_bin_path}/${name_prefix}size"
-    show_host_libs "${test_bin_path}/${name_prefix}strings"
-    show_host_libs "${test_bin_path}/${name_prefix}strip"
 
     echo
     echo "Testing if ${name_prefix}binutils start properly..."
@@ -417,7 +421,8 @@ function binutils_test()
     run_host_app_verbose "${test_bin_path}/${name_prefix}elfedit" --version
     run_host_app_verbose "${test_bin_path}/${name_prefix}gprof" --version
     run_host_app_verbose "${test_bin_path}/${name_prefix}ld" --version
-    if [ -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
+    if [ -f  "${test_bin_path}/${name_prefix}ld.gold" -o \
+         -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
       run_host_app_verbose "${test_bin_path}/${name_prefix}ld.gold" --version
@@ -439,7 +444,8 @@ function binutils_test()
     run_host_app_verbose "${test_bin_path}/${name_prefix}elfedit" --help
     run_host_app_verbose "${test_bin_path}/${name_prefix}gprof" --help
     run_host_app_verbose "${test_bin_path}/${name_prefix}ld" --help
-    if [ -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
+    if [ -f  "${test_bin_path}/${name_prefix}ld.gold" -o \
+         -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
       run_host_app_verbose "${test_bin_path}/${name_prefix}ld.gold" --help
