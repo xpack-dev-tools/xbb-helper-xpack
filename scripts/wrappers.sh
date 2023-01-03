@@ -109,7 +109,7 @@ function run_target_app_verbose()
     elif is_executable_script "$(${realpath} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
-    elif is_pe "$(${realpath} ${app_path})"
+    elif is_pe64 "$(${realpath} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -123,7 +123,7 @@ function run_target_app_verbose()
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe "$(${realpath} ${app_path}.exe)"
+    elif is_pe64 "$(${realpath} ${app_path}.exe)"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -136,6 +136,34 @@ function run_target_app_verbose()
       else
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
+      fi
+    elif is_pe32 "$(${realpath} ${app_path})"
+    then
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          run_verbose wine "${app_path}" "$@"
+        )
+      else
+        echo
+        echo "wine ${app_path} $@ - not available in ${FUNCNAME[0]}()"
+      fi
+    elif is_pe32 "$(${realpath} ${app_path}.exe)"
+    then
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          run_verbose wine "${app_path}.exe" "$@"
+        )
+      else
+        echo
+        echo "wine ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
     else
       echo
@@ -174,7 +202,7 @@ function run_target_app()
     elif is_executable_script "$(${realpath} ${app_path})"
     then
       "${app_path}" "$@"
-    elif is_pe "$(${realpath} ${app_path})"
+    elif is_pe64 "$(${realpath} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -188,7 +216,7 @@ function run_target_app()
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe "$(${realpath} ${app_path}.exe)"
+    elif is_pe64 "$(${realpath} ${app_path}.exe)"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -201,6 +229,34 @@ function run_target_app()
       else
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
+      fi
+    elif is_pe32 "$(${realpath} ${app_path})"
+    then
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          wine "${app_path}" "$@"
+        )
+      else
+        echo
+        echo "wine ${app_path} $@ - not available in ${FUNCNAME[0]}()"
+      fi
+    elif is_pe32 "$(${realpath} ${app_path}.exe)"
+    then
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        (
+          unset DISPLAY
+          export WINEDEBUG=-all
+          wine "${app_path}.exe" "$@"
+        )
+      else
+        echo
+        echo "wine ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
     else
       echo
@@ -334,7 +390,7 @@ function expect_target_output()
       elif is_executable_script "${app_path}"
       then
         output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
-      elif is_pe "${app_path}"
+      elif is_pe64 "${app_path}"
       then
         local wine_path=$(which wine64 2>/dev/null)
         if [ ! -z "${wine_path}" ]
@@ -345,6 +401,19 @@ function expect_target_output()
         else
           echo
           echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+          return
+        fi
+      elif is_pe32 "${app_path}"
+      then
+        local wine_path=$(which wine 2>/dev/null)
+        if [ ! -z "${wine_path}" ]
+        then
+          # Remove the trailing CR present on Windows.
+          output="$(wine "${app_path}" "$@" | sed -e 's|\r$||')"
+
+        else
+          echo
+          echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
           return
         fi
       else
@@ -386,7 +455,7 @@ function _run_mingw()
 
   show_target_libs_develop "${app_path}"
 
-  if is_pe "${app_path}"
+  if is_pe64 "${app_path}"
   then
     (
       local wine_path=$(which wine64 2>/dev/null)
@@ -396,6 +465,18 @@ function _run_mingw()
       else
         echo
         echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+      fi
+    )
+  elif is_pe32 "${app_path}"
+  then
+    (
+      local wine_path=$(which wine 2>/dev/null)
+      if [ ! -z "${wine_path}" ]
+      then
+        run_verbose wine "${app_name}" "$@"
+      else
+        echo
+        echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
       fi
     )
   fi
