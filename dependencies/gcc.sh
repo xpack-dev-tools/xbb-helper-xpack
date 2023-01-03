@@ -872,8 +872,15 @@ function gcc_test()
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       (
-        export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
-        echo "WINEPATH=${WINEPATH}"
+        if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+        then
+          cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
+          export PATH="${cxx_lib_path}:${PATH:-}"
+          echo "PATH=${PATH}"
+        else
+          export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
+          echo "WINEPATH=${WINEPATH}"
+        fi
 
         compiler-tests-single "${test_bin_path}"
         compiler-tests-single "${test_bin_path}" --gc
@@ -881,8 +888,15 @@ function gcc_test()
         compiler-tests-single "${test_bin_path}" --gc --lto
       )
       (
-        export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
-        echo "WINEPATH=${WINEPATH}"
+        if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+        then
+          cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
+          export PATH="${cxx_lib_path}:${PATH:-}"
+          echo "PATH=${PATH}"
+        else
+          export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
+          echo "WINEPATH=${WINEPATH}"
+        fi
 
         compiler-tests-single "${test_bin_path}" --static-lib
         compiler-tests-single "${test_bin_path}" --static-lib --gc
