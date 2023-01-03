@@ -95,8 +95,8 @@ but in the version specific release page.
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _* v1.1.2 released_
-- commit with a message like _prepare v1.1.2_
+- add a new entry like _* v1.1.3 released_
+- commit with a message like _prepare v1.1.3_
 
 ### Push changes
 

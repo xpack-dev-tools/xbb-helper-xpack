@@ -4,6 +4,9 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-01-03
 
+* v1.1.3 released
+* b27b4a9 Revert "wrappers.sh: use wine64 to run 32-bit exe"
+* 89e542e timer.sh: replace missing XBB_REQUESTED_TARGET
 * v1.1.2 released
 * 9bbc384 trigger-workflow-build.sh: fix json syntax
 * 3d85765 workflow inputs require underscore
