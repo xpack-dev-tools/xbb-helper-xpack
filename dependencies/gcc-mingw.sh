@@ -693,7 +693,8 @@ function gcc_mingw_test()
       # The DLLs are available in the /lib folder.
       if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
       then
-        export PATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib:${PATH:-}"
+        cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
+        export PATH="${cxx_lib_path}:${PATH:-}"
         echo "PATH=${PATH}"
       else
         export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
@@ -711,7 +712,8 @@ function gcc_mingw_test()
       # The DLLs are available in the /lib folder.
       if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
       then
-        export PATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib:${PATH:-}"
+        cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
+        export PATH="${cxx_lib_path}:${PATH:-}"
         echo "PATH=${PATH}"
       else
         export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
