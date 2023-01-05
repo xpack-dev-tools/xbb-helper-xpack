@@ -208,10 +208,13 @@ function copy_dependencies_recursive()
 
         install_file "${actual_source_file_path}" "${actual_destination_file_path}"
 
-        (
-          cd "${destination_folder_path}"
-          run_verbose ln -s "${actual_source_file_name}" "${source_file_name}"
-        )
+        if [ "${actual_source_file_name}" != "${source_file_name}" ]
+        then
+          (
+            cd "${destination_folder_path}"
+            run_verbose ln -s "${actual_source_file_name}" "${source_file_name}"
+          )
+        fi
 
       elif is_elf "${source_file_path}" || is_pe "${source_file_path}"
       then
