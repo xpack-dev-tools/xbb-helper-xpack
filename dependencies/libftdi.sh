@@ -74,6 +74,9 @@ function libftdi_build()
 
         config_options=()
 
+        config_options+=("-LH") # display help for each variable
+        config_options+=("-G" "Ninja")
+
         config_options+=("-DCMAKE_INSTALL_PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
         config_options+=("-DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG}")
@@ -104,10 +107,25 @@ function libftdi_build()
         echo
         echo "Running libftdi make..."
 
-        # Build.
-        run_verbose make -j ${XBB_JOBS}
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        then
+          run_verbose cmake \
+            --build . \
+            --parallel ${XBB_JOBS} \
+            --verbose \
+            --config "${build_type}"
+        else
+          run_verbose cmake \
+            --build . \
+            --parallel ${XBB_JOBS} \
+            --config "${build_type}"
+        fi
 
-        run_verbose make install
+        run_verbose cmake \
+          --build . \
+          --config "${build_type}" \
+          -- \
+          install
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libftdi_folder_name}/make-output-$(ndate).txt"
 
