@@ -147,10 +147,19 @@ function zstd_build()
         echo
         echo "Running zstd build..."
 
-        run_verbose cmake \
-          --build . \
-          --parallel ${XBB_JOBS} \
-          --config "${build_type}" \
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        then
+          run_verbose cmake \
+            --build . \
+            --parallel ${XBB_JOBS} \
+            --verbose \
+            --config "${build_type}"
+        else
+          run_verbose cmake \
+            --build . \
+            --parallel ${XBB_JOBS} \
+            --config "${build_type}"
+        fi
 
         # It takes too long.
         if false # [ "${XBB_WITH_TESTS}" == "y" ]
