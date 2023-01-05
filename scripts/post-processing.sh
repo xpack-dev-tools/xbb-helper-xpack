@@ -282,7 +282,7 @@ function copy_dependencies_recursive()
 
         if [ -z "${linux_rpaths_line}" ]
         then
-          echo ">>> \"${actual_destination_file_path}\" has no rpath, patchelf may damage it!"
+          echo ">>> \"${actual_destination_file_path}\" has no rpath, patchelf may damage it!" | tee "${XBB_LOGS_COPIED_FILES_FILE_PATH}"
           linux_rpaths_line="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib"
         fi
 
@@ -1963,7 +1963,7 @@ function check_binary_for_libraries()
                 break
               fi
             else
-              echo ">>> DT_RPATH \"${rpath}\" not supported"
+              echo ">>> DT_RPATH \"${rpath}\" not supported"  | tee "${XBB_LOGS_COPIED_FILES_FILE_PATH}"
             fi
           done
 
