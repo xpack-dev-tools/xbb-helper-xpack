@@ -36,7 +36,7 @@ function vde_build()
   local vde_url="https://downloads.sourceforge.net/project/vde/vde2/${vde_version}/${vde_archive}"
 
   local vde_folder_name="${vde_src_folder_name}"
-  local vde_patch_file_patch="${vde_folder_name}.git.patch"
+  local vde_patch_file_name="${vde_folder_name}.git.patch"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${vde_folder_name}"
 
@@ -48,7 +48,7 @@ function vde_build()
     cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${vde_url}" "${vde_archive}" \
-      "${vde_src_folder_name}" "${vde_patch_file_patch}"
+      "${vde_src_folder_name}" "${vde_patch_file_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${vde_folder_name}"
