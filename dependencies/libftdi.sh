@@ -74,7 +74,10 @@ function libftdi_build()
 
         config_options=()
 
-        config_options+=("-LH") # display help for each variable
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        then
+          config_options+=("-LH") # display help for each variable
+        fi
         config_options+=("-G" "Ninja")
 
         config_options+=("-DCMAKE_INSTALL_PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
