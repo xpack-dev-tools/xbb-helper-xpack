@@ -838,6 +838,11 @@ function xbb_set_compiler_flags()
 
   if [ "${XBB_HOST_PLATFORM}" == "linux" ]
   then
+    if [ "${XBB_HOST_ARCH}" == "arm" ]
+    then
+      # /opt/armv7-gcc-2017/arm-linux-gnueabihf/include/c++/7.2.0/bits/vector.tcc:394:7: note: parameter passing for argument of type '...' changed in GCC 7.1
+      XBB_CXXFLAGS+=" -Wno-psabi"
+    fi
     # Do not add -static here, it fails.
     # Do not try to link pthread statically, it must match the system glibc.
     XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
