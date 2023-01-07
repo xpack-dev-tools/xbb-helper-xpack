@@ -92,7 +92,7 @@ function binutils_cross_build()
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
-        # Used to enable wildcard; inspired from arm-none-eabi-gcc.
+        # Used to enable wildcard; inspired by arm-none-eabi-gcc.
         local crt_clob_file_path="$(${CC} --print-file-name=CRT_glob.o)"
         LDFLAGS+=" -Wl,${crt_clob_file_path}"
       fi

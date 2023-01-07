@@ -101,7 +101,7 @@ function pixman_build()
 
           # config_options+=("--with-gnu-ld")
 
-          # The numerous disables were inspired from Arch, after the initial
+          # The numerous disables were inspired by Arch, after the initial
           # failed on armhf.
           config_options+=("--disable-static-testprogs")
           config_options+=("--disable-loongson-mmi")

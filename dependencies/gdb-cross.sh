@@ -157,7 +157,7 @@ function gdb_cross_build()
         # Using LIBS does not work, the order is important.
         export DEBUGINFOD_LIBS="-lbcrypt"
 
-        # Used to enable wildcard; inspired from arm-none-eabi-gcc.
+        # Used to enable wildcard; inspired by arm-none-eabi-gcc.
         local crt_clob_file_path="$(${CC} --print-file-name=CRT_glob.o)"
         LDFLAGS+=" -Wl,${crt_clob_file_path}"
 
