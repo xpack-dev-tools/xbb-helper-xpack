@@ -152,20 +152,45 @@ function xbb_reset_env()
 
   # ---------------------------------------------------------------------------
 
+  local new_path=""
+
   # This must be used with caution, since it may result in unwanted shared
   # libraries copied from the system folders to the archive.
-  if [ "${XBB_APPLICATION_ADD_SYS_FOLDER_TO_RPATH:-""}" == "y" ]
+  if [ "${XBB_APPLICATION_ADD_ALL_SYS_FOLDERS_TO_RPATH:-""}" == "y" ]
+  then
+    if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+    then
+      # This is maximal, it adds lots of folders.
+      new_path="$(/usr/bin/gcc -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+    fi
+  elif [ "${XBB_APPLICATION_ADD_SYS_FOLDER_TO_RPATH:-""}" == "y" ]
   then
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
       # Start with the library path known by the compiler.
       # Later this path will be added to -rpath.
-      local realpath=$(which_realpath)
-      export LD_LIBRARY_PATH="$(${realpath} $(dirname $(/usr/bin/g++ -print-file-name=libstdc++.so.6)))"
 
-      # This is maximal, it adds lots of folders.
-      # export LD_LIBRARY_PATH="$(/usr/bin/gcc -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+      # /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/libstdc++.so.6
+      # /usr/lib/x86_64-linux-gnu/
+      new_path="$(${REALPATH} $(dirname $(/usr/bin/g++ -print-file-name=libstdc++.so.6)))"
+
+      run_verbose_develop ls -l "${new_path}"/*.so
     fi
+  fi
+
+  if [ ! -z "${new_path}" ]
+  then
+    if [ -z "${LD_LIBRARY_PATH}" ]
+    then
+      LD_LIBRARY_PATH="${new_path}"
+    else
+      # Add the system libraries _after_ the user supplied initial path.
+      LD_LIBRARY_PATH+=":${new_path}"
+    fi
+
+    echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+    export LD_LIBRARY_PATH
   fi
 
   # ---------------------------------------------------------------------------
