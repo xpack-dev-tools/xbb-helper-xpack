@@ -725,9 +725,9 @@ function xbb_prepare_gcc_env()
   export CXX="$(which ${prefix}g++${suffix} 2>/dev/null || echo ${prefix}g++${suffix})"
 
   # These are the special GCC versions, not the binutils ones.
-  export AR="$(which ${prefix}gcc-ar${suffix} 2>/dev/null || echo ${prefix}gcc-ar${suffix})"
-  export NM="$(which ${prefix}gcc-nm${suffix} 2>/dev/null || echo ${prefix}gcc-nm${suffix})"
-  export RANLIB="$(which ${prefix}gcc-ranlib${suffix} 2>/dev/null || echo ${prefix}gcc-ranlib${suffix})"
+  export AR="$(which ${prefix}gcc-ar${suffix} 2>/dev/null || which ${prefix}ar${suffix} 2>/dev/null || echo ${prefix}ar${suffix})"
+  export NM="$(which ${prefix}gcc-nm${suffix} 2>/dev/null || which ${prefix}nm${suffix} 2>/dev/null || echo ${prefix}nm${suffix})"
+  export RANLIB="$(which ${prefix}gcc-ranlib${suffix} 2>/dev/null || which ${prefix}ranlib${suffix} 2>/dev/null || echo ${prefix}ranlib${suffix})"
 
   # From binutils.
   export AS="$(which ${prefix}as 2>/dev/null || echo ${prefix}as)"
