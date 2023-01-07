@@ -789,8 +789,10 @@ function mingw_build_winpthreads()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}") # Arch /usr
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}") # Arch /usr MS
           config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}") # HB
+
+         config_options+=("--libdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib") # MS
 
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
