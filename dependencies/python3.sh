@@ -130,7 +130,7 @@ function python3_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-          
+
           # Exception: use BINS_INSTALL_*.
           config_options+=("--libdir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib")
 
@@ -231,10 +231,7 @@ function python3_test()
     echo
     echo "Checking the python3 binary shared libraries..."
 
-    (
-      local realpath=$(which_realpath)
-      show_host_libs "$(dirname $(${realpath} ${test_bin_folder_path}/python3))/../lib/libpython3"*."${XBB_HOST_SHLIB_EXT}"
-    )
+    show_host_libs "$(dirname $(${REALPATH} ${test_bin_folder_path}/python3))/../lib/libpython3"*."${XBB_HOST_SHLIB_EXT}"
 
     echo
     echo "Testing if the python3 binary starts properly..."

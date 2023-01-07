@@ -162,6 +162,8 @@ function copy_dependencies_recursive()
 
   (
     # set -x
+    # Do not use REALPATH, since it may use the python shortcut,
+    # which does not provide `--relative-to=`.
     local realpath=$(which grealpath || which realpath || echo realpath)
     local readlink=$(which greadlink || which readlink || echo readlink)
 
@@ -709,8 +711,7 @@ function install_file()
     fi
     run_verbose ${INSTALL} -c -m 755 "${source_file_path}" "${destination_file_path}"
 
-    local realpath=$(which_realpath)
-    echo "$(${realpath} ${source_file_path}) => ${destination_file_path}" >>"${XBB_LOGS_COPIED_FILES_FILE_PATH}"
+    echo "$(${REALPATH} ${source_file_path}) => ${destination_file_path}" >>"${XBB_LOGS_COPIED_FILES_FILE_PATH}"
   fi
 }
 
@@ -776,12 +777,10 @@ function is_darwin_dylib()
   local bin_path="$1"
   local real_path
 
-  local realpath=$(which grealpath || which realpath || echo realpath)
-
   # Follow symlinks.
   if [ -L "${bin_path}" ]
   then
-    real_path="$(${realpath} "${bin_path}")"
+    real_path="$(${REALPATH} "${bin_path}")"
   else
     real_path="${bin_path}"
   fi

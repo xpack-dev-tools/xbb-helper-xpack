@@ -67,18 +67,16 @@ function run_app_verbose()
   local app_path="$1"
   shift
 
-  local realpath=$(which_realpath)
-
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ] || [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
-    if is_elf "$(${realpath} ${app_path})"
+    if is_elf "$(${REALPATH} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
-    elif is_executable_script "$(${realpath} ${app_path})"
+    elif is_executable_script "$(${REALPATH} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
     else
-      run_verbose file "$(${realpath} ${app_path})"
+      run_verbose file "$(${REALPATH} ${app_path})"
       echo
       echo "Unsupported \"${app_path} $@\" in ${FUNCNAME[0]}()"
       exit 1
@@ -99,17 +97,15 @@ function run_target_app_verbose()
   local app_path="$1"
   shift
 
-  local realpath=$(which_realpath)
-
   if [ "${XBB_BUILD_PLATFORM}" == "linux" -o "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
-    if is_elf "$(${realpath} ${app_path})"
+    if is_elf "$(${REALPATH} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
-    elif is_executable_script "$(${realpath} ${app_path})"
+    elif is_executable_script "$(${REALPATH} ${app_path})"
     then
       run_verbose "${app_path}" "$@"
-    elif is_pe64 "$(${realpath} ${app_path})"
+    elif is_pe64 "$(${REALPATH} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -123,7 +119,7 @@ function run_target_app_verbose()
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe64 "$(${realpath} ${app_path}.exe)"
+    elif is_pe64 "$(${REALPATH} ${app_path}.exe)"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -137,7 +133,7 @@ function run_target_app_verbose()
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe32 "$(${realpath} ${app_path})"
+    elif is_pe32 "$(${REALPATH} ${app_path})"
     then
       local wine_path=$(which wine 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -151,7 +147,7 @@ function run_target_app_verbose()
         echo
         echo "wine ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe32 "$(${realpath} ${app_path}.exe)"
+    elif is_pe32 "$(${REALPATH} ${app_path}.exe)"
     then
       local wine_path=$(which wine 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -192,17 +188,15 @@ function run_target_app()
   local app_path="$1"
   shift
 
-  local realpath=$(which_realpath)
-
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
-    if is_elf "$(${realpath} ${app_path})"
+    if is_elf "$(${REALPATH} ${app_path})"
     then
       "${app_path}" "$@"
-    elif is_executable_script "$(${realpath} ${app_path})"
+    elif is_executable_script "$(${REALPATH} ${app_path})"
     then
       "${app_path}" "$@"
-    elif is_pe64 "$(${realpath} ${app_path})"
+    elif is_pe64 "$(${REALPATH} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -216,7 +210,7 @@ function run_target_app()
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe64 "$(${realpath} ${app_path}.exe)"
+    elif is_pe64 "$(${REALPATH} ${app_path}.exe)"
     then
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -230,7 +224,7 @@ function run_target_app()
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe32 "$(${realpath} ${app_path})"
+    elif is_pe32 "$(${REALPATH} ${app_path})"
     then
       local wine_path=$(which wine 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -244,7 +238,7 @@ function run_target_app()
         echo
         echo "wine ${app_path} $@ - not available in ${FUNCNAME[0]}()"
       fi
-    elif is_pe32 "$(${realpath} ${app_path}.exe)"
+    elif is_pe32 "$(${REALPATH} ${app_path}.exe)"
     then
       local wine_path=$(which wine 2>/dev/null)
       if [ ! -z "${wine_path}" ]
@@ -265,10 +259,10 @@ function run_target_app()
     fi
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
-    if is_elf "$(${realpath} ${app_path})"
+    if is_elf "$(${REALPATH} ${app_path})"
     then
       "${app_path}" "$@"
-    elif is_executable_script "$(${realpath} ${app_path})"
+    elif is_executable_script "$(${REALPATH} ${app_path})"
     then
       "${app_path}" "$@"
     else
@@ -373,9 +367,7 @@ function expect_target_output()
   shift
 
   (
-    local realpath=$(which_realpath)
-
-    local app_path="$(${realpath} "${app_name}")"
+    local app_path="$(${REALPATH} "${app_name}")"
 
     show_target_libs_develop "${app_name}"
 
@@ -451,7 +443,7 @@ function _run_mingw()
   local app_name="$1"
   shift
 
-  local app_path="$(${realpath} "${app_name}")"
+  local app_path="$(${REALPATH} "${app_name}")"
 
   show_target_libs_develop "${app_path}"
 

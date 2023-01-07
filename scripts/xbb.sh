@@ -55,6 +55,7 @@ function xbb_save_env()
   export PYTHON=$(which python 2>/dev/null || echo python)
   export SED=$(which gsed 2>/dev/null || which sed 2>/dev/null || echo sed)
   export INSTALL=$(which install 2>/dev/null || echo install)
+  export REALPATH=$(which_realpath)
 }
 
 function xbb_reset_env()
@@ -1134,11 +1135,9 @@ function xbb_activate_cxx_rpath()
 {
   local cxx_lib_path=""
 
-  local realpath=$(which_realpath)
-
   if [[ $(basename "${CC}") =~ .*gcc.* ]]
   then
-    cxx_lib_path="$(${realpath} $(dirname $(${CXX} -print-file-name=libstdc++.so.6)))"
+    cxx_lib_path="$(${REALPATH} $(dirname $(${CXX} -print-file-name=libstdc++.so.6)))"
     echo_develop
     echo_develop "libstdc++.so.6 @ ${cxx_lib_path}"
     if [ "${cxx_lib_path}" == "libstdc++.so.6" ]

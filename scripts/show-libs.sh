@@ -22,9 +22,8 @@ function show_host_libs()
       return
     fi
 
-    local realpath=$(which_realpath)
-    local abs_path="$(${realpath} ${app_path})"
-    local abs_exe_path="$(${realpath} ${app_path}.exe)"
+    local abs_path="$(${REALPATH} ${app_path})"
+    local abs_exe_path="$(${REALPATH} ${app_path}.exe)"
 
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
@@ -140,9 +139,8 @@ function show_target_libs()
       return
     fi
 
-    local realpath=$(which_realpath)
-    local abs_path="$(${realpath} ${app_path})"
-    local abs_exe_path="$(${realpath} ${app_path}.exe)"
+    local abs_path="$(${REALPATH} ${app_path})"
+    local abs_exe_path="$(${REALPATH} ${app_path}.exe)"
 
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
