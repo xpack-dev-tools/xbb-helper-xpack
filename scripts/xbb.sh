@@ -47,6 +47,9 @@ function xbb_make_writable()
 
 function xbb_save_env()
 {
+  echo
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   export XBB_SAVED_PATH="${PATH:-""}"
   export XBB_SAVED_LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
 
@@ -60,6 +63,9 @@ function xbb_save_env()
 
 function xbb_reset_env()
 {
+  echo
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   # Restore them to the initial values.
   PATH="${XBB_SAVED_PATH}"
   LD_LIBRARY_PATH="${XBB_SAVED_LD_LIBRARY_PATH}"
@@ -204,6 +210,9 @@ function xbb_prepare_pkg_config()
 # set via --target in build_common_parse_options().
 function xbb_set_requested()
 {
+  echo
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   case "${XBB_REQUESTED_TARGET:-""}" in
     linux-x64 )
       XBB_REQUESTED_HOST_PLATFORM="linux"
