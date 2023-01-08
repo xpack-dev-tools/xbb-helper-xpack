@@ -665,9 +665,9 @@ function xbb_set_extra_target_env()
 
   if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
-    echo "XBB_BUILD_STRIP=${XBB_BUILD_STRIP}"
-    echo "XBB_BUILD_RANLIB=${XBB_BUILD_RANLIB}"
-    echo "XBB_BUILD_OBJDUMP=${XBB_BUILD_OBJDUMP}"
+    echo "XBB_TARGET_STRIP=${XBB_BUILD_STRIP}"
+    echo "XBB_TARGET_RANLIB=${XBB_BUILD_RANLIB}"
+    echo "XBB_TARGET_OBJDUMP=${XBB_BUILD_OBJDUMP}"
 
     echo "XBB_CURRENT_TRIPLET=${XBB_CURRENT_TRIPLET}"
   fi
