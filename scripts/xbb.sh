@@ -51,8 +51,6 @@ function xbb_save_env()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   export XBB_SAVED_PATH="${PATH:-""}"
-  export XBB_SAVED_LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-""}"
-
   # On MSYS2, which complains about the missing file.
   export M4=$(which gm4 2>/dev/null || which m4 2>/dev/null || echo m4)
   export PYTHON=$(which python 2>/dev/null || echo python)
@@ -66,9 +64,8 @@ function xbb_reset_env()
   echo
   echo_develop "[${FUNCNAME[0]} $@]"
 
-  # Restore them to the initial values.
-  PATH="${XBB_SAVED_PATH}"
-  LD_LIBRARY_PATH="${XBB_SAVED_LD_LIBRARY_PATH}"
+  # Restore it to the initial values.
+  export PATH="${XBB_SAVED_PATH}"
 
   # Defaults, to ensure the variables are defined.
   LANG="${LANG:-"C"}"
