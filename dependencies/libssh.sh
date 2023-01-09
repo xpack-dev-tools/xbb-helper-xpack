@@ -66,11 +66,11 @@ function libssh_build()
       LDFLAGS="${XBB_LDFLAGS_LIB}"
       xbb_adjust_ldflags_rpath
 
-      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      then
-        # export LIBS=" -lpthread -ldl -lrt"
-        LDFLAGS+=" -lpthread -ldl -lrt"
-      fi
+      # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      # then
+      #   # export LIBS=" -lpthread -ldl -lrt"
+      #   LDFLAGS+=" -lpthread -ldl -lrt"
+      # fi
 
       export CPPFLAGS
       export CFLAGS
