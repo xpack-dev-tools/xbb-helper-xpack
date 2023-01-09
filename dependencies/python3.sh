@@ -236,7 +236,10 @@ function python3_test()
     echo
     echo "Testing if the python3 binary starts properly..."
 
-    # export LD_LIBRARY_PATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+    # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    # then
+    #   export LD_LIBRARY_PATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+    # fi
 
     run_host_app_verbose "${test_bin_folder_path}/python3" --version
 
