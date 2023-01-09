@@ -75,14 +75,8 @@ function xbb_reset_env()
   fi
 
   # Defaults, to ensure the variables are defined.
-  LANG="${LANG:-"C"}"
-  CI=${CI:-"false"}
-
-  export PATH
-  export LD_LIBRARY_PATH
-  export LANG
-
-  export CI
+  export LANG="${LANG:-"C"}"
+  export CI=${CI:-"false"}
 
   # ---------------------------------------------------------------------------
 
