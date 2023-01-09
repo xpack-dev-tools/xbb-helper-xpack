@@ -69,6 +69,7 @@ function xbb_reset_env()
 
   if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
+    # Setting this on macOS 10.13 is harmful, for example cmake fails to start.
     export DYLD_LIBRARY_PATH=""
   else
     export LD_LIBRARY_PATH=""
@@ -1080,13 +1081,14 @@ function xbb_activate_dependencies_dev()
     then
       # Needed by internal binaries, like the bootstrap compiler, which do not
       # have a rpath.
-      if [ -z "${DYLD_LIBRARY_PATH}" ]
-      then
-        DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
-      else
-        # Insert our dependencies before any other.
-        DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${DYLD_LIBRARY_PATH}"
-      fi
+      # if [ -z "${DYLD_LIBRARY_PATH}" ]
+      # then
+      #   DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
+      # else
+      #   # Insert our dependencies before any other.
+      #   DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${DYLD_LIBRARY_PATH}"
+      # fi
+      :
     else
       # Needed by internal binaries, like the bootstrap compiler, which do not
       # have a rpath.
@@ -1113,13 +1115,14 @@ function xbb_activate_dependencies_dev()
 
     if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
-      if [ -z "${LD_LIBRARY_PATH}" ]
-      then
-        DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
-      else
-        # Insert our dependencies before any other.
-        DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${DYLD_LIBRARY_PATH}"
-      fi
+      # if [ -z "${LD_LIBRARY_PATH}" ]
+      # then
+      #   DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
+      # else
+      #   # Insert our dependencies before any other.
+      #   DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${DYLD_LIBRARY_PATH}"
+      # fi
+      :
     else
       if [ -z "${LD_LIBRARY_PATH}" ]
       then
@@ -1135,8 +1138,9 @@ function xbb_activate_dependencies_dev()
   # dev-path:gcc-path:system-path
   if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
-    echo_develop "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
-    export DYLD_LIBRARY_PATH
+    # echo_develop "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
+    # export DYLD_LIBRARY_PATH
+    :
   else
     echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
     export LD_LIBRARY_PATH
@@ -1194,11 +1198,11 @@ function xbb_adjust_ldflags_rpath()
     LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
 
     echo_develop "LDFLAGS=${LDFLAGS}"
-  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-  then
-    LDFLAGS+=" -Wl,-rpath,${DYLD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
+  # elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  # then
+  #   LDFLAGS+=" -Wl,-rpath,${DYLD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
 
-    echo_develop "LDFLAGS=${LDFLAGS}"
+  #   echo_develop "LDFLAGS=${LDFLAGS}"
   fi
 }
 
