@@ -632,11 +632,11 @@ function guille_build()
       # Otherwise guile-config displays the verbosity.
       unset PKG_CONFIG
 
-      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      then
-        # export LD_LIBRARY_PATH="${XBB_LIBRARY_PATH}:${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}/libguile/.libs"
-        export LD_LIBRARY_PATH="${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}/libguile/.libs"
-      fi
+      # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      # then
+      #   # export LD_LIBRARY_PATH="${}:${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}/libguile/.libs"
+      #   export LD_LIBRARY_PATH="${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}/libguile/.libs"
+      # fi
 
       export CPPFLAGS
       export CFLAGS
@@ -819,12 +819,12 @@ function autogen_build()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
-      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      then
-        # To find libopts.so during build.
-        # export LD_LIBRARY_PATH="${XBB_LIBRARY_PATH}:${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}/autoopts/.libs"
-        export LD_LIBRARY_PATH="${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}/autoopts/.libs"
-      fi
+      # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      # then
+      #   # To find libopts.so during build.
+      #   # export LD_LIBRARY_PATH="${}:${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}/autoopts/.libs"
+      #   export LD_LIBRARY_PATH="${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}/autoopts/.libs"
+      # fi
 
       export CPPFLAGS
       export CFLAGS
@@ -2703,11 +2703,11 @@ function perl_build()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
-      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      then
-        # Required to pick libcrypt and libssp from bootstrap.
-        : # export LD_LIBRARY_PATH="${XBB_LIBRARY_PATH}"
-      fi
+      # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      # then
+      #   # Required to pick libcrypt and libssp from bootstrap.
+      #   export LD_LIBRARY_PATH="${}"
+      # fi
 
       export CPPFLAGS
       export CFLAGS
@@ -2840,7 +2840,7 @@ function perl_test()
       # /opt/xbb/bin/perl: error while loading shared libraries: libssp.so.0: cannot open shared object file: No such file or directory
       # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       # then
-      #   export LD_LIBRARY_PATH="${XBB_LIBRARY_PATH}"
+      #   export LD_LIBRARY_PATH="${}"
       # fi
 
       run_host_app_verbose "${test_bin_folder_path}/perl" --version
