@@ -1079,27 +1079,14 @@ function xbb_activate_dependencies_dev()
     # Add XBB lib in front of PKG_CONFIG_PATH.
     PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
-    if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+    # Needed by internal binaries, like the bootstrap compiler, which do not
+    # have a rpath.
+    if [ -z "${XBB_LIBRARY_PATH}" ]
     then
-      # Needed by internal binaries, like the bootstrap compiler, which do not
-      # have a rpath.
-      if [ -z "${XBB_LIBRARY_PATH}" ]
-      then
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
-      else
-        # Insert our dependencies before any other.
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${XBB_LIBRARY_PATH}"
-      fi
+      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
     else
-      # Needed by internal binaries, like the bootstrap compiler, which do not
-      # have a rpath.
-      if [ -z "${XBB_LIBRARY_PATH}" ]
-      then
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
-      else
-        # Insert our dependencies before any other.
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${XBB_LIBRARY_PATH}"
-      fi
+      # Insert our dependencies before any other.
+      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${XBB_LIBRARY_PATH}"
     fi
   fi
 
@@ -1114,36 +1101,19 @@ function xbb_activate_dependencies_dev()
 
     PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
 
-    if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+    if [ -z "${XBB_LIBRARY_PATH}" ]
     then
-      if [ -z "${XBB_LIBRARY_PATH}" ]
-      then
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
-      else
-        # Insert our dependencies before any other.
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${XBB_LIBRARY_PATH}"
-      fi
+      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
     else
-      if [ -z "${XBB_LIBRARY_PATH}" ]
-      then
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
-      else
-        # Insert our dependencies before any other.
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${XBB_LIBRARY_PATH}"
-      fi
+      # Insert our dependencies before any other.
+      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${XBB_LIBRARY_PATH}"
     fi
   fi
 
   # The order is important, it must be:
   # dev-path:gcc-path:system-path
-  if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
-  then
-    echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
-    export XBB_LIBRARY_PATH
-  else
-    echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
-    export XBB_LIBRARY_PATH
-  fi
+  echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
+  export XBB_LIBRARY_PATH
 
   export XBB_CPPFLAGS
 
