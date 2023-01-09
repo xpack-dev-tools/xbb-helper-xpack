@@ -132,7 +132,7 @@ function zstd_build()
             # Otherwise it'll generate two -mmacosx-version-min
             config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${XBB_MACOSX_DEPLOYMENT_TARGET}")
 
-            config_options+=("-DCMAKE_INSTALL_RPATH=${DYLD_LIBRARY_PATH}")
+            # config_options+=("-DCMAKE_INSTALL_RPATH=${DYLD_LIBRARY_PATH}")
           elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             config_options+=("-DCMAKE_SYSTEM_NAME=Windows")
