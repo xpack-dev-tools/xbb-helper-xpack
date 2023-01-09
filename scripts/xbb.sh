@@ -67,6 +67,13 @@ function xbb_reset_env()
   # Restore it to the initial values.
   export PATH="${XBB_SAVED_PATH}"
 
+  if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+  then
+    export DYLD_LIBRARY_PATH=""
+  else
+    export LD_LIBRARY_PATH=""
+  fi
+
   # Defaults, to ensure the variables are defined.
   LANG="${LANG:-"C"}"
   CI=${CI:-"false"}
@@ -1075,14 +1082,27 @@ function xbb_activate_dependencies_dev()
     # Add XBB lib in front of PKG_CONFIG_PATH.
     PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
-    # Needed by internal binaries, like the bootstrap compiler, which do not
-    # have a rpath.
-    if [ -z "${LD_LIBRARY_PATH}" ]
+    if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
-      LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
+      # Needed by internal binaries, like the bootstrap compiler, which do not
+      # have a rpath.
+      if [ -z "${DYLD_LIBRARY_PATH}" ]
+      then
+        DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
+      else
+        # Insert our dependencies before any other.
+        DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${DYLD_LIBRARY_PATH}"
+      fi
     else
-      # Insert our dependencies before any other.
-      LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${LD_LIBRARY_PATH}"
+      # Needed by internal binaries, like the bootstrap compiler, which do not
+      # have a rpath.
+      if [ -z "${LD_LIBRARY_PATH}" ]
+      then
+        LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
+      else
+        # Insert our dependencies before any other.
+        LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${LD_LIBRARY_PATH}"
+      fi
     fi
   fi
 
@@ -1097,18 +1117,36 @@ function xbb_activate_dependencies_dev()
 
     PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
 
-    if [ -z "${LD_LIBRARY_PATH}" ]
+    if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
-      LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
+      if [ -z "${LD_LIBRARY_PATH}" ]
+      then
+        DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
+      else
+        # Insert our dependencies before any other.
+        DYLD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${DYLD_LIBRARY_PATH}"
+      fi
     else
-      # Insert our dependencies before any other.
-      LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${LD_LIBRARY_PATH}"
+      if [ -z "${LD_LIBRARY_PATH}" ]
+      then
+        LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
+      else
+        # Insert our dependencies before any other.
+        LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${LD_LIBRARY_PATH}"
+      fi
     fi
   fi
 
   # The order is important, it must be:
   # dev-path:gcc-path:system-path
-  echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+  if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+  then
+    echo_develop "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
+    export DYLD_LIBRARY_PATH
+  else
+    echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+    export LD_LIBRARY_PATH
+  fi
 
   export XBB_CPPFLAGS
 
@@ -1118,26 +1156,37 @@ function xbb_activate_dependencies_dev()
   export XBB_LDFLAGS_APP_STATIC_GCC
 
   export PKG_CONFIG_PATH
-  export LD_LIBRARY_PATH
 }
 
 function xbb_update_ld_library_path()
 {
-  # This is maximal, it adds lots of folders.
-  local libs_path="$(${CXX} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
-
-  if [ -z "${LD_LIBRARY_PATH}" ]
+  local libs_path=""
+  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
   then
-    LD_LIBRARY_PATH="${libs_path}"
-  else
-    # This is debatable, since the libs path may include many system paths,
-    # but normally the initial LD_LIBRARY_PATH should be empty.
-    LD_LIBRARY_PATH="${libs_path}:${LD_LIBRARY_PATH}"
+
+    if [[ "$(basename ${CC})" =~ .*gcc.* ]]
+    then
+      # This is maximal, it adds lots of folders.
+      libs_path="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+    else
+      echo "TODO: compute rpath for ${CC}"
+      exit 1
+    fi
+
+    if [ -z "${LD_LIBRARY_PATH}" ]
+    then
+      LD_LIBRARY_PATH="${libs_path}"
+    else
+      # This is debatable, since the libs path may include many system paths,
+      # but normally the initial LD_LIBRARY_PATH should be empty.
+      LD_LIBRARY_PATH="${libs_path}:${LD_LIBRARY_PATH}"
+    fi
+
+    echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+    export LD_LIBRARY_PATH
+
   fi
-
-  echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-
-  export LD_LIBRARY_PATH
 }
 
 function xbb_adjust_ldflags_rpath()
@@ -1153,7 +1202,7 @@ function xbb_adjust_ldflags_rpath()
     echo_develop "LDFLAGS=${LDFLAGS}"
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
-    LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
+    LDFLAGS+=" -Wl,-rpath,${DYLD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
 
     echo_develop "LDFLAGS=${LDFLAGS}"
   fi
