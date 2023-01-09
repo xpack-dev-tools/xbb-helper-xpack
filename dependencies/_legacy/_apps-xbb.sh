@@ -1560,11 +1560,11 @@ function bison_build()
       LDFLAGS="${XBB_LDFLAGS_APP}"
       xbb_adjust_ldflags_rpath
 
-      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      then
-        # undefined reference to `clock_gettime' on docker
-        export LIBS="-lrt"
-      fi
+      # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      # then
+      #   # undefined reference to `clock_gettime' on docker
+      #   export LIBS="-lrt"
+      # fi
 
       export CPPFLAGS
       export CFLAGS
