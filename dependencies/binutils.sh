@@ -262,13 +262,13 @@ function binutils_build()
         # which is too late.
         if is_native
         then
-          LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${LD_LIBRARY_PATH}"
+          XBB_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
         elif [ "${has_program_prefix}" == "y" ]
         then
           # The `application/lib` must be also added before the toolchain path,
           # since the libctf*.so is located here, and there might be another one
           # in the toolchain path.
-          LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${LD_LIBRARY_PATH}"
+          XBB_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
         elif is_cross
         then
           :
@@ -276,7 +276,7 @@ function binutils_build()
           echo "TODO in ${FUNCNAME[0]} $@"
           exit 1
         fi
-        echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+        echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
       fi
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
@@ -512,13 +512,13 @@ function binutils_build_ld_gold()
         # which is too late.
         if is_native
         then
-          LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${LD_LIBRARY_PATH}"
+          XBB_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
         elif [ "${has_program_prefix}" == "y" ]
         then
           # The `application/lib` must be also added before the toolchain path,
           # since the libctf*.so is located here, and there might be another one
           # in the toolchain path.
-          LD_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${LD_LIBRARY_PATH}"
+          XBB_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
         elif is_cross
         then
           :
@@ -526,7 +526,7 @@ function binutils_build_ld_gold()
           echo "TODO in ${FUNCNAME[0]} $@"
           exit 1
         fi
-        echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+        echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
       fi
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
