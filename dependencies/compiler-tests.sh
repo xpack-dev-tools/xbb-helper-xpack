@@ -247,7 +247,7 @@ function compiler-tests-single()
 
             if [ "${XBB_HOST_PLATFORM}" == "linux" ]
             then
-              export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
+              export LD_LIBRARY_PATH=$(pwd):${XBB_LIBRARY_PATH:-}
             fi
           fi
 
@@ -489,7 +489,7 @@ function compiler-tests-single()
 
             if [ "${XBB_HOST_PLATFORM}" == "linux" ]
             then
-              export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
+              export LD_LIBRARY_PATH=$(pwd):${XBB_LIBRARY_PATH:-}
             fi
           fi
 
@@ -503,8 +503,8 @@ function compiler-tests-single()
           fi
 
           (
-            # LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
-            # export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+            # LD_LIBRARY_PATH=${XBB_LIBRARY_PATH:-""}
+            # export LD_LIBRARY_PATH=$(pwd):${XBB_LIBRARY_PATH}
 
             # C:\Users\ilg>"C:\Users\ilg\Desktop\New folder\lto-throwcatch-main.exe"
             # Mingw-w64 runtime failure:
