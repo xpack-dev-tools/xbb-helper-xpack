@@ -80,12 +80,12 @@ function qemu_build()
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         LDFLAGS+=" -fstack-protector"
-      elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      then
-        # The error messages are confusing, check the log for actual cause.
-        # For example the missing -ldl resulted in:
-        # sizeof(size_t) doesn't match GLIB_SIZEOF_SIZE_T
-        LDFLAGS+=" -ldl -ludev -lpthread -lrt"
+      # elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      # then
+      #   # The error messages are confusing, check the log for actual cause.
+      #   # For example the missing -ldl resulted in:
+      #   # sizeof(size_t) doesn't match GLIB_SIZEOF_SIZE_T
+      #   LDFLAGS+=" -ldl -ludev -lpthread -lrt"
       fi
 
       export CPPFLAGS
