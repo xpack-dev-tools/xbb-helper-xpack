@@ -316,7 +316,10 @@ function python2_test()
     echo
     echo "Testing if the python2 binary starts properly..."
 
-    export LD_LIBRARY_PATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    then
+      export LD_LIBRARY_PATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+    fi
     run_host_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}" --version
 
     run_host_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/python2.${XBB_PYTHON2_VERSION_MINOR}" -c 'import sys; print(sys.path)'
