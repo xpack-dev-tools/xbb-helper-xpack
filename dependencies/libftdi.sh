@@ -66,6 +66,14 @@ function libftdi_build()
       export CXXFLAGS
       export LDFLAGS
 
+      local build_type
+      if [ "${XBB_IS_DEBUG}" == "y" ]
+      then
+        build_type=Debug
+      else
+        build_type=Release
+      fi
+
       (
         xbb_show_env_develop
 
