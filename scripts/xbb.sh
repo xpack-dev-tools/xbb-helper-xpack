@@ -59,8 +59,6 @@ function xbb_save_env()
   export SED=$(which gsed 2>/dev/null || which sed 2>/dev/null || echo sed)
   export INSTALL=$(which install 2>/dev/null || echo install)
   export REALPATH=$(which_realpath)
-
-  XBB_APPLICATION_ADD_ALL_SYS_FOLDERS_TO_RPATH="${XBB_APPLICATION_ADD_ALL_SYS_FOLDERS_TO_RPATH:-"n"}"
 }
 
 function xbb_reset_env()
@@ -1128,33 +1126,8 @@ function xbb_activate_dependencies_dev()
 
 function xbb_update_ld_library_path()
 {
-  local libs_path=""
-  if [ "${XBB_APPLICATION_ADD_ALL_SYS_FOLDERS_TO_RPATH}" == "y" ]
-  then
-    # This is maximal, it adds lots of folders.
-    libs_path="$(${CXX} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
-  else
-    local cxx_lib_path="$(${REALPATH} $(dirname $(${CXX} -print-file-name=libstdc++.so)))"
-    local pthread_lib_path="$(${REALPATH} $(dirname $(${CXX} -print-file-name=libpthread.so)))"
-
-    echo_develop
-    echo_develop "libstdc++.so @ ${cxx_lib_path}"
-    echo_develop "pthread.so @ ${pthread_lib_path}"
-
-    if [ "${cxx_lib_path}" == "libstdc++.so" ]
-    then
-      echo "libstdc++.so not found!"
-      exit 1
-    fi
-
-    if [ "${pthread_lib_path}" == "pthread.so" ]
-    then
-      echo "libstdc++.so not found!"
-      exit 1
-    fi
-
-    libs_path="${cxx_lib_path}:${pthread_lib_path}"
-  fi
+  # This is maximal, it adds lots of folders.
+  local libs_path="$(${CXX} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
 
   if [ -z "${LD_LIBRARY_PATH}" ]
   then
