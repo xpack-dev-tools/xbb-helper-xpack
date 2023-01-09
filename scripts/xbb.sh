@@ -1093,12 +1093,12 @@ function xbb_activate_dependencies_dev()
     else
       # Needed by internal binaries, like the bootstrap compiler, which do not
       # have a rpath.
-      if [ -z "${LD_LIBRARY_PATH}" ]
+      if [ -z "${XBB_LIBRARY_PATH}" ]
       then
-        LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
       else
         # Insert our dependencies before any other.
-        LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${LD_LIBRARY_PATH}"
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${XBB_LIBRARY_PATH}"
       fi
     fi
   fi
@@ -1116,7 +1116,7 @@ function xbb_activate_dependencies_dev()
 
     if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
-      if [ -z "${LD_LIBRARY_PATH}" ]
+      if [ -z "${XBB_LIBRARY_PATH}" ]
       then
         XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
       else
@@ -1124,12 +1124,12 @@ function xbb_activate_dependencies_dev()
         XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${XBB_LIBRARY_PATH}"
       fi
     else
-      if [ -z "${LD_LIBRARY_PATH}" ]
+      if [ -z "${XBB_LIBRARY_PATH}" ]
       then
-        LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
       else
         # Insert our dependencies before any other.
-        LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${LD_LIBRARY_PATH}"
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${XBB_LIBRARY_PATH}"
       fi
     fi
   fi
@@ -1141,8 +1141,8 @@ function xbb_activate_dependencies_dev()
     echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
     export XBB_LIBRARY_PATH
   else
-    echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-    export LD_LIBRARY_PATH
+    echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
+    export XBB_LIBRARY_PATH
   fi
 
   export XBB_CPPFLAGS
@@ -1170,18 +1170,18 @@ function xbb_update_ld_library_path()
       exit 1
     fi
 
-    if [ -z "${LD_LIBRARY_PATH}" ]
+    if [ -z "${XBB_LIBRARY_PATH}" ]
     then
-      LD_LIBRARY_PATH="${libs_path}"
+      XBB_LIBRARY_PATH="${libs_path}"
     else
       # This is debatable, since the libs path may include many system paths,
-      # but normally the initial LD_LIBRARY_PATH should be empty.
-      LD_LIBRARY_PATH="${libs_path}:${LD_LIBRARY_PATH}"
+      # but normally the initial XBB_LIBRARY_PATH should be empty.
+      XBB_LIBRARY_PATH="${libs_path}:${XBB_LIBRARY_PATH}"
     fi
 
-    echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+    echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
 
-    export LD_LIBRARY_PATH
+    export XBB_LIBRARY_PATH
 
   fi
 }
@@ -1193,8 +1193,8 @@ function xbb_adjust_ldflags_rpath()
 
   if [ "${XBB_HOST_PLATFORM}" == "linux" ]
   then
-    LDFLAGS+=" -Wl,-rpath-link,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
-    LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
+    LDFLAGS+=" -Wl,-rpath-link,${XBB_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
+    LDFLAGS+=" -Wl,-rpath,${XBB_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
 
     echo_develop "LDFLAGS=${LDFLAGS}"
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
