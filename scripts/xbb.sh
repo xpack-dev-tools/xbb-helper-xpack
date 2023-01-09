@@ -1148,9 +1148,14 @@ function xbb_adjust_ldflags_rpath()
   echo_develop
   echo_develop "[${FUNCNAME[0]}]"
 
-  if [ "${XBB_HOST_PLATFORM}" == "linux" -o "${XBB_HOST_PLATFORM}" == "darwin" ]
+  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
   then
     LDFLAGS+=" -Wl,-rpath-link,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
+    LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
+
+    echo_develop "LDFLAGS=${LDFLAGS}"
+  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  then
     LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
 
     echo_develop "LDFLAGS=${LDFLAGS}"
