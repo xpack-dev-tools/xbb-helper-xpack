@@ -59,6 +59,8 @@ function xbb_save_env()
   export SED=$(which gsed 2>/dev/null || which sed 2>/dev/null || echo sed)
   export INSTALL=$(which install 2>/dev/null || echo install)
   export REALPATH=$(which_realpath)
+
+  XBB_APPLICATION_ADD_ALL_SYS_FOLDERS_TO_RPATH="${XBB_APPLICATION_ADD_ALL_SYS_FOLDERS_TO_RPATH:-"n"}"
 }
 
 function xbb_reset_env()
@@ -149,49 +151,6 @@ function xbb_reset_env()
   export XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH
 
   export XBB_BOOTSTRAP_SUFFIX
-
-  # ---------------------------------------------------------------------------
-
-  local new_path=""
-
-  # This must be used with caution, since it may result in unwanted shared
-  # libraries copied from the system folders to the archive.
-  if [ "${XBB_APPLICATION_ADD_ALL_SYS_FOLDERS_TO_RPATH:-""}" == "y" ]
-  then
-    if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
-    then
-      # This is maximal, it adds lots of folders.
-      new_path="$(/usr/bin/gcc -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
-    fi
-  elif [ "${XBB_APPLICATION_ADD_SYS_FOLDER_TO_RPATH:-""}" == "y" ]
-  then
-    if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
-    then
-      # Start with the library path known by the compiler.
-      # Later this path will be added to -rpath.
-
-      # /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/libstdc++.so.6
-      # /usr/lib/x86_64-linux-gnu/
-      new_path="$(${REALPATH} $(dirname $(/usr/bin/g++ -print-file-name=libstdc++.so.6)))"
-
-      run_verbose_develop ls -l "${new_path}"/*.so
-    fi
-  fi
-
-  if [ ! -z "${new_path}" ]
-  then
-    if [ -z "${LD_LIBRARY_PATH}" ]
-    then
-      LD_LIBRARY_PATH="${new_path}"
-    else
-      # Add the system libraries _after_ the user supplied initial path.
-      LD_LIBRARY_PATH+=":${new_path}"
-    fi
-
-    echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-
-    export LD_LIBRARY_PATH
-  fi
 
   # ---------------------------------------------------------------------------
 
@@ -1105,7 +1064,7 @@ function xbb_activate_dependencies_dev()
 
   # Must be done before, so that the deps path comes in front of it,
   # otherwise compiler libraries may take precedence.
-  xbb_activate_cxx_rpath
+  xbb_update_ld_library_path
 
   # Add XBB include in front of XBB_CPPFLAGS.
   XBB_CPPFLAGS="-I${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/include ${XBB_CPPFLAGS}"
@@ -1127,6 +1086,7 @@ function xbb_activate_dependencies_dev()
     then
       LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
     else
+      # Insert our dependencies before any other.
       LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${LD_LIBRARY_PATH}"
     fi
   fi
@@ -1146,6 +1106,7 @@ function xbb_activate_dependencies_dev()
     then
       LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
     else
+      # Insert our dependencies before any other.
       LD_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${LD_LIBRARY_PATH}"
     fi
   fi
@@ -1165,31 +1126,43 @@ function xbb_activate_dependencies_dev()
   export LD_LIBRARY_PATH
 }
 
-function xbb_activate_cxx_rpath()
+function xbb_update_ld_library_path()
 {
-  local cxx_lib_path=""
-
-  if [[ $(basename "${CC}") =~ .*gcc.* ]]
+  local libs_path=""
+  if [ "${XBB_APPLICATION_ADD_ALL_SYS_FOLDERS_TO_RPATH}" == "y" ]
   then
-    cxx_lib_path="$(${REALPATH} $(dirname $(${CXX} -print-file-name=libstdc++.so.6)))"
+    # This is maximal, it adds lots of folders.
+    libs_path="$(${CXX} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+  else
+    local cxx_lib_path="$(${REALPATH} $(dirname $(${CXX} -print-file-name=libstdc++.so)))"
+    local pthread_lib_path="$(${REALPATH} $(dirname $(${CXX} -print-file-name=libpthread.so)))"
+
     echo_develop
-    echo_develop "libstdc++.so.6 @ ${cxx_lib_path}"
-    if [ "${cxx_lib_path}" == "libstdc++.so.6" ]
-    then
-      return
-    fi
-  fi
+    echo_develop "libstdc++.so @ ${cxx_lib_path}"
+    echo_develop "pthread.so @ ${pthread_lib_path}"
 
-  if [ -z "${cxx_lib_path}" ]
-  then
-    return
+    if [ "${cxx_lib_path}" == "libstdc++.so" ]
+    then
+      echo "libstdc++.so not found!"
+      exit 1
+    fi
+
+    if [ "${pthread_lib_path}" == "pthread.so" ]
+    then
+      echo "libstdc++.so not found!"
+      exit 1
+    fi
+
+    libs_path="${cxx_lib_path}:${pthread_lib_path}"
   fi
 
   if [ -z "${LD_LIBRARY_PATH}" ]
   then
-    LD_LIBRARY_PATH="${cxx_lib_path}"
+    LD_LIBRARY_PATH="${libs_path}"
   else
-    LD_LIBRARY_PATH="${cxx_lib_path}:${LD_LIBRARY_PATH}"
+    # This is debatable, since the libs path may include many system paths,
+    # but normally the initial LD_LIBRARY_PATH should be empty.
+    LD_LIBRARY_PATH="${libs_path}:${LD_LIBRARY_PATH}"
   fi
 
   echo_develop "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
@@ -1199,9 +1172,15 @@ function xbb_activate_cxx_rpath()
 
 function xbb_adjust_ldflags_rpath()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]}]"
+
   if [ "${XBB_HOST_PLATFORM}" == "linux" -o "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
+    LDFLAGS+=" -Wl,-rpath-link,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
     LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
+
+    echo_develop "LDFLAGS=${LDFLAGS}"
   fi
 }
 
