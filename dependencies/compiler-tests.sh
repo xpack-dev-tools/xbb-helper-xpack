@@ -245,7 +245,10 @@ function compiler-tests-single()
 
             run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
 
-            export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
+            if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+            then
+              export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
+            fi
           fi
 
           expect_target_output "42" "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" 40 2
@@ -484,7 +487,10 @@ function compiler-tests-single()
           else
             run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -fpic -o "libthrowcatch-lib.${XBB_TARGET_SHLIB_EXT}" ${LDXXFLAGS}
 
-            export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
+            if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+            then
+              export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
+            fi
           fi
 
           # mingw-gcc on macOS throws
