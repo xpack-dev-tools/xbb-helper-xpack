@@ -1125,6 +1125,12 @@ function xbb_activate_dependencies_dev()
   export PKG_CONFIG_PATH
 }
 
+# Call it with -m64/-m32 for multilib use cases.
+function xbb_get_libs_path()
+{
+  ${CXX} "$@" -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||'
+}
+
 function xbb_update_ld_library_path()
 {
   local libs_path=""
@@ -1134,7 +1140,7 @@ function xbb_update_ld_library_path()
     if [[ "$(basename ${CC})" =~ .*gcc.* ]]
     then
       # This is maximal, it adds lots of folders.
-      libs_path="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+      libs_path="$(xbb_get_libs_path)"
     else
       echo "TODO: compute rpath for ${CC}"
       exit 1
