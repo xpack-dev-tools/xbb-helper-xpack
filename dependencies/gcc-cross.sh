@@ -259,7 +259,6 @@ function gcc_cross_build_first()
       fi
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
       if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
@@ -274,6 +273,8 @@ function gcc_cross_build_first()
           # export LIBS="-lzstd -lpthread"
         fi
       fi
+
+      xbb_adjust_ldflags_rpath
 
       gcc_cross_define_flags_for_target
 
@@ -562,7 +563,7 @@ function gcc_cross_build_final()
       fi
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
+
       # Do not add CRT_glob.o here, it will fail with already defined,
       # since it is already handled by --enable-mingw-wildcard.
 
@@ -579,6 +580,8 @@ function gcc_cross_build_final()
           # export LIBS="-lzstd -lpthread"
         fi
       fi
+
+      xbb_adjust_ldflags_rpath
 
       gcc_cross_define_flags_for_target "${nano_option}"
 

@@ -192,7 +192,6 @@ function gcc_mingw_build_first()
       fi
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
       if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
@@ -207,6 +206,8 @@ function gcc_mingw_build_first()
           # export LIBS="-lzstd -lpthread"
         fi
       fi
+
+      xbb_adjust_ldflags_rpath
 
       export CFLAGS_FOR_TARGET="-g -ffunction-sections -fdata-sections -pipe -O2 -D__USE_MINGW_ACCESS -w"
       export CXXFLAGS_FOR_TARGET="-g -ffunction-sections -fdata-sections -pipe -O2 -D__USE_MINGW_ACCESS -w"
@@ -435,6 +436,7 @@ function gcc_mingw_build_final()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS

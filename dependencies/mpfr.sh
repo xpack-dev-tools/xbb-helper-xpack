@@ -66,6 +66,7 @@ function mpfr_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS

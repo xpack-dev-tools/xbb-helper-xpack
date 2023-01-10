@@ -62,6 +62,7 @@ function termcap_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -85,7 +86,7 @@ function termcap_build()
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-          
+
           # No --libdir, --includedir, --datarootdir, --mandir
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")

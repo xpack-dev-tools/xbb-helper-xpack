@@ -77,6 +77,7 @@ function libedit_build()
       fi
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS

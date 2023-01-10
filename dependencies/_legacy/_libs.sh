@@ -64,6 +64,7 @@ function libelf_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -198,7 +199,6 @@ function python2_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
       if [[ $(basename "${CC}") =~ .*gcc.* ]]
       then
@@ -207,6 +207,8 @@ function python2_build()
         CXXFLAGS+=" -fno-semantic-interposition"
         LDFLAGS+=" -fno-semantic-interposition"
       fi
+
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
@@ -462,6 +464,7 @@ function xar_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -596,6 +599,7 @@ function libgpg_error_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -747,6 +751,7 @@ function libgcrypt_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -962,6 +967,7 @@ function libassuan_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -1129,6 +1135,7 @@ function libksba_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CC_FOR_BUILD="${CC}"
@@ -1291,6 +1298,7 @@ function npth_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -1452,6 +1460,7 @@ function _libusb_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS

@@ -61,6 +61,7 @@ function pkg_config_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS

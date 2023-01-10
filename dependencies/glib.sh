@@ -99,7 +99,6 @@ function glib_build()
       LIBS=""
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      xbb_adjust_ldflags_rpath
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
@@ -118,6 +117,8 @@ function glib_build()
       #   # LIBS=" -lpthread -ldl -lresolv"
       #   LDFLAGS+=" -lpthread -ldl -lresolv"
       # fi
+
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS

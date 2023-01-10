@@ -134,7 +134,6 @@ function gdb_cross_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
       LIBS=""
 
@@ -184,6 +183,8 @@ function gdb_cross_build()
           CONFIG_PYTHON_PREFIX="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
         fi
       fi
+
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS

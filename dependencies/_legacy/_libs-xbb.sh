@@ -62,6 +62,7 @@ function libtasn1_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -195,6 +196,7 @@ function libunistring_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -338,6 +340,7 @@ function gc_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -729,6 +732,7 @@ function xorg_util_macros_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -859,6 +863,7 @@ function xorg_xproto_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
