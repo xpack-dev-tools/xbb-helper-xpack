@@ -568,7 +568,7 @@ function compiler-tests-single()
               # 32 bit pseudo relocation at 00007FF67D9F1587 out of range, targeting 00007FFF403E157C, yielding the value 00000008C29EFFF1.
               echo
               echo "Skipping ${prefix}throwcatch-main${suffix} -flto on Windows..."
-            elif [ "${is_static_lib}" == "y" ] && [ "${XBB_BUILD_PLATFORM}" == "win32" ] && [[ "$(basename "${CC}")" =~ .*i686-w64-mingw32-gcc.* ]]
+            elif [ "${is_static_lib}" == "y" ] && [[ "$(basename "${CC}")" =~ .*i686-w64-mingw32-gcc.* ]]
             then
               # terminate called after throwing an instance of 'FirstException'
               #   what():  first
