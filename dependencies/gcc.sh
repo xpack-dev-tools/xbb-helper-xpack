@@ -916,7 +916,7 @@ function gcc_test()
       if [ "${XBB_HOST_ARCH}" == "x64" ]
       then
         (
-          export LD_LIBRARY_PATH="$(${CC} -m64 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+          export LD_LIBRARY_PATH="$(xbb_get_libs_path -m64)"
           echo
           echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
@@ -931,7 +931,7 @@ function gcc_test()
           echo "Skipping -m32 tests..."
         else
           (
-            export LD_LIBRARY_PATH="$(${CC} -m32 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+            export LD_LIBRARY_PATH="$(xbb_get_libs_path -m32)"
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
@@ -943,7 +943,7 @@ function gcc_test()
         fi
       else
         (
-          export LD_LIBRARY_PATH="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+          export LD_LIBRARY_PATH="$(xbb_get_libs_path)"
           echo
           echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
@@ -965,7 +965,7 @@ function gcc_test()
         then
           (
             # Mainly for libgfortran.so.
-            export LD_LIBRARY_PATH="$(${CC} -m64 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+            export LD_LIBRARY_PATH="$(xbb_get_libs_path -m64)"
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
@@ -980,7 +980,7 @@ function gcc_test()
             echo "Skipping -m32 --static-lib tests..."
           else
             (
-              export LD_LIBRARY_PATH="$(${CC} -m32 -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+              export LD_LIBRARY_PATH="$(xbb_get_libs_path -m32)"
               echo
               echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
@@ -993,7 +993,7 @@ function gcc_test()
         else
           (
             # Mainly for libgfortran.so.
-            export LD_LIBRARY_PATH="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
+            export LD_LIBRARY_PATH="$(xbb_get_libs_path)"
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
