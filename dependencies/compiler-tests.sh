@@ -243,11 +243,15 @@ function compiler-tests-single()
           else
             run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.${XBB_TARGET_SHLIB_EXT}" ${LDFLAGS}
 
+            # show_target_libs "lib${prefix}add-shared${suffix}.${XBB_TARGET_SHLIB_EXT}"
+
             run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
 
             if [ "${XBB_HOST_PLATFORM}" == "linux" ]
             then
-              export LD_LIBRARY_PATH=$(pwd):${XBB_LIBRARY_PATH:-}
+              export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
+              echo
+              echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
             fi
           fi
 
@@ -489,7 +493,9 @@ function compiler-tests-single()
 
             if [ "${XBB_HOST_PLATFORM}" == "linux" ]
             then
-              export LD_LIBRARY_PATH=$(pwd):${XBB_LIBRARY_PATH:-}
+              export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
+              echo
+              echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
             fi
           fi
 
@@ -503,8 +509,10 @@ function compiler-tests-single()
           fi
 
           (
-            # LD_LIBRARY_PATH=${XBB_LIBRARY_PATH:-""}
-            # export LD_LIBRARY_PATH=$(pwd):${XBB_LIBRARY_PATH}
+            # LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
+            # export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+            # echo
+            # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
             # C:\Users\ilg>"C:\Users\ilg\Desktop\New folder\lto-throwcatch-main.exe"
             # Mingw-w64 runtime failure:
