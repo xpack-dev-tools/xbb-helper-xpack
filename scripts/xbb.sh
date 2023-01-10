@@ -1141,6 +1141,31 @@ function xbb_update_ld_library_path()
     then
       # This is maximal, it adds lots of folders.
       libs_path="$(xbb_get_libs_path)"
+    elif [[ "$(basename ${CC})" =~ .*clang.* ]]
+    then
+      # find . -name '*.so'
+      # lib/x86_64-pc-linux-gnu/libc++abi.so.1
+      # lib/x86_64-pc-linux-gnu/libc++abi.so.1.0
+      # lib/x86_64-pc-linux-gnu/libunwind.so.1
+      # lib/x86_64-pc-linux-gnu/libc++.so
+      # lib/x86_64-pc-linux-gnu/libunwind.so.1.0
+      # lib/x86_64-pc-linux-gnu/libc++abi.so
+      # lib/x86_64-pc-linux-gnu/libunwind.so
+      # lib/x86_64-pc-linux-gnu/libc++.so.1
+      # lib/x86_64-pc-linux-gnu/libc++.so.1.0
+      # lib/clang/15.0.6/lib/x86_64-pc-linux-gnu/libclang_rt.memprof.so
+
+      # clang -print-file-name=libc++.so
+      # /home/ilg/Work/clang-xpack.git/build/linux-x64/application/bin/../lib/x86_64-pc-linux-gnu/libc++.so
+      # libs_path="$(dirname $(${CC} -print-file-name=libc++.so))"
+
+      # clang -print-runtime-dir
+      # /home/ilg/Work/clang-xpack.git/build/linux-x64/application/lib/clang/15.0.6/lib/x86_64-pc-linux-gnu
+
+      # clang -print-search-dirs
+      # programs: =/home/ilg/Work/clang-xpack.git/build/linux-x64/application/bin:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../x86_64-linux-gnu/bin
+      # libraries: =/home/ilg/Work/clang-xpack.git/build/linux-x64/application/lib/clang/15.0.6:/home/ilg/Work/clang-xpack.git/build/linux-x64/application/bin/../lib/x86_64-pc-linux-gnu:/usr/lib/gcc/x86_64-linux-gnu/10:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../lib64:/lib/x86_64-linux-gnu:/lib/../lib64:/usr/lib/x86_64-linux-gnu:/usr/lib/../lib64:/lib:/usr/lib
+      libs_path="$(xbb_get_libs_path)"
     else
       echo "TODO: compute rpath for ${CC}"
       exit 1
