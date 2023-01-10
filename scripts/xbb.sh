@@ -75,7 +75,10 @@ function xbb_reset_env()
     export LD_LIBRARY_PATH=""
   fi
 
-  export XBB_LIBRARY_PATH=""
+  if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+  then
+    export XBB_LIBRARY_PATH=""
+  fi
 
   # Defaults, to ensure the variables are defined.
   export LANG="${LANG:-"C"}"
@@ -1079,14 +1082,17 @@ function xbb_activate_dependencies_dev()
     # Add XBB lib in front of PKG_CONFIG_PATH.
     PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
-    # Needed by internal binaries, like the bootstrap compiler, which do not
-    # have a rpath.
-    if [ -z "${XBB_LIBRARY_PATH}" ]
+    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
-      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
-    else
-      # Insert our dependencies before any other.
-      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${XBB_LIBRARY_PATH}"
+      # Needed by internal binaries, like the bootstrap compiler, which do not
+      # have a rpath.
+      if [ -z "${XBB_LIBRARY_PATH}" ]
+      then
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
+      else
+        # Insert our dependencies before any other.
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${XBB_LIBRARY_PATH}"
+      fi
     fi
   fi
 
@@ -1101,19 +1107,25 @@ function xbb_activate_dependencies_dev()
 
     PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
 
-    if [ -z "${XBB_LIBRARY_PATH}" ]
+    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
-      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
-    else
-      # Insert our dependencies before any other.
-      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${XBB_LIBRARY_PATH}"
+      if [ -z "${XBB_LIBRARY_PATH}" ]
+      then
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
+      else
+        # Insert our dependencies before any other.
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${XBB_LIBRARY_PATH}"
+      fi
     fi
   fi
 
-  # The order is important, it must be:
-  # dev-path:gcc-path:system-path
-  echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
-  export XBB_LIBRARY_PATH
+  if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+  then
+    # The order is important, it must be:
+    # dev-path:gcc-path:system-path
+    echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
+    export XBB_LIBRARY_PATH
+  fi
 
   export XBB_CPPFLAGS
 
