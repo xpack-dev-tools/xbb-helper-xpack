@@ -75,10 +75,7 @@ function xbb_reset_env()
     export LD_LIBRARY_PATH=""
   fi
 
-  if [ "${XBB_REQUESTED_HOST_PLATFORM}" != "win32" ]
-  then
-    export XBB_LIBRARY_PATH=""
-  fi
+  export XBB_LIBRARY_PATH=""
 
   # Defaults, to ensure the variables are defined.
   export LANG="${LANG:-"C"}"
