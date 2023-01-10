@@ -37,6 +37,8 @@ function compiler-tests-single()
     local is_static_lib="n"
     local use_libunwind="n"
     local use_lld="n"
+    local use_libpthread="n"
+    local use_libdl="n"
 
     local prefix=""
     local suffix=""
@@ -95,6 +97,16 @@ function compiler-tests-single()
           shift
           ;;
 
+        --libpthread )
+          use_libpthread="y"
+          shift
+          ;;
+
+        --libdl )
+          use_libdl="y"
+          shift
+          ;;
+
         --lld )
           use_lld="y"
           shift
@@ -124,6 +136,18 @@ function compiler-tests-single()
     then
       LDFLAGS+=" -lunwind"
       LDXXFLAGS+=" -lunwind"
+    fi
+
+    if [ "${use_libpthread}" == "y" ]
+    then
+      LDFLAGS+=" -lpthread"
+      LDXXFLAGS+=" -lpthread"
+    fi
+
+    if [ "${use_libdl}" == "y" ]
+    then
+      LDFLAGS+=" -ldl"
+      LDXXFLAGS+=" -ldl"
     fi
 
     if [ "${use_lld}" == "y" ]
