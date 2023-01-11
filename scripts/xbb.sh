@@ -1208,8 +1208,11 @@ function xbb_adjust_ldflags_rpath()
   then
     for p in "${path_array[@]}"
     do
-      LDFLAGS+=" -Wl,-rpath-link,$(${REALPATH} ${p})"
-      LDFLAGS+=" -Wl,-rpath,$(${REALPATH} ${p})"
+      if [ -d "${p}" ]
+      then
+        LDFLAGS+=" -Wl,-rpath-link,$(${REALPATH} ${p})"
+        LDFLAGS+=" -Wl,-rpath,$(${REALPATH} ${p})"
+      fi
     done
     echo_develop "LDFLAGS=${LDFLAGS}"
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
