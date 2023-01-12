@@ -59,6 +59,13 @@ function machine_detect()
       exit 1
     fi
 
+    if [ ! -z "${XBB_REQUESTED_TARGET:-""}" ] &&
+       [ "${XBB_REQUESTED_TARGET}" != "${XBB_BUILD_PLATFORM}-${XBB_BUILD_ARCH}" ]
+    then
+      echo "Cannot build ${XBB_REQUESTED_TARGET} on ${XBB_BUILD_PLATFORM}-${XBB_BUILD_ARCH}"
+      exit 1
+    fi
+
   elif [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
     # ----- Determine distribution name and word size -----
@@ -88,6 +95,18 @@ function machine_detect()
       exit 1
     fi
 
+    if [ ! -z "${XBB_REQUESTED_TARGET:-""}" -a "${XBB_REQUEST_TARGET_BE_WINDOWS:-"n"}" != "y" ] &&
+       [ "${XBB_REQUESTED_TARGET}" != "${XBB_BUILD_PLATFORM}-${XBB_BUILD_ARCH}" ]
+    then
+      echo "Cannot build ${XBB_REQUESTED_TARGET} on ${XBB_BUILD_PLATFORM}-${XBB_BUILD_ARCH}"
+      exit 1
+    elif [ ! -z "${XBB_REQUESTED_TARGET:-""}" -a "${XBB_REQUEST_TARGET_BE_WINDOWS:-"n"}" == "y" ] &&
+       [ "${XBB_REQUESTED_TARGET}" != "win32-${XBB_BUILD_ARCH}" ]
+    then
+      echo "Cannot build ${XBB_REQUESTED_TARGET} on ${XBB_BUILD_PLATFORM}-${XBB_BUILD_ARCH}"
+      exit 1
+    fi
+
     local lsb_path=$(which lsb_release)
     if [ -z "${lsb_path}" ]
     then
@@ -112,6 +131,12 @@ function machine_detect()
       XBB_BUILD_ARCH="ia32"
     else
       echo "Unsupported uname -m ${XBB_BUILD_MACHINE} in ${FUNCNAME[0]}()"
+      exit 1
+    fi
+
+    if [ ! -z "${XBB_REQUESTED_TARGET:-""}" ]
+    then
+      echo "Cannot build anything on ${XBB_BUILD_PLATFORM}-${XBB_BUILD_ARCH}"
       exit 1
     fi
 
