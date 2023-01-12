@@ -70,7 +70,6 @@ function gdb_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
@@ -83,6 +82,8 @@ function gdb_build()
         # Using LIBS does not work, the order is important.
         export DEBUGINFOD_LIBS="-lbcrypt"
       fi
+
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS

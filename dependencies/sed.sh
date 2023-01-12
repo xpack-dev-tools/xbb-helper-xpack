@@ -65,6 +65,7 @@ function sed_build()
       fi
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS

@@ -88,7 +88,6 @@ function binutils_cross_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
@@ -96,6 +95,8 @@ function binutils_cross_build()
         local crt_clob_file_path="$(${CC} --print-file-name=CRT_glob.o)"
         LDFLAGS+=" -Wl,${crt_clob_file_path}"
       fi
+
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS

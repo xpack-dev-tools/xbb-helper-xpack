@@ -71,15 +71,14 @@ function mpdecimal_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      xbb_adjust_ldflags_rpath
 
-      LD=${CC}
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
-      export LD
+      export LD=${CC} # Does not like the default ld
 
       if [ ! -f "config.status" ]
       then

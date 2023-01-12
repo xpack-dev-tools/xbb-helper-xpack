@@ -94,6 +94,7 @@ function zlib_build()
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
         LDFLAGS="${XBB_LDFLAGS_LIB}"
+        
         xbb_adjust_ldflags_rpath
 
         export CPPFLAGS
@@ -121,7 +122,7 @@ function zlib_build()
             config_options=()
 
             config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-            
+
             config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
             config_options+=("--sharedlibdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
             config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")

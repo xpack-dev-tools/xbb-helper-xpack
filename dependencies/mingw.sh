@@ -270,6 +270,7 @@ function mingw_build_widl()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -381,6 +382,7 @@ function mingw_build_libmangle()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -495,6 +497,7 @@ function mingw_build_gendef()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS

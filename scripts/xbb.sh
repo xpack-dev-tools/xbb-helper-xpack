@@ -1079,14 +1079,17 @@ function xbb_activate_dependencies_dev()
     # Add XBB lib in front of PKG_CONFIG_PATH.
     PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
-    # Needed by internal binaries, like the bootstrap compiler, which do not
-    # have a rpath.
-    if [ -z "${XBB_LIBRARY_PATH}" ]
+    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
-      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
-    else
-      # Insert our dependencies before any other.
-      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${XBB_LIBRARY_PATH}"
+      # Needed by internal binaries, like the bootstrap compiler, which do not
+      # have a rpath.
+      if [ -z "${XBB_LIBRARY_PATH}" ]
+      then
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib"
+      else
+        # Insert our dependencies before any other.
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib:${XBB_LIBRARY_PATH}"
+      fi
     fi
   fi
 
@@ -1101,19 +1104,25 @@ function xbb_activate_dependencies_dev()
 
     PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
 
-    if [ -z "${XBB_LIBRARY_PATH}" ]
+    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
-      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
-    else
-      # Insert our dependencies before any other.
-      XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${XBB_LIBRARY_PATH}"
+      if [ -z "${XBB_LIBRARY_PATH}" ]
+      then
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64"
+      else
+        # Insert our dependencies before any other.
+        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/lib64:${XBB_LIBRARY_PATH}"
+      fi
     fi
   fi
 
-  # The order is important, it must be:
-  # dev-path:gcc-path:system-path
-  echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
-  export XBB_LIBRARY_PATH
+  if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+  then
+    # The order is important, it must be:
+    # dev-path:gcc-path:system-path
+    echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
+    export XBB_LIBRARY_PATH
+  fi
 
   export XBB_CPPFLAGS
 
@@ -1192,16 +1201,29 @@ function xbb_adjust_ldflags_rpath()
   echo_develop
   echo_develop "[${FUNCNAME[0]}]"
 
+  local path="${XBB_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
+  IFS=: read -r -d '' -a path_array < <(printf '%s:\0' "${path}")
+
   if [ "${XBB_HOST_PLATFORM}" == "linux" ]
   then
-    LDFLAGS+=" -Wl,-rpath-link,${XBB_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
-    LDFLAGS+=" -Wl,-rpath,${XBB_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
-
+    for p in "${path_array[@]}"
+    do
+      if [ -d "${p}" ]
+      then
+        LDFLAGS+=" -Wl,-rpath-link,$(${REALPATH} ${p})"
+        LDFLAGS+=" -Wl,-rpath,$(${REALPATH} ${p})"
+      fi
+    done
     echo_develop "LDFLAGS=${LDFLAGS}"
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
-    LDFLAGS+=" -Wl,-rpath,${XBB_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
-
+    for p in "${path_array[@]}"
+    do
+      if [ -d "${p}" ]
+      then
+        LDFLAGS+=" -Wl,-rpath,$(${REALPATH} ${p})"
+      fi
+    done
     echo_develop "LDFLAGS=${LDFLAGS}"
   fi
 }

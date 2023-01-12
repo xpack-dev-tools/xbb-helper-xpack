@@ -79,6 +79,7 @@ function scons_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -188,6 +189,7 @@ function curl_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -420,6 +422,7 @@ function tar_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -627,6 +630,7 @@ function guille_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       # Otherwise guile-config displays the verbosity.
@@ -817,14 +821,8 @@ function autogen_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
-      # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      # then
-      #   # To find libopts.so during build.
-      #   # export LD_LIBRARY_PATH="${}:${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}/autoopts/.libs"
-      #   export LD_LIBRARY_PATH="${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}/autoopts/.libs"
-      # fi
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
@@ -1022,6 +1020,7 @@ function gawk_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -1214,6 +1213,7 @@ function patch_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -1379,6 +1379,7 @@ function diffutils_build()
       fi
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -1558,13 +1559,8 @@ function bison_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
-      # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      # then
-      #   # undefined reference to `clock_gettime' on docker
-      #   export LIBS="-lrt"
-      # fi
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
@@ -1774,6 +1770,7 @@ function make_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -1948,6 +1945,7 @@ function bash_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -2119,10 +2117,8 @@ function wget_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
-      # Might be needed on Mac
-      # export LIBS="-liconv"
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
@@ -2314,6 +2310,7 @@ function dos2unix_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -2474,6 +2471,7 @@ function flex_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -2701,13 +2699,8 @@ function perl_build()
       CXXFLAGS="${XBB_CPPFLAGS} ${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
-      # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      # then
-      #   # Required to pick libcrypt and libssp from bootstrap.
-      #   export LD_LIBRARY_PATH="${}"
-      # fi
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
@@ -2912,6 +2905,7 @@ function tcl_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -3137,9 +3131,8 @@ function git_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
-      # export LIBS="-ldl"
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
@@ -3322,12 +3315,13 @@ function p7zip_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W} -std=c++11"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
       if [ "${XBB_HOST_PLATFORM}" == "linux" -o "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         LDFLAGS+=" -liconv"
       fi
+
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
@@ -3475,6 +3469,7 @@ function rhash_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -3668,6 +3663,7 @@ function re2c_build()
 
       # Without STATIC all tests fail.
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -3851,6 +3847,7 @@ function gnupg_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -4056,9 +4053,8 @@ function makedepend_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      xbb_adjust_ldflags_rpath
 
-      # export PKG_CONFIG_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/pkgconfig:${PKG_CONFIG_PATH}"
+      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS

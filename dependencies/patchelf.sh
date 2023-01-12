@@ -84,6 +84,7 @@ function patchelf_build()
       # Wihtout -static-libstdc++, it fails with
       # /usr/lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.29' not found
       LDFLAGS="${XBB_LDFLAGS_APP}"
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
