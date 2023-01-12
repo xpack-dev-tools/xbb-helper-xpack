@@ -98,7 +98,7 @@ function libssh_build()
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            config_options+=("-LH") # display help for each variable
+            config_options+=("-LAH") # display help for each variable
           fi
           config_options+=("-G" "Ninja")
 

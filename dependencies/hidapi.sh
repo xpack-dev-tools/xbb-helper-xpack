@@ -149,7 +149,7 @@ function hidapi_build()
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
         LDFLAGS="${XBB_LDFLAGS_LIB}"
-        
+
         xbb_adjust_ldflags_rpath
 
         export CPPFLAGS
@@ -175,7 +175,7 @@ function hidapi_build()
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            config_options+=("-LH") # display help for each variable
+            config_options+=("-LAH") # display help for each variable
           fi
           config_options+=("-G" "Ninja")
 
