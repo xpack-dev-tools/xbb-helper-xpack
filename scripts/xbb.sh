@@ -665,6 +665,7 @@ function xbb_unset_compiler_env()
 {
   unset CC
   unset CXX
+  unset ADDR2LINE
   unset AR
   unset AS
   unset DLLTOOL
@@ -731,6 +732,7 @@ function xbb_prepare_gcc_env()
   fi
 
   # From binutils.
+  export ADDR2LINE="$(which ${prefix}addr2line 2>/dev/null || echo ${prefix}addr2line)"
   export AS="$(which ${prefix}as 2>/dev/null || echo ${prefix}as)"
   if [ ! -z "$(which ${prefix}dlltool 2>/dev/null)" ]
   then
@@ -780,6 +782,7 @@ function xbb_prepare_clang_env()
   export CC="$(which ${prefix}clang${suffix} 2>/dev/null || echo ${prefix}clang${suffix})"
   export CXX="$(which ${prefix}clang++${suffix} 2>/dev/null || echo ${prefix}clang++${suffix})"
 
+  export ADDR2LINE="$(which ${prefix}addr2line 2>/dev/null || echo ${prefix}addr2line)"
   export AR="$(which ${prefix}ar 2>/dev/null || echo ${prefix}ar)"
   export AS="$(which ${prefix}as 2>/dev/null || echo ${prefix}as)"
   if [ ! -z "$(which ${prefix}dlltool 2>/dev/null)" ]
@@ -933,6 +936,7 @@ function xbb_set_compiler_flags()
       set +u
       echo "CC=${CC}"
       echo "CXX=${CXX}"
+      echo "ADDR2LINE=${ADDR2LINE}"
       echo "AR=${AR}"
       echo "AS=${AS}"
       echo "DLLTOOL=${DLLTOOL}"
