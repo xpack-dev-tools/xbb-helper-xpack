@@ -694,8 +694,19 @@ function xbb_unset_compiler_env()
   unset XBB_LDFLAGS_APP_STATIC_GCC
 }
 
+# To get the gcc-* variants, pass --lto as the first argument.
 function xbb_prepare_gcc_env()
 {
+  local with_lto="n"
+  if [ $# -ge 1 ]
+  then
+    if [ "${1}" == "--lto" ]
+    then
+      with_lto="y"
+      shift
+    fi
+  fi
+
   local prefix="${1:-}"
   local suffix="${2:-}"
 
@@ -708,9 +719,16 @@ function xbb_prepare_gcc_env()
   export CXX="$(which ${prefix}g++${suffix} 2>/dev/null || echo ${prefix}g++${suffix})"
 
   # These are the special GCC versions, not the binutils ones.
-  export AR="$(which ${prefix}gcc-ar${suffix} 2>/dev/null || which ${prefix}ar${suffix} 2>/dev/null || echo ${prefix}ar${suffix})"
-  export NM="$(which ${prefix}gcc-nm${suffix} 2>/dev/null || which ${prefix}nm${suffix} 2>/dev/null || echo ${prefix}nm${suffix})"
-  export RANLIB="$(which ${prefix}gcc-ranlib${suffix} 2>/dev/null || which ${prefix}ranlib${suffix} 2>/dev/null || echo ${prefix}ranlib${suffix})"
+  if [ "${with_lto}" == "y" ]
+  then
+    export AR="$(which ${prefix}gcc-ar${suffix} 2>/dev/null || which ${prefix}ar${suffix} 2>/dev/null || echo ${prefix}ar${suffix})"
+    export NM="$(which ${prefix}gcc-nm${suffix} 2>/dev/null || which ${prefix}nm${suffix} 2>/dev/null || echo ${prefix}nm${suffix})"
+    export RANLIB="$(which ${prefix}gcc-ranlib${suffix} 2>/dev/null || which ${prefix}ranlib${suffix} 2>/dev/null || echo ${prefix}ranlib${suffix})"
+  else
+    export AR="$(which ${prefix}ar${suffix} 2>/dev/null || echo ${prefix}ar${suffix})"
+    export NM="$(which ${prefix}nm${suffix} 2>/dev/null || echo ${prefix}nm${suffix})"
+    export RANLIB="$(which ${prefix}ranlib${suffix} 2>/dev/null || echo ${prefix}ranlib${suffix})"
+  fi
 
   # From binutils.
   export AS="$(which ${prefix}as 2>/dev/null || echo ${prefix}as)"
