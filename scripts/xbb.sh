@@ -716,6 +716,8 @@ function xbb_prepare_gcc_env()
 
   xbb_unset_compiler_env
 
+  # Absolute paths are used to avoid picking the wrong binaries in case
+  # the PATH changes.
   export CC="$(which ${prefix}gcc${suffix} 2>/dev/null || echo ${prefix}gcc${suffix})"
   export CXX="$(which ${prefix}g++${suffix} 2>/dev/null || echo ${prefix}g++${suffix})"
 
@@ -936,6 +938,7 @@ function xbb_set_compiler_flags()
       set +u
       echo "CC=${CC}"
       echo "CXX=${CXX}"
+      echo
       echo "ADDR2LINE=${ADDR2LINE}"
       echo "AR=${AR}"
       echo "AS=${AS}"
@@ -951,6 +954,7 @@ function xbb_set_compiler_flags()
       echo "WINDRES=${WINDRES}"
       echo "WINDMC=${WINDMC}"
       echo "RC=${RC}"
+      echo
       echo "XBB_CPPFLAGS=${XBB_CPPFLAGS}"
       echo "XBB_CFLAGS=${XBB_CFLAGS}"
       echo "XBB_CXXFLAGS=${XBB_CXXFLAGS}"
