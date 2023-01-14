@@ -736,36 +736,47 @@ function xbb_prepare_gcc_env()
   # From binutils.
   export ADDR2LINE="$(which ${prefix}addr2line 2>/dev/null || echo ${prefix}addr2line)"
   export AS="$(which ${prefix}as 2>/dev/null || echo ${prefix}as)"
-  if [ ! -z "$(which ${prefix}dlltool 2>/dev/null)" ]
+
+  local dlltool="$(which ${prefix}dlltool 2>/dev/null)"
+  if [ ! -z "${dlltool}" ]
   then
-    export DLLTOOL="$(which ${prefix}dlltool)"
+    export DLLTOOL="${dlltool}"
   fi
+
   export LD="$(which ${prefix}ld 2>/dev/null || echo ${prefix}ld)"
-  if [ ! -z "$(which ${prefix}objcopy 2>/dev/null)" ]
+
+  local objcopy="$(which ${prefix}objcopy 2>/dev/null)"
+  if [ ! -z "${objcopy}" ]
   then
-    export OBJCOPY="$(which ${prefix}objcopy)"
+    export OBJCOPY="${objcopy}"
   fi
-  if [ ! -z "$(which ${prefix}objdump 2>/dev/null)" ]
+
+  local objdump="$(which ${prefix}objdump 2>/dev/null)"
+  if [ ! -z "${objdump}" ]
   then
-    export OBJDUMP="$(which ${prefix}objdump)"
+    export OBJDUMP="${objdump}"
   fi
-  if [ ! -z "$(which ${prefix}readelf 2>/dev/null)" ]
+
+  local readelf="$(which ${prefix}readelf 2>/dev/null)"
+  if [ ! -z "${readelf}" ]
   then
-    export READELF="$(which ${prefix}readelf)"
+    export READELF="${readelf}"
   fi
+
   export SIZE="$(which ${prefix}size 2>/dev/null || echo ${prefix}size)"
   export STRIP="$(which ${prefix}strip 2>/dev/null || echo ${prefix}strip)"
-  if [ ! -z "$(which ${prefix}windres 2>/dev/null)" ]
+
+  local windmc="$(which ${prefix}windmc 2>/dev/null)"
+  if [ ! -z "${windmc}" ]
   then
-    export WINDRES="$(which ${prefix}windres)"
+    export WINDMC="${windmc}"
   fi
-  if [ ! -z "$(which ${prefix}windmc 2>/dev/null)" ]
+
+  local windres="$(which ${prefix}windres 2>/dev/null)"
+  if [ ! -z "${windres}" ]
   then
-    export WINDMC="$(which ${prefix}windmc)"
-  fi
-  if [ ! -z "$(which ${prefix}windres 2>/dev/null)" ]
-  then
-    export RC="$(which ${prefix}windres)"
+    export WINDRES="${windres}"
+    export RC="${windres}"
   fi
 
   xbb_set_compiler_flags
