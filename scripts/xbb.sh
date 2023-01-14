@@ -795,41 +795,54 @@ function xbb_prepare_clang_env()
   export CC="$(which ${prefix}clang${suffix} 2>/dev/null || echo ${prefix}clang${suffix})"
   export CXX="$(which ${prefix}clang++${suffix} 2>/dev/null || echo ${prefix}clang++${suffix})"
 
-  export ADDR2LINE="$(which ${prefix}addr2line 2>/dev/null || echo ${prefix}addr2line)"
-  export AR="$(which ${prefix}ar 2>/dev/null || echo ${prefix}ar)"
-  export AS="$(which ${prefix}as 2>/dev/null || echo ${prefix}as)"
-  if [ ! -z "$(which ${prefix}dlltool 2>/dev/null)" ]
+  export ADDR2LINE="$(which ${prefix}llvm-addr2line 2>/dev/null || which ${prefix}addr2line 2>/dev/null || echo ${prefix}addr2line)"
+  export AR="$(which ${prefix}llvm-ar 2>/dev/null || which ${prefix}ar 2>/dev/null || echo ${prefix}ar)"
+  export AS="$(which ${prefix}llvm-as 2>/dev/null || which ${prefix}as 2>/dev/null || echo ${prefix}as)"
+
+  local dlltool="$(which ${prefix}llvm-dlltool 2>/dev/null || which ${prefix}dlltool 2>/dev/null)"
+  if [ ! -z "${dlltool}" ]
   then
-    export DLLTOOL="$(which ${prefix}dlltool)"
+    export DLLTOOL="${dlltool}"
   fi
-  export LD="$(which ${prefix}ld 2>/dev/null || echo ${prefix}ld)"
-  export NM="$(which ${prefix}nm 2>/dev/null || echo ${prefix}nm)"
-  if [ ! -z "$(which ${prefix}objcopy 2>/dev/null)" ]
+
+  export LD="$(which ${prefix}ld.lld 2>/dev/null || which ${prefix}ld 2>/dev/null || echo ${prefix}ld)"
+
+  export NM="$(which ${prefix}llvm-nm 2>/dev/null || which ${prefix}nm 2>/dev/null || echo ${prefix}nm)"
+
+  local objcopy="$(which ${prefix}llvm-objcopy 2>/dev/null || which ${prefix}objcopy 2>/dev/null)"
+  if [ ! -z "${objcopy}" ]
   then
-    export OBJCOPY="$(which ${prefix}objcopy)"
+    export OBJCOPY="${objcopy}"
   fi
-  if [ ! -z "$(which ${prefix}objdump 2>/dev/null)" ]
+
+  local objdump="$(which ${prefix}llvm-objdump 2>/dev/null || which ${prefix}objdump 2>/dev/null)"
+  if [ ! -z "${objdump}" ]
   then
-  export OBJDUMP="$(which ${prefix}objdump)"
+  export OBJDUMP="${objdump}"
   fi
-  export RANLIB="$(which ${prefix}ranlib 2>/dev/null || echo ${prefix}ranlib)"
-  if [ ! -z "$(which ${prefix}readelf 2>/dev/null)" ]
+
+  export RANLIB="$(which ${prefix}llvm-ranlib 2>/dev/null || which ${prefix}ranlib 2>/dev/null || echo ${prefix}ranlib)"
+
+  local readelf="$(which ${prefix}llvm-readelf 2>/dev/null || which ${prefix}readelf 2>/dev/null)"
+  if [ ! -z "${readelf}" ]
   then
-    export READELF="$(which ${prefix}readelf)"
+    export READELF="${readelf}"
   fi
-  export SIZE="$(which ${prefix}size 2>/dev/null || echo ${prefix}size)"
-  export STRIP="$(which ${prefix}strip 2>/dev/null || echo ${prefix}strip)"
-  if [ ! -z "$(which ${prefix}windres 2>/dev/null)" ]
+
+  export SIZE="$(which ${prefix}llvm-size 2>/dev/null || which ${prefix}size 2>/dev/null || echo ${prefix}size)"
+  export STRIP="$(which ${prefix}llvm-strip 2>/dev/null || which ${prefix}strip 2>/dev/null || echo ${prefix}strip)"
+
+  local windmc=$(which ${prefix}windmc 2>/dev/null)
+  if [ ! -z "${windmc}" ]
   then
-    export WINDRES="$(which ${prefix}windres)"
+    export WINDMC="${windmc}"
   fi
-  if [ ! -z "$(which ${prefix}windmc 2>/dev/null)" ]
+
+  local windres="$(which ${prefix}llvm-windres 2>/dev/null || which ${prefix}windres 2>/dev/null)"
+  if [ ! -z "${windres}" ]
   then
-    export WINDMC="$(which ${prefix}windmc)"
-  fi
-  if [ ! -z "$(which ${prefix}windres 2>/dev/null)" ]
-  then
-    export RC="$(which ${prefix}windres)"
+    export WINDRES="${windres}"
+    export RC="${windres}"
   fi
 
   xbb_set_compiler_flags
