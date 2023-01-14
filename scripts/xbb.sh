@@ -836,7 +836,16 @@ function xbb_prepare_clang_env()
   fi
 
   export SIZE="$(which ${prefix}llvm-size 2>/dev/null || which ${prefix}size 2>/dev/null || echo ${prefix}size)"
-  export STRIP="$(which ${prefix}llvm-strip 2>/dev/null || which ${prefix}strip 2>/dev/null || echo ${prefix}strip)"
+
+  if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  then
+    # Stick to system tool on macOS.
+    # libtool: install: /Users/ilg/Work/clang-xpack.git/build/darwin-arm64/xpacks/.bin/llvm-strip --strip-unneeded /Users/ilg/Work/clang-xpack.git/build/darwin-arm64/aarch64-apple-darwin20.6.0/install/lib/libltdl.7.dylib
+    # /Users/ilg/Work/clang-xpack.git/build/darwin-arm64/xpacks/.bin/llvm-strip: error: option not supported by llvm-objcopy for MachO
+    export STRIP="$(which ${prefix}strip 2>/dev/null || echo ${prefix}strip)"
+  else
+    export STRIP="$(which ${prefix}llvm-strip 2>/dev/null || which ${prefix}strip 2>/dev/null || echo ${prefix}strip)"
+  fi
 
   local windmc=$(which ${prefix}windmc 2>/dev/null)
   if [ ! -z "${windmc}" ]
