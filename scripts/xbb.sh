@@ -805,7 +805,13 @@ function xbb_prepare_clang_env()
     export DLLTOOL="${dlltool}"
   fi
 
-  export LD="$(which ${prefix}ld.lld 2>/dev/null || which ${prefix}ld 2>/dev/null || echo ${prefix}ld)"
+  if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  then
+    # Stick to system linker on macOS.
+    export LD="$(which ${prefix}ld 2>/dev/null || echo ${prefix}ld)"
+  else
+    export LD="$(which ${prefix}ld.lld 2>/dev/null || which ${prefix}ld 2>/dev/null || echo ${prefix}ld)"
+  fi
 
   export NM="$(which ${prefix}llvm-nm 2>/dev/null || which ${prefix}nm 2>/dev/null || echo ${prefix}nm)"
 
