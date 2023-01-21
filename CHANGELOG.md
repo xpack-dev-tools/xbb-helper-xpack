@@ -2,6 +2,104 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-01-14
+
+* * v1.2.0 released
+* b5059d0 xbb.sh: keep system strip on macos clang
+* 7a963de xbb.sh: keep system linker on macos clang
+* fd63b2c xbb.sh: rework xbb_prepare_clang_env to use llvm-*
+* 80d8661 xbb.sh: optimise     xbb_prepare_gcc_env
+
+## 2023-01-13
+
+* 4ba203e xbb.sh: comments & cosmetics
+* 6ea5732 xbb.sh: add ADDR2LINE to environment
+* 63c7203 xbb.sh: extend *prepare_gcc_env with --lto
+* 4781499 mingw.sh: no longer needed to clear CC
+
+## 2023-01-12
+
+* c097618 Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* cfaa2f8 cmake -LAH
+* 6a4a941 Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* fb5a1ed machine.sh: validate requested vs build
+
+## 2023-01-11
+
+* d4165c6 xbb.sh: filter non-existent folders for -rpath mac
+2023-01-11 * 33ae9d0 xbb.sh: filter non-existing folders in -rpath
+2023-01-11 * e3adbcd xbb.sh: split rpath into multiple options
+
+## 2023-01-10
+
+* 5575b90 cosmetize xbb_adjust_ldflags_rpath
+* 0e65e18 compiler-tests.sh: add -lpthread -ldl
+* 514b19e xbb.sh: always empty XBB_LIBRARY_PATH
+* 509f3ce compiler-tests.sh: throwcatch-main on all i686-*-gcc
+* 1d9b61b xbb.sh: early use XBB_REQUESTED_HOST_PLATFORM
+* 9d67166 xbb.sh:  XBB_LIBRARY_PATH only non win32
+* 347717b compiler-tests.sh: fix pwd LD_LIBRARY_PATH
+* 7aac415 gcc.sh: use xbb_get_libs_path
+* 0a7efd1 xbb.sh: add clang to xbb_update_ld_library_path
+* f9648ab xbb.sh: add xbb_get_libs_path()
+
+## 2023-01-09
+
+* caf71f6 xbb.sh: simplify XBB_LIBRARY_PATH
+* b60a203 compiler-tests.sh: use XBB_LIBRARY_PATH on linux
+* 2f9e23f binutils.sh: use XBB_LIBRARY_PATH for linux
+* 2690fb2 xbb.sh: use XBB_LIBRARY_PATH for linux
+* 96f754b zstd.sh: use XBB_LIBRARY_PATH on macOS
+* 0cfe302 xbb.sh: use XBB_LIBRARY_PATH on macOS
+* 60d482c _apps-xbb.sh: comment out LD_LIBRARY_PATH
+* 17e558e Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* e780d6d zstd.sh: comment out -DCMAKE_INSTALL_RPATH
+* fb73543 xbb.sh: comment out DYLD_LIBRARY_PATH
+* f111743 libftdi.sh: set build_type
+* ed99e51 xbb.sh: cosmetics
+* 852afa3 xbb.sh: separate DYLD_LIBRARY_PATH for macOS
+* 4e2d06a xbb.sh: no longer preserve initial LD_LIBRARY_PATH
+* 5249b0e python3.sh: comment out unused XBB_HOST_PLATFORM
+* 0fe54ba _addp-xbb.sh: comment out unused XBB_HOST_PLATFORM
+* 9b9b2b3 zstd.sh: use DYLD_LIBRARY_PATH on macOS
+* aaa9233 _libs.sh: use LD_LIBRARY_PATH only on linux
+* 31b7130 compiler-tests.sh: LD_LIBRARY_PATH only on linux
+* d5a83b7 binutils.sh: use LD_LIBRARY_PATH only on linux
+* dd5b7d6 xbb.sh: no -rpath-link on macOS
+* 7f4aa3c _apps-xbb.sh: : comment out explicit libs
+* 61b6278 gcc.sh: comment out explicit libs
+* 9652d3e glib.sh: : comment out explicit libs
+* 9b12d76 libssh.sh: comment out explicit libs
+* 724ea38 libusb1.sh: comment out explicit libs
+* 9d1c1fc qemu.sh: comment out explicit libs
+* 7b65287 xbb.sh: xbb_update_ld_library_path use all paths
+* 83a899c xbb.sh: xbb_update_ld_library_path
+* 3ffd7d2 xbb.sh: fix messagees in xbb_set_extra_target_env
+
+## 2023-01-08
+
+* f8e3792 xbb.sh: fix xbb_set_extra_target_env display
+
+## 2023-01-07
+
+* d775daa fix typo
+* 6c45631 mingw.sh: add explicit --libdir to winpthreads
+* 5d44d29 xbb.sh: reimplement *_ALL_SYS_FOLDERS_TO_RPATH
+* 13f3962 xbb.sh: fall back for gcc-ar, gcc-nm, gcc-ranlib
+* d054940 xbb.sh: more empty lines in xbb_show_env
+* 8971ac4 xbb.sh: FUNCNAME[0]
+* cbb0fa5 define & use global REALPATH
+* 7941892 build-tests.sh: verbose winecfg; sleep
+2023-01-06 * 340058b vde.sh: rename vde_patch_file_name
+2023-01-06 * c6d2ebf XBB_CXXFLAGS+=" -Wno-psabi" on linux-arm
+2023-01-06 * d2cdc21 cmake -LH only when IS_DEVELOP
+2023-01-05 * 75e065d hidapi.sh: -LH for cmake
+2023-01-05 * 7e4e127 libftdi.sh: use ninja for build
+2023-01-05 * c990266 libssh.sh: use ninja for build
+2023-01-05 * fa59c8a zstd.sh: verbose cmake
+2023-01-05 * f392ddd post-processing.sh: keep some >>> in log
+2023-01-05 * c8ef3a8 post-processing.sh: skip linking itself
+
 ## 2023-01-03
 
 * v1.1.4 released
