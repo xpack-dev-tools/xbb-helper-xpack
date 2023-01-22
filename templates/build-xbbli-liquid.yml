@@ -43,7 +43,7 @@ jobs:
 {% for platform in platforms -%}
   {% if platform == "linux-x64" %}
   linux-x64-x:
-    name: 'Linux Intel X - {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+    name: 'Linux Intel X - {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
     timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64]
     container:
@@ -113,7 +113,7 @@ jobs:
 
   {% if platform == "win32-x64" or platform == "win32-ia32" %}
   linux-x64-w:
-    name: 'Linux Intel W - {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+    name: 'Linux Intel W - {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
     timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64]
     container:
