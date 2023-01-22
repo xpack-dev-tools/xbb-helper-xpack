@@ -2615,7 +2615,7 @@ __EOF__
 
       run_host_app_verbose "${test_bin_folder_path}/flex" test.flex
 
-      if [ ! -z ${XBB_LIBRARIES_INSTALL_FOLDER_PATH+x} ]
+      if is_variable_set "XBB_LIBRARIES_INSTALL_FOLDER_PATH"
       then
         run_host_app_verbose gcc lex.yy.c -L"${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib" -lfl -o test
 

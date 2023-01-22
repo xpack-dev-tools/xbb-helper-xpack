@@ -66,7 +66,7 @@ function gcc_cross_build_all()
   # The nano version is practically a new build installed in a
   # separate folder. Only the libraries are relevant; they are
   # copied in a separate step.
-  if [ ! -z ${XBB_NEWLIB_NANO_SUFFIX+x} ]
+  if is_variable_set "XBB_NEWLIB_NANO_SUFFIX"
   then
     (
       local saved_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
@@ -874,7 +874,7 @@ function gcc_cross_test()
 
     # -------------------------------------------------------------------------
 
-    if false # [ "${XBB_HOST_PLATFORM}" == "win32" ] && [ -z ${IS_NATIVE_TEST+x} ]
+    if false # [ "${XBB_HOST_PLATFORM}" == "win32" ] && is_variable_set "IS_NATIVE_TEST"
     then
       : # Skip Windows when non native (running on Wine).
     else

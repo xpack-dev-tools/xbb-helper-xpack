@@ -517,7 +517,7 @@ function compiler-tests-single()
 
     # -------------------------------------------------------------------------
 
-    if [ ! -z ${F90+x} ]
+    if is_variable_set "F90"
     then
       (
         cd fortran

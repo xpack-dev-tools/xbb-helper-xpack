@@ -274,7 +274,7 @@ function build_common_run()
       echo "# Copied files..."
       cat  "${XBB_LOGS_COPIED_FILES_FILE_PATH}" | sort
 
-      if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ] || [ ! -z ${XBB_APPLICATION_SHOW_DLLS+x} ]
+      if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ] || is_variable_set "XBB_APPLICATION_SHOW_DLLS"
       then
         (
           cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"

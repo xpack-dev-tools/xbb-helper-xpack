@@ -94,7 +94,7 @@ function xbb_reset_env()
   XBB_TARGET_FOLDER_NAME="${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH}"
 
   # Decide where to run the build for the requested target.
-  if [ ! -z ${WORK_FOLDER_PATH+x} ]
+  if is_variable_set "WORK_FOLDER_PATH"
   then
     # On the main development machine, the repos are stored in a folder
     # that is saved daily by Time Machine, and having the build folders
@@ -1052,19 +1052,19 @@ function xbb_activate_installed_bin()
   if [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
     # Add the native XBB bin to the PATH.
-    if [ ! -z ${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH+x} ] &&
+    if is_variable_set "XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH" &&
        [ -d "${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin" ]
     then
       PATH="${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin:$PATH"
     fi
   else
     # Add the dependencies bin to the PATH.
-    if [ ! -z ${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH+x} ]
+    if is_variable_set "XBB_DEPENDENCIES_INSTALL_FOLDER_PATH"
     then
       PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin:${PATH}"
     fi
     # Add the executables bin to the PATH, if different.
-    if [ ! -z ${XBB_EXECUTABLES_INSTALL_FOLDER_PATH+x} ] &&
+    if is_variable_set "XBB_EXECUTABLES_INSTALL_FOLDER_PATH" &&
        [ -d "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" ] &&
        [ "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" != "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}" ]
     then
@@ -1077,7 +1077,7 @@ function xbb_activate_installed_bin()
     PATH="${folder_path}:${PATH}"
   fi
 
-  if [ ! -z ${XBB_TEST_BIN_PATH+x} ]
+  if is_variable_set "XBB_TEST_BIN_PATH"
   then
     PATH="${XBB_TEST_BIN_PATH}:${PATH}"
   fi
@@ -1106,7 +1106,7 @@ function xbb_activate_application_bin()
   echo_develop
   echo_develop "[${FUNCNAME[0]}]"
 
-  if [ ! -z ${XBB_APPLICATION_INSTALL_FOLDER_PATH+x} ]
+  if is_variable_set "XBB_APPLICATION_INSTALL_FOLDER_PATH"
   then
     PATH="${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin:${XBB_APPLICATION_INSTALL_FOLDER_PATH}/usr/bin:${PATH}"
   fi
