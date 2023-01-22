@@ -12,8 +12,9 @@
 
 function is_variable_set()
 {
-  # For convenience, turn dashes into underscores.
-  local variable_name=$(echo "$1" | tr '-' '_')
+  # For convenience, turn dashes into underscores
+  # and convert all letters to upper case.
+  local variable_name=$(echo "$1" | tr '-' '_' | tr "[:lower:]" "[:upper:]")
 
   # https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Parameter-Expansion
   # ! is the bash indirection operator
