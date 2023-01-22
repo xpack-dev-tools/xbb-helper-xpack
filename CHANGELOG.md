@@ -2,6 +2,16 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-01-22
+
+* v1.3.0 released
+* e116e99 use is_variable_set
+* 01ade7a compiler-tests.sh: cleanup skip comments
+* daceb7f compiler-tests.sh: use XBB_SKIP_*TEST
+* aef28b3 is-something.sh: upper case in is_variable_set
+* 7668d24 compiler-tests.sh: XBB_SKIP_*global-terminate*
+* 9b3ca6b is-something.sh: add is_variable_set
+
 ## 2023-01-14
 
 * * v1.2.0 released
