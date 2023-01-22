@@ -312,7 +312,14 @@ function compiler-tests-single()
 
       run_host_app_verbose "${CXX}" "global-terminate.cpp" -o "${prefix}global-terminate${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       show_target_libs_develop "${prefix}global-terminate${suffix}${XBB_TARGET_DOT_EXE}"
-      run_target_app_verbose "./${prefix}global-terminate${suffix}"
+
+      if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}global-terminate${suffix}"
+      then
+        echo
+        echo "Skipping running ${prefix}global-terminate${suffix}..."
+      else
+        run_target_app_verbose "./${prefix}global-terminate${suffix}"
+      fi
 
       run_host_app_verbose "${CXX}" "longjmp-cleanup.cpp" -o "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       show_target_libs_develop "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
