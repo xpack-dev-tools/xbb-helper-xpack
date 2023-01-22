@@ -325,34 +325,6 @@ function compiler-tests-single()
       show_target_libs_develop "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
       run_target_app_verbose "./${prefix}longjmp-cleanup${suffix}"
 
-      # if false # [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [ "${XBB_TARGET_ARCH}" == "x64" ] && is_gcc
-      # then
-
-      #   # /Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../libexec/gcc/x86_64-apple-darwin17.7.0/12.2.0/collect2 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/ -dynamic -arch x86_64 -macosx_version_min 12.0.0 -o hello-exception -L/Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../lib/gcc/x86_64-apple-darwin17.7.0/12.2.0 -L/Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../lib/gcc -L/Users/runner/work/gcc-xpack/gcc-xpack/build/darwin-x64/x86_64-apple-darwin21.6.0/tests/xpack-gcc-12.2.0-2/bin/../lib/gcc/x86_64-apple-darwin17.7.0/12.2.0/../../.. /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//cc9bpKXa.o -lstdc++ -lemutls_w -lgcc -lSystem -no_compact_unwind
-      #   # 0  0x10b5f0ffa  __assert_rtn + 139
-      #   # 1  0x10b42428d  mach_o::relocatable::Parser<x86_64>::parse(mach_o::relocatable::ParserOptions const&) + 4989
-      #   # 2  0x10b414f8f  mach_o::relocatable::Parser<x86_64>::parse(unsigned char const*, unsigned long long, char const*, long, ld::File::Ordinal, mach_o::relocatable::ParserOptions const&) + 207
-      #   # 3  0x10b48b9d4  ld::tool::InputFiles::makeFile(Options::FileInfo const&, bool) + 2036
-      #   # 4  0x10b48efa0  ___ZN2ld4tool10InputFilesC2ER7Options_block_invoke + 48
-      #   # 5  0x7ff81d0b634a  _dispatch_client_callout2 + 8
-      #   # 6  0x7ff81d0c8c45  _dispatch_apply_invoke_and_wait + 213
-      #   # 7  0x7ff81d0c8161  _dispatch_apply_with_attr_f + 1178
-      #   # 8  0x7ff81d0c8327  dispatch_apply + 45
-      #   # 9  0x10b48ee2d  ld::tool::InputFiles::InputFiles(Options&) + 669
-      #   # 10  0x10b3ffd48  main + 840
-      #   # A linker snapshot was created at:
-      #   # 	/tmp/hello-exception-2022-12-14-082452.ld-snapshot
-      #   # ld: Assertion failed: (_file->_atomsArrayCount == computedAtomCount && "more atoms allocated than expected"), function parse, file macho_relocatable_file.cpp, line 2061.
-      #   # collect2: error: ld returned 1 exit status
-
-      #   echo
-      #   echo "Skipping hello-exception.cpp for macOS gcc..."
-      # else
-      #   run_host_app_verbose "${CXX}" "hello-exception.cpp" -o "${prefix}hello-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      #   show_target_libs_develop "${prefix}hello-exception${suffix}${XBB_TARGET_DOT_EXE}"
-      #   run_target_app_verbose "./${prefix}hello-exception${suffix}"
-      # fi
-
       if is_variable_set "XBB_SKIP_TEST_${prefix}hello-exception${suffix}"
       then
         echo
@@ -405,21 +377,6 @@ function compiler-tests-single()
         fi
       fi
 
-      # if [ "${XBB_TARGET_PLATFORM}" == "darwin" ] && [ "${XBB_TARGET_ARCH}" == "x64" ]
-      # then
-      #   # On macOS 10.13
-      #   # crt-test.c:1531: lgamma(F(-0.0)) failed, expected inf, got -inf
-      #   # crt-test.c:1532: lgammaf(F(-0.0)) failed, expected inf, got -inf
-      #   # 2592 tests, 2 failures
-      #   echo
-      #   echo "Skipping crt-test on macOS..."
-      # else
-      #   # This test uses math functions. On Windows -lm is not mandatory.
-      #   run_host_app_verbose "${CC}" crt-test.c -o "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
-      #   show_target_libs_develop "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}"
-      #   run_target_app_verbose "./${prefix}crt-test${suffix}"
-      # fi
-
       if is_variable_set "XBB_SKIP_TEST_${prefix}crt-test${suffix}"
       then
         echo
@@ -431,49 +388,6 @@ function compiler-tests-single()
         run_target_app_verbose "./${prefix}crt-test${suffix}"
       fi
 
-      # if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
-      # then
-      #   echo
-      #   echo "Skipping hello-weak-c with Windows binaries..."
-      # # elif [ "${is_lto}" != "y" ] && is_non_native && is_mingw_gcc
-      # # then
-      # #   # With mingw-gcc bootstrap
-      # #   # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
-      # #   echo
-      # #   echo "Skipping hello-weak-c without -flto with Windows binaries..."
-      # # elif is_non_native && is_mingw_clang
-      # # then
-      # #   # lld-link: error: duplicate symbol: world()
-      # #   # >>> defined at hello-weak-cpp.cpp
-      # #   # >>>            lto-hello-weak-cpp.cpp.o
-      # #   # >>> defined at hello-f-weak-cpp.cpp
-      # #   # >>>            lto-hello-f-weak-cpp.cpp.o
-      # #   # clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
-      # #   # -Wl,--allow-multiple-definition fixes this, but then
-      # #   # Test "./lto-hello-weak-cpp.exe " failed :-(
-      # #   # expected 12: "Hello World!"
-      # #   # got 11: "Hello there"
-      # #   echo
-      # #   echo "Skipping hello-weak-c without -flto with Windows binaries..."
-      # # elif is_cross && is_gcc
-      # # then
-      # #   echo
-      # #   echo "Skipping hello-weak-c without -flto with Windows binaries..."
-      # # elif [ "${is_lto}" != "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-      # # then
-      # #   echo
-      # #   echo "Skipping hello-weak-c without -flto on Windows..."
-      # # elif [ "${is_lto}" == "y" ] && is_clang && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-      # # then
-      # #   echo
-      # #   echo "Skipping hello-weak-c with clang -flto on Windows..."
-      # else
-      #   run_host_app_verbose "${CC}" -c "hello-weak.c" -o "${prefix}hello-weak${suffix}.c.o" ${CFLAGS}
-      #   run_host_app_verbose "${CC}" -c "hello-f-weak.c" -o "${prefix}hello-f-weak${suffix}.c.o" ${CFLAGS}
-      #   run_host_app_verbose "${CC}" "${prefix}hello-weak${suffix}.c.o" "${prefix}hello-f-weak${suffix}.c.o" -o "${prefix}hello-weak${suffix}${XBB_TARGET_DOT_EXE}" -lm ${LDFLAGS}
-      #   expect_target_output "Hello World!" "./${prefix}hello-weak${suffix}${XBB_TARGET_DOT_EXE}"
-      # fi
-
       if is_variable_set "XBB_SKIP_TEST_${prefix}hello-weak-c${suffix}"
       then
         echo
@@ -484,49 +398,6 @@ function compiler-tests-single()
         run_host_app_verbose "${CC}" "${prefix}hello-weak${suffix}.c.o" "${prefix}hello-f-weak${suffix}.c.o" -o "${prefix}hello-weak-c${suffix}${XBB_TARGET_DOT_EXE}" -lm ${LDFLAGS}
         expect_target_output "Hello World!" "./${prefix}hello-weak-c${suffix}${XBB_TARGET_DOT_EXE}"
       fi
-
-      # if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
-      # then
-      #   echo
-      #   echo "Skipping hello-weak-cpp with Windows binaries..."
-      # # elif [ "${is_lto}" != "y" ] && is_non_native && is_mingw_gcc
-      # # then
-      # #   # With mingw-gcc bootstrap
-      # #   # hello-weak-cpp:(.text+0x25): undefined reference to `hello()'
-      # #   echo
-      # #   echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
-      # # elif is_non_native && is_clang
-      # # then
-      # #   # lld-link: error: duplicate symbol: world()
-      # #   # >>> defined at hello-weak-cpp.cpp
-      # #   # >>>            lto-hello-weak-cpp.cpp.o
-      # #   # >>> defined at hello-f-weak-cpp.cpp
-      # #   # >>>            lto-hello-f-weak-cpp.cpp.o
-      # #   # clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
-      # #   # -Wl,--allow-multiple-definition fixes this, but then
-      # #   # Test "./lto-hello-weak-cpp.exe " failed :-(
-      # #   # expected 12: "Hello World!"
-      # #   # got 11: "Hello there"
-      # #   echo
-      # #   echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
-      # # elif is_cross && is_gcc
-      # # then
-      # #   echo
-      # #   echo "Skipping hello-weak-cpp without -flto with Windows binaries..."
-      # # elif [ "${is_lto}" != "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-      # # then
-      # #   echo
-      # #   echo "Skipping hello-weak-cpp without -flto on Windows..."
-      # # elif [ "${is_lto}" == "y" ] && is_clang && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-      # # then
-      # #   echo
-      # #   echo "Skipping hello-weak-cpp with clang -flto on Windows..."
-      # else
-      #   run_host_app_verbose "${CXX}" -c "hello-weak-cpp.cpp" -o "${prefix}hello-weak-cpp${suffix}.cpp.o" ${CXXFLAGS}
-      #   run_host_app_verbose "${CXX}" -c "hello-f-weak-cpp.cpp" -o "${prefix}hello-f-weak-cpp${suffix}.cpp.o" ${CXXFLAGS}
-      #   run_host_app_verbose "${CXX}" "${prefix}hello-weak-cpp${suffix}.cpp.o" "${prefix}hello-f-weak-cpp${suffix}.cpp.o" -o "${prefix}hello-weak-cpp${suffix}${XBB_TARGET_DOT_EXE}" -lm ${LDXXFLAGS}
-      #   expect_target_output "Hello World!" "./${prefix}hello-weak-cpp${suffix}${XBB_TARGET_DOT_EXE}"
-      # fi
 
       if is_variable_set "XBB_SKIP_TEST_${prefix}hello-weak-cpp${suffix}"
       then
@@ -582,78 +453,6 @@ function compiler-tests-single()
             run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS} -Wl,--allow-multiple-definition
           fi
 
-          # (
-          #   # LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-""}
-          #   # export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-          #   # echo
-          #   # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-
-          #   # C:\Users\ilg>"C:\Users\ilg\Desktop\New folder\lto-throwcatch-main.exe"
-          #   # Mingw-w64 runtime failure:
-          #   # 32 bit pseudo relocation at 00007FF74BF01697 out of range, targeting 00007FFBB05A168C, yielding the value 000000046469FFF1.
-
-          #   # TODO allow it on clang
-          #   # It happens with both bootstrap & cross.
-          #   if [ "${is_lto}" == "y" ] && is_non_native && is_mingw_gcc
-          #   then
-          #     show_target_libs "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
-          #     echo
-          #     echo "Skipping ${prefix}throwcatch-main${suffix} with gcc -flto..."
-          #   elif [ "${is_lto}" == "y" ] && is_cross && is_gcc
-          #   then
-          #     # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 0138), starting debugger...
-          #     # Unhandled exception: page fault on execute access to 0x122b1157c in 64-bit code (0x0000000122b1157c).
-          #     show_target_libs "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
-          #     echo
-          #     echo "Skipping ${prefix}throwcatch-main${suffix} with gcc -flto..."
-          #   elif [ "${XBB_TARGET_PLATFORM}" == "darwin" -a "${is_lto}" == "y" ] && is_native && is_clang
-          #   then
-
-          #     # Expected behaviour:
-          #     # [./throwcatch-main ]
-          #     # not throwing
-          #     # throwing FirstException
-          #     # caught FirstException
-          #     # throwing SecondException
-          #     # caught SecondException
-          #     # throwing std::exception
-          #     # caught std::exception
-          #     # all ok
-
-          #     # Does not identify the custom exceptions:
-          #     # [./lto-throwcatch-main ]
-          #     # not throwing
-          #     # throwing FirstException
-          #     # caught std::exception <--
-          #     # caught unexpected exception 3!
-          #     # throwing SecondException
-          #     # caught std::exception <--
-          #     # caught unexpected exception 3!
-          #     # throwing std::exception
-          #     # caught std::exception
-          #     # got errors
-
-          #     show_target_libs "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
-          #     echo
-          #     echo "Skipping ${prefix}throwcatch-main${suffix} with clang -flto on macOS..."
-          #   elif [ "${is_lto}" == "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-          #   then
-          #     # Mingw-w64 runtime failure:
-          #     # 32 bit pseudo relocation at 00007FF67D9F1587 out of range, targeting 00007FFF403E157C, yielding the value 00000008C29EFFF1.
-          #     echo
-          #     echo "Skipping ${prefix}throwcatch-main${suffix} -flto on Windows..."
-          #   elif [ "${is_static_lib}" == "y" ] && [[ "$(basename "${CC}")" =~ .*i686-w64-mingw32-gcc.* ]]
-          #   then
-          #     # terminate called after throwing an instance of 'FirstException'
-          #     #   what():  first
-          #     echo
-          #     echo "Skipping ${prefix}throwcatch-main${suffix} --static-lib i686 on Windows..."
-          #   else
-          #     show_target_libs_develop "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
-          #     run_target_app_verbose "./${prefix}throwcatch-main${suffix}"
-          #   fi
-          # )
-
           show_target_libs_develop "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
 
           if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}throwcatch-main${suffix}"
@@ -668,19 +467,6 @@ function compiler-tests-single()
 
       if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
-        # if is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-        # then
-        #   echo
-        #   echo "Skipping tlstest-main.cpp on Windows..."
-        # else
-        #   # tlstest-lib.dll is dynamically loaded by tltest-main.cpp.
-        #   run_host_app_verbose "${CXX}" tlstest-lib.cpp -o tlstest-lib.dll -shared -Wl,--out-implib,libtlstest-lib.dll.a ${LDXXFLAGS}
-        #   show_target_libs_develop "tlstest-lib.dll"
-
-        #   run_host_app_verbose "${CXX}" tlstest-main.cpp -o "${prefix}tlstest-main${suffix}${XBB_TARGET_DOT_EXE}"${LDXXFLAGS}
-        #   show_target_libs_develop ${prefix}tlstest-main${suffix}
-        #   run_target_app_verbose "./${prefix}tlstest-main${suffix}"
-        # fi
 
         if is_variable_set "XBB_SKIP_TEST_${prefix}tlstest-main${suffix}"
         then
@@ -702,41 +488,6 @@ function compiler-tests-single()
           show_target_libs_develop autoimport-lib.dll
 
           run_host_app_verbose "${CC}" autoimport-main.c -o "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lautoimport-lib ${LDFLAGS}
-
-          # # TODO allow it on clang
-          # # TODO allow it on bootstrap
-          # if [ "${is_lto}" == "y" ] && is_cross && is_mingw_gcc
-          # then
-          #   show_target_libs "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
-          #   echo
-          #   echo "Skipping ${prefix}autoimport-main${suffix} with gcc -flto..."
-          # elif [ "${is_lto}" == "y" ] && is_bootstrap && is_mingw_gcc
-          # then
-          #   # [wine64 ./lto-autoimport-main.exe]
-          #   # Mingw-w64 runtime failure:
-          #   # 32 bit pseudo relocation at 000000014000163A out of range, targeting 000000028846146C, yielding the value 000000014845FE2E.
-          #   # 0080:err:rpc:RpcAssoc_BindConnection receive failed with error 1726
-
-          #   show_target_libs "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
-          #   echo
-          #   echo "Skipping ${prefix}autoimport-main${suffix} with gcc -flto..."
-          # elif [ "${is_lto}" == "y" ] && is_cross && is_gcc
-          # then
-          #   # Mingw-w64 runtime failure:
-          #   # 32 bit pseudo relocation at 000000014000152A out of range, targeting 000000028846135C, yielding the value 000000014845FE2E.
-          #   show_target_libs "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
-          #   echo
-          #   echo "Skipping ${prefix}autoimport-main${suffix} with gcc -flto..."
-          # elif [ "${is_lto}" == "y" ] && is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-          # then
-          #   # Mingw-w64 runtime failure:
-          #   # 32 bit pseudo relocation at 00007FF62E64152A out of range, targeting 00007FFF4040135C, yielding the value 0000000911DBFE2E.
-          #   echo
-          #   echo "Skipping ${prefix}autoimport-main${suffix} with gcc -flto on Windows..."
-          # else
-          #   show_target_libs_develop "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
-          #   run_target_app_verbose "./${prefix}autoimport-main${suffix}"
-          # fi
 
           show_target_libs_develop "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
 
