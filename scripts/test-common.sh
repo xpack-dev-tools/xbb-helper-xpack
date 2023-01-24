@@ -18,6 +18,7 @@ source "${helper_folder_path}/scripts/xbb.sh"
 source "${helper_folder_path}/scripts/show-libs.sh"
 source "${helper_folder_path}/scripts/miscellaneous.sh"
 source "${helper_folder_path}/scripts/timer.sh"
+source "${helper_folder_path}/scripts/download.sh"
 
 # -----------------------------------------------------------------------------
 # Functions used when running separate tests.
