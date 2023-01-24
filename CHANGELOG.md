@@ -2,8 +2,22 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-01-24
+
+* v1.3.1 released
+* 4c9e0c5 templates: use xpm@next
+* 102a12c test-common.sh: source download.sh
+
+## 2023-01-23
+
+* b91e9c5 templates: show xpm --version after install
+* f0662ef README update
+* af3d81a templates: rename job names to lower case
+
 ## 2023-01-22
 
+* f0662ef README update
+* af3d81a templates: rename job names to lower
 * v1.3.0 released
 * e116e99 use is_variable_set
 * 01ade7a compiler-tests.sh: cleanup skip comments
@@ -14,7 +28,7 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-01-14
 
-* * v1.2.0 released
+* v1.2.0 released
 * b5059d0 xbb.sh: keep system strip on macos clang
 * 7a963de xbb.sh: keep system linker on macos clang
 * fd63b2c xbb.sh: rework xbb_prepare_clang_env to use llvm-*
