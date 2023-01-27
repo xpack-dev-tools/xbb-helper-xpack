@@ -1357,9 +1357,16 @@ function xbb_show_env_develop()
   fi
 }
 
+# -----------------------------------------------------------------------------
+
 function xbb_parse_option()
 {
   echo "$1" | sed -e 's|--[a-zA-Z0-9-]*=||'
+}
+
+function xbb_strip_macosx_version_min()
+{
+  echo "$1" | sed -e 's|-mmacosx-version-min=[0-9]*[.][0-9]*||'
 }
 
 # -----------------------------------------------------------------------------
