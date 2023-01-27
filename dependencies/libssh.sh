@@ -123,8 +123,7 @@ function libssh_build()
             # config_options+=("-DWITH_STACK_CLASH_PROTECTION=OFF")
           elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
-            # Otherwise it'll generate two -mmacosx-version-min
-            config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${XBB_MACOSX_DEPLOYMENT_TARGET}")
+            config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}")
           fi
 
           run_verbose cmake \

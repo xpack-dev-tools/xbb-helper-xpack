@@ -27,6 +27,7 @@
 # 2021-06-18 "3360000"
 # 2022 "3380200"
 # "3390200"
+# "3400100"
 
 # -----------------------------------------------------------------------------
 
@@ -37,15 +38,15 @@ function sqlite_build()
 
   local sqlite_version="$1"
 
+  # Alternative Source Code Formats - Snapshot of the complete (raw) source tree
+  # https://www.sqlite.org/2022/sqlite-src-3400100.zip
   local sqlite_src_folder_name="sqlite-src-${sqlite_version}"
   local sqlite_archive="${sqlite_src_folder_name}.zip"
   local sqlite_url
 
-  if [ "${sqlite_version}" == "3390200" ]
-  then
-    # 2022
-    sqlite_url="https://www.sqlite.org/2022/${sqlite_archive}"
-  elif [ "${sqlite_version}" == "3380200" ]
+  if [ "${sqlite_version}" == "3400100" ] || \
+     [ "${sqlite_version}" == "3390200" ] || \
+     [ "${sqlite_version}" == "3380200" ]
   then
     # 2022
     sqlite_url="https://www.sqlite.org/2022/${sqlite_archive}"

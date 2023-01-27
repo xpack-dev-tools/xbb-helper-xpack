@@ -106,7 +106,7 @@ function libftdi_build()
           config_options+=("-DFTDIPP:BOOL=off")
         elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
-          config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${XBB_MACOSX_DEPLOYMENT_TARGET}")
+          config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}")
         fi
 
         run_verbose cmake \
