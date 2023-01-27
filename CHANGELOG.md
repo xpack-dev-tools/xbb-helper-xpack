@@ -4,6 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-01-27
 
+* v1.4.0 released
+* 4189880 dependencies: use versioning functions
+* 96a75ee xbb.sh: add versioning functions
+* 8b18127 xbb.sh: add xbb_strip_macosx_version_min
+* 9888c49 download.sh: verbose Patch not found
 * v1.3.2 released
 * fa80da1 package.json: reorder scripts
 * c16e0f0 add extras/pyconfig-win-3.1[01].*.h
