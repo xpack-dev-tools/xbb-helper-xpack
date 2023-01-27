@@ -51,8 +51,8 @@ function python3_build()
 
   local python3_version="$1"
 
-  local python3_version_major=$(echo ${python3_version} | sed -e 's|\([0-9]\)[.].*|\1|')
-  local python3_version_minor=$(echo ${python3_version} | sed -e 's|\([0-9]\)[.]\([0-9][0-9]*\)[.].*|\2|')
+  local python3_version_major=$(xbb_get_version_major "${python3_version}")
+  local python3_version_minor=$(xbb_get_version_minor "${python3_version}")
 
   local python3_src_folder_name="${XBB_PYTHON3_SRC_FOLDER_NAME:-Python-${python3_version}}"
 

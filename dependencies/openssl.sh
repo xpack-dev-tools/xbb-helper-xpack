@@ -47,8 +47,8 @@ function openssl_build()
 
   local openssl_version="$1"
   # Numbers
-  local openssl_version_major=$(echo ${openssl_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.].*|\1|')
-  local openssl_version_minor=$(echo ${openssl_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.].*|\2|')
+  local openssl_version_major=$(xbb_get_version_major "${openssl_version}")
+  local openssl_version_minor=$(xbb_get_version_minor "${openssl_version}")
 
   local openssl_src_folder_name="openssl-${openssl_version}"
 

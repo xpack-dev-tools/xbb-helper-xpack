@@ -163,8 +163,8 @@ function python2_build()
 
   local python2_version="$1"
 
-  export XBB_PYTHON2_VERSION_MAJOR=$(echo ${python2_version} | sed -e 's|\([0-9]\)[.].*|\1|')
-  export XBB_PYTHON2_VERSION_MINOR=$(echo ${python2_version} | sed -e 's|\([0-9]\)[.]\([0-9][0-9]*\)[.].*|\2|')
+  export XBB_PYTHON2_VERSION_MAJOR=$(xbb_get_version_major "${python2_version}")
+  export XBB_PYTHON2_VERSION_MINOR=$(xbb_get_version_minor "${python2_version}")
   export XBB_PYTHON2_VERSION_MAJOR_MINOR=${XBB_PYTHON2_VERSION_MAJOR}${XBB_PYTHON2_VERSION_MINOR}
 
   # Used in python27-config.sh.
@@ -341,7 +341,7 @@ function download_python2_win()
 
   local python2_win_version="$1"
 
-  export XBB_PYTHON2_VERSION_MAJOR=$(echo ${python2_win_version} | sed -e 's|\([0-9]\)[.].*|\1|')
+  export XBB_PYTHON2_VERSION_MAJOR=$(xbb_get_version_major "${python2_win_version}")
   export XBB_PYTHON2_VERSION_MINOR=$(echo ${python2_win_version} | sed -e 's|\([0-9]\)[.]\([0-9][0-9]*\)[.].*|\2|')
   export XBB_PYTHON2_VERSION_MAJOR_MINOR=${XBB_PYTHON2_VERSION_MAJOR}${XBB_PYTHON2_VERSION_MINOR}
 

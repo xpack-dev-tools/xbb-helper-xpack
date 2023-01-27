@@ -2652,7 +2652,7 @@ function perl_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   XBB_PERL_VERSION="$1"
-  local perl_version_major="$(echo "${XBB_PERL_VERSION}" | sed -e 's/\([0-9]*\)[.].*/\1.0/')"
+  local perl_version_major=$(xbb_get_version_major "${XBB_PERL_VERSION}")
 
   local perl_src_folder_name="perl-${XBB_PERL_VERSION}"
 
@@ -2872,8 +2872,8 @@ function tcl_build()
 
   local tcl_version="$1"
 
-  TCL_VERSION_MAJOR="$(echo ${tcl_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.].*|\1|')"
-  TCL_VERSION_MINOR="$(echo ${tcl_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.].*|\2|')"
+  TCL_VERSION_MAJOR=$(xbb_get_version_major "${tcl_version}")
+  TCL_VERSION_MINOR=$(xbb_get_version_minor "${tcl_version}")
 
   local tcl_src_folder_name="tcl${tcl_version}"
 

@@ -37,7 +37,10 @@ function libpng_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local libpng_version="$1"
-  local libpng_major_minor_version="$(echo ${libpng_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.][0-9].*|\1\2|')"
+  local libpng_major_version=$(xbb_get_version_major "${libpng_version}")
+  local libpng_minor_version=$(xbb_get_version_minor "${libpng_version}")
+  # No dot!
+  local libpng_major_minor_version="${libpng_major_version}${libpng_minor_version}")"
 
   local libpng_src_folder_name="libpng-${libpng_version}"
 

@@ -32,7 +32,9 @@ function libssh_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local libssh_version="$1"
-  local libssh_major_minor_version="$(echo ${libssh_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.][0-9].*|\1.\2|')"
+  local libssh_major_version=$(xbb_get_version_major "${libssh_version}")
+  local libssh_minor_version=$(xbb_get_version_minor "${libssh_version}")
+  local libssh_major_minor_version="${libssh_major_version}.${libssh_minor_version}"
 
   local libssh_src_folder_name="libssh-${libssh_version}"
 

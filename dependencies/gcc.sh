@@ -146,7 +146,7 @@ function gcc_build()
     esac
   done
 
-  local gcc_version_major=$(echo ${gcc_version} | sed -e 's|\([0-9][0-9]*\)[.].*|\1|')
+  local gcc_version_major=$(xbb_get_version_major "${gcc_version}")
 
   export GCC_FOLDER_NAME="${GCC_SRC_FOLDER_NAME}"
 

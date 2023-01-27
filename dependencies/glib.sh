@@ -41,9 +41,9 @@ function glib_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local glib_version="$1"
-  local glib_major_version=$(echo ${glib_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.][0-9].*|\1|')
-  local glib_minor_version=$(echo ${glib_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.][0-9].*|\2|')
-  local glib_major_minor_version="$(echo ${glib_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.][0-9].*|\1.\2|')"
+  local glib_major_version=$(xbb_get_version_major "${glib_version}")
+  local glib_minor_version=$(xbb_get_version_minor "${glib_version}")
+  local glib_major_minor_version="${glib_major_version}.${glib_minor_version}"
 
   local glib_src_folder_name="glib-${glib_version}"
 

@@ -34,8 +34,8 @@ function readline_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local readline_version="$1"
-  local readline_version_major="$(echo ${readline_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)|\1|')"
-  local readline_version_minor="$(echo ${readline_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)|\2|')"
+  local readline_version_major=$(xbb_get_version_major "${readline_version}")
+  local readline_version_minor=$(xbb_get_version_minor "${readline_version}")
 
   # The folder name as resulted after being extracted from the archive.
   local readline_src_folder_name="readline-${readline_version}"

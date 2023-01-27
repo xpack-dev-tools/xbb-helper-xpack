@@ -48,8 +48,8 @@ function ncurses_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local ncurses_version="$1"
-  local ncurses_version_major="$(echo ${ncurses_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)|\1|')"
-  local ncurses_version_minor="$(echo ${ncurses_version} | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)|\2|')"
+  local ncurses_version_major=$(xbb_get_version_major "${ncurses_version}")
+  local ncurses_version_minor=$(xbb_get_version_minor "${ncurses_version}")
 
   # The folder name as resulted after being extracted from the archive.
   local ncurses_src_folder_name="ncurses-${ncurses_version}"
