@@ -142,6 +142,9 @@ function _do_patch()
         # Manually created patches.
         run_verbose_develop patch -p0 < "${patch_path}"
       fi
+    else
+      echo_develop
+      echo_develop "Patch \"${patch_file_name}\" not found, skipping..."
     fi
   fi
 }
