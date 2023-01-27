@@ -1364,6 +1364,26 @@ function xbb_parse_option()
   echo "$1" | sed -e 's|--[a-zA-Z0-9-]*=||'
 }
 
+function xbb_strip_version_pre_release()
+{
+  echo "$1" | sed -e 's|-.*||'
+}
+
+function xbb_get_version_major()
+{
+  echo "$1" | sed -e 's|\([0-9][0-9]*\).*|\1|'
+}
+
+function xbb_get_version_minor()
+{
+  echo "$1" | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\).*|\2|'
+}
+
+function xbb_get_version_patch()
+{
+  echo "$1" | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.]\([0-9][0-9]*\).*|\3|'
+}
+
 function xbb_strip_macosx_version_min()
 {
   echo "$1" | sed -e 's|-mmacosx-version-min=[0-9]*[.][0-9]*||'
