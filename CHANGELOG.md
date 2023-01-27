@@ -2,6 +2,14 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-01-27
+
+* v1.3.2 released
+* fa80da1 package.json: reorder scripts
+* c16e0f0 add extras/pyconfig-win-3.1[01].*.h
+* 135b723 dependencies: use MACOSX_DEPLOYMENT_TARGET
+* 247409d xbb.sh: use Apple MACOSX_DEPLOYMENT_TARGET env
+
 ## 2023-01-24
 
 * v1.3.1 released
