@@ -907,10 +907,10 @@ function xbb_set_compiler_flags()
   then
     if [ "${XBB_HOST_ARCH}" == "x64" ]
     then
-      export XBB_MACOSX_DEPLOYMENT_TARGET="10.13"
+      export MACOSX_DEPLOYMENT_TARGET="10.13"
     elif [ "${XBB_HOST_ARCH}" == "arm64" ]
     then
-      export XBB_MACOSX_DEPLOYMENT_TARGET="11.0"
+      export MACOSX_DEPLOYMENT_TARGET="11.0"
     else
       echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
       exit 1
@@ -918,13 +918,13 @@ function xbb_set_compiler_flags()
 
     if [[ $(basename "${CC}") =~ .*clang.* ]]
     then
-      XBB_CFLAGS+=" -mmacosx-version-min=${XBB_MACOSX_DEPLOYMENT_TARGET}"
-      XBB_CXXFLAGS+=" -mmacosx-version-min=${XBB_MACOSX_DEPLOYMENT_TARGET}"
+      XBB_CFLAGS+=" -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+      XBB_CXXFLAGS+=" -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
     fi
 
     # Note: macOS linker ignores -static-libstdc++, so
     # libstdc++.6.dylib should be handled.
-    XBB_LDFLAGS+=" -Wl,-macosx_version_min,${XBB_MACOSX_DEPLOYMENT_TARGET}"
+    XBB_LDFLAGS+=" -Wl,-macosx_version_min,${MACOSX_DEPLOYMENT_TARGET}"
 
     # With GCC 11.2 path are longer, and post-processing may fail:
     # error: /Library/Developer/CommandLineTools/usr/bin/install_name_tool: changing install names or rpaths can't be redone for: /Users/ilg/Work/gcc-11.2.0-2/darwin-x64/install/gcc/libexec/gcc/x86_64-apple-darwin17.7.0/11.2.0/g++-mapper-server (for architecture x86_64) because larger updated load commands do not fit (the program must be relinked, and you may need to use -headerpad or -headerpad_max_install_names)
