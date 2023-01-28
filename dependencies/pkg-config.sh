@@ -57,7 +57,16 @@ function pkg_config_build()
       xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
+
+      # On macOS it fails in glib:
+      # /Users/ilg/Work/pkg-config-0.29.2-2/darwin-x64/sources/pkg-config-0.29.2/glib/glib/gatomic.c:392:10: error: incompatible integer to pointer conversion passing 'gssize' (aka 'long') to parameter of type 'gpointer' (aka 'void *') [-Wint-conversion]
+      #   return g_atomic_pointer_add ((volatile gpointer *) atomic, val);
+      #          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      # /Users/ilg/Work/pkg-config-0.29.2-2/darwin-x64/sources/pkg-config-0.29.2/glib/glib/gatomic.h:170:46: note: expanded from macro 'g_atomic_pointer_add'
+      #     (gssize) __sync_fetch_and_add ((atomic), (val));                         \
+      #                                              ^~~~~
+
+      CFLAGS="${XBB_CFLAGS_NO_W} -Wno-int-conversion"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
@@ -99,12 +108,15 @@ function pkg_config_build()
           config_options+=("--with-internal-glib") # HB
           config_options+=("--with-pc-path=")
 
+          config_options+=("--with-system-include-path=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include")
+
           # On Intel Linux
           # gconvert.c:61:2: error: #error GNU libiconv not in use but included iconv.h is from libiconv
           config_options+=("--with-libiconv=yes")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-host-tool") # HB
+          config_options+=("--disable-compile-warnings")
 
           # --with-internal-glib fails with
           # gconvert.c:61:2: error: #error GNU libiconv not in use but included iconv.h is from libiconv
@@ -120,7 +132,7 @@ function pkg_config_build()
         echo "Running pkg_config make..."
 
         # Build.
-        run_verbose make -j ${XBB_JOBS}
+        run_verbose make -j ${XBB_JOBS} V=1
 
         if [ "${XBB_WITH_STRIP}" == "y" ]
         then
