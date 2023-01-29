@@ -4,7 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-01-29
 
-2023-01-28 * c640fff pkg-config.sh: fix -Wint-conversion
+* v1.4.1 released
+
+## 2023-01-28
+
+* c640fff pkg-config.sh: fix -Wint-conversion
 
 ## 2023-01-27
 
