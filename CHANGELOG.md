@@ -2,6 +2,10 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-01-29
+
+2023-01-28 * c640fff pkg-config.sh: fix -Wint-conversion
+
 ## 2023-01-27
 
 * v1.4.0 released
@@ -89,7 +93,6 @@ Entries in this file are in reverse chronological order.
 * 96f754b zstd.sh: use XBB_LIBRARY_PATH on macOS
 * 0cfe302 xbb.sh: use XBB_LIBRARY_PATH on macOS
 * 60d482c _apps-xbb.sh: comment out LD_LIBRARY_PATH
-* 17e558e Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
 * e780d6d zstd.sh: comment out -DCMAKE_INSTALL_RPATH
 * fb73543 xbb.sh: comment out DYLD_LIBRARY_PATH
 * f111743 libftdi.sh: set build_type
@@ -111,7 +114,7 @@ Entries in this file are in reverse chronological order.
 * 9d1c1fc qemu.sh: comment out explicit libs
 * 7b65287 xbb.sh: xbb_update_ld_library_path use all paths
 * 83a899c xbb.sh: xbb_update_ld_library_path
-* 3ffd7d2 xbb.sh: fix messagees in xbb_set_extra_target_env
+* 3ffd7d2 xbb.sh: fix messages in xbb_set_extra_target_env
 
 ## 2023-01-08
 
@@ -178,7 +181,7 @@ Entries in this file are in reverse chronological order.
 * bf1798b gcc-cross.sh: add -lphread to final step
 * c69fdbd gcc-cross.sh: cleanup
 * e688cbe gcc-cross.sh: add -lpthread for zstd
-* 5d2e82a build-all.sh: implement excludion properly
+* 5d2e82a build-all.sh: implement exclusion properly
 * 58155ee gcc-mingw.sh: fix ZSTD with -lpthread
 * cf4ca61 gcc.sh: fix ZSTD with -lpthread
 * a7237e1 build-all.sh: add --exclude
@@ -189,7 +192,7 @@ Entries in this file are in reverse chronological order.
 * cbd3c43 gcc-mingw.sh: re-enable zstd
 * 77ad863 gcc.sh: remove --without-zstd
 * c715331 gcc.sh: re-enable --with-zstd
-* a06627c buils-all.sh: sort list of files
+* a06627c builds-all.sh: sort list of files
 
 ## 2022-12-31
 
@@ -212,7 +215,6 @@ Entries in this file are in reverse chronological order.
 * dc5f0e5 build-all.sh: use ${HOME}
 * 99ecdec build-all.sh: clone if not already there
 * 65c9515 build-all.sh: re-enable first packages
-* f5ab8b5 Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
 * ff72c2c python3.sh: remove echo_develop from helpers
 * 50811dc python3.sh: remove echo_develop from helpers
 * 5bc4d40 ncurses.sh: -ldl
@@ -265,9 +267,6 @@ Entries in this file are in reverse chronological order.
 * ad0c4f4 regexp '[.].*'
 * 29d8152 post-processing.sh: which install_name_tool
 * 6dcfae1 show-libs.sh: use ${XBB_*_OBJDUMP}
-
-## 2022-12-27
-
 * v1.0.0 released
 
 ## 2022-12-23
