@@ -2,6 +2,13 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-01-30
+
+* v1.4.2 released
+* 3f22db9 add hidapi-0.13.1-windows.pc
+* b2ef2dd libusb0.sh: add call to bootstrap.sh
+* 899f117 hidapi.sh: update versions
+
 ## 2023-01-29
 
 * v1.4.1 released
