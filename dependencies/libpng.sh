@@ -40,7 +40,7 @@ function libpng_build()
   local libpng_major_version=$(xbb_get_version_major "${libpng_version}")
   local libpng_minor_version=$(xbb_get_version_minor "${libpng_version}")
   # No dot!
-  local libpng_major_minor_version="${libpng_major_version}${libpng_minor_version}")"
+  local libpng_major_minor_version="${libpng_major_version}${libpng_minor_version}"
 
   local libpng_src_folder_name="libpng-${libpng_version}"
 
