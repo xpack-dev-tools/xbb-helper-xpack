@@ -11,7 +11,8 @@
 
 # https://sourceforge.net/projects/libusb/files/libusb-compat-0.1/
 
-# 2013-05-21, 0.1.5, latest
+# 2013-05-21, 0.1.5
+# 2022-11-18, 0.1.8
 
 # Required by GNU/Linux and macOS.
 
@@ -42,6 +43,19 @@ function libusb0_build()
 
     download_and_extract "${libusb0_url}" "${libusb0_archive}" \
       "${libusb0_src_folder_name}"
+
+    (
+      if [ ! -x "${XBB_SOURCES_FOLDER_PATH}/${libusb0_src_folder_name}/configure" ]
+      then
+
+        cd "${XBB_SOURCES_FOLDER_PATH}/${libusb0_src_folder_name}"
+
+        xbb_activate_dependencies_dev
+
+        run_verbose bash ${DEBUG} "bootstrap.sh"
+
+      fi
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libusb0_folder_name}/bootstrap-output-$(ndate).txt"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libusb0_folder_name}"
