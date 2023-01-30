@@ -223,6 +223,11 @@ function glib_build()
               config_options+=("--cross" "${helper_folder_path}/extras/meson/mingw-w64-gcc.ini")
             fi
 
+            # The build fails on macOS while building the tests.
+            config_options+=("-D" "tests=false")
+            config_options+=("-D" "selinux=disabled")
+
+            # meson setup <options> builddir sourcedir
             run_verbose meson setup \
               "${config_options[@]}" \
               "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}" \
