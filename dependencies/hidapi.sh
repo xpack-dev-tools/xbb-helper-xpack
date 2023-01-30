@@ -21,11 +21,12 @@
 # https://github.com/archlinux/svntogit-community/blob/packages/hidapi/trunk/PKGBUILD
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/hidapi.rb
 
-# Nov 24, 2020, 0.10.1
+# Nov 24, 2020, "0.10.1" # Needs a patch to remove AC_CONFIG_MACRO_DIR([m4])
 # 27 Sep 2021, "0.11.0"
 # 23 Dec 2021, "0.11.1"
 # 3 Jan, 2022, "0.11.2"
 # 25 May 2022, "0.12.0"
+# 9 Jan 2023, "0.13.1" # Includes hidapi.pc
 
 # -----------------------------------------------------------------------------
 
