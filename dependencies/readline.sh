@@ -25,6 +25,7 @@
 # 2019-01-07, "8.0"
 # 2020-12-06, "8.1"
 # 2022-01-05, "8.1.2"
+# 2022-09-26, "8.2" - fails on mingw
 
 # -----------------------------------------------------------------------------
 
@@ -124,7 +125,7 @@ function readline_build()
         echo "Running readline make..."
 
         # Build.
-        run_verbose make -j ${XBB_JOBS}
+        run_verbose make -j 1 # ${XBB_JOBS}
 
         # Has no install-strip
         run_verbose make install
