@@ -2,8 +2,17 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-01-31
+
+* v1.4.3 released
+* 5b6b128 add libusb-win32-1.2.7.3.pc
+* 6c45e93 readline.sh: 8.2 fails on mingw
+* 3af16d0 pixman.sh: --disable-arm-a64-neon
+* 4a4406a glib.sh: disable tests, they fail to build
+
 ## 2023-01-30
 
+* fc523cc libpng.sh: fix bash syntax
 * v1.4.2 released
 * 3f22db9 add hidapi-0.13.1-windows.pc
 * b2ef2dd libusb0.sh: add call to bootstrap.sh
