@@ -52,7 +52,7 @@
 
 # -----------------------------------------------------------------------------
 
-# Returns GCC_SRC_FOLDER_NAME.
+# Returns XBB_GCC_SRC_FOLDER_NAME.
 function gcc_download()
 {
   local gcc_version="$1"
@@ -66,9 +66,9 @@ function gcc_download()
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@12.rb
   # https://github.com/fxcoudert/gcc/tags
 
-  export GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
+  export XBB_GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
 
-  local gcc_archive="${GCC_SRC_FOLDER_NAME}.tar.xz"
+  local gcc_archive="${XBB_GCC_SRC_FOLDER_NAME}.tar.xz"
   local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
   local gcc_patch_file_name="gcc-${gcc_version}.git.patch"
 
@@ -88,22 +88,22 @@ function gcc_download()
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "11.2.0" ]
   then
     # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.2.0-arm-20211201.tar.gz
-    export GCC_SRC_FOLDER_NAME="gcc-gcc-11.2.0-arm-20211201"
+    export XBB_GCC_SRC_FOLDER_NAME="gcc-gcc-11.2.0-arm-20211201"
     local gcc_archive="gcc-11.2.0-arm-20211201.tar.gz"
     local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
     local gcc_patch_file_name=""
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" -a "${gcc_version}" == "11.1.0" ]
   then
     # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.1.0-arm-20210504.tar.gz
-    export GCC_SRC_FOLDER_NAME="gcc-gcc-11.1.0-arm-20210504"
+    export XBB_GCC_SRC_FOLDER_NAME="gcc-gcc-11.1.0-arm-20210504"
     local gcc_archive="gcc-11.1.0-arm-20210504.tar.gz"
     local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
     local gcc_patch_file_name=""
   fi
 
-  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}"
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}"
 
-  local gcc_download_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_SRC_FOLDER_NAME}-downloaded"
+  local gcc_download_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${XBB_GCC_SRC_FOLDER_NAME}-downloaded"
   if [ ! -f "${gcc_download_stamp_file_path}" ]
   then
 
@@ -111,7 +111,7 @@ function gcc_download()
     cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gcc_url}" "${gcc_archive}" \
-      "${GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
+      "${XBB_GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gcc_download_stamp_file_path}"
@@ -148,7 +148,7 @@ function gcc_build()
 
   local gcc_version_major=$(xbb_get_version_major "${gcc_version}")
 
-  export GCC_FOLDER_NAME="${GCC_SRC_FOLDER_NAME}"
+  export GCC_FOLDER_NAME="${XBB_GCC_SRC_FOLDER_NAME}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
@@ -231,11 +231,11 @@ function gcc_build()
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" --help
-            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/gcc/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/gcc/configure" --help
 
-            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/libgcc/configure" --help
-            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/libstdc++-v3/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/libgcc/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/libstdc++-v3/configure" --help
           fi
 
           config_options=()
@@ -540,7 +540,7 @@ function gcc_build()
             exit 1
           fi
 
-          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" \
             ${config_options[@]}
 
           if [ "${XBB_HOST_PLATFORM}" == "linux" ]
