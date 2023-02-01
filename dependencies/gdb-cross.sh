@@ -265,8 +265,10 @@ function gdb_cross_build()
 
           config_options+=("--disable-binutils") # Arm, AArch64
           config_options+=("--disable-as") # Arm, AArch64
+          config_options+=("--disable-gas") # Arm, AArch64
           config_options+=("--disable-gdbtk") # Arm, AArch64
           # config_options+=("--disable-gprof")
+          config_options+=("--disable-gold") # Arm, AArch64
           config_options+=("--disable-ld") # Arm, AArch64
           config_options+=("--disable-nls") # Arm, AArch64
           config_options+=("--disable-objc-gc") # Arm, AArch64
@@ -298,6 +300,8 @@ function gdb_cross_build()
 
           config_options+=("--with-expat") # Arm
           config_options+=("--with-gdb-datadir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/share/gdb")
+
+          config_options+=("--with-gnu-ld") # AArch64
 
           # No need to, we keep track of paths to shared libraries.
           # Plus that if fails the build:

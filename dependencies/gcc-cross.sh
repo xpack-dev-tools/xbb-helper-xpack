@@ -395,6 +395,9 @@ function gcc_cross_build_first()
               config_options+=("--enable-multilib") # Arm
               config_options+=("--with-multilib-list=${XBB_GCC_MULTILIB_LIST}")  # Arm
             fi
+          elif [ "${triplet}" == "aarch64-none-elf" ]
+          then
+            config_options+=("--disable-libatomic") # ABE
           elif [ "${triplet}" == "riscv-none-elf" ]
           then
             config_options+=("--with-abi=${XBB_APPLICATION_GCC_ABI}")
@@ -406,6 +409,9 @@ function gcc_cross_build_first()
             else
               config_options+=("--enable-multilib")
             fi
+          else
+            echo "Unsupported triplet ${triplet} in ${FUNCNAME[0]}()"
+            exit 1
           fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" \
@@ -691,6 +697,9 @@ function gcc_cross_build_final()
               config_options+=("--enable-multilib") # Arm
               config_options+=("--with-multilib-list=${XBB_GCC_MULTILIB_LIST}")  # Arm
             fi
+          elif [ "${triplet}" == "aarch64-none-elf" ]
+          then
+            config_options+=("--disable-libatomic") # ABE
           elif [ "${triplet}" == "riscv-none-elf" ]
           then
             config_options+=("--with-abi=${XBB_APPLICATION_GCC_ABI}")
@@ -702,6 +711,9 @@ function gcc_cross_build_final()
             else
               config_options+=("--enable-multilib")
             fi
+          else
+            echo "Unsupported triplet ${triplet} in ${FUNCNAME[0]}()"
+            exit 1
           fi
 
           # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
