@@ -187,7 +187,7 @@ function gcc_cross_generate_riscv_multilib_file()
       echo
       echo "Running the multilib generator..."
 
-      cd "${XBB_SOURCES_FOLDER_PATH}/${GCC_SRC_FOLDER_NAME}/gcc/config/riscv"
+      cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/gcc/config/riscv"
 
       xbb_activate_dependencies_dev
 
