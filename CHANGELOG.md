@@ -2,6 +2,16 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-02-01
+
+* v1.4.4 released
+* fcf896a remove gcc-12.2.1-cross.git.patch, not needed
+* 63683b6 dependencies: *-cross update for arm 12.2
+* e139a52 gcc.sh: XBB_GCC_SRC_FOLDER_NAME
+* 74f11f0 gcc-cross.sh: fix XBB_GCC_SRC_FOLDER_NAME
+* 0535a14 gcc-cross.sh:  XBB_APPLICATION_WITHOUT_MULTILIB
+* a1cc8b8 templates: fetch-depth: 3
+
 ## 2023-01-31
 
 * v1.4.3 released
