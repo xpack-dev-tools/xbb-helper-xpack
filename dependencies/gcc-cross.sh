@@ -181,7 +181,7 @@ function gcc_cross_generate_riscv_multilib_file()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   # Not inside the previous if to allow multilib changes after download.
-  if [ "${XBB_APPLICATION_WITHOUT_MULTILIB}" != "y" ]
+  if [ "${XBB_APPLICATION_WITHOUT_MULTILIB:-""}" != "y" ]
   then
     (
       echo
