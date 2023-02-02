@@ -907,10 +907,10 @@ function xbb_set_compiler_flags()
   then
     if [ "${XBB_HOST_ARCH}" == "x64" ]
     then
-      export MACOSX_DEPLOYMENT_TARGET="10.13"
+      export MACOSX_DEPLOYMENT_TARGET="${XBB_APPLICATION_MACOSX_DEPLOYMENT_TARGET_X64}:-"10.13"}"
     elif [ "${XBB_HOST_ARCH}" == "arm64" ]
     then
-      export MACOSX_DEPLOYMENT_TARGET="11.0"
+      export MACOSX_DEPLOYMENT_TARGET="${XBB_APPLICATION_MACOSX_DEPLOYMENT_TARGET_ARM64}:-"11.0"}"
     else
       echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
       exit 1
