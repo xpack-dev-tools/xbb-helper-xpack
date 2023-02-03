@@ -2,9 +2,21 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-02-03
+
+* v1.4.5 released
+* c7545b3 xbb.sh: fix XBB_APPLICATION_MACOSX syntax
+
+## 2023-02-02
+
+* 1252400 xbb.sh: customizable macOS target
+
 ## 2023-02-01
 
 * v1.4.4 released
+* 6466383 1.4.4
+* 1adfd44 .vscode/settings.json: ignoreWords
+* c310b94 prepare v1.4.4
 * fcf896a remove gcc-12.2.1-cross.git.patch, not needed
 * 63683b6 dependencies: *-cross update for arm 12.2
 * e139a52 gcc.sh: XBB_GCC_SRC_FOLDER_NAME
