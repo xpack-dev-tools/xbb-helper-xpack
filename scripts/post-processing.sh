@@ -2032,7 +2032,7 @@ function create_archive()
       # To make things worse, some platforms (like Arduino) do not accept
       # `.tgz` and require the explicit `.tar.gz`.
       # Thus stick to the good old `.tar.gz`.
-      distribution_file_path"${XBB_DEPLOY_FOLDER_PATH}/${archive_name}.tar.gz"
+      distribution_file_path="${XBB_DEPLOY_FOLDER_PATH}/${archive_name}.tar.gz"
 
       echo "Compressed tarball: \"${distribution_file_path}\""
 
