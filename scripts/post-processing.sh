@@ -1986,14 +1986,7 @@ function check_binary_for_libraries()
 function create_archive()
 {
   (
-    local distribution_file_version="${XBB_RELEASE_VERSION}"
-
-    local target_folder_name=${XBB_TARGET_FOLDER_NAME}
-
-    local distribution_file="${XBB_DEPLOY_FOLDER_PATH}/${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${distribution_file_version}-${target_folder_name}"
-
-    local archive_version_path
-    archive_version_path="${XBB_ARCHIVE_FOLDER_PATH}/${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${distribution_file_version}"
+    local archive_name="${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}"
 
     cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
     find . -name '.DS_Store' -exec rm '{}' ';'
@@ -2003,71 +1996,59 @@ function create_archive()
 
     mkdir -pv "${XBB_DEPLOY_FOLDER_PATH}"
 
-    # The folder is temprarily moved into a versioned folder like
-    # xpack-<app-name>-<version>, or, in previous versions,
-    # in a more elaborate hierarchy like
-    # xPacks/<app-name>/<version>.
-    # After the archive is created, the folders are moved back.
-    # The atempt to transform the tar path fails, since symlinks were
-    # also transformed, which is bad.
+    rm -rf "${XBB_ARCHIVE_FOLDER_PATH}"
+
+    # The `application`` folder will be copied into a versioned folder
+    # like `xpack-<app-name>-<version>` and archived.
+    mkdir -pv "${XBB_ARCHIVE_FOLDER_PATH}/${archive_name}"
+
+    # The decompress package used by xpm fails to recreate the hard links:
+    # error: Error: ENOENT: no such file or directory, link 'xpack-arm-none-eabi-gcc-12.2.1-1.1/arm-none-eabi/lib/libg.a' -> '/Users/runner/Library/xPacks/@xpack-dev-tools/arm-none-eabi-gcc/12.2.1-1.1.1/.content/arm-none-eabi/lib/libc.a'
+    # Without --hard-dereference in macOS tar, the easy solution to avoid
+    # hard links is to use cp.
+
+    cp -R \
+      "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* \
+      "${XBB_ARCHIVE_FOLDER_PATH}/${archive_name}"
+
+    cd "${XBB_ARCHIVE_FOLDER_PATH}"
+
+    local distribution_file_path
+
     if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
     then
 
-      local distribution_file="${distribution_file}.zip"
+      distribution_file_path="${XBB_DEPLOY_FOLDER_PATH}/${archive_name}.zip"
 
       echo
-      echo "ZIP file: \"${distribution_file}\"."
+      echo "ZIP file: \"${distribution_file_path}\""
 
-      rm -rf "${XBB_ARCHIVE_FOLDER_PATH}"
-      mkdir -pv "${archive_version_path}"
-      mv "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
-
-      cd "${XBB_ARCHIVE_FOLDER_PATH}"
-      zip -r9 -q "${distribution_file}" *
-
-      # Put everything back.
-      mv "${archive_version_path}"/* "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+      zip -r9 -q "${distribution_file_path}" *
 
     else
 
       # Unfortunately on node.js, xz & bz2 require native modules, which
-      # proved unsafe, some xz versions failed to compile on node.js v9.x,
-      # so use the good old .tar.gz.
-      local distribution_file
-      # Some platforms (like Arduino) accept only this explicit path.
-      distribution_file="${distribution_file}.tar.gz"
+      # proved unsafe, some xz versions failed to compile on node.js v9.x.
+      # To make things worse, some platforms (like Arduino) do not accept
+      # `.tgz` and require the explicit `.tar.gz`.
+      # Thus stick to the good old `.tar.gz`.
+      distribution_file_path"${XBB_DEPLOY_FOLDER_PATH}/${archive_name}.tar.gz"
 
-      echo "Compressed tarball: \"${distribution_file}\"."
+      echo "Compressed tarball: \"${distribution_file_path}\""
 
-      rm -rf "${XBB_ARCHIVE_FOLDER_PATH}"
-      mkdir -pv "${archive_version_path}"
-
-      cd "${XBB_ARCHIVE_FOLDER_PATH}"
-      # -J uses xz for compression; best compression ratio.
-      # -j uses bz2 for compression; good compression ratio.
-      # -z uses gzip for compression; fair compression ratio.
+      # -z: use gzip for compression; fair compression ratio.
       if [ "${XBB_BUILD_UNAME}" == "Darwin" ]
       then
-        # The decompress package used by xpm fails to recreate the hard links:
-        # error: Error: ENOENT: no such file or directory, link 'xpack-arm-none-eabi-gcc-12.2.1-1.1/arm-none-eabi/lib/libg.a' -> '/Users/runner/Library/xPacks/@xpack-dev-tools/arm-none-eabi-gcc/12.2.1-1.1.1/.content/arm-none-eabi/lib/libc.a'
-        # Without --hard-dereference in macOS tar, the solution to avoid
-        # hard links is to use cp.
-        cp -R "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
-        tar -c -z -f "${distribution_file}" *
+        tar -c -z -f "${distribution_file_path}" *
       else
-        # Temporarily move the application folder.
-        mv -v "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
-        tar -c -z -f "${distribution_file}" \
+        # --hard-dereference is redundant, cp should have fixed the hard links.
+        tar -c -z -f "${distribution_file_path}" \
           --owner=0 \
           --group=0 \
           --format=posix \
           --hard-dereference \
           *
-
-        # Put the application back, to run the tests.
-        mv -v "${archive_version_path}"/* "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
       fi
-
 
     fi
 
@@ -2075,9 +2056,9 @@ function create_archive()
     if [ "${XBB_BUILD_UNAME}" == "Darwin" ]
     then
       # Isn't it binary?
-      shasum -a 256 "$(basename ${distribution_file})" >"$(basename ${distribution_file}).sha"
+      shasum -a 256 "$(basename ${distribution_file_path})" >"$(basename ${distribution_file_path}).sha"
     else
-      sha256sum "$(basename ${distribution_file})" >"$(basename ${distribution_file}).sha"
+      sha256sum "$(basename ${distribution_file_path})" >"$(basename ${distribution_file_path}).sha"
     fi
   )
 }
