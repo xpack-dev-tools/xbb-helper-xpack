@@ -59,7 +59,7 @@ from the `npmjs.com` registry:
 cd my-project
 xpm init # Unless a package.json is already present
 
-xpm install --save-dev @xpack-dev-tools/xbb-helper@latest
+xpm install --save-dev @xpack-dev-tools/xbb-helper@latest --verbose
 
 ls -l xpacks/xpack-dev-tools-xbb-helper
 ```
