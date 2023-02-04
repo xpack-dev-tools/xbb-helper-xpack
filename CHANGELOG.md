@@ -4,7 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-02-04
 
-* v1.4.6 released
+* v1.4.7 released
+* bcc69c3 post-processing: fix folder vs file archive names
+* 6ced03b post-processing.sh: fix syntax
+* f271fec post-processing: always use cp for archive
+* b3541f1 1.4.6
+* 4d632ed prepare v1.4.6
 * 0d1a527 post-processing.sh: avoid hard-links on macOS
 
 ## 2023-02-03
