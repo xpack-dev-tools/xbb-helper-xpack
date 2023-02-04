@@ -2041,28 +2041,33 @@ function create_archive()
 
       rm -rf "${XBB_ARCHIVE_FOLDER_PATH}"
       mkdir -pv "${archive_version_path}"
-      mv -v "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
 
-      # Without --hard-dereference the hard links may be turned into
-      # broken soft links on macOS.
       cd "${XBB_ARCHIVE_FOLDER_PATH}"
       # -J uses xz for compression; best compression ratio.
       # -j uses bz2 for compression; good compression ratio.
       # -z uses gzip for compression; fair compression ratio.
       if [ "${XBB_BUILD_UNAME}" == "Darwin" ]
       then
+        # The decompress package used by xpm fails to recreate the hard links:
+        # error: Error: ENOENT: no such file or directory, link 'xpack-arm-none-eabi-gcc-12.2.1-1.1/arm-none-eabi/lib/libg.a' -> '/Users/runner/Library/xPacks/@xpack-dev-tools/arm-none-eabi-gcc/12.2.1-1.1.1/.content/arm-none-eabi/lib/libc.a'
+        # Without --hard-dereference in macOS tar, the solution to avoid
+        # hard links is to use cp.
+        cp -R "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
         tar -c -z -f "${distribution_file}" *
       else
+        # Temporarily move the application folder.
+        mv -v "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* "${archive_version_path}"
         tar -c -z -f "${distribution_file}" \
           --owner=0 \
           --group=0 \
           --format=posix \
           --hard-dereference \
           *
+
+        # Put the application back, to run the tests.
+        mv -v "${archive_version_path}"/* "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
       fi
 
-      # Put folders back.
-      mv -v "${archive_version_path}"/* "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
 
     fi
 
