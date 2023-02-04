@@ -2,6 +2,11 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-02-04
+
+* v1.4.6 released
+* 0d1a527 post-processing.sh: avoid hard-links on macOS
+
 ## 2023-02-03
 
 * v1.4.5 released
