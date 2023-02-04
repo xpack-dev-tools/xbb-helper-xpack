@@ -1986,7 +1986,9 @@ function check_binary_for_libraries()
 function create_archive()
 {
   (
-    local archive_name="${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}"
+    local distribution_folder_name="${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}"
+    # The file name also includes the target name.
+    local distribution_file_name="${distribution_folder_name}-${XBB_TARGET_FOLDER_NAME}"
 
     cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
     find . -name '.DS_Store' -exec rm '{}' ';'
@@ -2000,7 +2002,7 @@ function create_archive()
 
     # The `application`` folder will be copied into a versioned folder
     # like `xpack-<app-name>-<version>` and archived.
-    mkdir -pv "${XBB_ARCHIVE_FOLDER_PATH}/${archive_name}"
+    mkdir -pv "${XBB_ARCHIVE_FOLDER_PATH}/${distribution_folder_name}"
 
     # The decompress package used by xpm fails to recreate the hard links:
     # error: Error: ENOENT: no such file or directory, link 'xpack-arm-none-eabi-gcc-12.2.1-1.1/arm-none-eabi/lib/libg.a' -> '/Users/runner/Library/xPacks/@xpack-dev-tools/arm-none-eabi-gcc/12.2.1-1.1.1/.content/arm-none-eabi/lib/libc.a'
@@ -2009,7 +2011,7 @@ function create_archive()
 
     cp -R \
       "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* \
-      "${XBB_ARCHIVE_FOLDER_PATH}/${archive_name}"
+      "${XBB_ARCHIVE_FOLDER_PATH}/${distribution_folder_name}"
 
     cd "${XBB_ARCHIVE_FOLDER_PATH}"
 
@@ -2018,7 +2020,8 @@ function create_archive()
     if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
     then
 
-      distribution_file_path="${XBB_DEPLOY_FOLDER_PATH}/${archive_name}.zip"
+      # Windows traditionally uses ZIP archives.
+      distribution_file_path="${XBB_DEPLOY_FOLDER_PATH}/${distribution_file_name}.zip"
 
       echo
       echo "ZIP file: \"${distribution_file_path}\""
@@ -2032,7 +2035,7 @@ function create_archive()
       # To make things worse, some platforms (like Arduino) do not accept
       # `.tgz` and require the explicit `.tar.gz`.
       # Thus stick to the good old `.tar.gz`.
-      distribution_file_path="${XBB_DEPLOY_FOLDER_PATH}/${archive_name}.tar.gz"
+      distribution_file_path="${XBB_DEPLOY_FOLDER_PATH}/${distribution_file_name}.tar.gz"
 
       echo "Compressed tarball: \"${distribution_file_path}\""
 
