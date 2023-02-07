@@ -10,8 +10,8 @@
 
 # -----------------------------------------------------------------------------
 
-# http://www.mpfr.org
-# http://www.mpfr.org/history.html
+# https://www.mpfr.org
+# https://www.mpfr.org/history.html
 
 # https://github.com/archlinux/svntogit-packages/blob/packages/mpfr/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/mpfr/files/PKGBUILD
@@ -38,7 +38,7 @@ function mpfr_build()
   local mpfr_src_folder_name="mpfr-${mpfr_version}"
 
   local mpfr_archive="${mpfr_src_folder_name}.tar.xz"
-  local mpfr_url="http://www.mpfr.org/${mpfr_src_folder_name}/${mpfr_archive}"
+  local mpfr_url="https://www.mpfr.org/${mpfr_src_folder_name}/${mpfr_archive}"
 
   # The folder name for build, licenses, etc.
   local mpfr_folder_name="${mpfr_src_folder_name}"

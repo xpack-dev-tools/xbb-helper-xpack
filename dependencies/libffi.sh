@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-# http://www.sourceware.org/libffi/
+# https://www.sourceware.org/libffi/
 # ftp://sourceware.org/pub/libffi/
 # https://github.com/libffi/libffi
 # https://github.com/libffi/libffi/releases

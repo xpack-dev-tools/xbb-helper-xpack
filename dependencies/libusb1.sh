@@ -29,7 +29,7 @@ function libusb1_build()
   local libusb1_src_folder_name="libusb-${libusb1_version}"
 
   local libusb1_archive="${libusb1_src_folder_name}.tar.bz2"
-  local libusb1_url="http://sourceforge.net/projects/libusb/files/libusb-1.0/${libusb1_src_folder_name}/${libusb1_archive}"
+  local libusb1_url="https://sourceforge.net/projects/libusb/files/libusb-1.0/${libusb1_src_folder_name}/${libusb1_archive}"
 
   local libusb1_folder_name="${libusb1_src_folder_name}"
 

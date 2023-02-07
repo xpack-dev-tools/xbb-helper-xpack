@@ -9,8 +9,8 @@
 
 # -----------------------------------------------------------------------------
 
-# http://www.pixman.org
-# http://cairographics.org/releases/
+# https://www.pixman.org
+# https://cairographics.org/releases/
 
 # https://archlinuxarm.org/packages/aarch64/pixman/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=pixman-git
@@ -36,7 +36,7 @@ function pixman_build()
   local pixman_src_folder_name="pixman-${pixman_version}"
 
   local pixman_archive="${pixman_src_folder_name}.tar.gz"
-  local pixman_url="http://cairographics.org/releases/${pixman_archive}"
+  local pixman_url="https://cairographics.org/releases/${pixman_archive}"
 
   local pixman_folder_name="${pixman_src_folder_name}"
 

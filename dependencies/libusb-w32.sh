@@ -30,7 +30,7 @@ function libusb_w32_build()
   local libusb_w32_src_folder_name="${libusb_w32_prefix}-src-${libusb_w32_version}"
 
   local libusb_w32_archive="${libusb_w32_src_folder_name}.zip"
-  local libusb_w32_url="http://sourceforge.net/projects/libusb-win32/files/libusb-win32-releases/${libusb_w32_version}/${libusb_w32_archive}"
+  local libusb_w32_url="https://sourceforge.net/projects/libusb-win32/files/libusb-win32-releases/${libusb_w32_version}/${libusb_w32_archive}"
 
   local libusb_w32_folder_name="${libusb_w32_prefix}-${libusb_w32_version}"
 

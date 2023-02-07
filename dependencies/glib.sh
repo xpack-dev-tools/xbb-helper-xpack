@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-# http://ftp.gnome.org/pub/GNOME/sources/glib
+# https://ftp.gnome.org/pub/GNOME/sources/glib
 
 # https://github.com/archlinux/svntogit-packages/blob/packages/glib2/trunk/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=glib2-git
@@ -49,7 +49,7 @@ function glib_build()
 
   local glib_archive="${glib_src_folder_name}.tar.xz"
 
-  local glib_url="http://ftp.gnome.org/pub/GNOME/sources/glib/${glib_major_minor_version}/${glib_archive}"
+  local glib_url="https://ftp.gnome.org/pub/GNOME/sources/glib/${glib_major_minor_version}/${glib_archive}"
 
   local glib_folder_name="${glib_src_folder_name}"
 

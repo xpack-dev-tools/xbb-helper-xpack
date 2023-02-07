@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-# http://www.bytereef.org/mpdecimal/index.html
+# https://www.bytereef.org/mpdecimal/index.html
 # https://www.bytereef.org/mpdecimal/download.html
 # https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-2.4.2.tar.gz
 

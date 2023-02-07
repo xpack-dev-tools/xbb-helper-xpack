@@ -334,7 +334,7 @@ function openssl_build()
             run_verbose ${INSTALL} -v -c -m 644 "/private/etc/ssl/cert.pem" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
           fi
 
-          curl --location http://curl.haxx.se/ca/cacert.pem -o cacert.pem
+          curl --location https://curl.haxx.se/ca/cacert.pem -o cacert.pem
           run_verbose ${INSTALL} -v -c -m 644 cacert.pem "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
         fi
 

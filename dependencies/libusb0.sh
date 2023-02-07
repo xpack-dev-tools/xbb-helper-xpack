@@ -28,7 +28,7 @@ function libusb0_build()
   local libusb0_src_folder_name="libusb-compat-${libusb0_version}"
 
   local libusb0_archive="${libusb0_src_folder_name}.tar.bz2"
-  local libusb0_url="http://sourceforge.net/projects/libusb/files/libusb-compat-0.1/${libusb0_src_folder_name}/${libusb0_archive}"
+  local libusb0_url="https://sourceforge.net/projects/libusb/files/libusb-compat-0.1/${libusb0_src_folder_name}/${libusb0_archive}"
 
   local libusb0_folder_name="${libusb0_src_folder_name}"
 

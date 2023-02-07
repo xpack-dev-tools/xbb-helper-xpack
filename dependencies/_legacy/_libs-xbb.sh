@@ -12,7 +12,7 @@
 function libtasn1_build()
 {
   # https://www.gnu.org/software/libtasn1/
-  # http://ftp.gnu.org/gnu/libtasn1/
+  # https://ftp.gnu.org/gnu/libtasn1/
   # https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz
 
   # https://github.com/archlinux/svntogit-packages/blob/packages/libtasn1/trunk/PKGBUILD
@@ -472,7 +472,7 @@ function gc_test_libs()
 
 function gnutls_build()
 {
-  # http://www.gnutls.org/
+  # https://www.gnutls.org/
   # https://www.gnupg.org/ftp/gcrypt/gnutls/
   # https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.7.tar.xz
 
@@ -684,11 +684,11 @@ function gnutls_test()
 
 function xorg_util_macros_build()
 {
-  # http://www.linuxfromscratch.org/blfs/view/
-  # http://www.linuxfromscratch.org/blfs/view/7.4/x/util-macros.html
+  # https://www.linuxfromscratch.org/blfs/view/
+  # https://www.linuxfromscratch.org/blfs/view/7.4/x/util-macros.html
 
-  # http://xorg.freedesktop.org/releases/individual/util
-  # http://xorg.freedesktop.org/releases/individual/util/util-macros-1.17.1.tar.bz2
+  # https://xorg.freedesktop.org/releases/individual/util
+  # https://xorg.freedesktop.org/releases/individual/util/util-macros-1.17.1.tar.bz2
 
   # https://github.com/archlinux/svntogit-packages/blob/packages/xorg-util-macros/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/any/xorg-util-macros/files/PKGBUILD
@@ -707,7 +707,7 @@ function xorg_util_macros_build()
   local xorg_util_macros_src_folder_name="util-macros-${xorg_util_macros_version}"
 
   local xorg_util_macros_archive="${xorg_util_macros_src_folder_name}.tar.bz2"
-  local xorg_util_macros_url="http://xorg.freedesktop.org/releases/individual/util/${xorg_util_macros_archive}"
+  local xorg_util_macros_url="https://xorg.freedesktop.org/releases/individual/util/${xorg_util_macros_archive}"
 
   local xorg_util_macros_folder_name="${xorg_util_macros_src_folder_name}"
 

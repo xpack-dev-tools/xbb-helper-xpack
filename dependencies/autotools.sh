@@ -32,7 +32,7 @@ function autotools_build()
   # depends on autoconf.
   automake_build "1.16.5"
 
-  # http://ftpmirror.gnu.org/libtool/
+  # https://ftpmirror.gnu.org/libtool/
   libtool_build "2.4.7"
 
   # configure.ac:34: error: Macro PKG_PROG_PKG_CONFIG is not available. It is usually defined in file pkg.m4 provided by package pkg-config.
