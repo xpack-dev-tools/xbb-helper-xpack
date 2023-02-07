@@ -9,8 +9,8 @@
 
 # -----------------------------------------------------------------------------
 
-# http://zlib.net
-# http://zlib.net/fossils/
+# https://zlib.net
+# https://zlib.net/fossils/
 
 # https://github.com/archlinux/svntogit-packages/blob/packages/zlib/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/zlib/files/PKGBUILD
@@ -33,7 +33,7 @@ function zlib_build()
   local zlib_src_folder_name="zlib-${zlib_version}"
 
   local zlib_archive="${zlib_src_folder_name}.tar.gz"
-  local zlib_url="http://zlib.net/fossils/${zlib_archive}"
+  local zlib_url="https://zlib.net/fossils/${zlib_archive}"
 
   # The folder name for build, licenses, etc.
   local zlib_folder_name="${zlib_src_folder_name}"
@@ -94,7 +94,7 @@ function zlib_build()
         CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
         LDFLAGS="${XBB_LDFLAGS_LIB}"
-        
+
         xbb_adjust_ldflags_rpath
 
         export CPPFLAGS

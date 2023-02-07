@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-# http://www.multiprecision.org/
+# https://www.multiprecision.org/
 # ftp://ftp.gnu.org/gnu/mpc
 
 # https://github.com/archlinux/svntogit-packages/blob/packages/mpc/trunk/PKGBUILD
@@ -41,7 +41,7 @@ function mpc_build()
   local mpc_url="ftp://ftp.gnu.org/gnu/mpc/${mpc_archive}"
   if [[ ${mpc_version} =~ 0[.].* ]]
   then
-    mpc_url="http://www.multiprecision.org/downloads/${mpc_archive}"
+    mpc_url="https://www.multiprecision.org/downloads/${mpc_archive}"
   fi
 
   # The folder name for build, licenses, etc.

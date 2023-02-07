@@ -10,7 +10,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/gettext/
-# http://ftp.gnu.org/pub/gnu/gettext/
+# https://ftp.gnu.org/pub/gnu/gettext/
 
 # https://archlinuxarm.org/packages/aarch64/gettext/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gettext-git
@@ -36,7 +36,7 @@ function gettext_build()
   local gettext_src_folder_name="gettext-${gettext_version}"
 
   local gettext_archive="${gettext_src_folder_name}.tar.gz"
-  local gettext_url="http://ftp.gnu.org/pub/gnu/gettext/${gettext_archive}"
+  local gettext_url="https://ftp.gnu.org/pub/gnu/gettext/${gettext_archive}"
 
   local gettext_folder_name="${gettext_src_folder_name}"
 

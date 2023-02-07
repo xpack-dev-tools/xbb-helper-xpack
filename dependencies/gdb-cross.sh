@@ -24,7 +24,7 @@ function gdb_cross_build_dependencies()
   # Fails on mingw. 0.8.13 is deprecated. Not used anyway.
   # libelf_build "0.8.13"
 
-  # http://ftp.gnu.org/pub/gnu/gettext/
+  # https://ftp.gnu.org/pub/gnu/gettext/
   gettext_build "${XBB_GETTEXT_VERSION}"
 
   # Used by ncurses. Fails on macOS.

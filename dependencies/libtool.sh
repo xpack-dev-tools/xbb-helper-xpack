@@ -10,8 +10,8 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/libtool/
-# http://ftpmirror.gnu.org/libtool/
-# http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz
+# https://ftpmirror.gnu.org/libtool/
+# https://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.xz
 
 # https://archlinuxarm.org/packages/aarch64/libtool/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libtool-git
@@ -35,7 +35,7 @@ function libtool_build()
   local libtool_src_folder_name="libtool-${libtool_version}"
 
   local libtool_archive="${libtool_src_folder_name}.tar.xz"
-  local libtool_url="http://ftp.hosteurope.de/mirror/ftp.gnu.org/gnu/libtool/${libtool_archive}"
+  local libtool_url="https://ftp.hosteurope.de/mirror/ftp.gnu.org/gnu/libtool/${libtool_archive}"
 
   local libtool_folder_name="libtool${step}-${libtool_version}"
 

@@ -47,8 +47,8 @@ export DEBIAN_FRONTEND=noninteractive
 
 # For older systems (like Ubuntu 18 Bionic) it might be also needed to
 # update the `/etc/apt/sources.lists` with newer URLs, like
-# "http://archive.ubuntu.com/ubuntu/" (for Intel)
-# "http://ports.ubuntu.com/ubuntu-ports/" (for Arm)
+# "https://archive.ubuntu.com/ubuntu/" (for Intel)
+# "https://ports.ubuntu.com/ubuntu-ports/" (for Arm)
 
 sudo apt-get update
 

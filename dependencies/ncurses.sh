@@ -20,7 +20,7 @@
 # https://github.com/archlinux/svntogit-packages/blob/packages/ncurses/trunk/PKGBUILD
 # depends=(glibc gcc-libs)
 # https://archlinuxarm.org/packages/aarch64/ncurses/files/PKGBUILD
-# http://deb.debian.org/debian/pool/main/n/ncurses/ncurses_6.1+20181013.orig.tar.gz.asc
+# https://deb.debian.org/debian/pool/main/n/ncurses/ncurses_6.1+20181013.orig.tar.gz.asc
 
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-ncurses/PKGBUILD
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-ncurses/001-use-libsystre.patch

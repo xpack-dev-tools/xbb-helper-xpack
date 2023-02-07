@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-# http://isl.gforge.inria.fr - deprecated
+# https://isl.gforge.inria.fr - deprecated
 # https://sourceforge.net/projects/libisl/files/
 
 # https://github.com/archlinux/svntogit-packages/blob/packages/libisl/trunk/PKGBUILD

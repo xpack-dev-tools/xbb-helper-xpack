@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-# http://www.xmlsoft.org
+# https://www.xmlsoft.org
 # ftp://xmlsoft.org/libxml2/
 # https://download.gnome.org/sources/libxml2
 # https://download.gnome.org/sources/libxml2/2.9/libxml2-2.9.14.tar.xz

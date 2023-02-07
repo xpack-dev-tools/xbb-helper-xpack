@@ -11,11 +11,11 @@
 
 function scons_build()
 {
-  # http://scons.org
-  # http://prdownloads.sourceforge.net/scons/
+  # https://scons.org
+  # https://prdownloads.sourceforge.net/scons/
   # https://sourceforge.net/projects/scons/files/scons/3.1.2/scons-3.1.2.tar.gz/download
   # https://sourceforge.net/projects/scons/files/latest/download
-  # http://prdownloads.sourceforge.net/scons/scons-3.1.2.tar.gz
+  # https://prdownloads.sourceforge.net/scons/scons-3.1.2.tar.gz
 
   # https://archlinuxarm.org/packages/any/scons/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=python2-scons
@@ -2252,7 +2252,7 @@ function wget_test()
 function dos2unix_build()
 {
   # https://waterlan.home.xs4all.nl/dos2unix.html
-  # http://dos2unix.sourceforge.net
+  # https://dos2unix.sourceforge.net
   # https://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.4.0.tar.
 
   # https://github.com/archlinux/svntogit-community/blob/packages/dos2unix/trunk/PKGBUILD
@@ -2629,7 +2629,7 @@ __EOF__
 function perl_build()
 {
   # https://www.cpan.org
-  # http://www.cpan.org/src/
+  # https://www.cpan.org/src/
 
   # https://github.com/archlinux/svntogit-packages/blob/packages/perl/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/perl/files/PKGBUILD
@@ -2657,7 +2657,7 @@ function perl_build()
   local perl_src_folder_name="perl-${XBB_PERL_VERSION}"
 
   local perl_archive="${perl_src_folder_name}.tar.gz"
-  local perl_url="http://www.cpan.org/src/${perl_version_major}/${perl_archive}"
+  local perl_url="https://www.cpan.org/src/${perl_version_major}/${perl_archive}"
 
   local perl_folder_name="${perl_src_folder_name}"
 
@@ -4007,9 +4007,9 @@ function gpg_test()
 
 function makedepend_build()
 {
-  # http://www.linuxfromscratch.org/blfs/view/7.4/x/makedepend.html
-  # http://xorg.freedesktop.org/archive/individual/util
-  # http://xorg.freedesktop.org/archive/individual/util/makedepend-1.0.5.tar.bz2
+  # https://www.linuxfromscratch.org/blfs/view/7.4/x/makedepend.html
+  # https://xorg.freedesktop.org/archive/individual/util
+  # https://xorg.freedesktop.org/archive/individual/util/makedepend-1.0.5.tar.bz2
 
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=makedepend
 
@@ -4026,7 +4026,7 @@ function makedepend_build()
   local makedepend_src_folder_name="makedepend-${makedepend_version}"
 
   local makedepend_archive="${makedepend_src_folder_name}.tar.bz2"
-  local makedepend_url="http://xorg.freedesktop.org/archive/individual/util/${makedepend_archive}"
+  local makedepend_url="https://xorg.freedesktop.org/archive/individual/util/${makedepend_archive}"
 
   local makedepend_folder_name="${makedepend_src_folder_name}"
 

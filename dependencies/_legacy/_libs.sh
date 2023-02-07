@@ -35,7 +35,7 @@ function libelf_build()
   local libelf_src_folder_name="libelf-${libelf_version}"
   local libelf_archive="${libelf_src_folder_name}.tar.gz"
 
-  # local libelf_url="http://www.mr511.de/software/${libelf_archive}"
+  # local libelf_url="https://www.mr511.de/software/${libelf_archive}"
   # The original site seems unavailable, use a mirror.
   local libelf_url="https://fossies.org/linux/misc/old/${libelf_archive}"
 

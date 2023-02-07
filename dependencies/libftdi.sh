@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-# http://www.intra2net.com/en/developer/libftdi/download.php
+# https://www.intra2net.com/en/developer/libftdi/download.php
 # https://www.intra2net.com/en/developer/libftdi/download/libftdi1-1.4.tar.bz2
 
 # 1.2 (no date)
@@ -30,7 +30,7 @@ function libftdi_build()
 
   local libftdi_archive="${libftdi_src_folder_name}.tar.bz2"
 
-  libftdi_url="http://www.intra2net.com/en/developer/libftdi/download/${libftdi_archive}"
+  libftdi_url="https://www.intra2net.com/en/developer/libftdi/download/${libftdi_archive}"
 
   local libftdi_folder_name="${libftdi_src_folder_name}"
 

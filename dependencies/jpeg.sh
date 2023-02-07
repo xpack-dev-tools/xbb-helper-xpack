@@ -13,8 +13,8 @@
 # See also
 # https://archlinuxarm.org/packages/aarch64/libjpeg-turbo/files/PKGBUILD
 
-# http://www.ijg.org
-# http://www.ijg.org/files/
+# https://www.ijg.org
+# https://www.ijg.org/files/
 
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libjpeg9
 
@@ -38,7 +38,7 @@ function jpeg_build()
   local jpeg_src_folder_name="jpeg-${jpeg_version}"
 
   local jpeg_archive="jpegsrc.v${jpeg_version}.tar.gz"
-  local jpeg_url="http://www.ijg.org/files/${jpeg_archive}"
+  local jpeg_url="https://www.ijg.org/files/${jpeg_archive}"
 
   local jpeg_folder_name="${jpeg_src_folder_name}"
 
