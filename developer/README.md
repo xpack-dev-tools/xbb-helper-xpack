@@ -38,7 +38,7 @@ should probably do it as well.
 To install the Ubuntu 18 packages, use the available script:
 
 ```sh
-bash ~/Work/xbb-helper-xpack.git/developer/ubuntu/install-dependencies.sh
+bash ~/Work/xpacks/xbb-helper-xpack.git/developer/ubuntu/install-dependencies.sh
 ```
 
 ### macOS

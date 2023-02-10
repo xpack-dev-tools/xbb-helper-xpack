@@ -221,7 +221,7 @@ function gcc_mingw_build_first()
       # ln_s "#{arch_dir}/#{target}", "#{arch_dir}/mingw"
       # Otherwise:
       # The directory that should contain system headers does not exist:
-      #   /home/ilg/Work/mingw-w64-gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/install/mingw/include
+      #   /home/ilg/Work/xpacks/mingw-w64-gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/install/mingw/include
       # Makefile:3271: recipe for target 'stmp-fixinc' failed
 
       rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/mingw"

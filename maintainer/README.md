@@ -3,8 +3,8 @@
 To run all possible builds on the given platform:
 
 ```sh
-git -C ~/Work/xbb-helper-xpack.git pull
-time bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh --deep-clean
+git -C ~/Work/xpacks/xbb-helper-xpack.git pull
+time bash ~/Work/xpacks/xbb-helper-xpack.git/maintainer/build-all.sh --deep-clean
 ```
 
 To only see the build command without running it, use `--dry-run`.
@@ -12,8 +12,8 @@ To only see the build command without running it, use `--dry-run`.
 On Linux, to build the Windows binaries:
 
 ```sh
-git -C ~/Work/xbb-helper-xpack.git pull
-time bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh --windows
+git -C ~/Work/xpacks/xbb-helper-xpack.git pull
+time bash ~/Work/xpacks/xbb-helper-xpack.git/maintainer/build-all.sh --windows
 ```
 
 The full builds may take more than 1 day to complete:
@@ -27,21 +27,21 @@ The full builds may take more than 1 day to complete:
 To show the repos status:
 
 ```sh
-bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh --status
+bash ~/Work/xpacks/xbb-helper-xpack.git/maintainer/build-all.sh --status
 ```
 
 To exclude some projects, use multiple `--exclude xyz`, for example:
 
 ```sh
-git -C ~/Work/xbb-helper-xpack.git pull
-time bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh --deep-clean --exclude clang
+git -C ~/Work/xpacks/xbb-helper-xpack.git pull
+time bash ~/Work/xpacks/xbb-helper-xpack.git/maintainer/build-all.sh --deep-clean --exclude clang
 ```
 
 To exclude all:
 
 ```sh
-git -C ~/Work/xbb-helper-xpack.git pull
-time bash ~/Work/xbb-helper-xpack.git/maintainer/build-all.sh \
+git -C ~/Work/xpacks/xbb-helper-xpack.git pull
+time bash ~/Work/xpacks/xbb-helper-xpack.git/maintainer/build-all.sh \
 --exclude gcc \
 --exclude mingw-w64-gcc \
 --exclude cmake \
