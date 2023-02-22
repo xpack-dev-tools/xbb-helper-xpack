@@ -86,7 +86,7 @@ touch "${post_file_path}"
 cat "scripts/templates/body-jekyll-release-post-part-1-liquid.md" | liquidjs "{ \"XBB_RELEASE_VERSION\": \"${version}\", \"RELEASE_DATE\": \"${release_date}\" }" >> "${post_file_path}"
 
 echo >> "${post_file_path}"
-echo '```console'  >> "${post_file_path}"
+echo '```txt'  >> "${post_file_path}"
 cat "${destination_folder_path}"/*.sha \
   | sed -e 's|$|\n|' \
   | sed -e 's|  |\n|' \
