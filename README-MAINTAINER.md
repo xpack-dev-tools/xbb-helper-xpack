@@ -2,11 +2,28 @@
 [![GitHub issues](https://img.shields.io/github/issues/xpack-dev-tools/xbb-helper-xpack.svg)](https://github.com/xpack-dev-tools/xbb-helper-xpack/issues/)
 [![GitHub pulls](https://img.shields.io/github/issues-pr/xpack-dev-tools/xbb-helper-xpack.svg)](https://github.com/xpack-dev-tools/xbb-helper-xpack/pulls)
 
-# How to make a new release (maintainer info)
+# Maintainer info
 
-## Release schedule
+## Prerequisites
 
-There are no scheduled releases, the project is updated when necessary.
+The build scripts run on GNU/Linux and macOS. The Windows binaries are
+generated on Intel GNU/Linux, using [mingw-w64](https://mingw-w64.org).
+
+For GNU/Linux the prerequisites are:
+
+- `npm` (shipped with Node.js; installed via nvm, not the system package manager)
+- `xpm` (installed via `npm`)
+- `docker`
+- `git` (installed via the system package manager)
+
+For macOS the prerequisites are:
+
+- `npm` (shipped with Node.js; installed via nvm)
+- `xpm` (installed via `npm`)
+- the Command Line Tools
+
+For details on installing them, please read the
+[XBB prerequisites page](https://xpack.github.io/xbb/prerequisites/).
 
 ## Get project sources
 
@@ -48,12 +65,11 @@ Further updates can be done with:
 git -C ~/Work/xpacks/xbb-helper-xpack.git pull
 ```
 
-## Prerequisites
+## Release schedule
 
-A recent [xpm](https://xpack.github.io/xpm/), which is a portable
-[Node.js](https://nodejs.org/) command line application.
+There are no scheduled releases, the project is updated when necessary.
 
-## Prepare the build
+## How to make new releases
 
 Before starting the build, perform some checks and tweaks.
 
