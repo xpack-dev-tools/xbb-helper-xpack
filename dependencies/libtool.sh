@@ -35,7 +35,7 @@ function libtool_build()
   local libtool_src_folder_name="libtool-${libtool_version}"
 
   local libtool_archive="${libtool_src_folder_name}.tar.xz"
-  local libtool_url="https://ftp.hosteurope.de/mirror/ftp.gnu.org/gnu/libtool/${libtool_archive}"
+  local libtool_url="https://ftpmirror.gnu.org/libtool/${libtool_archive}"
 
   local libtool_folder_name="libtool${step}-${libtool_version}"
 
