@@ -28,7 +28,7 @@ into their own projects.
 
 For maintainer info, please see:
 
-- [How to publish](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/README-MAINTAINER.md)
+- [How to publish](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/README-MAINTAINER.md).
 
 ## Install
 
