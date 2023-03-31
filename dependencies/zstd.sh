@@ -75,6 +75,8 @@ function zstd_build()
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
 
+      CMAKE=$(which cmake)
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -138,7 +140,7 @@ function zstd_build()
             config_options+=("-DCMAKE_SYSTEM_NAME=Windows")
           fi
 
-          run_verbose cmake \
+          run_verbose "${CMAKE}" \
             "${config_options[@]}" \
             \
             "${XBB_SOURCES_FOLDER_PATH}/${zstd_src_folder_name}/build/cmake"
@@ -152,13 +154,13 @@ function zstd_build()
 
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
-          run_verbose cmake \
+          run_verbose "${CMAKE}" \
             --build . \
             --parallel ${XBB_JOBS} \
             --verbose \
             --config "${build_type}"
         else
-          run_verbose cmake \
+          run_verbose "${CMAKE}" \
             --build . \
             --parallel ${XBB_JOBS} \
             --config "${build_type}"
@@ -180,7 +182,7 @@ function zstd_build()
           echo
           echo "Running zstd install..."
 
-          run_verbose cmake \
+          run_verbose "${CMAKE}" \
             --build . \
             --config "${build_type}" \
             -- \

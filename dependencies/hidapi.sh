@@ -83,6 +83,8 @@ function hidapi_build()
 
         LDFLAGS="${XBB_LDFLAGS_LIB}"
 
+        CMAKE=$(which cmake)
+
         export CPPFLAGS
         export CFLAGS
         export CXXFLAGS
@@ -151,6 +153,8 @@ function hidapi_build()
 
         LDFLAGS="${XBB_LDFLAGS_LIB}"
 
+        CMAKE=$(which cmake)
+
         xbb_adjust_ldflags_rpath
 
         export CPPFLAGS
@@ -191,7 +195,7 @@ function hidapi_build()
           fi
 
           # The mingw build also requires RC pointing to windres.
-          run_verbose cmake \
+          run_verbose "${CMAKE}" \
             "${config_options[@]}" \
             \
             "${XBB_SOURCES_FOLDER_PATH}/${hidapi_src_folder_name}"
@@ -204,13 +208,13 @@ function hidapi_build()
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose cmake \
+            run_verbose "${CMAKE}" \
               --build . \
               --parallel ${XBB_JOBS} \
               --verbose \
               --config "${build_type}"
           else
-            run_verbose cmake \
+            run_verbose "${CMAKE}" \
               --build . \
               --parallel ${XBB_JOBS} \
               --config "${build_type}"
@@ -219,7 +223,7 @@ function hidapi_build()
           echo
           echo "Running cmake install..."
 
-          run_verbose cmake \
+          run_verbose "${CMAKE}" \
             --build . \
             --config "${build_type}" \
             -- \
