@@ -108,7 +108,10 @@ function pkg_config_build()
           config_options+=("--with-internal-glib") # HB
           config_options+=("--with-pc-path=")
 
-          config_options+=("--with-system-include-path=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include")
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+          then
+            config_options+=("--with-system-include-path=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include")
+          fi
 
           # On Intel Linux
           # gconvert.c:61:2: error: #error GNU libiconv not in use but included iconv.h is from libiconv
