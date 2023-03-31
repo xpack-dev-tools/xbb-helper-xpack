@@ -83,6 +83,9 @@ function pkg_config_build()
         (
           xbb_show_env_develop
 
+          run_verbose which python3
+          run_verbose python3 --version
+
           echo
           echo "Running pkg_config configure..."
 
@@ -107,6 +110,7 @@ function pkg_config_build()
 
           config_options+=("--with-internal-glib") # HB
           config_options+=("--with-pc-path=")
+          config_options+=("--with-python=$(which python3)")
 
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
