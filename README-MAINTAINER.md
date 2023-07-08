@@ -35,34 +35,34 @@ To clone the stable branch (`xpack`), run the following commands in a
 terminal (on Windows use the _Git Bash_ console):
 
 ```sh
-rm -rf ~/Work/xpacks/xbb-helper-xpack.git && \
+rm -rf ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
 mkdir -p ~/Work/xpacks && \
 git clone \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
-  ~/Work/xpacks/xbb-helper-xpack.git
+  ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 ```
 
 For development purposes, clone the `xpack-develop` branch:
 
 ```sh
-rm -rf ~/Work/xpacks/xbb-helper-xpack.git && \
+rm -rf ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
 mkdir -p ~/Work/xpacks && \
 git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
-  ~/Work/xpacks/xbb-helper-xpack.git
+  ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 ```
 
 Link it to the central xPacks store:
 
 ```sh
-xpm link -C ~/Work/xpacks/xbb-helper-xpack.git
+xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 ```
 
 Further updates can be done with:
 
 ```sh
-git -C ~/Work/xpacks/xbb-helper-xpack.git pull
+git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 ```
 
 ## Release schedule
