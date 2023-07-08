@@ -2,6 +2,42 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-07-08
+
+* 064c558 xpack-dev-tools
+* 4ae07f9 xpack-dev-tools-build
+
+## 2023-03-31
+
+* 4a82860 dependencies CMAKE=$(which cmake)
+* 79b970c pkg-config.sh: explicit --with-python=python3
+* de170b4 pkg-config.sh: --with-system-include-path= for mac
+
+## 2023-03-25
+
+* 9549ed0 READMEs update
+* 43dbb82 READMEs update prerequisites
+
+## 2023-03-24
+
+* 8971b59 libtool.sh: use ftpmirror.gnu.org
+
+## 2023-02-22
+
+* ba45132 generate-jekyll update txt
+* bfcd30e READMEs update
+
+## 2023-02-10
+
+* fc4fb47 Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* b0ce665 update Work/xpacks
+* 7a03bec READMEs update
+
+## 2023-02-07
+
+* e819cbe READMEs update
+* a9d3609 dependencies: update urls to https
+
 ## 2023-02-04
 
 * v1.4.7 released
