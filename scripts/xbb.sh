@@ -102,7 +102,7 @@ function xbb_reset_env()
     # To avoid this, define a separate work folder (excluded from backup,
     # usually something like "${HOME}/Work")
     # and group all targets below a versioned application folder.
-    XBB_TARGET_WORK_FOLDER_PATH="${WORK_FOLDER_PATH}/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}/${XBB_TARGET_FOLDER_NAME}"
+    XBB_TARGET_WORK_FOLDER_PATH="${WORK_FOLDER_PATH}/xpack-dev-tools-build/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}/${XBB_TARGET_FOLDER_NAME}"
   elif [ ! -z "${XBB_REQUESTED_BUILD_RELATIVE_FOLDER:-}" ]
   then
     # If the user provides an explicit relative folder, use it.
