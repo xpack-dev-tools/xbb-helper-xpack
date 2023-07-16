@@ -1064,6 +1064,8 @@ function gcc_cross_strip_libs()
         fi
       done
     )
+  else
+    echo "gcc_cross_strip_libs() skipped"
   fi
 }
 

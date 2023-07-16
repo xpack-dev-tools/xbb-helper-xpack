@@ -198,8 +198,12 @@ function mingw_build_headers()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        # make install-strip
-        run_verbose make install-strip
+        if [ "${XBB_WITH_STRIP}" == "y" ]
+        then
+          run_verbose make install-strip
+        else
+          run_verbose make install
+        fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_headers_folder_name}/make-output-$(ndate).txt"
 
@@ -324,7 +328,12 @@ function mingw_build_widl()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        run_verbose make install-strip
+        if [ "${XBB_WITH_STRIP}" == "y" ]
+        then
+          run_verbose make install-strip
+        else
+          run_verbose make install
+        fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_widl_folder_name}/make-output-$(ndate).txt"
     )
@@ -428,7 +437,12 @@ function mingw_build_libmangle()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        run_verbose make install-strip
+        if [ "${XBB_WITH_STRIP}" == "y" ]
+        then
+          run_verbose make install-strip
+        else
+          run_verbose make install
+        fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_libmangle_folder_name}/make-libmangle-output-$(ndate).txt"
     )
@@ -547,7 +561,12 @@ function mingw_build_gendef()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        run_verbose make install-strip
+        if [ "${XBB_WITH_STRIP}" == "y" ]
+        then
+          run_verbose make install-strip
+        else
+          run_verbose make install
+        fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gendef_folder_name}/make-output-$(ndate).txt"
     )
@@ -697,8 +716,12 @@ function mingw_build_crt()
         # Apparently it'll be fixed in v11.
         run_verbose make -j1
 
-        # make install-strip
-        run_verbose make install-strip
+        if [ "${XBB_WITH_STRIP}" == "y" ]
+        then
+          run_verbose make install-strip
+        else
+          run_verbose make install
+        fi
 
         ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}"
 
@@ -830,8 +853,12 @@ function mingw_build_winpthreads()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        # make install-strip
-        run_verbose make install-strip
+        if [ "${XBB_WITH_STRIP}" == "y" ]
+        then
+          run_verbose make install-strip
+        else
+          run_verbose make install
+        fi
 
         # GCC installs all DLLs in lib; for consistency, copy
         # libwinpthread-1.dll there too. Normally not needed, as
@@ -950,8 +977,12 @@ function mingw_build_winstorecompat()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        # make install-strip
-        run_verbose make install-strip
+        if [ "${XBB_WITH_STRIP}" == "y" ]
+        then
+          run_verbose make install-strip
+        else
+          run_verbose make install
+        fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_build_winstorecompat_folder_name}/make-output-$(ndate).txt"
     )

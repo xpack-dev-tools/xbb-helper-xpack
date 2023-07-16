@@ -562,7 +562,12 @@ function gcc_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        run_verbose make install-strip
+        if [ "${XBB_WITH_STRIP}" == "y" ]
+        then
+          run_verbose make install-strip
+        else
+          run_verbose make install
+        fi
 
         if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
@@ -668,7 +673,13 @@ function _gcc_build_libs()
       echo "Running gcc-libs make..."
 
       run_verbose make -j ${XBB_JOBS} all-target-libgcc
-      run_verbose make install-strip-target-libgcc
+
+      if [ "${XBB_WITH_STRIP}" == "y" ]
+      then
+        run_verbose make install-strip-target-libgcc
+      else
+        run_verbose make install-target-libgcc
+      fi
 
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-libs-output-$(ndate).txt"
   )
@@ -712,7 +723,13 @@ function _gcc_build_final()
         echo "Running gcc-final make..."
 
         run_verbose make -j ${XBB_JOBS}
-        run_verbose make install-strip
+
+        if [ "${XBB_WITH_STRIP}" == "y" ]
+        then
+          run_verbose make install-strip
+        else
+          run_verbose make install
+        fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-final-output-$(ndate).txt"
     )

@@ -1584,6 +1584,8 @@ function strip_binaries()
 
       fi
     )
+  else
+    echo "strip_binaries() skipped"
   fi
 }
 

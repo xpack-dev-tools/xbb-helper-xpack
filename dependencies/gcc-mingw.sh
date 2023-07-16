@@ -467,7 +467,12 @@ function gcc_mingw_build_final()
       run_verbose make -j ${XBB_JOBS}
 
       # make install-strip
-      run_verbose make install-strip
+      if [ "${XBB_WITH_STRIP}" == "y" ]
+      then
+        run_verbose make install-strip
+      else
+        run_verbose make install
+      fi
 
       (
         # The DLLs are expected to be in the /${triplet}/lib folder.
@@ -490,7 +495,7 @@ function gcc_mingw_build_final()
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}/make-final-output-$(ndate).txt"
 
     (
-      if true
+      if [ "${XBB_WITH_STRIP}" == "y" ]
       then
 
         # Exception to the rule, it would be too complicated to express
@@ -525,6 +530,8 @@ function gcc_mingw_build_final()
           -exec "${ranlib}" '{}' ';'
         set -e
 
+      else
+        echo "Stripping ${name_prefix}gcc libraries skipped..."
       fi
 
       # The mingw link was created in gcc_first; no longer needed.
