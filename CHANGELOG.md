@@ -2,6 +2,11 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-07-16
+
+* 1.4.9
+* 3b49185 more XBB_WITH_STRIP checks
+
 ## 2023-07-08
 
 * 064c558 xpack-dev-tools
