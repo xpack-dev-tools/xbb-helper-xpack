@@ -2,6 +2,16 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-07-27
+
+* v1.4.10 released
+* af8336f templates: replace latest by explicit version
+
+## 2023-07-26
+
+* 7e2824c READMEs update xpack-dev-tools path
+* ff581c7 READMEs update
+
 ## 2023-07-16
 
 * 1.4.9
