@@ -18,7 +18,7 @@ a recent [xpm](https://xpack.github.io/xpm/),
 which is a portable [Node.js](https://nodejs.org/) command line application,
 is needed.
 
-It is recommended to update to the latest version with:
+It is recommended to install/update to the latest version with:
 
 ```sh
 npm install --location=global xpm@latest

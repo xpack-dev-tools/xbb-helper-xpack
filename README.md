@@ -38,12 +38,15 @@ As a source xPack, the easiest way to add it to a project is via
 ### Prerequisites
 
 A recent [xpm](https://xpack.github.io/xpm/),
-which is a portable [Node.js](https://nodejs.org/) command line application.
+which is a portable [Node.js](https://nodejs.org/) command line application
+that complements [npm](https://docs.npmjs.com)
+with several extra features specific to
+**C/C++ projects**.
 
-It is recommended to update to the latest version with:
+It is recommended to install/update to the latest version with:
 
 ```sh
-npm install --global xpm@latest
+npm install --location=global xpm@latest
 ```
 
 For details please follow the instructions in the
