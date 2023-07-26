@@ -36,7 +36,7 @@ terminal (on Windows use the _Git Bash_ console):
 
 ```sh
 rm -rf ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
-mkdir -p ~/Work/xpacks && \
+mkdir -p ~/Work/xpack-dev-tools && \
 git clone \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
   ~/Work/xpack-dev-tools/xbb-helper-xpack.git
@@ -46,7 +46,7 @@ For development purposes, clone the `xpack-develop` branch:
 
 ```sh
 rm -rf ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
-mkdir -p ~/Work/xpacks && \
+mkdir -p ~/Work/xpack-dev-tools && \
 git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
