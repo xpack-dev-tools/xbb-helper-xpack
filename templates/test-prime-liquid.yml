@@ -30,7 +30,7 @@ jobs:
   {% when "linux-x64" %}
   linux-x64:
     name: 'Linux x64 {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: 'Environment'
@@ -91,10 +91,10 @@ jobs:
           fetch-depth: 3
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} docker test'
-        uses: docker://ubuntu:latest
+        uses: docker://ubuntu:22.04
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/scripts/test.sh --image ubuntu:latest --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+          args: /github/workspace/scripts/test.sh --image ubuntu:22.04 --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
   {% when "linux-arm" %}
   linux-arm32:
     name: 'Linux arm32 {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -129,14 +129,14 @@ jobs:
           fetch-depth: 3
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} docker test'
-        uses: docker://arm32v7/ubuntu:latest
+        uses: docker://arm32v7/ubuntu:22.04
         with:
           entrypoint: /bin/bash # /usr/bin/linux32
-          args: /github/workspace/scripts/test.sh --image arm32v7/ubuntu:latest --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+          args: /github/workspace/scripts/test.sh --image arm32v7/ubuntu:22.04 --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
   {% when "darwin-x64" %}
   macos-x64:
     name: 'macOS x64 {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    runs-on: macos-10.15
+    runs-on: macos-12
 
     steps:
       - name: 'Environment'
