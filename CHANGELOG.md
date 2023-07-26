@@ -4,6 +4,9 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-07-27
 
+* v1.4.11 released
+* b76922a package.json: minXpm 0.16.3
+* d32d572 @xpack-dev-tools/xbb-helper/
 * v1.4.10 released
 * af8336f templates: replace latest by explicit version
 
