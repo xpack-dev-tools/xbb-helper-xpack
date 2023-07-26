@@ -64,7 +64,7 @@ xpm init # Unless a package.json is already present
 
 xpm install --save-dev @xpack-dev-tools/xbb-helper@latest --verbose
 
-ls -l xpacks/xpack-dev-tools-xbb-helper
+ls -l xpacks/@xpack-dev-tools/xbb-helper
 ```
 
 ### Git submodule
@@ -78,7 +78,7 @@ git init # Unless already a Git project
 mkdir -p xpacks
 
 git submodule add https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
-  xpacks/xpack-dev-tools-xbb-helper
+  xpacks/@xpack-dev-tools/xbb-helper
 ```
 
 ## Branches
@@ -105,8 +105,8 @@ A typical use case is to define an xPack action that copies, among
 other things, the build scripts from the helper templates:
 
 ```json
-  "cp xpacks/xpack-dev-tools-xbb-helper/templates/build.sh scripts/",
-  "cp xpacks/xpack-dev-tools-xbb-helper/templates/test.sh scripts/"
+  "cp xpacks/@xpack-dev-tools/xbb-helper/templates/build.sh scripts/",
+  "cp xpacks/@xpack-dev-tools/xbb-helper/templates/test.sh scripts/"
 ```
 
 The resulting `scripts/build.sh` requires two application scripts:

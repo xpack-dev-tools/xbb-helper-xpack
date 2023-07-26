@@ -41,7 +41,7 @@ script_folder_name="$(basename "${script_folder_path}")"
 # =============================================================================
 
 helper_folder_path="$(dirname ${script_folder_path})"
-project_folder_path="$(dirname $(dirname "${helper_folder_path}"))"
+project_folder_path="$(dirname $(dirname $(dirname "${helper_folder_path}")))"
 scripts_folder_path="${project_folder_path}/scripts"
 
 # -----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ echo "Update the ${XBB_APPLICATION_DESCRIPTION} package.json binaries..."
 version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 
 run_verbose xpm-dev binaries-update \
-  -C "${HOME}/Work/${XBB_APPLICATION_LOWER_CASE_NAME}-xpack.git" \
+  -C "${HOME}/Work/xpack-dev-tools/${XBB_APPLICATION_LOWER_CASE_NAME}-xpack.git" \
   "${version}" \
   "${HOME}/Downloads/xpack-binaries/${XBB_APPLICATION_LOWER_CASE_NAME}"
 
