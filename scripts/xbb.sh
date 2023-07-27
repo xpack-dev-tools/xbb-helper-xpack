@@ -33,13 +33,15 @@ function xbb_make_writable()
         echo
         echo "Make the xpacks folder writable by all..."
 
-        # Non-recursive! (Recursive fails with exit code 2)
-        run_verbose chmod a+w "${project_folder_path}/xpacks"
+        run_verbose find "${project_folder_path}/xpacks" -type d -exec chmod a+w '{}' ';'
 
-        if [ -d "${project_folder_path}/xpacks/.bin" ]
-        then
-          run_verbose chmod a+w "${project_folder_path}/xpacks/.bin"
-        fi
+        # Non-recursive! (Recursive fails with exit code 2)
+        # run_verbose chmod a+w "${project_folder_path}/xpacks"
+
+        # if [ -d "${project_folder_path}/xpacks/.bin" ]
+        # then
+        #   run_verbose chmod a+w "${project_folder_path}/xpacks/.bin"
+        # fi
       fi
     )
   fi
