@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-07-27
 
-* v1.4.11 released
+* v1.4.12 released
+* 7eb2adf xbb.sh: try to fix recursive chmod a+w
+* 77be29f 1.4.11
+* 9b99e0e prepare v1.4.11
 * b76922a package.json: minXpm 0.16.3
 * d32d572 @xpack-dev-tools/xbb-helper/
 * v1.4.10 released
