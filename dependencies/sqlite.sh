@@ -15,6 +15,7 @@
 # https://www.sqlite.org/2020/sqlite-src-3330000.zip
 # https://www.sqlite.org/2021/sqlite-src-3360000.zip
 # https://www.sqlite.org/2022/sqlite-src-3380200.zip
+# https://www.sqlite.org/2023/sqlite-src-3420000.zip
 # https://www.sqlite.org/src/tarball/7ebdfa80/SQLite-7ebdfa80.tar.gz
 
 # https://github.com/archlinux/svntogit-packages/blob/packages/sqlite/trunk/PKGBUILD
@@ -44,7 +45,11 @@ function sqlite_build()
   local sqlite_archive="${sqlite_src_folder_name}.zip"
   local sqlite_url
 
-  if [ "${sqlite_version}" == "3400100" ] || \
+  if [ "${sqlite_version}" == "3420000" ]
+  then
+    # 2023
+    sqlite_url="https://www.sqlite.org/2023/${sqlite_archive}"
+  elif [ "${sqlite_version}" == "3400100" ] || \
      [ "${sqlite_version}" == "3390200" ] || \
      [ "${sqlite_version}" == "3380200" ]
   then
