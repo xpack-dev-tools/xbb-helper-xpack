@@ -799,7 +799,6 @@ function xbb_prepare_clang_env()
 
   export ADDR2LINE="$(which ${prefix}llvm-addr2line 2>/dev/null || which ${prefix}addr2line 2>/dev/null || echo ${prefix}addr2line)"
   export AR="$(which ${prefix}llvm-ar 2>/dev/null || which ${prefix}ar 2>/dev/null || echo ${prefix}ar)"
-  export AS="$(which ${prefix}llvm-as 2>/dev/null || which ${prefix}as 2>/dev/null || echo ${prefix}as)"
 
   local dlltool="$(which ${prefix}llvm-dlltool 2>/dev/null || which ${prefix}dlltool 2>/dev/null)"
   if [ ! -z "${dlltool}" ]
@@ -809,9 +808,12 @@ function xbb_prepare_clang_env()
 
   if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
-    # Stick to system linker on macOS.
+    # Stick to system tools on macOS.
+    # with llvm-as -> configure: error: cannot compute suffix of object files: cannot compile
+    export AS="$(which ${prefix}as 2>/dev/null || echo ${prefix}as)"
     export LD="$(which ${prefix}ld 2>/dev/null || echo ${prefix}ld)"
   else
+    export AS="$(which ${prefix}llvm-as 2>/dev/null || which ${prefix}as 2>/dev/null || echo ${prefix}as)"
     export LD="$(which ${prefix}ld.lld 2>/dev/null || which ${prefix}ld 2>/dev/null || echo ${prefix}ld)"
   fi
 
