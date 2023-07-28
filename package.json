@@ -1,6 +1,6 @@
 {
   "name": "@xpack-dev-tools/xbb-helper",
-  "version": "1.4.14",
+  "version": "1.4.15",
   "description": "A source xPack with scripts and other files to support XBB builds",
   "main": "",
   "scripts": {
