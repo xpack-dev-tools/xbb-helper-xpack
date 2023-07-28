@@ -2,9 +2,16 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-07-28
+
+* ef06ba5 README update
+* 486f2a5 sqlite.sh: add 3420000
+* ad37ab7 add pyconfig-win-3.11.4.h
+
 ## 2023-07-27
 
-* v1.4.12 released
+* 30c8a40 1.4.12
+* 452a140 prepare v1.4.12
 * 7eb2adf xbb.sh: try to fix recursive chmod a+w
 * 77be29f 1.4.11
 * 9b99e0e prepare v1.4.11
