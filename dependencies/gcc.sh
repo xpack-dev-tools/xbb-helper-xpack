@@ -43,12 +43,16 @@
 # 2020-03-04, "8.4.0"
 # 2020-03-12, "9.3.0"
 # 2021-04-08, "10.3.0"
-# 2021-04-27, "11.1.0" +
+# 2021-04-27, "11.1.0"
 # 2021-05-14, "8.5.0" *
 # 2021-07-28, "11.2.0"
 # 2022-04-21, "11.3.0"
 # 2022-05-06, "12.1.0"
 # 2022-08-19, "12.2.0"
+# 2023-05-08, "12.3.0"
+# 2023-05-29, "11.4.0"
+# 2023-04-26, "13.1.0"
+# 2023-07-27, "13.2.0"
 
 # -----------------------------------------------------------------------------
 
@@ -899,8 +903,39 @@ function gcc_test()
 
     # -------------------------------------------------------------------------
 
+    local gcc_version=$(run_host_app "${CC}" -dumpversion)
+    echo "GCC: ${gcc_version}"
+
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
+
+      if [[ "${gcc_version}" =~ 12[.]3[.]0 ]]
+      then
+        # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
+        # collect2.exe: error: ld returned 1 exit status
+
+        export XBB_SKIP_TEST_HELLO_WEAK_C="y"
+        export XBB_SKIP_TEST_HELLO_WEAK_CPP="y"
+
+        # [wine64 ./lto-throwcatch-main.exe]
+        # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 03d8), starting debugger...
+        # Unhandled exception: page fault on execute access to 0x0000000122b1157c in 64-bit code (0x00000122b1157c).
+
+        export XBB_SKIP_RUN_TEST_LTO_THROWCATCH_MAIN="y"
+        export XBB_SKIP_RUN_TEST_GC_LTO_THROWCATCH_MAIN="y"
+        export XBB_SKIP_RUN_TEST_STATIC_LIB_LTO_THROWCATCH_MAIN="y"
+        export XBB_SKIP_RUN_TEST_STATIC_LIB_GC_LTO_THROWCATCH_MAIN="y"
+
+        # [wine64 ./lto-autoimport-main.exe]
+        # Mingw-w64 runtime failure:
+        # 32 bit pseudo relocation at 000000014000152A out of range, targeting 000000028846135C, yielding the value 000000014845FE2E.
+
+        export XBB_SKIP_RUN_TEST_LTO_AUTOIMPORT_MAIN="y"
+        export XBB_SKIP_RUN_TEST_GC_LTO_AUTOIMPORT_MAIN="y"
+        export XBB_SKIP_RUN_TEST_STATIC_LIB_LTO_AUTOIMPORT_MAIN="y"
+        export XBB_SKIP_RUN_TEST_STATIC_LIB_GC_LTO_AUTOIMPORT_MAIN="y"
+      fi
+
       (
         if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
         then
