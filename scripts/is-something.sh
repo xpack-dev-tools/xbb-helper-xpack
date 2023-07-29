@@ -12,20 +12,28 @@
 
 function is_variable_set()
 {
-  # For convenience, turn dashes into underscores
-  # and convert all letters to upper case.
-  local variable_name=$(echo "$1" | tr '-' '_' | tr "[:lower:]" "[:upper:]")
+  while [ $# -gt 0 ]
+  do
+    # For convenience, turn dashes into underscores
+    # and convert all letters to upper case.
+    local variable_name=$(echo "$1" | tr '-' '_' | tr "[:lower:]" "[:upper:]")
 
-  # https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Parameter-Expansion
-  # ! is the bash indirection operator
-  # ${var+x} evaluates to null if x is not set
-  # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_02
-  if [ ! -z ${!variable_name+x} ]
-  then
-    return 0
-  else
-    return 1
-  fi
+    echo_develop
+    echo_develop "is_variable_set ${variable_name}"
+
+    # https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Parameter-Expansion
+    # ! is the bash indirection operator
+    # ${var+x} evaluates to null if x is not set
+    # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_02
+    if [ ! -z ${!variable_name+x} ]
+    then
+      return 0
+    fi
+
+    shift
+  done
+
+  return 1
 }
 
 # -----------------------------------------------------------------------------
