@@ -695,7 +695,17 @@ function gcc_mingw_test()
     # - The Windows directory.
     # - The PATH variable directories.
 
-    # Run tests in all cases.
+    local bits
+    if [ "${triplet}" == "x86_64-w64-mingw32" ]
+    then
+      bits="--64"
+    elif [ "${triplet}" == "i686-w64-mingw32" ]
+    then
+      bits="--32"
+    else
+      echo "Unsupported triplet ${triplet}"
+      exit 1
+    fi
 
     (
       # For libstdc++-6.dll & co.
@@ -710,10 +720,10 @@ function gcc_mingw_test()
         echo "WINEPATH=${WINEPATH}"
       fi
 
-      compiler-tests-single "${test_bin_path}"
-      compiler-tests-single "${test_bin_path}" --gc
-      compiler-tests-single "${test_bin_path}" --lto
-      compiler-tests-single "${test_bin_path}" --gc --lto
+      compiler-tests-single "${test_bin_path}" ${bits}
+      compiler-tests-single "${test_bin_path}" --gc ${bits}
+      compiler-tests-single "${test_bin_path}" --lto ${bits}
+      compiler-tests-single "${test_bin_path}" --gc --lto ${bits}
     )
 
     (
@@ -729,17 +739,17 @@ function gcc_mingw_test()
         echo "WINEPATH=${WINEPATH}"
       fi
 
-      compiler-tests-single "${test_bin_path}" --static-lib
-      compiler-tests-single "${test_bin_path}" --static-lib --gc
-      compiler-tests-single "${test_bin_path}" --static-lib --lto
-      compiler-tests-single "${test_bin_path}" --static-lib --gc --lto
+      compiler-tests-single "${test_bin_path}" --static-lib ${bits}
+      compiler-tests-single "${test_bin_path}" --static-lib --gc ${bits}
+      compiler-tests-single "${test_bin_path}" --static-lib --lto ${bits}
+      compiler-tests-single "${test_bin_path}" --static-lib --gc --lto ${bits}
     )
 
     (
-      compiler-tests-single "${test_bin_path}" --static
-      compiler-tests-single "${test_bin_path}" --static --gc
-      compiler-tests-single "${test_bin_path}" --static --lto
-      compiler-tests-single "${test_bin_path}" --static --gc --lto
+      compiler-tests-single "${test_bin_path}" --static ${bits}
+      compiler-tests-single "${test_bin_path}" --static --gc ${bits}
+      compiler-tests-single "${test_bin_path}" --static --lto ${bits}
+      compiler-tests-single "${test_bin_path}" --static --gc --lto ${bits}
     )
 
     # -------------------------------------------------------------------------
