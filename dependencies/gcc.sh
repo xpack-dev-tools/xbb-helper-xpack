@@ -182,6 +182,9 @@ function gcc_build()
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
 
+      # Before LDFLAGS_FOR_TARGET & Co.
+      xbb_adjust_ldflags_rpath
+
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         # --enable-mingw-wildcard already does this, enabling it results in:
@@ -222,8 +225,6 @@ function gcc_build()
         export LDFLAGS_FOR_BUILD
         export BOOT_LDFLAGS
       fi
-
-      xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
       export CFLAGS
