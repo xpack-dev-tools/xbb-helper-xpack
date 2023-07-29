@@ -388,7 +388,7 @@ function compiler-tests-single()
         run_target_app_verbose "./${prefix}crt-test${suffix}"
       fi
 
-      if is_variable_set "XBB_SKIP_TEST_${prefix}hello-weak-c${suffix}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}hello-weak-c${suffix}" "XBB_SKIP_TEST_hello-weak-c"
       then
         echo
         echo "Skipping ${prefix}hello-weak-c${suffix}..."
@@ -399,7 +399,7 @@ function compiler-tests-single()
         expect_target_output "Hello World!" "./${prefix}hello-weak-c${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
-      if is_variable_set "XBB_SKIP_TEST_${prefix}hello-weak-cpp${suffix}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}hello-weak-cpp${suffix}" "XBB_SKIP_TEST_hello-weak-cpp"
       then
         echo
         echo "Skipping ${prefix}hello-weak-cpp${suffix}..."
