@@ -101,6 +101,11 @@ function libxml2_build()
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
 
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      then
+        LDFLAGS+=" -liconv"
+      fi
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
@@ -140,6 +145,7 @@ function libxml2_build()
           # config_options+=("--without-lzma") # HB
 
           # config_options+=("--with-history") # Arch
+          config_options+=("--with-iconv")
           config_options+=("--with-icu") # Arch
 
           # config_options+=("--disable-static") # Arch
