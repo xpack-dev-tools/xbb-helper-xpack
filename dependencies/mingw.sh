@@ -723,7 +723,7 @@ function mingw_build_crt()
           run_verbose make install
         fi
 
-        ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}"
+        run_verbose ls -l "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}"
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_crt_folder_name}/make-output-$(ndate).txt"
     )
