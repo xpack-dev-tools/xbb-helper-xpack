@@ -295,6 +295,13 @@ function compiler-tests-single()
       expect_target_output "42" "${prefix}simple-int-exception${suffix}${XBB_TARGET_DOT_EXE}"
 
       # -----------------------------------------------------------------------
+
+      # Test borrowed from https://gist.github.com/floooh/10160514
+      run_host_app_verbose "${CXX}" "atomic.cpp" -o "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}" -Wno-format ${LDXXFLAGS}
+      show_target_libs_develop "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}"
+      run_target_app_verbose "./${prefix}atomic${suffix}"
+
+      # -----------------------------------------------------------------------
       # Tests borrowed from the llvm-mingw project.
 
       run_host_app_verbose "${CC}" "hello.c" -o "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
