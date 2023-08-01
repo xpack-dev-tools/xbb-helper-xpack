@@ -56,14 +56,14 @@ function readline_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${readline_url}" "${readline_archive}" \
       "${readline_src_folder_name}" "${readline_patch_file_path}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${readline_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${readline_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${readline_folder_name}"
 
       xbb_activate_dependencies_dev
 

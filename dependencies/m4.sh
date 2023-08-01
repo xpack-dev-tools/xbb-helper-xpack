@@ -45,7 +45,7 @@ function m4_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${m4_url}" "${m4_archive}" \
       "${m4_src_folder_name}" \
@@ -53,7 +53,7 @@ function m4_build()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${m4_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${m4_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${m4_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -129,7 +129,7 @@ function m4_build()
         (
           echo
           echo "Linking gm4..."
-          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+          run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           rm -fv gm4
           ln -sv m4 gm4
         )

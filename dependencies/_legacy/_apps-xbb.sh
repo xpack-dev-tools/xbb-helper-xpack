@@ -53,7 +53,7 @@ function scons_build()
     echo "scons in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${scons_folder_name}" ]
     then
@@ -70,7 +70,7 @@ function scons_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${scons_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${scons_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -173,14 +173,14 @@ function curl_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${curl_url}" "${curl_archive}" \
       "${curl_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${curl_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${curl_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${curl_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -398,7 +398,7 @@ function tar_build()
     echo "tar in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${tar_folder_name}" ]
     then
@@ -413,7 +413,7 @@ function tar_build()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${tar_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${tar_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${tar_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -489,7 +489,7 @@ function tar_build()
         (
           echo
           echo "Linking gnutar..."
-          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+          run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           rm -fv gnutar
           ln -sv tar gnutar
         )
@@ -614,14 +614,14 @@ function guille_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${guile_url}" "${guile_archive}" \
       "${guile_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${guile_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -805,14 +805,14 @@ function autogen_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${autogen_url}" "${autogen_archive}" \
       "${autogen_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${autogen_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -1004,14 +1004,14 @@ function gawk_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gawk_url}" "${gawk_archive}" \
       "${gawk_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gawk_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${gawk_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${gawk_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -1197,14 +1197,14 @@ function patch_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${patch_url}" "${patch_archive}" \
       "${patch_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${patch_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${patch_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${patch_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -1356,14 +1356,14 @@ function diffutils_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${diffutils_url}" "${diffutils_archive}" \
       "${diffutils_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${diffutils_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${diffutils_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${diffutils_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -1543,14 +1543,14 @@ function bison_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${bison_url}" "${bison_archive}" \
       "${bison_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${bison_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${bison_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${bison_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -1753,7 +1753,7 @@ function make_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${make_url}" "${make_archive}" \
       "${make_src_folder_name}" \
@@ -1761,7 +1761,7 @@ function make_build()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${make_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${make_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${make_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -1839,7 +1839,7 @@ function make_build()
         (
           echo
           echo "Linking gmake -> make..."
-          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+          run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           rm -fv make
           ln -sv gmake make
         )
@@ -1929,14 +1929,14 @@ function bash_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${bash_url}" "${bash_archive}" \
       "${bash_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${bash_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${bash_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${bash_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -2101,14 +2101,14 @@ function wget_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${wget_url}" "${wget_archive}" \
       "${wget_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${wget_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${wget_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${wget_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -2286,7 +2286,7 @@ function dos2unix_build()
     echo "dos2unix in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${dos2unix_folder_name}" ]
     then
@@ -2301,7 +2301,7 @@ function dos2unix_build()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${dos2unix_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${dos2unix_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${dos2unix_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -2436,14 +2436,14 @@ function flex_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${flex_url}" "${flex_archive}" \
       "${flex_src_folder_name}" \
       "${flex_patch_file_name}"
 
     (
-      cd "${XBB_SOURCES_FOLDER_PATH}/${flex_src_folder_name}"
+      run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}/${flex_src_folder_name}"
       if [ ! -f "stamp-autogen" ]
       then
 
@@ -2461,7 +2461,7 @@ function flex_build()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${flex_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${flex_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${flex_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -2674,7 +2674,7 @@ function perl_build()
     echo "perl in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${perl_folder_name}" ]
     then
@@ -2689,7 +2689,7 @@ function perl_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${perl_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${perl_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -2889,14 +2889,14 @@ function tcl_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${tcl_url}" "${tcl_archive}" \
       "${tcl_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${tcl_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${tcl_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${tcl_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -3108,7 +3108,7 @@ function git_build()
     echo "git in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${git_folder_name}" ]
     then
@@ -3122,7 +3122,7 @@ function git_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${git_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${git_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -3288,7 +3288,7 @@ function p7zip_build()
     echo "p7zip in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${p7zip_folder_name}" ]
     then
@@ -3302,7 +3302,7 @@ function p7zip_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${p7zip_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${p7zip_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -3444,7 +3444,7 @@ function rhash_build()
     echo "rhash in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${rhash_folder_name}" ]
     then
@@ -3460,7 +3460,7 @@ function rhash_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${rhash_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${rhash_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -3625,7 +3625,7 @@ function re2c_build()
     echo "re2c in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${re2c_folder_name}" ]
     then
@@ -3639,7 +3639,7 @@ function re2c_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${re2c_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${re2c_folder_name}"
       if false # [ ! -f "stamp-autogen" ]
       then
 
@@ -3653,7 +3653,7 @@ function re2c_build()
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${re2c_folder_name}/autogen-output-$(ndate).txt"
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${re2c_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${re2c_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -3831,14 +3831,14 @@ function gnupg_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gnupg_url}" "${gnupg_archive}" \
       "${gnupg_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gnupg_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${gnupg_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${gnupg_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -4037,14 +4037,14 @@ function makedepend_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${makedepend_url}" "${makedepend_archive}" \
       "${makedepend_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${makedepend_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${makedepend_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${makedepend_folder_name}"
 
       xbb_activate_dependencies_dev
 

@@ -45,14 +45,14 @@ function xz_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${xz_url}" "${xz_archive}" \
       "${xz_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${xz_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${xz_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${xz_folder_name}"
 
       xbb_activate_dependencies_dev
 

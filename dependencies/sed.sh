@@ -42,14 +42,14 @@ function sed_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${sed_url}" "${sed_archive}" \
       "${sed_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${sed_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${sed_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${sed_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -144,7 +144,7 @@ function sed_build()
         (
           echo
           echo "Linking gsed..."
-          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+          run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           rm -fv gsed
           ln -sv sed gsed
         )
@@ -203,7 +203,7 @@ function sed_test()
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/sed"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/sed"
-    cd "${XBB_TESTS_FOLDER_PATH}/sed"
+    run_verbose_develop cd "${XBB_TESTS_FOLDER_PATH}/sed"
 
     echo "Hello World" >test.txt
     expect_host_output "Hello SED" "${test_bin_folder_path}/sed" 's|World|SED|' test.txt

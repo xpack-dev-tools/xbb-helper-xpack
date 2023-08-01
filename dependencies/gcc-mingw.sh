@@ -167,7 +167,7 @@ function gcc_mingw_build_first()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${mingw_gcc_url}" "${mingw_gcc_archive}" \
       "${mingw_gcc_src_folder_name}" \
@@ -177,7 +177,7 @@ function gcc_mingw_build_first()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -230,14 +230,14 @@ function gcc_mingw_build_first()
 
       rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/mingw"
       (
-        cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+        run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
         run_verbose ln -sv "${triplet}" "mingw"
       )
 
       # rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/mingw"
       # (
       #   mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/mingw"
-      #   cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/mingw"
+      #   run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/mingw"
       #   run_verbose ln -sv "../include" "include"
       # )
 
@@ -431,7 +431,7 @@ function gcc_mingw_build_final()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -484,12 +484,12 @@ function gcc_mingw_build_final()
         # is not properly populated; manually copy the DLLs.
         if [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
-          cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
+          run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
           run_verbose find "${triplet}" -name '*.dll' ! -iname 'liblto*' \
             -exec cp -v '{}' "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib" ';'
         fi
 
-        cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+        run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
         run_verbose find . -name '*.dll'
       )
 
@@ -510,7 +510,7 @@ function gcc_mingw_build_final()
         echo
         echo "Stripping ${name_prefix}gcc libraries..."
 
-        cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" # ! usr
+        run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" # ! usr
 
         strip="$(which ${triplet}-strip)"
         ranlib="$(which ${triplet}-ranlib)"
@@ -674,7 +674,7 @@ function gcc_mingw_test()
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc"
-    cd "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc"
+    run_verbose_develop cd "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc"
 
     echo
     echo "pwd: $(pwd)"

@@ -39,7 +39,7 @@ function libusb0_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libusb0_url}" "${libusb0_archive}" \
       "${libusb0_src_folder_name}"
@@ -48,7 +48,7 @@ function libusb0_build()
       if [ ! -x "${XBB_SOURCES_FOLDER_PATH}/${libusb0_src_folder_name}/configure" ]
       then
 
-        cd "${XBB_SOURCES_FOLDER_PATH}/${libusb0_src_folder_name}"
+        run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}/${libusb0_src_folder_name}"
 
         xbb_activate_dependencies_dev
 
@@ -59,7 +59,7 @@ function libusb0_build()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libusb0_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libusb0_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libusb0_folder_name}"
 
       xbb_activate_dependencies_dev
 

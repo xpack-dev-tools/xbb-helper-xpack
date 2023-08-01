@@ -166,7 +166,7 @@ function gcc_cross_download()
   then
     (
       mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-      cd "${XBB_SOURCES_FOLDER_PATH}"
+      run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
       download_and_extract "${XBB_GCC_ARCHIVE_URL}" \
         "${XBB_GCC_ARCHIVE_NAME}" "${XBB_GCC_SRC_FOLDER_NAME}" \
@@ -187,7 +187,7 @@ function gcc_cross_generate_riscv_multilib_file()
       echo
       echo "Running the multilib generator..."
 
-      cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/gcc/config/riscv"
+      run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/gcc/config/riscv"
 
       xbb_activate_dependencies_dev
 
@@ -238,13 +238,13 @@ function gcc_cross_build_first()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     gcc_cross_download
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gcc_first_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${gcc_first_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${gcc_first_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -463,7 +463,7 @@ function gcc_cross_copy_linux_libs()
     local linux_path="${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
     (
-      cd "${XBB_TARGET_WORK_FOLDER_PATH}"
+      run_verbose_develop cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
       copy_folder "${linux_path}/${triplet}/lib" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib"
       copy_folder "${linux_path}/${triplet}/include" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/include"
@@ -474,7 +474,7 @@ function gcc_cross_copy_linux_libs()
     )
 
     (
-      cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+      run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
       find "${triplet}/lib" "${triplet}/include" "include" "lib" "share" \
         -perm /111 -and ! -type d \
         -exec rm '{}' ';'
@@ -539,13 +539,13 @@ function gcc_cross_build_final()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     gcc_cross_download
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gcc_final_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${gcc_final_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${gcc_final_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -879,7 +879,7 @@ function gcc_cross_test()
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc"
-    cd "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc"
+    run_verbose_develop cd "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc"
 
     echo
     echo "pwd: $(pwd)"
@@ -1021,7 +1021,7 @@ function gcc_cross_tidy_up()
     echo "# Tidying up..."
 
     # find: pred.c:1932: launch: Assertion `starting_desc >= 0' failed.
-    cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
 
     find "${XBB_APPLICATION_INSTALL_FOLDER_PATH}" -name "libiberty.a" -exec rm -v '{}' ';'
     find "${XBB_APPLICATION_INSTALL_FOLDER_PATH}" -name '*.la' -exec rm -v '{}' ';'
@@ -1047,7 +1047,7 @@ function gcc_cross_strip_libs()
       echo
       echo "# Stripping libraries..."
 
-      cd "${XBB_TARGET_WORK_FOLDER_PATH}"
+      run_verbose_develop cd "${XBB_TARGET_WORK_FOLDER_PATH}"
 
       # which "${triplet}-objcopy"
 
@@ -1080,7 +1080,7 @@ function gcc_cross_final_tunings()
   if [ "${XBB_FIX_LTO_PLUGIN:-}" == "y" ]
   then
     (
-      cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+      run_verbose_develop cd "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
 
       echo
       if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]

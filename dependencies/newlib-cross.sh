@@ -64,7 +64,7 @@ function newlib_cross_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     if [ ! -d "${XBB_NEWLIB_SRC_FOLDER_NAME}" ]
     then
@@ -107,7 +107,7 @@ function newlib_cross_build()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${newlib_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${newlib_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${newlib_folder_name}"
 
       xbb_activate_dependencies_dev
       # xbb_activate_*_bin moved outside.

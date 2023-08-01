@@ -64,7 +64,7 @@ function libxml2_build()
     echo "libxml2 in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}" ]
     then
@@ -78,7 +78,7 @@ function libxml2_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
       if [ ! -f "stamp-autoreconf" ]
       then
         run_verbose autoreconf -vfi
@@ -91,7 +91,7 @@ function libxml2_build()
       # /lib added due to wrong -Llib used during make.
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}/lib"
 
-      cd "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
 
       xbb_activate_dependencies_dev
 

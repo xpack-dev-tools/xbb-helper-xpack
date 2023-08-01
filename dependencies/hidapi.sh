@@ -59,7 +59,7 @@ function hidapi_build()
         echo "hidapi in-source building..."
 
         mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-        cd "${XBB_BUILD_FOLDER_PATH}"
+        run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
         if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}" ]
         then
@@ -75,7 +75,7 @@ function hidapi_build()
         hidapi_OBJECT="hid.o"
         hidapi_A="libhid.a"
 
-        cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}/windows"
+        run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}/windows"
 
         CPPFLAGS="${XBB_CPPFLAGS}"
         CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -96,7 +96,7 @@ function hidapi_build()
 
         # Make just compiles the file. Create the archive and convert it to library.
         # No dynamic/shared libs involved.
-        cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}/windows"
+        run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}/windows"
         run_verbose ar -r  "${hidapi_A}" "${hidapi_OBJECT}"
         run_verbose ${XBB_TARGET_TRIPLET}-ranlib "${hidapi_A}"
 
@@ -109,7 +109,7 @@ function hidapi_build()
           "${helper_folder_path}/pkgconfig/hidapi-${hidapi_version}-windows.pc" \
           > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/hidapi.pc"
 
-        cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
+        run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/hidapi"
         run_verbose cp -v "hidapi/hidapi.h" \
           "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/hidapi"
@@ -127,13 +127,13 @@ function hidapi_build()
       then
 
         mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-        cd "${XBB_SOURCES_FOLDER_PATH}"
+        run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
         download_and_extract "${hidapi_url}" "${hidapi_archive}" \
           "${hidapi_src_folder_name}" "${hidapi_patch_file_name}"
 
         mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
-        cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
+        run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${hidapi_folder_name}"
 
         xbb_activate_dependencies_dev
 
@@ -232,7 +232,7 @@ function hidapi_build()
         ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${hidapi_folder_name}/build-output.txt"
 
         (
-          cd "${XBB_BUILD_FOLDER_PATH}"
+          run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
           copy_cmake_logs "${hidapi_folder_name}"
         )

@@ -72,14 +72,14 @@ function binutils_cross_build()
 
     # Download binutils.
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${XBB_BINUTILS_ARCHIVE_URL}" "${XBB_BINUTILS_ARCHIVE_NAME}" \
         "${XBB_BINUTILS_SRC_FOLDER_NAME}" "${XBB_BINUTILS_PATCH_FILE_NAME}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -176,7 +176,7 @@ function binutils_cross_build()
           config_options+=("--with-system-zlib")
 
           # Arm --with-sysroot=${sysroots}"
-          
+
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_BINUTILS_SRC_FOLDER_NAME}/configure" \
             "${config_options[@]}"
 

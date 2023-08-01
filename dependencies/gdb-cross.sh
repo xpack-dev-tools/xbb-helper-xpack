@@ -114,7 +114,7 @@ function gdb_cross_build()
     if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}" ]
     then
       mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
       download_and_extract "${XBB_GDB_ARCHIVE_URL}" "${XBB_GDB_ARCHIVE_NAME}" \
           "${XBB_GDB_SRC_FOLDER_NAME}" "${XBB_GDB_PATCH_FILE_NAME}"
@@ -123,7 +123,7 @@ function gdb_cross_build()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gdb_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${gdb_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${gdb_folder_name}"
 
       # To pick up the python lib from XBB
       # xbb_activate_dev

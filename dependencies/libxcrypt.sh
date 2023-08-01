@@ -55,7 +55,7 @@ function libxcrypt_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     # set +e
     download_and_extract "${libxcrypt_url}" "${libxcrypt_archive}" \
@@ -65,7 +65,7 @@ function libxcrypt_build()
     if [ ! -x "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}/configure" ]
     then
       (
-        cd "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}"
+        run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}"
 
         xbb_activate_dependencies_dev
 
@@ -86,7 +86,7 @@ function libxcrypt_build()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libxcrypt_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libxcrypt_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libxcrypt_folder_name}"
 
       xbb_activate_dependencies_dev
 

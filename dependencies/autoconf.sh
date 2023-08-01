@@ -43,14 +43,14 @@ function autoconf_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${autoconf_url}" "${autoconf_archive}" \
       "${autoconf_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${autoconf_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${autoconf_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${autoconf_folder_name}"
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"

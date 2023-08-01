@@ -121,7 +121,7 @@ function gcc_download()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gcc_url}" "${gcc_archive}" \
       "${XBB_GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
@@ -170,11 +170,11 @@ function gcc_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     (
       mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
       # To access the newly compiled libraries.
       # On Arm it still needs --with-gmp
@@ -633,11 +633,11 @@ function gcc_build()
         elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
           (
-            cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
+            run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
             run_verbose find "${XBB_TARGET_TRIPLET}" -name '*.dll' ! -iname 'liblto*' \
               -exec cp -v '{}' "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib" ';'
 
-            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+            run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
             run_verbose find . -name '*.dll'
           )
         fi
@@ -667,7 +667,7 @@ function _gcc_build_libs()
   then
   (
     mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
-    cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
     CPPFLAGS="${XBB_CPPFLAGS}"
     CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -717,7 +717,7 @@ function _gcc_build_final()
   then
     (
       mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
@@ -876,7 +876,7 @@ function gcc_test()
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/gcc"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/gcc"
-    cd "${XBB_TESTS_FOLDER_PATH}/gcc"
+    run_verbose_develop cd "${XBB_TESTS_FOLDER_PATH}/gcc"
 
     echo
     echo "pwd: $(pwd)"

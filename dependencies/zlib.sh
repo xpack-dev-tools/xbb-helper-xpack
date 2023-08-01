@@ -48,7 +48,7 @@ function zlib_build()
     echo "zlib in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${zlib_folder_name}" ]
     then
@@ -62,7 +62,7 @@ function zlib_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${zlib_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${zlib_folder_name}"
 
       xbb_activate_dependencies_dev
 

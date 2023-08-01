@@ -41,7 +41,7 @@ function findutils_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${findutils_url}" "${findutils_archive}" \
       "${findutils_src_folder_name}"
@@ -50,7 +50,7 @@ function findutils_build()
       if [ ! -x "${XBB_SOURCES_FOLDER_PATH}/${findutils_src_folder_name}/configure" ]
       then
 
-        cd "${XBB_SOURCES_FOLDER_PATH}/${findutils_src_folder_name}"
+        run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}/${findutils_src_folder_name}"
 
         xbb_activate_dependencies_dev
 
@@ -61,7 +61,7 @@ function findutils_build()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${findutils_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${findutils_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${findutils_folder_name}"
 
       xbb_activate_dependencies_dev
 

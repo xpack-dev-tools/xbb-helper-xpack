@@ -51,7 +51,7 @@ function gpm_build()
     echo "gmp in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${gpm_folder_name}" ]
     then
@@ -65,7 +65,7 @@ function gpm_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${gpm_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${gpm_folder_name}"
       if [ ! -f "stamp-autogen" ]
       then
 
@@ -76,7 +76,7 @@ function gpm_build()
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gpm_folder_name}/autogen-output-$(ndate).txt"
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${gpm_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${gpm_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -156,7 +156,7 @@ function gpm_build()
         then
           (
             mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+            run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
             # Manual copy, since it is not refered in the elf.
             cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libgpm.so.2.1.0" .

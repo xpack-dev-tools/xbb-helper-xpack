@@ -68,14 +68,14 @@ function python3_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${python3_url}" "${python3_archive}" \
       "${python3_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${python3_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${python3_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${python3_folder_name}"
 
       # GCC chokes on dynamic sizes:
       # error: variably modified ‘bytes’ at file scope
@@ -191,7 +191,7 @@ function python3_build()
         run_verbose make altinstall
 
         (
-          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+          run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           run_verbose ln -svf "python${XBB_PYTHON3_VERSION_MAJOR}.${XBB_PYTHON3_VERSION_MINOR}" \
             "python${XBB_PYTHON3_VERSION_MAJOR}"
         )
@@ -288,14 +288,14 @@ function python3_download_win()
 
       # The archive has no folders, so extract it manually.
       mkdir -pv "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
-      cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
+      run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
       run_verbose_develop unzip "${XBB_DOWNLOAD_FOLDER_PATH}/${python3_win_embed_pack}"
     else
       echo
       echo "Folder ${XBB_PYTHON3_WIN_SRC_FOLDER_NAME} already present"
     fi
 
-    cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_WIN_SRC_FOLDER_NAME}"
     echo
     echo "# Copying python${XBB_PYTHON3_VERSION_MAJOR}${XBB_PYTHON3_VERSION_MINOR}.dll..."
     # From here it'll be copied as dependency.
@@ -315,7 +315,7 @@ function python3_download_win()
     # The full source is needed for the headers.
     if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_SRC_FOLDER_NAME}" ]
     then
-      cd "${XBB_SOURCES_FOLDER_PATH}"
+      run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
       download_and_extract "${python3_url}" "${python3_archive}" \
         "${XBB_PYTHON3_SRC_FOLDER_NAME}"

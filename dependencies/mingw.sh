@@ -90,7 +90,7 @@ function mingw_download()
 
   (
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     if [ ! -d "${XBB_MINGW_SRC_FOLDER_NAME}" ]
     then
@@ -142,7 +142,7 @@ function mingw_build_headers()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mingw_headers_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_headers_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mingw_headers_folder_name}"
 
       if [ ! -f "config.status" ]
       then
@@ -265,7 +265,7 @@ function mingw_build_widl()
   then
     (
       mkdir -p "${XBB_BUILD_FOLDER_PATH}/${mingw_widl_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_widl_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mingw_widl_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -382,7 +382,7 @@ function mingw_build_libmangle()
   then
     (
       mkdir -p "${XBB_BUILD_FOLDER_PATH}/${mingw_libmangle_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_libmangle_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mingw_libmangle_folder_name}"
 
       # xbb_activate_dependencies_dev
 
@@ -501,7 +501,7 @@ function mingw_build_gendef()
   then
     (
       mkdir -p "${XBB_BUILD_FOLDER_PATH}/${mingw_gendef_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gendef_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gendef_folder_name}"
 
       # To pick libmangle.
       xbb_activate_dependencies_dev
@@ -619,7 +619,7 @@ function mingw_build_crt()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mingw_crt_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_crt_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mingw_crt_folder_name}"
 
       # Overwrite the flags, -ffunction-sections -fdata-sections result in
       # {standard input}: Assembler messages:
@@ -784,7 +784,7 @@ function mingw_build_winpthreads()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mingw_build_winpthreads_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_build_winpthreads_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mingw_build_winpthreads_folder_name}"
 
       CPPFLAGS=""
       CFLAGS="-O2 -pipe -w"
@@ -923,7 +923,7 @@ function mingw_build_winstorecompat()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mingw_build_winstorecompat_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${mingw_build_winstorecompat_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mingw_build_winstorecompat_folder_name}"
 
       CPPFLAGS=""
       CFLAGS="-O2 -pipe -w"

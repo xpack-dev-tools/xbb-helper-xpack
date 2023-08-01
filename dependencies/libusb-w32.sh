@@ -46,11 +46,11 @@ function libusb_w32_build()
     echo "libusb-w32 in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}" ]
     then
-      cd "${XBB_BUILD_FOLDER_PATH}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
       # Do not add the patch here, it must be done after dos2unix.
       download_and_extract "${libusb_w32_url}" "${libusb_w32_archive}" \
@@ -61,7 +61,7 @@ function libusb_w32_build()
         mv -v "${libusb_w32_src_folder_name}" "${libusb_w32_folder_name}"
       fi
 
-      cd "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}"
 
       # Patch from:
       # https://gitorious.org/jtag-tools/openocd-mingw-build-scripts
@@ -82,7 +82,7 @@ function libusb_w32_build()
       echo
       echo "Running libusb-win32 make..."
 
-      cd "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libusb_w32_folder_name}"
 
       xbb_activate_dependencies_dev
 

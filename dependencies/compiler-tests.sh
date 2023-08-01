@@ -213,7 +213,7 @@ function compiler-tests-single()
     fi
 
     (
-      cd c-cpp
+      run_verbose_develop cd c-cpp
 
       # Test C compile and link in a single step.
       run_host_app_verbose "${CC}" "simple-hello.c" -o "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
@@ -412,7 +412,7 @@ function compiler-tests-single()
 
       # Test weak override.
       (
-        cd weak-override
+        run_verbose_develop cd weak-override
 
         run_host_app_verbose "${CC}" -c "main-weak.c" -o "${prefix}main-weak${suffix}.c.o" ${CFLAGS}
         run_host_app_verbose "${CC}" -c "add2.c" -o "${prefix}add2${suffix}.c.o" ${CFLAGS}
@@ -520,7 +520,7 @@ function compiler-tests-single()
     if is_variable_set "F90"
     then
       (
-        cd fortran
+        run_verbose_develop cd fortran
 
         if is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
         then

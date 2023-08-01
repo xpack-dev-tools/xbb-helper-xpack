@@ -46,14 +46,14 @@ function libtasn1_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libtasn1_url}" "${libtasn1_archive}" \
       "${libtasn1_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libtasn1_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libtasn1_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libtasn1_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -180,14 +180,14 @@ function libunistring_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libunistring_url}" "${libunistring_archive}" \
       "${libunistring_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libunistring_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libunistring_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libunistring_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -324,14 +324,14 @@ function gc_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gc_url}" "${gc_archive}" \
       "${gc_src_folder_name}" "${gc_patch_file_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gc_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${gc_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${gc_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -511,14 +511,14 @@ function gnutls_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${gnutls_url}" "${gnutls_archive}" \
       "${gnutls_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gnutls_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${gnutls_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${gnutls_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -718,14 +718,14 @@ function xorg_util_macros_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${xorg_util_macros_url}" "${xorg_util_macros_archive}" \
       "${xorg_util_macros_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${xorg_util_macros_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${xorg_util_macros_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${xorg_util_macros_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -849,14 +849,14 @@ function xorg_xproto_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${xorg_xproto_url}" "${xorg_xproto_archive}" \
       "${xorg_xproto_src_folder_name}" "${xorg_xproto_patch_file_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${xorg_xproto_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${xorg_xproto_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${xorg_xproto_folder_name}"
 
       xbb_activate_dependencies_dev
 

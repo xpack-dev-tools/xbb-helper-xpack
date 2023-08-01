@@ -60,7 +60,7 @@ function glib_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     if [ ! -d "${glib_src_folder_name}" ]
     then
@@ -89,7 +89,7 @@ function glib_build()
     (
       # Hack, /gio/lib added because libtool needs it on Win32.
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}"/gio/lib
-      cd "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${glib_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -208,7 +208,7 @@ function glib_build()
             echo
             echo "Running glib meson setup..."
 
-            cd "${XBB_SOURCES_FOLDER_PATH}/${glib_src_folder_name}"
+            run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}/${glib_src_folder_name}"
 
             # https://mesonbuild.com/Commands.html#setup
             config_options=()

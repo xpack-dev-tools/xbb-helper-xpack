@@ -50,7 +50,7 @@ function bzip2_build()
     echo "bzip2 in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${bzip2_folder_name}" ]
     then
@@ -64,7 +64,7 @@ function bzip2_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${bzip2_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${bzip2_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -127,7 +127,7 @@ function bzip2_build()
           run_verbose ${INSTALL} -v -c -m 644 "libbz2.so.${bzip2_version}" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
           (
-            cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
+            run_verbose_develop cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
             rm -rfv libbz2.so*
             ln -sv "libbz2.so.${bzip2_version}" libbz2.so.1.0
@@ -178,7 +178,7 @@ function bzip2_build()
           run_verbose ${INSTALL} -v -c -m 644 "libbz2.${bzip2_version}.dylib" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
           (
-            cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
+            run_verbose_develop cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
             rm -rfv libbz2.dylib libbz2.1.dylib libbz2.1.0.dylib
             ln -sv "libbz2.${bzip2_version}.dylib" libbz2.1.0.dylib
@@ -211,7 +211,7 @@ function bzip2_build()
         if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" ]
         then
           (
-            cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+            run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
             # For unknown reasons, the original links are absolute.
             # Make them relative to the current folder.

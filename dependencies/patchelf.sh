@@ -53,7 +53,7 @@ function patchelf_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${patchelf_url}" "${patchelf_archive}" \
       "${patchelf_src_folder_name}"
@@ -62,7 +62,7 @@ function patchelf_build()
       if [ ! -x "${XBB_SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}/configure" ]
       then
 
-        cd "${XBB_SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}"
+        run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}"
 
         xbb_activate_dependencies_dev
 
@@ -73,7 +73,7 @@ function patchelf_build()
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${patchelf_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${patchelf_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${patchelf_folder_name}"
 
       xbb_activate_dependencies_dev
 

@@ -238,14 +238,14 @@ function binutils_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${binutils_url}" "${binutils_archive}" \
       "${binutils_src_folder_name}" "${binutils_patch_file_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
 
       # To access the newly compiled libraries.
       xbb_activate_dependencies_dev
@@ -489,14 +489,14 @@ function binutils_build_ld_gold()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${binutils_url}" "${binutils_archive}" \
       "${binutils_src_folder_name}" "${binutils_patch_file_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
 
       # To access the newly compiled libraries.
       xbb_activate_dependencies_dev

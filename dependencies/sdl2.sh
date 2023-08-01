@@ -64,14 +64,14 @@ function sdl2_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${sdl2_url}" "${sdl2_archive}" \
       "${sdl2_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${sdl2_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${sdl2_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${sdl2_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -188,14 +188,14 @@ function sdl2_image_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${sdl2_image_url}" "${sdl2_image_archive}" \
       "${sdl2_image_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${sdl2_image_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${sdl2_image_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${sdl2_image_folder_name}"
 
       # The windows build checks this.
       mkdir -pv lib

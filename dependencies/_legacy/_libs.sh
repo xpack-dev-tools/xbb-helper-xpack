@@ -48,14 +48,14 @@ function libelf_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libelf_url}" "${libelf_archive}" \
       "${libelf_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libelf_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libelf_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libelf_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -182,14 +182,14 @@ function python2_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${python2_url}" "${python2_archive}" \
       "${XBB_PYTHON2_SRC_FOLDER_NAME}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${python2_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${python2_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${python2_folder_name}"
 
       # To pick the new libraries
       xbb_activate_dependencies_dev
@@ -361,7 +361,7 @@ function download_python2_win()
 
   local python2_win_url="https://www.python.org/ftp/python/${python2_win_version}/${python2_win_pack}"
 
-  cd "${XBB_SOURCES_FOLDER_PATH}"
+  run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
   download "${python2_win_url}" "${python2_win_pack}"
 
@@ -369,7 +369,7 @@ function download_python2_win()
     if [ ! -d "${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}" ]
     then
       mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
       # Include only the headers and the python library and executable.
       local tmp_path="/tmp/included$$"
@@ -383,7 +383,7 @@ function download_python2_win()
       if [ -f "${patch_path}" ]
       then
         (
-          cd "${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}"
+          run_verbose_develop cd "${XBB_PYTHON2_WIN_SRC_FOLDER_NAME}"
           patch -p0 <"${patch_path}"
         )
       fi
@@ -441,7 +441,7 @@ function xar_build()
     echo "xar in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${xar_folder_name}" ]
     then
@@ -455,7 +455,7 @@ function xar_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${xar_folder_name}/xar/"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${xar_folder_name}/xar/"
 
       xbb_activate_dependencies_dev
 
@@ -583,14 +583,14 @@ function libgpg_error_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libgpg_error_url}" "${libgpg_error_archive}" \
       "${libgpg_error_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libgpg_error_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libgpg_error_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libgpg_error_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -735,14 +735,14 @@ function libgcrypt_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libgcrypt_url}" "${libgcrypt_archive}" \
       "${libgcrypt_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libgcrypt_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libgcrypt_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libgcrypt_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -951,14 +951,14 @@ function libassuan_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libassuan_url}" "${libassuan_archive}" \
       "${libassuan_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libassuan_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libassuan_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libassuan_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -1119,14 +1119,14 @@ function libksba_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libksba_url}" "${libksba_archive}" \
       "${libksba_src_folder_name}" "${libksba_patch_file_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libksba_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libksba_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libksba_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -1282,14 +1282,14 @@ function npth_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${npth_url}" "${npth_archive}" \
       "${npth_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${npth_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${npth_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${npth_folder_name}"
 
       xbb_activate_dependencies_dev
 
@@ -1444,14 +1444,14 @@ function _libusb_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libusb_url}" "${libusb_archive}" \
       "${libusb_src_folder_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libusb_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libusb_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libusb_folder_name}"
 
       xbb_activate_dependencies_dev
 

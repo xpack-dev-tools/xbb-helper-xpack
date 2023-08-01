@@ -48,14 +48,14 @@ function libtool_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${libtool_url}" "${libtool_archive}" \
       "${libtool_src_folder_name}" "${libtool_patch_file_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${libtool_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${libtool_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libtool_folder_name}"
 
       # The new CC was set before the call.
 
@@ -137,7 +137,7 @@ function libtool_build()
         (
           echo
           echo "Linking glibtool..."
-          cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+          run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
           rm -fv glibtool glibtoolize
           ln -sv libtool glibtool
           ln -sv libtoolize glibtoolize

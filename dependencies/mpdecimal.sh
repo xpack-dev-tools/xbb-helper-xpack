@@ -48,7 +48,7 @@ function mpdecimal_build()
     echo "mpdecimal in-source building..."
 
     mkdir -pv "${XBB_BUILD_FOLDER_PATH}"
-    cd "${XBB_BUILD_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
     if [ ! -d "${XBB_BUILD_FOLDER_PATH}/${mpdecimal_folder_name}" ]
     then
@@ -62,7 +62,7 @@ function mpdecimal_build()
     fi
 
     (
-      cd "${XBB_BUILD_FOLDER_PATH}/${mpdecimal_src_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mpdecimal_src_folder_name}"
 
       xbb_activate_dependencies_dev
 

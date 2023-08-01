@@ -45,14 +45,14 @@ function vde_build()
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
-    cd "${XBB_SOURCES_FOLDER_PATH}"
+    run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${vde_url}" "${vde_archive}" \
       "${vde_src_folder_name}" "${vde_patch_file_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${vde_folder_name}"
-      cd "${XBB_BUILD_FOLDER_PATH}/${vde_folder_name}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${vde_folder_name}"
 
       xbb_activate_dependencies_dev
 
