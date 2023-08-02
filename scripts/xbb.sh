@@ -867,6 +867,70 @@ function xbb_prepare_clang_env()
   xbb_set_compiler_flags
 }
 
+function xbb_prepare_apple_clang_env()
+{
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
+  xbb_unset_compiler_env
+
+  export CC="/usr/bin/clang"
+  export CXX="/usr/bin/clang++"
+
+  export ADDR2LINE="$(which ${prefix}llvm-addr2line 2>/dev/null || which ${prefix}addr2line 2>/dev/null || echo ${prefix}addr2line)"
+  export AR="/usr/bin/ar"
+
+  local dlltool="$(which ${prefix}llvm-dlltool 2>/dev/null || which ${prefix}dlltool 2>/dev/null)"
+  if [ ! -z "${dlltool}" ]
+  then
+    export DLLTOOL="${dlltool}"
+  fi
+
+  export AS="/usr/bin/as"
+  export LD="/usr/bin/ld"
+
+  export NM="/usr/bin/nm"
+
+  local objcopy="$(which ${prefix}llvm-objcopy 2>/dev/null || which ${prefix}objcopy 2>/dev/null)"
+  if [ ! -z "${objcopy}" ]
+  then
+    export OBJCOPY="${objcopy}"
+  fi
+
+  local objdump="/usr/bin/objdump"
+  if [ ! -z "${objdump}" ]
+  then
+  export OBJDUMP="${objdump}"
+  fi
+
+  export RANLIB="/usr/bin/ranlib"
+
+  local readelf="$(which ${prefix}llvm-readelf 2>/dev/null || which ${prefix}readelf 2>/dev/null)"
+  if [ ! -z "${readelf}" ]
+  then
+    export READELF="${readelf}"
+  fi
+
+  export SIZE="/usr/bin/size"
+
+  export STRIP="/usr/bin/strip"
+
+  local windmc=$(which ${prefix}windmc 2>/dev/null)
+  if [ ! -z "${windmc}" ]
+  then
+    export WINDMC="${windmc}"
+  fi
+
+  local windres="$(which ${prefix}llvm-windres 2>/dev/null || which ${prefix}windres 2>/dev/null)"
+  if [ ! -z "${windres}" ]
+  then
+    export WINDRES="${windres}"
+    export RC="${windres}"
+  fi
+
+  xbb_set_compiler_flags
+}
+
 function xbb_set_compiler_flags()
 {
   XBB_CPPFLAGS=""
