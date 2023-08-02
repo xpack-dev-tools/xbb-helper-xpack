@@ -34,7 +34,7 @@ function compiler-tests-single()
     local is_lto="n"
     local is_static="n"
     local is_static_lib="n"
-    local is_crt="n"
+    local use_crt="n"
     local use_libcxx="n"
     local use_libunwind="n"
     local use_lld="n"
@@ -89,7 +89,7 @@ function compiler-tests-single()
 
         # clang -rtlib=compiler-rt
         --crt )
-          is_crt="y"
+          use_crt="y"
           shift
           ;;
 
@@ -131,7 +131,7 @@ function compiler-tests-single()
     LDFLAGS=""
     LDXXFLAGS=""
 
-    if [ "${is_crt}" == "y" ]
+    if [ "${use_crt}" == "y" ]
     then
       LDFLAGS+=" -rtlib=compiler-rt"
       LDXXFLAGS+=" -rtlib=compiler-rt"
