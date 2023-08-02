@@ -32,9 +32,10 @@ function compiler-tests-single()
 
     local is_gc="n"
     local is_lto="n"
-    local is_crt="n"
     local is_static="n"
     local is_static_lib="n"
+    local is_crt="n"
+    local use_libcxx="n"
     local use_libunwind="n"
     local use_lld="n"
     local use_libpthread="n"
@@ -92,6 +93,11 @@ function compiler-tests-single()
           shift
           ;;
 
+        --libc++ )
+          use_libcxx="y"
+          shift
+          ;;
+
         --libunwind )
           use_libunwind="y"
           shift
@@ -130,6 +136,13 @@ function compiler-tests-single()
       LDFLAGS+=" -rtlib=compiler-rt"
       LDXXFLAGS+=" -rtlib=compiler-rt"
       prefix="crt-${prefix}"
+    fi
+
+    if [ "${use_libcxx}" == "y" ]
+    then
+      CXXFLAGS+=" -stdlib=libc++"
+      LDXXFLAGS+=" -stdlib=libc++"
+      prefix="libcxx-${prefix}"
     fi
 
     if [ "${use_libunwind}" == "y" ]
