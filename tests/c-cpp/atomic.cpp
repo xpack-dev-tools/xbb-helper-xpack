@@ -115,13 +115,13 @@ template<typename TYPE> void test(TYPE mask0, TYPE mask1, TYPE mask2) {
     assert(TYPE(atomicDog) == 5);
     atomicDog |= mask0;
     // printf("operator|=: %lx\n", TYPE(atomicDog));
-    assert(TYPE(atomicDog) == (0xFFFFFFFFU | mask0));
+    assert(TYPE(atomicDog) == (TYPE)-1);
     atomicDog &= mask1;
     // printf("operator|=: %lx\n", TYPE(atomicDog));
-    assert(TYPE(atomicDog) == ((0xFFFFFFFFU | mask0) & mask1));
+    assert(TYPE(atomicDog) == (((TYPE)-1) & mask1));
     atomicDog ^= mask2;
     // printf("operator^=: %lx\n", TYPE(atomicDog));
-    assert(TYPE(atomicDog) == (0xFFFFFFFFU | mask0));
+    assert(TYPE(atomicDog) == (TYPE)-1);
 
 }
 
