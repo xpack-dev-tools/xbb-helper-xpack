@@ -297,7 +297,12 @@ function compiler-tests-single()
       # -----------------------------------------------------------------------
 
       # Test borrowed from https://gist.github.com/floooh/10160514
-      run_host_app_verbose "${CXX}" "atomic.cpp" -o "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}" -Wno-format ${LDXXFLAGS}
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      then
+        "${CXX}" "atomic.cpp" -o "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}" -Wno-format -latomic ${LDXXFLAGS}
+      else
+        "${CXX}" "atomic.cpp" -o "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}" -Wno-format ${LDXXFLAGS}
+      fi
       show_target_libs_develop "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}"
       run_target_app_verbose "./${prefix}atomic${suffix}"
 
