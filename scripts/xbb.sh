@@ -877,10 +877,10 @@ function xbb_prepare_apple_clang_env()
   export CC="/usr/bin/clang"
   export CXX="/usr/bin/clang++"
 
-  export ADDR2LINE="$(which ${prefix}llvm-addr2line 2>/dev/null || which ${prefix}addr2line 2>/dev/null || echo ${prefix}addr2line)"
+  export ADDR2LINE="$(which llvm-addr2line 2>/dev/null || which addr2line 2>/dev/null || echo addr2line)"
   export AR="/usr/bin/ar"
 
-  local dlltool="$(which ${prefix}llvm-dlltool 2>/dev/null || which ${prefix}dlltool 2>/dev/null)"
+  local dlltool="$(which llvm-dlltool 2>/dev/null || which dlltool 2>/dev/null)"
   if [ ! -z "${dlltool}" ]
   then
     export DLLTOOL="${dlltool}"
@@ -891,7 +891,7 @@ function xbb_prepare_apple_clang_env()
 
   export NM="/usr/bin/nm"
 
-  local objcopy="$(which ${prefix}llvm-objcopy 2>/dev/null || which ${prefix}objcopy 2>/dev/null)"
+  local objcopy="$(which llvm-objcopy 2>/dev/null || which objcopy 2>/dev/null)"
   if [ ! -z "${objcopy}" ]
   then
     export OBJCOPY="${objcopy}"
@@ -905,7 +905,7 @@ function xbb_prepare_apple_clang_env()
 
   export RANLIB="/usr/bin/ranlib"
 
-  local readelf="$(which ${prefix}llvm-readelf 2>/dev/null || which ${prefix}readelf 2>/dev/null)"
+  local readelf="$(which llvm-readelf 2>/dev/null || which readelf 2>/dev/null)"
   if [ ! -z "${readelf}" ]
   then
     export READELF="${readelf}"
@@ -915,13 +915,13 @@ function xbb_prepare_apple_clang_env()
 
   export STRIP="/usr/bin/strip"
 
-  local windmc=$(which ${prefix}windmc 2>/dev/null)
+  local windmc=$(which windmc 2>/dev/null)
   if [ ! -z "${windmc}" ]
   then
     export WINDMC="${windmc}"
   fi
 
-  local windres="$(which ${prefix}llvm-windres 2>/dev/null || which ${prefix}windres 2>/dev/null)"
+  local windres="$(which llvm-windres 2>/dev/null || which windres 2>/dev/null)"
   if [ ! -z "${windres}" ]
   then
     export WINDRES="${windres}"
