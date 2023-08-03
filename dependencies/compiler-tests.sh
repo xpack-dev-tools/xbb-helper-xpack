@@ -310,7 +310,7 @@ function compiler-tests-single()
       # -----------------------------------------------------------------------
 
       # Test borrowed from https://gist.github.com/floooh/10160514
-      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
       then
         "${CXX}" "atomic.cpp" -o "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}" -Wno-format -latomic ${LDXXFLAGS}
       else
