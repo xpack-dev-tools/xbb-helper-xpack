@@ -338,7 +338,8 @@ function compiler-tests-single()
       run_host_app_verbose "${CXX}" "global-terminate.cpp" -o "${prefix}global-terminate${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       show_target_libs_develop "${prefix}global-terminate${suffix}${XBB_TARGET_DOT_EXE}"
 
-      if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}global-terminate${suffix}"
+      if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}global-terminate${suffix}" \
+                         "XBB_SKIP_RUN_TEST_${prefix}global-terminate"
       then
         echo
         echo "Skipping running ${prefix}global-terminate${suffix}..."
@@ -350,7 +351,8 @@ function compiler-tests-single()
       show_target_libs_develop "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
       run_target_app_verbose "./${prefix}longjmp-cleanup${suffix}"
 
-      if is_variable_set "XBB_SKIP_TEST_${prefix}hello-exception${suffix}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}hello-exception${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}hello-exception"
       then
         echo
         echo "Skipping ${prefix}hello-exception${suffix}..."
@@ -402,7 +404,8 @@ function compiler-tests-single()
         fi
       fi
 
-      if is_variable_set "XBB_SKIP_TEST_${prefix}crt-test${suffix}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}crt-test${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}crt-test"
       then
         echo
         echo "Skipping ${prefix}crt-test${suffix}..."
@@ -413,7 +416,8 @@ function compiler-tests-single()
         run_target_app_verbose "./${prefix}crt-test${suffix}"
       fi
 
-      if is_variable_set "XBB_SKIP_TEST_${prefix}hello-weak-c${suffix}" "XBB_SKIP_TEST_hello-weak-c"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}hello-weak-c${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}hello-weak-c"
       then
         echo
         echo "Skipping ${prefix}hello-weak-c${suffix}..."
@@ -424,7 +428,8 @@ function compiler-tests-single()
         expect_target_output "Hello World!" "./${prefix}hello-weak-c${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
-      if is_variable_set "XBB_SKIP_TEST_${prefix}hello-weak-cpp${suffix}" "XBB_SKIP_TEST_hello-weak-cpp"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}hello-weak-cpp${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}hello-weak-cpp"
       then
         echo
         echo "Skipping ${prefix}hello-weak-cpp${suffix}..."
@@ -480,7 +485,8 @@ function compiler-tests-single()
 
           show_target_libs_develop "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
 
-          if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}throwcatch-main${suffix}"
+          if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}throwcatch-main${suffix}" \
+                             "XBB_SKIP_RUN_TEST_${prefix}throwcatch-main"
           then
             echo
             echo "Skipping running ${prefix}throwcatch-main${suffix}..."
@@ -493,7 +499,8 @@ function compiler-tests-single()
       if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
 
-        if is_variable_set "XBB_SKIP_TEST_${prefix}tlstest-main${suffix}"
+        if is_variable_set "XBB_SKIP_TEST_${prefix}tlstest-main${suffix}" \
+                           "XBB_SKIP_TEST_${prefix}tlstest-main"
         then
           echo
           echo "Skipping ${prefix}tlstest-main${suffix}..."
@@ -516,7 +523,8 @@ function compiler-tests-single()
 
           show_target_libs_develop "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
 
-          if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}autoimport-main${suffix}"
+          if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}autoimport-main${suffix}" \
+                             "XBB_SKIP_RUN_TEST_${prefix}autoimport-main"
           then
             echo
             echo "Skipping running ${prefix}autoimport-main${suffix}..."
