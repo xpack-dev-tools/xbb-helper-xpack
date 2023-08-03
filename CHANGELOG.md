@@ -2,9 +2,48 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-08-03
+
+* v1.5.0 released
+* a780ac9 compiler-tests.sh: run_host_app_verbose for atomic
+* 630cca8 compiler-tests.sh: add suffix-less checks
+* 294d437 compiler-tests.sh: fix -latomic only on linux
+
+## 2023-08-02
+
+* 8b7c82d xbb.sh: apple_clang_env() fix missing prefix
+* 1bb95db atomic.cpp: (TYPE)-1
+* efbcff8 xbb.sh: add xbb_prepare_apple_clang_env
+* 9dab08c compiler-tests.sh: rename use_crt
+* 1b6f42a compiler-tests.sh: add --libc+
+* e4aa9ac compiler-tests.sh: add -latomic to linux tests
+* eaca1e5 atomic.cpp: add asserts
+
+## 2023-08-01
+
+* 2f5c5fb add test/atomic.cpp
+* 6cc6830 dependencies: run_verbose_develop cd
+* 468b4e7 mingw.sh: run_verbose ls
+
+## 2023-07-30
+
+* f0e3dc5 libxml2.sh: explicit -liconv on linux
+* b34509d wrappers.sh: add run_host_app()
+* f49306c compiler-tests.sh: check hello-weak-c(pp)
+* 782f898 is-something.sh is_variable_set $#
+* cf4af65 gcc.sh: skip failing win32 tests
+* 4487d43 gcc.sh: reorder xbb_adjust_ldflags_rpath
+* 7d7dd60 gcc-mingw.sh: skip failing tests
+* 14b7456 gcc-mingw.sh: add ${bits}
+* 94b24a5 crt-test.c: skip lgamma & lgammaf on 10.13
+* b2b2719 gcc.sh: reorder patch logic
+* 563505b xbb.sh: xbb_prepare_clang_env() no llvm-as on mac
+
 ## 2023-07-28
 
-* v1.4.15 released
+* 659b567 gcc.sh: add 13.*, 12.3, 11.4
+* 25c3480 1.4.15
+* bd5351f prepare v1.4.15
 * def4099 liquidjs --context --template
 * ad2b88c 1.4.14
 * d234836 prepare v1.4.14
