@@ -59,8 +59,7 @@ jobs:
   {% when "linux-arm64" %}
   linux-arm64:
     name: 'Linux Arm 64-bit {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    # runs-on: [self-hosted, linux, arm64, xbbla]
-    runs-on: [self-hosted, linux, arm64, xbbla64]
+    runs-on: [self-hosted, linux, arm64, xbbla]
 
     steps:
       - name: 'Environment'
@@ -97,7 +96,6 @@ jobs:
   {% when "linux-arm" %}
   linux-arm32:
     name: 'Linux Arm 32-bit {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    # runs-on: [self-hosted, linux, arm64, xbbla]
     runs-on: [self-hosted, linux, arm, xbbla32]
 
     steps:

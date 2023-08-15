@@ -66,7 +66,7 @@ jobs:
   linux-arm64:
     name: 'Linux Arm 64 - {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} clean'
     timeout-minutes: 2880 # 2 days
-    runs-on: [self-hosted, linux, arm64, xbbla64]
+    runs-on: [self-hosted, linux, arm64, xbbla]
     steps:
       - name: 'Environment'
         run: |
