@@ -4,7 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-15
 
-* v1.5.1 released
+* v1.5.2 released
+* dc0e75a rename build-xbbla-liquid.yml
+* d681e38 1.5.1
+* 82159ee rename xbbla (no 64)
+* f3e1cab prepare v1.5.1
 * d40b94c vde.sh: -Wno-implicit-int
 
 ## 2023-08-06
