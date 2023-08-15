@@ -68,6 +68,10 @@ function vde_build()
       CFLAGS="$(echo "${XBB_CFLAGS_NO_W}" | sed -e 's|-O0|-O2|')"
       CXXFLAGS="$(echo "${XBB_CXXFLAGS_NO_W}" | sed -e 's|-O0|-O2|')"
 
+      # 2.3.2
+      # /Users/ilg/Work/xpack-dev-tools-build/qemu-arm-7.2.0-1/darwin-x64/sources/vde2-2.3.2/src/wirefilter.c:136:28: error: parameter 'i' was not declared, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+      CFLAGS+=" -Wno-implicit-int"
+
       LDFLAGS="${XBB_LDFLAGS_LIB}"
 
       xbb_adjust_ldflags_rpath
