@@ -2,9 +2,24 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-08-15
+
+* v1.5.1 released
+* d40b94c vde.sh: -Wno-implicit-int
+
+## 2023-08-06
+
+* 355987a dot.npmignore wrappers
+
+## 2023-08-05
+
+* 23c8d5b READMEs update
+
 ## 2023-08-03
 
-* v1.5.0 released
+* ea41ece templates/dot.* add build*
+* 497e06e 1.5.0
+* 871375d prepare v1.5.0
 * a780ac9 compiler-tests.sh: run_host_app_verbose for atomic
 * 630cca8 compiler-tests.sh: add suffix-less checks
 * 294d437 compiler-tests.sh: fix -latomic only on linux
