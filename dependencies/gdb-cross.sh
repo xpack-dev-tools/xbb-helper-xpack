@@ -125,8 +125,12 @@ function gdb_cross_build()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gdb_folder_name}"
       run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${gdb_folder_name}"
 
+      # For bison.
+      xbb_activate_installed_bin
+
       # To pick up the python lib from XBB
       # xbb_activate_dev
+
       xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
