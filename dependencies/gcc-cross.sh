@@ -50,7 +50,12 @@ function gcc_cross_build_all()
 
   binutils_cross_build "${XBB_BINUTILS_VERSION}" "${triplet}"
 
-  gcc_cross_build_first "${XBB_GCC_VERSION}" "${triplet}"
+  (
+    # For flex.
+    xbb_activate_installed_bin
+
+    gcc_cross_build_first "${XBB_GCC_VERSION}" "${triplet}"
+  )
 
   (
     # Add the gcc first stage binaries to the path.
