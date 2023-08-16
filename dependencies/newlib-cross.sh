@@ -186,6 +186,7 @@ function newlib_cross_build()
             # --enable-newlib-mb --enable-newlib-reent-check-verify
             # --target=aarch64-none-elf --prefix=/'
 
+            # Checked for AArch64 12.3.rel1
             config_options+=("--disable-newlib-supplied-syscalls") # Arm, AArch64
 
             config_options+=("--enable-newlib-io-c99-formats") # Arm, AArch64
@@ -194,9 +195,9 @@ function newlib_cross_build()
             config_options+=("--enable-newlib-mb") # Arm, AArch64
             config_options+=("--enable-newlib-reent-check-verify") # Arm, AArch64
 
-            config_options+=("--enable-newlib-register-fini") # Arm
+            config_options+=("--enable-newlib-register-fini") # Arm, AArch64
 
-            config_options+=("--enable-newlib-retargetable-locking") # Arm
+            config_options+=("--enable-newlib-retargetable-locking") # Arm, AArch64
 
           else
 
