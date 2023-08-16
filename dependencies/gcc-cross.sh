@@ -65,7 +65,13 @@ function gcc_cross_build_all()
 
     newlib_cross_build "${XBB_NEWLIB_VERSION}" "${triplet}"
   )
-  gcc_cross_build_final "${XBB_GCC_VERSION}" "${triplet}"
+
+  (
+    # For flex.
+    xbb_activate_installed_bin
+
+    gcc_cross_build_final "${XBB_GCC_VERSION}" "${triplet}"
+  )
 
   # ---------------------------------------------------------------------
   # The nano version is practically a new build installed in a
