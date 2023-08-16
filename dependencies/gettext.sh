@@ -23,6 +23,7 @@
 # 2020-04-14 "0.20.2"
 # 2020-07-26 "0.21"
 # 2022-10-09, "0.21.1"
+# 2023-06-17, "0.22"
 
 # -----------------------------------------------------------------------------
 
@@ -81,7 +82,7 @@ function gettext_build()
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/gettext-runtime/configure" --help
+            run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/configure" --help
           fi
 
           # Build only the /gettext-runtime folder, attempts to build
@@ -116,12 +117,12 @@ function gettext_build()
           config_options+=("--without-cvs") # HB
           config_options+=("--without-xz") # HB
           config_options+=("--without-included-gettext") # Arch
+          # config_options+=("--with-included-gettext") # HB
 
           config_options+=("--with-included-glib") # HB
           config_options+=("--with-included-libcroco") # HB
-          config_options+=("--with-included-libunistring") # HB
+          #  config_options+=("--with-included-libunistring") # HB
           config_options+=("--with-included-libxml") # HB
-          config_options+=("--with-included-gettext") # HB
 
           # config_options+=("--with-emacs") # HB
 
@@ -151,7 +152,7 @@ function gettext_build()
           # config_options+=("--enable-relocatable")
 
           #  --enable-nls needed to include libintl
-          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/gettext-runtime/configure" \
+          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/configure" \
             "${config_options[@]}"
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${gettext_folder_name}/config-log-$(ndate).txt"
