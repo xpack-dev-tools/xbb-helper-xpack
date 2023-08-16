@@ -116,12 +116,17 @@ function gettext_build()
           config_options+=("--without-git") # HB
           config_options+=("--without-cvs") # HB
           config_options+=("--without-xz") # HB
+
           config_options+=("--without-included-gettext") # Arch
           # config_options+=("--with-included-gettext") # HB
 
           config_options+=("--with-included-glib") # HB
           config_options+=("--with-included-libcroco") # HB
-          #  config_options+=("--with-included-libunistring") # HB
+
+          # Use external libunistring.
+          # https://savannah.gnu.org/bugs/?62659
+          # config_options+=("--with-included-libunistring") # HB
+
           config_options+=("--with-included-libxml") # HB
 
           # config_options+=("--with-emacs") # HB
