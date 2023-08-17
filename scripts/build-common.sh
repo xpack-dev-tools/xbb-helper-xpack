@@ -269,6 +269,22 @@ function build_common_run()
 
       run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
       run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
+      if [ -d "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec" ]
+      then
+        run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/libexec"
+      fi
+      if [ -d "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/lib" ]
+      then
+        run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/lib"
+      fi
+      if [ -d "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/include" ]
+      then
+        run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/include"
+      fi
+      if [ -d "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/shared" ]
+      then
+        run_verbose ls -l "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/shared"
+      fi
 
       echo
       echo "# Copied files..."
