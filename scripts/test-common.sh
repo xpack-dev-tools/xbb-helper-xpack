@@ -362,6 +362,8 @@ function tests_perform_common()
     if [ "${XBB_DO_TEST_VIA_XPM}" == "y" ]
     then
       tests_install_via_xpm "${XBB_TESTS_FOLDER_PATH}"
+      tests_install_dependencies "${XBB_TESTS_FOLDER_PATH}" "${archive_suffix}"
+      run_verbose cd "${XBB_TESTS_FOLDER_PATH}"
       tests_run_all "${XBB_XPACK_FOLDER_PATH}/xpacks/.bin"
     elif [ ! -z "${XBB_BASE_URL}" ]
     then
@@ -372,6 +374,8 @@ function tests_perform_common()
       tests_run_all "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}/bin"
     else
       # Test the locally built binaries.
+      tests_install_dependencies "${XBB_TESTS_FOLDER_PATH}" "${archive_suffix}"
+      run_verbose cd "${XBB_TESTS_FOLDER_PATH}"
       tests_run_all "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
     fi
 
