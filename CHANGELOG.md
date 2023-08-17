@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-17
 
-* v1.6.0 released
+* v1.7.0 released
+* 3a89864 test-common.sh: add tests_install_dependencies
+* 87843f0 1.6.0
+* b09ca3f prepare v1.6.0
 * 335d185 dot.ignore /*.tgz
 * a3d6d9a bison.sh remove documentation
 * 6b7fc78 flex.sh: remove documentation
