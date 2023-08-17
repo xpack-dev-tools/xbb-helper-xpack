@@ -212,7 +212,7 @@ __EOF__
 
     run_host_app_verbose "${test_bin_folder_path}/bison" test.y -Wno-conflicts-sr
 
-    run_verbose g++ test.tab.c -o test -w
+    run_verbose $(which g++) test.tab.c -o test -w
 
     expect_host_output "pass" "$(which bash)" "-c" "(echo '((()(())))()' | ./test)"
     expect_host_output "fail" "$(which bash)" "-c" "(echo '())' | ./test)"
