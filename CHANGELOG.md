@@ -2,9 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-08-18
+
+* v1.7.3 released
+* ffacbf3 flex.sh: test compute realpath
+
 ## 2023-08-17
 
-* v1.7.2 released
+* 69480b2 1.7.2
+* 42fd5fd prepare v1.7.2
 * 7ff22d1 test-common.sh: more tests_install_dependencies
 * 6bd2c9e 1.7.1
 * 5fc04d6 prepare v1.7.1
