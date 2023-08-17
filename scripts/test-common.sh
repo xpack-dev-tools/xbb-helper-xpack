@@ -337,6 +337,8 @@ function tests_perform_common()
 
   machine_detect
 
+  tests_install_dependencies
+
   xbb_save_env
   xbb_set_requested
   xbb_reset_env
@@ -367,6 +369,12 @@ function tests_perform_common()
 
 # Called by xbb_set_target.
 function tests_add()
+{
+  :
+}
+
+# Redefine it in update.sh to add functionality.
+function tests_install_dependencies()
 {
   :
 }
