@@ -139,6 +139,8 @@ function flex_build()
 
           config_options+=("--disable-nls")
 
+          config_options+=("--disable-warnings")
+
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${flex_src_folder_name}/configure" \
             "${config_options[@]}"
 
