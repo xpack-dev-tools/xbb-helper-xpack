@@ -4,8 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-18
 
-* v1.7.4 released
-* 2cba4ab flex.sh: test -v
+* v1.7.5 released
+* 62f734c flex.sh: purge non static libs
+* 3befd7c flex.sh: revert to --enable-shared
+* 7441d18 1.7.4
+* 15f0e07 prepare v1.7.4* 2cba4ab flex.sh: test -v
 * c4b9113 flex.sh: rm *.la
 * 694396f flex.sh: --disable-shared
 * 7817562 1.7.3
