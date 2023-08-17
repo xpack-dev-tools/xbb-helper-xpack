@@ -337,12 +337,24 @@ function tests_perform_common()
 
   machine_detect
 
-  tests_install_dependencies
-
   xbb_save_env
   xbb_set_requested
   xbb_reset_env
   xbb_set_target "requested"
+
+  local archive_extension
+  local archive_architecture="${XBB_BUILD_ARCH}"
+  if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+  then
+    archive_extension="zip"
+    if [ "${XBB_FORCE_32_BIT}" == "y" ]
+    then
+      archive_architecture="ia32"
+    fi
+  else
+    archive_extension="tar.gz"
+  fi
+  local archive_suffix="${XBB_BUILD_PLATFORM}-${archive_architecture}.${archive_extension}"
 
   # The XBB_LOGS_FOLDER_PATH must be set at this point.
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
@@ -355,6 +367,8 @@ function tests_perform_common()
     then
       # Download archive and test its binaries.
       tests_install_archive "${XBB_TESTS_FOLDER_PATH}"
+      tests_install_dependencies "${XBB_TESTS_FOLDER_PATH}" "${archive_suffix}"
+      run_verbose cd "${XBB_TESTS_FOLDER_PATH}"
       tests_run_all "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}/bin"
     else
       # Test the locally built binaries.
