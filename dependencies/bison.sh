@@ -134,6 +134,9 @@ function bison_build()
           run_verbose make install
         fi
 
+        # Remove documentation
+        run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/info"
+
         # Takes too long.
         if false # [ "${RUN_LONG_TESTS}" == "y" ]
         then
