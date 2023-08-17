@@ -2,9 +2,35 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-08-17
+
+* v1.6.0 released
+* 335d185 dot.ignore /*.tgz
+* a3d6d9a bison.sh remove documentation
+* 6b7fc78 flex.sh: remove documentation
+* f050ade flex.sh: --disable-warnings
+* d901c1a dot.* update
+* da5ab57 gcc-cross.sh: temp xbb_activate_installed_bin
+* afac4d7 gcc-cross.sh: temp xbb_activate_installed_bin
+* a987c67 gettext.sh: add link to bug requiring libunistring
+* cd9774e gdb-cross: temporarily disable gettext
+* 69ef343 extract libunistring.sh
+* 0f89a7e gettext.sh: rework with tools, for autopoint
+* b612841 extract flex.sh
+
+## 2023-08-16
+
+* ad8268e gdb-13.2-cross.git.patch update for 12.3.rel1
+* d6d6079 gdb-cross: update from aarch64 12.3.rel1
+* 172c20a newlib-cross.sh: cosmetics
+* 8131e0f gdb-cross.sh: xbb_activate_installed_bin
+* f68300a extract bison.sh from legacy
+
 ## 2023-08-15
 
-* v1.5.2 released
+* 1b7ab11 add gdb-12.2/13.2-cross.git.patch
+* 73ac6e5 1.5.2
+* 657fa89 prepare v1.5.2
 * dc0e75a rename build-xbbla-liquid.yml
 * d681e38 1.5.1
 * 82159ee rename xbbla (no 64)
