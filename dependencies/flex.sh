@@ -162,7 +162,10 @@ function flex_build()
           run_verbose make install
         fi
 
-        run_verbose rm -rfv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"*.la
+        # Keep only the static library, it is small.
+        find "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib" -type f -not -name '*.a' -exec rm -rf '{}' ';'
+        find "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib" -type l -exec rm -rf '{}' ';'
+
         # Remove documentation
         run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share"
 
