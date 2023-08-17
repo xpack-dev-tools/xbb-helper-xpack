@@ -4,7 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-18
 
-* v1.7.3 released
+* v1.7.4 released
+* 2cba4ab flex.sh: test -v
+* c4b9113 flex.sh: rm *.la
+* 694396f flex.sh: --disable-shared
+* 7817562 1.7.3
+* 914b637 prepare v1.7.3
 * ffacbf3 flex.sh: test compute realpath
 
 ## 2023-08-17
