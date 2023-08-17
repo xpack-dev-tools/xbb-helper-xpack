@@ -4,7 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-17
 
-* v1.7.0 released
+* v1.7.1 released
+* 9631f16 test-common.sh:  tests_install_dependencies ok
+* b7da686 bison.sh: which g++
+* 9ea604e 1.7.0
+* 90500fe package.json 1.7.0-pre
+* e529060 prepare v1.7.0
 * 3a89864 test-common.sh: add tests_install_dependencies
 * 87843f0 1.6.0
 * b09ca3f prepare v1.6.0
