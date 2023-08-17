@@ -245,10 +245,16 @@ __EOF__
 
       if is_variable_set "XBB_LIBRARIES_INSTALL_FOLDER_PATH"
       then
-        run_host_app_verbose $(which gcc) lex.yy.c -L"${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib" -lfl -o test
+        run_host_app_verbose "$(which gcc)" lex.yy.c -L"${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib" -lfl -o test
+      else
+        local realpath="$(which_realpath)"
+        local flex_realpath="$(${realpath} "${test_bin_folder_path}/flex")"
+        local libraries_folder_path="$(dirname $(dirname "${flex_realpath}"))/lib"
 
-        echo "Hello World" | ./test
+        run_host_app_verbose "$(which gcc)" lex.yy.c -L"${libraries_folder_path}" -lfl -o test
       fi
+
+      echo "Hello World" | ./test
   )
 }
 
