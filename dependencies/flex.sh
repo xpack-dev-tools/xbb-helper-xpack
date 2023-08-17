@@ -163,6 +163,7 @@ function flex_build()
           run_verbose make install
         fi
 
+        run_verbose rm -rfv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"*.la
         # Remove documentation
         run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share"
 
