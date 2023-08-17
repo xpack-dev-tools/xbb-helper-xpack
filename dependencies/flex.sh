@@ -162,6 +162,9 @@ function flex_build()
           run_verbose make install
         fi
 
+        # Remove documentation
+        run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share"
+
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           # cxx_restart fails - https://github.com/westes/flex/issues/98
