@@ -21,6 +21,7 @@
 # 16-Dec-2016 "6.1.2"
 # 17-Jan-2020 "6.2.0"
 # 14-Nov-2020, "6.2.1"
+# 29-Jul-2023, "6.3.0"
 
 # -----------------------------------------------------------------------------
 
@@ -89,6 +90,13 @@ function gmp_build()
       then
         (
           xbb_show_env_develop
+
+          run_verbose sed -i.bak \
+            -e 's|gmp_compile="$cc $cflags $cppflags conftest.c >&5"|gmp_compile="$cc $cflags $cppflags conftest.c $LDFLAGS \>\&5"|' \
+            -e 's|gmp_cxxcompile="$CXX $CPPFLAGS $CXXFLAGS conftest.cc >&5"|gmp_cxxcompile="$CXX $CPPFLAGS $CXXFLAGS conftest.cc $LDFLAGS \>\&5"|' \
+            "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure"
+
+          run_verbose_develop diff "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure.bak" "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure" || true
 
           echo
           echo "Running gmp configure..."
