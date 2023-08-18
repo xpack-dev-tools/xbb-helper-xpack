@@ -251,8 +251,7 @@ __EOF__
       then
         run_host_app_verbose "$(which gcc)" lex.yy.c -L"${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib" -lfl -o test -v
       else
-        local realpath="$(which_realpath)"
-        local flex_realpath="$(${realpath} "${test_bin_folder_path}/flex")"
+        local flex_realpath="$(${REALPATH} "${test_bin_folder_path}/flex")"
         local libraries_folder_path="$(dirname $(dirname "${flex_realpath}"))/lib"
 
         ls -l "${libraries_folder_path}"
