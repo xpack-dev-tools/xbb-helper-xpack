@@ -966,6 +966,13 @@ function xbb_set_compiler_flags()
 
   if [ "${XBB_HOST_PLATFORM}" == "linux" ]
   then
+    if [[ $(basename "${CC}") =~ .*clang.* ]]
+    then
+      # Starting with clang 16, the new libraries seem ready for prime time.
+      XBB_CXXFLAGS+=" -stdlib=libc++"
+      XBB_LDFLAGS+=" -stdlib=libc++ -rtlib=compiler-rt -lunwind -fuse-ld=lld"
+    fi
+
     if [ "${XBB_HOST_ARCH}" == "arm" ]
     then
       # /opt/armv7-gcc-2017/arm-linux-gnueabihf/include/c++/7.2.0/bits/vector.tcc:394:7: note: parameter passing for argument of type '...' changed in GCC 7.1
