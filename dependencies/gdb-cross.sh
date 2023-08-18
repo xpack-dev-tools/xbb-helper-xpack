@@ -25,8 +25,7 @@ function gdb_cross_build_dependencies()
   # libelf_build "0.8.13"
 
   # https://ftp.gnu.org/pub/gnu/gettext/
-# temporarily disabled
-#  gettext_build "${XBB_GETTEXT_VERSION}"
+  gettext_build "${XBB_GETTEXT_VERSION}"
 
   # Used by ncurses. Fails on macOS.
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
