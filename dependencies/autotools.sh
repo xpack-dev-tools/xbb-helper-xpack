@@ -38,7 +38,8 @@ function autotools_build()
   # configure.ac:34: error: Macro PKG_PROG_PKG_CONFIG is not available. It is usually defined in file pkg.m4 provided by package pkg-config.
   # https://pkgconfig.freedesktop.org/releases/
   # depends on libiconv
-  pkg_config_build "0.29.2"
+  # No longer needed, use the xPack version.
+  # pkg_config_build "0.29.2"
 }
 
 # -----------------------------------------------------------------------------
