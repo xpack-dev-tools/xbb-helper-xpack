@@ -63,6 +63,11 @@ function gettext_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
+      if [[ $(basename "${CC}") =~ .*clang.* ]]
+      then
+        CFLAGS+=" -Wno-incompatible-function-pointer-types"
+      fi
+      
       LDFLAGS="${XBB_LDFLAGS_LIB}"
 
       xbb_adjust_ldflags_rpath
