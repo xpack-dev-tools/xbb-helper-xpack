@@ -300,7 +300,7 @@ function gdb_cross_build()
     # config_options+=("--disable-objc-gc") # Arm, AArch64
           config_options+=("--disable-sim") # Arm, AArch64
     # config_options+=("--disable-source-highlight") # Arm, AArch64
-    config_options+=("--disable-werror") # Arm, AArch64
+      config_options+=("--disable-werror") # Arm, AArch64
 
     # config_options+=("--enable-gdb")
           config_options+=("--enable-initfini-array") # Arm, AArch64
@@ -336,7 +336,7 @@ function gdb_cross_build()
           config_options+=("--with-mpfr-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}") # AArch64
           # config_options+=("--with-libmpfr-type=static") # AArch64
 
-    config_options+=("--with-gdb-datadir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/share/gdb")
+      config_options+=("--with-gdb-datadir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/share/gdb")
 
     # config_options+=("--with-gnu-ld") # AArch64
 
