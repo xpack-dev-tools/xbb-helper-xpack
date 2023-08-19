@@ -230,6 +230,18 @@ function gdb_cross_build()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/configure" --help
           fi
 
+          if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+          then
+
+            # From 13.2, this file was not included in the build.
+            run_verbose sed -i.bak \
+              -e "s|^	gcore.c [\\]$|	gcore.c gcore-elf.c \\\\|" \
+              "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/Makefile.in"
+
+            run_verbose_develop diff "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/Makefile.in.bak" "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/Makefile.in" || true
+
+          fi
+
           # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
           # gdb_configure='--enable-initfini-array --disable-nls --without-x
           # --disable-gdbtk --without-tcl --without-tk --disable-werror
