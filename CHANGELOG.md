@@ -2,9 +2,34 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-08-19
+
+* v1.8.0 released
+* 35ea23f gdb-cross.sh: cosmetics
+* 2d84796 gettext.sh: disable tools on windows
+* 3f837c3 gdb-cross.sh: add -lmpfr for windows
+* dd75d60 xbb.sh: always xbb_update_ld_library_path
+* 5234486 xbb.sh: XBB_APPLICATION_USE_CLANG_LIBCXX & LLD
+* aa56767 xbb.sh: XBB_APPLICATION_USE_CLANG_ON_LINUX
+* 38c49a1 gettext.sh: cosmetics
+* 5dc1be6 gdb-cross.sh: update arch url
+* 919c687 gdb-cross.sh: patch for gcore-elf.c
+* 487250b libxml2.sh: update versions
+* 95f81f1 autotools.sh: disable pkg_config, use xpack
+
 ## 2023-08-18
 
-* v1.7.5 released
+* 3c1c9a9 xbb.sh: -stdlib=libc++
+* d8a4a01 xbb.sh: XBB_APPLICATION_PREFER_GCC_ON_LINUX
+* 6edad8b flex.sh: use REALPATH
+* 969db86 gmp.sh: add $LDFLAGS sed patch
+* ff7af22 gdb-cross.sh: update arch link
+* 956025f gdb-cross.sh: libunistring_build
+* 4cfdec1 gettext.sh: -Wno-incompatible-function-pointer-types
+* 233f236 gdb-cross.sh: re-enable gettext
+* ab2b1e1 build-common.sh: more # Build results
+* 7ee794e 1.7.5
+* 7b501d4 prepare v1.7.5
 * 62f734c flex.sh: purge non static libs
 * 3befd7c flex.sh: revert to --enable-shared
 * 7441d18 1.7.4
