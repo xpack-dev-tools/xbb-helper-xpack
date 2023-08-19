@@ -179,7 +179,7 @@ function gdb_cross_build()
         LIBS="-lssp -liconv"
         # https://stackoverflow.com/questions/29046724/undefined-reference-to-imp-gmpz-init-building-gmp-program-on-cygwin
         # undefined reference to `__imp___gmpz_init'
-        LIBS+=" -lgmp"
+        LIBS+=" -lgmp -lmpfr"
       fi
 
       CONFIG_PYTHON_PREFIX=""
