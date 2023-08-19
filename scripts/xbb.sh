@@ -969,8 +969,15 @@ function xbb_set_compiler_flags()
     if [[ $(basename "${CC}") =~ .*clang.* ]]
     then
       # Starting with clang 16, the new libraries seem ready for prime time.
-      XBB_CXXFLAGS+=" -stdlib=libc++"
-      XBB_LDFLAGS+=" -stdlib=libc++ -rtlib=compiler-rt -lunwind -fuse-ld=lld"
+      if [ "${XBB_APPLICATION_USE_CLANG_LIBCXX:-}" == "y" ]
+      then
+        XBB_CXXFLAGS+=" -stdlib=libc++"
+        XBB_LDFLAGS+=" -stdlib=libc++ -rtlib=compiler-rt -lunwind"
+      fi
+      if [ "${XBB_APPLICATION_USE_CLANG_LLD:-}" == "y" ]
+      then
+        XBB_LDFLAGS+=" -fuse-ld=lld"
+      fi
     fi
 
     if [ "${XBB_HOST_ARCH}" == "arm" ]
