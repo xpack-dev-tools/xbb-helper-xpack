@@ -990,6 +990,9 @@ function xbb_set_compiler_flags()
     XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
     XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
+
+    xbb_update_ld_library_path
+
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
     if [ "${XBB_HOST_ARCH}" == "x64" ]
@@ -1024,6 +1027,9 @@ function xbb_set_compiler_flags()
     then
       XBB_LDFLAGS_APP_STATIC_GCC+=" -static-libgcc"
     fi
+
+    xbb_update_ld_library_path
+
   elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
 
@@ -1213,9 +1219,9 @@ function xbb_activate_dependencies_dev()
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
-  # Must be done before, so that the deps path comes in front of it,
+  # XBB_LIBRARY_PATH must be already set before (xbb_set_compiler_flags),
+  # and the deps path comes in front of it,
   # otherwise compiler libraries may take precedence.
-  xbb_update_ld_library_path
 
   # Add XBB include in front of XBB_CPPFLAGS.
   XBB_CPPFLAGS="-I${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}${name_suffix}/include ${XBB_CPPFLAGS}"
