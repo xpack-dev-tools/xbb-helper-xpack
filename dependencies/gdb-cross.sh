@@ -9,6 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
+# https://gitlab.archlinux.org/archlinux/packaging/packages/arm-none-eabi-gdb/-/blob/main/PKGBUILD
 # https://gitlab.archlinux.org/archlinux/packaging/packages/aarch64-linux-gnu-gdb/-/blob/main/PKGBUILD
 # https://github.com/archlinux/svntogit-community/blob/packages/riscv32-elf-gdb/trunk/PKGBUILD
 
