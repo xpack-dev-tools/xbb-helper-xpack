@@ -67,7 +67,7 @@ function gettext_build()
       then
         CFLAGS+=" -Wno-incompatible-function-pointer-types"
       fi
-      
+
       LDFLAGS="${XBB_LDFLAGS_LIB}"
 
       xbb_adjust_ldflags_rpath
