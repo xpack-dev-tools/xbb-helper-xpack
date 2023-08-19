@@ -162,8 +162,22 @@ function gettext_build()
           # config_options+=("--enable-relocatable")
 
           #  --enable-nls needed to include libintl
-          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/configure" \
-            "${config_options[@]}"
+
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          then
+
+            # Keep only gettext-runtime, with gettext-tools it fails with:
+            # /home/ilg/.local/xPacks/@xpack-dev-tools/mingw-w64-gcc/12.2.0-1.1/.content/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/bin/ld: ../woe32dll/.libs/libgettextsrc_la-c++format.o:c++format.cc:(.text.startup._GLOBAL__sub_I_formatstring_parsers+0x88): undefined reference to `__imp_formatstring_ruby'
+            # collect2: error: ld returned 1 exit status
+
+            run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/gettext-runtime/configure" \
+              "${config_options[@]}"
+          else
+
+            # On Linux/macOS the tools are needed for autopoint, refered by autotools.
+            run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/configure" \
+              "${config_options[@]}"
+          fi
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${gettext_folder_name}/config-log-$(ndate).txt"
         ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${gettext_folder_name}/configure-output-$(ndate).txt"
