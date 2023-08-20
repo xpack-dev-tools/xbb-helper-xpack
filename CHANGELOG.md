@@ -2,9 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-08-20
+
+* v1.8.1 released
+* 110e29c test-common.sh: install g++ for tests
+
 ## 2023-08-19
 
-* v1.8.0 released
+* 9e134c5 1.8.0
+* 3aebaa5 prepare v1.8.0
 * 35ea23f gdb-cross.sh: cosmetics
 * 2d84796 gettext.sh: disable tools on windows
 * 3f837c3 gdb-cross.sh: add -lmpfr for windows
