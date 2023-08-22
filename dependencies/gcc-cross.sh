@@ -614,6 +614,23 @@ function gcc_cross_build_final()
         export CC_FOR_TARGET="$(which ${name_prefix}gcc)"
         export GCC_FOR_TARGET="$(which ${name_prefix}gcc)"
         export CXX_FOR_TARGET="$(which ${name_prefix}g++)"
+
+        # There are some internal tools that must be compiled natively for the
+        # build machine (Linux).
+        export CC_FOR_BUILD="${XBB_NATIVE_CC}"
+        export CXX_FOR_BUILD="${XBB_NATIVE_CXX}"
+        export AR_FOR_BUILD="${XBB_NATIVE_AR}"
+        export LD_FOR_BUILD="${XBB_NATIVE_LD}"
+        export NM_FOR_BUILD="${XBB_NATIVE_NM}"
+        export RANLIB_FOR_BUILD="${XBB_NATIVE_RANLIB}"
+
+        export CFLAGS_FOR_BUILD="$(echo "${XBB_CFLAGS_NO_W}" | sed -e 's|-D__USE_MINGW_ACCESS||')"
+        export CXXFLAGS_FOR_BUILD="${XBB_CXXFLAGS_NO_W}"
+        export CPPFLAGS_FOR_BUILD=""
+        LDFLAGS_FOR_BUILD="-O2 -v -Wl,--gc-sections"
+        local libs_path="$(xbb_get_libs_path "${CC_FOR_BUILD}")"
+
+        export LDFLAGS_FOR_BUILD+="$(xbb_expand_rpath "${libs_path}")"
       fi
 
       if [ ! -f "config.status" ]
