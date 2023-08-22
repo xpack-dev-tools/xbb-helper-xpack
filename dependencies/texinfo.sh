@@ -96,7 +96,7 @@ function texinfo_build()
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          config_options+=("--disable-debug") # HB
+          # config_options+=("--disable-debug") # HB but not recognised
           config_options+=("--disable-dependency-tracking") # HB
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -127,6 +127,8 @@ function texinfo_build()
         else
           run_verbose make install
         fi
+
+        run_verbose rm -rf "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man"
 
         # Darwin: FAIL: t/94htmlxref.t 11 - htmlxref errors file_html
         # Darwin: ERROR: t/94htmlxref.t - exited with status 2
