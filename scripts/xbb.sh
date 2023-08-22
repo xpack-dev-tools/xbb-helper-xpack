@@ -53,12 +53,6 @@ function xbb_save_env()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   export XBB_SAVED_PATH="${PATH:-""}"
-  # On MSYS2, which complains about the missing file.
-  export M4=$(which gm4 2>/dev/null || which m4 2>/dev/null || echo m4)
-  export PYTHON=$(which python 2>/dev/null || echo python)
-  export SED=$(which gsed 2>/dev/null || which sed 2>/dev/null || echo sed)
-  export INSTALL=$(which install 2>/dev/null || echo install)
-  export REALPATH=$(which_realpath)
 }
 
 function xbb_reset_env()
@@ -162,6 +156,19 @@ function xbb_reset_env()
   # Prevent 'configure: error: you should not run configure as root'
   # when running inside a docker container.
   export FORCE_UNSAFE_CONFIGURE=1
+
+  xbb_set_actual_commands
+}
+
+function xbb_set_actual_commands()
+{
+  # On MSYS2, which complains about the missing file.
+  export M4=$(which gm4 2>/dev/null || which m4 2>/dev/null || echo m4)
+  export PYTHON=$(which python3 2>/dev/null || which python 2>/dev/null || echo python)
+  export SED=$(which gsed 2>/dev/null || which sed 2>/dev/null || echo sed)
+  export INSTALL=$(which install 2>/dev/null || echo install)
+  export REALPATH=$(which_realpath)
+  export MAKEINFO=$(which makeinfo 2>/dev/null || echo makeinfo)
 }
 
 function xbb_prepare_pkg_config()
@@ -1191,6 +1198,8 @@ function xbb_activate_installed_bin()
     export PKG_CONFIG="$(which pkg-config)"
     echo_develop "PKG_CONFIG=${PKG_CONFIG}"
   fi
+
+  xbb_set_actual_commands
 }
 
 # Add the application binaries to the PATH.
@@ -1206,6 +1215,8 @@ function xbb_activate_application_bin()
 
   export PATH
   echo_develop "PATH=${PATH}"
+
+  xbb_set_actual_commands
 
   hash -r
 }
