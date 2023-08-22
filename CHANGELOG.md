@@ -2,9 +2,21 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-08-22
+
+* v1.9.0 released
+* d46c157 gcc-cross.sh: gcc_cross_build_all installed_bin
+* fba9316 add xbb_set_actual_commands
+* 287608c texinfo.sh: no need for --disable-debug
+
+## 2023-08-21
+
+* 049c598 dot.npmignore: add extras
+
 ## 2023-08-20
 
-* v1.8.1 released
+* ae380e9 1.8.1
+* 1babf16 prepare v1.8.1
 * 110e29c test-common.sh: install g++ for tests
 
 ## 2023-08-19
