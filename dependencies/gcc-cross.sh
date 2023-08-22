@@ -48,27 +48,22 @@ function gcc_cross_build_all()
 {
   local triplet="$1"
 
-  binutils_cross_build "${XBB_BINUTILS_VERSION}" "${triplet}"
-
   (
-    # For flex.
+    # For makeinfo
     xbb_activate_installed_bin
+
+    binutils_cross_build "${XBB_BINUTILS_VERSION}" "${triplet}"
 
     gcc_cross_build_first "${XBB_GCC_VERSION}" "${triplet}"
-  )
 
-  (
-    # Add the gcc first stage binaries to the path.
-    # For macOS and Linux, the compiler is installed in the application folder.
-    # For Windows, it is in the native dependencies folder.
-    xbb_activate_installed_bin
+    (
+      # Be sure to add the gcc first stage binaries to the path.
+      # For macOS and Linux, the compiler is installed in the application folder.
+      # For Windows, it is in the native dependencies folder.
+      xbb_activate_installed_bin
 
-    newlib_cross_build "${XBB_NEWLIB_VERSION}" "${triplet}"
-  )
-
-  (
-    # For flex.
-    xbb_activate_installed_bin
+      newlib_cross_build "${XBB_NEWLIB_VERSION}" "${triplet}"
+    )
 
     gcc_cross_build_final "${XBB_GCC_VERSION}" "${triplet}"
   )
@@ -84,6 +79,9 @@ function gcc_cross_build_all()
 
       # Temporarily set a distinct output folder and build again.
       xbb_set_executables_install_path "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}${XBB_NEWLIB_NANO_SUFFIX}"
+
+      # For makeinfo (binutils), flex (gcc-final)
+      xbb_activate_installed_bin
 
       # Although in the initial versions this was a copy, it is cleaner
       # to do it again.
