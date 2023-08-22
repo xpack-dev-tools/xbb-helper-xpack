@@ -549,6 +549,12 @@ function xbb_set_compiler_env()
       export XBB_NATIVE_CC="$(which gcc 2>/dev/null || echo gcc)"
       export XBB_NATIVE_CXX="$(which g++ 2>/dev/null || echo g++)"
 
+      export XBB_NATIVE_LD="$(which ld 2>/dev/null || echo ld)"
+
+      export XBB_NATIVE_AR="$(which gcc-ar 2>/dev/null || which ar 2>/dev/null || echo ar)"
+      export XBB_NATIVE_NM="$(which gcc-nm 2>/dev/null || which nm 2>/dev/null || echo nm)"
+      export XBB_NATIVE_RANLIB="$(which gcc-ranlib 2>/dev/null || which ranlib 2>/dev/null || echo ranlib)"
+
       xbb_prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
     else
       if [ "${XBB_APPLICATION_USE_CLANG_ON_LINUX:-}" == "y" ]
