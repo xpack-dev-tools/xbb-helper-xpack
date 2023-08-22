@@ -1403,6 +1403,41 @@ function xbb_adjust_ldflags_rpath()
   fi
 }
 
+# STDOUT!
+function xbb_expand_rpath()
+{
+  local path="$1"
+
+  IFS=: read -r -d '' -a path_array < <(printf '%s:\0' "${path}")
+
+  local output=""
+
+  # Compare the platform where the build is performed.
+  if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+  then
+    for p in "${path_array[@]}"
+    do
+      if [ -d "${p}" ]
+      then
+        output+=" -Wl,-rpath-link,$(${REALPATH} ${p})"
+        output+=" -Wl,-rpath,$(${REALPATH} ${p})"
+      fi
+    done
+  elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+  then
+    for p in "${path_array[@]}"
+    do
+      if [ -d "${p}" ]
+      then
+        output+=" -Wl,-rpath,$(${REALPATH} ${p})"
+      fi
+    done
+  fi
+
+  echo "${output}"
+}
+
+# STDOUT!
 function xbb_get_current_package_version()
 {
   local package_file_path="${1:-"${project_folder_path}/package.json"}"
@@ -1411,6 +1446,7 @@ function xbb_get_current_package_version()
   grep '"version":' "${package_file_path}" | sed -e 's|.*"version": "\(.*\)".*|\1|'
 }
 
+# STDOUT!
 function xbb_get_current_helper_version()
 {
   local package_file_path="${1:-"${project_folder_path}/package.json"}"
