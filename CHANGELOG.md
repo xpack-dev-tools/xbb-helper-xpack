@@ -2,9 +2,18 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-08-23
+
+* v1.10.0 released
+* 60e1f48 gcc-cross.sh: add XX_FOR_BUILD
+* 6902316 xbb.sh: add xbb_expand_rpath()
+* ee97e3d xbb.sh: XBB_NATIVE_LD|AR|NM|RANLIB
+
 ## 2023-08-22
 
-* v1.9.0 released
+* 1eea6a1 1.9.0
+* cb72b0b prepare v1.9.0
+* 9b34ea5 .vscode/settings.json
 * d46c157 gcc-cross.sh: gcc_cross_build_all installed_bin
 * fba9316 add xbb_set_actual_commands
 * 287608c texinfo.sh: no need for --disable-debug
