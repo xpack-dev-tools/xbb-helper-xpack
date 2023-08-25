@@ -176,6 +176,7 @@ function gcc_build()
       mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
       run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
+      local saved_ldflags="${XBB_LDFLAGS_APP}"
       # To access the newly compiled libraries.
       # On Arm it still needs --with-gmp
       xbb_activate_dependencies_dev
@@ -206,7 +207,7 @@ function gcc_build()
         # GCC will suffer build errors if forced to use a particular linker.
         unset LD
 
-        export LDFLAGS_FOR_TARGET="${LDFLAGS}"
+        export LDFLAGS_FOR_TARGET="${saved_ldflags}"
         export LDFLAGS_FOR_BUILD="${LDFLAGS}"
         export BOOT_LDFLAGS="${LDFLAGS}"
       elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
@@ -221,7 +222,7 @@ function gcc_build()
         #   LDFLAGS+=" -lpthread"
         # fi
 
-        LDFLAGS_FOR_TARGET="${LDFLAGS}"
+        LDFLAGS_FOR_TARGET="${saved_ldflags}"
         LDFLAGS_FOR_BUILD="${LDFLAGS}"
         BOOT_LDFLAGS="${LDFLAGS}"
 
