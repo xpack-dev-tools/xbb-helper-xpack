@@ -1318,7 +1318,8 @@ function xbb_get_libs_path()
 function xbb_update_ld_library_path()
 {
   local libs_path=""
-  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+  if [ "${XBB_HOST_PLATFORM}" == "linux" ] ||
+     [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
 
     if [[ "$(basename ${CC})" =~ .*gcc.* ]]
