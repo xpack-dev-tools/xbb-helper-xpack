@@ -116,15 +116,11 @@ function newlib_cross_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      gcc_cross_define_flags_for_target "${nano_option}"
-
       export CPPFLAGS
       export CFLAGS
       export CXXFLAGS
 
-      export CFLAGS_FOR_TARGET
-      export CXXFLAGS_FOR_TARGET
-      export LDFLAGS_FOR_TARGET
+      gcc_cross_define_flags_for_target "${nano_option}"
 
       if [ ! -f "config.status" ]
       then
