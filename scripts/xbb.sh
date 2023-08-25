@@ -799,6 +799,8 @@ function xbb_prepare_gcc_env()
     export RC="${windres}"
   fi
 
+  export LEX="$(which flex 2>/dev/null || echo flex)"
+
   xbb_set_compiler_flags
 }
 
@@ -882,6 +884,8 @@ function xbb_prepare_clang_env()
     export RC="${windres}"
   fi
 
+  export LEX="$(which flex 2>/dev/null || echo flex)"
+
   xbb_set_compiler_flags
 }
 
@@ -945,6 +949,8 @@ function xbb_prepare_apple_clang_env()
     export WINDRES="${windres}"
     export RC="${windres}"
   fi
+
+  export LEX="$(which flex 2>/dev/null || echo flex)"
 
   xbb_set_compiler_flags
 }
@@ -1089,6 +1095,7 @@ function xbb_set_compiler_flags()
       echo "AS=${AS}"
       echo "DLLTOOL=${DLLTOOL}"
       echo "LD=${LD}"
+      echo "LEX=${LEX}"
       echo "NM=${NM}"
       echo "OBJCOPY=${OBJCOPY}"
       echo "OBJDUMP=${OBJDUMP}"
