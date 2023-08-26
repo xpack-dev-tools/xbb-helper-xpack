@@ -1312,6 +1312,8 @@ function xbb_activate_dependencies_dev()
     # The order is important, it must be:
     # dev-path:gcc-path:system-path
     echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
+
+    # Do not export it on Windows.
     export XBB_LIBRARY_PATH
   fi
 
@@ -1388,6 +1390,8 @@ function xbb_update_ld_library_path()
   fi
 }
 
+# Note: it adds only folder that are present!
+# For futures, create empty folders before.
 function xbb_adjust_ldflags_rpath()
 {
   echo_develop
