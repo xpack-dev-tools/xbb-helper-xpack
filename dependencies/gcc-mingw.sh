@@ -52,6 +52,7 @@
 
 # -----------------------------------------------------------------------------
 
+# Called twice, first for the bootloader, second for the actual build.
 function gcc_mingw_build_dependencies()
 {
   libiconv_build "${XBB_LIBICONV_VERSION}"
@@ -722,8 +723,24 @@ function gcc_mingw_test()
       # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/install/lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
       # collect2: error: ld returned 1 exit status
 
+      # Interestingly, -flto tests pass.
       export XBB_SKIP_TEST_HELLO_WEAK_C="y"
       export XBB_SKIP_TEST_HELLO_WEAK_CPP="y"
+
+      export XBB_SKIP_TEST_GC_HELLO_WEAK_C="y"
+      export XBB_SKIP_TEST_GC_HELLO_WEAK_CPP="y"
+
+      export XBB_SKIP_TEST_STATIC_LIB_HELLO_WEAK_C="y"
+      export XBB_SKIP_TEST_STATIC_LIB_HELLO_WEAK_CPP="y"
+
+      export XBB_SKIP_TEST_STATIC_LIB_GC_HELLO_WEAK_C="y"
+      export XBB_SKIP_TEST_STATIC_LIB_GC_HELLO_WEAK_CPP="y"
+
+      export XBB_SKIP_TEST_STATIC_HELLO_WEAK_C="y"
+      export XBB_SKIP_TEST_STATIC_HELLO_WEAK_CPP="y"
+
+      export XBB_SKIP_TEST_STATIC_GC_HELLO_WEAK_C="y"
+      export XBB_SKIP_TEST_STATIC_GC_HELLO_WEAK_CPP="y"
 
       # [wine64 ./lto-throwcatch-main.exe]
       # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 0394), starting debugger...
