@@ -56,6 +56,10 @@ function binutils_prepare_common_options()
   config_options=()
 
   config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
+  config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+  config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+  # Remove ansidecl.h!
+
   config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB mingw
   # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
 
@@ -348,6 +352,10 @@ function binutils_build()
               "$(dirname ${libiberty_file_path})"
           fi
         fi
+
+        # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/sources/gcc-12.3.0/libiberty/objalloc.c:95:18: error: 'PTR' undeclared (first use in this function)
+        #    95 |   ret->chunks = (PTR) malloc (CHUNK_SIZE);
+        run_verbose rm -rf "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ansidecl.h"
 
         run_verbose rm -rf "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}/doc"
 
