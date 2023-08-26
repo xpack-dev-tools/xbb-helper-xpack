@@ -176,7 +176,6 @@ function gcc_build()
       mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
       run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
-      local saved_ldflags="${XBB_LDFLAGS_APP}"
       # To access the newly compiled libraries.
       # On Arm it still needs --with-gmp
       xbb_activate_dependencies_dev
@@ -207,7 +206,8 @@ function gcc_build()
         # GCC will suffer build errors if forced to use a particular linker.
         unset LD
 
-        export LDFLAGS_FOR_TARGET="${saved_ldflags}"
+        local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+        LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
         export LDFLAGS_FOR_BUILD="${LDFLAGS}"
         export BOOT_LDFLAGS="${LDFLAGS}"
       elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
@@ -222,7 +222,8 @@ function gcc_build()
         #   LDFLAGS+=" -lpthread"
         # fi
 
-        LDFLAGS_FOR_TARGET="${saved_ldflags}"
+        local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+        LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
         LDFLAGS_FOR_BUILD="${LDFLAGS}"
         BOOT_LDFLAGS="${LDFLAGS}"
 
@@ -574,6 +575,13 @@ function gcc_build()
         echo
         echo "Running gcc make..."
 
+# (
+#   cd /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/build/gcc-12.3.0/libiberty
+
+#   /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/xpacks/.bin/gcc -c -DHAVE_CONFIG_H -ffunction-sections -fdata-sections -pipe -O2 -w -I/home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/install/include  -I. -I/home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/sources/gcc-12.3.0/libiberty/../include  -W -Wall -Wwrite-strings -Wc++-compat -Wstrict-prototypes -Wshadow=local -pedantic  -D_GNU_SOURCE -fcf-protection /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/sources/gcc-12.3.0/libiberty/objalloc.c -o objalloc.o.c -E -v
+
+#   exit 1
+# )
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
