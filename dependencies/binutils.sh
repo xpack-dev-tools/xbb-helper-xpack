@@ -345,6 +345,15 @@ function binutils_build()
         # make install-strip
         run_verbose make install
 
+        if [ "${has_program_prefix}" == "y" ]
+        then
+          # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/lib64/libiberty.a(cplus-dem.o): warning: relocation against `current_demangling_style' in read-only section `.text.cplus_demangle'
+          # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/lib64/libiberty.a(cp-demangle.o): relocation R_X86_64_PC32 against symbol `cplus_demangle_builtin_types' can not be used when making a shared object; recompile with -fPIC
+          # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: final link failed: bad value
+
+          run_verbose rm -rf "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libiberty.a"
+        fi
+
         if [ -f "libiberty/pic/libiberty.a" ]
         then
           # install PIC version of libiberty
