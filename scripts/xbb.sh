@@ -1163,6 +1163,25 @@ function xbb_set_libraries_install_path()
   echo_develop "XBB_LIBRARIES_INSTALL_FOLDER_PATH=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 }
 
+# Must be called after xxbb_set_target() and
+# xbb_set_compiler_flags(), xbb_prepare_*_env(), xbb_set_compiler_env().
+function xbb_set_flex_package_paths()
+{
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
+  # Adjust environent to refer to the flex xPack dependency.
+  local flex_realpath="$(${REALPATH} "$(which flex)")"
+  XBB_FLEX_PACKAGE_PATH="$(dirname $(dirname "${flex_realpath}"))"
+
+  export XBB_CPPFLAGS+=" -I${XBB_FLEX_PACKAGE_PATH}/include"
+  export XBB_LDFLAGS+=" -L${XBB_FLEX_PACKAGE_PATH}/lib"
+  export XBB_LDFLAGS_LIB+=" -L${XBB_FLEX_PACKAGE_PATH}/lib"
+  export XBB_LDFLAGS_APP+=" -L${XBB_FLEX_PACKAGE_PATH}/lib"
+  export XBB_LDFLAGS_APP_STATIC_GCC+=" -L${XBB_FLEX_PACKAGE_PATH}/lib"
+  echo_develop "XBB_FLEX_PACKAGE_PATH=${XBB_FLEX_PACKAGE_PATH}"
+}
+
 # Add the freshly built binaries.
 function xbb_activate_installed_bin()
 {
