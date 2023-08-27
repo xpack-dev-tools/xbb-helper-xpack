@@ -3114,7 +3114,7 @@ function rhash_build()
 function rhash_test_libs()
 {
   echo
-  echo "Checking the flex shared libraries..."
+  echo "Checking the rhash shared libraries..."
 
   if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
@@ -3130,7 +3130,7 @@ function rhash_test()
 
   (
     echo
-    echo "Checking the flex shared libraries..."
+    echo "Checking the rhash shared libraries..."
 
     show_host_libs "${test_bin_folder_path}/rhash"
 
@@ -3314,7 +3314,7 @@ function re2c_test()
 
   (
     echo
-    echo "Checking the flex shared libraries..."
+    echo "Checking the re2c shared libraries..."
 
     show_host_libs "${test_bin_folder_path}/re2c"
 
