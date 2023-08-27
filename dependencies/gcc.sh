@@ -911,7 +911,8 @@ function gcc_test()
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
 
-      if [[ "${gcc_version}" =~ 12[.]3[.]0 ]]
+      if [[ "${gcc_version}" =~ 12[.]3[.]0 ]] ||
+         [[ "${gcc_version}" =~ 13[.]2[.]0 ]]
       then
         # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
         # collect2.exe: error: ld returned 1 exit status
