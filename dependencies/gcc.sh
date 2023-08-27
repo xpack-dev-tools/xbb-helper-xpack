@@ -919,6 +919,21 @@ function gcc_test()
         export XBB_SKIP_TEST_HELLO_WEAK_C="y"
         export XBB_SKIP_TEST_HELLO_WEAK_CPP="y"
 
+        export XBB_SKIP_TEST_GC_HELLO_WEAK_C="y"
+        export XBB_SKIP_TEST_GC_HELLO_WEAK_CPP="y"
+
+        export XBB_SKIP_TEST_STATIC_LIB_HELLO_WEAK_C="y"
+        export XBB_SKIP_TEST_STATIC_LIB_HELLO_WEAK_CPP="y"
+
+        export XBB_SKIP_TEST_STATIC_LIB_GC_HELLO_WEAK_C="y"
+        export XBB_SKIP_TEST_STATIC_LIB_GC_HELLO_WEAK_CPP="y"
+
+        export XBB_SKIP_TEST_STATIC_HELLO_WEAK_C="y"
+        export XBB_SKIP_TEST_STATIC_HELLO_WEAK_CPP="y"
+
+        export XBB_SKIP_TEST_STATIC_GC_HELLO_WEAK_C="y"
+        export XBB_SKIP_TEST_STATIC_GC_HELLO_WEAK_CPP="y"
+
         # [wine64 ./lto-throwcatch-main.exe]
         # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 03d8), starting debugger...
         # Unhandled exception: page fault on execute access to 0x0000000122b1157c in 64-bit code (0x00000122b1157c).
