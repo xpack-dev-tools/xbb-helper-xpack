@@ -16,7 +16,7 @@
 
 # https://github.com/archlinux/svntogit-packages/blob/packages/libpcap/trunk/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libpcap.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libpcap.rb
 
 # June 9, 2021 "1.10.1"
 

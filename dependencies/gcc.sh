@@ -19,8 +19,8 @@
 
 # https://archlinuxarm.org/packages/aarch64/gcc/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gcc-git
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@8.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@8.rb
 
 # Mingw on Arch
 # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
@@ -66,8 +66,8 @@ function gcc_download()
   # backported with his help to gcc-11 branch.
 
   # The repo used by the HomeBrew:
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@12.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@12.rb
   # https://github.com/Homebrew/formula-patches/tree/master/gcc
   # https://github.com/fxcoudert/gcc/tags
 

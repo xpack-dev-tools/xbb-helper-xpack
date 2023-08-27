@@ -18,7 +18,7 @@
 # https://github.com/archlinux/svntogit-packages/blob/packages/qemu/trunk/PKGBUILD
 # https://github.com/archlinux/svntogit-community/blob/packages/libvirt/trunk/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/qemu.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/q/qemu.rb
 
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-qemu/PKGBUILD
 

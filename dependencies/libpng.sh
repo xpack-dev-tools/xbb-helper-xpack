@@ -18,7 +18,7 @@
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libpng-git
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libpng
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libpng.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libpng.rb
 
 # libpng_version="1.2.53"
 # libpng_version="1.6.17"

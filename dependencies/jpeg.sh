@@ -18,7 +18,7 @@
 
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libjpeg9
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/jpeg.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/j/jpeg.rb
 
 # Jan 19 10:26 2014 "9a"
 # Jan 17 10:46 2016 "9b"

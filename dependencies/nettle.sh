@@ -16,7 +16,7 @@
 # https://archlinuxarm.org/packages/aarch64/nettle/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=nettle-git
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/nettle.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/n/nettle.rb
 
 # 2017-11-19, "3.4"
 # 2018-12-04, "3.4.1"

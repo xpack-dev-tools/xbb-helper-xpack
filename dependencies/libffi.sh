@@ -21,7 +21,7 @@
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libffi-git
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libffi
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libffi.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libffi.rb
 
 # 12-Nov-2014, "3.2.1"
 # 23 Nov 2019, "3.3"

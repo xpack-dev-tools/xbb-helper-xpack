@@ -18,7 +18,7 @@
 
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-bzip2/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/bzip2.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/b/bzip2.rb
 
 # 2019-07-13 "1.0.8"
 

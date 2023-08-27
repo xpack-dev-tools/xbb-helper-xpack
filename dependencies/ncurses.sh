@@ -26,7 +26,7 @@
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-ncurses/001-use-libsystre.patch
 # https://github.com/msys2/MSYS2-packages/blob/master/ncurses/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/ncurses.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/n/ncurses.rb
 
 # _4421.c:1364:15: error: expected ‘)’ before ‘int’
 # ../include/curses.h:1906:56: note: in definition of macro ‘mouse_trafo’

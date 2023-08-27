@@ -558,7 +558,7 @@ function libgpg_error_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/libgpg-error/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/libgpg-error/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libgpg-error.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libgpg-error.rb
 
   # 2020-02-07, "1.37"
   # 2021-03-22, "1.42"
@@ -709,7 +709,7 @@ function libgcrypt_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/libgcrypt/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/libgcrypt/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libgcrypt.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libgcrypt.rb
 
   # 2019-08-29, "1.8.5"
   # 2021-06-02, "1.8.8"
@@ -927,7 +927,7 @@ function libassuan_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/libassuan/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/libassuan/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libassuan.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libassuan.rb
 
   # 2019-02-11, "2.5.3"
   # 2021-03-22, "2.5.5"
@@ -1093,7 +1093,7 @@ function libksba_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/libksba/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/libksba/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libksba.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libksba.rb
 
   # 2016-08-22, "1.3.5"
   # 2021-06-10, "1.6.0"
@@ -1259,7 +1259,7 @@ function npth_build()
 
   # https://archlinuxarm.org/packages/aarch64/npth/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/npth.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/n/npth.rb
 
   # 2018-07-16, "1.6"
 
@@ -1418,7 +1418,7 @@ function _libusb_build()
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libusb
   # https://github.com/libusb/libusb/releases/download/v1.0.24/libusb-1.0.24.tar.bz2
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libusb.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libusb.rb
 
   # 2015-09-14, 1.0.20
   # 2018-03-25, 1.0.22

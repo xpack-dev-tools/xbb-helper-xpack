@@ -14,7 +14,7 @@
 # https://archlinuxarm.org/packages/aarch64/flex/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=flex-git
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/flex.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/f/flex.rb
 
 # Apple uses 2.5.3
 # Ubuntu 12 uses 2.5.35

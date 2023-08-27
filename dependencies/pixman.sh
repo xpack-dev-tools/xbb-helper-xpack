@@ -16,7 +16,7 @@
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=pixman-git
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-pixman
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/pixman.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/pixman.rb
 
 # pixman_version="0.32.6"
 # pixman_version="0.34.0" # 2016-01-31

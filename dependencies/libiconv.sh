@@ -15,7 +15,7 @@
 # https://github.com/archlinux/svntogit-community/blob/packages/libiconv/trunk/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libiconv
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libiconv.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libiconv.rb
 
 # 2011-08-07 1.14"
 # 2017-02-02 "1.15"

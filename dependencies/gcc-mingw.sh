@@ -29,7 +29,7 @@
 #
 # binutils & gcc --prefix=#{arch_dir} --with-sysroot=#{arch_dir}
 # mingw-headers --prefix=#{arch_dir}/#{target}
-# mingw-libs --prefix=#{arch_dir}/#{target} --with-sysroot=#{arch_dir}/## https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
+# mingw-libs --prefix=#{arch_dir}/#{target} --with-sysroot=#{arch_dir}/## https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mingw-w64.rb
 
 # https://ftp.gnu.org/gnu/gcc/
 # 2019-02-22, "8.3.0"

@@ -17,7 +17,7 @@
 
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=pkg-config-git
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/pkg-config.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/pkg-config.rb
 
 # 2017-03-20, "0.29.2", latest
 

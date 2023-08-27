@@ -16,7 +16,7 @@
 # https://archlinuxarm.org/packages/aarch64/texinfo/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=texinfo-svn
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/texinfo.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/t/texinfo.rb
 
 # 2017-09-12, "6.5"
 # 2019-02-16, "6.6"

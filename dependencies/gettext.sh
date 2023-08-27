@@ -16,7 +16,7 @@
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gettext-git
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-gettext
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/gettext.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gettext.rb
 
 # 2015-07-14 "0.19.5.1"
 # 2016-06-11 "0.19.8.1"

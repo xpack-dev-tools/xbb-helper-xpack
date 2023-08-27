@@ -144,7 +144,7 @@ function curl_build()
   # https://archlinuxarm.org/packages/aarch64/curl/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=curl-git
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/curl.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/c/curl.rb
 
   # 2017-10-23, "7.56.1"
   # 2017-11-29, "7.57.0"
@@ -369,7 +369,7 @@ function tar_build()
   # https://archlinuxarm.org/packages/aarch64/tar/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=tar-git
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gnu-tar.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gnu-tar.rb
 
   # 2016-05-16 "1.29"
   # 2017-12-17 "1.30"
@@ -587,8 +587,8 @@ function guille_build()
 
   # https://github.com/archlinux/svntogit-packages/blob/packages/guile/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/guile/files/PKGBUILD
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/guile.rb
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/guile@2.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/guile.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/guile@2.rb
 
   # 2020-03-07, "2.2.7"
   # Note: for non 2.2, update the tests!
@@ -977,7 +977,7 @@ function gawk_build()
   # https://archlinuxarm.org/packages/aarch64/gawk/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gawk-git
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gawk.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gawk.rb
 
   # 2017-10-19, "4.2.0"
   # 2018-02-25, "4.2.1"
@@ -1173,7 +1173,7 @@ function patch_build()
   # https://archlinuxarm.org/packages/aarch64/patch/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=patch-git
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gpatch.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gpatch.rb
 
   # 2015-03-06, "2.7.5"
   # 2018-02-06, "2.7.6" (latest)
@@ -1331,7 +1331,7 @@ function diffutils_build()
   # https://archlinuxarm.org/packages/aarch64/diffutils/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=diffutils-git
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/diffutils.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/d/diffutils.rb
 
   # 2017-05-21, "3.6"
   # 2018-12-31, "3.7"
@@ -1515,7 +1515,7 @@ function make_build()
   # https://archlinuxarm.org/packages/aarch64/make/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=make-git
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/make.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/make.rb
 
   # 2016-06-10, "4.2.1"
   # 2020-01-19, "4.3"
@@ -1695,7 +1695,7 @@ function bash_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/bash/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/bash/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/bash.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/b/bash.rb
 
   # 2018-01-30, "4.4.18"
   # 2019-01-07, "5.0"
@@ -1862,7 +1862,7 @@ function wget_build()
   # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/wget
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=wget-git
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/wget.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/w/wget.rb
 
   # 2016-06-10, "1.19"
   # 2018-12-26, "1.20.1"
@@ -2050,7 +2050,7 @@ function dos2unix_build()
   # https://github.com/archlinux/svntogit-community/blob/packages/dos2unix/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/dos2unix/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/dos2unix.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/d/dos2unix.rb
 
   # 30-Oct-2017, "7.4.0"
   # 2019-09-24, "7.4.1"
@@ -2190,7 +2190,7 @@ function perl_build()
   # https://archlinuxarm.org/packages/aarch64/perl/files/PKGBUILD
   # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/perl
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/perl.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/perl.rb
 
   # Fails to build on macOS
 
@@ -2416,7 +2416,7 @@ function tcl_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/tcl/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/tcl/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/tcl-tk.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/t/tcl-tk.rb
 
   # 2019-11-21, "8.6.10"
   # 2021-01-02, "8.6.11"
@@ -2632,7 +2632,7 @@ function git_build()
 
   # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/git
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/git.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/git.rb
 
   # 30-Oct-2017, "2.15.0"
   # 24-Feb-2019, "2.21.0"
@@ -2810,7 +2810,7 @@ function p7zip_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/p7zip/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/p7zip/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/p7zip.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/p7zip.rb
 
   # 2016-07-14, "16.02"
   # 04 Apr 2021, "17.04"
@@ -2970,7 +2970,7 @@ function rhash_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/rhash/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/rhash/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/rhash.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/r/rhash.rb
 
   # 14 Dec 2019, "1.3.9"
   # Jan 7, 2021, "1.4.1"
@@ -3152,7 +3152,7 @@ function re2c_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/re2c/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/re2c/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/re2c.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/r/re2c.rb
 
   # 14 Dec 2019, "1.3"
   # Mar 27, 2021, "2.1.1"
@@ -3361,7 +3361,7 @@ function gnupg_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/gnupg/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/gnupg/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gnupg.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gnupg.rb
 
   # 2021-06-10, "2.2.28"
   # 2021-04-20, "2.3.1" fails on macOS
@@ -3568,7 +3568,7 @@ function makedepend_build()
 
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=makedepend
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/makedepend.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/makedepend.rb
 
   # 2013-07-23, 1.0.5
   # 2019-03-16, 1.0.6

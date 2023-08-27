@@ -15,7 +15,7 @@
 
 # https://github.com/archlinux/svntogit-packages/blob/packages/pcre2/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/pcre2/files/PKGBUILD
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/pcre2.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/pcre2.rb
 
 # 15 Apr 2022, "10.40"
 

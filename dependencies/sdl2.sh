@@ -16,7 +16,7 @@
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=sdl2-hg
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-sdl2
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/sdl2.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/s/sdl2.rb
 
 # sdl2_version="2.0.3" # 2014-03-16
 # sdl2_version="2.0.5" # 2016-10-20
@@ -32,7 +32,7 @@
 # https://archlinuxarm.org/packages/aarch64/sdl2_image/files
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-sdl2_image
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/sdl2_image.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/s/sdl2_image.rb
 
 # sdl2_image_version="1.1"
 # sdl2_image_version="2.0.1" # 2016-01-03

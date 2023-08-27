@@ -19,7 +19,7 @@
 
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-libssh/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libssh.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libssh.rb
 
 # 2021-08-26 "0.9.6"
 # 2022-08-30, "0.10.1"

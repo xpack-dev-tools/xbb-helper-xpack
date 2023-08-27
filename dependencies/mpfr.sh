@@ -16,7 +16,7 @@
 # https://github.com/archlinux/svntogit-packages/blob/packages/mpfr/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/mpfr/files/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mpfr.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mpfr.rb
 
 # 6 March 2016 "3.1.4"
 # 7 September 2017 "3.1.6"

@@ -16,7 +16,7 @@
 # https://archlinuxarm.org/packages/any/automake/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=automake-git
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/automake.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/a/automake.rb
 
 # 2015-01-05, "1.15"
 # 2018-02-25, "1.16"

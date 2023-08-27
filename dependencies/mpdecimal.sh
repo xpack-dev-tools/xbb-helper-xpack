@@ -16,7 +16,7 @@
 # https://github.com/archlinux/svntogit-packages/blob/packages/mpdecimal/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/mpdecimal/files/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mpdecimal.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mpdecimal.rb
 
 # 2016-02-28, "2.4.2"
 # 2020-06-28, "2.5.0"
