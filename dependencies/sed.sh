@@ -13,7 +13,7 @@
 # https://github.com/archlinux/svntogit-packages/blob/packages/sed/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/sed/files/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/gnu-sed.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gnu-sed.rb
 
 # 2018-12-21, "4.7"
 # 2020-01-14, "4.8"

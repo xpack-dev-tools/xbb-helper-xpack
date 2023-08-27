@@ -15,7 +15,7 @@
 # https://github.com/archlinux/svntogit-packages/blob/packages/libedit/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/libedit/files/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libedit.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libedit.rb
 
 # 2021-05-22, "20210522-3.1"
 # 2021-09-10, "20210910-3.1"

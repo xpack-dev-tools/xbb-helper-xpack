@@ -15,7 +15,7 @@
 # https://archlinuxarm.org/packages/any/autoconf2.13/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=autoconf-git
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/autoconf.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/a/autoconf.rb
 
 # 2012-04-24, "2.69"
 # 2021-01-28, "2.71"

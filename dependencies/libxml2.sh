@@ -25,7 +25,7 @@
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-libxml2/PKGBUILD
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-readline/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libxml2.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libxml2.rb
 
 # Mar 05 2018, "2.9.8"
 # Jan 03 2019, "2.9.9"

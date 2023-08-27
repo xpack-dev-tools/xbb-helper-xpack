@@ -20,7 +20,7 @@
 
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-readline/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/readline.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/r/readline.rb
 
 # 2019-01-07, "8.0"
 # 2020-12-06, "8.1"

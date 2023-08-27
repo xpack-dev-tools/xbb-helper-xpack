@@ -17,7 +17,7 @@
 # https://archlinuxarm.org/packages/aarch64/bison/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=bison-git
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/bison.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/b/bison.rb
 
 # 2015-01-23, "3.0.4"
 # 2019-02-03, "3.3.2", Crashes with Abort trap 6.

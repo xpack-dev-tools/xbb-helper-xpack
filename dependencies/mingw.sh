@@ -34,7 +34,7 @@
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD
 
 # Homebrew
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mingw-w64.rb
 
 # 2018-06-03, "5.0.4"
 # 2018-09-16, "6.0.0"
@@ -583,7 +583,7 @@ function mingw_build_gendef()
 
 # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-crt-git/PKGBUILD
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mingw-w64.rb
 
 function mingw_build_crt()
 {
@@ -742,7 +742,7 @@ function mingw_build_crt()
 
 # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-winpthreads/trunk/PKGBUILD
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-winpthreads-git/PKGBUILD
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mingw-w64.rb
 
 function mingw_build_winpthreads()
 {

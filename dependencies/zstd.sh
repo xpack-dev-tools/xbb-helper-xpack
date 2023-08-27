@@ -18,7 +18,7 @@
 # https://github.com/archlinux/svntogit-packages/blob/packages/zstd/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/zstd/files/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/zstd.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/z/zstd.rb
 
 # 5 Nov 2019 "1.4.4"
 # 3 Mar 2021 "1.4.9"

@@ -15,7 +15,7 @@
 # https://github.com/archlinux/svntogit-packages/blob/packages/zlib/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/zlib/files/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/zlib.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/z/zlib.rb
 
 # 2013-04-28 "1.2.8"
 # 2017-01-15 "1.2.11"

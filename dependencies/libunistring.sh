@@ -14,7 +14,7 @@
 # https://github.com/archlinux/svntogit-packages/blob/packages/libunistring/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/libunistring/files/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/libunistring.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libunistring.rb
 
 # 2018-05-25 "0.9.10"
 # 2022-10-16 "1.1"

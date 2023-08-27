@@ -15,7 +15,7 @@
 
 # https://github.com/archlinux/svntogit-packages/blob/packages/lzo/trunk/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/lzo.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/lzo.rb
 
 # 01 Mar 2017 "2.10"
 

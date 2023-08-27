@@ -20,7 +20,7 @@
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=openssl-static
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=openssl-git
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/openssl@1.1.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/o/openssl@1.1.rb
 
 # 2017-Nov-02
 # XBB_OPENSSL_VERSION="1.1.0g"

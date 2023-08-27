@@ -19,7 +19,7 @@ function libtasn1_build()
   # https://archlinuxarm.org/packages/aarch64/libtasn1/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libtasn1-git
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/libtasn1.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libtasn1.rb
 
   # 2017-11-19, "4.12"
   # 2018-01-16, "4.13"
@@ -159,7 +159,7 @@ function gc_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/gc/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/gc/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/bdw-gc.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/b/bdw-gc.rb
 
   # 2 Mar 2019 "8.0.4"
   # 28 Sep 2021, "8.0.6"
@@ -346,7 +346,7 @@ function gnutls_build()
   # https://archlinuxarm.org/packages/aarch64/gnutls/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gnutls-git
 
-  # # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gnutls.rb
+  # # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gnutls.rb
 
   # 2017-10-21, "3.6.1"
   # 2019-03-27, "3.6.7"
@@ -558,7 +558,7 @@ function xorg_util_macros_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/xorg-util-macros/trunk/PKGBUILD
   # https://archlinuxarm.org/packages/any/xorg-util-macros/files/PKGBUILD
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/util-macros.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/u/util-macros.rb
 
   # 2013-09-07, "1.17.1"
   # 2018-03-05, "1.19.2"
@@ -689,7 +689,7 @@ function xorg_xproto_build()
   # https://github.com/archlinux/svntogit-packages/blob/packages/xorgproto/trunk/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=xorgproto-git
 
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/xorgproto.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/x/xorgproto.rb
 
   # 2016-09-23, "7.0.31" (latest)
 

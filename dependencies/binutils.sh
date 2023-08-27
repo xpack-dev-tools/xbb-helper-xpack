@@ -27,7 +27,7 @@
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-binutils/PKGBUILD
 # https://github.com/msys2/MSYS2-packages/blob/master/binutils/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/binutils.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/b/binutils.rb
 
 
 # 2017-07-24, "2.29"

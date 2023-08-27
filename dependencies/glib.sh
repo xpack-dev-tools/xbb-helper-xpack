@@ -15,7 +15,7 @@
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=glib2-git
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-glib2
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/glib.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/glib.rb
 
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-glib2/PKGBUILD
 

@@ -15,7 +15,7 @@
 # https://github.com/archlinux/svntogit-packages/blob/packages/coreutils/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/coreutils/files/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/coreutils.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/c/coreutils.rb
 
 # 2018-07-01, "8.30"
 # 2019-03-10 "8.31"

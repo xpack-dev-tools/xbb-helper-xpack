@@ -22,7 +22,7 @@
 
 # https://archlinuxarm.org/packages/aarch64/sqlite/files/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/sqlite.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/s/sqlite.rb
 
 # 2020-06-18 "3.32.3" 7ebdfa80
 # 2021-06-18 "3360000"

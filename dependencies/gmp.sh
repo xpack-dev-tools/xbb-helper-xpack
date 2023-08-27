@@ -15,7 +15,7 @@
 # https://github.com/archlinux/svntogit-packages/blob/packages/gmp/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/gmp/files/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/gmp.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gmp.rb
 
 # 01-Nov-2015 "6.1.0"
 # 16-Dec-2016 "6.1.2"

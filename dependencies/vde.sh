@@ -17,7 +17,7 @@
 
 # https://github.com/archlinux/svntogit-packages/blob/packages/vde2/trunk/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/vde.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/v/vde.rb
 
 # 2011-11-23 "2.3.2"
 

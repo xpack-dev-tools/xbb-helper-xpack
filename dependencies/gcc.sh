@@ -19,8 +19,8 @@
 
 # https://archlinuxarm.org/packages/aarch64/gcc/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gcc-git
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@8.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@8.rb
 
 # Mingw on Arch
 # https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
@@ -66,8 +66,8 @@ function gcc_download()
   # backported with his help to gcc-11 branch.
 
   # The repo used by the HomeBrew:
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc.rb
-  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/gcc@12.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb
+  # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@12.rb
   # https://github.com/Homebrew/formula-patches/tree/master/gcc
   # https://github.com/fxcoudert/gcc/tags
 
@@ -911,7 +911,8 @@ function gcc_test()
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
 
-      if [[ "${gcc_version}" =~ 12[.]3[.]0 ]]
+      if [[ "${gcc_version}" =~ 12[.]3[.]0 ]] ||
+         [[ "${gcc_version}" =~ 13[.]2[.]0 ]]
       then
         # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
         # collect2.exe: error: ld returned 1 exit status

@@ -14,7 +14,7 @@
 
 # https://github.com/archlinux/svntogit-packages/blob/packages/libisl/trunk/PKGBUILD
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/isl.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/i/isl.rb
 
 # 2015-06-12 "0.15"
 # 2016-01-15 "0.16.1"

@@ -16,7 +16,7 @@
 # https://archlinuxarm.org/packages/aarch64/m4/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=m4-git
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/m4.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/m4.rb
 
 # 2016-12-31, "1.4.18"
 # 2021-05-28, "1.4.19"

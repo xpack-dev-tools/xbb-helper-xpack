@@ -16,7 +16,7 @@
 # https://archlinuxarm.org/packages/aarch64/xz/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=xz-git
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/xz.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/x/xz.rb
 
 # 2016-12-30 "5.2.3"
 # 2018-04-29 "5.2.4"

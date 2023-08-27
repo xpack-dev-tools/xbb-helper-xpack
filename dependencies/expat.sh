@@ -16,7 +16,7 @@
 # https://archlinuxarm.org/packages/aarch64/expat/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=expat-git
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/expat.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/e/expat.rb
 
 # Oct 21, 2017 "2.1.1"
 # Nov 1, 2017 "2.2.5"

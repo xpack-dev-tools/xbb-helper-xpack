@@ -29,7 +29,7 @@
 #
 # binutils & gcc --prefix=#{arch_dir} --with-sysroot=#{arch_dir}
 # mingw-headers --prefix=#{arch_dir}/#{target}
-# mingw-libs --prefix=#{arch_dir}/#{target} --with-sysroot=#{arch_dir}/## https://github.com/Homebrew/homebrew-core/blob/master/Formula/mingw-w64.rb
+# mingw-libs --prefix=#{arch_dir}/#{target} --with-sysroot=#{arch_dir}/## https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mingw-w64.rb
 
 # https://ftp.gnu.org/gnu/gcc/
 # 2019-02-22, "8.3.0"
@@ -717,7 +717,8 @@ function gcc_mingw_test()
 
     # Skip tests known to fail.
 
-    if [[ "${gcc_version}" =~ 12[.]3[.]0 ]]
+    if [[ "${gcc_version}" =~ 12[.]3[.]0 ]] ||
+       [[ "${gcc_version}" =~ 13[.]2[.]0 ]]
     then
 
       # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/install/lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
