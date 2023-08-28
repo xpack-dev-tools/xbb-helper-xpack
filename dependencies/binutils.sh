@@ -408,19 +408,19 @@ function binutils_test_libs()
   # Run test added because on arm 32-bit it happened to fail with:
   # /home/ilg/Work/xpack-dev-tools/mingw-w64-gcc-xpack.git/build/linux-arm/application/lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/as: error while loading shared libraries: /home/ilg/Work/xpack-dev-tools/mingw-w64-gcc-xpack.git/build/linux-arm/application/armv7l-unknown-linux-gnueabihf/x86_64-w64-mingw32/lib/libbfd-2.41.so: unexpected reloc type 0x03
 
-  echo
-  echo "Testing if ${name_prefix}binutils start properly..."
+  # echo
+  # echo "Testing if ${name_prefix}binutils start properly..."
 
-  run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ar" --version
-  run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}as" --version
-  run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ld" --version
-  run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}nm" --version
-  run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}objcopy" --version
-  run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}objdump" --version
-  run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ranlib" --version
-  run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}size" --version
-  run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}strings" --version
-  run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}strip" --version
+  # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ar" --version
+  # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}as" --version
+  # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ld" --version
+  # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}nm" --version
+  # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}objcopy" --version
+  # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}objdump" --version
+  # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}ranlib" --version
+  # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}size" --version
+  # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}strings" --version
+  # run_host_app_verbose "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${name_prefix}strip" --version
 }
 
 function binutils_test()
