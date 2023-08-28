@@ -343,6 +343,8 @@ function binutils_build()
         # make install-strip
         run_verbose make install
 
+if false
+then
         if [ "${has_program_prefix}" == "y" ]
         then
           # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/lib64/libiberty.a(cplus-dem.o): warning: relocation against `current_demangling_style' in read-only section `.text.cplus_demangle'
@@ -368,6 +370,7 @@ function binutils_build()
         run_verbose rm -rf "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ansidecl.h"
 
         run_verbose rm -rf "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}/doc"
+fi
 
         binutils_test_libs
 
