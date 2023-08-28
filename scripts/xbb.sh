@@ -1445,6 +1445,16 @@ function xbb_adjust_ldflags_rpath()
   echo_develop "[${FUNCNAME[0]}]"
 
   local path="${XBB_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
+
+  local priority_path="${1:-""}"
+  if [ -n "${priority_path}" ]
+  then
+    mkdir -pv "${priority_path}"
+    path="${priority_path}:${path}"
+
+    export XBB_LIBRARY_PATH="${path}"
+  fi
+
   IFS=: read -r -d '' -a path_array < <(printf '%s:\0' "${path}")
 
   if [ "${XBB_HOST_PLATFORM}" == "linux" ]
