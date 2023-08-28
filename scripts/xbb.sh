@@ -1266,7 +1266,7 @@ function xbb_activate_application_bin()
 # XBB environment variables.
 function xbb_activate_dependencies_dev()
 {
-  local name_suffix="${1:-""}" # Deprecated, do not use.
+  local priority_path="${1:-""}"
 
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
@@ -1322,6 +1322,34 @@ function xbb_activate_dependencies_dev()
       else
         # Insert our dependencies before any other.
         XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARY_PATH}"
+      fi
+    fi
+  fi
+
+  if [ -n "${priority_path}" ] &&
+     [ "${priority_path}" != "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib" ]
+  then
+    mkdir -pv "${priority_path}"
+
+    # Add given path in front of XBB_LDFLAGS.
+    XBB_LDFLAGS="-L${priority_path}/lib ${XBB_LDFLAGS}"
+    XBB_LDFLAGS_LIB="-L${priority_path}/lib ${XBB_LDFLAGS_LIB}"
+    XBB_LDFLAGS_APP="-L${priority_path}/lib ${XBB_LDFLAGS_APP}"
+    XBB_LDFLAGS_APP_STATIC_GCC="-L${priority_path}/lib ${XBB_LDFLAGS_APP_STATIC_GCC}"
+
+    # Add XBB lib in front of PKG_CONFIG_PATH.
+    PKG_CONFIG_PATH="${priority_path}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+
+    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+    then
+      # Needed by internal binaries, like the bootstrap compiler, which do not
+      # have a rpath.
+      if [ -z "${XBB_LIBRARY_PATH}" ]
+      then
+        XBB_LIBRARY_PATH="${priority_path}/lib"
+      else
+        # Insert our dependencies before any other.
+        XBB_LIBRARY_PATH="${priority_path}/lib:${XBB_LIBRARY_PATH}"
       fi
     fi
   fi
