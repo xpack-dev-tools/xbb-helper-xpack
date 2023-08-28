@@ -52,12 +52,20 @@
 function binutils_prepare_common_options()
 {
   local triplet="$1"
+  local has_triplet="$2"
 
   config_options=()
 
   config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
-  config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
-  config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+
+  if [ "${has_triplet}" == "y" ]
+  then
+    config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${triplet}/lib")
+    config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${triplet}/include")
+  else
+    config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+    config_options+=("--includedir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include")
+  fi
   # Remove ansidecl.h!
 
   config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB mingw
@@ -198,6 +206,9 @@ function binutils_build()
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix=""
   local program_prefix=""
+
+  # triplet and prefix are passed only from gcc-mingw.sh.
+  local has_triplet="n"
   local has_program_prefix="n"
 
   while [ $# -gt 0 ]
@@ -206,6 +217,7 @@ function binutils_build()
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
         name_prefix="${triplet}-"
+        has_triplet="y"
         shift
         ;;
 
@@ -251,12 +263,7 @@ function binutils_build()
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
       run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
 
-      # To access the newly compiled libraries.
-      xbb_activate_dependencies_dev
-
-      CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
-      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+      local libraries_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 
       if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
@@ -264,27 +271,18 @@ function binutils_build()
         # Be sure that the local libraries are prefered to compiler libraries.
         # The build script adds the local folder at the end of the rpath,
         # which is too late.
-        if is_native
+        if [ "${has_triplet}" == "y" ]
         then
-          XBB_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
-        elif [ "${has_program_prefix}" == "y" ]
-        then
-          # The `application/lib` must be also added before the toolchain path,
-          # since the libctf*.so is located here, and there might be another one
-          # in the toolchain path.
-
-          XBB_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
-        elif is_cross
-        then
-          :
-        else
-          echo "TODO in ${FUNCNAME[0]} $@"
-          exit 1
+          libraries_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${triplet}"
         fi
-        echo_develop
-        echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
-        export XBB_LIBRARY_PATH
       fi
+
+      # To access the newly compiled libraries.
+      xbb_activate_dependencies_dev "${libraries_path}"
+
+      CPPFLAGS="${XBB_CPPFLAGS}"
+      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
 
@@ -295,7 +293,7 @@ function binutils_build()
         LDFLAGS+=" -Wl,${crt_clob_file_path}"
       fi
 
-      xbb_adjust_ldflags_rpath
+      xbb_adjust_ldflags_rpath "${libraries_path}/lib"
 
       export CPPFLAGS
       export CFLAGS
@@ -320,7 +318,7 @@ function binutils_build()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/ld/configure" --help
           fi
 
-          binutils_prepare_common_options "${triplet}"
+          binutils_prepare_common_options "${triplet}" "${has_triplet}"
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" \
             ${config_options[@]}
