@@ -381,12 +381,20 @@ then
           fi
         fi
 
-        # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/sources/gcc-12.3.0/libiberty/objalloc.c:95:18: error: 'PTR' undeclared (first use in this function)
-        #    95 |   ret->chunks = (PTR) malloc (CHUNK_SIZE);
-        run_verbose rm -rf "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ansidecl.h"
 
         run_verbose rm -rf "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}/doc"
 fi
+
+        if [ "${has_triplet}" != "y" ]
+        then
+          # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/sources/gcc-12.3.0/libiberty/objalloc.c:95:18: error: 'PTR' undeclared (first use in this function)
+          #    95 |   ret->chunks = (PTR) malloc (CHUNK_SIZE);
+          # or
+          # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/install/include/ansidecl.h:282:56: note: in expansion of macro 'warn_unused_result'
+          #   282 | #  define ATTRIBUTE_WARN_UNUSED_RESULT __attribute__ ((warn_unused_result))
+
+          run_verbose rm -rf "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ansidecl.h"
+        fi
 
         binutils_test_libs
 
