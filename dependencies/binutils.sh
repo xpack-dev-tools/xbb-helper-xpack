@@ -163,7 +163,11 @@ function binutils_prepare_common_options()
   config_options+=("--enable-plugins") # Arch, HB
   config_options+=("--enable-relro") # Arch
 
-  if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  if [ "${has_triplet}" == "y" ]
+  then
+    # To avoid the libexec dilema for mingw which has two variants.
+    config_options+=("--disable-shared")
+  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
     # Undefined symbols for architecture arm64:
     #   "_ctf_open", referenced from:
