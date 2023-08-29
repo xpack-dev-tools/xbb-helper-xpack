@@ -511,6 +511,11 @@ function xbb_set_target()
   xbb_set_extra_host_env
   xbb_set_extra_target_env
 
+  if [ "${XBB_APPLICATION_HAS_FLEX_PACKAGE:-""}" == "y" ]
+  then
+    xbb_set_flex_package_paths
+  fi
+
   # ---------------------------------------------------------------------------
 
   tests_add "xbb_set_target" "${kind}"
