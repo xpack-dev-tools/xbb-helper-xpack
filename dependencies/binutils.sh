@@ -28,6 +28,7 @@
 # https://github.com/msys2/MSYS2-packages/blob/master/binutils/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/b/binutils.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mingw-w64.rb
 
 
 # 2017-07-24, "2.29"
@@ -78,7 +79,7 @@ function binutils_prepare_common_options()
 
   config_options+=("--build=${XBB_BUILD_TRIPLET}")
   config_options+=("--host=${XBB_HOST_TRIPLET}")
-  config_options+=("--target=${triplet}") # Arch, HB
+  config_options+=("--target=${triplet}") # Arch, HB, HB mingw
 
   config_options+=("--program-prefix=${program_prefix}")
   config_options+=("--program-suffix=")
@@ -147,7 +148,7 @@ function binutils_prepare_common_options()
   then
     # The mingw binaries have architecture specific names,
     # so multilib makes no sense.
-    config_options+=("--disable-multilib") # Arch, HB
+    config_options+=("--disable-multilib") # Arch, HB, HB mingw
   else
     if [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "x64" ]
     then
@@ -166,7 +167,7 @@ function binutils_prepare_common_options()
 
   if [ ! -z "${triplet}" ]
   then
-    config_options+=("--enable-targets=${triplet}") # HB
+    config_options+=("--enable-targets=${triplet}") # HB, HB mingw
   else
     config_options+=("--enable-targets=all") # HB
   fi
@@ -185,7 +186,7 @@ function binutils_prepare_common_options()
   config_options+=("--disable-libdecnumber") # Arch
 
   config_options+=("--disable-new-dtags")
-  config_options+=("--disable-nls") # HB
+  config_options+=("--disable-nls") # HB, HB mingw
 
   config_options+=("--disable-readline") # Arch
   config_options+=("--disable-sim") # Arch
