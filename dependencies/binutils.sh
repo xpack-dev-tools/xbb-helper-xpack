@@ -162,7 +162,18 @@ function binutils_prepare_common_options()
 
   config_options+=("--enable-plugins") # Arch, HB
   config_options+=("--enable-relro") # Arch
-  config_options+=("--enable-shared") # Arch
+
+  if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  then
+    # Undefined symbols for architecture arm64:
+    #   "_ctf_open", referenced from:
+    #       _ctf_link_add_ctf in libctf_nobfd_la-ctf-link.o
+    #       _ctf_link_deduplicating_count_inputs in libctf_nobfd_la-ctf-link.o
+    # ld: symbol(s) not found for architecture arm64
+    :
+  else
+    config_options+=("--enable-shared") # Arch
+  fi
   config_options+=("--enable-static")
 
   if [ ! -z "${triplet}" ]
