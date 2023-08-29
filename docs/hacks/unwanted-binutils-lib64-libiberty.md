@@ -4,7 +4,11 @@ When building binutils with mingw-w64, at the end it installs `libiberty.a`
 in `lib64`. If multilib is enabled, the nest step will stumble on it, since
 it is not the PID version.
 
+## Workaround
+
 The workaround is to remove it from `${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libiberty.a`.
+
+## Console output
 
 i686 ok, x86 fails:
 

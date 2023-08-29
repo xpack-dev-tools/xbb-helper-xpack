@@ -14,6 +14,8 @@ macro. This definition interferes with several methods in `windows.h`.
 #endif
 ```
 
+## Workaround
+
 Two solutions:
 
 ```c++
@@ -41,6 +43,8 @@ or
 #endif
 ```
 
+## Console output
+
 The error looks like:
 
 ```console
@@ -62,7 +66,6 @@ make[1]: Leaving directory '/home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/w
 Makefile:1045: recipe for target 'all' failed
 make: *** [all] Error 2
 ```
-
 
 The offending command, verbose and with -E:
 
