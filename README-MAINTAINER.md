@@ -94,8 +94,8 @@ No need to add a tag here, it'll be added when the release is created.
 
 ### Increase the version
 
-Determine the upstream version (like `1.10.0`) and eventually update the
-`package.json` file; the format is `1.10.0-pre`.
+Determine the upstream version (like `1.10.1`) and eventually update the
+`package.json` file; the format is `1.10.1-pre`.
 
 ### Fix possible open issues
 
@@ -103,7 +103,7 @@ Check GitHub issues and pull requests:
 
 - <https://github.com/xpack-dev-tools/xbb-helper-xpack/issues/>
 
-and fix them; assign them to a milestone (like `1.10.0`).
+and fix them; assign them to a milestone (like `1.10.1`).
 
 ### Check `README.md`
 
@@ -124,8 +124,8 @@ Use a new version, suffixed by `.pre`.
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _* v1.10.0 released_
-- commit with a message like _prepare v1.10.0_
+- add a new entry like _* v1.10.1 released_
+- commit with a message like _prepare v1.10.1_
 
 ### Push changes
 
@@ -164,9 +164,9 @@ The version is visible at:
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack-dev-tools/xbb-helper`
-- `npm dist-tag add @xpack-dev-tools/xbb-helper@1.10.0 latest`
+- `npm dist-tag add @xpack-dev-tools/xbb-helper@1.10.1 latest`
 - `npm dist-tag ls @xpack-dev-tools/xbb-helper`
 
 If necessary, unpublish previous releases:
 
-- `npm unpublish @xpack-dev-tools/xbb-helper@1.10.0`
+- `npm unpublish @xpack-dev-tools/xbb-helper@1.10.1`

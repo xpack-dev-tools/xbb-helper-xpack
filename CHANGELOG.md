@@ -2,9 +2,68 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-08-30
+
+* v1.10.1 released
+* 363f4de miscellaneous.sh: rework darwin_get_lc_rpaths
+* c6e8755 post-processing.sh: darwin_get_dylibs in check bin
+* 517eb9e miscellaneous.sh: no reexport in darwin_get_dylibs
+
+## 2023-08-29
+
+* 4dcb153 docs/hacks updates
+* 5254164 binutils: re-enable remove ansidecl.h, for gcc
+* a6eee10 binutils.sh: for mingw skip --enable-shared
+* 8d80b6a docs/hacks: add undefined-ctf-open.md
+* 86d01d5 binutils.sh: skip --enable-shared for macos
+* 9e66b42 binutils.sh: add HB mingw link & comments
+* e3d4a9d xbb.sh: set_target call xbb_set_flex_package_paths
+
+## 2023-08-28
+
+* c20ff19 binutils.sh: re-enable tests for non windows
+* da8fe5e binutils.sh: comment out test_libs --version
+* 6d72e14 binutils.sh: disable hacks
+* d3fb0f8 binutils.sh: insert triplet into libs paths
+* 37ad22c binutils.sh: add --verbose to test_libs
+* bd81c59 xbb.sh: add priority_path to *ldflags_rpath()
+* a1ddf29 xbb.sh: add priority_path to *devs_dep
+* 9746796 xbb.sh: remove unused name suffix from *deps_dev
+* f9c2f6e gcc.12.3.0.git.patch relocated from gcc
+
+## 2023-08-27
+
+* ce013aa xbb.sh: add xbb_set_flex_package_paths()
+* d74fb1e gcc-mingw.sh: skip tests for 13.2
+* 8903cdf gcc.sh: skip tests for 13.2
+* 076d4ac dependencies: update homebreu urls
+* 03ebe80 _apps-xbb.sh: fix names in comments
+* fe31ed7 add docs/hacks
+* 5c80a94 gcc.sh: skip some tests for 12.3
+* f9dc753 gcc.sh: cleanup
+* eee3803 gcc-mingw.sh: skip hello weak tests
+* 6a9ced0 xbb.sh: add comments
+* 974d74a binutils.sh: rm lib64/libiberty.a
+* d1c6bcc binutils.sh: export XBB_LIBRARY_PATH
+
+## 2023-08-26
+
+* 0748c0c gcc.sh: rework LDFLAGS_FOR_TARGET
+* 81a5f14 binutils.sh: remove ansidecl.h
+
+## 2023-08-25
+
+* b194a96 gdb-cross.sh: fix indentation
+* 96d800c xbb.sh: XBB_LDFLAGS+=" -lpthread" for linux gcc
+* a877249 gcc.sh: LDFLAGS_FOR_TARGET shorter
+* 5782609 xbb.sh: export LEX
+* 48b51c2 xbb.sh: update_ld_library_path for macOS too
+* e5c5d01 newlib-cross.sh: reorder _define_flags_for_target
+
 ## 2023-08-23
 
-* v1.10.0 released
+* 93904cc 1.10.0
+* 7f88754 prepare v1.10.0
 * 60e1f48 gcc-cross.sh: add XX_FOR_BUILD
 * 6902316 xbb.sh: add xbb_expand_rpath()
 * ee97e3d xbb.sh: XBB_NATIVE_LD|AR|NM|RANLIB
