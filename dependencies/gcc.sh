@@ -404,6 +404,21 @@ function gcc_build()
               config_options+=("--disable-bootstrap")
             else
               config_options+=("--enable-bootstrap")
+
+              # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: warning: libpthread.so.0, needed by /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/install/lib/libisl.so, not found (try using -rpath or -rpath-link)
+              # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
+              # lto-compress.cc:(.text+0x153): undefined reference to `ZSTD_compressBound'
+
+              # Options for stage 2 and later.
+              # Check Makefile POSTSTAGE1_LDFLAGS and POSTSTAGE1_LIBS.
+
+              local deps_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+              local deps_rpaths="$(xbb_expand_rpath "${deps_path}")"
+
+              config_options+=("--with-boot-libs=-lpthread")
+              # Build the intermediate stage with static system libraries,
+              # to save some references to shared libraries.
+              config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc ${deps_rpaths}")
             fi
 
             # The Linux build also uses:
@@ -568,19 +583,19 @@ function gcc_build()
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" \
             ${config_options[@]}
 
-          if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-          then
-            # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: warning: libpthread.so.0, needed by /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/install/lib/libisl.so, not found (try using -rpath or -rpath-link)
-            # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
-            # lto-compress.cc:(.text+0x153): undefined reference to `ZSTD_compressBound'
-            local deps_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-            local deps_rpaths="$(xbb_expand_rpath "${deps_path}")"
-            run_verbose sed -i.bak \
-              -e "s|^\(POSTSTAGE1_LDFLAGS = .*\)$|\1 -lpthread ${deps_rpaths}|" \
-              "Makefile"
+          # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+          # then
+          #   # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: warning: libpthread.so.0, needed by /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/install/lib/libisl.so, not found (try using -rpath or -rpath-link)
+          #   # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
+          #   # lto-compress.cc:(.text+0x153): undefined reference to `ZSTD_compressBound'
+          #   local deps_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+          #   local deps_rpaths="$(xbb_expand_rpath "${deps_path}")"
+          #   run_verbose sed -i.bak \
+          #     -e "s|^\(POSTSTAGE1_LDFLAGS = .*\)$|\1 -lpthread ${deps_rpaths}|" \
+          #     "Makefile"
 
-            run_verbose_develop diff Makefile.bak Makefile || true
-          fi
+          #   run_verbose_develop diff Makefile.bak Makefile || true
+          # fi
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/config-log-$(ndate).txt"
 
