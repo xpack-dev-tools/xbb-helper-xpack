@@ -206,6 +206,7 @@ function gcc_build()
         # GCC will suffer build errors if forced to use a particular linker.
         unset LD
 
+        # LDFLAGS+=" -liconv"
         local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
         LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
         export LDFLAGS_FOR_BUILD="${LDFLAGS}"
@@ -370,13 +371,21 @@ function gcc_build()
             # From HomeBrew, but not present on 11.x
             # config_options+=("--with-native-system-header-dir=/usr/include")
 
-            #  fails with Undefined symbols: "_libiconv_open", etc
+            # Still fails with undefined symbols like:
+            #  Undefined symbols for architecture arm64:
+            #   "__ZdaPvm", referenced from:
             if true # [ "${XBB_IS_DEVELOP}" == "y" ]
             then
               # To speed things up during development.
               config_options+=("--disable-bootstrap")
             else
               config_options+=("--enable-bootstrap")
+
+              # Options for stage 2 and later.
+              config_options+=("--with-boot-libs=-liconv")
+              # Build the intermediate stage with static system libraries,
+              # otherwise it generates a reference to `@rpath/libstdc++.6.dylib`
+              config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib -Wl,-rpath,${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
             fi
 
             config_options+=("--disable-multilib")
