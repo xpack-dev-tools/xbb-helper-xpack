@@ -248,6 +248,7 @@ function darwin_get_dylibs()
     otool -L "${file_path}" \
           | sed '1d' \
           | sed '1d' \
+          | grep -v ', reexport)' \
           | sed -e 's|[[:space:]]*\(.*\) (.*)|\1|' \
 
   else
