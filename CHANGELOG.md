@@ -2,9 +2,19 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-08-31
+
+* v1.10.6 released
+* fae0d46 gcc.sh: rework bootstrap --with-boot-*
+* 885b7c7 gcc.sh: experiment with bootstrap on macOS
+
 ## 2023-08-30
 
-* v1.10.5 released
+* 3107968 gdb.sh: add link to hb
+* 78be099 1.10.5
+* d36d07c prepare v1.10.5
+* 766d9f9 1.10.4
+* e4dd4cd prepare v1.10.4
 * d0a5d67 gcc.sh: pass deps path to POSTSTAGE1_LDFLAGS
 * fb2b2c1 1.10.3
 * 093d718 prepare v1.10.3
