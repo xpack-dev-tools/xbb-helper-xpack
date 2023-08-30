@@ -4,7 +4,7 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-30
 
-* v1.10.4 released
+* v1.10.5 released
 * d0a5d67 gcc.sh: pass deps path to POSTSTAGE1_LDFLAGS
 * fb2b2c1 1.10.3
 * 093d718 prepare v1.10.3
