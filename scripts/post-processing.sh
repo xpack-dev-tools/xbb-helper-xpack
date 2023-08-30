@@ -1814,22 +1814,7 @@ function check_binary_for_libraries()
         set -e
       )
 
-      # Skip the first line which is the binary itself.
-      local libs
-      if is_darwin_dylib "${file_path}"
-      then
-        # Skip the second line too, which is the library again.
-        lib_paths=$(otool -L "${file_path}" \
-              | sed '1d' \
-              | sed '1d' \
-              | sed -e 's|[[:space:]]*\(.*\) (.*)|\1|' \
-            )
-      else
-        lib_paths=$(otool -L "${file_path}" \
-              | sed '1d' \
-              | sed -e 's|[[:space:]]*\(.*\) (.*)|\1|' \
-            )
-      fi
+      lib_paths=$(darwin_get_dylibs "${file_path}")
 
       # For debug, use DYLD_PRINT_LIBRARIES=1
       # https://medium.com/@donblas/fun-with-rpath-otool-and-install-name-tool-e3e41ae86172
