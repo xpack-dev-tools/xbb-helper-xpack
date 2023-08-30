@@ -564,8 +564,10 @@ function gcc_build()
             # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: warning: libpthread.so.0, needed by /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/install/lib/libisl.so, not found (try using -rpath or -rpath-link)
             # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
             # lto-compress.cc:(.text+0x153): undefined reference to `ZSTD_compressBound'
+            local deps_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+            local deps_rpaths="$(xbb_expand_rpath "${deps_path}")"
             run_verbose sed -i.bak \
-              -e "s|^\(POSTSTAGE1_LDFLAGS = .*\)$|\1 -lpthread|" \
+              -e "s|^\(POSTSTAGE1_LDFLAGS = .*\)$|\1 -lpthread ${deps_rpaths}|" \
               "Makefile"
 
             run_verbose_develop diff Makefile.bak Makefile || true
