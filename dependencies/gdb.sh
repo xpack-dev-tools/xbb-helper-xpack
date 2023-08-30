@@ -13,6 +13,8 @@
 # https://ftp.gnu.org/gnu/gdb/
 # https://ftp.gnu.org/gnu/gdb/gdb-10.2.tar.xz
 
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gdb.rb
+
 # GDB Text User Interface
 # https://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_19.html#SEC197
 
