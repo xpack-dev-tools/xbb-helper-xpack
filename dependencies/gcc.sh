@@ -561,9 +561,14 @@ function gcc_build()
 
           if [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
+            # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: warning: libpthread.so.0, needed by /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/install/lib/libisl.so, not found (try using -rpath or -rpath-link)
+            # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
+            # lto-compress.cc:(.text+0x153): undefined reference to `ZSTD_compressBound'
             run_verbose sed -i.bak \
-              -e "s|^\(POSTSTAGE1_LDFLAGS = .*\)$|\1 -Wl,-rpath,${LD_LIBRARY_PATH}|" \
+              -e "s|^\(POSTSTAGE1_LDFLAGS = .*\)$|\1 -lpthread|" \
               "Makefile"
+
+            run_verbose_develop diff Makefile.bak Makefile
           fi
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/config-log-$(ndate).txt"
