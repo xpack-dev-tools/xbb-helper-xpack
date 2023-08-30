@@ -235,7 +235,10 @@ function darwin_get_lc_rpaths()
 {
   local file_path="$1"
 
-  otool -l "${file_path}" | grep LC_RPATH -A2 | grep '(offset ' | sed -e 's|.*path \(.*\) (offset.*)|\1|'
+  otool -l "${file_path}" \
+        | grep LC_RPATH -A2 \
+        | grep '(offset ' \
+        | sed -e 's|.*path \(.*\) (offset.*)|\1|'
 }
 
 function darwin_get_dylibs()
@@ -244,14 +247,13 @@ function darwin_get_dylibs()
 
   if is_darwin_dylib "${file_path}"
   then
-    # Skip the extra line with the library name.
-    otool -L "${file_path}" \
-          | sed '1d' \
-          | sed '1d' \
-          | grep -v ', reexport)' \
-          | sed -e 's|[[:space:]]*\(.*\) (.*)|\1|' \
+    otool -l "${file_path}" \
+          | grep LC_LOAD_DYLIB -A2 \
+          | grep '(offset ' \
+          | sed -e 's|.*name \(.*\) (offset.*)|\1|'
 
   else
+    # Skip the extra line with the library name.
     otool -L "${file_path}" \
           | sed '1d' \
           | sed -e 's|[[:space:]]*\(.*\) (.*)|\1|' \
