@@ -4,7 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-30
 
-* v1.10.1 released
+* v1.10.2 released
+* 3c3585f add docs/hacks/gcc-undefined-zstd.md
+* 895097f gcc.sh: patch -lpthread into POSTSTAGE1_LDFLAGS
+* f997286 1.10.1
+* 95b719a prepare v1.10.1
 * 363f4de miscellaneous.sh: rework darwin_get_lc_rpaths
 * c6e8755 post-processing.sh: darwin_get_dylibs in check bin
 * 517eb9e miscellaneous.sh: no reexport in darwin_get_dylibs
