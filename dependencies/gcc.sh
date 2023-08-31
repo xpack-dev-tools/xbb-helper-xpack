@@ -397,9 +397,9 @@ function gcc_build()
             # programs, and require setting the executable rpath to work.
             config_options+=("--enable-shared")
 
-            #  fails on aarch64 with
+            # Still fails on aarch64 with
             # gcc/lto-compress.cc:135: undefined reference to `ZSTD_compressBound'
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if true # [ "${XBB_IS_DEVELOP}" == "y" ]
             then
               config_options+=("--disable-bootstrap")
             else
