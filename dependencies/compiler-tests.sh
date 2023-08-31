@@ -229,7 +229,7 @@ function compiler-tests-single()
       run_verbose_develop cd c-cpp
 
       # Test C compile and link in a single step.
-      run_host_app_verbose "${CC}" "simple-hello.c" -o "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+      run_host_app_verbose "${CC}" "simple-hello.c" -o "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -v
       expect_target_output "Hello" "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}"
 
       # Test C compile and link in separate steps.
@@ -240,7 +240,7 @@ function compiler-tests-single()
       # -----------------------------------------------------------------------
 
       # Test C++ compile and link in a single step.
-      run_host_app_verbose "${CXX}" "simple-hello.cpp" -o "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+      run_host_app_verbose "${CXX}" "simple-hello.cpp" -o "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -v
       expect_target_output "Hello" "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}"
 
       # Test C++ compile and link in separate steps.
