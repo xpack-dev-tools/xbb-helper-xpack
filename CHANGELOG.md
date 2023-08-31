@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-08-31
 
-* v1.10.6 released
+* v1.10.7 released
+* c31eec8 gcc.sh: disable bootstrap on linux too
+* 84785d5 1.10.6
+* 0913129 prepare v1.10.6
 * fae0d46 gcc.sh: rework bootstrap --with-boot-*
 * 885b7c7 gcc.sh: experiment with bootstrap on macOS
 
