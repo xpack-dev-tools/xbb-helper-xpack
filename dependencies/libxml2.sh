@@ -78,15 +78,22 @@ function libxml2_build()
       fi
     fi
 
-    (
-      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
-      if [ ! -f "stamp-autoreconf" ]
-      then
-        run_verbose autoreconf -vfi
+    # autoreconf: running: /Users/ilg/Work/xpack-dev-tools-build/qemu-riscv-8.1.0-1/darwin-x64/x86_64-apple-darwin21.6.0/install/bin/autoconf --force
+    # configure.ac:1087: error: possibly undefined macro: m4_ifdef
 
-        touch "stamp-autoreconf"
-      fi
-    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libxml2_folder_name}/autoreconf-output-$(ndate).txt"
+    if [ ! -f "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}/configure" ]
+    then
+      (
+        run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${libxml2_folder_name}"
+        if [ ! -f "stamp-autoreconf" ]
+        then
+
+          run_verbose autoreconf -vfi
+          
+          touch "stamp-autoreconf"
+        fi
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libxml2_folder_name}/autoreconf-output-$(ndate).txt"
+    fi
 
     (
       # /lib added due to wrong -Llib used during make.
