@@ -85,6 +85,14 @@ function qemu_build()
       #   # For example the missing -ldl resulted in:
       #   # sizeof(size_t) doesn't match GLIB_SIZEOF_SIZE_T
       #   LDFLAGS+=" -ldl -ludev -lpthread -lrt"
+      elif [ "${XBB_HOST_PLATFORM}" == "linux" ] &&
+           [ "${XBB_HOST_ARCH}" == "arm64" ]
+      then
+        # ../../../sources/qemu-8.1.0.git/util/cpuinfo-aarch64.c: In function 'cpuinfo_init':
+        # ../../../sources/qemu-8.1.0.git/util/cpuinfo-aarch64.c:58:22: error: 'HWCAP_USCAT' undeclared (first use in this function); did you mean 'HWCAP_JSCVT'?
+        # 58 |     info |= (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
+
+        CPPFLAGS+=" -DHWCAP_USCAT=(1<<25)"
       fi
 
       xbb_adjust_ldflags_rpath
