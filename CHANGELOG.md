@@ -2,9 +2,23 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-09-03
+
+* v1.10.8 released
+
+## 2023-09-02
+
+* 51dff5c qemu.sh: define HWCAP_USCAT only for 8.1.0
+* 87dcadf qemu.sh: -DHWCAP_USCAT=(1<<25) for arm64
+* 8874c6c add docs/hacks/autoreconf-m4-ifdef.md
+* b3e524a gdb-cross.sh comments
+* bf0315b libxml2.sh: conditional autoreconf
+
 ## 2023-08-31
 
-* v1.10.7 released
+* e855091 compiler-tests.sh: verbose first test
+* 59673b9 1.10.7
+* e7fc112 prepare v1.10.7
 * c31eec8 gcc.sh: disable bootstrap on linux too
 * 84785d5 1.10.6
 * 0913129 prepare v1.10.6
