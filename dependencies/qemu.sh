@@ -86,7 +86,8 @@ function qemu_build()
       #   # sizeof(size_t) doesn't match GLIB_SIZEOF_SIZE_T
       #   LDFLAGS+=" -ldl -ludev -lpthread -lrt"
       elif [ "${XBB_HOST_PLATFORM}" == "linux" ] &&
-           [ "${XBB_HOST_ARCH}" == "arm64" ]
+           [ "${XBB_HOST_ARCH}" == "arm64" ] &&
+           [ "${qemu_version}" == "8.1.0" ]
       then
         # ../../../sources/qemu-8.1.0.git/util/cpuinfo-aarch64.c: In function 'cpuinfo_init':
         # ../../../sources/qemu-8.1.0.git/util/cpuinfo-aarch64.c:58:22: error: 'HWCAP_USCAT' undeclared (first use in this function); did you mean 'HWCAP_JSCVT'?
