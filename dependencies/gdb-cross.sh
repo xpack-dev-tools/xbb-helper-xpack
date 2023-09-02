@@ -25,6 +25,7 @@ function gdb_cross_build_dependencies()
   # Fails on mingw. 0.8.13 is deprecated. Not used anyway.
   # libelf_build "0.8.13"
 
+  # Without it gettext fails:
   # Undefined symbols for architecture x86_64:
   #   "_gl_get_setlocale_null_lock", referenced from:
   #       _libgettextpo_setlocale_null_r in setlocale_null.o
