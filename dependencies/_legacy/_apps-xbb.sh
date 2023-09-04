@@ -2519,6 +2519,8 @@ function tcl_build()
               run_verbose sed -i.bak \
                 -e 's|EXTRA_APP_CC_SWITCHES=.-mdynamic-no-pic.|EXTRA_APP_CC_SWITCHES=""|' \
                 "${XBB_SOURCES_FOLDER_PATH}/${tcl_src_folder_name}/macosx/configure"
+
+              run_verbose diff "${XBB_SOURCES_FOLDER_PATH}/${tcl_src_folder_name}/macosx/configure.bak" "${XBB_SOURCES_FOLDER_PATH}/${tcl_src_folder_name}/macosx/configure" || true
             fi
 
             config_options+=("--enable-threads") # HB

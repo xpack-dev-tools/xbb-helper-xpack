@@ -60,6 +60,8 @@ function qemu_build()
       run_verbose sed -i.bak \
         -e 's|printf("QEMU emulator version "|printf("xPack QEMU emulator version "|' \
         "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c"
+
+      run_verbose diff "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c.bak" "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c" || true
     fi
     # exit 1
 

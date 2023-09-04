@@ -92,6 +92,8 @@ function newlib_cross_build()
           run_verbose sed -i.bak \
             -e 's|^\(%(nano_link) .*\)$|\1 %:replace-outfile(-lstdc++ -lstdc++_nano)|' \
             "${nano_specs_file_path}"
+
+          run_verbose diff "${nano_specs_file_path}.bak" "${nano_specs_file_path}" || true
         fi
         if grep "%(nano_link)" "${nano_specs_file_path}" | grep -q "%:replace-outfile(-lsupc++ -lsupc++_nano)"
         then
@@ -100,6 +102,8 @@ function newlib_cross_build()
           run_verbose sed -i.bak \
             -e 's|^\(%(nano_link) .*\)$|\1 %:replace-outfile(-lsupc++ -lsupc++_nano)|' \
             "${nano_specs_file_path}"
+
+          run_verbose diff "${nano_specs_file_path}.bak" "${nano_specs_file_path}" || true
         fi
       fi
       # exit 1

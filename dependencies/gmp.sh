@@ -96,7 +96,7 @@ function gmp_build()
             -e 's|gmp_cxxcompile="$CXX $CPPFLAGS $CXXFLAGS conftest.cc >&5"|gmp_cxxcompile="$CXX $CPPFLAGS $CXXFLAGS conftest.cc $LDFLAGS \>\&5"|' \
             "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure"
 
-          run_verbose_develop diff "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure.bak" "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure" || true
+          run_verbose diff "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure.bak" "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure" || true
 
           echo
           echo "Running gmp configure..."
@@ -154,6 +154,8 @@ function gmp_build()
             run_verbose sed -i.bak \
               -e 's| t-sqrlo$(EXEEXT) | |' \
               "tests/mpn/Makefile"
+
+            run_verbose diff "tests/mpn/Makefile.bak" "tests/mpn/Makefile" || true
           fi
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${gmp_folder_name}/config-log-$(ndate).txt"

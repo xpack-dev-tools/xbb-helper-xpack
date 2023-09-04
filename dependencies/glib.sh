@@ -75,7 +75,7 @@ function glib_build()
         -e "s|python = import('python').find_installation()|python = import('python').find_installation('${which_python}')|"   \
         "${glib_src_folder_name}/meson.build"
 
-      diff "${glib_src_folder_name}/meson.build.bak" "${glib_src_folder_name}/meson.build" || true
+      run_verbose diff "${glib_src_folder_name}/meson.build.bak" "${glib_src_folder_name}/meson.build" || true
 
       # When invoking python scripts, meson gets confused and
       # tries to use itself; thus invoke python explicitly.
@@ -83,7 +83,7 @@ function glib_build()
         -e "s|command: \[gengiotypefuncs_prog, '@OUTPUT@', '@INPUT@'\])|command: [find_program('python3'), gengiotypefuncs_prog.full_path(), '@OUTPUT@', '@INPUT@'])|" \
         "${glib_src_folder_name}/gio/tests/meson.build"
 
-      diff "${glib_src_folder_name}/gio/tests/meson.build.bak" "${glib_src_folder_name}/gio/tests/meson.build" || true
+      run_verbose diff "${glib_src_folder_name}/gio/tests/meson.build.bak" "${glib_src_folder_name}/gio/tests/meson.build" || true
     fi
 
     (

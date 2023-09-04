@@ -240,7 +240,7 @@ function gdb_cross_build()
               -e "s|^	gcore.c [\\]$|	gcore.c gcore-elf.c \\\\|" \
               "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/Makefile.in"
 
-            run_verbose_develop diff "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/Makefile.in.bak" "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/Makefile.in" || true
+            run_verbose diff "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/Makefile.in.bak" "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/gdb/Makefile.in" || true
 
           fi
 

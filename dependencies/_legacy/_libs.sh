@@ -818,8 +818,10 @@ function libgcrypt_build()
           if false # [ "${XBB_BUILD_MACHINE}" != "aarch64" ]
           then
             # fix screwed up capability detection
-            sed -i.bak -e '/HAVE_GCC_INLINE_ASM_AARCH32_CRYPTO 1/d' "config.h"
-            sed -i.bak -e '/HAVE_GCC_INLINE_ASM_NEON 1/d' "config.h"
+            run_verbose sed -i.bak -e '/HAVE_GCC_INLINE_ASM_AARCH32_CRYPTO 1/d' "config.h"
+            run_verbose sed -i.bak -e '/HAVE_GCC_INLINE_ASM_NEON 1/d' "config.h"
+
+            run_verbose diff config.h.bak config.h || true
           fi
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libgcrypt_folder_name}/config-log-$(ndate).txt"

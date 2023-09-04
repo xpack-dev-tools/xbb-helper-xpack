@@ -594,7 +594,7 @@ function gcc_build()
           #     -e "s|^\(POSTSTAGE1_LDFLAGS = .*\)$|\1 -lpthread ${deps_rpaths}|" \
           #     "Makefile"
 
-          #   run_verbose_develop diff Makefile.bak Makefile || true
+          #   run_verbose diff Makefile.bak Makefile || true
           # fi
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/config-log-$(ndate).txt"

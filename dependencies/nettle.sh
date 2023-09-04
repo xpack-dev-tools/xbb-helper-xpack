@@ -121,6 +121,8 @@ function nettle_build()
             run_verbose sed -i.bak \
               -e 's| dlopen-test$(EXEEXT)||' \
               "testsuite/Makefile"
+
+            run_verbose diff "testsuite/Makefile.bak" "testsuite/Makefile"
           fi
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${nettle_folder_name}/config-log-$(ndate).txt"

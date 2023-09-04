@@ -106,6 +106,8 @@ function libtasn1_build()
               -e 's| Test_tree$(EXEEXT) | |' \
               -e 's| copynode$(EXEEXT) | |' \
               "tests/Makefile"
+
+            run_verbose diff "tests/Makefile.bak" "tests/Makefile" || true
           fi
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${libtasn1_folder_name}/config-log-$(ndate).txt"

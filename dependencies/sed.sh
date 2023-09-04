@@ -121,6 +121,8 @@ function sed_build()
             run_verbose sed -i.bak \
               -e 's|testsuite/panic-tests.sh||g' \
               "Makefile"
+
+            run_verbose diff "Makefile.bak" "Makefile" || true
           fi
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${sed_folder_name}/config-log-$(ndate).txt"
