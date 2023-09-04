@@ -198,7 +198,7 @@ function zstd_build()
       (
         run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
-        copy_cmake_logs "${zstd_folder_name}"
+        copy_cmake_files "${zstd_folder_name}"
       )
 
     )
