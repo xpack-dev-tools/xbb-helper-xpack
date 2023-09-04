@@ -137,9 +137,14 @@ function copy_cmake_files()
   echo
   echo "Preserving CMake files..."
   rm -rf "${XBB_LOGS_FOLDER_PATH}/${folder_name}"/CMake*
-  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles"
 
-  cp -rv CMakeFiles "${XBB_LOGS_FOLDER_PATH}/${folder_name}"
+  (
+    cd "${folder_name}"
+
+    local date_suffix=$(ndate)
+    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles-${date_suffix}"
+    cp -rv CMakeFiles/* "${XBB_LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles-${date_suffix}"
+  )
 }
 
 # -----------------------------------------------------------------------------
