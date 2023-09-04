@@ -4,7 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-09-04
 
-* v1.11.0 released
+* v1.11.1 released
+* d545865 add pkgconfig/hidapi-0.14.0-windows.pc
+* 56dcf1d README update
+* ae21909 README update
+* 84ae7de 1.11.0
+* 9650878 prepare v1.11.0
 * 7bb95b6 run_verbose diff
 * 29f297b autotools.sh: re-enable pkg_config
 * 1cfd9b3 miscellaneous.sh: fix copy_cmake_files
