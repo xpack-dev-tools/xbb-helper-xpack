@@ -234,7 +234,7 @@ function hidapi_build()
         (
           run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"
 
-          copy_cmake_logs "${hidapi_folder_name}"
+          copy_cmake_files "${hidapi_folder_name}"
         )
 
         find "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" \
