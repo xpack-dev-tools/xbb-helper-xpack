@@ -112,6 +112,7 @@ function copy_build_files()
 # Must be called in the build folder, like
 # cd "${XBB_BUILD_FOLDER_PATH}"
 
+# DEPRECATED, cmake >= 3.26 no longer use *.log files.
 function copy_cmake_logs()
 {
   local folder_name="$1"
@@ -127,6 +128,18 @@ function copy_cmake_logs()
 
     cp -v "CMakeFiles"/*.log "${XBB_LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles"
   )
+}
+
+function copy_cmake_files()
+{
+  local folder_name="$1"
+
+  echo
+  echo "Preserving CMake files..."
+  rm -rf "${XBB_LOGS_FOLDER_PATH}/${folder_name}"/CMake*
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles"
+
+  cp -rv CMakeFiles "${XBB_LOGS_FOLDER_PATH}/${folder_name}"
 }
 
 # -----------------------------------------------------------------------------
