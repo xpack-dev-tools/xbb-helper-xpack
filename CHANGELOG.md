@@ -2,9 +2,22 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-09-04
+
+* v1.11.0 released
+* 7bb95b6 run_verbose diff
+* 29f297b autotools.sh: re-enable pkg_config
+* 1cfd9b3 miscellaneous.sh: fix copy_cmake_files
+* 85839d8 zstd.sh: use copy_cmake_files
+* 5f58028 hidapi.sh: use copy_cmake_files
+* 6399d1c miscellaneous.sh: add copy_cmake_files()
+* c708c7e README update
+* d353614 templates: bump xbb 5.1.0
+
 ## 2023-09-03
 
-* v1.10.8 released
+* 7d12b44 1.10.8
+* a6d2051 prepare v1.10.8
 
 ## 2023-09-02
 
