@@ -137,7 +137,7 @@ The version is visible at:
 - merge `xpack-develop` into `xpack`
 - push to GitHub
 
-### Tag the npm package as `latest`
+### Tag the npm package as `latest` - DEPRECATED
 
 When the release is considered stable, promote it as `latest`:
 
