@@ -123,7 +123,7 @@ Use a new version, suffixed by `.pre`.
 - push the `xpack-develop` branch to GitHub
 - the `postversion` npm script should also update tags via `git push origin --tags`
 
-### Publish - DEPRECATED
+### Publish
 
 - `npm publish --tag next` (use `npm publish --access public` when
   publishing for the first time)
@@ -137,7 +137,7 @@ The version is visible at:
 - merge `xpack-develop` into `xpack`
 - push to GitHub
 
-### Tag the npm package as `latest` - DEPRECATED
+### Tag the npm package as `latest`
 
 When the release is considered stable, promote it as `latest`:
 
