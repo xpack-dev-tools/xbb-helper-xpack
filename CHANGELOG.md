@@ -2,9 +2,17 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-09-05
+
+* v1.11.2 released
+* 89db9f2 .vscode/settings.json: ignoreWords
+* 461e183 coreutils.sh: --disable-year2038 for 32-bit arm
+* 6302d3d README update
+
 ## 2023-09-04
 
-* v1.11.1 released
+2023-09-04 * 1012e2d 1.11.1
+2023-09-04 * 9afd463 prepare v1.11.1
 * d545865 add pkgconfig/hidapi-0.14.0-windows.pc
 * 56dcf1d README update
 * ae21909 README update
@@ -91,7 +99,7 @@ Entries in this file are in reverse chronological order.
 * ce013aa xbb.sh: add xbb_set_flex_package_paths()
 * d74fb1e gcc-mingw.sh: skip tests for 13.2
 * 8903cdf gcc.sh: skip tests for 13.2
-* 076d4ac dependencies: update homebreu urls
+* 076d4ac dependencies: update homebrew urls
 * 03ebe80 _apps-xbb.sh: fix names in comments
 * fe31ed7 add docs/hacks
 * 5c80a94 gcc.sh: skip some tests for 12.3
