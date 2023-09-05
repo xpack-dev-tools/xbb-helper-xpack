@@ -127,6 +127,10 @@ function coreutils_build()
             # config_options+=("--program-prefix=g") # HB
             # `ar` must be excluded, it interferes with Apple similar program.
             config_options+=("--enable-no-install-program=ar")
+          elif [ "${XBB_HOST_PLATFORM}" == "linux" ] && [ "${XBB_HOST_ARCH}" == "arm" ]
+          then
+            # Hopefully 32-bit machines will no longer be in use by then.
+            config_options+=("--disable-year2038")
           fi
 
           # --enable-no-install-program=groups,hostname,kill,uptime # Arch
