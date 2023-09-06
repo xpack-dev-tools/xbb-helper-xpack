@@ -43,10 +43,12 @@ script_folder_name="$(basename "${script_folder_path}")"
 # Maintenance script used to build all packages available on a given platform.
 # To run it, clone the helper project and then run:
 #
-# bash ${HOME}/Work/xbb-helper-xpack.git/maintainer/build-all.sh
-# bash ${HOME}/Work/xbb-helper-xpack.git/maintainer/build-all.sh --windows
+# bash ${WORK}/xbb-helper-xpack.git/maintainer/build-all.sh
+# bash ${WORK}/xbb-helper-xpack.git/maintainer/build-all.sh --windows
 
 # -----------------------------------------------------------------------------
+
+WORK="${HOME}/Work/xpack-dev-tools"
 
 do_windows=""
 do_clone=""
@@ -185,7 +187,7 @@ then
   names+=( xbb-helper )
   for name in ${names[@]}
   do
-    run_verbose git -C ${HOME}/Work/${name}-xpack.git status
+    run_verbose git -C ${WORK}/${name}-xpack.git status
   done
 
   exit 0
@@ -198,20 +200,20 @@ then
   for name in ${names[@]}
   do
 
-    run_verbose rm -rf ${HOME}/Work/${name}-xpack.git && \
-    run_verbose mkdir -p ${HOME}/Work && \
+    run_verbose rm -rf ${WORK}/${name}-xpack.git && \
+    run_verbose mkdir -p ${WORK} && \
     run_verbose git clone \
       --branch xpack-develop \
       https://github.com/xpack-dev-tools/${name}-xpack.git \
-      ${HOME}/Work/${name}-xpack.git
+      ${WORK}/${name}-xpack.git
 
   done
 
   exit 0
 fi
 
-# git -C ${HOME}/Work/xbb-helper-xpack.git pull
-# xpm link -C ${HOME}/Work/xbb-helper-xpack.git
+# git -C ${WORK}/xbb-helper-xpack.git pull
+# xpm link -C ${WORK}/xbb-helper-xpack.git
 
 IFS="|"
 for name in ${names[@]}
@@ -224,48 +226,48 @@ do
     echo
     echo "Skipping ${name}..."
   else
-    if [ -d "${HOME}/Work/${name}-xpack.git" ]
+    if [ -d "${WORK}/${name}-xpack.git" ]
     then
-      run_verbose git -C ${HOME}/Work/${name}-xpack.git pull
+      run_verbose git -C ${WORK}/${name}-xpack.git pull
     else
       run_verbose git clone \
         --branch xpack-develop \
         https://github.com/xpack-dev-tools/${name}-xpack.git \
-        ${HOME}/Work/${name}-xpack.git
+        ${WORK}/${name}-xpack.git
     fi
 
     if [ "${do_deep_clean}" == "y" ]
     then
-      xpm run deep-clean -C ${HOME}/Work/${name}-xpack.git
+      xpm run deep-clean -C ${WORK}/${name}-xpack.git
     fi
 
-    xpm run install -C ${HOME}/Work/${name}-xpack.git
-    xpm run link-deps -C ${HOME}/Work/${name}-xpack.git
+    xpm run install -C ${WORK}/${name}-xpack.git
+    xpm run link-deps -C ${WORK}/${name}-xpack.git
 
     if [ "$(uname)" == "Darwin" ]
     then
-      xpm run deep-clean --config ${config}  -C ${HOME}/Work/${name}-xpack.git
-      xpm install --config ${config} -C ${HOME}/Work/${name}-xpack.git
+      xpm run deep-clean --config ${config}  -C ${WORK}/${name}-xpack.git
+      xpm install --config ${config} -C ${WORK}/${name}-xpack.git
 
       if [ "${do_dry_run}" == "y" ]
       then
         echo "Skipping real action for ${name}..."
       else
-        xpm run build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
+        xpm run build-develop --config ${config} -C ${WORK}/${name}-xpack.git
       fi
     elif [ "$(uname)" == "Linux" ]
     then
-      xpm run deep-clean --config ${config} -C ${HOME}/Work/${name}-xpack.git
-      xpm run docker-prepare --config ${config} -C ${HOME}/Work/${name}-xpack.git
-      xpm run docker-link-deps --config ${config} -C ${HOME}/Work/${name}-xpack.git
+      xpm run deep-clean --config ${config} -C ${WORK}/${name}-xpack.git
+      xpm run docker-prepare --config ${config} -C ${WORK}/${name}-xpack.git
+      xpm run docker-link-deps --config ${config} -C ${WORK}/${name}-xpack.git
 
       if [ "${do_dry_run}" == "y" ]
       then
-        echo "would run [xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git]"
+        echo "would run [xpm run docker-build-develop --config ${config} -C ${WORK}/${name}-xpack.git]"
       else
-        xpm run docker-build-develop --config ${config} -C ${HOME}/Work/${name}-xpack.git
+        xpm run docker-build-develop --config ${config} -C ${WORK}/${name}-xpack.git
       fi
-      xpm run docker-remove --config ${config} -C ${HOME}/Work/${name}-xpack.git
+      xpm run docker-remove --config ${config} -C ${WORK}/${name}-xpack.git
     fi
   fi
 
@@ -274,12 +276,12 @@ done
 echo
 echo "# Durations summary:"
 
-run_verbose find ${HOME}/Work -name 'duration-*-*.txt' -exec echo '[cat {}]' ';' -exec cat '{}' ';' -exec echo ';'
+run_verbose find ${WORK} -name 'duration-*-*.txt' -exec echo '[cat {}]' ';' -exec cat '{}' ';' -exec echo ';'
 
 echo
 echo "# Copied files summary:"
 
-run_verbose find ${HOME}/Work -name 'copied-files-*-*.txt' -exec echo '[sort {}]' ';' -exec echo ';' -exec sort '{}' ';' -exec echo ';'
+run_verbose find ${WORK} -name 'copied-files-*-*.txt' -exec echo '[sort {}]' ';' -exec echo ';' -exec sort '{}' ';' -exec echo ';'
 
 echo "Done"
 exit 0
