@@ -226,6 +226,9 @@ do
     echo
     echo "Skipping ${name}..."
   else
+    # Temporary?
+    rm -rf "${WORK}/${name}-xpack.git/package-lock.json"
+
     if [ -d "${WORK}/${name}-xpack.git" ]
     then
       run_verbose git -C ${WORK}/${name}-xpack.git pull
