@@ -1,6 +1,6 @@
 # build-all checklist
 
-| Name | xbbmi | xbbma | wks | xbblix | xbbliw | xbbla | xbbla32 |
+| Name | xbbmi | xbbma | wks | xbbli x | xbbli w | xbbla | xbbla32 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | gcc | | | | | | | |
 | mingw-w64-gcc | | | | | | | |
@@ -24,4 +24,4 @@
 | texinfo | | | | | | | |
 | wine | | | | | | | |
 | clang | | | | | | | |
-| Name | xbbmi | xbbma | wks | xbblix | xbbliw | xbbla | xbbla32 |
+| Name | xbbmi | xbbma | wks | xbbli x | xbbli w | xbbla | xbbla32 |
