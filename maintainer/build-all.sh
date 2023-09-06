@@ -272,6 +272,8 @@ do
       fi
       xpm run docker-remove --config ${config} -C ${WORK}/${name}-xpack.git
     fi
+
+    xpm run deep-clean --config ${config} -C ${WORK}/${name}-xpack.git
   fi
 
 done
