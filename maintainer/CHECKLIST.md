@@ -24,3 +24,4 @@
 | texinfo | | | | | | | |
 | wine | | | | | | | |
 | clang | | | | | | | |
+| Name | xbbmi | xbbma | wks | xbblix | xbbliw | xbbla | xbbla32 |
