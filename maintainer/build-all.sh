@@ -154,12 +154,16 @@ names=()
 # All-platform packages.
 names+=( gcc )
 names+=( mingw-w64-gcc )
+
 names+=( cmake )
 names+=( meson-build )
 names+=( ninja-build )
+
 names+=( openocd )
+
 names+=( qemu-arm )
 names+=( qemu-riscv )
+
 names+=( arm-none-eabi-gcc )
 names+=( aarch64-none-elf-gcc )
 names+=( riscv-none-elf-gcc )
