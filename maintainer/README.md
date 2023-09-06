@@ -59,6 +59,9 @@ time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh \
 --exclude realpath \
 --exclude m4 \
 --exclude sed \
+--exclude bison \
+--exclude flex \
+--exclude texinfo \
 --exclude wine \
 --exclude clang \
 --windows \
