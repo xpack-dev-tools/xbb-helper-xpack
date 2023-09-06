@@ -170,7 +170,7 @@ then
   names+=( windows-build-tools )
 else
   # Linux & macOS only packages (no Windows).
-  names+=( patchelf pkg-config realpath m4 sed )
+  names+=( patchelf pkg-config realpath m4 sed bison flex texinfo )
 
   if [ "${config}" == "linux-x64" ]
   then
