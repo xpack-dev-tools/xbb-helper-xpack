@@ -213,7 +213,7 @@ __EOF__
     run_host_app_verbose "${test_bin_folder_path}/bison" test.y -Wno-conflicts-sr
 
     (
-      export LD_LIBRARY_PATH="$(xbb_get_libs_path)"
+      export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}")"
 
       run_verbose ${CXX} test.tab.c -o test -w
 

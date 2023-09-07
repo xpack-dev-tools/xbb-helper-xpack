@@ -1379,10 +1379,11 @@ function xbb_activate_dependencies_dev()
   export PKG_CONFIG_PATH
 }
 
+# The first argument must be the compiler, like "${CXX}"
 # Call it with -m64/-m32 for multilib use cases.
 function xbb_get_libs_path()
 {
-  ${CXX} "$@" -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||'
+  "$@" -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||'
 }
 
 function xbb_update_ld_library_path()
@@ -1395,7 +1396,7 @@ function xbb_update_ld_library_path()
     if [[ "$(basename ${CC})" =~ .*gcc.* ]]
     then
       # This is maximal, it adds lots of folders.
-      libs_path="$(xbb_get_libs_path)"
+      libs_path="$(xbb_get_libs_path "${CXX}")"
     elif [[ "$(basename ${CC})" =~ .*clang.* ]]
     then
       # find . -name '*.so'
@@ -1420,7 +1421,7 @@ function xbb_update_ld_library_path()
       # clang -print-search-dirs
       # programs: =/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../x86_64-linux-gnu/bin
       # libraries: =/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/lib/clang/15.0.6:/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin/../lib/x86_64-pc-linux-gnu:/usr/lib/gcc/x86_64-linux-gnu/10:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../lib64:/lib/x86_64-linux-gnu:/lib/../lib64:/usr/lib/x86_64-linux-gnu:/usr/lib/../lib64:/lib:/usr/lib
-      libs_path="$(xbb_get_libs_path)"
+      libs_path="$(xbb_get_libs_path "${CXX}")"
     else
       echo "TODO: compute rpath for ${CC}"
       exit 1
