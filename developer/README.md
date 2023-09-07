@@ -53,7 +53,7 @@ any system folders.
 ### Visual Studio Code
 
 All steps in the workflow
-can be run from a terminal, and the scripts can be editted with
+can be run from a terminal, and the scripts can be edited with
 any text editor, thus VSCode is not really a prerequisite.
 
 However, all actions are also defined as **xPack actions** and can
