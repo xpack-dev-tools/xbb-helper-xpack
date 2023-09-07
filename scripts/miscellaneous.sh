@@ -63,6 +63,7 @@ function copy_license()
   )
 }
 
+# Deprecated in Sep 2023.
 function copy_build_files()
 {
   echo

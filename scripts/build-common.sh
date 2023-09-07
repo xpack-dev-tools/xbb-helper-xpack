@@ -171,7 +171,8 @@ function build_common_run()
   xbb_reset_env
   xbb_prepare_pkg_config
 
-  copy_build_files
+  # Deprecated in Sep 2023.
+  # copy_build_files
 
   tests_initialize
 
