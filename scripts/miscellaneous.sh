@@ -211,8 +211,10 @@ function copy_libudev_with_links()
       cp -v "${from_file_path}" "${dest_folder_path}"
     fi
 
-    # Fails with new patchelf 0.18.0!
-    
+    # Fails with:
+    # ELF load command address/offset not properly aligned
+    # when using patchelf 0.18.0.
+
     # Hack to get libudev.so in line with the 'all rpath' policy,
     # since on arm 32-bit it is checked.
     # Manually add $ORIGIN to libudev.so (fingers crossed!).
