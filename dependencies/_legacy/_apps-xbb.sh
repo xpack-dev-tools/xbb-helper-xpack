@@ -3348,7 +3348,11 @@ __EOF__
 
     run_host_app_verbose "${test_bin_folder_path}/re2c" -is -o test-out.c test.c
 
-    run_verbose gcc -c test-out.c
+    (
+      export LD_LIBRARY_PATH="$(xbb_get_libs_path)"
+
+      run_verbose "${CC}" -c test-out.c
+    )
   )
 }
 
