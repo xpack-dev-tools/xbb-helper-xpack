@@ -53,3 +53,10 @@ Add `NO_DEFAULT_PATH` when searching libusb.
 ## hidapi-*.patch
 
 Remove AC_CONFIG_MACRO_DIR([m4]).
+
+## gcc-X.Y.Z.git.patch & gcc-X.Y.Z-cross.git.patch
+
+For GCC 12 & 13, the `abort()` macro in `system.h` must be disabled when
+compiling for mingw-w64.
+
+
