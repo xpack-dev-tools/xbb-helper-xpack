@@ -2,9 +2,49 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-09-08
+
+* v2.0.0 released
+* 6071868 autotools.sh: move libiconv out
+* c5144e3 maintainer/README updates
+* a5d86a4 build-all.sh: no final deep-clean (statistics)
+* 03a010f binutils.sh: add default for has_triplet
+* 7e18743 deprecate copy_build_files
+* 8115ded add gcc 12.3 & 13.2 cross patches
+
+## 2023-09-07
+
+* 8428e93 add gcc-13.2.0.patch for mingw
+* 4a41c9e rework gcc-12.3.* patches for mingw
+* 5829296 rename hacks/mingw-define-abort.md
+* e01726e $(xbb_get_libs_path "${CXX}")"
+* 21dc5e2 _apps-xbb.sh: use LD_LIBRARY_PATH in re2c_test
+* 72b6d9a flex.sh: use LD_LIBRARY_PATH in test
+* 92a391d bison.sh: use LD_LIBRARY_PATH in test
+* 9f31c81 miscellaneous.sh: explain no patchelf
+* da866e4 miscellaneous.sh: do not patchelf libudev.so
+* 41b5afa CHECKLIST.md update
+* 4b88412 README fix typo
+* 504e71e .vscode/settings.json: ignoreWords
+
+## 2023-09-06
+
+* 0f2b98a maintainer/CHECKLIST update
+* 87d67af maintainer/CHECKLIST update
+* 3dc253c add maintainer/CHECKLIST.md
+* 2b1a8d4 maintainer/README update
+* cf748b8 build-all.sh cosmetics
+* 0d7d22a build-all.sh: deep-clean --config at the end
+* 2f0796c build-all.sh: add bison flex texinfo
+* b41ded8 build-all.sh: rm -rf package-lock.json
+* a11311b build-all.sh: update WORK path
+* 928e092 READMEs update
+
 ## 2023-09-05
 
-* v1.11.2 released
+* e869d5d 1.11.2
+* ed49daa prepare v1.11.2
+* bc1602b .vscode/settings.json: ignoreWords
 * 89db9f2 .vscode/settings.json: ignoreWords
 * 461e183 coreutils.sh: --disable-year2038 for 32-bit arm
 * 6302d3d README update
