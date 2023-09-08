@@ -277,7 +277,8 @@ do
       xpm run docker-remove --config ${config} -C ${WORK}/${name}-xpack.git
     fi
 
-    xpm run deep-clean --config ${config} -C ${WORK}/${name}-xpack.git
+    # Cannot do this if we want the final statistics.
+    # xpm run deep-clean --config ${config} -C ${WORK}/${name}-xpack.git
   fi
 
 done
