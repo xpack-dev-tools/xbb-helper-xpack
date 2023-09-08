@@ -21,8 +21,9 @@ function autotools_build()
   # For tools to access their dependencies.
   xbb_activate_installed_bin
 
+  # Moved out, must be explicitly called by the application before this!
   # https://ftp.gnu.org/pub/gnu/libiconv/
-  libiconv_build "1.17" # "1.16"
+  # libiconv_build "1.17" # "1.16"
 
   # https://ftp.gnu.org/gnu/autoconf/
   # depends on m4.
