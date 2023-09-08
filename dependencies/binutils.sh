@@ -53,7 +53,7 @@
 function binutils_prepare_common_options()
 {
   local triplet="$1"
-  local has_triplet="$2"
+  local has_triplet="${2:-""}"
 
   config_options=()
 
