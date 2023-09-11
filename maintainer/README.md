@@ -11,11 +11,14 @@ git clone \
   ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 ```
 
+Check if the build machines have enough free space and eventually
+do some cleanups (`df -BG -H /` on Linux, `df -gH /` on macOS).
+
 To get all projects:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh --clean
+time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh --clone
 ```
 
 To run all possible builds on the given platform from scratch:
@@ -36,9 +39,9 @@ time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh --
 
 The full builds may take more than 1 day to complete:
 
-- `xbbmi`: 7h (nuc)
-- `xbbma`: 3h02
-- `xbbli`: 5h Linux, 6h Windows
+- `xbbmi`: 7h03 (nuc)
+- `xbbma`: 3h37
+- `xbbli`: 5h06 Linux, 7h05 Windows
 - `xbbla`: 19h + 9h clang
 - `xbbla32`: 18h + 8h clang
 
