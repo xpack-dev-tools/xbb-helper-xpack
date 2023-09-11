@@ -26,6 +26,7 @@
     "autotools",
     "binutils",
     "cleanup",
+    "cleanups",
     "coreutils",
     "cosmetize",
     "dylib",
