@@ -51,8 +51,8 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-09-04
 
-2023-09-04 * 1012e2d 1.11.1
-2023-09-04 * 9afd463 prepare v1.11.1
+* 1012e2d 1.11.1
+* 9afd463 prepare v1.11.1
 * d545865 add pkgconfig/hidapi-0.14.0-windows.pc
 * 56dcf1d README update
 * ae21909 README update
