@@ -55,6 +55,9 @@ do_clone=""
 do_dry_run=""
 do_status=""
 do_deep_clean=""
+
+do_patch_debian=""
+
 # https://www.gnu.org/software/bash/manual/html_node/Arrays.html
 declare -a excluded=( )
 
@@ -89,6 +92,11 @@ do
     --exclude )
       excluded+=( "$2" )
       shift 2
+      ;;
+
+    --patch-debian )
+      do_patch_debian="y"
+      shift
       ;;
 
     * )
@@ -241,6 +249,20 @@ do
         --branch xpack-develop \
         https://github.com/xpack-dev-tools/${name}-xpack.git \
         ${WORK}/${name}-xpack.git
+    fi
+
+    if [ "${do_patch_debian}" == "y" ]
+    then
+      (
+        cd "${WORK}/${name}-xpack.git"
+        run_verbose sed -i.bak \
+          -e 's|"dockerImage": "ilegeul/ubuntu:amd64-18.04-xbb-v5.1.1"|"dockerImage": "ilegeul/debian:amd64-10-xbb-v5.1.1"|' \
+          -e 's|"dockerImage": "ilegeul/ubuntu:arm64v8-18.04-xbb-v5.1.1"|"dockerImage": "ilegeul/debian:arm64v8-10-xbb-v5.1.1"|' \
+          -e 's|"dockerImage": "ilegeul/ubuntu:arm32v7-18.04-xbb-v5.1.1"|"dockerImage": "ilegeul/debian:arm32v7-10-xbb-v5.1.1"|' \
+          package.json
+
+        run_verbose diff package.json.bak package.json || true
+      )
     fi
 
     if [ "${do_deep_clean}" == "y" ]
