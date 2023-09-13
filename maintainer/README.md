@@ -41,9 +41,9 @@ The full builds may take more than 1 day to complete:
 
 - `xbbmi`: 7h03 (nuc)
 - `xbbma`: 3h37
-- `xbbli`: 5h06 Linux, 7h05 Windows
-- `xbbla`: 19h + 9h clang
-- `xbbla32`: 18h + 8h clang
+- `xbbli`: 6h03 Linux, 7h02 Windows
+- `xbbla`: 24h10 + 11h06 clang
+- `xbbla32`: 21h22 + 9h07 clang
 
 To show the repos status:
 
