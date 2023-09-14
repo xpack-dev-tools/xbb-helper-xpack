@@ -214,6 +214,10 @@ function ncurses_build()
 
           config_options+=("--disable-db-install")
 
+          config_options+=("--disable-root-access") # Arch
+          config_options+=("--disable-root-environ") # Arch
+          config_options+=("--disable-setuid-environ") # Arch
+
           if [ "${XBB_NCURSES_DISABLE_WIDEC}" == "y" ]
           then
             config_options+=("--disable-widec")
