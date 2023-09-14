@@ -271,6 +271,32 @@ function ncurses_build()
           fi
         done
 
+        if [ "${XBB_NCURSES_DISABLE_WIDEC}" == "y" ]
+        then
+          # Fool packages looking to link to wide-character ncurses libraries
+          for lib in ncurses ncurses++ form panel menu
+          do
+            if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}" ]
+            then
+              ln -sfv lib${lib}.${XBB_HOST_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.${XBB_HOST_SHLIB_EXT}"
+            fi
+            if [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a" ]
+            then
+              ln -sfv lib${lib}.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.a"
+            fi
+
+            # ln -sv ${lib}.pc "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc"
+            if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}.pc" ]
+            then
+              cat "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}.pc" | \
+                sed \
+                  -e "s|Name: ${lib}|Name: ${lib}w|" \
+                  -e "s|-l${lib}|-l${lib}w|" \
+                > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc"
+            fi
+          done
+        fi
+
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${ncurses_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
