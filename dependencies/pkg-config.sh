@@ -12,7 +12,7 @@
 # https://www.freedesktop.org/wiki/Software/pkg-config/
 # https://pkgconfig.freedesktop.org/releases/
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/pkgconf/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/pkgconf/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/pkgconf/files/PKGBUILD
 
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=pkg-config-git

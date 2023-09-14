@@ -18,7 +18,7 @@
 # https://github.com/libusb/hidapi/archive/hidapi-0.9.0.zip
 # Jun 19 2019 "hidapi-0.9.0", maintained releases by libusb
 
-# https://github.com/archlinux/svntogit-community/blob/packages/hidapi/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/hidapi/-/blob/main/PKGBUILD
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/h/hidapi.rb
 
 # Nov 24, 2020, "0.10.1" # Needs a patch to remove AC_CONFIG_MACRO_DIR([m4])

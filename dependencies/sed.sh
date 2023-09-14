@@ -10,7 +10,7 @@
 # https://www.gnu.org/software/sed/
 # https://ftp.gnu.org/gnu/sed/
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/sed/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/sed/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/sed/files/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gnu-sed.rb

@@ -140,7 +140,7 @@ function curl_build()
   # https://curl.haxx.se/download/
   # https://curl.haxx.se/download/curl-7.64.1.tar.xz
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/curl/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/curl/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/curl/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=curl-git
 
@@ -365,7 +365,7 @@ function tar_build()
   # https://www.gnu.org/software/tar/
   # https://ftp.gnu.org/gnu/tar/
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/tar/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/tar/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/tar/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=tar-git
 
@@ -585,7 +585,7 @@ function guille_build()
   # https://www.gnu.org/software/guile/
   # https://ftp.gnu.org/gnu/guile/
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/guile/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/guile/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/guile/files/PKGBUILD
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/guile.rb
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/guile@2.rb
@@ -779,7 +779,7 @@ function autogen_build()
   # https://ftp.gnu.org/gnu/autogen/
   # https://ftp.gnu.org/gnu/autogen/rel5.18.16/autogen-5.18.16.tar.xz
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/autogen/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/autogen/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/autogen/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/autogen.rb
@@ -973,7 +973,7 @@ function gawk_build()
   # https://www.gnu.org/software/gawk/
   # https://ftp.gnu.org/gnu/gawk/
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/gawk/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/gawk/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/gawk/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gawk-git
 
@@ -1169,7 +1169,7 @@ function patch_build()
   # https://www.gnu.org/software/patch/
   # https://ftp.gnu.org/gnu/patch/
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/patch/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/patch/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/patch/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=patch-git
 
@@ -1327,7 +1327,7 @@ function diffutils_build()
   # https://www.gnu.org/software/diffutils/
   # https://ftp.gnu.org/gnu/diffutils/
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/diffutils/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/diffutils/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/diffutils/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=diffutils-git
 
@@ -1511,7 +1511,7 @@ function make_build()
   # https://www.gnu.org/software/make/
   # https://ftp.gnu.org/gnu/make/
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/make/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/make/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/make/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=make-git
 
@@ -1692,7 +1692,7 @@ function bash_build()
   # https://ftp.gnu.org/gnu/bash/
   # https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/bash/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/bash/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/bash/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/b/bash.rb
@@ -1857,7 +1857,7 @@ function wget_build()
   # https://www.gnu.org/software/wget/
   # https://ftp.gnu.org/gnu/wget/
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/wget/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/wget/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/wget/files/PKGBUILD
   # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/wget
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=wget-git
@@ -2047,7 +2047,7 @@ function dos2unix_build()
   # https://dos2unix.sourceforge.net
   # https://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.4.0.tar.
 
-  # https://github.com/archlinux/svntogit-community/blob/packages/dos2unix/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/dos2unix/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/dos2unix/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/d/dos2unix.rb
@@ -2186,7 +2186,7 @@ function perl_build()
   # https://www.cpan.org
   # https://www.cpan.org/src/
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/perl/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/perl/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/perl/files/PKGBUILD
   # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/perl
 
@@ -2413,7 +2413,7 @@ function tcl_build()
   # https://prdownloads.sourceforge.net/tcl/tcl8.6.10-src.tar.gz
   # https://sourceforge.net/projects/tcl/files/Tcl/8.6.10/tcl8.6.10-src.tar.gz/download
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/tcl/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/tcl/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/tcl/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/t/tcl-tk.rb
@@ -2809,7 +2809,7 @@ function p7zip_build()
   # https://sourceforge.net/projects/p7zip/files/p7zip
   # https://sourceforge.net/projects/p7zip/files/p7zip/16.02/p7zip_16.02_src_all.tar.bz2/download
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/p7zip/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/p7zip/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/p7zip/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/p7zip.rb
@@ -2969,7 +2969,7 @@ function rhash_build()
   # https://github.com/rhash/RHash/releases
   # https://github.com/rhash/RHash/archive/v1.3.9.tar.gz
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/rhash/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/rhash/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/rhash/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/r/rhash.rb
@@ -3151,7 +3151,7 @@ function re2c_build()
   # https://github.com/skvadrik/re2c/releases
   # https://github.com/skvadrik/re2c/releases/download/1.3/re2c-1.3.tar.xz
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/re2c/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/re2c/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/re2c/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/r/re2c.rb
@@ -3364,7 +3364,7 @@ function gnupg_build()
   # https://www.gnupg.org
   # https://www.gnupg.org/ftp/gcrypt/gnupg/gnupg-2.2.19.tar.bz2
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/gnupg/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/gnupg/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/gnupg/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gnupg.rb

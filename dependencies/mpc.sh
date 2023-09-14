@@ -12,7 +12,7 @@
 # https://www.multiprecision.org/
 # ftp://ftp.gnu.org/gnu/mpc
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/mpc/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mpc/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/mpc/files/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mpc.rb

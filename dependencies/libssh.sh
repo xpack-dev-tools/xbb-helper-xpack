@@ -14,7 +14,7 @@
 # https://www.libssh.org/files/
 # https://www.libssh.org/files/0.9/libssh-0.9.6.tar.xz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/libssh/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/libssh/-/blob/main/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libssh
 
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-libssh/PKGBUILD

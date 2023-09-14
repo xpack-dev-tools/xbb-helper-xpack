@@ -15,7 +15,7 @@
 # https://sourceforge.net/projects/vde/files/vde2/
 # https://downloads.sourceforge.net/project/vde/vde2/2.3.2/vde2-2.3.2.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/vde2/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/vde2/-/blob/main/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/v/vde.rb
 

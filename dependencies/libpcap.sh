@@ -14,7 +14,7 @@
 # https://www.tcpdump.org/release/
 # https://www.tcpdump.org/release/libpcap-1.10.1.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/libpcap/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/libpcap/-/blob/main/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libpcap.rb
 

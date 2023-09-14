@@ -14,7 +14,7 @@
 
 # https://www.openssl.org/source/openssl-1.1.1n.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/openssl/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/openssl/-/blob/main/PKGBUILD
 
 # https://archlinuxarm.org/packages/aarch64/openssl/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=openssl-static

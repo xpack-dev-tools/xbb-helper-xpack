@@ -20,11 +20,11 @@
 
 # Arch
 # https://archlinux.org/packages/?sort=&q=mingw-w64&maintainer=&flagged=
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-winpthreads/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-binutils/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-headers/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-crt/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-winpthreads/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-binutils/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-gcc/-/blob/main/PKGBUILD
 
 # MSYS2
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-headers-git/PKGBUILD
@@ -105,7 +105,7 @@ function mingw_download()
   )
 }
 
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-headers/-/blob/main/PKGBUILD
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-headers-git/PKGBUILD
 
 function mingw_build_headers()
@@ -581,7 +581,7 @@ function mingw_build_gendef()
 
 # -----------------------------------------------------------------------------
 
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-crt/-/blob/main/PKGBUILD
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-crt-git/PKGBUILD
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mingw-w64.rb
 
@@ -740,7 +740,7 @@ function mingw_build_crt()
 
 # -----------------------------------------------------------------------------
 
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-winpthreads/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-winpthreads/-/blob/main/PKGBUILD
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-winpthreads-git/PKGBUILD
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mingw-w64.rb
 

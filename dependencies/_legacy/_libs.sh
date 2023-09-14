@@ -555,7 +555,7 @@ function libgpg_error_build()
 {
   # https://gnupg.org/ftp/gcrypt/libgpg-error
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libgpg-error/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/libgpg-error/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/libgpg-error/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libgpg-error.rb
@@ -706,7 +706,7 @@ function libgcrypt_build()
   # https://gnupg.org/ftp/gcrypt/libgcrypt
   # https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.5.tar.bz2
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libgcrypt/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/libgcrypt/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/libgcrypt/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libgcrypt.rb
@@ -926,7 +926,7 @@ function libassuan_build()
   # https://gnupg.org/ftp/gcrypt/libassuan
   # https://gnupg.org/ftp/gcrypt/libassuan/libassuan-2.5.3.tar.bz2
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libassuan/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/libassuan/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/libassuan/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libassuan.rb
@@ -1092,7 +1092,7 @@ function libksba_build()
   # https://gnupg.org/ftp/gcrypt/libksba
   # https://gnupg.org/ftp/gcrypt/libksba/libksba-1.3.5.tar.bz2
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libksba/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/libksba/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/libksba/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libksba.rb

@@ -13,7 +13,7 @@
 # https://www.mpfr.org
 # https://www.mpfr.org/history.html
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/mpfr/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mpfr/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/mpfr/files/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mpfr.rb

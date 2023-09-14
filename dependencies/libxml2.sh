@@ -17,7 +17,7 @@
 # https://gitlab.gnome.org/GNOME/libxml2/-/releases
 # https://gitlab.gnome.org/GNOME/libxml2/-/archive/v2.9.14/libxml2-v2.9.14.tar.bz2
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/libxml2/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/libxml2/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/libxml2/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libxml2-git
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libxml2
@@ -89,7 +89,7 @@ function libxml2_build()
         then
 
           run_verbose autoreconf -vfi
-          
+
           touch "stamp-autoreconf"
         fi
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libxml2_folder_name}/autoreconf-output-$(ndate).txt"

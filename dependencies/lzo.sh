@@ -13,7 +13,7 @@
 # https://www.oberhumer.com/opensource/lzo/
 # https://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/lzo/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/lzo/-/blob/main/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/lzo.rb
 

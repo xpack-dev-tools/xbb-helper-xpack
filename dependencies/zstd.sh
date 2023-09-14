@@ -15,7 +15,7 @@
 # https://github.com/facebook/zstd/archive/v1.4.4.tar.gz
 # https://github.com/facebook/zstd/releases/download/v1.5.0/zstd-1.5.0.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/zstd/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/zstd/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/zstd/files/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/z/zstd.rb

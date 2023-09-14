@@ -12,7 +12,7 @@
 # https://isl.gforge.inria.fr - deprecated
 # https://sourceforge.net/projects/libisl/files/
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/libisl/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/libisl/-/blob/main/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/i/isl.rb
 

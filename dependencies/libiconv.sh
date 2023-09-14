@@ -12,7 +12,7 @@
 # https://www.gnu.org/software/libiconv/
 # https://ftp.gnu.org/pub/gnu/libiconv/
 
-# https://github.com/archlinux/svntogit-community/blob/packages/libiconv/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/libiconv/-/blob/main/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libiconv
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libiconv.rb

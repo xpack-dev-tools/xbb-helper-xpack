@@ -11,7 +11,7 @@
 
 # https://ftp.gnome.org/pub/GNOME/sources/glib
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/glib2/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/glib2/-/blob/main/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=glib2-git
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-glib2
 

@@ -16,7 +16,7 @@
 # https://github.com/libffi/libffi/releases/download/v3.4.2/libffi-3.4.2.tar.gz
 # https://github.com/libffi/libffi/archive/v3.2.1.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/libffi/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/libffi/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/libffi/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libffi-git
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libffi

@@ -18,7 +18,7 @@
 # https://www.sqlite.org/2023/sqlite-src-3420000.zip
 # https://www.sqlite.org/src/tarball/7ebdfa80/SQLite-7ebdfa80.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/sqlite/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/sqlite/-/blob/main/PKGBUILD
 
 # https://archlinuxarm.org/packages/aarch64/sqlite/files/PKGBUILD
 

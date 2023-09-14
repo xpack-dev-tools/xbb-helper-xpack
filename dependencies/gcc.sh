@@ -13,9 +13,9 @@
 # https://gcc.gnu.org/install
 # https://gcc.gnu.org/install/configure.html
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/gcc/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/gcc10/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/gcc/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/gcc10/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-gcc/-/blob/main/PKGBUILD
 
 # https://archlinuxarm.org/packages/aarch64/gcc/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gcc-git
@@ -23,9 +23,9 @@
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@8.rb
 
 # Mingw on Arch
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-headers/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-crt/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-gcc/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-headers/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-crt/-/blob/main/PKGBUILD
 #
 # Mingw on Msys2
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD

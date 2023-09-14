@@ -16,7 +16,7 @@
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/python@3.10.rb
 
-## https://github.com/archlinux/svntogit-packages/blob/packages/python/trunk/PKGBUILD
+## https://gitlab.archlinux.org/archlinux/packaging/packages/python/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/python/files/PKGBUILD
 # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python
 # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python-pip

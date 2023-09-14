@@ -19,7 +19,7 @@
 
 # The DLLs are moved to bin
 # mv "$pkgdir"/usr/${_arch}/lib/*.dll "$pkgdir"/usr/${_arch}/bin/
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-gcc/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-gcc/-/blob/main/PKGBUILD
 
 # MSYS2 uses a lot of patches.
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD

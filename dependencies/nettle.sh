@@ -12,7 +12,7 @@
 # https://www.lysator.liu.se/~nisse/nettle/
 # https://ftp.gnu.org/gnu/nettle/
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/nettle/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/nettle/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/nettle/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=nettle-git
 

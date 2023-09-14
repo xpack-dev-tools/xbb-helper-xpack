@@ -17,8 +17,8 @@
 # https://invisible-mirror.net/archives/ncurses/
 # https://invisible-mirror.net/archives/ncurses/ncurses-6.2.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/ncurses/trunk/PKGBUILD
 # depends=(glibc gcc-libs)
+# https://gitlab.archlinux.org/archlinux/packaging/packages/ncurses/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/ncurses/files/PKGBUILD
 # https://deb.debian.org/debian/pool/main/n/ncurses/ncurses_6.1+20181013.orig.tar.gz.asc
 

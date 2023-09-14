@@ -12,7 +12,7 @@
 # https://www.gnu.org/software/coreutils/
 # https://ftp.gnu.org/gnu/coreutils/
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/coreutils/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/coreutils/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/coreutils/files/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/c/coreutils.rb

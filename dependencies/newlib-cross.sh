@@ -9,8 +9,8 @@
 
 # -----------------------------------------------------------------------------
 
-# https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-newlib/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/riscv32-elf-newlib/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/arm-none-eabi-newlib/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/riscv32-elf-newlib/-/blob/main/PKGBUILD
 
 # -----------------------------------------------------------------------------
 

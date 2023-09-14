@@ -13,7 +13,7 @@
 # https://ftp.gnu.org/gnu/readline/
 # https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/readline/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/readline/-/blob/main/PKGBUILD
 
 # depends=(glibc gcc-libs)
 # https://archlinuxarm.org/packages/aarch64/readline/files/PKGBUILD

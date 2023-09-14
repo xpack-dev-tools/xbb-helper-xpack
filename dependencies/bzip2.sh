@@ -13,7 +13,7 @@
 # https://sourceware.org/pub/bzip2/
 # https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/bzip2/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/bzip2/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/bzip2/files/PKGBUILD
 
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-bzip2/PKGBUILD

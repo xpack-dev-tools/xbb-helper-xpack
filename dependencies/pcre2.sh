@@ -13,7 +13,7 @@
 # https://github.com/PCRE2Project/pcre2/releases
 # https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.40/pcre2-10.40.tar.bz2
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/pcre2/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/pcre2/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/pcre2/files/PKGBUILD
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/pcre2.rb
 

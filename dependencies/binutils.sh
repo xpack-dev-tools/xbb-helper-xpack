@@ -13,7 +13,7 @@
 # https://www.gnu.org/software/binutils/
 # https://ftp.gnu.org/gnu/binutils/
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/binutils/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/binutils/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/binutils/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
 
@@ -21,7 +21,7 @@
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-binutils/PKGBUILD
 
 # mingw-w64
-# https://github.com/archlinux/svntogit-community/blob/packages/mingw-w64-binutils/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mingw-w64-binutils/-/blob/main/PKGBUILD
 
 # MSYS2
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-binutils/PKGBUILD

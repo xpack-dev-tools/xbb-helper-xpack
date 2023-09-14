@@ -12,7 +12,7 @@
 # https://www.thrysoee.dk/editline/
 # https://www.thrysoee.dk/editline/libedit-20221030-3.1.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/libedit/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/libedit/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/libedit/files/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libedit.rb

@@ -13,7 +13,7 @@
 # https://sourceforge.net/projects/libpng/files/libpng16/
 # https://sourceforge.net/projects/libpng/files/libpng16/older-releases/
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/libpng/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/libpng/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/libpng/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libpng-git
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=mingw-w64-libpng

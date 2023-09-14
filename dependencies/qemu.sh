@@ -15,8 +15,8 @@
 # The second choice is the xPack fork.
 # https://github.com/xpack-dev-tools/qemu
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/qemu/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/libvirt/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/qemu/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/libvirt/-/blob/main/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/q/qemu.rb
 

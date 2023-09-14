@@ -12,7 +12,7 @@
 # https://www.gnu.org/software/m4/
 # https://ftp.gnu.org/gnu/m4/
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/m4/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/m4/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/m4/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=m4-git
 

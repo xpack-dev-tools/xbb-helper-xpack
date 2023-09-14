@@ -15,7 +15,7 @@
 # https://github.com/besser82/libxcrypt/archive/v4.4.15.tar.gz
 # https://github.com/besser82/libxcrypt/releases/download/v4.4.28/libxcrypt-4.4.28.tar.xz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/libxcrypt/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/libxcrypt/-/blob/main/PKGBUILD
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libxcrypt.rb
 
 # 26 Jul 2018, "4.1.1"

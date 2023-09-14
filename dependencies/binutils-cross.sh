@@ -13,8 +13,8 @@
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=binutils-git
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
 
-# https://github.com/archlinux/svntogit-community/blob/packages/arm-none-eabi-binutils/trunk/PKGBUILD
-# https://github.com/archlinux/svntogit-community/blob/packages/riscv32-elf-binutils/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/arm-none-eabi-binutils/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/riscv32-elf-binutils/-/blob/main/PKGBUILD
 
 # 2022-02-09, "2.38"
 # 2022-08-05, "2.39"

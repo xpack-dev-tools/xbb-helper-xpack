@@ -12,7 +12,7 @@
 # https://libexpat.github.io
 # https://github.com/libexpat/libexpat/releases
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/expat/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/expat/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/expat/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=expat-git
 

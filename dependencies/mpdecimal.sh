@@ -13,7 +13,7 @@
 # https://www.bytereef.org/mpdecimal/download.html
 # https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-2.4.2.tar.gz
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/mpdecimal/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/mpdecimal/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/mpdecimal/files/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mpdecimal.rb

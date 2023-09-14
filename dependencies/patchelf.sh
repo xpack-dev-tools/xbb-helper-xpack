@@ -16,7 +16,7 @@
 # https://github.com/NixOS/patchelf/archive/0.12.tar.gz
 # https://github.com/NixOS/patchelf/releases/download/0.14.5/patchelf-0.14.5.tar.bz2
 
-# https://github.com/archlinux/svntogit-community/blob/packages/patchelf/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/patchelf/-/blob/main/PKGBUILD
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/patchelf.rb
 
 

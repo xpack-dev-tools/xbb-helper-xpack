@@ -15,7 +15,7 @@ function libtasn1_build()
   # https://ftp.gnu.org/gnu/libtasn1/
   # https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/libtasn1/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/libtasn1/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/libtasn1/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libtasn1-git
 
@@ -158,7 +158,7 @@ function gc_build()
   # https://github.com/ivmai/bdwgc/releases/download/v8.0.4/gc-8.0.4.tar.gz
   # https://github.com/ivmai/bdwgc/releases/download/v8.2.0/gc-8.2.0.tar.gz
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/gc/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/gc/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/gc/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/b/bdw-gc.rb
@@ -343,7 +343,7 @@ function gnutls_build()
   # https://www.gnupg.org/ftp/gcrypt/gnutls/
   # https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.7.tar.xz
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/gnutls/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/gnutls/-/blob/main/PKGBUILD
 
   # https://archlinuxarm.org/packages/aarch64/gnutls/files/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gnutls-git
@@ -557,7 +557,7 @@ function xorg_util_macros_build()
   # https://xorg.freedesktop.org/releases/individual/util
   # https://xorg.freedesktop.org/releases/individual/util/util-macros-1.17.1.tar.bz2
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/xorg-util-macros/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/xorg-util-macros/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/any/xorg-util-macros/files/PKGBUILD
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/u/util-macros.rb
@@ -688,7 +688,7 @@ function xorg_xproto_build()
   # https://www.x.org/releases/individual/proto/
   # https://www.x.org/releases/individual/proto/xproto-7.0.31.tar.bz2
 
-  # https://github.com/archlinux/svntogit-packages/blob/packages/xorgproto/trunk/PKGBUILD
+  # https://gitlab.archlinux.org/archlinux/packaging/packages/xorgproto/-/blob/main/PKGBUILD
   # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=xorgproto-git
 
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/x/xorgproto.rb

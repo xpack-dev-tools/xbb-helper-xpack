@@ -12,7 +12,7 @@
 # https://zlib.net
 # https://zlib.net/fossils/
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/zlib/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/zlib/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/zlib/files/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/z/zlib.rb

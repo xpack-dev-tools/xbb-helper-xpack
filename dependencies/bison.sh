@@ -13,7 +13,6 @@
 # https://ftp.gnu.org/gnu/bison/
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/bison/-/blob/main/PKGBUILD
-# https://github.com/archlinux/svntogit-packages/blob/packages/bison/trunk/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/bison/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=bison-git
 

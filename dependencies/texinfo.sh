@@ -12,7 +12,7 @@
 # https://www.gnu.org/software/texinfo/
 # https://ftp.gnu.org/gnu/texinfo/
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/texinfo/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/texinfo/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/texinfo/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=texinfo-svn
 

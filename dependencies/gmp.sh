@@ -12,7 +12,7 @@
 # https://gmplib.org
 # https://gmplib.org/download/gmp/
 
-# https://github.com/archlinux/svntogit-packages/blob/packages/gmp/trunk/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/gmp/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/gmp/files/PKGBUILD
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gmp.rb
