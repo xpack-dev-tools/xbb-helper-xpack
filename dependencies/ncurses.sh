@@ -177,6 +177,7 @@ function ncurses_build()
             config_options+=("--enable-symlinks") # HB
 
             config_options+=("--enable-sigwinch") # HB
+            config_options+=("--enable-pc-files")
 
           fi
 
