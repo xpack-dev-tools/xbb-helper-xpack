@@ -97,6 +97,8 @@ function ncurses_build()
       export CXXFLAGS
       export LDFLAGS
 
+      XBB_NCURSES_DISABLE_WIDEC=${XBB_NCURSES_DISABLE_WIDEC:-""}
+
       if [ ! -f "config.status" ]
       then
         (
@@ -210,8 +212,6 @@ function ncurses_build()
           # Running sh /home/ilg/Work/xpack-dev-tools/qemu-arm-xpack.git/build/linux-x64/sources/ncurses-6.3/misc/shlib tic to install /etc/terminfo:/lib/terminfo:/usr/share/terminfo ...
 
           config_options+=("--disable-db-install")
-
-          XBB_NCURSES_DISABLE_WIDEC=${XBB_NCURSES_DISABLE_WIDEC:-""}
 
           if [ "${XBB_NCURSES_DISABLE_WIDEC}" == "y" ]
           then
