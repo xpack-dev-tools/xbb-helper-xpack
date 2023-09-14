@@ -37,6 +37,7 @@
 # 27 Jan 2018, "6.1"
 # 12 Feb 2020, "6.2"
 # 2021-11-08, "6.3"
+# 2022-12-31, "6.4"
 
 # Could not make it work on Windows.
 
@@ -170,7 +171,7 @@ function ncurses_build()
             config_options+=("--with-default-terminfo-dir=/etc/terminfo:/lib/terminfo:/usr/share/terminfo")
             config_options+=("--with-gpm")
             config_options+=("--with-versioned-syms") # Arch
-            config_options+=("--with-xterm-kbs=del")
+            config_options+=("--with-xterm-kbs=del") # Arch
 
             config_options+=("--enable-termcap")
             config_options+=("--enable-const")
@@ -185,7 +186,7 @@ function ncurses_build()
           config_options+=("--with-normal")
           config_options+=("--with-cxx")
           config_options+=("--with-cxx-binding") # Arch
-          config_options+=("--with-cxx-shared") # HB
+          config_options+=("--with-cxx-shared") # Arch, HB
           config_options+=("--with-pkg-config-libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig")
 
           # Fails on Linux, with missing _nc_cur_term, which is there.
@@ -222,7 +223,7 @@ function ncurses_build()
           then
             config_options+=("--disable-widec")
           else
-            config_options+=("--enable-widec")
+            config_options+=("--enable-widec") # Arch
           fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${ncurses_src_folder_name}/configure" \
