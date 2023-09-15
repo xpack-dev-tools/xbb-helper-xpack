@@ -173,6 +173,10 @@ function ncurses_build()
             config_options+=("--with-versioned-syms") # Arch
             config_options+=("--with-xterm-kbs=del") # Arch
 
+            config_options+=("--disable-root-access") # Arch
+            config_options+=("--disable-root-environ") # Arch
+            config_options+=("--disable-setuid-environ") # Arch
+
             config_options+=("--enable-termcap")
             config_options+=("--enable-const")
             config_options+=("--enable-symlinks") # HB
@@ -214,10 +218,6 @@ function ncurses_build()
           # Running sh /home/ilg/Work/xpack-dev-tools/qemu-arm-xpack.git/build/linux-x64/sources/ncurses-6.3/misc/shlib tic to install /etc/terminfo:/lib/terminfo:/usr/share/terminfo ...
 
           config_options+=("--disable-db-install")
-
-          config_options+=("--disable-root-access") # Arch
-          config_options+=("--disable-root-environ") # Arch
-          config_options+=("--disable-setuid-environ") # Arch
 
           if [ "${XBB_NCURSES_DISABLE_WIDEC}" == "y" ]
           then
