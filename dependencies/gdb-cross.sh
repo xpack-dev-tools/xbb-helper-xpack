@@ -432,21 +432,23 @@ function gdb_cross_test()
   local name_suffix="${3:-}"
 
   (
-    show_host_libs "${test_bin_path}/${triplet}-gdb${name_suffix}"
+    GDB="${test_bin_path}/${triplet}-gdb${name_suffix}"
 
-    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" --version
-    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" --config
+    show_host_libs "${GDB}"
+
+    run_host_app_verbose "${GDB}" --version
+    run_host_app_verbose "${GDB}" --config
 
     # This command is known to fail with 'Abort trap: 6' (SIGABRT)
     # Early turn off pagination to avoid:
     # "Type <return> to continue, or q <return> to quit"
-    run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" \
-      -eiex='set pagination off' \
-      --nh \
+    run_host_app_verbose "${GDB}" \
+      -eiex 'set pagination off' \
       --nx \
-      -ex='show language' \
-      -ex='set language auto' \
-      --batch
+      --nw \
+      --batch \
+      -ex 'show language' \
+      -ex 'set language auto' \
 
     if [ -f "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc/hello-cpp.elf" ]
     then
@@ -454,25 +456,26 @@ function gdb_cross_test()
       # Reading symbols from /home/ilg/Work/xpack-dev-tools/riscv-none-elf-gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/tests/riscv-none-elf-gcc/hello-cpp.elf...
       # I'm sorry, Dave, I can't do that.  Symbol format `elf32-littleriscv' unknown.
 
-      run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" \
-        --nh \
+      run_host_app_verbose "${GDB}" \
         --nx \
-        -q \
+        --nw \
+        --batch \
         "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc/hello-cpp.elf" \
-        --batch
+
     fi
 
     if [ "${name_suffix}" == "-py3" ]
     then
       # Show Python paths.
-      run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" \
+      run_host_app_verbose "${GDB}" \
         -eiex='set pagination off' \
-        --nh \
         --nx \
-        -ex='set pagination off' \
-        -ex='python import sys; print(sys.prefix)' \
-        -ex='python import sys; import os; print(os.pathsep.join(sys.path))' \
-        --batch
+        --nw \
+        --batch \
+        -ex 'set pagination off' \
+        -ex 'python import sys; print(sys.prefix)' \
+        -ex 'python import sys; import os; print(os.pathsep.join(sys.path))' \
+
     fi
   )
 }
