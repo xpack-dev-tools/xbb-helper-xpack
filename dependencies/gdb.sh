@@ -194,19 +194,89 @@ function gdb_test()
 {
   local test_bin_path="$1"
 
-  show_host_libs "${test_bin_path}/gdb"
+  GDB="${test_bin_path}/gdb"
 
-  run_host_app_verbose "${test_bin_path}/gdb" --version
-  run_host_app_verbose "${test_bin_path}/gdb" --help
-  run_host_app_verbose "${test_bin_path}/gdb" --config
+  show_host_libs "${GDB}"
+
+  run_host_app_verbose "${GDB}" --version
+  run_host_app_verbose "${GDB}" --help
+  run_host_app_verbose "${GDB}" --config
 
   # This command is known to fail with 'Abort trap: 6' (SIGABRT)
-  run_host_app_verbose "${test_bin_path}/gdb" \
-    --nh \
+  # in abnormal builds.
+  run_host_app_verbose "${GDB}" \
     --nx \
-    -ex='show language' \
-    -ex='set language auto' \
-    -ex='quit'
+    --nw \
+    --batch \
+    -ex 'show language' \
+    -ex 'set language auto' \
+
+  # ---------------------------------------------------------------------------
+  # Test if GDB is built with correct ELF support.
+  (
+    # Assume that the compiler was built too.
+    CXX="${test_bin_path}/g++"
+
+    rm -rf "${XBB_TESTS_FOLDER_PATH}/gdb"
+    mkdir -pv "${XBB_TESTS_FOLDER_PATH}/gdb"
+    run_verbose_develop cd "${XBB_TESTS_FOLDER_PATH}/gdb"
+
+    cat <<'__EOF__' > hello.cpp
+#include <iostream>
+
+int
+main(int argc, char* argv[])
+{
+  std::cout << "Hello World" << std::endl;
+
+  return 0;
+}
+__EOF__
+
+    if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+    then
+      (
+        if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+        then
+          cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
+          export PATH="${cxx_lib_path}:${PATH:-}"
+          echo "PATH=${PATH}"
+        else
+          export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
+          echo "WINEPATH=${WINEPATH}"
+        fi
+
+        run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp.exe -g -v
+
+        run_host_app_verbose "${GDB}" \
+          --nx \
+          --nw \
+          --batch \
+          hello-cpp.exe \
+          --return-child-result \
+          -ex 'run' \
+
+      )
+    else
+      (
+        export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}" -m64)"
+        echo
+        echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+        run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp -g -v
+
+        # Test if GDB is built with correct ELF support.
+        run_host_app_verbose "${GDB}" \
+          --nx \
+          --nw \
+          --batch \
+          hello-cpp \
+          --return-child-result \
+          -ex 'run' \
+
+      )
+    fi
+  )
 
 }
 
