@@ -2,9 +2,45 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-09-20
+
+* v2.0.1 released
+* abcbfd0 gdb-cross.sh: rework test for elf
+* 7230ecd gdb.sh: test if a program can be executed
+* d295305 gdb-cross.sh: riscv#23 test gdb elf
+* 09c7bb1 gdb-cross.sh: --batch in gdb tests
+* 6712ac9 gcc-cross.sh: add -g to hello.c* tests
+
+## 2023-09-15
+
+* 70b4c1c ncurses.sh: move --disable-root* to non-windows
+
+## 2023-09-14
+
+* 663fc9f ncurses.sh: cosmetics
+* 90c2196 ncurses.sh: add w links if _DISABLE_WIDEC
+* 62055d1 ncurses.sh: rework links with loop
+* a65cbe9 ncurses.sh: add more --disable-root*
+* f4a9b47 ncurses.sh: add --enable-pc-files for non-windows
+* 88ae2b8 ncurses.sh: move *DISABLE_WIDEC to the top
+* de18f2b update gitlab.archlinux.org links
+
+## 2023-09-13
+
+* 1452f03 maintainer/build-all.sh: add --patch-debian
+* df927d5 README update
+* 649864c CHANGELOG update
+
+## 2023-09-11
+
+* 8a2fac8 README update
+* 719c1ab .vscode/settings.json: ignoreWords
+
 ## 2023-09-08
 
-* v2.0.0 released
+* 918109e 2.0.0
+* f63d7b1 prepare v2.0.0
+* c1b076f .vscode/settings.json: ignoreWords
 * 6071868 autotools.sh: move libiconv out
 * c5144e3 maintainer/README updates
 * a5d86a4 build-all.sh: no final deep-clean (statistics)
