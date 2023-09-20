@@ -448,6 +448,20 @@ function gdb_cross_test()
       -ex='set language auto' \
       --batch
 
+    if [ -f "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc/hello-cpp.elf" ]
+    then
+      # Test if GDB is built with correct ELF support.
+      # Reading symbols from /home/ilg/Work/xpack-dev-tools/riscv-none-elf-gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/tests/riscv-none-elf-gcc/hello-cpp.elf...
+      # I'm sorry, Dave, I can't do that.  Symbol format `elf32-littleriscv' unknown.
+
+      run_host_app_verbose "${test_bin_path}/${triplet}-gdb${name_suffix}" \
+        --nh \
+        --nx \
+        -q \
+        "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc/hello-cpp.elf" \
+        --batch
+    fi
+
     if [ "${name_suffix}" == "-py3" ]
     then
       # Show Python paths.
