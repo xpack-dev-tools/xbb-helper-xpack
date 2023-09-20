@@ -446,7 +446,7 @@ function gdb_cross_test()
       --nx \
       -ex='show language' \
       -ex='set language auto' \
-      -ex='quit'
+      --batch
 
     if [ "${name_suffix}" == "-py3" ]
     then
@@ -458,7 +458,7 @@ function gdb_cross_test()
         -ex='set pagination off' \
         -ex='python import sys; print(sys.prefix)' \
         -ex='python import sys; import os; print(os.pathsep.join(sys.path))' \
-        -ex='quit'
+        --batch
     fi
   )
 }
