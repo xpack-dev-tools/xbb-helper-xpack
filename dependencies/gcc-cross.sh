@@ -947,7 +947,7 @@ __EOF__
         VERBOSE="-v"
       fi
 
-      run_host_app_verbose "${CC}" hello.c -o hello-c.elf "${specs}" -v
+      run_host_app_verbose "${CC}" hello.c -o hello-c.elf "${specs}" -g -v
 
       run_host_app_verbose "${CC}" -c hello.c -o hello.c.o -flto ${VERBOSE}
       run_host_app_verbose "${CC}" hello.c.o -o hello-c-lto.elf "${specs}" -flto ${VERBOSE}
@@ -970,7 +970,7 @@ __sync_synchronize()
 }
 __EOF__
 
-      run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp.elf "${specs}" ${VERBOSE}
+      run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp.elf "${specs}" -g ${VERBOSE}
 
       run_host_app_verbose "${CXX}" -c hello.cpp -o hello.cpp.o  -flto
       run_host_app_verbose "${CXX}" hello.cpp.o -o hello-cpp-lto.elf "${specs}" -flto ${VERBOSE}
