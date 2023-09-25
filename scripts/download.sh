@@ -70,16 +70,16 @@ function download()
     (
       echo
       echo "Downloading \"${archive_name}\" from \"${url}\"..."
-      # TODO: make unique between containers!
-      local id="$(bash -c 'echo $$')"
-      rm -f "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${id}.download"
+      # Not guaranteed to be unique between containers, but good enough.
+      local rand=$(echo $((RANDOM)))
+      rm -f "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${rand}.download"
       mkdir -pv "${XBB_DOWNLOAD_FOLDER_PATH}"
-      run_verbose curl --insecure --fail --location --output "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${id}.download" "${url}"
+      run_verbose curl --insecure --fail --location --output "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${rand}.download" "${url}"
       if [ ! -f "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}" ]
       then
-        mv -fv "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${id}.download" "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}"
+        mv -fv "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${rand}.download" "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}"
       else
-        rm -f "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${id}.download"
+        rm -f "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${rand}.download"
       fi
     )
   else
