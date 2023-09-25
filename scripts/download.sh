@@ -70,7 +70,8 @@ function download()
     (
       echo
       echo "Downloading \"${archive_name}\" from \"${url}\"..."
-      local id="$$"
+      # TODO: make unique between containers!
+      local id="$(bash -c 'echo $$')"
       rm -f "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${id}.download"
       mkdir -pv "${XBB_DOWNLOAD_FOLDER_PATH}"
       run_verbose curl --insecure --fail --location --output "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${id}.download" "${url}"
