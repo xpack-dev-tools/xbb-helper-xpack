@@ -17,9 +17,10 @@
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/l/libedit.rb
 
-# 2021-05-22, "20210522-3.1"
-# 2021-09-10, "20210910-3.1"
-# 2022-10-30, "20211030-3.1"
+# "20210522-3.1"
+# "20210910-3.1"
+# "20211030-3.1"
+# "20230828-3.1"
 
 # depends=('glibc' 'ncurses' 'libncursesw.so')
 
