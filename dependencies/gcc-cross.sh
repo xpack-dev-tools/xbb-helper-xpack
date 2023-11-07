@@ -925,7 +925,8 @@ function gcc_cross_test()
         specs="-specs=nosys.specs"
       elif [ "${triplet}" == "aarch64-none-elf" ]
       then
-        specs="-specs=rdimon.specs"
+        # specs="-specs=rdimon.specs"
+        specs="-specs=nosys.specs"
       elif [ "${triplet}" == "riscv-none-elf" ]
       then
         specs="-specs=semihost.specs"
