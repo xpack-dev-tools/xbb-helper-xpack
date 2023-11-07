@@ -919,7 +919,10 @@ function gcc_cross_test()
 
       if [ "${triplet}" == "arm-none-eabi" ]
       then
-        specs="-specs=rdimon.specs"
+        # /Users/ilg/Work/xpack-dev-tools-build/arm-none-eabi-gcc-13.2.1-1.1/darwin-x64/application/lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/bin/ld: /Users/ilg/Work/xpack-dev-tools-build/arm-none-eabi-gcc-13.2.1-1.1/darwin-x64/application/lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/libg.a(libc_a-getentropyr.o): in function `_getentropy_r':
+        # (.text._getentropy_r+0x1c): undefined reference to `_getentropy'
+        # specs="-specs=rdimon.specs"
+        specs="-specs=nosys.specs"
       elif [ "${triplet}" == "aarch64-none-elf" ]
       then
         specs="-specs=rdimon.specs"
