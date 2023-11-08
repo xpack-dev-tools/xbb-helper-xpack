@@ -2,9 +2,29 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-11-08
+
+* v2.0.2 released
+* 009be84 gcc-cross.sh: use nosys.specs in aarch64 tests
+
+## 2023-11-07
+
+* 919a4b4 gcc-cross.sh: use nosys.specs in tests
+
+## 2023-10-10
+
+* 43203d4 libedit.sh: update release dates
+
+## 2023-09-25
+
+* c314088 download.sh: better id, random
+* bdbb62e download.sh: better id, not yet unique
+* efd549f download.sh: use $$ to make names unique
+
 ## 2023-09-20
 
-* v2.0.1 released
+* 14eb265 2.0.1
+* 0f4ddd2 prepare v2.0.1
 * abcbfd0 gdb-cross.sh: rework test for elf
 * 7230ecd gdb.sh: test if a program can be executed
 * d295305 gdb-cross.sh: riscv#23 test gdb elf
