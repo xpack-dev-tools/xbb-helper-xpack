@@ -2,9 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-12-03
+
+* v2.0.3 released
+* 0b5a9d3 templates: bump xbb 5.1.1
+
 ## 2023-11-08
 
-* v2.0.2 released
+* 70a8434 2.0.2
+* 585a188 prepare v2.0.2
 * 009be84 gcc-cross.sh: use nosys.specs in aarch64 tests
 
 ## 2023-11-07
