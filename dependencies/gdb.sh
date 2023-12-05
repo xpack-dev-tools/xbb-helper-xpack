@@ -257,7 +257,8 @@ __EOF__
           -ex 'run' \
 
       )
-    else
+    elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    then
       (
         export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}" -m64)"
         echo
@@ -275,6 +276,38 @@ __EOF__
           -ex 'run' \
 
       )
+    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    then
+      if [ "${XBB_HOST_ARCH}" == "x64" ]
+      then
+        # On macOS x64 10.13:
+        # Unable to find Mach task port for process-id 96212: (os/kern) failure (0x5).
+        #  (please check gdb is codesigned - see taskgated(8))
+        echo "skip gdb check"
+      else
+        (
+          export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}")"
+          echo
+          echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+          run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp -g -v
+
+          # echo 'startup-with-shell off' >.gdbinit
+          # Test if GDB is built with correct ELF support.
+          run_host_app_verbose "${GDB}" \
+            -ex 'set startup-with-shell off' \
+            --nx \
+            --nw \
+            --batch \
+            hello-cpp \
+            --return-child-result \
+            -ex 'run' \
+
+        )
+      fi
+    else
+      echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+      exit 1
     fi
   )
 
