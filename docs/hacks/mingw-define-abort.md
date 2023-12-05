@@ -1,4 +1,4 @@
-# abort() macro interfeares with <windows.h>
+# abort() macro interferes with <windows.h>
 
 In `gcc/diagnostic-color.cc`, the header `system.h` defines the `abort()`
 macro. This definition interferes with several methods in `windows.h`.
