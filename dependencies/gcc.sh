@@ -77,43 +77,6 @@ function gcc_download()
   local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
   local gcc_patch_file_name="${XBB_GCC_PATCH_FILE_NAME}"
 
-  if [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [[ "${gcc_version}" =~ 13[.].*[.].* ]]
-  then
-    # https://raw.githubusercontent.com/Homebrew/formula-patches/master/gcc/gcc-13.1.0.diff
-    : # local gcc_patch_file_name="gcc-${gcc_version}-darwin.git.patch"
-  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [ "${XBB_HOST_ARCH}" == "arm64" ] && [ "${gcc_version}" == "12.1.0" ]
-  then
-    # https://raw.githubusercontent.com/Homebrew/formula-patches/d61235ed/gcc/gcc-12.1.0-arm.diff
-    : # local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.git.patch"
-  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [[ "${gcc_version}" =~ 12[.].*[.].* ]]
-  then
-    # https://raw.githubusercontent.com/Homebrew/formula-patches/1d184289/gcc/gcc-12.2.0-arm.diff
-    # https://raw.githubusercontent.com/Homebrew/formula-patches/master/gcc/gcc-12.3.0.diff
-    : # local gcc_patch_file_name="gcc-${gcc_version}-darwin.git.patch"
-  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [ "${XBB_HOST_ARCH}" == "arm64" ] && [ "${gcc_version}" == "11.1.0" ]
-  then
-    # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.1.0-arm-20210504.tar.gz
-    export XBB_GCC_SRC_FOLDER_NAME="gcc-gcc-11.1.0-arm-20210504"
-    local gcc_archive="gcc-11.1.0-arm-20210504.tar.gz"
-    local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
-    local gcc_patch_file_name=""
-  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [ "${XBB_HOST_ARCH}" == "arm64" ] && [ "${gcc_version}" == "11.2.0" ]
-  then
-    # https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.2.0-arm-20211201.tar.gz
-    export XBB_GCC_SRC_FOLDER_NAME="gcc-gcc-11.2.0-arm-20211201"
-    local gcc_archive="gcc-11.2.0-arm-20211201.tar.gz"
-    local gcc_url="https://github.com/fxcoudert/gcc/archive/refs/tags/${gcc_archive}"
-    local gcc_patch_file_name=""
-  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [ "${XBB_HOST_ARCH}" == "arm64" ] && [ "${gcc_version}" =~ 11[.]3[.].* ]
-  then
-    # https://raw.githubusercontent.com/Homebrew/formula-patches/22dec3fc/gcc/gcc-11.3.0-arm.diff
-    local gcc_patch_file_name="gcc-${gcc_version}-darwin-arm.git.patch"
-  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [ "${XBB_HOST_ARCH}" == "arm64" ] && [ "${gcc_version}" =~ 11[.].*[.].* ]
-  then
-    # https://raw.githubusercontent.com/Homebrew/formula-patches/master/gcc/gcc-11.4.0.diff
-    : # local gcc_patch_file_name="gcc-${gcc_version}-darwin.git.patch"
-  fi
-
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}"
 
   local gcc_download_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${XBB_GCC_SRC_FOLDER_NAME}-downloaded"
