@@ -2,9 +2,23 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-12-05
+
+* v2.0.4 released
+* 5ad29f7 hacks: fix typo
+* 184d7fd gcc.sh cleanup deprecated
+* ec315a9 gcc.sh: cosmetics
+* 50f692e gcc.sh: skip tests for 11.4
+* a17f7e9 gcc-mingw.sh: skip tests for 11.4
+
+## 2023-12-04
+
+* 3acfd8b gcc.sh: use externally defined patch
+
 ## 2023-12-03
 
-* v2.0.3 released
+* d0b2126 2.0.3
+* dfffb31 prepare v2.0.3
 * 0b5a9d3 templates: bump xbb 5.1.1
 
 ## 2023-11-08
