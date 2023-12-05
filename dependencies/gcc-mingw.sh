@@ -717,7 +717,8 @@ function gcc_mingw_test()
 
     # Skip tests known to fail.
 
-    if [[ "${gcc_version}" =~ 12[.]3[.]0 ]] ||
+    if [[ "${gcc_version}" =~ 11[.]4[.]0 ]] || \
+       [[ "${gcc_version}" =~ 12[.]3[.]0 ]] || \
        [[ "${gcc_version}" =~ 13[.]2[.]0 ]]
     then
 
