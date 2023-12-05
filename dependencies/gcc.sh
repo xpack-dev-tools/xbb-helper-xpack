@@ -698,38 +698,38 @@ function _gcc_build_libs()
   local gcc_libs_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-libs-installed"
   if [ ! -f "${gcc_libs_stamp_file_path}" ]
   then
-  (
-    mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
-    run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
-
-    CPPFLAGS="${XBB_CPPFLAGS}"
-    CFLAGS="${XBB_CFLAGS_NO_W}"
-    CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-    LDFLAGS="${XBB_LDFLAGS_APP} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
-
-    export CPPFLAGS
-    export CFLAGS
-    export CXXFLAGS
-    export LDFLAGS
-
     (
-      xbb_show_env_develop
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
+      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
 
-      echo
-      echo "Running gcc-libs make..."
+      CPPFLAGS="${XBB_CPPFLAGS}"
+      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      run_verbose make -j ${XBB_JOBS} all-target-libgcc
+      LDFLAGS="${XBB_LDFLAGS_APP} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
 
-      if [ "${XBB_WITH_STRIP}" == "y" ]
-      then
-        run_verbose make install-strip-target-libgcc
-      else
-        run_verbose make install-target-libgcc
-      fi
+      export CPPFLAGS
+      export CFLAGS
+      export CXXFLAGS
+      export LDFLAGS
 
-    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-libs-output-$(ndate).txt"
-  )
+      (
+        xbb_show_env_develop
+
+        echo
+        echo "Running gcc-libs make..."
+
+        run_verbose make -j ${XBB_JOBS} all-target-libgcc
+
+        if [ "${XBB_WITH_STRIP}" == "y" ]
+        then
+          run_verbose make install-strip-target-libgcc
+        else
+          run_verbose make install-target-libgcc
+        fi
+
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-libs-output-$(ndate).txt"
+    )
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gcc_libs_stamp_file_path}"
