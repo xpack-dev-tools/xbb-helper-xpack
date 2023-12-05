@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-12-05
 
-* v2.0.4 released
+* v2.0.5 released
+* 114de4f gdb.sh: skip gdb test on x64 macOS
+* 32f78eb 2.0.4
+* 398fddd prepare v2.0.4
 * 5ad29f7 hacks: fix typo
 * 184d7fd gcc.sh cleanup deprecated
 * ec315a9 gcc.sh: cosmetics
