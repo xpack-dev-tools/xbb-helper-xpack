@@ -3,13 +3,13 @@ function libyaml_build()
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
-  local libyaml_version="0.2.5"
+  local libyaml_version="$1"
 
   local libyaml_src_folder_name="yaml-${libyaml_version}"
 
   local libyaml_archive="${libyaml_src_folder_name}.tar.gz"
 
-  libyaml_url="https://pyyaml.org/download/libyaml/yaml-0.2.5.tar.gz"
+  libyaml_url="https://pyyaml.org/download/libyaml/yaml-"${libyaml_version}".tar.gz"
   local libyaml_folder_name="${libyaml_src_folder_name}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libyaml_folder_name}"
