@@ -69,7 +69,6 @@ function binutils_prepare_common_options()
   fi
   # Remove ansidecl.h!
 
-  config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB mingw
   # config_options+=("--with-lib-path=/usr/lib:/usr/local/lib")
 
   config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
@@ -89,6 +88,7 @@ function binutils_prepare_common_options()
   if [ "${XBB_HOST_PLATFORM}" != "linux" ]
   then
     config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+    config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}") # HB mingw
   fi
 
   # Use the zlib compiled from sources.
