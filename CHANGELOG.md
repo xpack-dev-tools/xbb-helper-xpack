@@ -2,9 +2,24 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-02-23
+
+* v2.0.6 released
+* 41f4591 binutils.sh: no sysroot for linux
+
+## 2024-02-22
+
+* 4115f35 Merge pull request #2 from juliaazziz/xpack
+* bcfb575 Pass libyaml version from caller
+
+## 2024-01-30
+
+* 2bd6c23 dependencies: add libyaml
+
 ## 2023-12-05
 
-* v2.0.5 released
+* 56fe109 2.0.5
+* b9cbe1e prepare v2.0.5
 * 114de4f gdb.sh: skip gdb test on x64 macOS
 * 32f78eb 2.0.4
 * 398fddd prepare v2.0.4
