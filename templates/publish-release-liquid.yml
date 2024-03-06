@@ -56,7 +56,7 @@ jobs:
 
       - name: 'Publish release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.13.0
         with:
           allowUpdates: false
           bodyFile: '.github/workflows/body-github-release.md'
@@ -79,7 +79,7 @@ jobs:
 
       - name: 'Publish artifacts'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.13.0
         with:
           allowUpdates: true
           artifacts: '~/Downloads/xpack-binaries/{{ XBB_APPLICATION_LOWER_CASE_NAME }}/*'
