@@ -1135,6 +1135,26 @@ function gcc_test()
         # 	@rpath/libgcc_s.1.1.dylib (compatibility version 1.0.0, current version 1.1.0)
         # 	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1319.0.0)
 
+        if [[ "${gcc_version}" =~ 13[.]2[.]0 ]] && [ "${XBB_HOST_ARCH}" == "x64" ]
+        then
+          # On macOS Intel with CLT 15.3
+          # terminate called after throwing an instance of 'std::exception'
+          # what():  std::exception
+
+          XBB_SKIP_TEST_HELLO_EXCEPTION="y"
+          XBB_SKIP_TEST_GC_HELLO_EXCEPTION="y"
+          XBB_SKIP_TEST_LTO_HELLO_EXCEPTION="y"
+          XBB_SKIP_TEST_GC_LTO_HELLO_EXCEPTION="y"
+
+          # [./exception-reduced ]
+          # terminate called after throwing an instance of 'int'
+
+          XBB_SKIP_RUN_TEST_EXCEPTION_REDUCED="y"
+          XBB_SKIP_RUN_TEST_GC_EXCEPTION_REDUCED="y"
+          XBB_SKIP_RUN_TEST_LTO_EXCEPTION_REDUCED="y"
+          XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
+        fi
+
         # Old macOS linkers do not support LTO, thus use lld.
         compiler-tests-single "${test_bin_path}"
         compiler-tests-single "${test_bin_path}" --gc
