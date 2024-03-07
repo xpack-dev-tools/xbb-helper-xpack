@@ -368,7 +368,15 @@ function compiler-tests-single()
 
       run_host_app_verbose "${CXX}" "exception-reduced.cpp" -o "${prefix}exception-reduced${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       show_target_libs_develop "${prefix}exception-reduced${suffix}${XBB_TARGET_DOT_EXE}"
-      run_target_app_verbose "./${prefix}exception-reduced${suffix}"
+
+      if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}exception-reduced${suffix}" \
+                         "XBB_SKIP_RUN_TEST_${prefix}exception-reduced"
+      then
+        echo
+        echo "Skipping running ${prefix}exception-reduced${suffix}..."
+      else
+        run_target_app_verbose "./${prefix}exception-reduced${suffix}"
+      fi
 
       if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
