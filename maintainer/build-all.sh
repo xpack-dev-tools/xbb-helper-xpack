@@ -53,7 +53,7 @@ WORK="${HOME}/Work/xpack-dev-tools"
 do_windows=""
 do_clone=""
 do_dry_run=""
-do_status=""
+do_repos_status=""
 do_deep_clean=""
 
 do_patch_debian=""
@@ -79,8 +79,8 @@ do
       shift
       ;;
 
-    --status )
-      do_status="y"
+    --status|--repos-status )
+      do_repos_status="y"
       shift
       ;;
 
@@ -194,7 +194,7 @@ fi
 # At the end, as the longest.
 names+=( clang )
 
-if [ "${do_status}" == "y" ]
+if [ "${do_repos_status}" == "y" ]
 then
   names+=( xbb-helper )
   for name in ${names[@]}

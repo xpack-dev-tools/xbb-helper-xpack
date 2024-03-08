@@ -41,14 +41,14 @@ The full builds may take more than 1 day to complete:
 
 - `xbbmi`: 7h03 (nuc)
 - `xbbma`: 3h37
-- `xbbli`: 6h03 Linux, 7h02 Windows
+- `xbbli`: 5h16 Linux, 7h02 Windows
 - `xbbla`: 24h10 + 11h06 clang
 - `xbbla32`: 21h22 + 9h07 clang
 
 To show the repos status:
 
 ```sh
-bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh --status
+bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh --repos-status
 ```
 
 To exclude some projects, use multiple `--exclude xyz`, for example:
