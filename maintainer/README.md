@@ -41,7 +41,8 @@ The full builds may take more than 1 day to complete:
 
 - `xbbmi`: 7h03 (nuc)
 - `xbbma`: 3h37
-- `xbbli`: 5h16 Linux, 7h02 Windows
+- `xbbli`: 316m (5h16) Linux, 395m (6h35) Windows
+- `berry5`: 1086m (18h06)
 - `xbbla`: 24h10 + 11h06 clang
 - `xbbla32`: 21h22 + 9h07 clang
 
