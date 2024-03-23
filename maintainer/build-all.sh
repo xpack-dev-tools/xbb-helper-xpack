@@ -160,9 +160,8 @@ fi
 names=()
 
 # All-platform packages.
-names+=( gcc )
-names+=( mingw-w64-gcc )
 
+# Start with the light ones.
 names+=( cmake )
 names+=( meson-build )
 names+=( ninja-build )
@@ -171,10 +170,6 @@ names+=( openocd )
 
 names+=( qemu-arm )
 names+=( qemu-riscv )
-
-names+=( arm-none-eabi-gcc )
-names+=( aarch64-none-elf-gcc )
-names+=( riscv-none-elf-gcc )
 
 if [ "${do_windows}" == "y" ]
 then
@@ -190,6 +185,14 @@ else
     names+=( wine )
   fi
 fi
+
+# The heavy ones.
+names+=( gcc )
+names+=( mingw-w64-gcc )
+
+names+=( arm-none-eabi-gcc )
+names+=( aarch64-none-elf-gcc )
+names+=( riscv-none-elf-gcc )
 
 # At the end, as the longest.
 names+=( clang )
