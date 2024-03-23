@@ -1165,6 +1165,8 @@ function xbb_set_libraries_install_path()
 
   export XBB_LIBRARIES_INSTALL_FOLDER_PATH="$1"
 
+  mkdir -p "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+
   if [ ${XBB_TARGET_BITS} -eq 64 ]
   then
     # Create the folder to be sure rpath gets it.
