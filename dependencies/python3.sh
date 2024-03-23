@@ -22,6 +22,7 @@
 # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python-pip
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/python@3.9.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/python@3.12.rb
 
 # 2018-12-24, "3.7.2"
 # March 25, 2019, "3.7.3"

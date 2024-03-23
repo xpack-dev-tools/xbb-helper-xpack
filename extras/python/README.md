@@ -14,7 +14,7 @@ To get it:
 - install it
 - go to `C:\Users\ilg\AppData\Local\Programs\Python\Python3X\include`
 - copy `pyconfig.h`
-- rename
+- rename `pyconfig-win-3.X.Y.h`
 
 ## python3-config-win.sh
 
