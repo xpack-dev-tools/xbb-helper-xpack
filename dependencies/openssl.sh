@@ -38,6 +38,8 @@
 # 2022-Mar-15, "1.1.1n"
 # 2022-Jul-05, "1.1.1q"
 
+# 2024-01-30, "3.2.1"
+
 # -----------------------------------------------------------------------------
 
 function openssl_build()
@@ -398,8 +400,25 @@ function openssl_test()
     rm -rf "${XBB_TESTS_FOLDER_PATH}/openssl"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/openssl"; cd "${XBB_TESTS_FOLDER_PATH}/openssl"
 
+    local openssl_version_string=$(run_host_app_verbose "${test_bin_folder_path}/openssl" version)
+    local openssl_version=$(echo "${openssl_version_string}" | grep 'OpenSSL' | sed -e 's|OpenSSL ||' -e 's| .*||')
+    local openssl_version_major=$(xbb_get_version_major "${openssl_version}")
+
+    local prefix
+    if [ ${openssl_version_major} -eq 1 ]
+    then
+      prefix="SHA256"
+   elif [ ${openssl_version_major} -eq 3 ]
+    then
+      prefix="SHA2-256"
+    else
+      echo "Unsupported openssl version $openssl_version"
+      exit 1
+    fi
+
     echo "This is a test file" >testfile.txt
-    expect_host_output "SHA256(testfile.txt)= c87e2ca771bab6024c269b933389d2a92d4941c848c52f155b9b84e1f109fe35" "${test_bin_folder_path}/openssl" dgst -sha256 testfile.txt
+    expect_host_output "${prefix}(testfile.txt)= c87e2ca771bab6024c269b933389d2a92d4941c848c52f155b9b84e1f109fe35" "${test_bin_folder_path}/openssl" dgst -sha256 testfile.txt
+
   )
 }
 
