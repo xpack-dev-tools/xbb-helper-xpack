@@ -29,6 +29,7 @@
 # 2022 "3380200"
 # "3390200"
 # "3400100"
+# "3450200" "2024"
 
 # -----------------------------------------------------------------------------
 
@@ -37,13 +38,14 @@ function sqlite_build()
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
-  local sqlite_version="$1"
+  local sqlite_version="${1}"
+  local sqlite_year="${2:-""}"
 
   # Alternative Source Code Formats - Snapshot of the complete (raw) source tree
   # https://www.sqlite.org/2022/sqlite-src-3400100.zip
   local sqlite_src_folder_name="sqlite-src-${sqlite_version}"
   local sqlite_archive="${sqlite_src_folder_name}.zip"
-  local sqlite_url
+  local sqlite_url="https://www.sqlite.org/${sqlite_year}/${sqlite_archive}"
 
   if [ "${sqlite_version}" == "3420000" ]
   then
@@ -66,8 +68,11 @@ function sqlite_build()
     sqlite_archive="${sqlite_src_folder_name}.tar.gz"
     sqlite_url="https://www.sqlite.org/src/tarball/${sqlite_commit}/${sqlite_archive}"
   else
-    echo "Unsupported sqlite version ${sqlite_version} in ${FUNCNAME[0]}()"
-    exit 1
+    if [ -z "${sqlite_year}" ]
+    then
+      echo "Provide an year to sqlite_build()"
+      exit 1
+    fi
   fi
 
   local sqlite_folder_name="sqlite-${sqlite_version}"
