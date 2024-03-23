@@ -2,9 +2,30 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-03-23
+
+* v2.0.7 released
+* b8524ea maintainer/README update
+* 263ccc3 maintainer/build-all.sh reorder
+
+## 2024-03-08
+
+* 463d354 README update
+* 34d8409 maintainer --repos-status
+
+## 2024-03-07
+
+* 387b368 gcc.sh on Intel macOS: disable some exception tests
+* cc41dff compiler-tests.sh: conditional exception-reduced
+
+## 2024-03-06
+
+* 795ce2f templates: ncipollo/release-action@v1.13.0
+
 ## 2024-02-23
 
-* v2.0.6 released
+* 6b26ef9 2.0.6
+* a417d6a prepare v2.0.6
 * 41f4591 binutils.sh: no sysroot for linux
 
 ## 2024-02-22
