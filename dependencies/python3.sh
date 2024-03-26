@@ -149,7 +149,17 @@ function python3_build()
 
           config_options+=("--without-ensurepip") # HB, Arch
 
-          config_options+=("--with-universal-archs=${XBB_TARGET_BITS}-bit")
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+          then
+            if true
+            then
+              config_options+=("--disable-universalsdk")
+            else
+              config_options+=("--enable-universalsdk")
+              config_options+=("--with-universal-archs=${XBB_TARGET_BITS}-bit")
+            fi
+          fi
+
           config_options+=("--with-computed-gotos") # Arch
           config_options+=("--with-dbmliborder=gdbm:ndbm") # HB, Arch
 
