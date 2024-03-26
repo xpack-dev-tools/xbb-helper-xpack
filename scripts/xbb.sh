@@ -1047,7 +1047,15 @@ function xbb_set_compiler_flags()
 
     # Note: macOS linker ignores -static-libstdc++, so
     # libstdc++.6.dylib should be handled.
-    XBB_LDFLAGS+=" -Wl,-macosx_version_min,${MACOSX_DEPLOYMENT_TARGET}"
+
+    # On CLT >= 15, the option was updated to -macos_version_min.
+    local xbb_build_clt_version_major=$(echo ${XBB_BUILD_CLT_VERSION} | sed  -e 's|[.].*||')
+    if [ ${xbb_build_clt_version_major} -lt 15 ]
+    then
+      XBB_LDFLAGS+=" -Wl,-macosx_version_min,${MACOSX_DEPLOYMENT_TARGET}"
+    else
+      XBB_LDFLAGS+=" -Wl,-macos_version_min,${MACOSX_DEPLOYMENT_TARGET}"
+    fi
 
     # With GCC 11.2 path are longer, and post-processing may fail:
     # error: /Library/Developer/CommandLineTools/usr/bin/install_name_tool: changing install names or rpaths can't be redone for: /Users/ilg/Work/gcc-11.2.0-2/darwin-x64/install/gcc/libexec/gcc/x86_64-apple-darwin17.7.0/11.2.0/g++-mapper-server (for architecture x86_64) because larger updated load commands do not fit (the program must be relinked, and you may need to use -headerpad or -headerpad_max_install_names)
