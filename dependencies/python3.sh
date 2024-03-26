@@ -86,6 +86,7 @@ function python3_build()
       # To pick the new libraries
       xbb_activate_dependencies_dev
 
+      # When wide, there must be links, no need to use ncursesw
       CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
@@ -166,8 +167,12 @@ function python3_build()
           config_options+=("--with-lto") # HB, Arch
 
           config_options+=("--with-system-expat") # HB, Arch
-          config_options+=("--with-system-ffi") # HB, Arch
-          config_options+=("--with-system-libmpdec") # HB, Arch
+
+          # No longer in use.
+          # config_options+=("--with-system-ffi") # HB, Arch
+
+          # #error "No valid combination of CONFIG_64, CONFIG_32 and _PyHASH_BITS"
+          # config_options+=("--with-system-libmpdec") # HB, Arch
 
           # config_options+=("--with-dtrace") # HB
 
