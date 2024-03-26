@@ -66,6 +66,9 @@ function machine_detect()
       exit 1
     fi
 
+    export XBB_BUILD_CLT_VERSION="$(pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | grep version | sed -e 's|version: ||')"
+    echo "XBB_BUILD_CLT_VERSION=${XBB_BUILD_CLT_VERSION}"
+
   elif [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
     # ----- Determine distribution name and word size -----
