@@ -14,14 +14,13 @@
 # https://www.python.org/ftp/python/
 # https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tar.xz
 
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/python@3.10.rb
-
 ## https://gitlab.archlinux.org/archlinux/packaging/packages/python/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/python/files/PKGBUILD
 # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python
 # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python-pip
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/python@3.9.rb
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/python@3.10.rb
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/p/python@3.12.rb
 
 # 2018-12-24, "3.7.2"
@@ -51,6 +50,23 @@ function python3_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local python3_version="$1"
+  shift
+
+  local ensurepip=""
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --with-ensurepip=* )
+        ensurepip=$(xbb_parse_option "$1")
+        shift
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+  done
 
   local python3_version_major=$(xbb_get_version_major "${python3_version}")
   local python3_version_minor=$(xbb_get_version_minor "${python3_version}")
@@ -148,7 +164,12 @@ function python3_build()
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          config_options+=("--without-ensurepip") # HB, Arch
+          if [ ! -z "${ensurepip}" ]
+          then
+            config_options+=("--with-ensurepip=${ensurepip}")
+          else
+            config_options+=("--without-ensurepip") # HB, Arch
+          fi
 
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
