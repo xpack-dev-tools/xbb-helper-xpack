@@ -874,6 +874,13 @@ function is_darwin_allowed_sys_dylib()
       return 0 # True
     fi
   done
+
+  if [ ${lib_name}${XBB_APPLICATION_HAS_LIBZ1DYLIB:-""} == "/usr/lib/libz.1.dyliby" ]
+  then
+    echo_develop "/usr/lib/libz.1.dylib accepted"
+    return 0 # True
+  fi
+
   return 1 # False
 }
 
