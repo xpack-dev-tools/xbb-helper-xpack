@@ -55,13 +55,17 @@ function qemu_build()
       git_clone "${XBB_QEMU_GIT_URL}" "${XBB_QEMU_GIT_BRANCH}" \
           "${XBB_QEMU_GIT_COMMIT}" "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}"
 
-      # Simple way to customise the greeting message, instead of
-      # managing a patch, or a fork.
-      run_verbose sed -i.bak \
-        -e 's|printf("QEMU emulator version "|printf("xPack QEMU emulator version "|' \
-        "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c"
+      if false # Disabled, since the fork is needed anyway for the macOS patches.
+      then
+        # Simple way to customise the greeting message, instead of
+        # managing a patch, or a fork.
+        # On later versions, the file is `system/vl.c`.
+        run_verbose sed -i.bak \
+          -e 's|printf("QEMU emulator version "|printf("xPack QEMU emulator version "|' \
+          "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c"
 
-      run_verbose diff "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c.bak" "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c" || true
+        run_verbose diff "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c.bak" "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c" || true
+      fi
     fi
     # exit 1
 
