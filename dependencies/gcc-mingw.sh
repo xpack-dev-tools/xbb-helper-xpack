@@ -682,12 +682,12 @@ function gcc_mingw_test()
 
     # -------------------------------------------------------------------------
 
-    run_verbose cp -rv "${helper_folder_path}/tests/c-cpp" .
+    run_verbose cp -Rv "${helper_folder_path}/tests/c-cpp" .
     chmod -R a+w c-cpp
-    run_verbose cp -rv "${helper_folder_path}/tests/wine"/* c-cpp
+    run_verbose cp -Rv "${helper_folder_path}/tests/wine"/* c-cpp
     chmod -R a+w c-cpp
 
-    run_verbose cp -rv "${helper_folder_path}/tests/fortran" .
+    run_verbose cp -Rv "${helper_folder_path}/tests/fortran" .
     chmod -R a+w fortran
 
     # -------------------------------------------------------------------------

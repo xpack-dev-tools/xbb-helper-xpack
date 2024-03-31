@@ -144,7 +144,7 @@ function copy_cmake_files()
 
     local date_suffix=$(ndate)
     mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles-${date_suffix}"
-    cp -rv CMakeFiles/* "${XBB_LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles-${date_suffix}"
+    cp -Rv CMakeFiles/* "${XBB_LOGS_FOLDER_PATH}/${folder_name}/CMakeFiles-${date_suffix}"
   )
 }
 
