@@ -2,9 +2,43 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-04-01
+
+* v2.0.8 released
+
+## 2024-03-31
+
+* 0ef07ea cp -R
+
+## 2024-03-29
+
+* 108fff1 qemu.sh: disable greetings patch
+* ae2541a pixman.sh: add support for meson builds
+
+## 2024-03-28
+
+* 4ffbd15 post-processing.sh: HAS_LIBZ1DYLIB
+* 57372b2 python3.sh: --with-ensurepip
+
+## 2024-03-27
+
+* b9d5114 python3.sh: --without-system-libmpdec
+* c646640 python3.sh: darwin tweaks
+* 2b36983 xbb.sh: -macos_version_min
+* 4ca8ae5 machine.sh: compute XBB_BUILD_CLT_VERSION
+* ebcb86c ncurses.sh: more elaborate fakes
+
 ## 2024-03-23
 
-* v2.0.7 released
+* 4b75866 add pyconfig-win-3.11.8.h
+* 0afa3f4 python3: try 3.12.2; not yet functional
+* df6be94 sqlite.sh: add sqlite_year
+* 5f4a271 xbb.sh: mkdir install/lib
+* b27f27f xbb.sh: mkdir install/lib64
+* f378d5b maintainer/README update
+* d2eb956 openssl.sh: add 3.2.1
+* 5accd96 2.0.7
+* c33105f prepare v2.0.7
 * b8524ea maintainer/README update
 * 263ccc3 maintainer/build-all.sh reorder
 
