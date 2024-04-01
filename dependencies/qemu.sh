@@ -85,21 +85,22 @@ function qemu_build()
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         LDFLAGS+=" -fstack-protector"
-      # elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      # then
-      #   # The error messages are confusing, check the log for actual cause.
-      #   # For example the missing -ldl resulted in:
-      #   # sizeof(size_t) doesn't match GLIB_SIZEOF_SIZE_T
-      #   LDFLAGS+=" -ldl -ludev -lpthread -lrt"
-      elif [ "${XBB_HOST_PLATFORM}" == "linux" ] &&
-           [ "${XBB_HOST_ARCH}" == "arm64" ] &&
-           [[ "${qemu_version}" =~ 8[.][12][.][012] ]]
+      elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
-        # ../../../sources/qemu-8.1.0.git/util/cpuinfo-aarch64.c: In function 'cpuinfo_init':
-        # ../../../sources/qemu-8.1.0.git/util/cpuinfo-aarch64.c:58:22: error: 'HWCAP_USCAT' undeclared (first use in this function); did you mean 'HWCAP_JSCVT'?
-        # 58 |     info |= (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
+        #   # The error messages are confusing, check the log for actual cause.
+        #   # For example the missing -ldl resulted in:
+        #   # sizeof(size_t) doesn't match GLIB_SIZEOF_SIZE_T
+        #   LDFLAGS+=" -ldl -ludev -lpthread -lrt"
 
-        CPPFLAGS+=" -DHWCAP_USCAT=(1<<25)"
+        if [ "${XBB_HOST_ARCH}" == "arm64" ] &&
+           [[ "${qemu_version}" =~ 8[.][12][.][012] ]]
+        then
+          # ../../../sources/qemu-8.1.0.git/util/cpuinfo-aarch64.c: In function 'cpuinfo_init':
+          # ../../../sources/qemu-8.1.0.git/util/cpuinfo-aarch64.c:58:22: error: 'HWCAP_USCAT' undeclared (first use in this function); did you mean 'HWCAP_JSCVT'?
+          # 58 |     info |= (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
+
+          CPPFLAGS+=" -DHWCAP_USCAT=(1<<25)"
+        fi
       fi
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
@@ -227,6 +228,8 @@ function qemu_build()
 
           config_options+=("--disable-werror")
 
+          config_options+=("--ninja=$(which ninja)")
+
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/configure" \
             ${config_options[@]}
 
@@ -235,13 +238,24 @@ function qemu_build()
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${qemu_folder_name}/configure-output-$(ndate).txt"
 
       (
-        echo
-        echo "Running qemu ${qemu_target} make..."
+        if false
+        then
+          echo
+          echo "Running qemu ${qemu_target} make..."
 
-        # Build.
-        run_verbose make -j ${XBB_JOBS} # V=1
+          # Build.
+          run_verbose make -j ${XBB_JOBS} # V=1
 
-        run_verbose make install
+          run_verbose make install
+        else
+          echo
+          echo "Running qemu ${qemu_target} ninja..."
+
+          # Build.
+          run_verbose ninja -j ${XBB_JOBS}
+
+          run_verbose ninja install
+        fi
 
         if [ "${qemu_target}" == "arm" ]
         then
