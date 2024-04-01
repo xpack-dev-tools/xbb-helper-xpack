@@ -102,6 +102,19 @@ function qemu_build()
         CPPFLAGS+=" -DHWCAP_USCAT=(1<<25)"
       fi
 
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      then
+        # FAILED: libqemuutil.a.p/util_oslib-win32.c.obj
+        # {standard input}: Assembler messages:
+        # {standard input}:2859: Error: CFI instruction used without previous .cfi_startproc
+        # {standard input}:2909: Error: .cfi_endproc without corresponding .cfi_startproc
+        # {standard input}:2911: Error: .seh_endproc used in segment '.text' instead of expected '.text$qemu_close_socket_osfhandle'
+        # {standard input}: Error: open CFI at the end of file; missing .cfi_endproc directive
+        # {standard input}:19020: Error: invalid operands (.text and .text$qemu_close_socket_osfhandle sections) for `-'
+        CFLAGS=$(echo ${CFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')
+        CXXFLAGS=$(echo ${CXXFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')
+      fi
+
       xbb_adjust_ldflags_rpath
 
       export CPPFLAGS
