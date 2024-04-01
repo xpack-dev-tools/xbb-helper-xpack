@@ -249,7 +249,7 @@ function glib_build()
         #     import packaging.version
         # ModuleNotFoundError: No module named 'packaging'
 
-        python3 -m pip install packaging
+        run_verbose python3 -m pip install packaging
 
         (
           echo
