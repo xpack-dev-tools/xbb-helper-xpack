@@ -2,9 +2,19 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-04-02
+
+* v2.0.9 released
+
 ## 2024-04-01
 
-* v2.0.8 released
+* ebba6d5 qemu.sh: switch to ninja
+* 51ee8b2 qemu.sh: -DHWCAP_USCAT for 8.2.2
+* 58ba685 qemu.sh: disable -ffunction-sections on windows
+* f712cb8 glib.sh: run_verbose python3
+* 909e253 glib.sh: pip install packaging
+* 372854c 2.0.8
+* aa3d97b prepare v2.0.8
 
 ## 2024-03-31
 
