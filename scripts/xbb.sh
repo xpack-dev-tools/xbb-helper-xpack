@@ -985,7 +985,7 @@ function xbb_set_compiler_flags()
 
   if [ "${XBB_IS_DEVELOP}" == "y" ]
   then
-    XBB_LDFLAGS+=" -v"
+    XBB_LDFLAGS+=" -v -Wl,-v"
   fi
 
   if [ "${XBB_HOST_PLATFORM}" == "linux" ]
