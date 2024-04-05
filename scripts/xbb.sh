@@ -1485,6 +1485,7 @@ function xbb_adjust_ldflags_rpath()
     do
       if [ -d "${p}" ]
       then
+        LDFLAGS+=" -L$(${REALPATH} ${p})"
         LDFLAGS+=" -Wl,-rpath-link,$(${REALPATH} ${p})"
         LDFLAGS+=" -Wl,-rpath,$(${REALPATH} ${p})"
       fi
@@ -1496,6 +1497,7 @@ function xbb_adjust_ldflags_rpath()
     do
       if [ -d "${p}" ]
       then
+        LDFLAGS+=" -L$(${REALPATH} ${p})"
         LDFLAGS+=" -Wl,-rpath,$(${REALPATH} ${p})"
       fi
     done
