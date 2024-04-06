@@ -579,12 +579,15 @@ function binutils_build_ld_gold()
         # which is too late.
         if is_native
         then
+          mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
           XBB_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
         elif [ "${has_program_prefix}" == "y" ]
         then
           # The `application/lib` must be also added before the toolchain path,
           # since the libctf*.so is located here, and there might be another one
           # in the toolchain path.
+          mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib"
+          mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
           XBB_LIBRARY_PATH="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_HOST_TRIPLET}/${triplet}/lib:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
         elif is_cross
         then
