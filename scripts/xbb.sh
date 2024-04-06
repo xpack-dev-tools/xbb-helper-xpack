@@ -1328,7 +1328,7 @@ function xbb_activate_dependencies_dev()
   if [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64" ]
   then
     # For 64-bit systems, add XBB lib64 in front of paths.
-    XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_LIB}"
+    XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS}"
     XBB_LDFLAGS_LIB="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_LIB}"
     XBB_LDFLAGS_APP="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_APP}"
     XBB_LDFLAGS_APP_STATIC_GCC="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_APP_STATIC_GCC}"
@@ -1415,29 +1415,41 @@ function xbb_update_ld_library_path()
       libs_path="$(xbb_get_libs_path "${CXX}")"
     elif [[ "$(basename ${CC})" =~ .*clang.* ]]
     then
-      # find . -name '*.so'
-      # lib/x86_64-pc-linux-gnu/libc++abi.so.1
-      # lib/x86_64-pc-linux-gnu/libc++abi.so.1.0
-      # lib/x86_64-pc-linux-gnu/libunwind.so.1
-      # lib/x86_64-pc-linux-gnu/libc++.so
-      # lib/x86_64-pc-linux-gnu/libunwind.so.1.0
-      # lib/x86_64-pc-linux-gnu/libc++abi.so
-      # lib/x86_64-pc-linux-gnu/libunwind.so
-      # lib/x86_64-pc-linux-gnu/libc++.so.1
-      # lib/x86_64-pc-linux-gnu/libc++.so.1.0
-      # lib/clang/15.0.6/lib/x86_64-pc-linux-gnu/libclang_rt.memprof.so
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      then
+        # find . -name '*.so'
+        # lib/x86_64-pc-linux-gnu/libc++abi.so.1
+        # lib/x86_64-pc-linux-gnu/libc++abi.so.1.0
+        # lib/x86_64-pc-linux-gnu/libunwind.so.1
+        # lib/x86_64-pc-linux-gnu/libc++.so
+        # lib/x86_64-pc-linux-gnu/libunwind.so.1.0
+        # lib/x86_64-pc-linux-gnu/libc++abi.so
+        # lib/x86_64-pc-linux-gnu/libunwind.so
+        # lib/x86_64-pc-linux-gnu/libc++.so.1
+        # lib/x86_64-pc-linux-gnu/libc++.so.1.0
+        # lib/clang/15.0.6/lib/x86_64-pc-linux-gnu/libclang_rt.memprof.so
 
-      # clang -print-file-name=libc++.so
-      # /home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin/../lib/x86_64-pc-linux-gnu/libc++.so
-      # libs_path="$(dirname $(${CC} -print-file-name=libc++.so))"
+        # clang -print-file-name=libc++.so
+        # /home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin/../lib/x86_64-pc-linux-gnu/libc++.so
+        # libs_path="$(dirname $(${CC} -print-file-name=libc++.so))"
 
-      # clang -print-runtime-dir
-      # /home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/lib/clang/15.0.6/lib/x86_64-pc-linux-gnu
+        # clang -print-runtime-dir
+        # /home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/lib/clang/15.0.6/lib/x86_64-pc-linux-gnu
 
-      # clang -print-search-dirs
-      # programs: =/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../x86_64-linux-gnu/bin
-      # libraries: =/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/lib/clang/15.0.6:/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin/../lib/x86_64-pc-linux-gnu:/usr/lib/gcc/x86_64-linux-gnu/10:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../lib64:/lib/x86_64-linux-gnu:/lib/../lib64:/usr/lib/x86_64-linux-gnu:/usr/lib/../lib64:/lib:/usr/lib
-      libs_path="$(xbb_get_libs_path "${CXX}")"
+        # clang -print-search-dirs
+        # programs: =/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../x86_64-linux-gnu/bin
+        # libraries: =/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/lib/clang/15.0.6:/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin/../lib/x86_64-pc-linux-gnu:/usr/lib/gcc/x86_64-linux-gnu/10:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../lib64:/lib/x86_64-linux-gnu:/lib/../lib64:/usr/lib/x86_64-linux-gnu:/usr/lib/../lib64:/lib:/usr/lib
+        libs_path="$(xbb_get_libs_path "${CXX}")"
+      else
+        # On macOS --print-search-dirs is not usable:
+        # clang++ --print-search-dirs
+        # programs: =/Users/ilg/Work/xpack-dev-tools/clang-xpack.git/build/darwin-arm64/xpacks/.bin:/Users/ilg/Library/xPacks/@xpack-dev-tools/clang/17.0.6-1.1/xpack-clang-17.0.6-2/bin
+        # libraries: =/Users/ilg/Library/xPacks/@xpack-dev-tools/clang/17.0.6-1.1/xpack-clang-17.0.6-2/lib/clang/17
+        local cxx_absolute_path="$(${REALPATH} "${CXX}")"
+        local lib_absolute_path="$(dirname $(dirname "${cxx_absolute_path}"))/lib"
+
+        libs_path=$(dirname $(find "${lib_absolute_path}" -name 'libc++.dylib')):$("${CXX}" -print-runtime-dir)
+      fi
     else
       echo "TODO: compute rpath for ${CC}"
       exit 1
