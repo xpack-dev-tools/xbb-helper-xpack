@@ -1459,7 +1459,7 @@ function xbb_update_ld_library_path()
   fi
 }
 
-# Note: it adds only folder that are present!
+# Note: it adds only folders that are present!
 # For futures, create empty folders before.
 function xbb_adjust_ldflags_rpath()
 {
