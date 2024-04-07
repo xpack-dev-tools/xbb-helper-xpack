@@ -1440,15 +1440,21 @@ function xbb_update_ld_library_path()
         # programs: =/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../x86_64-linux-gnu/bin
         # libraries: =/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/lib/clang/15.0.6:/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin/../lib/x86_64-pc-linux-gnu:/usr/lib/gcc/x86_64-linux-gnu/10:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../lib64:/lib/x86_64-linux-gnu:/lib/../lib64:/usr/lib/x86_64-linux-gnu:/usr/lib/../lib64:/lib:/usr/lib
         libs_path="$(xbb_get_libs_path "${CXX}")"
-      else
-        # On macOS --print-search-dirs is not usable:
+      elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      then
+        # On macOS --print-search-dirs is not directly usable:
         # clang++ --print-search-dirs
         # programs: =/Users/ilg/Work/xpack-dev-tools/clang-xpack.git/build/darwin-arm64/xpacks/.bin:/Users/ilg/Library/xPacks/@xpack-dev-tools/clang/17.0.6-1.1/xpack-clang-17.0.6-2/bin
         # libraries: =/Users/ilg/Library/xPacks/@xpack-dev-tools/clang/17.0.6-1.1/xpack-clang-17.0.6-2/lib/clang/17
+
         local cxx_absolute_path="$(${REALPATH} "${CXX}")"
         local lib_absolute_path="$(dirname $(dirname "${cxx_absolute_path}"))/lib"
 
+        # Manually search for c++ & runtime libraries.
         libs_path=$(dirname $(find "${lib_absolute_path}" -name 'libc++.dylib')):$("${CXX}" -print-runtime-dir)
+      else
+        echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+        exit 1
       fi
     else
       echo "TODO: compute rpath for ${CC}"
