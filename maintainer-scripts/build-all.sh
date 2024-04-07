@@ -70,6 +70,11 @@ do
       ;;
 
     --clone )
+      if [ $(hostname -s) == "wksi" ]
+      then
+        echo "Cloning on wksi is not a good idea"
+        exit 1
+      fi
       do_clone="y"
       shift
       ;;

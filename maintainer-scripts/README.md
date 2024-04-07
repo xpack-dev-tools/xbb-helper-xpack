@@ -161,3 +161,12 @@ time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh \
 --deep-clean \
 
 ```
+
+```
+for f in /Users/ilg/MyProjects/xpack-dev-tools.github/xPacks/*.git
+do
+  echo $f
+  ln -sf $f /Users/ilg/Work/xpack-dev-tools/$(basename $f)
+done
+```
+
