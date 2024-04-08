@@ -18,14 +18,14 @@ To get all projects:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh --clone
+time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --clone
 ```
 
 To run all possible builds on the given platform from scratch:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh --deep-clean
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean
 ```
 
 To only see the build command without running it, use `--dry-run`.
@@ -34,7 +34,7 @@ On Linux, to build the Windows binaries:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh --windows
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows
 ```
 
 The full builds may take more than 1 day to complete:
@@ -51,21 +51,21 @@ The full builds may take more than 1 day to complete:
 To show the repos status:
 
 ```sh
-bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh --repos-status
+bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --repos-status
 ```
 
 To exclude some projects, use multiple `--exclude xyz`, for example:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh --deep-clean --exclude clang
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean --exclude clang
 ```
 
 To exclude all:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh \
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude cmake \
 --exclude meson-build \
 --exclude ninja-build \
@@ -100,13 +100,13 @@ On Ampere the space is tight and the largest build must be
 removed
 
 ```sh
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh \
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang
 --deep-clean \
 
 xpm run deep-clean --config linux-arm64 -C ~/Work/xpack-dev-tools/arm-none-eabi-gcc-xpack.git
 
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh \
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude cmake \
 --exclude meson-build \
 --exclude ninja-build \
@@ -155,7 +155,7 @@ WARNING: Running pip as the 'root' user can result in broken permissions and con
 but it still fails...
 
 ```sh
-time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer/build-all.sh \
+time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude qemu-arm \
 --exclude qemu-riscv \
 --deep-clean \
