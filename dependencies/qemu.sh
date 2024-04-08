@@ -257,14 +257,42 @@ function qemu_build()
           run_verbose ninja install
         fi
 
+        # On recent macOS the installed binaries loose the rpath,
+        # so manually re-install the original ones.
         if [ "${qemu_target}" == "arm" ]
         then
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+          then
+            run_verbose ${INSTALL} -v -c -m 755 \
+              "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}/qemu-system-aarch64" \
+              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-aarch64"
+            run_verbose ${INSTALL} -v -c -m 755 \
+              "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}/qemu-system-arm" \
+              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-arm"
+          fi
           show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-aarch64"
+          show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-arm"
         elif [ "${qemu_target}" == "riscv" ]
         then
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+          then
+            run_verbose ${INSTALL} -v -c -m 755 \
+              "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}/qemu-system-riscv64" \
+              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-riscv64"
+            run_verbose ${INSTALL} -v -c -m 755 \
+              "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}/qemu-system-riscv32" \
+              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-riscv32"
+          fi
           show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-riscv64"
+          show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-system-riscv32"
         elif [ "${qemu_target}" == "tools" ]
         then
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+          then
+            run_verbose ${INSTALL} -v -c -m 755 \
+              "${XBB_BUILD_FOLDER_PATH}/${qemu_folder_name}/qemu-img" \
+              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-img"
+          fi
           show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/qemu-img"
         else
           echo "Unsupported qemu_target ${qemu_target} in ${FUNCNAME[0]}()"
