@@ -1299,7 +1299,7 @@ function xbb_activate_dependencies_dev()
   # Add XBB include in front of XBB_CPPFLAGS.
   XBB_CPPFLAGS="-I${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/include ${XBB_CPPFLAGS}"
 
-  if [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib" ]
+  if true # [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib" ]
   then
     # Add XBB lib in front of XBB_LDFLAGS.
     XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS}"
@@ -1325,7 +1325,7 @@ function xbb_activate_dependencies_dev()
   fi
 
   # Used by libffi, for example.
-  if [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64" ]
+  if [ "${XBB_HOST_BITS}" == "64" ] # [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64" ]
   then
     # For 64-bit systems, add XBB lib64 in front of paths.
     XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS}"
@@ -1477,8 +1477,7 @@ function xbb_update_ld_library_path()
   fi
 }
 
-# Note: it adds only folders that are present!
-# For futures, create empty folders before.
+# Note: it adds all folders, even if they are not present!
 function xbb_adjust_ldflags_rpath()
 {
   echo_develop
@@ -1501,7 +1500,7 @@ function xbb_adjust_ldflags_rpath()
   then
     for p in "${path_array[@]}"
     do
-      if [ -d "${p}" ]
+      if true # [ -d "${p}" ]
       then
         LDFLAGS+=" -L$(${REALPATH} ${p})"
         LDFLAGS+=" -Wl,-rpath-link,$(${REALPATH} ${p})"
@@ -1513,7 +1512,7 @@ function xbb_adjust_ldflags_rpath()
   then
     for p in "${path_array[@]}"
     do
-      if [ -d "${p}" ]
+      if true # [ -d "${p}" ]
       then
         LDFLAGS+=" -L$(${REALPATH} ${p})"
         LDFLAGS+=" -Wl,-rpath,$(${REALPATH} ${p})"
@@ -1539,6 +1538,7 @@ function xbb_expand_rpath()
     do
       if [ -d "${p}" ]
       then
+        output+=" -L$(${REALPATH} ${p})"
         output+=" -Wl,-rpath-link,$(${REALPATH} ${p})"
         output+=" -Wl,-rpath,$(${REALPATH} ${p})"
       fi
@@ -1549,6 +1549,7 @@ function xbb_expand_rpath()
     do
       if [ -d "${p}" ]
       then
+        output+=" -L$(${REALPATH} ${p})"
         output+=" -Wl,-rpath,$(${REALPATH} ${p})"
       fi
     done
