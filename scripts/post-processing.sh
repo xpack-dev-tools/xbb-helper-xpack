@@ -519,7 +519,7 @@ function copy_dependencies_recursive()
         # If outside XBB_APPLICATION_INSTALL_FOLDER_PATH, copy it to libexec,
         # otherwise leave it in place and add a new $ORIGIN.
         local rpath_relative_to_app_prefix="$(${realpath} --relative-to="${XBB_APPLICATION_INSTALL_FOLDER_PATH}" "${from_path}")"
-        echo_develop "relative to XBB_APPLICATION_INSTALL_FOLDER_PATH ${rpath_relative_to_app_prefix}"
+        # echo_develop "relative to XBB_APPLICATION_INSTALL_FOLDER_PATH ${rpath_relative_to_app_prefix}?"
         # If the relative path starts with `..`, it is outside.
         if [ "${rpath_relative_to_app_prefix:0:2}" == ".." ]
         then
