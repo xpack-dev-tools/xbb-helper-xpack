@@ -334,16 +334,16 @@ function gcc_build()
             # From HomeBrew, but not present on 11.x
             # config_options+=("--with-native-system-header-dir=/usr/include")
 
-            # Still fails with undefined symbols like:
-            #  Undefined symbols for architecture arm64:
-            #   "__ZdaPvm", referenced from:
-            if true # [ "${XBB_IS_DEVELOP}" == "y" ]
-            then
-              # To speed things up during development.
-              config_options+=("--disable-bootstrap")
-            else
-              config_options+=("--enable-bootstrap")
+            # Be sure the multi-step build is performed; shortcuts
+            # generally fail, since clang may have different libraries.
+            config_options+=("--enable-bootstrap")
 
+            # Options for stage 2 and later.
+            # config_options+=("--with-boot-libs=-liconv")
+
+            # Build the intermediate stage with static system libraries,
+            # otherwise it generates a reference to `@rpath/libstdc++.6.dylib`
+            config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib -Wl,-rpath,${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
               # Options for stage 2 and later.
               config_options+=("--with-boot-libs=-liconv")
               # Build the intermediate stage with static system libraries,
