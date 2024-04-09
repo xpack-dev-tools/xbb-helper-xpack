@@ -554,10 +554,13 @@ function copy_dependencies_recursive()
 
           patch_macos_elf_add_rpath "${actual_destination_file_path}" "@loader_path/${relative_lc_rpath}"
 
-          run_verbose "${install_name_tool}" \
-            -change "${lib_path}" \
-            "@rpath/$(basename "${from_path}")" \
-            "${actual_destination_file_path}"
+          if [ "${lib_path}" != "@rpath/$(basename "${from_path}")" ]
+          then
+            run_verbose "${install_name_tool}" \
+              -change "${lib_path}" \
+              "@rpath/$(basename "${from_path}")" \
+              "${actual_destination_file_path}"
+          fi
 
           show_host_libs "${actual_destination_file_path}"
 
