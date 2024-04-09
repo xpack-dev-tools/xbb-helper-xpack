@@ -344,12 +344,13 @@ function gcc_build()
             # Build the intermediate stage with static system libraries,
             # otherwise it generates a reference to `@rpath/libstdc++.6.dylib`
             config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib -Wl,-rpath,${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
-              # Options for stage 2 and later.
-              config_options+=("--with-boot-libs=-liconv")
-              # Build the intermediate stage with static system libraries,
-              # otherwise it generates a reference to `@rpath/libstdc++.6.dylib`
-              config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib -Wl,-rpath,${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
-            fi
+
+            # Weird, but without it the stage 2 configre in gcc does not
+            # identify the custom libiconv.*.
+            # ld: Undefined symbols:
+            # _libiconv, referenced from:
+            # __ZL19convert_using_iconvPvPKhmP11_cpp_strbuf in libcpp.a[2](charset.o)
+            config_options+=("--disable-rpath")
 
             config_options+=("--disable-multilib")
 
