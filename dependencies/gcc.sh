@@ -187,15 +187,15 @@ function gcc_build()
         #   # Testing -lzstd alone fails since it depends on -lpthread.
         #   LDFLAGS+=" -lpthread"
         # fi
+        :
+        # local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+        # LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
+        # LDFLAGS_FOR_BUILD="${LDFLAGS}"
+        # BOOT_LDFLAGS="${LDFLAGS}"
 
-        local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-        LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
-        LDFLAGS_FOR_BUILD="${LDFLAGS}"
-        BOOT_LDFLAGS="${LDFLAGS}"
-
-        export LDFLAGS_FOR_TARGET
-        export LDFLAGS_FOR_BUILD
-        export BOOT_LDFLAGS
+        # export LDFLAGS_FOR_TARGET
+        # export LDFLAGS_FOR_BUILD
+        # export BOOT_LDFLAGS
       fi
 
       export CPPFLAGS
@@ -366,7 +366,7 @@ function gcc_build()
 
             # Still fails on aarch64 with
             # gcc/lto-compress.cc:135: undefined reference to `ZSTD_compressBound'
-            if true # [ "${XBB_IS_DEVELOP}" == "y" ]
+            if false # [ "${XBB_IS_DEVELOP}" == "y" ]
             then
               config_options+=("--disable-bootstrap")
             else
@@ -382,11 +382,14 @@ function gcc_build()
               local deps_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
               local deps_rpaths="$(xbb_expand_rpath "${deps_path}")"
 
-              config_options+=("--with-boot-libs=-lpthread")
+              # Do not enable it, since it switches the compiler to CC, not CXX.
+              # config_options+=("--with-boot-libs=-lpthread")
               # Build the intermediate stage with static system libraries,
               # to save some references to shared libraries.
-              config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc ${deps_rpaths}")
+              config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc ${deps_rpaths}") # -v -Wl,-v
             fi
+
+            # config_options+=("--disable-rpath")
 
             # The Linux build also uses:
             # --with-linker-hash-style=gnu
