@@ -1502,9 +1502,15 @@ function xbb_adjust_ldflags_rpath()
     do
       if true # [ -d "${p}" ]
       then
-        LDFLAGS+=" -L$(${REALPATH} ${p})"
-        LDFLAGS+=" -Wl,-rpath-link,$(${REALPATH} ${p})"
-        LDFLAGS+=" -Wl,-rpath,$(${REALPATH} ${p})"
+        # -m, --canonicalize-missing
+        #      no path components need exist or be a directory
+        LDFLAGS+=" -L$(${REALPATH} -m ${p})"
+        LDFLAGS+=" -Wl,-rpath-link,$(${REALPATH} -m ${p})"
+        LDFLAGS+=" -Wl,-rpath,$(${REALPATH} -m ${p})"
+      else
+        LDFLAGS+=" -L${p}"
+        LDFLAGS+=" -Wl,-rpath-link,${p}"
+        LDFLAGS+=" -Wl,-rpath,${p}"
       fi
     done
     echo_develop "LDFLAGS=${LDFLAGS}"
@@ -1512,13 +1518,22 @@ function xbb_adjust_ldflags_rpath()
   then
     for p in "${path_array[@]}"
     do
-      if true # [ -d "${p}" ]
+      if [ -d "${p}" ]
       then
         LDFLAGS+=" -L$(${REALPATH} ${p})"
         LDFLAGS+=" -Wl,-rpath,$(${REALPATH} ${p})"
+      else
+        LDFLAGS+=" -L${p}"
+        LDFLAGS+=" -Wl,-rpath,${p}"
       fi
     done
     echo_develop "LDFLAGS=${LDFLAGS}"
+  elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
+  then
+    : Nothing to do.
+  else
+    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM}"
+    exit 1
   fi
 }
 
@@ -1536,11 +1551,15 @@ function xbb_expand_rpath()
   then
     for p in "${path_array[@]}"
     do
-      if [ -d "${p}" ]
+      if true # [ -d "${p}" ]
       then
-        output+=" -L$(${REALPATH} ${p})"
-        output+=" -Wl,-rpath-link,$(${REALPATH} ${p})"
-        output+=" -Wl,-rpath,$(${REALPATH} ${p})"
+        output+=" -L$(${REALPATH} -m ${p})"
+        output+=" -Wl,-rpath-link,$(${REALPATH} -m ${p})"
+        output+=" -Wl,-rpath,$(${REALPATH} -m ${p})"
+      else
+        output+=" -L${p}"
+        output+=" -Wl,-rpath-link,${p}"
+        output+=" -Wl,-rpath,${p}"
       fi
     done
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
@@ -1551,6 +1570,9 @@ function xbb_expand_rpath()
       then
         output+=" -L$(${REALPATH} ${p})"
         output+=" -Wl,-rpath,$(${REALPATH} ${p})"
+      else
+        output+=" -L${p}"
+        output+=" -Wl,-rpath,${p}"
       fi
     done
   fi
