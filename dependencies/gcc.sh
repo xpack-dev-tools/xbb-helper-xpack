@@ -170,9 +170,17 @@ function gcc_build()
         unset LD
 
         # LDFLAGS+=" -liconv"
-        local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-        LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
-        export LDFLAGS_FOR_BUILD="${LDFLAGS}"
+        # local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+        # export LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
+
+        # LDFLAGS_FOR_TARGET defaults to empty, must be set.
+        export LDFLAGS_FOR_TARGET="${LDFLAGS}"
+
+        # LDFLAGS_FOR_BUILD defaults to LDFLAGS, no need to set it.
+        # export LDFLAGS_FOR_BUILD="${LDFLAGS}"
+
+        # Flags to pass to stage2 and later makes.
+        # BOOT_LDFLAGS defaults to empty, must be set.
         export BOOT_LDFLAGS="${LDFLAGS}"
       elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
@@ -242,12 +250,12 @@ function gcc_build()
           config_options+=("--with-dwarf2")
           config_options+=("--with-diagnostics-color=auto")
 
+          config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+
           config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-isl=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-          config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-mpc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-
           config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           # Use the zlib compiled from sources.
@@ -257,14 +265,14 @@ function gcc_build()
           config_options+=("--enable-languages=c,c++,objc,obj-c++,lto,fortran") # HB
           config_options+=("--enable-objc-gc=auto")
 
-          # Intel specific.
-          # config_options+=("--enable-cet=auto")
           config_options+=("--enable-checking=release") # HB, Arch
 
           config_options+=("--enable-lto") # Arch
           config_options+=("--enable-plugin") # Arch
 
           config_options+=("--enable-__cxa_atexit") # Arch
+
+          # Intel specific.
           config_options+=("--enable-cet=auto") # Arch
 
           config_options+=("--enable-threads=posix")
@@ -272,6 +280,7 @@ function gcc_build()
           # It fails on macOS master with:
           # libstdc++-v3/include/bits/cow_string.h:630:9: error: no matching function for call to 'std::basic_string<wchar_t>::_Alloc_hider::_Alloc_hider(std::basic_string<wchar_t>::_Rep*)'
           # config_options+=("--enable-fully-dynamic-string")
+
           config_options+=("--enable-cloog-backend=isl")
 
           config_options+=("--enable-default-pie") # Arch
@@ -579,7 +588,7 @@ function gcc_build()
         else
           run_verbose make install
         fi
-
+exit 1
         if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
           echo
