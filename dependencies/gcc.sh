@@ -169,19 +169,13 @@ function gcc_build()
         # GCC will suffer build errors if forced to use a particular linker.
         unset LD
 
-        # LDFLAGS+=" -liconv"
-        # local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-        # export LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
-
-        # LDFLAGS_FOR_TARGET defaults to empty, must be set.
-        export LDFLAGS_FOR_TARGET="${LDFLAGS}"
+        # export LDFLAGS_FOR_TARGET="${LDFLAGS}"
 
         # LDFLAGS_FOR_BUILD defaults to LDFLAGS, no need to set it.
         # export LDFLAGS_FOR_BUILD="${LDFLAGS}"
 
         # Flags to pass to stage2 and later makes.
-        # BOOT_LDFLAGS defaults to empty, must be set.
-        export BOOT_LDFLAGS="${LDFLAGS}"
+        # export BOOT_LDFLAGS="${LDFLAGS}"
       elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         # if is_native || is_bootstrap
@@ -588,7 +582,7 @@ function gcc_build()
         else
           run_verbose make install
         fi
-exit 1
+
         if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
           echo
