@@ -71,10 +71,10 @@ function gcc_download()
   # https://github.com/Homebrew/formula-patches/tree/master/gcc
   # https://github.com/fxcoudert/gcc/tags
 
-  export XBB_GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
+  export XBB_GCC_SRC_FOLDER_NAME="${XBB_APPLICATION_GCC_SRC_FOLDER_NAME:-gcc-${gcc_version}}"
 
-  local gcc_archive="${XBB_GCC_SRC_FOLDER_NAME}.tar.xz"
-  local gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}"
+  local gcc_archive="${XBB_APPLICATION_GCC_ARCHIVE_NAME:-${XBB_GCC_SRC_FOLDER_NAME}.tar.xz}"
+  local gcc_url="${XBB_APPLICATION_GCC_URL:-https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}}"
   local gcc_patch_file_name="${XBB_GCC_PATCH_FILE_NAME}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}"
@@ -86,8 +86,15 @@ function gcc_download()
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
     run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
-    download_and_extract "${gcc_url}" "${gcc_archive}" \
-      "${XBB_GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
+    if [ "${XBB_APPLICATION_TEST_PRERELEASE:-""}" == "y" ]
+    then
+      run_verbose git clone \
+        "${XBB_APPLICATION_GCC_GIT_URL}" \
+        "${XBB_APPLICATION_GCC_SRC_FOLDER_NAME}"
+    else
+      download_and_extract "${gcc_url}" "${gcc_archive}" \
+        "${XBB_GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
+    fi
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gcc_download_stamp_file_path}"
