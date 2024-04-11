@@ -102,7 +102,7 @@ function extract()
       echo "Extracting \"${archive_file_path}\" -> \"${pwd}/${folder_name}\"..."
       if [[ "${archive_file_path}" == *zip ]]
       then
-        run_verbose_develop unzip "${archive_file_path}"
+        run_verbose_develop unzip -q "${archive_file_path}"
       else
         # On macOS Docker seems to have a problem and extracting symlinks
         # fails, but a second atempt is successful.
