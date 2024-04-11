@@ -883,6 +883,11 @@ function is_darwin_allowed_sys_dylib()
     echo_develop "/usr/lib/libz.1.dylib accepted"
     return 0 # True
   fi
+  if [ ${lib_name}${XBB_APPLICATION_HAS_LIBICONV2DYLIB:-""} == "/usr/lib/libiconv.2.dyliby" ]
+  then
+    echo_develop "/usr/lib/libiconv.2.dylib accepted"
+    return 0 # True
+  fi
 
   return 1 # False
 }
