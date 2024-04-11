@@ -1172,8 +1172,15 @@ function gcc_test()
         # Old macOS linkers do not support LTO, thus use lld.
         compiler-tests-single "${test_bin_path}"
         compiler-tests-single "${test_bin_path}" --gc
-        compiler-tests-single "${test_bin_path}" --lto --lld
-        compiler-tests-single "${test_bin_path}" --gc --lto --lld
+
+        if false
+        then
+          compiler-tests-single "${test_bin_path}" --lto
+          compiler-tests-single "${test_bin_path}" --gc --lto
+        else
+          compiler-tests-single "${test_bin_path}" --lto --lld
+          compiler-tests-single "${test_bin_path}" --gc --lto --lld
+        fi
 
         echo
         echo "Skipping all --static-lib on macOS..."
