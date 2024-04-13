@@ -362,6 +362,9 @@ function gcc_build()
             # __ZL19convert_using_iconvPvPKhmP11_cpp_strbuf in libcpp.a[2](charset.o)
             config_options+=("--disable-rpath")
 
+            # Do not install libraries with @rpath/library-name.
+            config_options+=("--enable-darwin-at-rpath=no")
+
             config_options+=("--disable-multilib")
 
           elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
