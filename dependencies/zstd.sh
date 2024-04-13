@@ -75,7 +75,7 @@ function zstd_build()
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
 
-      CMAKE=$(which cmake)
+      CMAKE="$(which cmake)"
 
       xbb_adjust_ldflags_rpath
 
@@ -110,7 +110,7 @@ function zstd_build()
 
           config_options+=("-DCMAKE_INSTALL_PREFIX=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
-          config_options+=("-DZSTD_BUILD_CONTRIB=ON") # Arch, MD
+          # config_options+=("-DZSTD_BUILD_CONTRIB=ON") # Arch, MD
           config_options+=("-DZSTD_BUILD_CONTRIB=OFF")
 
           config_options+=("-DZSTD_BUILD_PROGRAMS=OFF")
@@ -140,10 +140,39 @@ function zstd_build()
             config_options+=("-DCMAKE_SYSTEM_NAME=Windows")
           fi
 
+          config_options+=("-DCMAKE_SKIP_RPATH=ON")
+          config_options+=("-DCMAKE_SKIP_INSTALL_RPATH=ON")
+
           run_verbose "${CMAKE}" \
             "${config_options[@]}" \
             \
             "${XBB_SOURCES_FOLDER_PATH}/${zstd_src_folder_name}/build/cmake"
+
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+          then
+            # Replace the relative rpath name with the absolute path.
+            run_verbose sed -i.bak \
+              -e "s|INSTALLNAME_DIR = @rpath/|INSTALLNAME_DIR = ${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/|" \
+              "${XBB_BUILD_FOLDER_PATH}/${zstd_folder_name}/build.ninja"
+          elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+          then
+            # Replace the relative rpath name with the absolute path.
+            run_verbose sed -i.bak \
+              -e "s|INSTALLNAME_DIR = @rpath/|INSTALLNAME_DIR = |" \
+              "${XBB_BUILD_FOLDER_PATH}/${zstd_folder_name}/build.ninja"
+          else
+            # Maybe add win32?
+            echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM}"
+            exit 1
+          fi
+
+          if [ -f "${XBB_BUILD_FOLDER_PATH}/${zstd_folder_name}/build.ninja.bak" ]
+          then
+            run_verbose diff \
+              "${XBB_BUILD_FOLDER_PATH}/${zstd_folder_name}/build.ninja.bak" \
+              "${XBB_BUILD_FOLDER_PATH}/${zstd_folder_name}/build.ninja" \
+              || true
+          fi
 
         ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${zstd_folder_name}/cmake-output-$(ndate).txt"
       fi
