@@ -198,7 +198,9 @@ function gcc_build()
         # export LDFLAGS_FOR_BUILD="${LDFLAGS}"
 
         # Flags to pass to stage2 and later makes.
-        # export BOOT_LDFLAGS="${LDFLAGS}"
+        # local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+        # export BOOT_LDFLAGS="$(xbb_expand_rpath "${app_libs_path}")"
+
       elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         # if is_native || is_bootstrap
@@ -248,6 +250,10 @@ function gcc_build()
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--program-suffix=")
 
+          # Defaults, but make them explicit for clarity.
+#          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+#          config_options+=("--libexecdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/libexec")
+
           config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
           config_options+=("--htmldir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/html")
@@ -273,6 +279,7 @@ function gcc_build()
           config_options+=("--with-isl=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-mpc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          # Note: the path is not propagated to sub-projects.
           config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           # Use the zlib compiled from sources.
@@ -364,14 +371,21 @@ function gcc_build()
             # generally fail, since clang may have different libraries.
             config_options+=("--enable-bootstrap")
 
+            # Build stage 1 with static system libraries.
+            # -static-libgcc is not available when bootstraping with clang.
+            # (clang: error: unsupported option '-static-libgcc')
+            # config_options+=("--with-stage1-ldflags=-static-libstdc++")
+
             # Options for stage 2 and later.
             # config_options+=("--with-boot-libs=-liconv")
+            # config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib -Wl,-rpath,${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
 
-            # Build the intermediate stage with static system libraries,
-            # otherwise it generates a reference to `@rpath/libstdc++.6.dylib`
-            config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib -Wl,-rpath,${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+#            local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+#            local ldflags="-static-libstdc++ -static-libgcc $(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
 
-            # Weird, but without it the stage 2 configre in gcc does not
+#            config_options+=("--with-boot-ldflags=${ldflags}")
+
+            # Weird, but without it the stage 2 configure in gcc does not
             # identify the custom libiconv.*.
             # ld: Undefined symbols:
             # _libiconv, referenced from:
@@ -410,6 +424,7 @@ function gcc_build()
 
               # Do not enable it, since it switches the compiler to CC, not CXX.
               # config_options+=("--with-boot-libs=-lpthread")
+
               # Build the intermediate stage with static system libraries,
               # to save some references to shared libraries.
               config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc ${deps_rpaths}") # -v -Wl,-v
