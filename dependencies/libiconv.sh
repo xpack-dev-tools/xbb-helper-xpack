@@ -32,13 +32,37 @@ function libiconv_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local libiconv_version="$1"
+  shift
+
+  local disable_shared="n"
+  local suffix=""
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --disable-shared )
+        disable_shared="y"
+        shift
+        ;;
+
+      --suffix=* )
+        suffix=$(xbb_parse_option "$1")
+        shift
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+  done
 
   local libiconv_src_folder_name="libiconv-${libiconv_version}"
 
   local libiconv_archive="${libiconv_src_folder_name}.tar.gz"
   local libiconv_url="https://ftp.gnu.org/pub/gnu/libiconv/${libiconv_archive}"
 
-  local libiconv_folder_name="${libiconv_src_folder_name}"
+  local libiconv_folder_name="${libiconv_src_folder_name}${suffix}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${libiconv_folder_name}"
 
@@ -79,7 +103,7 @@ function libiconv_build()
           xbb_show_env_develop
 
           echo
-          echo "Running libiconv configure..."
+          echo "Running libiconv${suffix} configure..."
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -108,6 +132,11 @@ function libiconv_build()
 
           config_options+=("--disable-nls")
 
+          if [ "${disable_shared}" == "y" ]
+          then
+            config_options+=("--disable-shared")
+          fi
+
           config_options+=("--enable-static") # HB
           config_options+=("--enable-extra-encodings") # Arch
 
@@ -124,7 +153,7 @@ function libiconv_build()
 
       (
         echo
-        echo "Running libiconv make..."
+        echo "Running libiconv${suffix} make..."
 
         # Build.
         run_verbose make -j ${XBB_JOBS}
@@ -145,14 +174,14 @@ function libiconv_build()
 
       copy_license \
         "${XBB_SOURCES_FOLDER_PATH}/${libiconv_src_folder_name}" \
-        "${libiconv_folder_name}"
+        "${libiconv_src_folder_name}"
     )
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libiconv_stamp_file_path}"
 
   else
-    echo "Library libiconv already installed"
+    echo "Library libiconv${suffix} already installed"
   fi
 }
 
