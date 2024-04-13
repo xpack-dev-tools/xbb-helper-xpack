@@ -1169,11 +1169,12 @@ function gcc_test()
           XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
         fi
 
-        # Old macOS linkers do not support LTO, thus use lld.
         compiler-tests-single "${test_bin_path}"
         compiler-tests-single "${test_bin_path}" --gc
 
-        if false
+        # Old macOS linkers do not support LTO, thus use lld.
+        # Note: lld might be available in gcc 14.
+        if true
         then
           compiler-tests-single "${test_bin_path}" --lto
           compiler-tests-single "${test_bin_path}" --gc --lto
