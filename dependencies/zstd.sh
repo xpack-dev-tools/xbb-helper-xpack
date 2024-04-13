@@ -203,6 +203,10 @@ function zstd_build()
 
     )
 
+    (
+      zstd_test
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${zstd_folder_name}/test-output-$(ndate).txt"
+
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${zstd_stamp_file_path}"
 
@@ -211,4 +215,13 @@ function zstd_build()
   fi
 }
 
+function zstd_test()
+{
+  (
+    echo
+    echo "Checking the zstd shared library..."
+
+    show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libzstd.${XBB_HOST_SHLIB_EXT}"
+  )
+}
 # -----------------------------------------------------------------------------
