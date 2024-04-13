@@ -88,9 +88,17 @@ function gcc_download()
 
     if [ "${XBB_APPLICATION_TEST_PRERELEASE:-""}" == "y" ]
     then
-      run_verbose git clone \
-        "${XBB_APPLICATION_GCC_GIT_URL}" \
-        "${XBB_APPLICATION_GCC_SRC_FOLDER_NAME}"
+      if [ ! -z "${XBB_APPLICATION_GCC_GIT_BRANCH:-""}" ]
+      then
+        run_verbose git clone \
+          "${XBB_APPLICATION_GCC_GIT_URL}" \
+          --branch "${XBB_APPLICATION_GCC_GIT_BRANCH}" \
+          "${XBB_APPLICATION_GCC_SRC_FOLDER_NAME}"
+      else
+        run_verbose git clone \
+          "${XBB_APPLICATION_GCC_GIT_URL}" \
+          "${XBB_APPLICATION_GCC_SRC_FOLDER_NAME}"
+      fi
     else
       download_and_extract "${gcc_url}" "${gcc_archive}" \
         "${XBB_GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
