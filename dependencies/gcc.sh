@@ -184,7 +184,15 @@ function gcc_build()
         # GCC will suffer build errors if forced to use a particular linker.
         unset LD
 
-        # export LDFLAGS_FOR_TARGET="${LDFLAGS}"
+        # local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+        # local app_libs_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib"
+        # LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}")"
+        LDFLAGS_FOR_TARGET="-L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib"
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        then
+          LDFLAGS_FOR_TARGET+=" -v -Wl,-v"
+        fi
+        export LDFLAGS_FOR_TARGET
 
         # LDFLAGS_FOR_BUILD defaults to LDFLAGS, no need to set it.
         # export LDFLAGS_FOR_BUILD="${LDFLAGS}"
