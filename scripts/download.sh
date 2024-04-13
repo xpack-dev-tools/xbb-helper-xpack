@@ -27,12 +27,15 @@ function git_clone()
   (
     echo
     echo "Cloning \"${folder_name}\" from \"${url}\"..."
-    run_verbose git clone --branch="${branch}" "${url}" "${folder_name}"
+
+    run_verbose rm -rf "${folder_name}" "${folder_name}.download"
+    run_verbose git clone --verbose --branch "${branch}" "${url}" "${folder_name}.download"
     if [ -n "${commit}" ]
     then
-      cd "${folder_name}"
+      cd "${folder_name}.download"
       run_verbose git checkout -qf "${commit}"
     fi
+    run_verbose mv "${folder_name}.download" "${folder_name}"
   )
 }
 
