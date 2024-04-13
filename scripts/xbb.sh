@@ -1433,7 +1433,7 @@ function xbb_update_ld_library_path()
         # /home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin/../lib/x86_64-pc-linux-gnu/libc++.so
         # libs_path="$(dirname $(${CC} -print-file-name=libc++.so))"
 
-        # clang -print-runtime-dir
+        # clang -print-runtime-dir (works only with recent clang!)
         # /home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/lib/clang/15.0.6/lib/x86_64-pc-linux-gnu
 
         # clang -print-search-dirs
@@ -1447,11 +1447,19 @@ function xbb_update_ld_library_path()
         # programs: =/Users/ilg/Work/xpack-dev-tools/clang-xpack.git/build/darwin-arm64/xpacks/.bin:/Users/ilg/Library/xPacks/@xpack-dev-tools/clang/17.0.6-1.1/xpack-clang-17.0.6-2/bin
         # libraries: =/Users/ilg/Library/xPacks/@xpack-dev-tools/clang/17.0.6-1.1/xpack-clang-17.0.6-2/lib/clang/17
 
+        # bin/../lib is valid with the xPack structure, and the HB folders
         local cxx_absolute_path="$(${REALPATH} "${CXX}")"
         local lib_absolute_path="$(dirname $(dirname "${cxx_absolute_path}"))/lib"
 
         # Manually search for c++ & runtime libraries.
-        libs_path=$(dirname $(find "${lib_absolute_path}" -name 'libc++.dylib')):$("${CXX}" -print-runtime-dir)
+        libs_path=""
+        local libcpp_path=$(find "${lib_absolute_path}" -name 'libc++.dylib')
+        if [ -n "${libcpp_path}" ]
+        then
+          libs_path="$(dirname ${libcpp_path}):"
+        fi
+        libs_path+="$(dirname $("${CXX}" -print-libgcc-file-name))"
+
       else
         echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
         exit 1
