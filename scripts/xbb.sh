@@ -1140,6 +1140,8 @@ function xbb_set_compiler_flags()
       echo "XBB_LDFLAGS_LIB=${XBB_LDFLAGS_LIB}"
       echo "XBB_LDFLAGS_APP=${XBB_LDFLAGS_APP}"
       echo "XBB_LDFLAGS_APP_STATIC_GCC=${XBB_LDFLAGS_APP_STATIC_GCC}"
+
+      echo "XBB_TOOLCHAIN_RPATH=${XBB_TOOLCHAIN_RPATH}"
     )
   fi
 
@@ -1532,7 +1534,7 @@ function xbb_get_toolchain_library_path()
      [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
 
-    if [[ "$(basename ${CC})" =~ .*gcc.* ]]
+    if [[ "$(basename ${1})" =~ .*g[c+][c+].* ]]
     then
       # ./lib64/libasan.so
       # ./lib64/libgcc_s.so
@@ -1547,9 +1549,9 @@ function xbb_get_toolchain_library_path()
       # ./lib64/libcc1.so
       # ./lib64/libtsan.so
       # ./lib64/libhwasan.so
-      local libstdcpp_path="$("${$@}" -print-file-name=libstdc++.so)"
-      libs_path="$(dirname $("${REALPATH}" "${libstdcpp_path}"))"
-    elif [[ "$(basename ${CC})" =~ .*clang.* ]]
+      local libstdcpp_path="$("${@}" -print-file-name=libstdc++.so)"
+      libs_path="$(dirname $("${REALPATH}" -m "${libstdcpp_path}"))"
+    elif [[ "$(basename ${1})" =~ .*clang.* ]]
     then
       if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
