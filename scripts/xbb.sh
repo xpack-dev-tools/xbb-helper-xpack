@@ -1631,7 +1631,13 @@ function xbb_adjust_ldflags_rpath()
   fi
 
   LDFLAGS+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
-  LDFLAGS+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}" "${XBB_TOOLCHAIN_RPATH}")"
+
+  if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+  then
+    # -rpath is not used on Windows.
+    LDFLAGS+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}" "${XBB_TOOLCHAIN_RPATH}")"
+  fi
+
   LDFLAGS="${LDFLAGS# }" # Trim trailing spaces
 
   export LDFLAGS
