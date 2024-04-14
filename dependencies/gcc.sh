@@ -207,12 +207,12 @@ function gcc_build()
         #   LDFLAGS+=" -lpthread"
         # fi
         :
-        # local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-        # LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
+        local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
+        LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
         # LDFLAGS_FOR_BUILD="${LDFLAGS}"
         # BOOT_LDFLAGS="${LDFLAGS}"
 
-        # export LDFLAGS_FOR_TARGET
+        export LDFLAGS_FOR_TARGET
         # export LDFLAGS_FOR_BUILD
         # export BOOT_LDFLAGS
       fi
@@ -406,6 +406,8 @@ function gcc_build()
             else
               config_options+=("--enable-bootstrap")
 
+              config_options+=("--with-stage1-ldflags=-static-libstdc++ -static-libgcc ${LDFLAGS}") # -v -Wl,-v
+
               # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: warning: libpthread.so.0, needed by /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/install/lib/libisl.so, not found (try using -rpath or -rpath-link)
               # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
               # lto-compress.cc:(.text+0x153): undefined reference to `ZSTD_compressBound'
@@ -413,15 +415,15 @@ function gcc_build()
               # Options for stage 2 and later.
               # Check Makefile POSTSTAGE1_LDFLAGS and POSTSTAGE1_LIBS.
 
-              local deps_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-              local deps_rpaths="$(xbb_expand_rpath "${deps_path}")"
+#              local deps_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+#              local deps_rpaths="$(xbb_expand_rpath "${deps_path}")"
 
               # Do not enable it, since it switches the compiler to CC, not CXX.
               # config_options+=("--with-boot-libs=-lpthread")
 
               # Build the intermediate stage with static system libraries,
               # to save some references to shared libraries.
-              config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc ${deps_rpaths}") # -v -Wl,-v
+              config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc ${LDFLAGS}") # -v -Wl,-v
             fi
 
             # config_options+=("--disable-rpath")
