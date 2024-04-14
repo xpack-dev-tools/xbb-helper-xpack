@@ -1686,7 +1686,7 @@ function copy_distro_files()
 }
 
 # Override it in the project, if needed.
-function copy_custom_files()
+function application_copy_files()
 {
   :
 }

@@ -227,7 +227,7 @@ function build_common_run()
         strip_binaries
 
         copy_distro_files
-        copy_custom_files
+        application_copy_files
 
         check_binaries
 
