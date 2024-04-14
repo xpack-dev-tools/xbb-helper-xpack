@@ -1293,7 +1293,7 @@ function xbb_activate_application_bin()
 # XBB environment variables.
 function xbb_activate_dependencies_dev()
 {
-  local priority_path
+  local priority_path=""
 
   if [ $# -gt 0 ]
   then
