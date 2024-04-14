@@ -32,8 +32,7 @@ function git_clone()
     run_verbose git clone --verbose --branch "${branch}" "${url}" "${folder_name}.download"
     if [ -n "${commit}" ]
     then
-      cd "${folder_name}.download"
-      run_verbose git checkout -qf "${commit}"
+      run_verbose git -C "${folder_name}.download" checkout -qf "${commit}"
     fi
     run_verbose mv "${folder_name}.download" "${folder_name}"
   )
