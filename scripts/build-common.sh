@@ -231,6 +231,8 @@ function build_common_run()
 
         check_binaries
 
+        application_check_binaries
+
         create_archive
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/post-process-output-$(ndate).txt"
     else

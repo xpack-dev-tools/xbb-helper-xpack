@@ -1983,6 +1983,12 @@ function check_binary_for_libraries()
   )
 }
 
+# $1 = folder path (default ${XBB_APPLICATION_INSTALL_FOLDER_PATH})
+function application_check_binaries()
+{
+  : # Override it in the application.
+}
+
 # -----------------------------------------------------------------------------
 
 function create_archive()
