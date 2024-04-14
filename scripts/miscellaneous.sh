@@ -300,7 +300,24 @@ function linux_get_rpaths_line()
 # Required during running tests on macOS.
 function pyrealpath()
 {
-  "${PYTHON}" -c 'import os, sys; print(os.path.realpath(os.path.abspath(sys.argv[1])))' "$1"
+  local path=""
+  while [ $# -gt 1 ]
+  do
+    if [ ${1:0:1} == "-" ]
+    then
+      shift
+    else
+      path=${1}
+      break
+    fi
+  done
+  if [ -z "${path}" ]
+  then
+    echo "usage: pyrealpath ... path"
+    exit 1
+  fi
+  
+  "${PYTHON}" -c 'import os, sys; print(os.path.realpath(os.path.abspath(sys.argv[1])))' "${path}"
 }
 
 # -----------------------------------------------------------------------------
