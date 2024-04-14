@@ -1347,7 +1347,7 @@ function xbb_activate_dependencies_dev()
     # Add XBB lib in front of PKG_CONFIG_PATH.
     PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
-    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+    if true # [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
       # Needed by internal binaries, like the bootstrap compiler, which do not
       # have a rpath.
@@ -1374,7 +1374,7 @@ function xbb_activate_dependencies_dev()
 
       PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
 
-      if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+      if true # [ "${XBB_HOST_PLATFORM}" != "win32" ]
       then
         # if [ -z "${XBB_LIBRARY_PATH}" ]
         # then
@@ -1401,7 +1401,7 @@ function xbb_activate_dependencies_dev()
     # Add XBB lib in front of PKG_CONFIG_PATH.
     PKG_CONFIG_PATH="${priority_path}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
-    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+    if true # [ "${XBB_HOST_PLATFORM}" != "win32" ]
     then
       # Needed by internal binaries, like the bootstrap compiler, which do not
       # have a rpath.
@@ -1415,7 +1415,7 @@ function xbb_activate_dependencies_dev()
     fi
   fi
 
-  if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+  if true # [ "${XBB_HOST_PLATFORM}" != "win32" ]
   then
     # The order is important, it must be:
     # dev-path:gcc-path:system-path
