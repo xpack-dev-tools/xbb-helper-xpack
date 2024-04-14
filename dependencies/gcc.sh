@@ -91,7 +91,7 @@ function gcc_download()
       run_verbose git_clone \
         "${XBB_APPLICATION_GCC_GIT_URL}" \
         "${XBB_APPLICATION_GCC_GIT_BRANCH:-"master"}" \
-        "" \
+        "${XBB_APPLICATION_GCC_GIT_COMMIT:-""}" \
         "${XBB_APPLICATION_GCC_SRC_FOLDER_NAME}"
     else
       download_and_extract "${gcc_url}" "${gcc_archive}" \
