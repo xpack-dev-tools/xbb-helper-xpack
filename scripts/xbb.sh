@@ -972,6 +972,8 @@ function xbb_set_compiler_flags()
 
   XBB_LDFLAGS=""
 
+  XBB_TOOLCHAIN_RPATH=""
+
   if [ "${XBB_IS_DEBUG}" == "y" ]
   then
     XBB_CFLAGS+=" -g -O0"
@@ -1024,7 +1026,8 @@ function xbb_set_compiler_flags()
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
     XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
 
-    xbb_update_ld_library_path
+    # xbb_update_ld_library_path
+    XBB_TOOLCHAIN_RPATH="$(xbb_get_toolchain_library_path "${CXX}")"
 
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
@@ -1069,7 +1072,8 @@ function xbb_set_compiler_flags()
       XBB_LDFLAGS_APP_STATIC_GCC+=" -static-libgcc"
     fi
 
-    xbb_update_ld_library_path
+    # xbb_update_ld_library_path
+    XBB_TOOLCHAIN_RPATH="$(xbb_get_toolchain_library_path "${CXX}")"
 
   elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
   then
@@ -1154,6 +1158,8 @@ function xbb_set_compiler_flags()
   export XBB_LDFLAGS_LIB
   export XBB_LDFLAGS_APP
   export XBB_LDFLAGS_APP_STATIC_GCC
+
+  export XBB_TOOLCHAIN_RPATH
 }
 
 function xbb_set_executables_install_path()
@@ -1287,7 +1293,36 @@ function xbb_activate_application_bin()
 # XBB environment variables.
 function xbb_activate_dependencies_dev()
 {
-  local priority_path="${1:-""}"
+  local priority_path
+
+  if [ $# -gt 0 ]
+  then
+    priority_path="${1}"
+    shift
+  fi
+
+  local with_lib64="n"
+
+  if [ "${XBB_HOST_PLATFORM}" == "linux" ] && [ "${XBB_HOST_BITS}" == "64" ]
+  then
+    # TODO: check Linux builds and update callers.
+    with_lib64="y"
+  fi
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --with-lib64 )
+        with_lib64="y"
+        shift
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+  done
 
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
@@ -1302,10 +1337,10 @@ function xbb_activate_dependencies_dev()
   if true # [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib" ]
   then
     # Add XBB lib in front of XBB_LDFLAGS.
-    XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS}"
-    XBB_LDFLAGS_LIB="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS_LIB}"
-    XBB_LDFLAGS_APP="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS_APP}"
-    XBB_LDFLAGS_APP_STATIC_GCC="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS_APP_STATIC_GCC}"
+    # XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS}"
+    # XBB_LDFLAGS_LIB="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS_LIB}"
+    # XBB_LDFLAGS_APP="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS_APP}"
+    # XBB_LDFLAGS_APP_STATIC_GCC="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS_APP_STATIC_GCC}"
 
     # Add XBB lib in front of PKG_CONFIG_PATH.
     PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/pkgconfig:${PKG_CONFIG_PATH}"
@@ -1314,35 +1349,38 @@ function xbb_activate_dependencies_dev()
     then
       # Needed by internal binaries, like the bootstrap compiler, which do not
       # have a rpath.
-      if [ -z "${XBB_LIBRARY_PATH}" ]
-      then
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib"
-      else
-        # Insert our dependencies before any other.
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
-      fi
+      # if [ -z "${XBB_LIBRARY_PATH}" ]
+      # then
+      #   XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib"
+      # else
+      #   # Insert our dependencies before any other.
+         XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
+      # fi
     fi
   fi
 
-  # Used by libffi, for example.
-  if [ "${XBB_HOST_BITS}" == "64" ] # [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64" ]
+  if [ "${with_lib64}" == "y" ]
   then
-    # For 64-bit systems, add XBB lib64 in front of paths.
-    XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS}"
-    XBB_LDFLAGS_LIB="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_LIB}"
-    XBB_LDFLAGS_APP="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_APP}"
-    XBB_LDFLAGS_APP_STATIC_GCC="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_APP_STATIC_GCC}"
-
-    PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
-
-    if [ "${XBB_HOST_PLATFORM}" != "win32" ]
+    # Used by libffi, for example.
+    if [ "${XBB_HOST_BITS}" == "64" ] # [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64" ]
     then
-      if [ -z "${XBB_LIBRARY_PATH}" ]
+      # For 64-bit systems, add XBB lib64 in front of paths.
+      # XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS}"
+      # XBB_LDFLAGS_LIB="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_LIB}"
+      # XBB_LDFLAGS_APP="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_APP}"
+      # XBB_LDFLAGS_APP_STATIC_GCC="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_APP_STATIC_GCC}"
+
+      PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
+
+      if [ "${XBB_HOST_PLATFORM}" != "win32" ]
       then
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64"
-      else
-        # Insert our dependencies before any other.
-        XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARY_PATH}"
+        # if [ -z "${XBB_LIBRARY_PATH}" ]
+        # then
+        #   XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64"
+        # else
+        #   # Insert our dependencies before any other.
+           XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARY_PATH}"
+        # fi
       fi
     fi
   fi
@@ -1353,10 +1391,10 @@ function xbb_activate_dependencies_dev()
     mkdir -pv "${priority_path}"
 
     # Add given path in front of XBB_LDFLAGS.
-    XBB_LDFLAGS="-L${priority_path}/lib ${XBB_LDFLAGS}"
-    XBB_LDFLAGS_LIB="-L${priority_path}/lib ${XBB_LDFLAGS_LIB}"
-    XBB_LDFLAGS_APP="-L${priority_path}/lib ${XBB_LDFLAGS_APP}"
-    XBB_LDFLAGS_APP_STATIC_GCC="-L${priority_path}/lib ${XBB_LDFLAGS_APP_STATIC_GCC}"
+    # XBB_LDFLAGS="-L${priority_path}/lib ${XBB_LDFLAGS}"
+    # XBB_LDFLAGS_LIB="-L${priority_path}/lib ${XBB_LDFLAGS_LIB}"
+    # XBB_LDFLAGS_APP="-L${priority_path}/lib ${XBB_LDFLAGS_APP}"
+    # XBB_LDFLAGS_APP_STATIC_GCC="-L${priority_path}/lib ${XBB_LDFLAGS_APP_STATIC_GCC}"
 
     # Add XBB lib in front of PKG_CONFIG_PATH.
     PKG_CONFIG_PATH="${priority_path}/lib/pkgconfig:${PKG_CONFIG_PATH}"
@@ -1365,13 +1403,13 @@ function xbb_activate_dependencies_dev()
     then
       # Needed by internal binaries, like the bootstrap compiler, which do not
       # have a rpath.
-      if [ -z "${XBB_LIBRARY_PATH}" ]
-      then
-        XBB_LIBRARY_PATH="${priority_path}/lib"
-      else
-        # Insert our dependencies before any other.
-        XBB_LIBRARY_PATH="${priority_path}/lib:${XBB_LIBRARY_PATH}"
-      fi
+      # if [ -z "${XBB_LIBRARY_PATH}" ]
+      # then
+      #   XBB_LIBRARY_PATH="${priority_path}/lib"
+      # else
+      #   # Insert our dependencies before any other.
+         XBB_LIBRARY_PATH="${priority_path}/lib:${XBB_LIBRARY_PATH}"
+      # fi
     fi
   fi
 
@@ -1387,10 +1425,10 @@ function xbb_activate_dependencies_dev()
 
   export XBB_CPPFLAGS
 
-  export XBB_LDFLAGS
-  export XBB_LDFLAGS_LIB
-  export XBB_LDFLAGS_APP
-  export XBB_LDFLAGS_APP_STATIC_GCC
+  # export XBB_LDFLAGS
+  # export XBB_LDFLAGS_LIB
+  # export XBB_LDFLAGS_APP
+  # export XBB_LDFLAGS_APP_STATIC_GCC
 
   export PKG_CONFIG_PATH
 }
@@ -1469,20 +1507,102 @@ function xbb_update_ld_library_path()
       exit 1
     fi
 
-    if [ -z "${XBB_LIBRARY_PATH}" ]
-    then
-      XBB_LIBRARY_PATH="${libs_path}"
-    else
-      # This is debatable, since the libs path may include many system paths,
-      # but normally the initial XBB_LIBRARY_PATH should be empty.
-      XBB_LIBRARY_PATH="${libs_path}:${XBB_LIBRARY_PATH}"
-    fi
+    # if [ -z "${XBB_LIBRARY_PATH}" ]
+    # then
+    #   XBB_LIBRARY_PATH="${libs_path}"
+    # else
+    #   # This is debatable, since the libs path may include many system paths,
+    #   # but normally the initial XBB_LIBRARY_PATH should be empty.
+       XBB_LIBRARY_PATH="${libs_path}:${XBB_LIBRARY_PATH}"
+    # fi
 
     echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
 
     export XBB_LIBRARY_PATH
 
   fi
+}
+
+# Call it with "${CXX}", possibly "-m32"
+# returns string on STDOUT
+function xbb_get_toolchain_library_path()
+{
+  local libs_path=""
+  if [ "${XBB_HOST_PLATFORM}" == "linux" ] ||
+     [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  then
+
+    if [[ "$(basename ${CC})" =~ .*gcc.* ]]
+    then
+      # ./lib64/libasan.so
+      # ./lib64/libgcc_s.so
+      # ./lib64/libgomp.so
+      # ./lib64/libitm.so
+      # ./lib64/libssp.so
+      # ./lib64/libatomic.so
+      # ./lib64/libstdc++.so
+      # ./lib64/libgfortran.so
+      # ./lib64/libubsan.so
+      # ./lib64/liblsan.so
+      # ./lib64/libcc1.so
+      # ./lib64/libtsan.so
+      # ./lib64/libhwasan.so
+      local libstdcpp_path="$("${$@}" -print-file-name=libstdc++.so)"
+      libs_path="$(dirname $("${REALPATH}" "${libstdcpp_path}"))"
+    elif [[ "$(basename ${CC})" =~ .*clang.* ]]
+    then
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      then
+        # ./lib/clang/16/lib/aarch64-unknown-linux-gnu/libclang_rt.asan.so
+        # ./lib/clang/16/lib/aarch64-unknown-linux-gnu/libclang_rt.tsan.so
+        # ./lib/clang/16/lib/aarch64-unknown-linux-gnu/libclang_rt.ubsan_minimal.so
+        # ./lib/clang/16/lib/aarch64-unknown-linux-gnu/libclang_rt.scudo_standalone.so
+        # ./lib/clang/16/lib/aarch64-unknown-linux-gnu/libclang_rt.ubsan_standalone.so
+        # ./lib/clang/16/lib/aarch64-unknown-linux-gnu/libclang_rt.hwasan.so
+        # ./lib/libclang-cpp.so
+        # ./lib/libLTO.so
+        # ./lib/libLLVM.so
+        # ./lib/aarch64-unknown-linux-gnu/libc++.so
+        # ./lib/aarch64-unknown-linux-gnu/libc++abi.so
+        # ./lib/aarch64-unknown-linux-gnu/libunwind.so
+        # ./lib/liblldbIntelFeatures.so
+        # ./lib/LLVMPolly.so
+        # ./lib/libLLVM-16.0.6.so
+        # ./lib/libLLVM-16.so
+        # ./lib/libRemarks.so
+        # ./lib/libclang.so
+        # ./lib/liblldb.so
+        # ./lib/LLVMgold.so
+        local runtime_path="$("${$@}" -print-runtime-dir)"
+        local libcpp_path="$("${$@}" -print-file-name=libc++.so)"
+        libs_path="$(dirname $("${REALPATH}" "${libcpp_path}")):${runtime_path}"
+
+      elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      then
+        # bin/../lib is valid with the xPack structure, and the HB folders
+        local cxx_absolute_path="$(${REALPATH} "${CXX}")"
+        local lib_absolute_path="$(dirname $(dirname "${cxx_absolute_path}"))/lib"
+
+        # Manually search for c++ & runtime libraries.
+        libs_path=""
+        local libcpp_path=$(find "${lib_absolute_path}" -name 'libc++.dylib')
+        if [ -n "${libcpp_path}" ]
+        then
+          libs_path="$(dirname ${libcpp_path}):"
+        fi
+        libs_path+="$(dirname $("${CXX}" -print-libgcc-file-name))"
+
+      else
+        echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+        exit 1
+      fi
+    else
+      echo "TODO: compute rpath for ${CC}"
+      exit 1
+    fi
+  fi
+
+  echo -n "${libs_path}"
 }
 
 # Note: it adds all folders, even if they are not present!
@@ -1493,62 +1613,38 @@ function xbb_adjust_ldflags_rpath()
 
   local path="${XBB_LIBRARY_PATH:-${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib}"
 
-  local priority_path="${1:-""}"
-  if [ -n "${priority_path}" ]
+  local priority_path
+  if [ $# -gt 0 ]
   then
+
+    echo "TODO check binutils"
+    exit 1
+
+    priority_path="${1}"
+
     mkdir -pv "${priority_path}"
     path="${priority_path}:${path}"
 
     export XBB_LIBRARY_PATH="${path}"
   fi
 
-  IFS=: read -r -d '' -a path_array < <(printf '%s:\0' "${path}")
+  LDFLAGS+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
+  LDFLAGS+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}" "${XBB_TOOLCHAIN_RPATH}")"
+  LDFLAGS="${LDFLAGS# }" # Trim trailing spaces
 
-  if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-  then
-    for p in "${path_array[@]}"
-    do
-      if true # [ -d "${p}" ]
-      then
-        # -m, --canonicalize-missing
-        #      no path components need exist or be a directory
-        LDFLAGS+=" -L$(${REALPATH} -m ${p})"
-        LDFLAGS+=" -Wl,-rpath-link,$(${REALPATH} -m ${p})"
-        LDFLAGS+=" -Wl,-rpath,$(${REALPATH} -m ${p})"
-      else
-        LDFLAGS+=" -L${p}"
-        LDFLAGS+=" -Wl,-rpath-link,${p}"
-        LDFLAGS+=" -Wl,-rpath,${p}"
-      fi
-    done
-    echo_develop "LDFLAGS=${LDFLAGS}"
-  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-  then
-    for p in "${path_array[@]}"
-    do
-      if [ -d "${p}" ]
-      then
-        LDFLAGS+=" -L$(${REALPATH} ${p})"
-        LDFLAGS+=" -Wl,-rpath,$(${REALPATH} ${p})"
-      else
-        LDFLAGS+=" -L${p}"
-        LDFLAGS+=" -Wl,-rpath,${p}"
-      fi
-    done
-    echo_develop "LDFLAGS=${LDFLAGS}"
-  elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
-  then
-    : Nothing to do.
-  else
-    echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM}"
-    exit 1
-  fi
+  export LDFLAGS
 }
 
 # STDOUT!
-function xbb_expand_rpath()
+function xbb_expand_linker_rpaths()
 {
-  local path="$1"
+  local path=""
+
+  while [ $# -gt 0 ]
+  do
+    path+=":${1}"
+    shift
+  done
 
   IFS=: read -r -d '' -a path_array < <(printf '%s:\0' "${path}")
 
@@ -1559,33 +1655,73 @@ function xbb_expand_rpath()
   then
     for p in "${path_array[@]}"
     do
-      if true # [ -d "${p}" ]
+      if [ -n "${p}" ]
       then
-        output+=" -L$(${REALPATH} -m ${p})"
         output+=" -Wl,-rpath-link,$(${REALPATH} -m ${p})"
         output+=" -Wl,-rpath,$(${REALPATH} -m ${p})"
-      else
-        output+=" -L${p}"
-        output+=" -Wl,-rpath-link,${p}"
-        output+=" -Wl,-rpath,${p}"
       fi
     done
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
     for p in "${path_array[@]}"
     do
-      if [ -d "${p}" ]
+      if [ -n "${p}" ]
       then
-        output+=" -L$(${REALPATH} ${p})"
-        output+=" -Wl,-rpath,$(${REALPATH} ${p})"
-      else
-        output+=" -L${p}"
-        output+=" -Wl,-rpath,${p}"
+        if [ -d "${p}" ]
+        then
+          output+=" -Wl,-rpath,$(${REALPATH} ${p})"
+        else
+          output+=" -Wl,-rpath,${p}"
+        fi
       fi
     done
   fi
 
-  echo "${output}"
+  echo -n "${output# }" # Trim trailing spaces
+}
+
+# STDOUT!
+function xbb_expand_linker_library_paths()
+{
+  local path=""
+
+  while [ $# -gt 0 ]
+  do
+    path+=":${1}"
+    shift
+  done
+
+  IFS=: read -r -d '' -a path_array < <(printf '%s:\0' "${path}")
+
+  local output=""
+
+  # Compare the platform where the build is performed.
+  if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+  then
+    for p in "${path_array[@]}"
+    do
+      if [ -n "${p}" ]
+      then
+        output+=" -L$(${REALPATH} -m ${p})"
+      fi
+    done
+  elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+  then
+    for p in "${path_array[@]}"
+    do
+      if [ -n "${p}" ]
+      then
+        if [ -d "${p}" ]
+        then
+          output+=" -L$(${REALPATH} ${p})"
+        else
+          output+=" -L${p}"
+        fi
+      fi
+    done
+  fi
+
+  echo "${output# }" # Trim trailing spaces
 }
 
 # STDOUT!

@@ -180,7 +180,7 @@ function gcc_build()
 
         # local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
         # local app_libs_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib"
-        # LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}")"
+        # LDFLAGS_FOR_TARGET="$(xbb_expand_linker_rpaths "${app_libs_path}")"
         LDFLAGS_FOR_TARGET="-L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib"
         if [ "${XBB_IS_DEVELOP}" == "y" ]
         then
@@ -193,7 +193,7 @@ function gcc_build()
 
         # Flags to pass to stage2 and later makes.
         # local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-        # export BOOT_LDFLAGS="$(xbb_expand_rpath "${app_libs_path}")"
+        # export BOOT_LDFLAGS="$(xbb_expand_linker_rpaths "${app_libs_path}")"
 
       elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
@@ -208,7 +208,7 @@ function gcc_build()
         # fi
         :
         local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-        LDFLAGS_FOR_TARGET="$(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
+        LDFLAGS_FOR_TARGET="$(xbb_expand_linker_rpaths "${app_libs_path}") ${LDFLAGS}"
         # LDFLAGS_FOR_BUILD="${LDFLAGS}"
         # BOOT_LDFLAGS="${LDFLAGS}"
 
@@ -375,7 +375,7 @@ function gcc_build()
             # config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib -Wl,-rpath,${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
 
 #            local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-#            local ldflags="-static-libstdc++ -static-libgcc $(xbb_expand_rpath "${app_libs_path}") ${LDFLAGS}"
+#            local ldflags="-static-libstdc++ -static-libgcc $(xbb_expand_linker_rpaths "${app_libs_path}") ${LDFLAGS}"
 
 #            config_options+=("--with-boot-ldflags=${ldflags}")
 
@@ -416,7 +416,7 @@ function gcc_build()
               # Check Makefile POSTSTAGE1_LDFLAGS and POSTSTAGE1_LIBS.
 
 #              local deps_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-#              local deps_rpaths="$(xbb_expand_rpath "${deps_path}")"
+#              local deps_rpaths="$(xbb_expand_linker_rpaths "${deps_path}")"
 
               # Do not enable it, since it switches the compiler to CC, not CXX.
               # config_options+=("--with-boot-libs=-lpthread")
@@ -596,7 +596,7 @@ function gcc_build()
           #   # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
           #   # lto-compress.cc:(.text+0x153): undefined reference to `ZSTD_compressBound'
           #   local deps_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-          #   local deps_rpaths="$(xbb_expand_rpath "${deps_path}")"
+          #   local deps_rpaths="$(xbb_expand_linker_rpaths "${deps_path}")"
           #   run_verbose sed -i.bak \
           #     -e "s|^\(POSTSTAGE1_LDFLAGS = .*\)$|\1 -lpthread ${deps_rpaths}|" \
           #     "Makefile"

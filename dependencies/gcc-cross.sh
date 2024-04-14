@@ -630,7 +630,7 @@ function gcc_cross_build_final()
         LDFLAGS_FOR_BUILD="-O2 -v -Wl,--gc-sections"
         local libs_path="$(xbb_get_libs_path "${CC_FOR_BUILD}")"
 
-        export LDFLAGS_FOR_BUILD+="$(xbb_expand_rpath "${libs_path}")"
+        export LDFLAGS_FOR_BUILD+="$(xbb_expand_linker_rpaths "${libs_path}")"
       fi
 
       if [ ! -f "config.status" ]
