@@ -160,9 +160,12 @@ function zstd_build()
             run_verbose sed -i.bak \
               -e "s|INSTALLNAME_DIR = @rpath/|INSTALLNAME_DIR = |" \
               "${XBB_BUILD_FOLDER_PATH}/${zstd_folder_name}/build.ninja"
+          elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          then
+            : # nothing to patch for Windows.
           else
             # Maybe add win32?
-            echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM}"
+            echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
             exit 1
           fi
 
