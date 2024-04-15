@@ -352,7 +352,21 @@ function binutils_build()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          : # run_verbose make check
+          run_verbose make -O CFLAGS_FOR_TARGET="-O2 -g" \
+          CXXFLAGS="-O2 -no-pie -fno-PIC" \
+          CFLAGS="-O2 -no-pie" \
+          LDFLAGS="" \
+          check || true
+
+          # On Linux there are 6 failing tests
+          # FAIL: relro_test.sh
+          # FAIL: object_unittest
+          # FAIL: binary_unittest
+          # FAIL: leb128_unittest
+          # FAIL: overflow_unittest
+          # FAIL: eh_test
+          # # XFAIL: 0
+          # # FAIL:  6
         fi
 
         # Avoid strip here, it may interfere with patchelf.
