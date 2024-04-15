@@ -15,6 +15,8 @@
 
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gdb.rb
 
+# https://gitlab.archlinux.org/archlinux/packaging/packages/gdb/-/blob/main/PKGBUILD?ref_type=heads
+
 # GDB Text User Interface
 # https://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_19.html#SEC197
 
@@ -214,8 +216,7 @@ function gdb_test()
   # ---------------------------------------------------------------------------
   # Test if GDB is built with correct ELF support.
   (
-    # Assume that the compiler was built too.
-    CXX="${test_bin_path}/g++"
+    CXX="$(which g++)"
 
     rm -rf "${XBB_TESTS_FOLDER_PATH}/gdb"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/gdb"
@@ -265,6 +266,8 @@ __EOF__
         echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
         run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp -g -v
+
+        run_host_app_verbose "./hello-cpp"
 
         # Test if GDB is built with correct ELF support.
         run_host_app_verbose "${GDB}" \
