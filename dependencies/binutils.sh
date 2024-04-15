@@ -394,7 +394,8 @@ then
               "$(dirname ${libiberty_file_path})"
           fi
         fi
-else
+elif false
+then
         if [ -f "libiberty/pic/libiberty.a" ]
         then
           # install PIC version of libiberty
