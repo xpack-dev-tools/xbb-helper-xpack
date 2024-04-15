@@ -198,12 +198,12 @@ function zstd_build()
             --config "${build_type}"
         fi
 
-        # It takes too long.
-        if false # [ "${XBB_WITH_TESTS}" == "y" ]
+        # It takes too long, run only the first test (which also takes a few minutes)
+        if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose ctest \
             -V \
-
+            --tests-regex 'fullbench'
         fi
 
         (
