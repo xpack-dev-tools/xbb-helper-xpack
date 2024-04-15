@@ -163,19 +163,30 @@ function gcc_mingw_build_first()
 
   export mingw_gcc_folder_name="${name_prefix}gcc-${mingw_gcc_version}"
 
-  local mingw_gcc_step1_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${name_prefix}gcc-first-${mingw_gcc_version}-installed"
-  if [ ! -f "${mingw_gcc_step1_stamp_file_path}" ]
-  then
+  mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}"
 
+  if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${mingw_gcc_src_folder_name}" ]
+  then
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
     run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
-    download_and_extract "${mingw_gcc_url}" "${mingw_gcc_archive}" \
-      "${mingw_gcc_src_folder_name}" \
-      "${XBB_MINGW_GCC_PATCH_FILE_NAME:-none}"
+    if [ "${XBB_APPLICATION_TEST_PRERELEASE:-""}" == "y" ]
+    then
+      run_verbose git_clone \
+        "${XBB_APPLICATION_GCC_GIT_URL}" \
+        "${XBB_APPLICATION_GCC_GIT_BRANCH:-"master"}" \
+        "${XBB_APPLICATION_GCC_GIT_COMMIT:-""}" \
+        "${mingw_gcc_src_folder_name}"
+    else
+      download_and_extract "${mingw_gcc_url}" "${mingw_gcc_archive}" \
+        "${mingw_gcc_src_folder_name}" \
+        "${XBB_MINGW_GCC_PATCH_FILE_NAME:-none}"
+    fi
+  fi
 
-    mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}"
-
+  local mingw_gcc_step1_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${name_prefix}gcc-first-${mingw_gcc_version}-installed"
+  if [ ! -f "${mingw_gcc_step1_stamp_file_path}" ]
+  then
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
       run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${mingw_gcc_folder_name}"
