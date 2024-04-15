@@ -71,7 +71,7 @@ function gcc_download()
   # https://github.com/Homebrew/formula-patches/tree/master/gcc
   # https://github.com/fxcoudert/gcc/tags
 
-  export XBB_GCC_SRC_FOLDER_NAME="${XBB_APPLICATION_GCC_SRC_FOLDER_NAME:-gcc-${gcc_version}}"
+  export XBB_GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
 
   local gcc_archive="${XBB_APPLICATION_GCC_ARCHIVE_NAME:-${XBB_GCC_SRC_FOLDER_NAME}.tar.xz}"
   local gcc_url="${XBB_APPLICATION_GCC_URL:-https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}}"
@@ -79,8 +79,9 @@ function gcc_download()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}"
 
-  local gcc_download_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${XBB_GCC_SRC_FOLDER_NAME}-downloaded"
-  if [ ! -f "${gcc_download_stamp_file_path}" ]
+  # local gcc_download_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${XBB_GCC_SRC_FOLDER_NAME}-downloaded"
+  # if [ ! -f "${gcc_download_stamp_file_path}" ]
+  if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}" ]
   then
 
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
@@ -92,14 +93,14 @@ function gcc_download()
         "${XBB_APPLICATION_GCC_GIT_URL}" \
         "${XBB_APPLICATION_GCC_GIT_BRANCH:-"master"}" \
         "${XBB_APPLICATION_GCC_GIT_COMMIT:-""}" \
-        "${XBB_APPLICATION_GCC_SRC_FOLDER_NAME}"
+        "${XBB_GCC_SRC_FOLDER_NAME}"
     else
       download_and_extract "${gcc_url}" "${gcc_archive}" \
         "${XBB_GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
     fi
 
-    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
-    touch "${gcc_download_stamp_file_path}"
+    # mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
+    # touch "${gcc_download_stamp_file_path}"
   fi
 }
 
