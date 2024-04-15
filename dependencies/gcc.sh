@@ -208,7 +208,7 @@ function gcc_build()
         # fi
         :
         local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-        LDFLAGS_FOR_TARGET="$(xbb_expand_linker_rpaths "${app_libs_path}") ${LDFLAGS}"
+        LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET $(xbb_expand_linker_rpaths "${app_libs_path}") ${LDFLAGS}"
         # LDFLAGS_FOR_BUILD="${LDFLAGS}"
         # BOOT_LDFLAGS="${LDFLAGS}"
 
@@ -406,7 +406,7 @@ function gcc_build()
             else
               config_options+=("--enable-bootstrap")
 
-              config_options+=("--with-stage1-ldflags=-static-libstdc++ -static-libgcc ${LDFLAGS}") # -v -Wl,-v
+              config_options+=("--with-stage1-ldflags=-static-libstdc++ -static-libgcc -DXBB_MARKER_STAGE1 ${LDFLAGS}") # -v -Wl,-v
 
               # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: warning: libpthread.so.0, needed by /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/install/lib/libisl.so, not found (try using -rpath or -rpath-link)
               # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
@@ -423,7 +423,7 @@ function gcc_build()
 
               # Build the intermediate stage with static system libraries,
               # to save some references to shared libraries.
-              config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc ${LDFLAGS}") # -v -Wl,-v
+              config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc -DXBB_MARKER_BOOT ${LDFLAGS}") # -v -Wl,-v
             fi
 
             # config_options+=("--disable-rpath")
