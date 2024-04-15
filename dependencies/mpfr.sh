@@ -131,8 +131,8 @@ function mpfr_build()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          run_verbose make -j1 check
-          run_verbose make -j1 check-exported-symbols
+          run_verbose make -j1 check # Arch
+          run_verbose make -j1 check-exported-symbols # Arch
         fi
 
         if [ "${XBB_WITH_STRIP}" == "y" ]
