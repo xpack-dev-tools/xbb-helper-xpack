@@ -1618,13 +1618,9 @@ function xbb_adjust_ldflags_rpath()
   local priority_path
   if [ $# -gt 0 ]
   then
-
-    echo "TODO check binutils"
-    exit 1
-
     priority_path="${1}"
 
-    mkdir -pv "${priority_path}"
+    # Insert the priority path at the beginning.
     path="${priority_path}:${path}"
 
     export XBB_LIBRARY_PATH="${path}"
