@@ -511,10 +511,10 @@ function xbb_set_target()
   xbb_set_extra_host_env
   xbb_set_extra_target_env
 
-  if [ "${XBB_APPLICATION_HAS_FLEX_PACKAGE:-""}" == "y" ]
-  then
-    xbb_set_flex_package_paths
-  fi
+  # if [ "${XBB_APPLICATION_HAS_FLEX_PACKAGE:-""}" == "y" ]
+  # then
+  #   xbb_set_flex_package_paths
+  # fi
 
   # ---------------------------------------------------------------------------
 
@@ -1192,6 +1192,7 @@ function xbb_set_libraries_install_path()
   echo_develop "XBB_LIBRARIES_INSTALL_FOLDER_PATH=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"
 }
 
+# DEPRECATED! Use `xbb_activate_dependencies_dev --with-flex``
 # Must be called after xxbb_set_target() and
 # xbb_set_compiler_flags(), xbb_prepare_*_env(), xbb_set_compiler_env().
 function xbb_set_flex_package_paths()
