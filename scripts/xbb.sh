@@ -1307,18 +1307,24 @@ function xbb_activate_dependencies_dev()
   fi
 
   local with_lib64="n"
+  local with_flex="n"
 
-  if [ "${XBB_HOST_PLATFORM}" == "linux" ] && [ "${XBB_HOST_BITS}" == "64" ]
-  then
-    # TODO: check Linux builds and update callers.
-    with_lib64="y"
-  fi
+  # if [ "${XBB_HOST_PLATFORM}" == "linux" ] && [ "${XBB_HOST_BITS}" == "64" ]
+  # then
+  #   # TODO: check Linux builds and update callers.
+  #   with_lib64="y"
+  # fi
 
   while [ $# -gt 0 ]
   do
     case "$1" in
       --with-lib64 )
         with_lib64="y"
+        shift
+        ;;
+
+      --with-flex )
+        with_flex="y"
         shift
         ;;
 
@@ -1332,110 +1338,56 @@ function xbb_activate_dependencies_dev()
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
-  # XBB_LIBRARY_PATH must be already set before (xbb_set_compiler_flags),
-  # and the deps path comes in front of it,
-  # otherwise compiler libraries may take precedence.
+  if [ "${with_flex}" == "y" ]
+  then
+    # Adjust the environent to refer to the flex xPack dependency.
+    local flex_realpath="$(${REALPATH} "$(which flex)")"
+    XBB_FLEX_PACKAGE_PATH="$(dirname $(dirname "${flex_realpath}"))"
+
+    XBB_CPPFLAGS+=" -I${XBB_FLEX_PACKAGE_PATH}/include"
+
+    XBB_LIBRARY_PATH="${XBB_FLEX_PACKAGE_PATH}/lib:${XBB_LIBRARY_PATH}"
+  fi
+
 
   # Add XBB include in front of XBB_CPPFLAGS.
   XBB_CPPFLAGS="-I${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/include ${XBB_CPPFLAGS}"
 
-  if true # [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib" ]
-  then
-    # Add XBB lib in front of XBB_LDFLAGS.
-    # XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS}"
-    # XBB_LDFLAGS_LIB="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS_LIB}"
-    # XBB_LDFLAGS_APP="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS_APP}"
-    # XBB_LDFLAGS_APP_STATIC_GCC="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib ${XBB_LDFLAGS_APP_STATIC_GCC}"
+  # Add XBB lib in front of PKG_CONFIG_PATH.
+  PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
-    # Add XBB lib in front of PKG_CONFIG_PATH.
-    PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib/pkgconfig:${PKG_CONFIG_PATH}"
+  XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
 
-    if true # [ "${XBB_HOST_PLATFORM}" != "win32" ]
-    then
-      # Needed by internal binaries, like the bootstrap compiler, which do not
-      # have a rpath.
-      # if [ -z "${XBB_LIBRARY_PATH}" ]
-      # then
-      #   XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib"
-      # else
-      #   # Insert our dependencies before any other.
-         XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib:${XBB_LIBRARY_PATH}"
-      # fi
-    fi
-  fi
-
-  if [ "${with_lib64}" == "y" ]
+  if [ "${with_lib64}" == "y" ] && [ "${XBB_HOST_BITS}" == "64" ]
   then
     # Used by libffi, for example.
-    if [ "${XBB_HOST_BITS}" == "64" ] # [ -d "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64" ]
+    PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
+
+    XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARY_PATH}"
+  fi
+
+  # Avoid duplicating existing path.
+  if [ -n "${priority_path}" ]
+  then
+    if [ "${priority_path}" == "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}" ]
     then
-      # For 64-bit systems, add XBB lib64 in front of paths.
-      # XBB_LDFLAGS="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS}"
-      # XBB_LDFLAGS_LIB="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_LIB}"
-      # XBB_LDFLAGS_APP="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_APP}"
-      # XBB_LDFLAGS_APP_STATIC_GCC="-L${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64 ${XBB_LDFLAGS_APP_STATIC_GCC}"
+      echo "Path ${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH} already in."
+    else
+      # Add XBB lib in front of PKG_CONFIG_PATH.
+      PKG_CONFIG_PATH="${priority_path}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
-      PKG_CONFIG_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64/pkgconfig:${PKG_CONFIG_PATH}"
-
-      if true # [ "${XBB_HOST_PLATFORM}" != "win32" ]
-      then
-        # if [ -z "${XBB_LIBRARY_PATH}" ]
-        # then
-        #   XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64"
-        # else
-        #   # Insert our dependencies before any other.
-           XBB_LIBRARY_PATH="${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARY_PATH}"
-        # fi
-      fi
+          XBB_LIBRARY_PATH="${priority_path}/lib:${XBB_LIBRARY_PATH}"
     fi
   fi
 
-  if [ -n "${priority_path}" ] &&
-     [ "${priority_path}" != "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/lib" ]
-  then
-    mkdir -pv "${priority_path}"
-
-    # Add given path in front of XBB_LDFLAGS.
-    # XBB_LDFLAGS="-L${priority_path}/lib ${XBB_LDFLAGS}"
-    # XBB_LDFLAGS_LIB="-L${priority_path}/lib ${XBB_LDFLAGS_LIB}"
-    # XBB_LDFLAGS_APP="-L${priority_path}/lib ${XBB_LDFLAGS_APP}"
-    # XBB_LDFLAGS_APP_STATIC_GCC="-L${priority_path}/lib ${XBB_LDFLAGS_APP_STATIC_GCC}"
-
-    # Add XBB lib in front of PKG_CONFIG_PATH.
-    PKG_CONFIG_PATH="${priority_path}/lib/pkgconfig:${PKG_CONFIG_PATH}"
-
-    if true # [ "${XBB_HOST_PLATFORM}" != "win32" ]
-    then
-      # Needed by internal binaries, like the bootstrap compiler, which do not
-      # have a rpath.
-      # if [ -z "${XBB_LIBRARY_PATH}" ]
-      # then
-      #   XBB_LIBRARY_PATH="${priority_path}/lib"
-      # else
-      #   # Insert our dependencies before any other.
-         XBB_LIBRARY_PATH="${priority_path}/lib:${XBB_LIBRARY_PATH}"
-      # fi
-    fi
-  fi
-
-  if true # [ "${XBB_HOST_PLATFORM}" != "win32" ]
-  then
-    # The order is important, it must be:
-    # dev-path:gcc-path:system-path
-    echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
-
-    # Do not export it on Windows.
-    export XBB_LIBRARY_PATH
-  fi
+  # The order is important, it must be:
+  # dev-path:gcc-path:system-path
+  echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
 
   export XBB_CPPFLAGS
-
-  # export XBB_LDFLAGS
-  # export XBB_LDFLAGS_LIB
-  # export XBB_LDFLAGS_APP
-  # export XBB_LDFLAGS_APP_STATIC_GCC
-
   export PKG_CONFIG_PATH
+  # Do not export it on Windows.
+  export XBB_LIBRARY_PATH
 }
 
 # The first argument must be the compiler, like "${CXX}"
