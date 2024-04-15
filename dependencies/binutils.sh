@@ -380,10 +380,17 @@ then
               "$(dirname ${libiberty_file_path})"
           fi
         fi
-
+else
+        if [ -f "libiberty/pic/libiberty.a" ]
+        then
+          # install PIC version of libiberty
+          run_verbose ${INSTALL} -v -c -m 644 libiberty/pic/libiberty.a \
+            "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
+          run_verbose rm -rf "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libiberty.a"
+        fi
+fi
 
         run_verbose rm -rf "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}/doc"
-fi
 
         if [ "${has_triplet}" != "y" ]
         then
