@@ -157,7 +157,7 @@ function gcc_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      LDFLAGS="${XBB_LDFLAGS_APP}"
+      LDFLAGS="-DXBB_MARKER_TOP ${XBB_LDFLAGS_APP}"
 
       # Before LDFLAGS_FOR_TARGET & Co.
       xbb_adjust_ldflags_rpath
@@ -207,15 +207,14 @@ function gcc_build()
         #   # Testing -lzstd alone fails since it depends on -lpthread.
         #   LDFLAGS+=" -lpthread"
         # fi
-        :
-        local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-        LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET $(xbb_expand_linker_rpaths "${app_libs_path}") ${LDFLAGS}"
-        # LDFLAGS_FOR_BUILD="${LDFLAGS}"
-        # BOOT_LDFLAGS="${LDFLAGS}"
+
+        # The target may refer to the development libraries.
+        # It does not need the bootstrap toolchain rpaths.
+        LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET ${XBB_LDFLAGS_APP}"
+        LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
+        LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
 
         export LDFLAGS_FOR_TARGET
-        # export LDFLAGS_FOR_BUILD
-        # export BOOT_LDFLAGS
       fi
 
       export CPPFLAGS
@@ -399,33 +398,26 @@ function gcc_build()
             # programs, and require setting the executable rpath to work.
             config_options+=("--enable-shared")
 
-            # Still fails on aarch64 with
-            # gcc/lto-compress.cc:135: undefined reference to `ZSTD_compressBound'
-            if false # [ "${XBB_IS_DEVELOP}" == "y" ]
-            then
-              config_options+=("--disable-bootstrap")
-            else
-              config_options+=("--enable-bootstrap")
+            config_options+=("--enable-bootstrap")
 
-              config_options+=("--with-stage1-ldflags=-static-libstdc++ -static-libgcc -DXBB_MARKER_STAGE1 ${LDFLAGS}") # -v -Wl,-v
+            # Stage 1 is the bootstrap, performed with on old compiler,
+            # thus it needs the toolchain rpaths, but the resulting
+            # compiler will be statically linked, to avoid computing
+            # multiple rpaths in multilib cases.
+            # The flags are added to the top LDFLAGS, so no need to repeat them.
+            config_options+=("--with-stage1-ldflags=-DXBB_MARKER_STAGE1 -static-libstdc++ -static-libgcc") # -v -Wl,-v
 
-              # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: warning: libpthread.so.0, needed by /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/install/lib/libisl.so, not found (try using -rpath or -rpath-link)
-              # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
-              # lto-compress.cc:(.text+0x153): undefined reference to `ZSTD_compressBound'
+            # Do not enable it, since it switches the compiler to CC, not CXX.
+            # config_options+=("--with-boot-libs=-lpthread")
 
-              # Options for stage 2 and later.
-              # Check Makefile POSTSTAGE1_LDFLAGS and POSTSTAGE1_LIBS.
+            # Build the intermediate stages (2 & 3) with static system libraries,
+            # to save some references to shared libraries.
+            # The bootstrap toolchain rpaths are not needed.
+            local ldflags_for_boot="-DXBB_MARKER_BOOT -static-libstdc++ -static-libgcc ${XBB_LDFLAGS_APP}"
+            ldflags_for_boot+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
+            ldflags_for_boot+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
 
-#              local deps_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-#              local deps_rpaths="$(xbb_expand_linker_rpaths "${deps_path}")"
-
-              # Do not enable it, since it switches the compiler to CC, not CXX.
-              # config_options+=("--with-boot-libs=-lpthread")
-
-              # Build the intermediate stage with static system libraries,
-              # to save some references to shared libraries.
-              config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc -DXBB_MARKER_BOOT ${LDFLAGS}") # -v -Wl,-v
-            fi
+            config_options+=("--with-boot-ldflags=${ldflags_for_boot}") # -v -Wl,-v
 
             # config_options+=("--disable-rpath")
 
