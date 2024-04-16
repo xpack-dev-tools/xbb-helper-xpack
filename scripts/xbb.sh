@@ -1028,7 +1028,6 @@ function xbb_set_compiler_flags()
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
     XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
 
-    # xbb_update_ld_library_path
     XBB_TOOLCHAIN_RPATH="$(xbb_get_toolchain_library_path "${CXX}")"
 
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
@@ -1074,7 +1073,6 @@ function xbb_set_compiler_flags()
       XBB_LDFLAGS_APP_STATIC_GCC+=" -static-libgcc"
     fi
 
-    # xbb_update_ld_library_path
     XBB_TOOLCHAIN_RPATH="$(xbb_get_toolchain_library_path "${CXX}")"
 
   elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
@@ -1390,94 +1388,12 @@ function xbb_activate_dependencies_dev()
   export XBB_LIBRARY_PATH
 }
 
+# DEPRECATED, use xbb_get_toolchain_library_path()
 # The first argument must be the compiler, like "${CXX}"
 # Call it with -m64/-m32 for multilib use cases.
-function xbb_get_libs_path()
+function _xbb_get_libs_path()
 {
   "$@" -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||'
-}
-
-function xbb_update_ld_library_path()
-{
-  local libs_path=""
-  if [ "${XBB_HOST_PLATFORM}" == "linux" ] ||
-     [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-  then
-
-    if [[ "$(basename ${CC})" =~ .*gcc.* ]]
-    then
-      # This is maximal, it adds lots of folders.
-      libs_path="$(xbb_get_libs_path "${CXX}")"
-    elif [[ "$(basename ${CC})" =~ .*clang.* ]]
-    then
-      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      then
-        # find . -name '*.so'
-        # lib/x86_64-pc-linux-gnu/libc++abi.so.1
-        # lib/x86_64-pc-linux-gnu/libc++abi.so.1.0
-        # lib/x86_64-pc-linux-gnu/libunwind.so.1
-        # lib/x86_64-pc-linux-gnu/libc++.so
-        # lib/x86_64-pc-linux-gnu/libunwind.so.1.0
-        # lib/x86_64-pc-linux-gnu/libc++abi.so
-        # lib/x86_64-pc-linux-gnu/libunwind.so
-        # lib/x86_64-pc-linux-gnu/libc++.so.1
-        # lib/x86_64-pc-linux-gnu/libc++.so.1.0
-        # lib/clang/15.0.6/lib/x86_64-pc-linux-gnu/libclang_rt.memprof.so
-
-        # clang -print-file-name=libc++.so
-        # /home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin/../lib/x86_64-pc-linux-gnu/libc++.so
-        # libs_path="$(dirname $(${CC} -print-file-name=libc++.so))"
-
-        # clang -print-runtime-dir (works only with recent clang!)
-        # /home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/lib/clang/15.0.6/lib/x86_64-pc-linux-gnu
-
-        # clang -print-search-dirs
-        # programs: =/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../x86_64-linux-gnu/bin
-        # libraries: =/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/lib/clang/15.0.6:/home/ilg/Work/xpack-dev-tools/clang-xpack.git/build/linux-x64/application/bin/../lib/x86_64-pc-linux-gnu:/usr/lib/gcc/x86_64-linux-gnu/10:/usr/lib/gcc/x86_64-linux-gnu/10/../../../../lib64:/lib/x86_64-linux-gnu:/lib/../lib64:/usr/lib/x86_64-linux-gnu:/usr/lib/../lib64:/lib:/usr/lib
-        libs_path="$(xbb_get_libs_path "${CXX}")"
-      elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-      then
-        # On macOS --print-search-dirs is not directly usable:
-        # clang++ --print-search-dirs
-        # programs: =/Users/ilg/Work/xpack-dev-tools/clang-xpack.git/build/darwin-arm64/xpacks/.bin:/Users/ilg/Library/xPacks/@xpack-dev-tools/clang/17.0.6-1.1/xpack-clang-17.0.6-2/bin
-        # libraries: =/Users/ilg/Library/xPacks/@xpack-dev-tools/clang/17.0.6-1.1/xpack-clang-17.0.6-2/lib/clang/17
-
-        # bin/../lib is valid with the xPack structure, and the HB folders
-        local cxx_absolute_path="$(${REALPATH} "${CXX}")"
-        local lib_absolute_path="$(dirname $(dirname "${cxx_absolute_path}"))/lib"
-
-        # Manually search for c++ & runtime libraries.
-        libs_path=""
-        local libcpp_path=$(find "${lib_absolute_path}" -name 'libc++.dylib')
-        if [ -n "${libcpp_path}" ]
-        then
-          libs_path="$(dirname ${libcpp_path}):"
-        fi
-        libs_path+="$(dirname $("${CXX}" -print-libgcc-file-name))"
-
-      else
-        echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
-        exit 1
-      fi
-    else
-      echo "TODO: compute rpath for ${CC}"
-      exit 1
-    fi
-
-    # if [ -z "${XBB_LIBRARY_PATH}" ]
-    # then
-    #   XBB_LIBRARY_PATH="${libs_path}"
-    # else
-    #   # This is debatable, since the libs path may include many system paths,
-    #   # but normally the initial XBB_LIBRARY_PATH should be empty.
-       XBB_LIBRARY_PATH="${libs_path}:${XBB_LIBRARY_PATH}"
-    # fi
-
-    echo_develop "XBB_LIBRARY_PATH=${XBB_LIBRARY_PATH}"
-
-    export XBB_LIBRARY_PATH
-
-  fi
 }
 
 # Call it with "${CXX}", possibly "-m32"
