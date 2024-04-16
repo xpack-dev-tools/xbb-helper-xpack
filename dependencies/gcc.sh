@@ -179,23 +179,15 @@ function gcc_build()
         # GCC will suffer build errors if forced to use a particular linker.
         unset LD
 
-        # local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-        # local app_libs_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib"
-        # LDFLAGS_FOR_TARGET="$(xbb_expand_linker_rpaths "${app_libs_path}")"
-        LDFLAGS_FOR_TARGET="-L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib"
-        if [ "${XBB_IS_DEVELOP}" == "y" ]
-        then
-          LDFLAGS_FOR_TARGET+=" -v -Wl,-v"
-        fi
+        # The target may refer to the development libraries.
+        # It does not need the bootstrap toolchain rpaths.
+        LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET ${XBB_LDFLAGS_APP}"
+        # The static libiconv is used to avoid a reference in libstdc++.dylib
+        LDFLAGS_FOR_TARGET+=" -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib"
+        LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
+        LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
+
         export LDFLAGS_FOR_TARGET
-
-        # LDFLAGS_FOR_BUILD defaults to LDFLAGS, no need to set it.
-        # export LDFLAGS_FOR_BUILD="${LDFLAGS}"
-
-        # Flags to pass to stage2 and later makes.
-        # local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-        # export BOOT_LDFLAGS="$(xbb_expand_linker_rpaths "${app_libs_path}")"
-
       elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
         # if is_native || is_bootstrap
@@ -366,18 +358,24 @@ function gcc_build()
             config_options+=("--enable-bootstrap")
 
             # Build stage 1 with static system libraries.
-            # -static-libgcc is not available when bootstraping with clang.
-            # (clang: error: unsupported option '-static-libgcc')
-            # config_options+=("--with-stage1-ldflags=-static-libstdc++")
+            # The flags are added to the top LDFLAGS, so no need to repeat them.
+            local ldflags_for_bootstrap="-DXBB_MARKER_STAGE1 -static-libstdc++"
+            if [[ $(basename "${CC}") =~ .*gcc.* ]]
+            then
+              # -static-libgcc is available only when bootstraping with gcc.
+              # (clang: error: unsupported option '-static-libgcc')
+              ldflags_for_bootstrap+=" -static-libgcc"
+            fi
+            config_options+=("--with-stage1-ldflags=${ldflags_for_bootstrap}") # -v -Wl,-v
 
-            # Options for stage 2 and later.
-            # config_options+=("--with-boot-libs=-liconv")
-            # config_options+=("--with-boot-ldflags=-static-libstdc++ -static-libgcc -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib -Wl,-rpath,${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+            # Build the intermediate stages (2 & 3) with static system libraries,
+            # to save some references to shared libraries.
+            # The bootstrap toolchain rpaths are not needed.
+            local ldflags_for_boot="-DXBB_MARKER_BOOT -static-libstdc++ -static-libgcc ${XBB_LDFLAGS_APP}"
+            ldflags_for_boot+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
+            ldflags_for_boot+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
 
-#            local app_libs_path="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64:${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib"
-#            local ldflags="-static-libstdc++ -static-libgcc $(xbb_expand_linker_rpaths "${app_libs_path}") ${LDFLAGS}"
-
-#            config_options+=("--with-boot-ldflags=${ldflags}")
+            config_options+=("--with-boot-ldflags=${ldflags_for_boot}") # -v -Wl,-v
 
             # Weird, but without it the stage 2 configure in gcc does not
             # identify the custom libiconv.*.
