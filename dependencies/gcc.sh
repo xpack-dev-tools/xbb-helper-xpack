@@ -1027,7 +1027,7 @@ function gcc_test()
       if [ "${XBB_HOST_ARCH}" == "x64" ]
       then
         (
-          export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}" -m64)"
+          export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m64)"
           echo
           echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
@@ -1042,7 +1042,7 @@ function gcc_test()
           echo "Skipping -m32 tests..."
         else
           (
-            export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}" -m32)"
+            export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m32)"
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
@@ -1054,7 +1054,7 @@ function gcc_test()
         fi
       else
         (
-          export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}")"
+          export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
           echo
           echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
@@ -1076,7 +1076,7 @@ function gcc_test()
         then
           (
             # Mainly for libgfortran.so.
-            export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}" -m64)"
+            export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m64)"
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
@@ -1091,7 +1091,7 @@ function gcc_test()
             echo "Skipping -m32 --static-lib tests..."
           else
             (
-              export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}" -m32)"
+              export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m32)"
               echo
               echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
@@ -1104,7 +1104,7 @@ function gcc_test()
         else
           (
             # Mainly for libgfortran.so.
-            export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}")"
+            export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
