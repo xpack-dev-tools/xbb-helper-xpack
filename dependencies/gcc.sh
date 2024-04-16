@@ -8,7 +8,8 @@
 # -----------------------------------------------------------------------------
 
 # https://gcc.gnu.org
-# https://ftp.gnu.org/gnu/gcc/
+# Releases https://ftp.gnu.org/gnu/gcc/
+
 # https://gcc.gnu.org/wiki/InstallingGCC
 # https://gcc.gnu.org/install
 # https://gcc.gnu.org/install/configure.html
@@ -19,6 +20,7 @@
 
 # https://archlinuxarm.org/packages/aarch64/gcc/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gcc-git
+
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb
 # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc@8.rb
 
@@ -31,29 +33,6 @@
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gcc/PKGBUILD
 # https://github.com/msys2/MSYS2-packages/blob/master/gcc/PKGBUILD
 
-
-# 2018-05-02, "8.1.0"
-# 2018-07-26, "8.2.0"
-# 2018-10-30, "6.5.0" *
-# 2018-12-06, "7.4.0"
-# 2019-02-22, "8.3.0"
-# 2019-05-03, "9.1.0"
-# 2019-08-12, "9.2.0"
-# 2019-11-14, "7.5.0" *
-# 2020-03-04, "8.4.0"
-# 2020-03-12, "9.3.0"
-# 2021-04-08, "10.3.0"
-# 2021-04-27, "11.1.0"
-# 2021-05-14, "8.5.0" *
-# 2021-07-28, "11.2.0"
-# 2022-04-21, "11.3.0"
-# 2022-05-06, "12.1.0"
-# 2022-08-19, "12.2.0"
-# 2023-05-08, "12.3.0"
-# 2023-05-29, "11.4.0"
-# 2023-04-26, "13.1.0"
-# 2023-07-27, "13.2.0"
-
 # -----------------------------------------------------------------------------
 
 # Returns XBB_GCC_SRC_FOLDER_NAME.
@@ -63,7 +42,7 @@ function gcc_download()
 
   # Branch from the Darwin maintainer of GCC with Apple Silicon support,
   # located at https://github.com/iains/gcc-darwin-arm64 and
-  # backported with his help to gcc-11 branch.
+  # backported with his help to gcc-1? branch.
 
   # The repo used by the HomeBrew:
   # https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gcc.rb
@@ -79,8 +58,6 @@ function gcc_download()
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}"
 
-  # local gcc_download_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${XBB_GCC_SRC_FOLDER_NAME}-downloaded"
-  # if [ ! -f "${gcc_download_stamp_file_path}" ]
   if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}" ]
   then
 
@@ -98,9 +75,6 @@ function gcc_download()
       download_and_extract "${gcc_url}" "${gcc_archive}" \
         "${XBB_GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
     fi
-
-    # mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
-    # touch "${gcc_download_stamp_file_path}"
   fi
 }
 
@@ -417,6 +391,7 @@ function gcc_build()
 
             config_options+=("--with-boot-ldflags=${ldflags_for_boot}") # -v -Wl,-v
 
+            # Required on macOS, but here apparently not.
             # config_options+=("--disable-rpath")
 
             # The Linux build also uses:
@@ -685,109 +660,6 @@ function gcc_build()
 
   tests_add "gcc_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
-
-# Deprecated.
-# Currently not used, work done by gcc_build().
-function _gcc_build_libs()
-{
-  echo_develop
-  echo_develop "[${FUNCNAME[0]} $@]"
-
-  local gcc_libs_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-libs-installed"
-  if [ ! -f "${gcc_libs_stamp_file_path}" ]
-  then
-    (
-      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
-      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
-
-      CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
-      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-      LDFLAGS="${XBB_LDFLAGS_APP} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
-
-      export CPPFLAGS
-      export CFLAGS
-      export CXXFLAGS
-      export LDFLAGS
-
-      (
-        xbb_show_env_develop
-
-        echo
-        echo "Running gcc-libs make..."
-
-        run_verbose make -j ${XBB_JOBS} all-target-libgcc
-
-        if [ "${XBB_WITH_STRIP}" == "y" ]
-        then
-          run_verbose make install-strip-target-libgcc
-        else
-          run_verbose make install-target-libgcc
-        fi
-
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-libs-output-$(ndate).txt"
-    )
-
-    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
-    touch "${gcc_libs_stamp_file_path}"
-  else
-    echo "Component gcc-libs already installed"
-  fi
-}
-
-# Deprecated.
-# Currently not used, work done by gcc_build().
-function _gcc_build_final()
-{
-  echo_develop
-  echo_develop "[${FUNCNAME[0]} $@]"
-
-  local gcc_final_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${GCC_FOLDER_NAME}-final-installed"
-  if [ ! -f "${gcc_final_stamp_file_path}" ]
-  then
-    (
-      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
-      run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
-
-      CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
-      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
-
-      LDFLAGS="${XBB_LDFLAGS_APP} -Wl,-rpath,${XBB_FOLDER_PATH}/lib"
-
-      export CPPFLAGS
-      export CFLAGS
-      export CXXFLAGS
-      export LDFLAGS
-
-      (
-        xbb_show_env_develop
-
-        echo
-        echo "Running gcc-final make..."
-
-        run_verbose make -j ${XBB_JOBS}
-
-        if [ "${XBB_WITH_STRIP}" == "y" ]
-        then
-          run_verbose make install-strip
-        else
-          run_verbose make install
-        fi
-
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-final-output-$(ndate).txt"
-    )
-
-    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
-    touch "${gcc_final_stamp_file_path}"
-  else
-    echo "Component gcc-final already installed"
-  fi
-
-  tests_add "gcc_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-}
-
 
 function gcc_test()
 {
@@ -1156,19 +1028,8 @@ function gcc_test()
     elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       (
-        # # https://stackoverflow.com/questions/3146274/is-it-ok-to-use-dyld-library-path-on-mac-os-x-and-whats-the-dynamic-library-s
-        # Note: do not simply override DYLD_FALLBACK_LIBRARY_PATH,
-        # it must include the system lcoations.
-        # export DYLD_LIBRARY_PATH="$(${CC} -print-search-dirs | grep 'libraries: =' | sed -e 's|libraries: =||')"
-        # echo
-        # echo "DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}"
-
-        # Normally this is not needed, the resulting binaries use rpath:
-        # [objdump --macho --dylibs-used /Users/ilg/Work/gcc-12.2.0-2/darwin-x64/x86_64-apple-darwin21.6.0/tests/gcc/c-cpp/throwcatch-main]
-        # /Users/ilg/Work/gcc-12.2.0-2/darwin-x64/x86_64-apple-darwin21.6.0/tests/gcc/c-cpp/throwcatch-main: (LC_RPATH=@loader_path:/Users/ilg/Work/gcc-12.2.0-2/darwin-x64/application/lib/gcc/x86_64-apple-darwin21.6.0/12.2.0:/Users/ilg/Work/gcc-12.2.0-2/darwin-x64/application/lib)
-        # 	@rpath/libstdc++.6.dylib (compatibility version 7.0.0, current version 7.30.0)
-        # 	@rpath/libgcc_s.1.1.dylib (compatibility version 1.0.0, current version 1.1.0)
-        # 	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1319.0.0)
+        # By default the references to libstdc++ are absolute and no rpath
+        # is required.
 
         if [[ "${gcc_version}" =~ 13[.]2[.]0 ]] && [ "${XBB_HOST_ARCH}" == "x64" ]
         then
