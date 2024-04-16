@@ -1204,8 +1204,12 @@ function gcc_test()
           compiler-tests-single "${test_bin_path}" --gc --lto --lld
         fi
 
-        echo
-        echo "Skipping all --static-lib on macOS..."
+        # Again, with -static-libstdc++
+        compiler-tests-single "${test_bin_path}" --static-lib
+        compiler-tests-single "${test_bin_path}" --gc --static-lib
+        compiler-tests-single "${test_bin_path}" --lto --static-lib
+        compiler-tests-single "${test_bin_path}" --gc --lto --static-lib
+
         echo
         echo "Skipping all --static on macOS..."
       )
