@@ -210,10 +210,6 @@ function gcc_build()
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
           config_options+=("--program-suffix=")
 
-          # Defaults, but make them explicit for clarity.
-          config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
-          config_options+=("--libexecdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/libexec")
-
           config_options+=("--infodir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/info")
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
           config_options+=("--htmldir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/html")
