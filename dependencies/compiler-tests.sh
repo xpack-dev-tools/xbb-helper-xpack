@@ -204,8 +204,12 @@ function compiler-tests-single()
       prefix="static-${prefix}"
     elif [ "${is_static_lib}" == "y" ]
     then
-      LDFLAGS+=" -static-libgcc"
-      LDXXFLAGS+=" -static-libgcc -static-libstdc++"
+      if [ "${XBB_TARGET_PLATFORM}" != "darwin" ]
+      then
+        LDFLAGS+=" -static-libgcc"
+        LDXXFLAGS+=" -static-libgcc"
+      fi
+      LDXXFLAGS+=" -static-libstdc++"
       prefix="static-lib-${prefix}"
     fi
 
