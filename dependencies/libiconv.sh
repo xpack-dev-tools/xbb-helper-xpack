@@ -36,6 +36,7 @@ function libiconv_build()
 
   local disable_shared="n"
   local suffix=""
+  local bits_flags=""
 
   while [ $# -gt 0 ]
   do
@@ -47,6 +48,16 @@ function libiconv_build()
 
       --suffix=* )
         suffix=$(xbb_parse_option "$1")
+        shift
+        ;;
+
+      --32 )
+        bits_flags=" -m32"
+        shift
+        ;;
+
+      --64 )
+        bits_flags=" -m64"
         shift
         ;;
 
@@ -85,10 +96,10 @@ function libiconv_build()
       CPPFLAGS="${XBB_CPPFLAGS}"
       # -fgnu89-inline fixes "undefined reference to `aliases2_lookup'"
       #  https://savannah.gnu.org/bugs/?47953
-      CFLAGS="${XBB_CFLAGS_NO_W} -fgnu89-inline"
-      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+      CFLAGS="${XBB_CFLAGS_NO_W} -fgnu89-inline ${bits_flags}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W} ${bits_flags}"
 
-      LDFLAGS="${XBB_LDFLAGS_LIB}"
+      LDFLAGS="${XBB_LDFLAGS_LIB} ${bits_flags}"
 
       xbb_adjust_ldflags_rpath
 
