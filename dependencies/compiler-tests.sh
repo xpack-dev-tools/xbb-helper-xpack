@@ -313,7 +313,13 @@ function compiler-tests-single()
 
       # -----------------------------------------------------------------------
 
-      run_host_app_verbose "${CXX}" "sleepy-threads.cpp" -o "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      then
+        run_host_app_verbose "${CXX}" "sleepy-threads.cpp" -o "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -lpthread
+      else
+        run_host_app_verbose "${CXX}" "sleepy-threads.cpp" -o "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+      fi
+
       expect_target_output "abcd" "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" 4
       expect_target_output "abcdefgh" "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" 8
 
