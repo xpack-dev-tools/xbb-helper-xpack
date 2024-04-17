@@ -959,6 +959,8 @@ function gcc_test()
         compiler-tests-single "${test_bin_path}" --gc
         compiler-tests-single "${test_bin_path}" --lto
         compiler-tests-single "${test_bin_path}" --gc --lto
+
+        compiler_tests_single_fortran "${test_bin_path}"
       )
       (
         if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
@@ -995,6 +997,8 @@ function gcc_test()
           compiler-tests-single "${test_bin_path}" --64 --gc
           compiler-tests-single "${test_bin_path}" --64 --lto
           compiler-tests-single "${test_bin_path}" --64 --gc --lto
+
+          compiler_tests_single_fortran "${test_bin_path}" --64
         )
         if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
         then
@@ -1010,6 +1014,8 @@ function gcc_test()
             compiler-tests-single "${test_bin_path}" --32 --gc
             compiler-tests-single "${test_bin_path}" --32 --lto
             compiler-tests-single "${test_bin_path}" --32 --gc --lto
+
+            compiler_tests_single_fortran "${test_bin_path}" --32
           )
         fi
       else
@@ -1022,6 +1028,8 @@ function gcc_test()
           compiler-tests-single "${test_bin_path}" --gc
           compiler-tests-single "${test_bin_path}" --lto
           compiler-tests-single "${test_bin_path}" --gc --lto
+
+          compiler_tests_single_fortran "${test_bin_path}"
         )
       fi
 
@@ -1036,9 +1044,9 @@ function gcc_test()
         then
           (
             # Mainly for libgfortran.so.
-            export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m64)"
-            echo
-            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+            # export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m64)"
+            # echo
+            # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
             compiler-tests-single "${test_bin_path}" --64 --static-lib
             compiler-tests-single "${test_bin_path}" --64 --static-lib --gc
@@ -1051,9 +1059,9 @@ function gcc_test()
             echo "Skipping -m32 --static-lib tests..."
           else
             (
-              export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m32)"
-              echo
-              echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+              # export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m32)"
+              # echo
+              # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
               compiler-tests-single "${test_bin_path}" --32 --static-lib
               compiler-tests-single "${test_bin_path}" --32 --static-lib --gc
@@ -1064,9 +1072,9 @@ function gcc_test()
         else
           (
             # Mainly for libgfortran.so.
-            export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
-            echo
-            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+            # export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
+            # echo
+            # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
             compiler-tests-single "${test_bin_path}" --static-lib
             compiler-tests-single "${test_bin_path}" --static-lib --gc
@@ -1153,11 +1161,17 @@ function gcc_test()
           compiler-tests-single "${test_bin_path}" --gc --lto --lld
         fi
 
+        compiler_tests_single_fortran "${test_bin_path}"
+
+        # ---------------------------------------------------------------------
+
         # Again, with -static-libstdc++
         compiler-tests-single "${test_bin_path}" --static-lib
         compiler-tests-single "${test_bin_path}" --gc --static-lib
         compiler-tests-single "${test_bin_path}" --lto --static-lib
         compiler-tests-single "${test_bin_path}" --gc --lto --static-lib
+
+        # ---------------------------------------------------------------------
 
         echo
         echo "Skipping all --static on macOS..."
