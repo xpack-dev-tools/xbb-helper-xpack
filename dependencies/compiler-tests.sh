@@ -19,10 +19,10 @@
 # [--libunwind]
 # [--lld]
 
-function compiler-tests-single()
+function compiler_tests_single()
 {
   echo_develop
-  echo_develop "[compiler-tests-single $@]"
+  echo_develop "[compiler_tests_single $@]"
 
   local test_bin_path="$1"
   shift

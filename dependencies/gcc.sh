@@ -955,10 +955,10 @@ function gcc_test()
           echo "WINEPATH=${WINEPATH}"
         fi
 
-        compiler-tests-single "${test_bin_path}"
-        compiler-tests-single "${test_bin_path}" --gc
-        compiler-tests-single "${test_bin_path}" --lto
-        compiler-tests-single "${test_bin_path}" --gc --lto
+        compiler_tests_single "${test_bin_path}"
+        compiler_tests_single "${test_bin_path}" --gc
+        compiler_tests_single "${test_bin_path}" --lto
+        compiler_tests_single "${test_bin_path}" --gc --lto
 
         compiler_tests_single_fortran "${test_bin_path}"
       )
@@ -973,16 +973,16 @@ function gcc_test()
           echo "WINEPATH=${WINEPATH}"
         fi
 
-        compiler-tests-single "${test_bin_path}" --static-lib
-        compiler-tests-single "${test_bin_path}" --static-lib --gc
-        compiler-tests-single "${test_bin_path}" --static-lib --lto
-        compiler-tests-single "${test_bin_path}" --static-lib --gc --lto
+        compiler_tests_single "${test_bin_path}" --static-lib
+        compiler_tests_single "${test_bin_path}" --static-lib --gc
+        compiler_tests_single "${test_bin_path}" --static-lib --lto
+        compiler_tests_single "${test_bin_path}" --static-lib --gc --lto
       )
       (
-        compiler-tests-single "${test_bin_path}" --static
-        compiler-tests-single "${test_bin_path}" --static --gc
-        compiler-tests-single "${test_bin_path}" --static --lto
-        compiler-tests-single "${test_bin_path}" --static --gc --lto
+        compiler_tests_single "${test_bin_path}" --static
+        compiler_tests_single "${test_bin_path}" --static --gc
+        compiler_tests_single "${test_bin_path}" --static --lto
+        compiler_tests_single "${test_bin_path}" --static --gc --lto
       )
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
@@ -993,10 +993,10 @@ function gcc_test()
           echo
           echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-          compiler-tests-single "${test_bin_path}" --64
-          compiler-tests-single "${test_bin_path}" --64 --gc
-          compiler-tests-single "${test_bin_path}" --64 --lto
-          compiler-tests-single "${test_bin_path}" --64 --gc --lto
+          compiler_tests_single "${test_bin_path}" --64
+          compiler_tests_single "${test_bin_path}" --64 --gc
+          compiler_tests_single "${test_bin_path}" --64 --lto
+          compiler_tests_single "${test_bin_path}" --64 --gc --lto
 
           compiler_tests_single_fortran "${test_bin_path}" --64
         )
@@ -1010,10 +1010,10 @@ function gcc_test()
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-            compiler-tests-single "${test_bin_path}" --32
-            compiler-tests-single "${test_bin_path}" --32 --gc
-            compiler-tests-single "${test_bin_path}" --32 --lto
-            compiler-tests-single "${test_bin_path}" --32 --gc --lto
+            compiler_tests_single "${test_bin_path}" --32
+            compiler_tests_single "${test_bin_path}" --32 --gc
+            compiler_tests_single "${test_bin_path}" --32 --lto
+            compiler_tests_single "${test_bin_path}" --32 --gc --lto
 
             compiler_tests_single_fortran "${test_bin_path}" --32
           )
@@ -1024,10 +1024,10 @@ function gcc_test()
           echo
           echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-          compiler-tests-single "${test_bin_path}"
-          compiler-tests-single "${test_bin_path}" --gc
-          compiler-tests-single "${test_bin_path}" --lto
-          compiler-tests-single "${test_bin_path}" --gc --lto
+          compiler_tests_single "${test_bin_path}"
+          compiler_tests_single "${test_bin_path}" --gc
+          compiler_tests_single "${test_bin_path}" --lto
+          compiler_tests_single "${test_bin_path}" --gc --lto
 
           compiler_tests_single_fortran "${test_bin_path}"
         )
@@ -1048,10 +1048,10 @@ function gcc_test()
             # echo
             # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-            compiler-tests-single "${test_bin_path}" --64 --static-lib
-            compiler-tests-single "${test_bin_path}" --64 --static-lib --gc
-            compiler-tests-single "${test_bin_path}" --64 --static-lib --lto
-            compiler-tests-single "${test_bin_path}" --64 --static-lib --gc --lto
+            compiler_tests_single "${test_bin_path}" --64 --static-lib
+            compiler_tests_single "${test_bin_path}" --64 --static-lib --gc
+            compiler_tests_single "${test_bin_path}" --64 --static-lib --lto
+            compiler_tests_single "${test_bin_path}" --64 --static-lib --gc --lto
           )
           if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
           then
@@ -1063,10 +1063,10 @@ function gcc_test()
               # echo
               # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-              compiler-tests-single "${test_bin_path}" --32 --static-lib
-              compiler-tests-single "${test_bin_path}" --32 --static-lib --gc
-              compiler-tests-single "${test_bin_path}" --32 --static-lib --lto
-              compiler-tests-single "${test_bin_path}" --32 --static-lib --gc --lto
+              compiler_tests_single "${test_bin_path}" --32 --static-lib
+              compiler_tests_single "${test_bin_path}" --32 --static-lib --gc
+              compiler_tests_single "${test_bin_path}" --32 --static-lib --lto
+              compiler_tests_single "${test_bin_path}" --32 --static-lib --gc --lto
             )
           fi
         else
@@ -1076,10 +1076,10 @@ function gcc_test()
             # echo
             # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-            compiler-tests-single "${test_bin_path}" --static-lib
-            compiler-tests-single "${test_bin_path}" --static-lib --gc
-            compiler-tests-single "${test_bin_path}" --static-lib --lto
-            compiler-tests-single "${test_bin_path}" --static-lib --gc --lto
+            compiler_tests_single "${test_bin_path}" --static-lib
+            compiler_tests_single "${test_bin_path}" --static-lib --gc
+            compiler_tests_single "${test_bin_path}" --static-lib --lto
+            compiler_tests_single "${test_bin_path}" --static-lib --gc --lto
           )
         fi
       fi
@@ -1095,28 +1095,28 @@ function gcc_test()
         if [ "${XBB_HOST_ARCH}" == "x64" ]
         then
           (
-            compiler-tests-single "${test_bin_path}" --64 --static
-            compiler-tests-single "${test_bin_path}" --64 --static --gc
-            compiler-tests-single "${test_bin_path}" --64 --static --lto
-            compiler-tests-single "${test_bin_path}" --64 --static --gc --lto
+            compiler_tests_single "${test_bin_path}" --64 --static
+            compiler_tests_single "${test_bin_path}" --64 --static --gc
+            compiler_tests_single "${test_bin_path}" --64 --static --lto
+            compiler_tests_single "${test_bin_path}" --64 --static --gc --lto
 
             if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
             then
               echo
               echo "Skipping -m32 --static tests..."
             else
-              compiler-tests-single "${test_bin_path}" --32 --static
-              compiler-tests-single "${test_bin_path}" --32 --static --gc
-              compiler-tests-single "${test_bin_path}" --32 --static --lto
-              compiler-tests-single "${test_bin_path}" --32 --static --gc --lto
+              compiler_tests_single "${test_bin_path}" --32 --static
+              compiler_tests_single "${test_bin_path}" --32 --static --gc
+              compiler_tests_single "${test_bin_path}" --32 --static --lto
+              compiler_tests_single "${test_bin_path}" --32 --static --gc --lto
             fi
           )
         else
           (
-            compiler-tests-single "${test_bin_path}" --static
-            compiler-tests-single "${test_bin_path}" --static --gc
-            compiler-tests-single "${test_bin_path}" --static --lto
-            compiler-tests-single "${test_bin_path}" --static --gc --lto
+            compiler_tests_single "${test_bin_path}" --static
+            compiler_tests_single "${test_bin_path}" --static --gc
+            compiler_tests_single "${test_bin_path}" --static --lto
+            compiler_tests_single "${test_bin_path}" --static --gc --lto
           )
         fi
 
@@ -1147,18 +1147,18 @@ function gcc_test()
           XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
         fi
 
-        compiler-tests-single "${test_bin_path}"
-        compiler-tests-single "${test_bin_path}" --gc
+        compiler_tests_single "${test_bin_path}"
+        compiler_tests_single "${test_bin_path}" --gc
 
         # Old macOS linkers do not support LTO, thus use lld.
         # Note: lld might be available in gcc 14.
         if true
         then
-          compiler-tests-single "${test_bin_path}" --lto
-          compiler-tests-single "${test_bin_path}" --gc --lto
+          compiler_tests_single "${test_bin_path}" --lto
+          compiler_tests_single "${test_bin_path}" --gc --lto
         else
-          compiler-tests-single "${test_bin_path}" --lto --lld
-          compiler-tests-single "${test_bin_path}" --gc --lto --lld
+          compiler_tests_single "${test_bin_path}" --lto --lld
+          compiler_tests_single "${test_bin_path}" --gc --lto --lld
         fi
 
         compiler_tests_single_fortran "${test_bin_path}"
@@ -1166,10 +1166,10 @@ function gcc_test()
         # ---------------------------------------------------------------------
 
         # Again, with -static-libstdc++
-        compiler-tests-single "${test_bin_path}" --static-lib
-        compiler-tests-single "${test_bin_path}" --gc --static-lib
-        compiler-tests-single "${test_bin_path}" --lto --static-lib
-        compiler-tests-single "${test_bin_path}" --gc --lto --static-lib
+        compiler_tests_single "${test_bin_path}" --static-lib
+        compiler_tests_single "${test_bin_path}" --gc --static-lib
+        compiler_tests_single "${test_bin_path}" --lto --static-lib
+        compiler_tests_single "${test_bin_path}" --gc --lto --static-lib
 
         # ---------------------------------------------------------------------
 
