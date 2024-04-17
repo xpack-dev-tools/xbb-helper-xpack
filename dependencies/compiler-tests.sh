@@ -569,10 +569,53 @@ function compiler-tests-single()
       # Test a very simple Objective-C (a printf).
       run_host_app_verbose "${CC}" simple-objc.m -o "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
       expect_target_output "Hello World" "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}"
-
     )
 
-    # -------------------------------------------------------------------------
+  )
+}
+
+# test_bin_path
+# [--32|--64]
+function compiler_tests_single_fortran()
+{
+  echo_develop
+  echo_develop "[compiler_tests_single_fortran $@]"
+
+  local test_bin_path="$1"
+  shift
+
+  (
+    unset IFS
+
+    local prefix=""
+    local suffix=""
+    local bits_flags=""
+
+    while [ $# -gt 0 ]
+    do
+      case "$1" in
+
+        --64 )
+          bits_flags=" -m64"
+          suffix="-64"
+          shift
+          ;;
+
+        --32 )
+          bits_flags=" -m32"
+          suffix="-32"
+          shift
+          ;;
+
+        * )
+          echo "Unsupported option $1 in ${FUNCNAME[0]}()"
+          exit 1
+          ;;
+
+      esac
+    done
+
+    LDFLAGS=""
 
     if is_variable_set "F90"
     then
@@ -587,12 +630,12 @@ function compiler-tests-single()
           echo "Skipping Fortran tests on Windows..."
         else
           # Test a very simple Fortran (a print).
-          run_host_app_verbose "${F90}" hello.f90 -o "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+          run_host_app_verbose "${F90}" hello.f90 -o "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}" ${bits_flags} ${LDFLAGS}
           # The space is expected.
           expect_target_output " Hello" "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}"
 
           # Test a concurrent computation.
-          run_host_app_verbose "${F90}" concurrent.f90 -o "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+          run_host_app_verbose "${F90}" concurrent.f90 -o "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}" ${bits_flags} ${LDFLAGS}
 
           show_target_libs_develop "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}"
           run_target_app_verbose "./${prefix}concurrent-f${suffix}"
@@ -602,7 +645,6 @@ function compiler-tests-single()
       echo
       echo "Skipping Fortran tests, compiler not available..."
     fi
-
   )
 }
 
