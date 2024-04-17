@@ -782,8 +782,14 @@ function gcc_test()
 
     if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
-      show_host_libs "$(${CC} --print-file-name=libgcc_s.so.1)"
-      show_host_libs "$(${CC} --print-file-name=libstdc++.so.6)"
+      show_host_libs "$(${CC} -m64 --print-file-name=libgcc_s.so.1)"
+      show_host_libs "$(${CC} -m64 --print-file-name=libstdc++.so.6)"
+
+      if [ "${XBB_SKIP_32_BIT_TESTS:-""}" != "y" ]
+      then
+        show_host_libs "$(${CC} -m32 --print-file-name=libgcc_s.so.1)"
+        show_host_libs "$(${CC} -m32 --print-file-name=libstdc++.so.6)"
+      fi
     elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       local libgcc_path="$(${CC} --print-file-name=libgcc_s.1.dylib)"
@@ -846,6 +852,15 @@ function gcc_test()
     run_host_app_verbose "${CXX}" -print-multi-os-directory
     run_host_app_verbose "${CXX}" -print-sysroot
     run_host_app_verbose "${CXX}" -print-prog-name=cc1plus
+
+    if [ "${XBB_HOST_PLATFORM}" == "linux" ] && [ "${XBB_SKIP_32_BIT_TESTS:-""}" != "y" ]
+    then
+      run_host_app_verbose "${CC}" -m32 -print-search-dirs
+      run_host_app_verbose "${CC}" -m32 -print-multi-os-directory
+
+      run_host_app_verbose "${CXX}" -m32 -print-search-dirs
+      run_host_app_verbose "${CXX}" -m32 -print-multi-os-directory
+    fi
 
     echo
     echo "Testing if gcc compiles simple programs..."
