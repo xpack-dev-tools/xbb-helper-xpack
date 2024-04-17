@@ -731,6 +731,7 @@ function gcc_mingw_test()
     if [[ "${gcc_version}" =~ 11[.]4[.]0 ]] || \
        [[ "${gcc_version}" =~ 12[.]3[.]0 ]] || \
        [[ "${gcc_version}" =~ 13[.]2[.]0 ]]
+       [[ "${gcc_version}" =~ 14[.]0[.]1 ]]
     then
 
       # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/install/lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
@@ -804,6 +805,8 @@ function gcc_mingw_test()
       compiler_tests_single "${test_bin_path}" --gc ${bits}
       compiler_tests_single "${test_bin_path}" --lto ${bits}
       compiler_tests_single "${test_bin_path}" --gc --lto ${bits}
+
+      compiler_tests_single_fortran "${test_bin_path}" ${bits}
     )
 
     (
