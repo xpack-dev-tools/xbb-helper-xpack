@@ -248,7 +248,7 @@ __EOF__
       run_host_app_verbose "${test_bin_folder_path}/flex" test.flex
 
       (
-        export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}")"
+        export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
 
         if is_variable_set "XBB_LIBRARIES_INSTALL_FOLDER_PATH"
         then

@@ -261,7 +261,7 @@ __EOF__
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
       (
-        export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}" -m64)"
+        export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m64)"
         echo
         echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
@@ -289,7 +289,7 @@ __EOF__
         echo "skip gdb check"
       else
         (
-          export LD_LIBRARY_PATH="$(xbb_get_libs_path "${CXX}")"
+          export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
           echo
           echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 

@@ -628,7 +628,7 @@ function gcc_cross_build_final()
         export CXXFLAGS_FOR_BUILD="${XBB_CXXFLAGS_NO_W}"
         export CPPFLAGS_FOR_BUILD=""
         LDFLAGS_FOR_BUILD="-O2 -v -Wl,--gc-sections"
-        local libs_path="$(xbb_get_libs_path "${CC_FOR_BUILD}")"
+        local libs_path="$(xbb_get_toolchain_library_path "${CC_FOR_BUILD}")"
 
         export LDFLAGS_FOR_BUILD+="$(xbb_expand_linker_rpaths "${libs_path}")"
       fi
