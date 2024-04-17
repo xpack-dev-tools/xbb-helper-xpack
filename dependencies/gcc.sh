@@ -131,7 +131,13 @@ function gcc_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      LDFLAGS="-DXBB_MARKER_TOP ${XBB_LDFLAGS_APP}"
+      if [ "${XBB_IS_DEVELOP}" == "y" ]
+      then
+        LDFLAGS="-DXBB_MARKER_TOP"
+      else
+        LDFLAGS=""
+      fi
+      LDFLAGS+=" ${XBB_LDFLAGS_APP}"
 
       # Before LDFLAGS_FOR_TARGET & Co.
       xbb_adjust_ldflags_rpath
@@ -155,7 +161,13 @@ function gcc_build()
 
         # The target may refer to the development libraries.
         # It does not need the bootstrap toolchain rpaths.
-        LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET ${XBB_LDFLAGS_APP}"
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        then
+          LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET"
+        else
+          LDFLAGS_FOR_TARGET=""
+        fi
+        LDFLAGS_FOR_TARGET+=" ${XBB_LDFLAGS_APP}"
         # The static libiconv is used to avoid a reference in libstdc++.dylib
         LDFLAGS_FOR_TARGET+=" -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib"
         LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
@@ -176,7 +188,13 @@ function gcc_build()
 
         # The target may refer to the development libraries.
         # It does not need the bootstrap toolchain rpaths.
-        LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET ${XBB_LDFLAGS_APP}"
+        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        then
+          LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET"
+        else
+          LDFLAGS_FOR_TARGET=""
+        fi
+        LDFLAGS_FOR_TARGET+=" ${XBB_LDFLAGS_APP}"
         LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
         LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
 
@@ -329,7 +347,14 @@ function gcc_build()
 
             # Build stage 1 with static system libraries.
             # The flags are added to the top LDFLAGS, so no need to repeat them.
-            local ldflags_for_bootstrap="-DXBB_MARKER_STAGE1 -static-libstdc++"
+            local ldflags_for_bootstrap
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            then
+              ldflags_for_bootstrap="-DXBB_MARKER_STAGE1"
+            else
+              ldflags_for_bootstrap=""
+            fi
+            ldflags_for_bootstrap+=" -static-libstdc++"
             if [[ $(basename "${CC}") =~ .*gcc.* ]]
             then
               # -static-libgcc is available only when bootstraping with gcc.
@@ -341,7 +366,14 @@ function gcc_build()
             # Build the intermediate stages (2 & 3) with static system libraries,
             # to save some references to shared libraries.
             # The bootstrap toolchain rpaths are not needed.
-            local ldflags_for_boot="-DXBB_MARKER_BOOT -static-libstdc++ -static-libgcc ${XBB_LDFLAGS_APP}"
+            local ldflags_for_boot
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            then
+              ldflags_for_boot="-DXBB_MARKER_BOOT"
+            else
+              ldflags_for_boot=""
+            fi
+            ldflags_for_boot+=" -static-libstdc++ -static-libgcc ${XBB_LDFLAGS_APP}"
             ldflags_for_boot+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
             ldflags_for_boot+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
 
@@ -373,7 +405,15 @@ function gcc_build()
             # compiler will be statically linked, to avoid computing
             # multiple rpaths in multilib cases.
             # The flags are added to the top LDFLAGS, so no need to repeat them.
-            config_options+=("--with-stage1-ldflags=-DXBB_MARKER_STAGE1 -static-libstdc++ -static-libgcc") # -v -Wl,-v
+            local ldflags_for_bootstrap
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            then
+              ldflags_for_bootstrap="-DXBB_MARKER_STAGE1"
+            else
+              ldflags_for_bootstrap=""
+            fi
+            ldflags_for_bootstrap+=" -static-libstdc++ -static-libgcc"
+            config_options+=("--with-stage1-ldflags=${ldflags_for_bootstrap}") # -v -Wl,-v
 
             # Do not enable it, since it switches the compiler to CC, not CXX.
             # config_options+=("--with-boot-libs=-lpthread")
@@ -381,7 +421,14 @@ function gcc_build()
             # Build the intermediate stages (2 & 3) with static system libraries,
             # to save some references to shared libraries.
             # The bootstrap toolchain rpaths are not needed.
-            local ldflags_for_boot="-DXBB_MARKER_BOOT -static-libstdc++ -static-libgcc ${XBB_LDFLAGS_APP}"
+            local ldflags_for_boot
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            then
+              ldflags_for_boot="-DXBB_MARKER_BOOT"
+            else
+              ldflags_for_boot=""
+            fi
+            ldflags_for_boot+=" -static-libstdc++ -static-libgcc ${XBB_LDFLAGS_APP}"
             ldflags_for_boot+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
             ldflags_for_boot+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
 
