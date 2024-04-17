@@ -26,14 +26,14 @@ function timer_stop()
   local delta_seconds=$((script_end_second-XBB_SCRIPT_BEGIN_SECOND))
   if [ ${delta_seconds} -lt 2 ]
   then
-    printf "Duration: %d second" ${delta_seconds}
+    printf "Duration: %d second\n" ${delta_seconds}
   elif [ ${delta_seconds} -lt 100 ]
   then
-    printf "Duration: %d seconds" ${delta_seconds}
+    printf "Duration: %d seconds\n" ${delta_seconds}
   elif [ ${delta_seconds} -lt 3600 ]
   then
     local delta_minutes=$(((delta_seconds+30)/60))
-    printf "Duration: %d minutes" ${delta_minutes}
+    printf "Duration: %d minutes\n" ${delta_minutes}
   else
     local delta_minutes=$(((delta_seconds+30)/60))
     local delta_hours=$((delta_minutes/60))
