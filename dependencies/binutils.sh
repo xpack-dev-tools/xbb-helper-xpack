@@ -352,21 +352,17 @@ function binutils_build()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          run_verbose make -O CFLAGS_FOR_TARGET="-O2 -g" \
-          CXXFLAGS="-O2 -no-pie -fno-PIC" \
-          CFLAGS="-O2 -no-pie" \
-          LDFLAGS="" \
-          check || true
+          (
+            export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
+            echo
+            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-          # On Linux there are 6 failing tests
-          # FAIL: relro_test.sh
-          # FAIL: object_unittest
-          # FAIL: binary_unittest
-          # FAIL: leb128_unittest
-          # FAIL: overflow_unittest
-          # FAIL: eh_test
-          # # XFAIL: 0
-          # # FAIL:  6
+            run_verbose make -O CFLAGS_FOR_TARGET="-O2 -g" \
+            CXXFLAGS="-O2 -no-pie -fno-PIC" \
+            CFLAGS="-O2 -no-pie" \
+            LDFLAGS="" \
+            check # || true
+          )
         fi
 
         # Avoid strip here, it may interfere with patchelf.
