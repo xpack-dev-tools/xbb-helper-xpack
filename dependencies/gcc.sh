@@ -632,6 +632,36 @@ function gcc_build()
           run_verbose make install
         fi
 
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+        then
+          # Hack to include the libiconv.a objects into libstdc++.a.
+          local tmp_path=$(mktemp -d)
+
+          if [ "${XBB_TARGET_ARCH}" == "x64" ] || [ "${XBB_TARGET_ARCH}" == "arm64" ]
+          then
+            (
+              rm -rf "${tmp_path}"
+              mkdir "${tmp_path}"
+              cd "${tmp_path}"
+
+              ${AR} xv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static64/lib/libiconv.a"
+              ${AR} rsv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64/libstdc++.a" *.o
+            )
+          fi
+
+          if [ "${XBB_TARGET_ARCH}" == "x64" ] || [ "${XBB_TARGET_ARCH}" == "arm" ]
+          then
+            (
+              rm -rf "${tmp_path}"
+              mkdir "${tmp_path}"
+              cd "${tmp_path}"
+
+              ${AR} xv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static32/lib/libiconv.a"
+              ${AR} rsv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib32/libstdc++.a" *.o
+            )
+          fi
+        fi
+
         if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
           echo
