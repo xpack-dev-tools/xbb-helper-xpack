@@ -554,11 +554,14 @@ function xbb_set_compiler_env()
       export XBB_NATIVE_CC="$(which gcc 2>/dev/null || echo gcc)"
       export XBB_NATIVE_CXX="$(which g++ 2>/dev/null || echo g++)"
 
-      export XBB_NATIVE_LD="$(which ld 2>/dev/null || echo ld)"
-
       export XBB_NATIVE_AR="$(which gcc-ar 2>/dev/null || which ar 2>/dev/null || echo ar)"
+      export XBB_NATIVE_AS="$(which as 2>/dev/null || echo as)"
+      export XBB_NATIVE_DLLTOOL="$(which dlltool 2>/dev/null || echo dlltool)"
+      export XBB_NATIVE_LD="$(which ld 2>/dev/null || echo ld)"
       export XBB_NATIVE_NM="$(which gcc-nm 2>/dev/null || which nm 2>/dev/null || echo nm)"
       export XBB_NATIVE_RANLIB="$(which gcc-ranlib 2>/dev/null || which ranlib 2>/dev/null || echo ranlib)"
+      export XBB_NATIVE_WINDMC="$(which windmc 2>/dev/null || echo windmc)"
+      export XBB_NATIVE_WINDRES="$(which windres 2>/dev/null || echo windres)"
 
       xbb_prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
     else
@@ -1401,8 +1404,8 @@ function _xbb_get_libs_path()
 function xbb_get_toolchain_library_path()
 {
   local libs_path=""
-  if [ "${XBB_HOST_PLATFORM}" == "linux" ] ||
-     [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  if [ "${XBB_BUILD_PLATFORM}" == "linux" ] ||
+     [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
 
     if [[ "$(basename ${1})" =~ .*g[c+][c+].* ]]
@@ -1424,7 +1427,7 @@ function xbb_get_toolchain_library_path()
       libs_path="$(dirname $("${REALPATH}" -m "${libstdcpp_path}"))"
     elif [[ "$(basename ${1})" =~ .*clang.* ]]
     then
-      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
       then
         # ./lib/clang/16/lib/aarch64-unknown-linux-gnu/libclang_rt.asan.so
         # ./lib/clang/16/lib/aarch64-unknown-linux-gnu/libclang_rt.tsan.so
@@ -1450,7 +1453,7 @@ function xbb_get_toolchain_library_path()
         local libcpp_path="$("${$@}" -print-file-name=libc++.so)"
         libs_path="$(dirname $("${REALPATH}" "${libcpp_path}")):${runtime_path}"
 
-      elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
       then
         # bin/../lib is valid with the xPack structure, and the HB folders
         local cxx_absolute_path="$(${REALPATH} "${CXX}")"
@@ -1466,7 +1469,7 @@ function xbb_get_toolchain_library_path()
         libs_path+="$(dirname $("${CXX}" -print-libgcc-file-name))"
 
       else
-        echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+        echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
         exit 1
       fi
     else
