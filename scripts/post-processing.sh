@@ -385,9 +385,9 @@ function copy_dependencies_recursive()
       echo
       if [ ! -z "${lc_rpaths_line}" ]
       then
-        otool -L "${actual_destination_file_path}" | sed -e "1s|:|: (LC_RPATH=${lc_rpaths_line})|"
+        otool -L "${actual_destination_file_path}" | sed -e "1s|:|: (LC_RPATH=${lc_rpaths_line})|" || true
       else
-        otool -L "${actual_destination_file_path}"
+        otool -L "${actual_destination_file_path}" || true
       fi
 
       local lib_paths=$(darwin_get_dylibs "${actual_destination_file_path}")
@@ -577,9 +577,9 @@ function copy_dependencies_recursive()
         echo
         if [ ! -z "${lc_rpaths_line}" ]
         then
-          otool -L "${actual_destination_file_path}" | sed -e "1s|^|Processed |" -e "1s|:|: (LC_RPATH=${lc_rpaths_line})|"
+          otool -L "${actual_destination_file_path}" | sed -e "1s|^|Processed |" -e "1s|:|: (LC_RPATH=${lc_rpaths_line})|" || true
         else
-          otool -L "${actual_destination_file_path}" | sed -e "1s|^|Processed |"
+          otool -L "${actual_destination_file_path}" | sed -e "1s|^|Processed |" || true
         fi
       )
 
@@ -1657,13 +1657,13 @@ function strip_binary()
     return
   fi
 
-  echo "[${strip} ${file_path}]"
+  # echo "[${strip} ${file_path}]"
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
   then
     # Remove the debugging symbol table entries; there is no --strip-unneeded.
-    "${strip}" -S "${file_path}" || true
+    run_verbose "${strip}" -S "${file_path}" || true
   else
-    "${strip}" --strip-unneeded "${file_path}" || true
+    run_verbose "${strip}" --strip-unneeded "${file_path}" || true
   fi
 }
 
@@ -1825,7 +1825,7 @@ function check_binary_for_libraries()
           echo "${file_name}: (${file_path})"
         fi
 
-        otool -L "${file_name}" | tail -n +2
+        otool -L "${file_name}" | tail -n +2 || true
         set -e
       )
 
@@ -1911,9 +1911,9 @@ function check_binary_for_libraries()
         local unxp
         if [[ "${file_name}" =~ .*[.]dylib ]]
         then
-          unxp=$(otool -L "${file_path}" | sed '1d' | sed '1d' | grep -v "${file_name}" | egrep -e "(macports|homebrew|opt|install)/")
+          unxp=$(otool -L "${file_path}" | sed '1d' | sed '1d' | grep -v "${file_name}" | egrep -e "(macports|homebrew|opt|install)/") || true
         else
-          unxp=$(otool -L "${file_path}" | sed '1d' | grep -v "${file_name}" | egrep -e "(macports|homebrew|opt|install)/")
+          unxp=$(otool -L "${file_path}" | sed '1d' | grep -v "${file_name}" | egrep -e "(macports|homebrew|opt|install)/") || true
         fi
 
         # echo "|${unxp}|"

@@ -261,7 +261,8 @@ function darwin_get_lc_rpaths()
   otool -l "${file_path}" \
         | grep LC_RPATH -A2 \
         | grep '(offset ' \
-        | sed -e 's|.*path \(.*\) (offset.*)|\1|'
+        | sed -e 's|.*path \(.*\) (offset.*)|\1|' || true
+
 }
 
 function darwin_get_dylibs()
@@ -273,13 +274,13 @@ function darwin_get_dylibs()
     otool -l "${file_path}" \
           | grep LC_LOAD_DYLIB -A2 \
           | grep '(offset ' \
-          | sed -e 's|.*name \(.*\) (offset.*)|\1|'
+          | sed -e 's|.*name \(.*\) (offset.*)|\1|' || true
 
   else
     # Skip the extra line with the library name.
     otool -L "${file_path}" \
           | sed '1d' \
-          | sed -e 's|[[:space:]]*\(.*\) (.*)|\1|' \
+          | sed -e 's|[[:space:]]*\(.*\) (.*)|\1|' || true
 
   fi
 }
@@ -316,7 +317,7 @@ function pyrealpath()
     echo "usage: pyrealpath ... path"
     exit 1
   fi
-  
+
   "${PYTHON}" -c 'import os, sys; print(os.path.realpath(os.path.abspath(sys.argv[1])))' "${path}"
 }
 
