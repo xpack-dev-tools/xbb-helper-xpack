@@ -255,7 +255,7 @@ function gcc_build()
 
           config_options+=("--with-pkgversion=${XBB_GCC_BRANDING}")
 
-          #  build crashes LTO on Apple Silicon.
+          # LTO build crashes on Apple Silicon.
           # config_options+=("--with-build-config=-lto") # Arch
 
           # config_options+=("--with-gcc-major-version-only") # HB
@@ -559,7 +559,7 @@ function gcc_build()
               exit 1
             fi
 
-            # Cross builds have their own explicit .
+            # Cross builds have their own explicit bootstrap.
             config_options+=("--disable-bootstrap")
 
             config_options+=("--enable-mingw-wildcard")
