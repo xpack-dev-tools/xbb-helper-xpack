@@ -27,7 +27,7 @@ function autotools_build()
 
   # https://ftp.gnu.org/gnu/autoconf/
   # depends on m4.
-  autoconf_build "2.71"
+  autoconf_build "2.72" # "2.71"
 
   # https://ftp.gnu.org/gnu/automake/
   # depends on autoconf.
