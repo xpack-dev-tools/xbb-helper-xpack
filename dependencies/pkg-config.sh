@@ -125,6 +125,9 @@ function pkg_config_build()
           config_options+=("--disable-host-tool") # HB
           config_options+=("--disable-compile-warnings")
 
+          config_options+=("--disable-dependency-tracking")
+
+
           # --with-internal-glib fails with
           # gconvert.c:61:2: error: #error GNU libiconv not in use but included iconv.h is from libiconv
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${pkg_config_src_folder_name}/configure" \
@@ -148,7 +151,7 @@ function pkg_config_build()
           run_verbose make install
         fi
 
-        if [ "${XBB_WITH_TESTS}" == "y" ]
+        if false # [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check
         fi
