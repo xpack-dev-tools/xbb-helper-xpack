@@ -637,33 +637,46 @@ function gcc_build()
           # Hack to include the libiconv.a objects into libstdc++.a.
           local tmp_path=$(mktemp -d)
 
+          echo
+          echo "Including libiconv.a into libstdc++.a..."
+
           if [ "${XBB_TARGET_ARCH}" == "x64" ]
           then
             (
               rm -rf "${tmp_path}"
               mkdir "${tmp_path}"
-              cd "${tmp_path}"
+              run_verbose_develop cd "${tmp_path}"
 
-              ${AR} xv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static64/lib/libiconv.a"
-              ${AR} rsv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64/libstdc++.a" *.o
+              run_verbose ${AR} xv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static64/lib/libiconv.a"
+              run_verbose ${AR} rsv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64/libstdc++.a" *.o
             )
             (
               rm -rf "${tmp_path}"
               mkdir "${tmp_path}"
-              cd "${tmp_path}"
+              run_verbose_develop cd "${tmp_path}"
 
-              ${AR} xv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static32/lib/libiconv.a"
-              ${AR} rsv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib32/libstdc++.a" *.o
+              run_verbose ${AR} xv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static32/lib/libiconv.a"
+              run_verbose ${AR} rsv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib32/libstdc++.a" *.o
             )
-          elif [ "${XBB_TARGET_ARCH}" == "arm64" ] || [ "${XBB_TARGET_ARCH}" == "arm" ]
+          elif [ "${XBB_TARGET_ARCH}" == "arm64" ]
           then
             (
               rm -rf "${tmp_path}"
               mkdir "${tmp_path}"
-              cd "${tmp_path}"
+              run_verbose_develop cd "${tmp_path}"
 
-              ${AR} xv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib/libiconv.a"
-              ${AR} rsv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/libstdc++.a" *.o
+              run_verbose ${AR} xv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib/libiconv.a"
+              run_verbose ${AR} rsv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib64/libstdc++.a" *.o
+            )
+          elif [ "${XBB_TARGET_ARCH}" == "arm" ]
+          then
+            (
+              rm -rf "${tmp_path}"
+              mkdir "${tmp_path}"
+              run_verbose_develop cd "${tmp_path}"
+
+              run_verbose ${AR} xv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib/libiconv.a"
+              run_verbose ${AR} rsv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/libstdc++.a" *.o
             )
           else
             echo "Unsupported XBB_TARGET_ARCH=${XBB_TARGET_ARCH} in ${FUNCNAME[0]}()"
