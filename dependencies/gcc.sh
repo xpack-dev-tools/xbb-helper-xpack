@@ -641,6 +641,25 @@ function gcc_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
+        if [ "${XBB_WITH_TESTS}" == "y" ] && [ "${XBB_APPLICATION_ENABLE_GCC_CHECK:-""}" == "y" ]
+        then
+          (
+            echo
+            echo "Running gcc make check..."
+
+            xbb_activate_installed_bin
+
+            export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
+            echo
+            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+
+            make -k check || true
+          )
+        fi
+
+        echo
+        echo "Running gcc make install..."
+
         if [ "${XBB_WITH_STRIP}" == "y" ]
         then
           run_verbose make install-strip
@@ -760,6 +779,8 @@ function gcc_build()
         fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-output-$(ndate).txt"
+
+      grep FAIL "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-output-$(ndate).txt" || true
     )
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
