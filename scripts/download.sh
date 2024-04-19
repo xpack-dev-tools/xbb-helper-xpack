@@ -33,7 +33,11 @@ function git_clone()
     if [ -n "${commit}" ]
     then
       run_verbose git -C "${folder_name}.download" checkout -qf "${commit}"
+    else
+      run_verbose git -C "${folder_name}.download" rev-parse HEAD
     fi
+    run_verbose git -C "${folder_name}.download" log -1 --format=%cd
+    
     run_verbose mv "${folder_name}.download" "${folder_name}"
   )
 }
