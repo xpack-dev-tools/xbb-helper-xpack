@@ -780,7 +780,8 @@ function gcc_build()
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-output-$(ndate).txt"
 
-      grep FAIL "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/make-output-$(ndate).txt" || true
+      grep -i "FAIL:" "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}"/make-output-*.txt || true
+      grep -i "error:" "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}"/make-output-*.txt || true
     )
 
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
