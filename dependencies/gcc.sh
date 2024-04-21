@@ -169,6 +169,11 @@ function gcc_build()
         # Hack to prevent "too many sections", "File too big" etc in insn-emit.c
         CXXFLAGS=$(echo ${CXXFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')
         CXXFLAGS+=" -D__USE_MINGW_ACCESS"
+
+        # c++tools require a pic/libiberty.a, and --with-pic is ignored.
+        CFLAGS+=" -fPIC"
+        CXXFLAGS+=" -fPIC"
+
       elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         # HomeBrew mentiones this:
