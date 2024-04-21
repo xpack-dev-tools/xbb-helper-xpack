@@ -548,6 +548,9 @@ function gcc_build()
               config_options+=("--enable-shared") # Arch
             fi
 
+            # To keep -fPIC and generate  pic/libiberty.a
+            config_options+=("--enable-host-shared")
+
             if [ "${XBB_HOST_ARCH}" == "x64" ]
             then
               config_options+=("--with-arch=x86-64")
