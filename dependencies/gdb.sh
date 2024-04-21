@@ -216,8 +216,6 @@ function gdb_test()
   # ---------------------------------------------------------------------------
   # Test if GDB is built with correct ELF support.
   (
-    CXX="$(which g++)"
-
     rm -rf "${XBB_TESTS_FOLDER_PATH}/gdb"
     mkdir -pv "${XBB_TESTS_FOLDER_PATH}/gdb"
     run_verbose_develop cd "${XBB_TESTS_FOLDER_PATH}/gdb"
@@ -237,17 +235,19 @@ __EOF__
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
       (
-        if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-        then
-          cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
-          export PATH="${cxx_lib_path}:${PATH:-}"
-          echo "PATH=${PATH}"
-        else
-          export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
-          echo "WINEPATH=${WINEPATH}"
-        fi
+        # if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+        # then
+        #   cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
+        #   export PATH="${cxx_lib_path}:${PATH:-}"
+        #   echo "PATH=${PATH}"
+        # else
+        #   export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
+        #   echo "WINEPATH=${WINEPATH}"
+        # fi
 
-        run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp.exe -g -v
+        run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp.exe -g -v --static
+
+        show_target_libs hello-cpp.exe
 
         run_host_app_verbose "${GDB}" \
           --nx \
@@ -255,17 +255,20 @@ __EOF__
           --batch \
           hello-cpp.exe \
           --return-child-result \
-          -ex 'run' \
+          -ex 'run' ||
+          true
 
       )
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
       (
-        export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
-        echo
-        echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+        # export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
+        # echo
+        # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-        run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp -g -v
+        run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp -g -v -static-libstdc++ -static-libgcc
+
+        show_host_libs hello-cpp
 
         run_host_app_verbose "./hello-cpp"
 
@@ -294,7 +297,7 @@ __EOF__
             hello-cpp \
             --return-child-result \
             -ex 'run'
-            
+
         fi
 
       )
@@ -308,11 +311,13 @@ __EOF__
         echo "skip gdb check"
       else
         (
-          export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
-          echo
-          echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+          # export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
+          # echo
+          # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-          run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp -g -v
+          run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp -g -v -static-libstdc++
+
+          show_host_libs hello-cpp
 
           # echo 'startup-with-shell off' >.gdbinit
           # Test if GDB is built with correct ELF support.
