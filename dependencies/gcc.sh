@@ -962,7 +962,8 @@ function gcc_test()
 
       if [[ "${gcc_version}" =~ 11[.]4[.]0 ]] || \
          [[ "${gcc_version}" =~ 12[.]3[.]0 ]] || \
-         [[ "${gcc_version}" =~ 13[.]2[.]0 ]]
+         [[ "${gcc_version}" =~ 13[.]2[.]0 ]] || \
+         [[ "${gcc_version}" =~ 14[.]0[.]1 ]]
       then
         # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
         # collect2.exe: error: ld returned 1 exit status
@@ -1023,6 +1024,7 @@ function gcc_test()
         compiler_tests_single_fortran "${test_bin_path}"
       )
       (
+        # For libwinpthread.
         if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
         then
           cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
@@ -1103,11 +1105,6 @@ function gcc_test()
         if [ "${XBB_HOST_ARCH}" == "x64" ]
         then
           (
-            # Mainly for libgfortran.so.
-            # export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m64)"
-            # echo
-            # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-
             compiler_tests_single "${test_bin_path}" --64 --static-lib
             compiler_tests_single "${test_bin_path}" --64 --static-lib --gc
             compiler_tests_single "${test_bin_path}" --64 --static-lib --lto
@@ -1119,10 +1116,6 @@ function gcc_test()
             echo "Skipping -m32 --static-lib tests..."
           else
             (
-              # export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m32)"
-              # echo
-              # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-
               compiler_tests_single "${test_bin_path}" --32 --static-lib
               compiler_tests_single "${test_bin_path}" --32 --static-lib --gc
               compiler_tests_single "${test_bin_path}" --32 --static-lib --lto
@@ -1131,11 +1124,6 @@ function gcc_test()
           fi
         else
           (
-            # Mainly for libgfortran.so.
-            # export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
-            # echo
-            # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-
             compiler_tests_single "${test_bin_path}" --static-lib
             compiler_tests_single "${test_bin_path}" --static-lib --gc
             compiler_tests_single "${test_bin_path}" --static-lib --lto
