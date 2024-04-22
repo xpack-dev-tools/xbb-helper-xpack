@@ -173,7 +173,6 @@ function gcc_build()
         # c++tools require a pic/libiberty.a, and --with-pic is ignored.
         CFLAGS+=" -fPIC"
         CXXFLAGS+=" -fPIC"
-
       elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         # HomeBrew mentiones this:
@@ -197,16 +196,6 @@ function gcc_build()
         export LDFLAGS_FOR_TARGET
       elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
-        # if is_native || is_bootstrap
-        # then
-        #   # Hack to avoid missing ZSTD_* symbols
-        #   # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
-        #   # lto-compress.cc:(.text._Z19lto_end_compressionP22lto_compression_stream+0x33): undefined reference to `ZSTD_compressBound'
-
-        #   # Testing -lzstd alone fails since it depends on -lpthread.
-        #   LDFLAGS+=" -lpthread"
-        # fi
-
         # The target may refer to the development libraries.
         # It does not need the bootstrap toolchain rpaths.
         if [ "${XBB_IS_DEVELOP}" == "y" ]
@@ -359,7 +348,7 @@ function gcc_build()
             # while Xcode may vary from version to version.
             config_options+=("--with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk") # HB
 
-            # From HomeBrew, but not present on 11.x
+            # From HomeBrew, but the folder is not present in 11.x
             # config_options+=("--with-native-system-header-dir=/usr/include")
 
             # Be sure the multi-step build is performed; shortcuts
@@ -623,20 +612,6 @@ function gcc_build()
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" \
             ${config_options[@]}
 
-          # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-          # then
-          #   # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: warning: libpthread.so.0, needed by /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/x86_64-pc-linux-gnu/install/lib/libisl.so, not found (try using -rpath or -rpath-link)
-          #   # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/linux-x64/application/x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
-          #   # lto-compress.cc:(.text+0x153): undefined reference to `ZSTD_compressBound'
-          #   local deps_path="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64:${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-          #   local deps_rpaths="$(xbb_expand_linker_rpaths "${deps_path}")"
-          #   run_verbose sed -i.bak \
-          #     -e "s|^\(POSTSTAGE1_LDFLAGS = .*\)$|\1 -lpthread ${deps_rpaths}|" \
-          #     "Makefile"
-
-          #   run_verbose diff Makefile.bak Makefile || true
-          # fi
-
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/config-log-$(ndate).txt"
 
         ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${GCC_FOLDER_NAME}/configure-output-$(ndate).txt"
@@ -743,10 +718,6 @@ function gcc_build()
         elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
           run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_TARGET_TRIPLET}"-*.exe
-
-          # These files are necessary:
-          # gcc.exe: fatal error: cannot execute 'as': CreateProcess: No such file or directory
-          # run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}/bin"
         fi
 
         show_host_libs "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc"
