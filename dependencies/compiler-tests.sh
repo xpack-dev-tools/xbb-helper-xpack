@@ -19,10 +19,10 @@
 # [--libunwind]
 # [--lld]
 
-function compiler_tests_single()
+function test_compiler_c_cpp()
 {
   echo_develop
-  echo_develop "[compiler_tests_single $@]"
+  echo_develop "[test_compiler_c_cpp $@]"
 
   local test_bin_path="$1"
   shift
@@ -576,10 +576,10 @@ function compiler_tests_single()
 
 # test_bin_path
 # [--32|--64]
-function compiler_tests_single_fortran()
+function test_compiler_fortran()
 {
   echo_develop
-  echo_develop "[compiler_tests_single_fortran $@]"
+  echo_develop "[test_compiler_fortran $@]"
 
   local test_bin_path="$1"
   shift

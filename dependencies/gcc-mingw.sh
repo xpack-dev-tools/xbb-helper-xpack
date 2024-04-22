@@ -786,26 +786,26 @@ function gcc_mingw_test()
         echo "WINEPATH=${WINEPATH}"
       fi
 
-      compiler_tests_single "${test_bin_path}" ${bits}
-      compiler_tests_single "${test_bin_path}" --gc ${bits}
-      compiler_tests_single "${test_bin_path}" --lto ${bits}
-      compiler_tests_single "${test_bin_path}" --gc --lto ${bits}
+      test_compiler_c_cpp "${test_bin_path}" ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --gc ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --lto ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --gc --lto ${bits}
 
-      compiler_tests_single_fortran "${test_bin_path}" ${bits}
+      test_compiler_fortran "${test_bin_path}" ${bits}
     )
 
     (
-      compiler_tests_single "${test_bin_path}" --static-lib ${bits}
-      compiler_tests_single "${test_bin_path}" --static-lib --gc ${bits}
-      compiler_tests_single "${test_bin_path}" --static-lib --lto ${bits}
-      compiler_tests_single "${test_bin_path}" --static-lib --gc --lto ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --static-lib ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --static-lib --gc ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --static-lib --lto ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --static-lib --gc --lto ${bits}
     )
 
     (
-      compiler_tests_single "${test_bin_path}" --static ${bits}
-      compiler_tests_single "${test_bin_path}" --static --gc ${bits}
-      compiler_tests_single "${test_bin_path}" --static --lto ${bits}
-      compiler_tests_single "${test_bin_path}" --static --gc --lto ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --static ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --static --gc ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --static --lto ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --static --gc --lto ${bits}
     )
 
     # -------------------------------------------------------------------------
