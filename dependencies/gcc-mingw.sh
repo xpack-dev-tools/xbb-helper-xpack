@@ -810,18 +810,6 @@ function gcc_mingw_test()
     )
 
     (
-      # For libwinpthread-1.dll. (This is a big pain).
-      # The DLLs are available in the /lib folder.
-      if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-      then
-        cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
-        export PATH="${cxx_lib_path}:${PATH:-}"
-        echo "PATH=${PATH}"
-      else
-        export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
-        echo "WINEPATH=${WINEPATH}"
-      fi
-
       compiler_tests_single "${test_bin_path}" --static-lib ${bits}
       compiler_tests_single "${test_bin_path}" --static-lib --gc ${bits}
       compiler_tests_single "${test_bin_path}" --static-lib --lto ${bits}
