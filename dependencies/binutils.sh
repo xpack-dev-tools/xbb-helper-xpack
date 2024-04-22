@@ -359,14 +359,14 @@ function binutils_build()
 
             if [ "${XBB_HOST_ARCH}" == "x64" ]
             then
-              run_verbose make -O CFLAGS_FOR_TARGET="-O2 -g" \
+              run_verbose make CFLAGS_FOR_TARGET="-O2 -g" \
               CXXFLAGS="-O2 -no-pie -fno-PIC" \
               CFLAGS="-O2 -no-pie" \
               LDFLAGS="" \
               check
             else
               # TODO: investigate why tests on Arm fail.
-              run_verbose make -O CFLAGS_FOR_TARGET="-O2 -g" \
+              run_verbose make CFLAGS_FOR_TARGET="-O2 -g" \
               CXXFLAGS="-O2 -no-pie -fno-PIC" \
               CFLAGS="-O2 -no-pie" \
               LDFLAGS="" \
