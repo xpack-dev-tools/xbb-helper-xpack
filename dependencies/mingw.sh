@@ -860,19 +860,6 @@ function mingw_build_winpthreads()
           run_verbose make install
         fi
 
-        if false
-        then
-          # GCC installs all DLLs in lib; for consistency, copy
-          # libwinpthread-1.dll there too. Normally not needed, as
-          # shared is disabled.
-          if [ ! -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib/libwinpthread-1.dll" ] && \
-            [ -f "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" ]
-          then
-            run_verbose ${INSTALL} -v -c -m 644 "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/bin/libwinpthread-1.dll" \
-              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib/"
-          fi
-        fi
-
         # Force the linker to use the static library, otherwise a reference
         # to libwinpthread-1.dll will remain even with -static-libgcc.
         run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/lib/libpthread.dll.a"

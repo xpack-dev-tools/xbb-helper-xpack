@@ -121,7 +121,6 @@ function binutils_prepare_common_options()
   then
 
     # Not supported by clang.
-    # config_options+=("--enable-pgo-build=lto")
     :
 
   else
@@ -169,11 +168,6 @@ function binutils_prepare_common_options()
     config_options+=("--disable-shared")
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
-    # Undefined symbols for architecture arm64:
-    #   "_ctf_open", referenced from:
-    #       _ctf_link_add_ctf in libctf_nobfd_la-ctf-link.o
-    #       _ctf_link_deduplicating_count_inputs in libctf_nobfd_la-ctf-link.o
-    # ld: symbol(s) not found for architecture arm64
     :
   else
     config_options+=("--enable-shared") # Arch
@@ -378,38 +372,6 @@ function binutils_build()
         # Avoid strip here, it may interfere with patchelf.
         # make install-strip
         run_verbose make install
-
-if false
-then
-        if [ "${has_program_prefix}" == "y" ]
-        then
-          # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/lib64/libiberty.a(cplus-dem.o): warning: relocation against `current_demangling_style' in read-only section `.text.cplus_demangle'
-          # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/x86_64-w64-mingw32/install/lib64/libiberty.a(cp-demangle.o): relocation R_X86_64_PC32 against symbol `cplus_demangle_builtin_types' can not be used when making a shared object; recompile with -fPIC
-          # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: final link failed: bad value
-
-          run_verbose rm -rf "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libiberty.a"
-        fi
-
-        if [ -f "libiberty/pic/libiberty.a" ]
-        then
-          # install PIC version of libiberty
-          libiberty_file_path="$(find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" -name libiberty.a)"
-          if [ -n "${libiberty_file_path}" ]
-          then
-            run_verbose ${INSTALL} -v -c -m 644 libiberty/pic/libiberty.a \
-              "$(dirname ${libiberty_file_path})"
-          fi
-        fi
-elif false
-then
-        if [ -f "libiberty/pic/libiberty.a" ]
-        then
-          # install PIC version of libiberty
-          run_verbose ${INSTALL} -v -c -m 644 libiberty/pic/libiberty.a \
-            "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-          run_verbose rm -rf "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib64/libiberty.a"
-        fi
-fi
 
         run_verbose rm -rf "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}/doc"
 

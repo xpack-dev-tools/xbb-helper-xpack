@@ -210,20 +210,6 @@ function gcc_mingw_build_first()
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
 
-      # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      # then
-      #   if is_native || is_bootstrap
-      #   then
-      #     # Hack to avoid missing ZSTD_* symbols
-      #     # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
-      #     # lto-compress.cc:(.text._Z19lto_end_compressionP22lto_compression_stream+0x33): undefined reference to `ZSTD_compressBound'
-
-      #     # Testing -lzstd alone fails since it depends on -lpthread.
-      #     # LDFLAGS+=" -lpthread"
-      #     # export LIBS="-lzstd -lpthread"
-      #   fi
-      # fi
-
       xbb_adjust_ldflags_rpath
 
       export CFLAGS_FOR_TARGET="-g -ffunction-sections -fdata-sections -pipe -O2 -D__USE_MINGW_ACCESS -w"
@@ -247,6 +233,7 @@ function gcc_mingw_build_first()
         run_verbose ln -sv "${triplet}" "mingw"
       )
 
+      # Apparently not needed.
       # rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/mingw"
       # (
       #   mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/mingw"
