@@ -92,6 +92,7 @@ function gmp_build()
         (
           xbb_show_env_develop
 
+          # Mandatory patch, otherwise configure fails without -rpath.
           run_verbose sed -i.bak \
             -e 's|gmp_compile="$cc $cflags $cppflags conftest.c >&5"|gmp_compile="$cc $cflags $cppflags conftest.c $LDFLAGS \>\&5"|' \
             -e 's|gmp_cxxcompile="$CXX $CPPFLAGS $CXXFLAGS conftest.cc >&5"|gmp_cxxcompile="$CXX $CPPFLAGS $CXXFLAGS conftest.cc $LDFLAGS \>\&5"|' \
@@ -101,9 +102,6 @@ function gmp_build()
 
           echo
           echo "Running gmp configure..."
-
-          # ABI is mandatory, otherwise configure fails on 32-bit.
-          # (see https://gmplib.org/manual/ABI-and-ISA.html)
 
           if [ "${XBB_IS_DEVELOP}" == "y" ]
           then
@@ -143,6 +141,8 @@ function gmp_build()
 
           if [ "${XBB_HOST_ARCH}" == "ia32" -o "${XBB_HOST_ARCH}" == "arm" ]
           then
+            # For 32-bit, ABI is mandatory, otherwise configure fails.
+            # (see https://gmplib.org/manual/ABI-and-ISA.html)
             config_options+=("ABI=32")
           fi
 
