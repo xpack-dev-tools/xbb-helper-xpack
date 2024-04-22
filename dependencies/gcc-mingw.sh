@@ -9,13 +9,17 @@
 
 # -----------------------------------------------------------------------------
 
+# https://gcc.gnu.org
+# Releases https://ftp.gnu.org/gnu/gcc/
+
+# https://gcc.gnu.org/wiki/InstallingGCC
+# https://gcc.gnu.org/install
+# https://gcc.gnu.org/install/configure.html
+
 # The configurations generally follow the Linux Arch configurations, but
 # also MSYS2 and HomeBrew were considered.
 
 # The difference is the install location, which no longer uses `/usr`.
-
-# https://gcc.gnu.org
-# https://gcc.gnu.org/wiki/InstallingGCC
 
 # The DLLs are moved to bin
 # mv "$pkgdir"/usr/${_arch}/lib/*.dll "$pkgdir"/usr/${_arch}/bin/
@@ -30,25 +34,6 @@
 # binutils & gcc --prefix=#{arch_dir} --with-sysroot=#{arch_dir}
 # mingw-headers --prefix=#{arch_dir}/#{target}
 # mingw-libs --prefix=#{arch_dir}/#{target} --with-sysroot=#{arch_dir}/## https://github.com/Homebrew/homebrew-core/blob/master/Formula/m/mingw-w64.rb
-
-# https://ftp.gnu.org/gnu/gcc/
-# 2019-02-22, "8.3.0"
-# 2019-05-03, "9.1.0"
-# 2019-08-12, "9.2.0"
-# 2019-11-14, "7.5.0" *
-# 2020-03-04, "8.4.0"
-# 2020-03-12, "9.3.0"
-# 2021-04-08, "10.3.0"
-# 2021-04-27, "11.1.0"
-# 2021-05-14, "8.5.0" *
-# 2021-07-28, "11.2.0"
-# 2022-04-21, "11.3.0"
-# 2022-05-06, "12.1.0"
-# 2022-08-19, "12.2.0"
-# 2023-05-08, "12.3.0"
-# 2023-05-29, "11.4.0"
-# 2023-04-26, "13.1.0"
-# 2023-07-27, "13.2.0"
 
 # -----------------------------------------------------------------------------
 
@@ -225,19 +210,19 @@ function gcc_mingw_build_first()
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
 
-      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-      then
-        if is_native || is_bootstrap
-        then
-          # Hack to avoid missing ZSTD_* symbols
-          # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
-          # lto-compress.cc:(.text._Z19lto_end_compressionP22lto_compression_stream+0x33): undefined reference to `ZSTD_compressBound'
+      # if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      # then
+      #   if is_native || is_bootstrap
+      #   then
+      #     # Hack to avoid missing ZSTD_* symbols
+      #     # /home/ilg/.local/xPacks/@xpack-dev-tools/gcc/12.2.0-2.1/.content/bin/../lib/gcc/x86_64-pc-linux-gnu/12.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: lto-compress.o: in function `lto_end_compression(lto_compression_stream*)':
+      #     # lto-compress.cc:(.text._Z19lto_end_compressionP22lto_compression_stream+0x33): undefined reference to `ZSTD_compressBound'
 
-          # Testing -lzstd alone fails since it depends on -lpthread.
-          LDFLAGS+=" -lpthread"
-          # export LIBS="-lzstd -lpthread"
-        fi
-      fi
+      #     # Testing -lzstd alone fails since it depends on -lpthread.
+      #     # LDFLAGS+=" -lpthread"
+      #     # export LIBS="-lzstd -lpthread"
+      #   fi
+      # fi
 
       xbb_adjust_ldflags_rpath
 
@@ -345,14 +330,7 @@ function gcc_mingw_build_first()
 
           config_options+=("--enable-languages=c,c++,fortran,objc,obj-c++,lto") # Arch
 
-          if true
-          then
-            # undefined reference to `__imp_pthread_mutex_lock'
-            config_options+=("--enable-shared") # Arch
-          else
-            config_options+=("--disable-shared")
-          fi
-
+          config_options+=("--enable-shared") # Arch
           config_options+=("--enable-static") # Arch
 
           config_options+=("--enable-__cxa_atexit")
@@ -482,15 +460,6 @@ function gcc_mingw_build_final()
       echo "Running ${name_prefix}gcc final configure..."
 
       run_verbose make -j configure-target-libgcc
-
-      if false # [ -f "${triplet}/libgcc/auto-target.h" ]
-      then
-        # Might no longer be needed with modern GCC.
-        run_verbose grep 'HAVE_SYS_MMAN_H' "${triplet}/libgcc/auto-target.h"
-        run_verbose sed -i.bak -e 's|#define HAVE_SYS_MMAN_H 1|#define HAVE_SYS_MMAN_H 0|' \
-          "${triplet}/libgcc/auto-target.h"
-        run_verbose diff "${triplet}/libgcc/auto-target.h.bak" "${triplet}/libgcc/auto-target.h" || true
-      fi
 
       echo
       echo "Running ${name_prefix}gcc final make..."
