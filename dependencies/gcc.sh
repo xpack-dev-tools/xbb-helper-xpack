@@ -727,28 +727,21 @@ function gcc_build()
           fi
         fi
 
+        echo
+        echo "Removing unnecessary files..."
+
         if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
         then
-          echo
-          echo "Removing unnecessary files..."
-
           rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc-ar"
           rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc-nm"
           rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/gcc-ranlib"
 
           run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_TARGET_TRIPLET}"-*
-
         elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
         then
-          echo
-          echo "Removing unnecessary files..."
-
           run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_TARGET_TRIPLET}"-*
         elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
-          echo
-          echo "Removing unnecessary files..."
-
           run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${XBB_TARGET_TRIPLET}"-*.exe
 
           # These files are necessary:
@@ -777,6 +770,9 @@ function gcc_build()
         elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
           (
+            echo
+            echo "Copying DLL files to lib..."
+
             run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${GCC_FOLDER_NAME}"
             run_verbose find "${XBB_TARGET_TRIPLET}" -name '*.dll' ! -iname 'liblto*' \
               -exec cp -v '{}' "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib" ';'
