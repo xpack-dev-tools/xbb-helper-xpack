@@ -199,6 +199,22 @@ function gcc_mingw_build_first()
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
+        export CC_FOR_BUILD="${XBB_NATIVE_CC}"
+        export CXX_FOR_BUILD="${XBB_NATIVE_CXX}"
+
+        export AR_FOR_BUILD="${XBB_NATIVE_AR}"
+        export AS_FOR_BUILD="${XBB_NATIVE_AS}"
+        export DLLTOOL_FOR_BUILD="${XBB_NATIVE_DLLTOOL}"
+        export LD_FOR_BUILD="${XBB_NATIVE_LD}"
+        export NM_FOR_BUILD="${XBB_NATIVE_NM}"
+        export RANLIB_FOR_BUILD="${XBB_NATIVE_RANLIB}"
+        export WINDMC_FOR_BUILD="${XBB_NATIVE_WINDMC}"
+        export WINDRES_FOR_BUILD="${XBB_NATIVE_WINDRES}"
+
+        # local xbb_library_path_for_build=""
+        local xbb_toolchain_rpath_for_build="$(xbb_get_toolchain_library_path "${CXX_FOR_BUILD}")"
+        export LDFLAGS_FOR_BUILD="$(xbb_expand_linker_rpaths "${xbb_toolchain_rpath_for_build}")"
+
         # x86_64-w64-mingw32/bin/as: insn-emit.o: too many sections (32823)
         # `-Wa,-mbig-obj` is passed to the wrong compiler, and fails
         CXXFLAGS=$(echo ${CXXFLAGS} | sed -e 's|-ffunction-sections -fdata-sections||')
