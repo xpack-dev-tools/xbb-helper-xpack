@@ -23,7 +23,8 @@
 # 2020-01-16 "0.22"
 # 2020-11-11 "0.23"
 # 2021-05-01 "0.24"
-# 2022-07-02 "0.25"
+# 2022-07-02 "0.25" - requires patch on macOS 10.13
+# 2023-04-02, "0.26" - requires patch on macOS 10.13
 
 # Depends on gmp.
 
@@ -50,6 +51,8 @@ function isl_build()
   # The folder name for build, licenses, etc.
   local isl_folder_name="${isl_src_folder_name}"
 
+  local isl_patch_file_name="${isl_folder_name}.git.patch"
+
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${isl_folder_name}"
 
   local isl_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-${isl_folder_name}-installed"
@@ -60,7 +63,7 @@ function isl_build()
     run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     download_and_extract "${isl_url}" "${isl_archive}" \
-      "${isl_src_folder_name}"
+      "${isl_src_folder_name}" "${isl_patch_file_name}"
 
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${isl_folder_name}"
