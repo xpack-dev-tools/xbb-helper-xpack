@@ -1206,8 +1206,17 @@ function gcc_test()
 
         # ---------------------------------------------------------------------
 
-        echo
-        echo "Skipping all --static on macOS..."
+        if true
+        then
+          echo
+          echo "Skipping all --static on macOS..."
+        else
+          # Again, with -static
+          test_compiler_c_cpp "${test_bin_path}" --static
+          test_compiler_c_cpp "${test_bin_path}" --gc --static
+          test_compiler_c_cpp "${test_bin_path}" --lto --static
+          test_compiler_c_cpp "${test_bin_path}" --gc --lto --static-lib
+        fi
       )
     fi
   )
