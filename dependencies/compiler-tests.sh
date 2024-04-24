@@ -480,6 +480,99 @@ function test_compiler_c_cpp()
         run_target_app_verbose "./${prefix}weak-override${suffix}"
       )
 
+      # Test weak.
+      (
+        run_verbose_develop cd weak
+
+        for name in add1-weak-dummy-chained dummy expected3-add1-weak expected5 main add2 expected1 expected3 main-weak
+        do
+          run_host_app_verbose "${CC}" -c "${name}.c" -o "${prefix}${name}${suffix}.c.o" ${CFLAGS}
+        done
+
+        for name in overload-new unwind-main unwind-strong unwind-weak-dummy unwind-weak
+        do
+          run_host_app_verbose "${CXX}" -c "${name}.cpp" -o "${prefix}${name}${suffix}.cpp.o" ${CXXFLAGS}
+        done
+
+        # normal
+        run_host_app_verbose "${CC}" "${prefix}main${suffix}.c.o" "${prefix}add2${suffix}.c.o" "${prefix}expected3${suffix}.c.o" "${prefix}dummy${suffix}.c.o" -o "${prefix}normal${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+
+        show_target_libs_develop "${prefix}normal${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}normal${suffix}"
+
+        # TODO: investigate why it fails with GCC 14 on macOS.
+        # if is_variable_set "XBB_SKIP_TEST_${prefix}weak-undef-c${suffix}" \
+        #                    "XBB_SKIP_TEST_${prefix}weak-undef-c"
+        # then
+        #   echo
+        #   echo "Skipping ${prefix}weak-undef-c${suffix}..."
+        # else
+        #   # weak-undef
+        #   run_host_app_verbose "${CC}" "${prefix}main-weak${suffix}.c.o" "${prefix}expected1${suffix}.c.o" "${prefix}dummy${suffix}.c.o" -o "${prefix}weak-undef${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+
+        #   show_target_libs_develop "${prefix}weak-undef${suffix}${XBB_TARGET_DOT_EXE}"
+        #   run_target_app_verbose "./${prefix}weak-undef${suffix}"
+        # fi
+
+        # weak-defined
+        run_host_app_verbose "${CC}" "${prefix}main-weak${suffix}.c.o" "${prefix}add2${suffix}.c.o" "${prefix}expected3${suffix}.c.o" "${prefix}dummy${suffix}.c.o" -o "${prefix}weak-defined${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+
+        show_target_libs_develop "${prefix}weak-defined${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}weak-defined${suffix}"
+
+        # weak-use
+        run_host_app_verbose "${CC}" "${prefix}main${suffix}.c.o" "${prefix}add1-weak-dummy-chained${suffix}.c.o" "${prefix}expected3${suffix}.c.o" -o "${prefix}weak-use${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+
+        show_target_libs_develop "${prefix}weak-use${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}weak-use${suffix}"
+
+        # weak-override
+        run_host_app_verbose "${CC}" "${prefix}main${suffix}.c.o" "${prefix}add1-weak-dummy-chained${suffix}.c.o" "${prefix}add2${suffix}.c.o" "${prefix}expected5${suffix}.c.o" -o "${prefix}weak-override${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+
+        show_target_libs_develop "${prefix}weak-override${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}weak-override${suffix}"
+
+        # weak-duplicate
+        run_host_app_verbose "${CC}" "${prefix}main${suffix}.c.o" "${prefix}add1-weak-dummy-chained${suffix}.c.o" "${prefix}expected3-add1-weak${suffix}.c.o" -o "${prefix}weak-duplicate${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+
+        show_target_libs_develop "${prefix}weak-duplicate${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}weak-duplicate${suffix}"
+
+        if is_variable_set "XBB_SKIP_TEST_${prefix}overload-new-cpp${suffix}" \
+                           "XBB_SKIP_TEST_${prefix}overload-new-cpp"
+        then
+          echo
+          echo "Skipping ${prefix}overload-new-cpp${suffix}..."
+        else
+          # overload-new
+          run_host_app_verbose "${CXX}" "${prefix}overload-new${suffix}.cpp.o" -o "${prefix}overload-new${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+
+          show_target_libs_develop "${prefix}overload-new${suffix}${XBB_TARGET_DOT_EXE}"
+          run_target_app_verbose "./${prefix}overload-new${suffix}"
+        fi
+
+        # unwind-weak
+        run_host_app_verbose "${CXX}" "${prefix}unwind-weak${suffix}.cpp.o" "${prefix}unwind-main${suffix}.cpp.o" -o "${prefix}unwind-weak${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+
+        show_target_libs_develop "${prefix}unwind-weak${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}unwind-weak${suffix}"
+
+        # TODO: investigate why it fails with GCC 14 on macOS.
+        # if is_variable_set "XBB_SKIP_TEST_${prefix}unwind-strong-cpp${suffix}" \
+        #                    "XBB_SKIP_TEST_${prefix}unwind-strong-cpp"
+        # then
+        #   echo
+        #   echo "Skipping ${prefix}unwind-strong-cpp${suffix}..."
+        # else
+        #   # unwind-strong
+        #   run_host_app_verbose "${CXX}" "${prefix}unwind-weak-dummy${suffix}.cpp.o" "${prefix}unwind-main${suffix}.cpp.o" -o "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+
+        #   show_target_libs_develop "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}"
+        #   run_target_app_verbose "./${prefix}unwind-strong${suffix}"
+        # fi
+
+      )
+
       # Test if exceptions thrown from shared libraries are caught.
       if [ "${is_static}" != "y" ]
       then
@@ -569,6 +662,7 @@ function test_compiler_c_cpp()
       # Test a very simple Objective-C (a printf).
       run_host_app_verbose "${CC}" simple-objc.m -o "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
       expect_target_output "Hello World" "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}"
+
     )
 
   )
