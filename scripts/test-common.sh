@@ -212,6 +212,7 @@ function tests_good_bye()
     elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
       run_verbose sw_vers
+      run_verbose pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
     fi
   )
 }
@@ -261,7 +262,7 @@ function tests_update_system_common()
   then
     run_verbose apt-get -qq update
     run_verbose apt-get -qq install -y git-core curl tar gzip lsb-release binutils file
-    
+
     run_verbose apt-get -qq install --yes g++
     if [ "$(uname -m)" == "x86_64" ]
     then
