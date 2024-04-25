@@ -1416,24 +1416,7 @@ function xbb_get_toolchain_library_path()
      [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
 
-    if [[ "$(basename ${1})" =~ .*g[c+][c+].* ]]
-    then
-      # ./lib64/libasan.so
-      # ./lib64/libgcc_s.so
-      # ./lib64/libgomp.so
-      # ./lib64/libitm.so
-      # ./lib64/libssp.so
-      # ./lib64/libatomic.so
-      # ./lib64/libstdc++.so
-      # ./lib64/libgfortran.so
-      # ./lib64/libubsan.so
-      # ./lib64/liblsan.so
-      # ./lib64/libcc1.so
-      # ./lib64/libtsan.so
-      # ./lib64/libhwasan.so
-      local libstdcpp_path="$("${@}" -print-file-name=libstdc++.so)"
-      libs_path="$(dirname $("${REALPATH}" -m "${libstdcpp_path}"))"
-    elif [[ "$(basename ${1})" =~ .*clang.* ]]
+    if [[ "$(basename ${1})" =~ .*clang.* ]] # Must be the first!
     then
       if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
       then
@@ -1480,6 +1463,23 @@ function xbb_get_toolchain_library_path()
         echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
         exit 1
       fi
+    elif [[ "$(basename ${1})" =~ .*g[c+][c+].* ]]
+    then
+      # ./lib64/libasan.so
+      # ./lib64/libgcc_s.so
+      # ./lib64/libgomp.so
+      # ./lib64/libitm.so
+      # ./lib64/libssp.so
+      # ./lib64/libatomic.so
+      # ./lib64/libstdc++.so
+      # ./lib64/libgfortran.so
+      # ./lib64/libubsan.so
+      # ./lib64/liblsan.so
+      # ./lib64/libcc1.so
+      # ./lib64/libtsan.so
+      # ./lib64/libhwasan.so
+      local libstdcpp_path="$("${@}" -print-file-name=libstdc++.so)"
+      libs_path="$(dirname $("${REALPATH}" -m "${libstdcpp_path}"))"
     else
       echo "TODO: compute rpath for ${CC}"
       exit 1
