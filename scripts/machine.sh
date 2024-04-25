@@ -66,7 +66,10 @@ function machine_detect()
       exit 1
     fi
 
-    export XBB_BUILD_CLT_VERSION="$(pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | grep version | sed -e 's|version: ||')"
+    export XBB_BUILD_MACOS_VERSION="$(sw_vers | grep ProductVersion | sed -e 's|[^0-9]*||')"
+    echo "XBB_BUILD_MACOS_VERSION=${XBB_BUILD_MACOS_VERSION}"
+
+    export XBB_BUILD_CLT_VERSION="$(pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | grep version | sed -e 's|[^0-9]*||')"
     echo "XBB_BUILD_CLT_VERSION=${XBB_BUILD_CLT_VERSION}"
 
   elif [ "${XBB_BUILD_PLATFORM}" == "linux" ]
