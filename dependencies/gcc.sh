@@ -364,12 +364,10 @@ function gcc_build()
             else
               ldflags_for_bootstrap=""
             fi
-            ldflags_for_bootstrap+=" -static-libstdc++"
             if [[ $(basename "${CC}") =~ .*gcc.* ]]
             then
-              # -static-libgcc is available only when bootstraping with gcc.
-              # (clang: error: unsupported option '-static-libgcc')
-              ldflags_for_bootstrap+=" -static-libgcc"
+              # These are available only when bootstraping with gcc.
+              ldflags_for_bootstrap+=" -static-libstdc++ -static-libgcc"
             fi
             config_options+=("--with-stage1-ldflags=${ldflags_for_bootstrap}") # -v -Wl,-v
 
