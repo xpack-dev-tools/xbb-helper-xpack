@@ -66,7 +66,17 @@ function gmp_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      LDFLAGS="${XBB_LDFLAGS_LIB}"
+      LDFLAGS="${XBB_LDFLAGS_LIB} -ld64"
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      then
+        local xbb_build_clt_version_major=$(echo ${XBB_BUILD_CLT_VERSION} | sed  -e 's|[.].*||')
+        if [ ${xbb_build_clt_version_major} -ge 15 ]
+        then
+          # Workaround for the linker bug:
+          # ld: branch8 out of range 244124 in ___gmpn_add_nc
+          LDFLAGS+=" -ld_classic"
+        fi
+      fi
 
       xbb_adjust_ldflags_rpath
 
