@@ -191,7 +191,10 @@ function hidapi_build()
 
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
-            config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}")
+            if [ ! -z "${MACOSX_DEPLOYMENT_TARGET:-""}" ]
+            then
+              config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}")
+            fi
           fi
 
           # The mingw build also requires RC pointing to windres.

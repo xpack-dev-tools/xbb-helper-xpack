@@ -132,7 +132,10 @@ function zstd_build()
 
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
-            config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}")
+            if [ ! -z "${MACOSX_DEPLOYMENT_TARGET:-""}" ]
+            then
+              config_options+=("-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}")
+            fi
 
             # config_options+=("-DCMAKE_INSTALL_RPATH=${XBB_LIBRARY_PATH}")
           elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
