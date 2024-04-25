@@ -1035,33 +1035,41 @@ function xbb_set_compiler_flags()
 
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
-    if [ "${XBB_HOST_ARCH}" == "x64" ]
-    then
-      export MACOSX_DEPLOYMENT_TARGET="${XBB_APPLICATION_MACOSX_DEPLOYMENT_TARGET_X64:-"10.13"}"
-    elif [ "${XBB_HOST_ARCH}" == "arm64" ]
-    then
-      export MACOSX_DEPLOYMENT_TARGET="${XBB_APPLICATION_MACOSX_DEPLOYMENT_TARGET_ARM64:-"11.0"}"
-    else
-      echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
-      exit 1
-    fi
-
-    if [[ $(basename "${CC}") =~ .*clang.* ]]
-    then
-      XBB_CFLAGS+=" -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
-      XBB_CXXFLAGS+=" -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
-    fi
-
-    # Note: macOS linker ignores -static-libstdc++, so
-    # libstdc++.6.dylib should be handled.
-
-    # On CLT >= 15, the option was updated to -macos_version_min.
     local xbb_build_clt_version_major=$(echo ${XBB_BUILD_CLT_VERSION} | sed  -e 's|[.].*||')
-    if [ ${xbb_build_clt_version_major} -lt 15 ]
+    local xbb_build_macos_version_major=$(echo ${XBB_BUILD_MACOS_VERSION} | sed  -e 's|[.].*||')
+
+    if [ ${xbb_build_macos_version_major} -ge 14 ] &&
+       [ "${XBB_APPLICATION_SKIP_MACOSX_DEPLOYMENT_TARGET:-""}" == "y" ]
     then
-      XBB_LDFLAGS+=" -Wl,-macosx_version_min,${MACOSX_DEPLOYMENT_TARGET}"
+      echo "macOS ${XBB_BUILD_MACOS_VERSION} is too recent, setting MACOSX_DEPLOYMENT_TARGET skipped."
     else
-      XBB_LDFLAGS+=" -Wl,-macos_version_min,${MACOSX_DEPLOYMENT_TARGET}"
+      if [ "${XBB_HOST_ARCH}" == "x64" ]
+      then
+        export MACOSX_DEPLOYMENT_TARGET="${XBB_APPLICATION_MACOSX_DEPLOYMENT_TARGET_X64:-"10.13"}"
+      elif [ "${XBB_HOST_ARCH}" == "arm64" ]
+      then
+        export MACOSX_DEPLOYMENT_TARGET="${XBB_APPLICATION_MACOSX_DEPLOYMENT_TARGET_ARM64:-"11.0"}"
+      else
+        echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
+        exit 1
+      fi
+
+      if [[ $(basename "${CC}") =~ .*clang.* ]]
+      then
+        XBB_CFLAGS+=" -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+        XBB_CXXFLAGS+=" -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+      fi
+
+      # Note: macOS linker ignores -static-libstdc++, so
+      # libstdc++.6.dylib should be handled.
+
+      # On CLT >= 15, the option was updated to -macos_version_min.
+      if [ ${xbb_build_clt_version_major} -lt 15 ]
+      then
+        XBB_LDFLAGS+=" -Wl,-macosx_version_min,${MACOSX_DEPLOYMENT_TARGET}"
+      else
+        XBB_LDFLAGS+=" -Wl,-macos_version_min,${MACOSX_DEPLOYMENT_TARGET}"
+      fi
     fi
 
     # With GCC 11.2 path are longer, and post-processing may fail:
