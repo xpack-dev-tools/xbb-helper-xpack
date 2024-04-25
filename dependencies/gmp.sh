@@ -66,7 +66,7 @@ function gmp_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      LDFLAGS="${XBB_LDFLAGS_LIB} -ld64"
+      LDFLAGS="${XBB_LDFLAGS_LIB}"
       if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         local xbb_build_clt_version_major=$(echo ${XBB_BUILD_CLT_VERSION} | sed  -e 's|[.].*||')
