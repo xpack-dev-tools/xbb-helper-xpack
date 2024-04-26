@@ -223,10 +223,10 @@ function test_compiler_c_cpp()
 
     if [ "${XBB_IS_DEVELOP}" == "y" ]
     then
-      CFLAGS+=" -v"
-      CXXFLAGS+=" -v"
-      LDFLAGS+=" -v"
-      LDXXFLAGS+=" -v"
+      CFLAGS+=" -g -v"
+      CXXFLAGS+=" -g -v"
+      LDFLAGS+=" -g -v"
+      LDXXFLAGS+=" -g -v"
     fi
 
     (
