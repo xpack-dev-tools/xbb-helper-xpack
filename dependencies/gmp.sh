@@ -74,7 +74,7 @@ function gmp_build()
         then
           # Workaround for the linker bug:
           # ld: branch8 out of range 244124 in ___gmpn_add_nc
-          LDFLAGS+=" -ld_classic"
+          LDFLAGS+=" -Wl,-ld_classic"
         fi
       fi
 
