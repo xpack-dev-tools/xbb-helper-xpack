@@ -932,7 +932,6 @@ function gcc_test()
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
-
       if [[ "${gcc_version}" =~ 11[.]4[.]0 ]] || \
          [[ "${gcc_version}" =~ 12[.]3[.]0 ]] || \
          [[ "${gcc_version}" =~ 13[.]2[.]0 ]] || \
@@ -942,21 +941,17 @@ function gcc_test()
         # collect2.exe: error: ld returned 1 exit status
 
         export XBB_SKIP_TEST_HELLO_WEAK_C="y"
-        export XBB_SKIP_TEST_HELLO_WEAK_CPP="y"
-
         export XBB_SKIP_TEST_GC_HELLO_WEAK_C="y"
-        export XBB_SKIP_TEST_GC_HELLO_WEAK_CPP="y"
-
         export XBB_SKIP_TEST_STATIC_LIB_HELLO_WEAK_C="y"
-        export XBB_SKIP_TEST_STATIC_LIB_HELLO_WEAK_CPP="y"
-
         export XBB_SKIP_TEST_STATIC_LIB_GC_HELLO_WEAK_C="y"
-        export XBB_SKIP_TEST_STATIC_LIB_GC_HELLO_WEAK_CPP="y"
-
         export XBB_SKIP_TEST_STATIC_HELLO_WEAK_C="y"
-        export XBB_SKIP_TEST_STATIC_HELLO_WEAK_CPP="y"
-
         export XBB_SKIP_TEST_STATIC_GC_HELLO_WEAK_C="y"
+
+        export XBB_SKIP_TEST_HELLO_WEAK_CPP="y"
+        export XBB_SKIP_TEST_GC_HELLO_WEAK_CPP="y"
+        export XBB_SKIP_TEST_STATIC_LIB_HELLO_WEAK_CPP="y"
+        export XBB_SKIP_TEST_STATIC_LIB_GC_HELLO_WEAK_CPP="y"
+        export XBB_SKIP_TEST_STATIC_HELLO_WEAK_CPP="y"
         export XBB_SKIP_TEST_STATIC_GC_HELLO_WEAK_CPP="y"
 
         # [wine64 ./lto-throwcatch-main.exe]
@@ -1138,7 +1133,6 @@ function gcc_test()
             test_compiler_c_cpp "${test_bin_path}" --static --gc --lto
           )
         fi
-
       fi
     elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
@@ -1166,26 +1160,18 @@ function gcc_test()
           XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
         fi
 
-        XBB_SKIP_TEST_WEAK_UNDEF_C="y"
-        XBB_SKIP_TEST_GC_WEAK_UNDEF_C="y"
-        XBB_SKIP_TEST_LTO_WEAK_UNDEF_C="y"
-        XBB_SKIP_TEST_GC_LTO_WEAK_UNDEF_C="y"
-        XBB_SKIP_TEST_STATIC_LIB_WEAK_UNDEF_C="y"
-        XBB_SKIP_TEST_STATIC_LIB_GC_WEAK_UNDEF_C="y"
-        XBB_SKIP_TEST_STATIC_LIB_LTO_WEAK_UNDEF_C="y"
-        XBB_SKIP_TEST_STATIC_LIB_GC_LTO_WEAK_UNDEF_C="y"
+        if [[ "${gcc_version}" =~ 14[.]0[.]1 ]]
+        then
+          # It looks like an Apple linker issue.
+          XBB_SKIP_TEST_ALL_WEAK_UNDEF_C="y"
 
-        XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
-        XBB_SKIP_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
+          XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
+          XBB_SKIP_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
 
-        XBB_SKIP_TEST_UNWIND_STRONG_CPP="y"
-        XBB_SKIP_TEST_GC_UNWIND_STRONG_CPP="y"
-        XBB_SKIP_TEST_LTO_UNWIND_STRONG_CPP="y"
-        XBB_SKIP_TEST_GC_LTO_UNWIND_STRONG_CPP="y"
-        XBB_SKIP_TEST_STATIC_LIB_UNWIND_STRONG_CPP="y"
-        XBB_SKIP_TEST_STATIC_LIB_GC_UNWIND_STRONG_CPP="y"
-        XBB_SKIP_TEST_STATIC_LIB_LTO_UNWIND_STRONG_CPP="y"
-        XBB_SKIP_TEST_STATIC_LIB_GC_LTO_UNWIND_STRONG_CPP="y"
+          XBB_SKIP_TEST_ALL_UNWIND_STRONG_CPP="y"
+        fi
+
+        // --------------------------------------------------------------------
 
         test_compiler_c_cpp "${test_bin_path}"
         test_compiler_c_cpp "${test_bin_path}" --gc
@@ -1228,5 +1214,25 @@ function gcc_test()
     fi
   )
 }
+
+# -----------------------------------------------------------------------------
+
+# XBB_SKIP_TEST_WEAK_UNDEF_C="y"
+# XBB_SKIP_TEST_GC_WEAK_UNDEF_C="y"
+# XBB_SKIP_TEST_LTO_WEAK_UNDEF_C="y"
+# XBB_SKIP_TEST_GC_LTO_WEAK_UNDEF_C="y"
+# XBB_SKIP_TEST_STATIC_LIB_WEAK_UNDEF_C="y"
+# XBB_SKIP_TEST_STATIC_LIB_GC_WEAK_UNDEF_C="y"
+# XBB_SKIP_TEST_STATIC_LIB_LTO_WEAK_UNDEF_C="y"
+# XBB_SKIP_TEST_STATIC_LIB_GC_LTO_WEAK_UNDEF_C="y"
+
+# XBB_SKIP_TEST_UNWIND_STRONG_CPP="y"
+# XBB_SKIP_TEST_GC_UNWIND_STRONG_CPP="y"
+# XBB_SKIP_TEST_LTO_UNWIND_STRONG_CPP="y"
+# XBB_SKIP_TEST_GC_LTO_UNWIND_STRONG_CPP="y"
+# XBB_SKIP_TEST_STATIC_LIB_UNWIND_STRONG_CPP="y"
+# XBB_SKIP_TEST_STATIC_LIB_GC_UNWIND_STRONG_CPP="y"
+# XBB_SKIP_TEST_STATIC_LIB_LTO_UNWIND_STRONG_CPP="y"
+# XBB_SKIP_TEST_STATIC_LIB_GC_LTO_UNWIND_STRONG_CPP="y"
 
 # -----------------------------------------------------------------------------
