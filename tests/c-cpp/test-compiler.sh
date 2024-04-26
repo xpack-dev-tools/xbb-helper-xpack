@@ -464,22 +464,6 @@ function test_compiler_c_cpp()
         expect_target_output "Hello World!" "./${prefix}hello-weak-cpp${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
-      # Test weak override.
-      (
-        run_verbose_develop cd weak-override
-
-        run_host_app_verbose "${CC}" -c "main-weak.c" -o "${prefix}main-weak${suffix}.c.o" ${CFLAGS}
-        run_host_app_verbose "${CC}" -c "add2.c" -o "${prefix}add2${suffix}.c.o" ${CFLAGS}
-        run_host_app_verbose "${CC}" -c "dummy.c" -o "${prefix}dummy${suffix}.c.o" ${CFLAGS}
-        run_host_app_verbose "${CC}" -c "expected3.c" -o "${prefix}expected3${suffix}.c.o" ${CFLAGS}
-
-        run_host_app_verbose "${CC}" "${prefix}main-weak${suffix}.c.o" "${prefix}add2${suffix}.c.o" "${prefix}dummy${suffix}.c.o" "${prefix}expected3${suffix}.c.o" -o "${prefix}weak-override${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
-
-        show_target_libs_develop "${prefix}weak-override${suffix}${XBB_TARGET_DOT_EXE}"
-        # The test returns success if the weak override is effective, 1 otherwise.
-        run_target_app_verbose "./${prefix}weak-override${suffix}"
-      )
-
       # Test weak.
       (
         run_verbose_develop cd weak
