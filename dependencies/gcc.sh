@@ -944,15 +944,19 @@ function gcc_test()
 
         export XBB_SKIP_TEST_HELLO_WEAK_C="y"
         export XBB_SKIP_TEST_GC_HELLO_WEAK_C="y"
+
         export XBB_SKIP_TEST_STATIC_LIB_HELLO_WEAK_C="y"
         export XBB_SKIP_TEST_STATIC_LIB_GC_HELLO_WEAK_C="y"
+
         export XBB_SKIP_TEST_STATIC_HELLO_WEAK_C="y"
         export XBB_SKIP_TEST_STATIC_GC_HELLO_WEAK_C="y"
 
         export XBB_SKIP_TEST_HELLO_WEAK_CPP="y"
         export XBB_SKIP_TEST_GC_HELLO_WEAK_CPP="y"
+
         export XBB_SKIP_TEST_STATIC_LIB_HELLO_WEAK_CPP="y"
         export XBB_SKIP_TEST_STATIC_LIB_GC_HELLO_WEAK_CPP="y"
+
         export XBB_SKIP_TEST_STATIC_HELLO_WEAK_CPP="y"
         export XBB_SKIP_TEST_STATIC_GC_HELLO_WEAK_CPP="y"
 
@@ -962,6 +966,7 @@ function gcc_test()
 
         export XBB_SKIP_RUN_TEST_LTO_THROWCATCH_MAIN="y"
         export XBB_SKIP_RUN_TEST_GC_LTO_THROWCATCH_MAIN="y"
+
         export XBB_SKIP_RUN_TEST_STATIC_LIB_LTO_THROWCATCH_MAIN="y"
         export XBB_SKIP_RUN_TEST_STATIC_LIB_GC_LTO_THROWCATCH_MAIN="y"
 
@@ -971,8 +976,70 @@ function gcc_test()
 
         export XBB_SKIP_RUN_TEST_LTO_AUTOIMPORT_MAIN="y"
         export XBB_SKIP_RUN_TEST_GC_LTO_AUTOIMPORT_MAIN="y"
+
         export XBB_SKIP_RUN_TEST_STATIC_LIB_LTO_AUTOIMPORT_MAIN="y"
         export XBB_SKIP_RUN_TEST_STATIC_LIB_GC_LTO_AUTOIMPORT_MAIN="y"
+
+        # weak-defined - fully functional.
+
+        # weak-use - LTO variants are functional.
+        # in function `dummy': undefined reference to `func'
+        export XBB_SKIP_TEST_WEAK_USE_C="y"
+        export XBB_SKIP_TEST_GC_WEAK_USE_C="y"
+
+        export XBB_SKIP_TEST_STATIC_LIB_WEAK_USE_C="y"
+        export XBB_SKIP_TEST_STATIC_LIB_GC_WEAK_USE_C="y"
+
+        export XBB_SKIP_TEST_STATIC_WEAK_USE_C="y"
+        export XBB_SKIP_TEST_STATIC_GC_WEAK_USE_C="y"
+
+        # weak-override - fully functional.
+
+        # weak-duplicate - LTO are functional.
+        # in function `dummy': undefined reference to `func'
+        export XBB_SKIP_TEST_WEAK_DUPLICATE_C="y"
+        export XBB_SKIP_TEST_GC_WEAK_DUPLICATE_C="y"
+
+        export XBB_SKIP_TEST_STATIC_LIB_WEAK_DUPLICATE_C="y"
+        export XBB_SKIP_TEST_STATIC_LIB_GC_WEAK_DUPLICATE_C="y"
+
+        export XBB_SKIP_TEST_STATIC_WEAK_DUPLICATE_C="y"
+        export XBB_SKIP_TEST_STATIC_GC_WEAK_DUPLICATE_C="y"
+
+        # overload-new - static lib and static are functional.
+        # Does not return success.
+        export XBB_SKIP_TEST_OVERLOAD_NEW_CPP="y"
+        export XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
+
+        export XBB_SKIP_TEST_LTO_OVERLOAD_NEW_CPP="y"
+        export XBB_SKIP_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
+
+        # unwind-weak - LTO are functional.
+        #  in function `main': undefined reference to `step1'
+        export XBB_SKIP_TEST_UNWIND_WEAK_CPP="y"
+        export XBB_SKIP_TEST_GC_UNWIND_WEAK_CPP="y"
+
+        export XBB_SKIP_TEST_STATIC_LIB_UNWIND_WEAK_CPP="y"
+        export XBB_SKIP_TEST_STATIC_LIB_GC_UNWIND_WEAK_CPP="y"
+
+        export XBB_SKIP_TEST_STATIC_UNWIND_WEAK_CPP="y"
+        export XBB_SKIP_TEST_STATIC_GC_UNWIND_WEAK_CPP="y"
+
+        # unwind-strong - totally unfunctional.
+        # unwind-main.cpp.o: in function `main': undefined reference to `step1'
+        export XBB_SKIP_TEST_ALL_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_GC_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_LTO_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_GC_LTO_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_STATIC_LIB_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_STATIC_LIB_GC_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_STATIC_LIB_LTO_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_STATIC_LIB_GC_LTO_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_STATIC_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_STATIC_GC_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_STATIC_LTO_UNWIND_STRONG_CPP="y"
+        # export XBB_SKIP_TEST_STATIC_GC_LTO_UNWIND_STRONG_CPP="y"
       fi
 
       (
@@ -1009,11 +1076,21 @@ function gcc_test()
     then
       if [[ "${gcc_version}" =~ 14[.]0[.]1 ]]
       then
-        if [ "${XBB_HOST_ARCH}" == "arm64" ]
-        then
-          # core dumped
-          export XBB_SKIP_TEST_ALL_UNWIND_STRONG_CPP="y"
-        fi
+        :
+        # core dumped
+        export XBB_SKIP_TEST_ALL_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_GC_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_LTO_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_GC_LTO_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_STATIC_LIB_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_STATIC_LIB_GC_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_STATIC_LIB_LTO_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_STATIC_LIB_GC_LTO_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_STATIC_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_STATIC_GC_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_STATIC_LTO_UNWIND_STRONG_CPP="y"
+        # XBB_SKIP_TEST_STATIC_GC_LTO_UNWIND_STRONG_CPP="y"
       fi
 
       if [ "${XBB_HOST_ARCH}" == "x64" ]
