@@ -501,18 +501,19 @@ function test_compiler_c_cpp()
         run_target_app_verbose "./${prefix}normal${suffix}"
 
         # TODO: investigate why it fails with GCC 14 on macOS.
-        # if is_variable_set "XBB_SKIP_TEST_${prefix}weak-undef-c${suffix}" \
-        #                    "XBB_SKIP_TEST_${prefix}weak-undef-c"
-        # then
-        #   echo
-        #   echo "Skipping ${prefix}weak-undef-c${suffix}..."
-        # else
-        #   # weak-undef
-        #   run_host_app_verbose "${CC}" "${prefix}main-weak${suffix}.c.o" "${prefix}expected1${suffix}.c.o" "${prefix}dummy${suffix}.c.o" -o "${prefix}weak-undef${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+        if is_variable_set "XBB_SKIP_TEST_ALL_weak-undef-c${suffix}" \
+                           "XBB_SKIP_TEST_${prefix}weak-undef-c${suffix}" \
+                           "XBB_SKIP_TEST_${prefix}weak-undef-c"
+        then
+          echo
+          echo "Skipping ${prefix}weak-undef-c${suffix}..."
+        else
+          # weak-undef
+          run_host_app_verbose "${CC}" "${prefix}main-weak${suffix}.c.o" "${prefix}expected1${suffix}.c.o" "${prefix}dummy${suffix}.c.o" -o "${prefix}weak-undef${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
-        #   show_target_libs_develop "${prefix}weak-undef${suffix}${XBB_TARGET_DOT_EXE}"
-        #   run_target_app_verbose "./${prefix}weak-undef${suffix}"
-        # fi
+          show_target_libs_develop "${prefix}weak-undef${suffix}${XBB_TARGET_DOT_EXE}"
+          run_target_app_verbose "./${prefix}weak-undef${suffix}"
+        fi
 
         # weak-defined
         run_host_app_verbose "${CC}" "${prefix}main-weak${suffix}.c.o" "${prefix}add2${suffix}.c.o" "${prefix}expected3${suffix}.c.o" "${prefix}dummy${suffix}.c.o" -o "${prefix}weak-defined${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
@@ -558,18 +559,19 @@ function test_compiler_c_cpp()
         run_target_app_verbose "./${prefix}unwind-weak${suffix}"
 
         # TODO: investigate why it fails with GCC 14 on macOS.
-        # if is_variable_set "XBB_SKIP_TEST_${prefix}unwind-strong-cpp${suffix}" \
-        #                    "XBB_SKIP_TEST_${prefix}unwind-strong-cpp"
-        # then
-        #   echo
-        #   echo "Skipping ${prefix}unwind-strong-cpp${suffix}..."
-        # else
-        #   # unwind-strong
-        #   run_host_app_verbose "${CXX}" "${prefix}unwind-weak-dummy${suffix}.cpp.o" "${prefix}unwind-main${suffix}.cpp.o" -o "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        if is_variable_set "XBB_SKIP_TEST_ALL_unwind-strong-cpp${suffix}" \
+                           "XBB_SKIP_TEST_${prefix}unwind-strong-cpp${suffix}" \
+                           "XBB_SKIP_TEST_${prefix}unwind-strong-cpp"
+        then
+          echo
+          echo "Skipping ${prefix}unwind-strong-cpp${suffix}..."
+        else
+          # unwind-strong
+          run_host_app_verbose "${CXX}" "${prefix}unwind-weak-dummy${suffix}.cpp.o" "${prefix}unwind-main${suffix}.cpp.o" -o "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
 
-        #   show_target_libs_develop "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}"
-        #   run_target_app_verbose "./${prefix}unwind-strong${suffix}"
-        # fi
+          show_target_libs_develop "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}"
+          run_target_app_verbose "./${prefix}unwind-strong${suffix}"
+        fi
 
       )
 
