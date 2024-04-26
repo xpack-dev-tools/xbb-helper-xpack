@@ -1010,6 +1010,15 @@ function gcc_test()
       )
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
+      if [[ "${gcc_version}" =~ 14[.]0[.]1 ]]
+      then
+        if [ "${XBB_HOST_ARCH}" == "arm64" ]
+        then
+          # core dumped
+          export XBB_SKIP_TEST_ALL_UNWIND_STRONG_CPP="y"
+        fi
+      fi
+
       if [ "${XBB_HOST_ARCH}" == "x64" ]
       then
         (
