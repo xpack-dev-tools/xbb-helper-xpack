@@ -1173,7 +1173,7 @@ function gcc_test()
           XBB_SKIP_TEST_ALL_UNWIND_STRONG_CPP="y"
         fi
 
-        // --------------------------------------------------------------------
+        # ---------------------------------------------------------------------
 
         test_compiler_c_cpp "${test_bin_path}"
         test_compiler_c_cpp "${test_bin_path}" --gc
