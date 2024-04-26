@@ -1025,21 +1025,7 @@ function gcc_test()
         export XBB_SKIP_TEST_STATIC_UNWIND_WEAK_CPP="y"
         export XBB_SKIP_TEST_STATIC_GC_UNWIND_WEAK_CPP="y"
 
-        # unwind-strong - totally unfunctional.
-        # unwind-main.cpp.o: in function `main': undefined reference to `step1'
-        export XBB_SKIP_TEST_ALL_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_GC_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_LTO_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_GC_LTO_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_STATIC_LIB_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_STATIC_LIB_GC_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_STATIC_LIB_LTO_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_STATIC_LIB_GC_LTO_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_STATIC_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_STATIC_GC_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_STATIC_LTO_UNWIND_STRONG_CPP="y"
-        # export XBB_SKIP_TEST_STATIC_GC_LTO_UNWIND_STRONG_CPP="y"
+        # unwind-strong - fully functional.
       fi
 
       (
@@ -1074,25 +1060,6 @@ function gcc_test()
       )
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
-      if [[ "${gcc_version}" =~ 14[.]0[.]1 ]]
-      then
-        :
-        # core dumped
-        export XBB_SKIP_TEST_ALL_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_GC_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_LTO_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_GC_LTO_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_STATIC_LIB_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_STATIC_LIB_GC_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_STATIC_LIB_LTO_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_STATIC_LIB_GC_LTO_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_STATIC_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_STATIC_GC_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_STATIC_LTO_UNWIND_STRONG_CPP="y"
-        # XBB_SKIP_TEST_STATIC_GC_LTO_UNWIND_STRONG_CPP="y"
-      fi
-
       if [ "${XBB_HOST_ARCH}" == "x64" ]
       then
         (
@@ -1246,8 +1213,6 @@ function gcc_test()
 
           XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
           XBB_SKIP_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
-
-          XBB_SKIP_TEST_ALL_UNWIND_STRONG_CPP="y"
         fi
 
         # ---------------------------------------------------------------------

@@ -599,7 +599,7 @@ function test_compiler_c_cpp()
           echo "Skipping ${prefix}unwind-strong-cpp${suffix}..."
         else
           # unwind-strong
-          run_host_app_verbose "${CXX}" "${prefix}unwind-weak-dummy${suffix}.cpp.o" "${prefix}unwind-main${suffix}.cpp.o" -o "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+          run_host_app_verbose "${CXX}" "${prefix}unwind-weak-dummy${suffix}.cpp.o" "${prefix}unwind-main${suffix}.cpp.o" "${prefix}unwind-strong${suffix}.cpp.o" -o "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
 
           show_target_libs_develop "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}"
           run_target_app_verbose "./${prefix}unwind-strong${suffix}"
