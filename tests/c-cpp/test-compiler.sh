@@ -205,12 +205,16 @@ function test_compiler_c_cpp()
       prefix="static-${prefix}"
     elif [ "${is_static_lib}" == "y" ]
     then
-      if [ "${XBB_TARGET_PLATFORM}" != "darwin" ]
+      if [[ $(basename "${CC}") =~ .*clang.* ]] && [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
+        :
+        # clang: error: unsupported option '-static-libgcc'
+        # clang++: warning: argument unused during compilation: '-static-libstdc++' [-Wunused-command-line-argument]
+      else
         LDFLAGS+=" -static-libgcc"
         LDXXFLAGS+=" -static-libgcc"
+        LDXXFLAGS+=" -static-libstdc++"
       fi
-      LDXXFLAGS+=" -static-libstdc++"
       prefix="static-lib-${prefix}"
     fi
 
