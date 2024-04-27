@@ -1193,44 +1193,51 @@ function gcc_test()
           # terminate called after throwing an instance of 'std::exception'
           # what():  std::exception
 
-          XBB_SKIP_TEST_HELLO_EXCEPTION="y"
-          XBB_SKIP_TEST_GC_HELLO_EXCEPTION="y"
-          XBB_SKIP_TEST_LTO_HELLO_EXCEPTION="y"
-          XBB_SKIP_TEST_GC_LTO_HELLO_EXCEPTION="y"
+          export XBB_SKIP_TEST_HELLO_EXCEPTION="y"
+          export XBB_SKIP_TEST_GC_HELLO_EXCEPTION="y"
+          export XBB_SKIP_TEST_LTO_HELLO_EXCEPTION="y"
+          export XBB_SKIP_TEST_GC_LTO_HELLO_EXCEPTION="y"
 
           # [./exception-reduced ]
           # terminate called after throwing an instance of 'int'
 
-          XBB_SKIP_RUN_TEST_EXCEPTION_REDUCED="y"
-          XBB_SKIP_RUN_TEST_GC_EXCEPTION_REDUCED="y"
-          XBB_SKIP_RUN_TEST_LTO_EXCEPTION_REDUCED="y"
-          XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
+          export XBB_SKIP_RUN_TEST_EXCEPTION_REDUCED="y"
+          export XBB_SKIP_RUN_TEST_GC_EXCEPTION_REDUCED="y"
+          export XBB_SKIP_RUN_TEST_LTO_EXCEPTION_REDUCED="y"
+          export XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
         fi
 
         if [[ "${gcc_version}" =~ 14[.]0[.]1 ]]
         then
-          # It looks like an Apple linker issue.
-          XBB_SKIP_TEST_ALL_WEAK_UNDEF_C="y"
+          # Most likely an Apple linker issue.
+          export XBB_SKIP_TEST_ALL_WEAK_UNDEF_C="y"
+          # export XBB_SKIP_TEST_WEAK_UNDEF_C="y"
+          # export XBB_SKIP_TEST_GC_WEAK_UNDEF_C="y"
+          # export XBB_SKIP_TEST_LTO_WEAK_UNDEF_C="y"
+          # export XBB_SKIP_TEST_GC_LTO_WEAK_UNDEF_C="y"
+          # export XBB_SKIP_TEST_STATIC_LIB_WEAK_UNDEF_C="y"
+          # export XBB_SKIP_TEST_STATIC_LIB_GC_WEAK_UNDEF_C="y"
+          # export XBB_SKIP_TEST_STATIC_LIB_LTO_WEAK_UNDEF_C="y"
+          # export XBB_SKIP_TEST_STATIC_LIB_GC_LTO_WEAK_UNDEF_C="y"
 
-          XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
-          XBB_SKIP_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
+          export XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
+          export XBB_SKIP_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
         fi
 
         # ---------------------------------------------------------------------
 
+        # It is mandatory that the compiler runs properly without any
+        # explicit libraries or other options, otherwise tools used
+        # during configuration (like meson) will fail probing for
+        # capabilities.
         test_compiler_c_cpp "${test_bin_path}"
-        test_compiler_c_cpp "${test_bin_path}" --gc
 
-        # Old macOS linkers do not support LTO, thus use lld.
-        # Note: lld might be available in gcc 14.
-        if true
-        then
-          test_compiler_c_cpp "${test_bin_path}" --lto
-          test_compiler_c_cpp "${test_bin_path}" --gc --lto
-        else
-          test_compiler_c_cpp "${test_bin_path}" --lto --lld
-          test_compiler_c_cpp "${test_bin_path}" --gc --lto --lld
-        fi
+        # ---------------------------------------------------------------------
+
+        # Again, with various options.
+        test_compiler_c_cpp "${test_bin_path}" --gc
+        test_compiler_c_cpp "${test_bin_path}" --lto
+        test_compiler_c_cpp "${test_bin_path}" --gc --lto
 
         test_compiler_fortran "${test_bin_path}"
 
@@ -1262,22 +1269,3 @@ function gcc_test()
 
 # -----------------------------------------------------------------------------
 
-# XBB_SKIP_TEST_WEAK_UNDEF_C="y"
-# XBB_SKIP_TEST_GC_WEAK_UNDEF_C="y"
-# XBB_SKIP_TEST_LTO_WEAK_UNDEF_C="y"
-# XBB_SKIP_TEST_GC_LTO_WEAK_UNDEF_C="y"
-# XBB_SKIP_TEST_STATIC_LIB_WEAK_UNDEF_C="y"
-# XBB_SKIP_TEST_STATIC_LIB_GC_WEAK_UNDEF_C="y"
-# XBB_SKIP_TEST_STATIC_LIB_LTO_WEAK_UNDEF_C="y"
-# XBB_SKIP_TEST_STATIC_LIB_GC_LTO_WEAK_UNDEF_C="y"
-
-# XBB_SKIP_TEST_UNWIND_STRONG_CPP="y"
-# XBB_SKIP_TEST_GC_UNWIND_STRONG_CPP="y"
-# XBB_SKIP_TEST_LTO_UNWIND_STRONG_CPP="y"
-# XBB_SKIP_TEST_GC_LTO_UNWIND_STRONG_CPP="y"
-# XBB_SKIP_TEST_STATIC_LIB_UNWIND_STRONG_CPP="y"
-# XBB_SKIP_TEST_STATIC_LIB_GC_UNWIND_STRONG_CPP="y"
-# XBB_SKIP_TEST_STATIC_LIB_LTO_UNWIND_STRONG_CPP="y"
-# XBB_SKIP_TEST_STATIC_LIB_GC_LTO_UNWIND_STRONG_CPP="y"
-
-# -----------------------------------------------------------------------------
