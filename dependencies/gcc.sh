@@ -942,6 +942,7 @@ function gcc_test()
         # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
         # collect2.exe: error: ld returned 1 exit status
 
+        # Interestingly, LTO tests pass.
         export XBB_SKIP_TEST_HELLO_WEAK_C="y"
         export XBB_SKIP_TEST_GC_HELLO_WEAK_C="y"
 
@@ -1006,7 +1007,7 @@ function gcc_test()
         export XBB_SKIP_TEST_STATIC_WEAK_DUPLICATE_C="y"
         export XBB_SKIP_TEST_STATIC_GC_WEAK_DUPLICATE_C="y"
 
-        # overload-new - static lib and static are functional.
+        # overload-new - static lib and static are functional. (all on mingw!)
         # Does not return success.
         export XBB_SKIP_TEST_OVERLOAD_NEW_CPP="y"
         export XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
