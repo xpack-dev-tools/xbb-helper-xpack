@@ -131,6 +131,13 @@ function test_compiler_c_cpp()
     LDFLAGS=""
     LDXXFLAGS=""
 
+    if [ "${use_lld}" == "y" ]
+    then
+      LDFLAGS+=" -fuse-ld=lld"
+      LDXXFLAGS+=" -fuse-ld=lld"
+      prefix="lld-${prefix}"
+    fi
+
     if [ "${use_crt}" == "y" ]
     then
       LDFLAGS+=" -rtlib=compiler-rt"
@@ -161,12 +168,6 @@ function test_compiler_c_cpp()
     then
       LDFLAGS+=" -ldl"
       LDXXFLAGS+=" -ldl"
-    fi
-
-    if [ "${use_lld}" == "y" ]
-    then
-      LDFLAGS+=" -fuse-ld=lld"
-      LDXXFLAGS+=" -fuse-ld=lld"
     fi
 
     if [ "${is_lto}" == "y" ]
