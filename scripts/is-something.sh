@@ -12,14 +12,13 @@
 
 function is_variable_set()
 {
+  echo_develop
+
   while [ $# -gt 0 ]
   do
     # For convenience, turn dashes into underscores
     # and convert all letters to upper case.
     local variable_name=$(echo "$1" | tr '-' '_' | tr "[:lower:]" "[:upper:]")
-
-    echo_develop
-    echo_develop "is_variable_set ${variable_name}"
 
     # https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Parameter-Expansion
     # ! is the bash indirection operator
@@ -27,9 +26,11 @@ function is_variable_set()
     # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_02
     if [ ! -z ${!variable_name+x} ]
     then
+      echo_develop "is_variable_set ${variable_name} - YES"
       return 0
     fi
 
+    echo_develop "is_variable_set ${variable_name} - NO"
     shift
   done
 
