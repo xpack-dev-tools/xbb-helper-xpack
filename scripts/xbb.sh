@@ -1434,8 +1434,8 @@ function xbb_get_toolchain_library_path()
         # ./lib/libclang.so
         # ./lib/liblldb.so
         # ./lib/LLVMgold.so
-        local runtime_path="$("${$@}" -print-runtime-dir)"
-        local libcpp_path="$("${$@}" -print-file-name=libc++.so)"
+        local runtime_path="$("$@" -print-runtime-dir)"
+        local libcpp_path="$("$@" -print-file-name=libc++.so)"
         libs_path="$(dirname $("${REALPATH}" "${libcpp_path}")):${runtime_path}"
 
       elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
@@ -1472,7 +1472,7 @@ function xbb_get_toolchain_library_path()
       # ./lib64/libcc1.so
       # ./lib64/libtsan.so
       # ./lib64/libhwasan.so
-      local libstdcpp_path="$("${@}" -print-file-name=libstdc++.so)"
+      local libstdcpp_path="$("$@" -print-file-name=libstdc++.so)"
       libs_path="$(dirname $("${REALPATH}" -m "${libstdcpp_path}"))"
     else
       echo "TODO: compute rpath for ${CC}"
