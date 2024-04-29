@@ -248,14 +248,28 @@ function test_compiler_c_cpp()
 
       # -----------------------------------------------------------------------
 
-      # Test C++ compile and link in a single step.
-      run_host_app_verbose "${CXX}" "simple-hello.cpp" -o "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -v
-      expect_target_output "Hello" "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}simple-hello-cpp-one${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}simple-hello-cpp-one"
+      then
+        echo
+        echo "Skipping ${prefix}simple-hello-cpp-one${suffix}..."
+      else
+        # Test C++ compile and link in a single step.
+        run_host_app_verbose "${CXX}" "simple-hello.cpp" -o "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -v
+        expect_target_output "Hello" "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
 
-      # Test C++ compile and link in separate steps.
-      run_host_app_verbose "${CXX}" -c "simple-hello.cpp" -o "${prefix}simple-hello${suffix}.cpp.o" ${CXXFLAGS}
-      run_host_app_verbose "${CXX}" "${prefix}simple-hello${suffix}.cpp.o" -o "${prefix}simple-hello-cpp-two${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      expect_target_output "Hello" "${prefix}simple-hello-cpp-two${suffix}${XBB_TARGET_DOT_EXE}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}simple-hello-cpp-two${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}simple-hello-cpp-two"
+      then
+        echo
+        echo "Skipping ${prefix}simple-hello-cpp-two${suffix}..."
+      else
+        # Test C++ compile and link in separate steps.
+        run_host_app_verbose "${CXX}" -c "simple-hello.cpp" -o "${prefix}simple-hello${suffix}.cpp.o" ${CXXFLAGS}
+        run_host_app_verbose "${CXX}" "${prefix}simple-hello${suffix}.cpp.o" -o "${prefix}simple-hello-cpp-two${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        expect_target_output "Hello" "${prefix}simple-hello-cpp-two${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
 
       # -----------------------------------------------------------------------
 
@@ -307,26 +321,54 @@ function test_compiler_c_cpp()
 
       # -----------------------------------------------------------------------
 
-      run_host_app_verbose "${CXX}" "simple-exception.cpp" -o "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      expect_target_output "MyException" "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}simple-exception${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}simple-exception"
+      then
+        echo
+        echo "Skipping ${prefix}simple-exception${suffix}..."
+      else
+        run_host_app_verbose "${CXX}" "simple-exception.cpp" -o "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        expect_target_output "MyException" "${prefix}simple-exception${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
 
-      run_host_app_verbose "${CXX}" "simple-str-exception.cpp" -o "${prefix}simple-str-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      expect_target_output "MyStringException" "${prefix}simple-str-exception${suffix}${XBB_TARGET_DOT_EXE}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}simple-str-exception${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}simple-str-exception"
+      then
+        echo
+        echo "Skipping ${prefix}simple-str-exception${suffix}..."
+      else
+        run_host_app_verbose "${CXX}" "simple-str-exception.cpp" -o "${prefix}simple-str-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        expect_target_output "MyStringException" "${prefix}simple-str-exception${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
 
-      run_host_app_verbose "${CXX}" "simple-int-exception.cpp" -o "${prefix}simple-int-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      expect_target_output "42" "${prefix}simple-int-exception${suffix}${XBB_TARGET_DOT_EXE}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}simple-int-exception${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}simple-int-exception"
+      then
+        echo
+        echo "Skipping ${prefix}simple-int-exception${suffix}..."
+      else
+        run_host_app_verbose "${CXX}" "simple-int-exception.cpp" -o "${prefix}simple-int-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        expect_target_output "42" "${prefix}simple-int-exception${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
 
       # -----------------------------------------------------------------------
 
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if is_variable_set "XBB_SKIP_TEST_${prefix}sleepy-threads${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}sleepy-threads"
       then
-        run_host_app_verbose "${CXX}" "sleepy-threads.cpp" -o "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -lpthread
+        echo
+        echo "Skipping ${prefix}sleepy-threads${suffix}..."
       else
-        run_host_app_verbose "${CXX}" "sleepy-threads.cpp" -o "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      fi
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+        then
+          run_host_app_verbose "${CXX}" "sleepy-threads.cpp" -o "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -lpthread
+        else
+          run_host_app_verbose "${CXX}" "sleepy-threads.cpp" -o "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        fi
 
-      expect_target_output "abcd" "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" 4
-      expect_target_output "abcdefgh" "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" 8
+        expect_target_output "abcd" "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" 4
+        expect_target_output "abcdefgh" "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" 8
+      fi
 
       # -----------------------------------------------------------------------
 
@@ -352,21 +394,36 @@ function test_compiler_c_cpp()
       show_target_libs_develop "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}"
       run_target_app_verbose "./${prefix}setjmp${suffix}"
 
-      run_host_app_verbose "${CXX}" "hello-cpp.cpp" -o "${prefix}hello-cpp${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      show_target_libs_develop "${prefix}hello-cpp${suffix}${XBB_TARGET_DOT_EXE}"
-      run_target_app_verbose "./${prefix}hello-cpp${suffix}"
-
-      run_host_app_verbose "${CXX}" "global-terminate.cpp" -o "${prefix}global-terminate${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      show_target_libs_develop "${prefix}global-terminate${suffix}${XBB_TARGET_DOT_EXE}"
-
-      if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}global-terminate${suffix}" \
-                         "XBB_SKIP_RUN_TEST_${prefix}global-terminate"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}hello-cpp${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}hello-cpp"
       then
         echo
-        echo "Skipping running ${prefix}global-terminate${suffix}..."
+        echo "Skipping ${prefix}hello-cpp${suffix}..."
       else
-        run_target_app_verbose "./${prefix}global-terminate${suffix}"
+        run_host_app_verbose "${CXX}" "hello-cpp.cpp" -o "${prefix}hello-cpp${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        show_target_libs_develop "${prefix}hello-cpp${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}hello-cpp${suffix}"
       fi
+
+      if is_variable_set "XBB_SKIP_TEST_${prefix}global-terminate${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}global-terminate"
+      then
+        echo
+        echo "Skipping ${prefix}global-terminate${suffix}..."
+      else
+        run_host_app_verbose "${CXX}" "global-terminate.cpp" -o "${prefix}global-terminate${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        show_target_libs_develop "${prefix}global-terminate${suffix}${XBB_TARGET_DOT_EXE}"
+
+        if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}global-terminate${suffix}" \
+                          "XBB_SKIP_RUN_TEST_${prefix}global-terminate"
+        then
+          echo
+          echo "Skipping running ${prefix}global-terminate${suffix}..."
+        else
+          run_target_app_verbose "./${prefix}global-terminate${suffix}"
+        fi
+      fi
+
 
       run_host_app_verbose "${CXX}" "longjmp-cleanup.cpp" -o "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       show_target_libs_develop "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
@@ -383,21 +440,36 @@ function test_compiler_c_cpp()
         run_target_app_verbose "./${prefix}hello-exception${suffix}"
       fi
 
-      run_host_app_verbose "${CXX}" "exception-locale.cpp" -o "${prefix}exception-locale${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      show_target_libs_develop "${prefix}exception-locale${suffix}${XBB_TARGET_DOT_EXE}"
-      run_target_app_verbose "./${prefix}exception-locale${suffix}"
-
-      run_host_app_verbose "${CXX}" "exception-reduced.cpp" -o "${prefix}exception-reduced${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      show_target_libs_develop "${prefix}exception-reduced${suffix}${XBB_TARGET_DOT_EXE}"
-
-      if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}exception-reduced${suffix}" \
-                         "XBB_SKIP_RUN_TEST_${prefix}exception-reduced"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}exception-locale${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}exception-locale"
       then
         echo
-        echo "Skipping running ${prefix}exception-reduced${suffix}..."
+        echo "Skipping ${prefix}exception-locale${suffix}..."
       else
-        run_target_app_verbose "./${prefix}exception-reduced${suffix}"
+        run_host_app_verbose "${CXX}" "exception-locale.cpp" -o "${prefix}exception-locale${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        show_target_libs_develop "${prefix}exception-locale${suffix}${XBB_TARGET_DOT_EXE}"
+        run_target_app_verbose "./${prefix}exception-locale${suffix}"
       fi
+
+      if is_variable_set "XBB_SKIP_TEST_${prefix}exception-reduced${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}exception-reduced"
+      then
+        echo
+        echo "Skipping ${prefix}exception-reduced${suffix}..."
+      else
+        run_host_app_verbose "${CXX}" "exception-reduced.cpp" -o "${prefix}exception-reduced${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        show_target_libs_develop "${prefix}exception-reduced${suffix}${XBB_TARGET_DOT_EXE}"
+
+        if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}exception-reduced${suffix}" \
+                           "XBB_SKIP_RUN_TEST_${prefix}exception-reduced"
+        then
+          echo
+          echo "Skipping running ${prefix}exception-reduced${suffix}..."
+        else
+          run_target_app_verbose "./${prefix}exception-reduced${suffix}"
+        fi
+      fi
+
 
       if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
