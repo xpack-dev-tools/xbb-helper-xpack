@@ -73,7 +73,7 @@ function test_compiler_fortran()
           run_host_app_verbose "${F90}" concurrent.f90 -o "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}" ${bits_flags} ${LDFLAGS}
 
           show_target_libs_develop "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}"
-          run_target_app_verbose "./${prefix}concurrent-f${suffix}"
+          expect_target_succeed "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}"
         fi
       )
     else
