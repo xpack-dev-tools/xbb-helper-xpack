@@ -386,19 +386,19 @@ function test_compiler_c_cpp()
         run_host_app_verbose "${CXX}" "atomic.cpp" -o "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}" -Wno-format ${LDXXFLAGS}
       fi
       show_target_libs_develop "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}"
-      expect_target_succeed "${prefix}atomic${suffix}"
+      expect_target_succeed "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}"
 
       # -----------------------------------------------------------------------
       # Tests borrowed from the llvm-mingw project.
 
       run_host_app_verbose "${CC}" "hello.c" -o "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
       show_target_libs_develop "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}"
-      expect_target_succeed "${prefix}hello${suffix}"
+      expect_target_succeed "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}"
 
       # run_host_app_verbose "${CC}" "setjmp-patched.c" -o "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
       run_host_app_verbose "${CC}" "setjmp.c" -o "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
       show_target_libs_develop "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}"
-      expect_target_succeed "${prefix}setjmp${suffix}"
+      expect_target_succeed "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}"
 
       if is_variable_set "XBB_SKIP_TEST_${prefix}hello-cpp${suffix}" \
                          "XBB_SKIP_TEST_${prefix}hello-cpp"
@@ -408,7 +408,7 @@ function test_compiler_c_cpp()
       else
         run_host_app_verbose "${CXX}" "hello-cpp.cpp" -o "${prefix}hello-cpp${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
         show_target_libs_develop "${prefix}hello-cpp${suffix}${XBB_TARGET_DOT_EXE}"
-        expect_target_succeed "${prefix}hello-cpp${suffix}"
+        expect_target_succeed "${prefix}hello-cpp${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
       if is_variable_set "XBB_SKIP_TEST_${prefix}global-terminate${suffix}" \
@@ -426,14 +426,14 @@ function test_compiler_c_cpp()
           echo
           echo "Skipping running ${prefix}global-terminate${suffix}..."
         else
-          expect_target_succeed "${prefix}global-terminate${suffix}"
+          expect_target_succeed "${prefix}global-terminate${suffix}${XBB_TARGET_DOT_EXE}"
         fi
       fi
 
 
       run_host_app_verbose "${CXX}" "longjmp-cleanup.cpp" -o "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
       show_target_libs_develop "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
-      expect_target_succeed "${prefix}longjmp-cleanup${suffix}"
+      expect_target_succeed "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
 
       if is_variable_set "XBB_SKIP_TEST_${prefix}hello-exception${suffix}" \
                          "XBB_SKIP_TEST_${prefix}hello-exception"
@@ -443,7 +443,7 @@ function test_compiler_c_cpp()
       else
         run_host_app_verbose "${CXX}" "hello-exception.cpp" -o "${prefix}hello-exception${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
         show_target_libs_develop "${prefix}hello-exception${suffix}${XBB_TARGET_DOT_EXE}"
-        expect_target_succeed "${prefix}hello-exception${suffix}"
+        expect_target_succeed "${prefix}hello-exception${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
       if is_variable_set "XBB_SKIP_TEST_${prefix}exception-locale${suffix}" \
@@ -454,7 +454,7 @@ function test_compiler_c_cpp()
       else
         run_host_app_verbose "${CXX}" "exception-locale.cpp" -o "${prefix}exception-locale${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
         show_target_libs_develop "${prefix}exception-locale${suffix}${XBB_TARGET_DOT_EXE}"
-        expect_target_succeed "${prefix}exception-locale${suffix}"
+        expect_target_succeed "${prefix}exception-locale${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
       if is_variable_set "XBB_SKIP_TEST_${prefix}exception-reduced${suffix}" \
@@ -472,7 +472,7 @@ function test_compiler_c_cpp()
           echo
           echo "Skipping running ${prefix}exception-reduced${suffix}..."
         else
-          expect_target_succeed "${prefix}exception-reduced${suffix}"
+          expect_target_succeed "${prefix}exception-reduced${suffix}${XBB_TARGET_DOT_EXE}"
         fi
       fi
 
@@ -481,33 +481,33 @@ function test_compiler_c_cpp()
       then
         run_host_app_verbose "${CC}" "hello-tls.c" -o "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
         show_target_libs_develop "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
-        expect_target_succeed "${prefix}hello-tls${suffix}"
+        expect_target_succeed "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
 
         if false
         then
           # -lssp not available.
           run_host_app_verbose "${CC}" "bufferoverflow.c" -o "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -D_FORTIFY_SOURCE=2 -lssp
           show_target_libs_develop "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}"
-          expect_target_succeed "${prefix}bufferoverflow${suffix}"
-          expect_target_succeed "${prefix}bufferoverflow${suffix}" 1
-          expect_target_succeed "${prefix}bufferoverflow${suffix}" 2
-          expect_target_succeed "${prefix}bufferoverflow${suffix}" 3
-          expect_target_succeed "${prefix}bufferoverflow${suffix}" 4
-          expect_target_succeed "${prefix}bufferoverflow${suffix}" 5
-          expect_target_succeed "${prefix}bufferoverflow${suffix}" 6
-          expect_target_succeed "${prefix}bufferoverflow${suffix}" 7
-          expect_target_succeed "${prefix}bufferoverflow${suffix}" 8
-          expect_target_succeed "${prefix}bufferoverflow${suffix}" 9
-          expect_target_succeed "${prefix}bufferoverflow${suffix}" 10
+          expect_target_succeed "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}"
+          expect_target_succeed "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" 1
+          expect_target_succeed "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" 2
+          expect_target_succeed "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" 3
+          expect_target_succeed "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" 4
+          expect_target_succeed "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" 5
+          expect_target_succeed "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" 6
+          expect_target_succeed "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" 7
+          expect_target_succeed "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" 8
+          expect_target_succeed "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" 9
+          expect_target_succeed "${prefix}bufferoverflow${suffix}${XBB_TARGET_DOT_EXE}" 10
 
           # Control Flow Guard is _not_ enabled!
           run_host_app_verbose "${CC}" "cfguard-test.c" -o "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -mguard=cf
           show_target_libs_develop "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}"
-          expect_target_succeed "${prefix}cfguard-test${suffix}"
-          expect_target_succeed "${prefix}cfguard-test${suffix}" check_enabled
-          expect_target_succeed "${prefix}cfguard-test${suffix}" normal_icall
-          expect_target_succeed "${prefix}cfguard-test${suffix}" invalid_icall
-          expect_target_succeed "${prefix}cfguard-test${suffix}" invalid_icall_nocf
+          expect_target_succeed "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}"
+          expect_target_succeed "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}" check_enabled
+          expect_target_succeed "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}" normal_icall
+          expect_target_succeed "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}" invalid_icall
+          expect_target_succeed "${prefix}cfguard-test${suffix}${XBB_TARGET_DOT_EXE}" invalid_icall_nocf
         fi
       fi
 
@@ -520,7 +520,7 @@ function test_compiler_c_cpp()
         # This test uses math functions. On Windows -lm is not mandatory.
         run_host_app_verbose "${CC}" crt-test.c -o "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
         show_target_libs_develop "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}"
-        expect_target_succeed "${prefix}crt-test${suffix}"
+        expect_target_succeed "${prefix}crt-test${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
       if is_variable_set "XBB_SKIP_TEST_${prefix}hello-weak-c${suffix}" \
@@ -565,7 +565,7 @@ function test_compiler_c_cpp()
         run_host_app_verbose "${CC}" "${prefix}main${suffix}.c.o" "${prefix}add2${suffix}.c.o" "${prefix}expected3${suffix}.c.o" "${prefix}dummy${suffix}.c.o" -o "${prefix}normal${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
         show_target_libs_develop "${prefix}normal${suffix}${XBB_TARGET_DOT_EXE}"
-        expect_target_succeed "${prefix}normal${suffix}"
+        expect_target_succeed "${prefix}normal${suffix}${XBB_TARGET_DOT_EXE}"
 
         # TODO: investigate why it fails with GCC 14 on macOS.
         if is_variable_set "XBB_SKIP_TEST_ALL_weak-undef-c${suffix}" \
@@ -579,7 +579,7 @@ function test_compiler_c_cpp()
           run_host_app_verbose "${CC}" "${prefix}main-weak${suffix}.c.o" "${prefix}expected1${suffix}.c.o" "${prefix}dummy${suffix}.c.o" -o "${prefix}weak-undef${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
           show_target_libs_develop "${prefix}weak-undef${suffix}${XBB_TARGET_DOT_EXE}"
-          expect_target_succeed "${prefix}weak-undef${suffix}"
+          expect_target_succeed "${prefix}weak-undef${suffix}${XBB_TARGET_DOT_EXE}"
         fi
 
         if is_variable_set "XBB_SKIP_TEST_ALL_weak-defined-c${suffix}" \
@@ -594,7 +594,7 @@ function test_compiler_c_cpp()
           run_host_app_verbose "${CC}" "${prefix}main-weak${suffix}.c.o" "${prefix}add2${suffix}.c.o" "${prefix}expected3${suffix}.c.o" "${prefix}dummy${suffix}.c.o" -o "${prefix}weak-defined${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
           show_target_libs_develop "${prefix}weak-defined${suffix}${XBB_TARGET_DOT_EXE}"
-          expect_target_succeed "${prefix}weak-defined${suffix}"
+          expect_target_succeed "${prefix}weak-defined${suffix}${XBB_TARGET_DOT_EXE}"
         fi
 
         if is_variable_set "XBB_SKIP_TEST_ALL_weak-use-c${suffix}" \
@@ -609,7 +609,7 @@ function test_compiler_c_cpp()
           run_host_app_verbose "${CC}" "${prefix}main${suffix}.c.o" "${prefix}add1-weak-dummy-chained${suffix}.c.o" "${prefix}expected3${suffix}.c.o" -o "${prefix}weak-use${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
           show_target_libs_develop "${prefix}weak-use${suffix}${XBB_TARGET_DOT_EXE}"
-          expect_target_succeed "${prefix}weak-use${suffix}"
+          expect_target_succeed "${prefix}weak-use${suffix}${XBB_TARGET_DOT_EXE}"
         fi
 
         if is_variable_set "XBB_SKIP_TEST_ALL_weak-override-c${suffix}" \
@@ -624,7 +624,7 @@ function test_compiler_c_cpp()
           run_host_app_verbose "${CC}" "${prefix}main${suffix}.c.o" "${prefix}add1-weak-dummy-chained${suffix}.c.o" "${prefix}add2${suffix}.c.o" "${prefix}expected5${suffix}.c.o" -o "${prefix}weak-override${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
           show_target_libs_develop "${prefix}weak-override${suffix}${XBB_TARGET_DOT_EXE}"
-          expect_target_succeed "${prefix}weak-override${suffix}"
+          expect_target_succeed "${prefix}weak-override${suffix}${XBB_TARGET_DOT_EXE}"
         fi
 
         if is_variable_set "XBB_SKIP_TEST_ALL_weak-duplicate-c${suffix}" \
@@ -639,7 +639,7 @@ function test_compiler_c_cpp()
           run_host_app_verbose "${CC}" "${prefix}main${suffix}.c.o" "${prefix}add1-weak-dummy-chained${suffix}.c.o" "${prefix}expected3-add1-weak${suffix}.c.o" -o "${prefix}weak-duplicate${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
           show_target_libs_develop "${prefix}weak-duplicate${suffix}${XBB_TARGET_DOT_EXE}"
-          expect_target_succeed "${prefix}weak-duplicate${suffix}"
+          expect_target_succeed "${prefix}weak-duplicate${suffix}${XBB_TARGET_DOT_EXE}"
         fi
 
         if is_variable_set "XBB_SKIP_TEST_ALL_overload-new-cpp${suffix}" \
@@ -654,7 +654,7 @@ function test_compiler_c_cpp()
           run_host_app_verbose "${CXX}" "${prefix}overload-new${suffix}.cpp.o" -o "${prefix}overload-new${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
 
           show_target_libs_develop "${prefix}overload-new${suffix}${XBB_TARGET_DOT_EXE}"
-          expect_target_succeed "${prefix}overload-new${suffix}"
+          expect_target_succeed "${prefix}overload-new${suffix}${XBB_TARGET_DOT_EXE}"
         fi
 
         if is_variable_set "XBB_SKIP_TEST_ALL_unwind-weak-cpp${suffix}" \
@@ -669,7 +669,7 @@ function test_compiler_c_cpp()
           run_host_app_verbose "${CXX}" "${prefix}unwind-weak${suffix}.cpp.o" "${prefix}unwind-main${suffix}.cpp.o" -o "${prefix}unwind-weak${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
 
           show_target_libs_develop "${prefix}unwind-weak${suffix}${XBB_TARGET_DOT_EXE}"
-          expect_target_succeed "${prefix}unwind-weak${suffix}"
+          expect_target_succeed "${prefix}unwind-weak${suffix}${XBB_TARGET_DOT_EXE}"
         fi
 
         # TODO: investigate why it fails with GCC 14 on macOS.
@@ -685,7 +685,7 @@ function test_compiler_c_cpp()
           run_host_app_verbose "${CXX}" "${prefix}unwind-weak-dummy${suffix}.cpp.o" "${prefix}unwind-main${suffix}.cpp.o" "${prefix}unwind-strong${suffix}.cpp.o" -o "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
 
           show_target_libs_develop "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}"
-          expect_target_succeed "${prefix}unwind-strong${suffix}"
+          expect_target_succeed "${prefix}unwind-strong${suffix}${XBB_TARGET_DOT_EXE}"
         fi
 
       )
@@ -725,7 +725,7 @@ function test_compiler_c_cpp()
             echo
             echo "Skipping running ${prefix}throwcatch-main${suffix}..."
           else
-            expect_target_succeed "${prefix}throwcatch-main${suffix}"
+            expect_target_succeed "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
           fi
         )
       fi
@@ -745,7 +745,7 @@ function test_compiler_c_cpp()
 
           run_host_app_verbose "${CXX}" tlstest-main.cpp -o "${prefix}tlstest-main${suffix}${XBB_TARGET_DOT_EXE}"${LDXXFLAGS}
           show_target_libs_develop ${prefix}tlstest-main${suffix}
-          expect_target_succeed "${prefix}tlstest-main${suffix}"
+          expect_target_succeed "${prefix}tlstest-main${suffix}${XBB_TARGET_DOT_EXE}"
         fi
 
         if [ "${is_static}" != "y" ]
@@ -763,7 +763,7 @@ function test_compiler_c_cpp()
             echo
             echo "Skipping running ${prefix}autoimport-main${suffix}..."
           else
-            expect_target_succeed "${prefix}autoimport-main${suffix}"
+            expect_target_succeed "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
           fi
         fi
 
@@ -771,7 +771,7 @@ function test_compiler_c_cpp()
         run_host_app_verbose "${WIDL}" idltest.idl -o idltest.h -h
         run_host_app_verbose "${CC}" idltest.c -o "${prefix}idltest${suffix}${XBB_TARGET_DOT_EXE}" -I. -lole32 ${LDFLAGS}
         show_target_libs_develop "${prefix}idltest${suffix}${XBB_TARGET_DOT_EXE}"
-        expect_target_succeed "${prefix}idltest${suffix}"
+        expect_target_succeed "${prefix}idltest${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
       # -----------------------------------------------------------------------
