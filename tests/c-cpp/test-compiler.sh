@@ -226,19 +226,22 @@ function test_compiler_c_cpp()
       LDXXFLAGS+=" -m${bits}"
     fi
 
+    VERBOSE="-v"
     if [ "${XBB_IS_DEVELOP}" == "y" ]
     then
       CFLAGS+=" -g -v"
       CXXFLAGS+=" -g -v"
       LDFLAGS+=" -g -v"
       LDXXFLAGS+=" -g -v"
+
+      VERBOSE+=" -Wl,--verbose"
     fi
 
     (
       run_verbose_develop cd c-cpp
 
       # Test C compile and link in a single step.
-      run_host_app_verbose "${CC}" "simple-hello.c" -o "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -v
+      run_host_app_verbose "${CC}" "simple-hello.c" -o "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} ${VERBOSE}
       expect_target_output "Hello" "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}"
 
       # Test C compile and link in separate steps.
@@ -255,7 +258,7 @@ function test_compiler_c_cpp()
         echo "Skipping ${prefix}simple-hello-cpp-one${suffix}..."
       else
         # Test C++ compile and link in a single step.
-        run_host_app_verbose "${CXX}" "simple-hello.cpp" -o "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -v
+        run_host_app_verbose "${CXX}" "simple-hello.cpp" -o "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} ${VERBOSE}
         expect_target_output "Hello" "${prefix}simple-hello-cpp-one${suffix}${XBB_TARGET_DOT_EXE}"
       fi
 
