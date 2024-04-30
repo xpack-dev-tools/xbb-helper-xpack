@@ -1228,7 +1228,7 @@ function gcc_test()
 
         # It is mandatory for the compiler to run properly without any
         # explicit libraries or other options, otherwise tools used
-        # during configuration (like meson) will fail probing for
+        # during configuration (like meson) might fail probing for
         # capabilities.
         test_compiler_c_cpp "${test_bin_path}"
 
