@@ -445,8 +445,119 @@ function expect_target_output()
       echo "Test \"${app_name} $@\" failed :-("
       echo "expected output ${#expected} chars: \"${expected}\""
       echo "got ${#output} chars: \"${output}\""
-      echo "expected ${#expected}: \"${expected}\""
-      echo "got ${#output}: \"${output}\""
+      echo
+      exit 1
+    fi
+  )
+}
+
+function expect_target_succeed()
+{
+  expect_target_exit 0 "$@"
+}
+
+function expect_target_exit()
+{
+  local expected_exit_code="$1"
+  shift
+
+  local app_name="$1"
+  shift
+
+  (
+    local app_path="$(${REALPATH} "${app_name}")"
+
+    show_target_libs_develop "${app_name}"
+
+    local succeed=""
+    local exit_code=0
+
+    if [ "${XBB_BUILD_PLATFORM}" == "linux" -o "${XBB_BUILD_PLATFORM}" == "darwin" ]
+    then
+
+      if is_elf "${app_path}"
+      then
+        echo
+        echo "[${app_path} $@]"
+        # This looks weird, but the purpose here is to run the command
+        # within `if`, the result is the exit code in both cases.
+        if "${app_path}" "$@"
+        then
+          : # Nothing special to do, get the exit code below.
+        fi
+        exit_code=$?
+
+      elif is_executable_script "${app_path}"
+      then
+        echo
+        echo "[${app_path} $@]"
+        if "${app_path}" "$@"
+        then
+          :
+        fi
+        exit_code=$?
+      elif is_pe64 "${app_path}"
+      then
+        local wine_path=$(which wine64 2>/dev/null)
+        if [ ! -z "${wine_path}" ]
+        then
+          echo
+          echo "[wine64 ${app_path} $@]"
+          if wine64 "${app_path}" "$@"
+          then
+            :
+          fi
+          exit_code=$?
+        else
+          echo
+          echo "wine64 ${app_name} $@ - not available in ${FUNCNAME[0]}()"
+          return
+        fi
+      elif is_pe32 "${app_path}"
+      then
+        local wine_path=$(which wine 2>/dev/null)
+        if [ ! -z "${wine_path}" ]
+        then
+          echo
+          echo "[wine ${app_path} $@]"
+          if wine "${app_path}" "$@"
+          then
+            :
+          fi
+          exit_code=$?
+        else
+          echo
+          echo "wine ${app_name} $@ - not available in ${FUNCNAME[0]}()"
+          return
+        fi
+      else
+        echo
+        echo "Unsupported \"${app_name} $@\" in ${FUNCNAME[0]}()"
+        exit 1
+      fi
+
+    elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+    then
+      echo
+      echo "[${app_path} $@]"
+      if "${app_path}" "$@"
+      then
+        :
+      fi
+      exit_code=$?
+    else
+      echo
+      echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
+      exit 1
+    fi
+
+    if [ ${exit_code} -eq ${expected_exit_code} ]
+    then
+      echo
+      echo "Test \"${app_name} $@\" passed, got exit code: ${exit_code} :-)"
+    else
+      echo
+      echo "Test \"${app_name} $@\" failed, got exit code: ${exit_code}, expeted ${expected_exit_code} :-("
       echo
       exit 1
     fi
