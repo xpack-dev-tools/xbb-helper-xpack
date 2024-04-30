@@ -234,7 +234,10 @@ function test_compiler_c_cpp()
       LDFLAGS+=" -g -v"
       LDXXFLAGS+=" -g -v"
 
-      VERBOSE+=" -Wl,--verbose"
+      if [ "${XBB_TARGET_PLATFORM}" != "darwin" ]
+      then
+        VERBOSE+=" -Wl,--verbose"
+      fi
     fi
 
     (
