@@ -384,21 +384,26 @@ function expect_target_output()
 
       if is_elf "${app_path}"
       then
-        output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+        echo
+        echo "[${app_path} $@]"
+        output="$("${app_path}" "$@" | sed -e 's|\r$||')"
       elif is_executable_script "${app_path}"
       then
-        output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+        echo
+        echo "[${app_path} $@]"
+        output="$("${app_path}" "$@" | sed -e 's|\r$||')"
       elif is_pe64 "${app_path}"
       then
         local wine_path=$(which wine64 2>/dev/null)
         if [ ! -z "${wine_path}" ]
         then
+          echo
+          echo "[wine64 ${app_path} $@]"
           # Remove the trailing CR present on Windows.
           output="$(wine64 "${app_path}" "$@" | sed -e 's|\r$||')"
-
         else
           echo
-          echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+          echo "wine64 ${app_name} $@ - not available in ${FUNCNAME[0]}()"
           return
         fi
       elif is_pe32 "${app_path}"
@@ -406,12 +411,13 @@ function expect_target_output()
         local wine_path=$(which wine 2>/dev/null)
         if [ ! -z "${wine_path}" ]
         then
+          echo
+          echo "[wine ${app_path} $@]"
           # Remove the trailing CR present on Windows.
           output="$(wine "${app_path}" "$@" | sed -e 's|\r$||')"
-
         else
           echo
-          echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
+          echo "wine ${app_name} $@ - not available in ${FUNCNAME[0]}()"
           return
         fi
       else
@@ -419,7 +425,6 @@ function expect_target_output()
         echo "Unsupported \"${app_name} $@\" in ${FUNCNAME[0]}()"
         exit 1
       fi
-
     elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
     then
       output="$("${app_path}" "$@")"
@@ -429,13 +434,17 @@ function expect_target_output()
       exit 1
     fi
 
+    echo ${output}
+
     if [ "x${output}x" == "x${expected}x" ]
     then
       echo
-      echo "Test \"${app_name} $@\" passed, got \"${expected}\" :-)"
+      echo "Test \"${app_name} $@\" passed, got output \"${expected}\" :-)"
     else
       echo
       echo "Test \"${app_name} $@\" failed :-("
+      echo "expected output ${#expected} chars: \"${expected}\""
+      echo "got ${#output} chars: \"${output}\""
       echo "expected ${#expected}: \"${expected}\""
       echo "got ${#output}: \"${output}\""
       echo
