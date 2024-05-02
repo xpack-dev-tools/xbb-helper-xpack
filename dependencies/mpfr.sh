@@ -33,6 +33,7 @@ function mpfr_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local mpfr_version="$1"
+  local mpfr_version_major=$(xbb_get_version_major "${mpfr_version}")
 
   # The folder name as resulted after being extracted from the archive.
   local mpfr_src_folder_name="mpfr-${mpfr_version}"
@@ -132,7 +133,10 @@ function mpfr_build()
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 check # Arch
-          run_verbose make -j1 check-exported-symbols # Arch
+          if [ ${mpfr_version_major} -ge 4 ]
+          then
+            run_verbose make -j1 check-exported-symbols # Arch
+          fi
         fi
 
         if [ "${XBB_WITH_STRIP}" == "y" ]
