@@ -135,7 +135,7 @@ function texinfo_build()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if false # is_darwin
+          if is_darwin
           then
             run_verbose make -j1 check || true
           else
