@@ -1207,7 +1207,8 @@ function gcc_test()
           export XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
         fi
 
-        if [[ "${gcc_version}" =~ 14[.]0[.]1 ]]
+        if [[ "${gcc_version}" =~ 14[.]0[.]1 ]] || \
+           [[ "${gcc_version}" =~ 15[.]0[.]0 ]]
         then
           # Most likely an Apple linker issue.
           export XBB_SKIP_TEST_ALL_WEAK_UNDEF_C="y"
