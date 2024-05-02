@@ -149,7 +149,7 @@ function m4_build()
             # Remove failing test.
             run_verbose sed -i.bak -e 's|test-vasprintf-posix$(EXEEXT) ||' "${XBB_BUILD_FOLDER_PATH}/${m4_folder_name}/tests/Makefile"
 
-            run_verbose diff "${XBB_BUILD_FOLDER_PATH}/${m4_folder_name}/tests/Makefile.bak" "${XBB_BUILD_FOLDER_PATH}/${m4_folder_name}/tests/Makefile"
+            run_verbose diff "${XBB_BUILD_FOLDER_PATH}/${m4_folder_name}/tests/Makefile.bak" "${XBB_BUILD_FOLDER_PATH}/${m4_folder_name}/tests/Makefile" || true
           fi
 
           run_verbose make -j1 check
