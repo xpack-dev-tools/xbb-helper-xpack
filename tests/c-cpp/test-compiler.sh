@@ -126,10 +126,10 @@ function test_compiler_c_cpp()
       esac
     done
 
-    CFLAGS=""
-    CXXFLAGS=""
-    LDFLAGS=""
-    LDXXFLAGS=""
+    CFLAGS="${CFLAGS:-""}"
+    CXXFLAGS="${CXXFLAGS:-""}"
+    LDFLAGS="${LDFLAGS:-""}"
+    LDXXFLAGS="${LDXXFLAGS:-""}"
 
     if [ "${use_lld}" == "y" ]
     then
