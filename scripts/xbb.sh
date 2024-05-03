@@ -1502,11 +1502,15 @@ function xbb_adjust_ldflags_rpath()
     export XBB_LIBRARY_PATH="${path}"
   fi
 
-  LDFLAGS+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
+  # Add -L for both the user libraries and for the toolchain libraries,
+  # otherwise the linker will pick the system libraries, like libc++
+  # on macOS.
+  LDFLAGS+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}" "${XBB_TOOLCHAIN_RPATH}")"
 
+  # -rpath is not used on Windows the toolchain libraries.
   if [ "${XBB_HOST_PLATFORM}" != "win32" ]
   then
-    # -rpath is not used on Windows.
+    # Add -Wl,-rpath for both the user libraries and the toolchain libraries.
     LDFLAGS+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}" "${XBB_TOOLCHAIN_RPATH}")"
   fi
 
