@@ -173,7 +173,7 @@ function flex_build()
         then
           # cxx_restart fails - https://github.com/westes/flex/issues/98
           # make -k check || true
-          if [ "${XBB_HOST_PLATFORM}" == "darwin" ] && [ "${XBB_HOST_ARCH}" == "arm64" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             : # Fails with internal error, caused by gm4
           else
