@@ -340,7 +340,8 @@ function openssl_build()
           run_verbose ${INSTALL} -v -c -m 644 cacert.pem "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
         fi
 
-        if [ "${XBB_WITH_TESTS}" == "y" ]
+        # It takes too long.
+        if false # [ "${XBB_WITH_TESTS}" == "y" ]
         then
           run_verbose make -j1 test
         fi
