@@ -58,5 +58,3 @@ Remove AC_CONFIG_MACRO_DIR([m4]).
 
 For GCC 12 & 13, the `abort()` macro in `system.h` must be disabled when
 compiling for mingw-w64.
-
-
