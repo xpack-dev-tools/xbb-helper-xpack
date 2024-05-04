@@ -155,10 +155,10 @@ function openssl_build()
               config_options+=("enable-ec_nistp_64_gcc_128")
               if [ "${XBB_HOST_ARCH}" == "x64" ]
               then
-                config_options+=("darwin-x86_64")
+                config_options+=("darwin64-x86_64")
               elif [ "${XBB_HOST_ARCH}" == "arm64" ]
               then
-                config_options+=("darwin-arm64")
+                config_options+=("darwin64-arm64")
               else
                 echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
                 exit 1
