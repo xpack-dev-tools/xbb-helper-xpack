@@ -90,7 +90,7 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 --exclude clang \
 --deep-clean \
 \
---windows \
+--windows
 
 ```
 
@@ -102,8 +102,8 @@ removed
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
---exclude clang
---deep-clean \
+--exclude clang \
+--deep-clean
 
 xpm run deep-clean --config linux-arm64 -C ~/Work/xpack-dev-tools/arm-none-eabi-gcc-xpack.git
 
@@ -129,7 +129,7 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 --exclude aarch64-none-elf-gcc \
 --exclude arm-none-eabi-gcc \
 --exclude riscv-none-elf-gcc \
---deep-clean \
+--deep-clean
 
 ```
 
