@@ -1524,6 +1524,8 @@ function xbb_adjust_ldflags_rpath()
   LDFLAGS="${LDFLAGS# }" # Trim trailing spaces
 
   export LDFLAGS
+
+  echo_develop "LDFLAGS=${LDFLAGS}"
 }
 
 # STDOUT!
