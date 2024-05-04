@@ -313,15 +313,21 @@ do
 
 done
 
+local work_build_folder="${WORK}"
+if [ ! -z "${WORK_FOLDER_PATH:-""}" ]
+then
+  work_build_folder="${WORK_FOLDER_PATH}/xpack-dev-tools-build"
+fi
+
 echo
 echo "# Durations summary:"
 
-run_verbose find ${WORK} -name 'duration-*-*.txt' -exec echo '[cat {}]' ';' -exec cat '{}' ';' -exec echo ';'
+run_verbose find ${work_build_folder} -name 'duration-*-*.txt' -exec echo '[cat {}]' ';' -exec cat '{}' ';' -exec echo ';'
 
 echo
 echo "# Copied files summary:"
 
-run_verbose find ${WORK} -name 'copied-files-*-*.txt' -exec echo '[sort {}]' ';' -exec echo ';' -exec sort '{}' ';' -exec echo ';'
+run_verbose find ${work_build_folder} -name 'copied-files-*-*.txt' -exec echo '[sort {}]' ';' -exec echo ';' -exec sort '{}' ';' -exec echo ';'
 
 echo "Done"
 exit 0
