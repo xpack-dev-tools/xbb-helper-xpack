@@ -91,7 +91,7 @@ function show_host_libs()
           echo "${abs_path}:"
         fi
         # otool -L "${abs_path}" | tail -n +2
-        "${XBB_HOST_OBJDUMP}" --macho --dylibs-used "${abs_path}" | tail -n +3
+        "${XBB_HOST_OBJDUMP}" --macho --dylibs-used "${abs_path}" | tail -n +2
       else
         run_verbose file -L "${abs_path}"
         echo
@@ -208,7 +208,7 @@ function show_target_libs()
           echo "${abs_path}:"
         fi
         # otool -L "${abs_path}" | tail -n +2
-        "${XBB_TARGET_OBJDUMP}" --macho --dylibs-used "${abs_path}" | tail -n +3
+        "${XBB_TARGET_OBJDUMP}" --macho --dylibs-used "${abs_path}" | tail -n +2
       elif is_pe "${abs_path}"
       then
         run_verbose ls -l "${abs_path}"
