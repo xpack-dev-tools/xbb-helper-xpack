@@ -15,12 +15,9 @@
 # https://www.openssl.org/source/openssl-1.1.1n.tar.gz
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/openssl/-/blob/main/PKGBUILD
-
-# https://archlinuxarm.org/packages/aarch64/openssl/files/PKGBUILD
-# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=openssl-static
-# https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=openssl-git
-
-# https://github.com/Homebrew/homebrew-core/blob/master/Formula/o/openssl@1.1.rb
+# https://github.com/archlinuxarm/PKGBUILDs/blob/master/core/openssl/PKGBUILD
+# https://github.com/msys2/MSYS2-packages/blob/master/openssl/PKGBUILD
+# https://github.com/Homebrew/homebrew-core/blob/master/Formula/o/openssl@3.rb
 
 # 2017-Nov-02
 # XBB_OPENSSL_VERSION="1.1.0g"
@@ -87,17 +84,7 @@ function openssl_build()
 
       xbb_activate_dependencies_dev
 
-      #  -Wno-unused-command-line-argument
-
-      # export CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${openssl_folder_name}/include"
       CPPFLAGS="${XBB_CPPFLAGS}"
-      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-      then
-        # /usr/include/CommonCrypto/CommonRandom.h:35:9: error: unknown type name 'CCCryptorStatus'
-        # typedef CCCryptorStatus CCRNGStatus;
-        : # CPPFLAGS+=" -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
-      fi
-
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
@@ -125,51 +112,175 @@ function openssl_build()
           echo
           echo "Running openssl configure..."
 
-          echo
-          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+          if [ ${openssl_version_major} -ge 3 ]
           then
 
-            # Older versions do not support the KERNEL_BITS trick and require
-            # the separate configurator.
+            # Version 3 has a simpler configuration.
 
-            if [ ${openssl_version_minor} -eq 0 ]
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            then
+              run_verbose "./Configure" --help || true
+              run_verbose "./Configure" LIST
+            fi
+
+            config_options=()
+
+            config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+            config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
+
+            config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
+            config_options+=("shared") # Arch
+            config_options+=("enable-ktls") # Arch
+
+            config_options+=("enable-md2")
+            config_options+=("enable-rc5")
+            config_options+=("enable-tls")
+            config_options+=("enable-tls1_3")
+            config_options+=("enable-tls1_2")
+            config_options+=("enable-tls1_1")
+
+            # From Homebrew:
+            # SSLv2 died with 1.1.0, so no-ssl2 no longer required.
+            # SSLv3 & zlib are off by default with 1.1.0 but this may not
+            # be obvious to everyone, so explicitly state it for now to
+            # help debug inevitable breakage.
+            config_options+=("no-ssl3")
+            config_options+=("no-ssl3-method")
+            config_options+=("no-zlib")
+
+            config_options+=("no-zstd")
+
+            if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+            then
+              config_options+=("enable-ec_nistp_64_gcc_128")
+              if [ "${XBB_HOST_ARCH}" == "x64" ]
+              then
+                config_options+=("darwin-x86_64")
+              elif [ "${XBB_HOST_ARCH}" == "arm64" ]
+              then
+                config_options+=("darwin-arm64")
+              else
+                echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
+                exit 1
+              fi
+            elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+            then
+              # Prevent executing from stack.
+              config_options+=("-Wa,--noexecstack")
+              if [ "${XBB_HOST_ARCH}" == "x64" ]
+              then
+                config_options+=("enable-ec_nistp_64_gcc_128") # Arch
+                config_options+=("linux-x86_64")
+              elif [ "${XBB_HOST_ARCH}" == "arm64" ]
+              then
+                config_options+=("no-afalgeng") # Arch
+                config_options+=("linux-aarch64")
+              elif [ "${XBB_HOST_ARCH}" == "arm" ]
+              then
+                config_options+=("linux-armv4")
+              else
+                echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
+                exit 1
+              fi
+            elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
+            then
+              if [ "${XBB_HOST_ARCH}" == "x64" ]
+              then
+                config_options+=("mingw64")
+              elif [ "${XBB_HOST_ARCH}" == "ia32" ]
+              then
+                config_options+=("mingw")
+              else
+                echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
+                exit 1
+              fi
+            fi
+
+            set +u
+
+            # perl, do not start with bash.
+            run_verbose "./Configure" \
+              "${config_options[@]}"
+
+            set -u
+
+            run_verbose make depend
+
+          else # Legacy 1.x
+
+            if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
             then
 
-              # This config does not use the standard GNU environment definitions.
-              # `Configure` is a Perl script.
-              if [ "${XBB_IS_DEVELOP}" == "y" ]
+              # Older versions do not support the KERNEL_BITS trick and require
+              # the separate configurator.
+
+              if [ ${openssl_version_minor} -eq 0 ]
               then
-                run_verbose "./Configure" --help || true
+
+                # This config does not use the standard GNU environment definitions.
+                # `Configure` is a Perl script.
+                if [ "${XBB_IS_DEVELOP}" == "y" ]
+                then
+                  run_verbose "./Configure" --help || true
+                fi
+
+                run_verbose "./Configure" "darwin64-x86_64-cc" \
+                  --prefix="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" \
+                  \
+                  --openssldir="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl" \
+                  shared \
+                  enable-md2 \
+                  enable-rc5 \
+                  enable-tls \
+                  enable-tls1_3 \
+                  enable-tls1_2 \
+                  enable-tls1_1 \
+                  zlib \
+                  "${CPPFLAGS} ${CFLAGS} ${LDFLAGS}"
+
+                run_verbose make depend
+
+              else
+
+                if [ "${XBB_IS_DEVELOP}" == "y" ]
+                then
+                  run_verbose "./config" --help
+                fi
+
+                # From HomeBrew
+                # SSLv2 died with 1.1.0, so no-ssl2 no longer required.
+                # SSLv3 & zlib are off by default with 1.1.0 but this may not
+                # be obvious to everyone, so explicitly state it for now to
+                # help debug inevitable breakage.
+
+                config_options=()
+
+                config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+                # DO NOT USE --libdir
+
+                config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
+                config_options+=("shared")
+                config_options+=("enable-md2")
+                config_options+=("enable-rc5")
+                config_options+=("enable-tls")
+                config_options+=("enable-tls1_3")
+                config_options+=("enable-tls1_2")
+                config_options+=("enable-tls1_1")
+                config_options+=("no-ssl3")
+                config_options+=("no-ssl3-method")
+                config_options+=("no-zlib")
+                config_options+=("${CPPFLAGS}")
+                config_options+=("${CFLAGS}")
+                config_options+=("${LDFLAGS}")
+
+                export KERNEL_BITS=64
+                run_verbose "./config" \
+                  "${config_options[@]}"
+
               fi
 
-              run_verbose "./Configure" "darwin64-x86_64-cc" \
-                --prefix="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" \
-                \
-                --openssldir="${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl" \
-                shared \
-                enable-md2 \
-                enable-rc5 \
-                enable-tls \
-                enable-tls1_3 \
-                enable-tls1_2 \
-                enable-tls1_1 \
-                zlib \
-                "${CPPFLAGS} ${CFLAGS} ${LDFLAGS}"
-
-              run_verbose make depend
-
-            else
-
-              if [ "${XBB_IS_DEVELOP}" == "y" ]
-              then
-                run_verbose "./config" --help
-              fi
-
-              # From HomeBrew
-              # SSLv2 died with 1.1.0, so no-ssl2 no longer required.
-              # SSLv3 & zlib are off by default with 1.1.0 but this may not
-              # be obvious to everyone, so explicitly state it for now to
-              # help debug inevitable breakage.
+            elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+            then
 
               config_options=()
 
@@ -187,115 +298,86 @@ function openssl_build()
               config_options+=("no-ssl3")
               config_options+=("no-ssl3-method")
               config_options+=("no-zlib")
+
+              if [ "${XBB_HOST_ARCH}" == "x64" ]
+              then
+                config_options+=("enable-ec_nistp_64_gcc_128")
+              elif [ "${XBB_HOST_ARCH}" == "arm64" ]
+              then
+                config_options+=("no-afalgeng")
+              fi
+
               config_options+=("${CPPFLAGS}")
               config_options+=("${CFLAGS}")
               config_options+=("${LDFLAGS}")
 
-              export KERNEL_BITS=64
+              # config_options+=("-Wa,--noexecstack ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}")
+              config_options+=("-Wa,--noexecstack")
+
+              set +u
+
+              # undefined reference to EVP_md2
+              #  enable-md2
+
+              # perl, do not start with bash.
               run_verbose "./config" \
                 "${config_options[@]}"
 
-            fi
+              set -u
 
-          elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
-          then
+              if [ ${openssl_version_minor} -eq 0 ]
+              then
+                run_verbose make depend
+              fi
 
-            config_options=()
-
-            config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-            # DO NOT USE --libdir
-
-            config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
-            config_options+=("shared")
-            config_options+=("enable-md2")
-            config_options+=("enable-rc5")
-            config_options+=("enable-tls")
-            config_options+=("enable-tls1_3")
-            config_options+=("enable-tls1_2")
-            config_options+=("enable-tls1_1")
-            config_options+=("no-ssl3")
-            config_options+=("no-ssl3-method")
-            config_options+=("no-zlib")
-
-            if [ "${XBB_HOST_ARCH}" == "x64" ]
+            elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
             then
-              config_options+=("enable-ec_nistp_64_gcc_128")
-            elif [ "${XBB_HOST_ARCH}" == "arm64" ]
-            then
-              config_options+=("no-afalgeng")
-            fi
 
-            config_options+=("${CPPFLAGS}")
-            config_options+=("${CFLAGS}")
-            config_options+=("${LDFLAGS}")
+              run_verbose "./Configure" --help || true
 
-            # config_options+=("-Wa,--noexecstack ${CPPFLAGS} ${CFLAGS} ${LDFLAGS}")
-            config_options+=("-Wa,--noexecstack")
+              config_options=()
 
-            set +u
+              if [ "${XBB_HOST_ARCH}" == "x64" ]
+              then
+                config_options+=("mingw64")
+              elif [ "${XBB_HOST_ARCH}" == "ia32" ]
+              then
+                config_options+=("mingw")
+              else
+                echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
+                exit 1
+              fi
 
-            # undefined reference to EVP_md2
-            #  enable-md2
+              config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+              # DO NOT USE --libdir
 
-            # perl, do not start with bash.
-            run_verbose "./config" \
-              "${config_options[@]}"
+              # Not needed, the CC/CXX macros already define the target.
+              # config_options+=("--cross-compile-prefix=${XBB_TARGET_TRIPLET}")
 
-            set -u
+              config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
 
-            if [ ${openssl_version_minor} -eq 0 ]
-            then
-              run_verbose make depend
-            fi
+              config_options+=("shared")
+              config_options+=("zlib-dynamic")
+              config_options+=("enable-camellia")
+              config_options+=("enable-capieng")
+              config_options+=("enable-idea")
+              config_options+=("enable-mdc2")
+              config_options+=("enable-rc5")
+              config_options+=("enable-rfc3779")
+              config_options+=("-D__MINGW_USE_VC2005_COMPAT")
 
-          elif [ "${XBB_HOST_PLATFORM}" == "win32" ]
-          then
+              config_options+=("${CPPFLAGS}")
+              config_options+=("${CFLAGS}")
+              config_options+=("${LDFLAGS}")
 
-            run_verbose "./Configure" --help || true
+              run_verbose "./Configure" \
+                "${config_options[@]}"
 
-            config_options=()
-
-            if [ "${XBB_HOST_ARCH}" == "x64" ]
-            then
-              config_options+=("mingw64")
-            elif [ "${XBB_HOST_ARCH}" == "ia32" ]
-            then
-              config_options+=("mingw")
             else
-              echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
+              echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
               exit 1
             fi
 
-            config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-            # DO NOT USE --libdir
-
-            # Not needed, the CC/CXX macros already define the target.
-            # config_options+=("--cross-compile-prefix=${XBB_TARGET_TRIPLET}")
-
-            config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
-
-            config_options+=("shared")
-            config_options+=("zlib-dynamic")
-            config_options+=("enable-camellia")
-            config_options+=("enable-capieng")
-            config_options+=("enable-idea")
-            config_options+=("enable-mdc2")
-            config_options+=("enable-rc5")
-            config_options+=("enable-rfc3779")
-            config_options+=("-D__MINGW_USE_VC2005_COMPAT")
-
-            config_options+=("${CPPFLAGS}")
-            config_options+=("${CFLAGS}")
-            config_options+=("${LDFLAGS}")
-
-            run_verbose "./Configure" \
-              "${config_options[@]}"
-
-            run_verbose make -j ${XBB_JOBS}
-
-          else
-            echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
-            exit 1
           fi
 
           touch config.stamp
