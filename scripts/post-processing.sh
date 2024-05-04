@@ -1825,7 +1825,8 @@ function check_binary_for_libraries()
           echo "${file_name}: (${file_path})"
         fi
 
-        otool -L "${file_name}" | tail -n +2 || true
+        # otool -L "${file_name}" | tail -n +2 || true
+        "${XBB_TARGET_OBJDUMP}" --macho --dylibs-used "${file_name}" | tail -n +2 || true
         set -e
       )
 
