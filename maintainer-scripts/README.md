@@ -66,9 +66,9 @@ To exclude all:
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
+--exclude ninja-build \
 --exclude cmake \
 --exclude meson-build \
---exclude ninja-build \
 --exclude openocd \
 --exclude qemu-arm \
 --exclude qemu-riscv \
@@ -107,9 +107,9 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 xpm run deep-clean --config linux-arm64 -C ~/Work/xpack-dev-tools/arm-none-eabi-gcc-xpack.git
 
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
+--exclude ninja-build \
 --exclude cmake \
 --exclude meson-build \
---exclude ninja-build \
 --exclude openocd \
 --exclude qemu-arm \
 --exclude qemu-riscv \

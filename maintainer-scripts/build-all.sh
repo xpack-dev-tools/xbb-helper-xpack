@@ -167,9 +167,9 @@ names=()
 # All-platform packages.
 
 # Start with the light ones.
+names+=( ninja-build )
 names+=( cmake )
 names+=( meson-build )
-names+=( ninja-build )
 
 names+=( openocd )
 
