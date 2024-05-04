@@ -568,7 +568,7 @@ function copy_dependencies_recursive()
 
       done
 
-      if [[ "${source_file_name}" =~ .*[.]dylib ]]
+      if is_darwin_dylib "${actual_destination_file_path}"
       then
         run_verbose "${install_name_tool}" -id "@rpath/${source_file_name}" "${actual_destination_file_path}"
       fi
