@@ -84,8 +84,8 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 --exclude wine \
 --exclude gcc \
 --exclude mingw-w64-gcc \
---exclude arm-none-eabi-gcc \
 --exclude aarch64-none-elf-gcc \
+--exclude arm-none-eabi-gcc \
 --exclude riscv-none-elf-gcc \
 --exclude clang \
 --deep-clean \
@@ -100,6 +100,7 @@ On Ampere the space is tight and the largest build must be
 removed
 
 ```sh
+git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang
 --deep-clean \
@@ -125,8 +126,8 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 --exclude wine \
 --exclude gcc \
 --exclude mingw-w64-gcc \
---exclude arm-none-eabi-gcc \
 --exclude aarch64-none-elf-gcc \
+--exclude arm-none-eabi-gcc \
 --exclude riscv-none-elf-gcc \
 --deep-clean \
 
@@ -149,24 +150,16 @@ ilg@wksi ~ % sudo -H pip3 install setuptools
 Password:
 Requirement already satisfied: setuptools in /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages (65.5.0)
 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
-
 ```
 
-but it still fails...
+### Repair links
+
+In case the links were damaged, redo all:
 
 ```sh
-time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
---exclude qemu-arm \
---exclude qemu-riscv \
---deep-clean \
-
-```
-
-```
 for f in /Users/ilg/MyProjects/xpack-dev-tools.github/xPacks/*.git
 do
   echo $f
   ln -sf $f /Users/ilg/Work/xpack-dev-tools/$(basename $f)
 done
 ```
-

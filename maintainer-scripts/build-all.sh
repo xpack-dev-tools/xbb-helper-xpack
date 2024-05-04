@@ -195,8 +195,8 @@ fi
 names+=( gcc )
 names+=( mingw-w64-gcc )
 
-names+=( arm-none-eabi-gcc )
 names+=( aarch64-none-elf-gcc )
+names+=( arm-none-eabi-gcc )
 names+=( riscv-none-elf-gcc )
 
 # At the end, as the longest.
