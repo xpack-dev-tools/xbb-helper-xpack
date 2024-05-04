@@ -313,7 +313,7 @@ do
 
 done
 
-local work_build_folder="${WORK}"
+work_build_folder="${WORK}"
 if [ ! -z "${WORK_FOLDER_PATH:-""}" ]
 then
   work_build_folder="${WORK_FOLDER_PATH}/xpack-dev-tools-build"
