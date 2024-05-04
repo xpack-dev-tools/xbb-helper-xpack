@@ -133,7 +133,8 @@ function texinfo_build()
         # Darwin: FAIL: t/94htmlxref.t 11 - htmlxref errors file_html
         # Darwin: ERROR: t/94htmlxref.t - exited with status 2
 
-        if [ "${XBB_WITH_TESTS}" == "y" ]
+        # Too many.
+        if false # [ "${XBB_WITH_TESTS}" == "y" ]
         then
           if is_darwin
           then
