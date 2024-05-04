@@ -100,6 +100,10 @@ On Ampere the space is tight and the largest build must be
 removed
 
 ```sh
+df -BG -H /
+
+rm -rf ~/Work/xpack-dev-tools/*/build
+
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang \
