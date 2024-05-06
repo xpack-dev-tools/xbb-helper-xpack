@@ -325,16 +325,19 @@ function gdb_cross_build()
           config_options+=("--without-x") # Arm, AArch64
     # config_options+=("--without-xxhash") # Arm, AArch64
 
-          config_options+=("--with-expat") # Arm, AArch64
-          config_options+=("--with-libexpat-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}") # AArch64
+          # In 2.42 the path is from the short `--with-xxx`, not `--with-xxx-prefix`
+          # config_options+=("--with-expat") # Arm, AArch64
+          # config_options+=("--with-libexpat-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}") # AArch64
           # config_options+=("--with-libexpat-type=static") # AArch64
 
-          config_options+=("--with-gmp") # AArch64
-          config_options+=("--with-gmp-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}") # AArch64
+          # config_options+=("--with-gmp") # AArch64
+          # config_options+=("--with-gmp-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}") # AArch64
+          config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}") # AArch64
           # config_options+=("--with-libgmp-type=static") # AArch64
 
-          config_options+=("--with-mpfr") # AArch64
-          config_options+=("--with-mpfr-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}") # AArch64
+          # config_options+=("--with-mpfr") # AArch64
+          # config_options+=("--with-mpfr-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}") # AArch64
+          config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}") # AArch64
           # config_options+=("--with-libmpfr-type=static") # AArch64
 
       config_options+=("--with-gdb-datadir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/share/gdb")
