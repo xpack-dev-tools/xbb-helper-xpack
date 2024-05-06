@@ -912,30 +912,25 @@ function gcc_cross_test()
 
     # -------------------------------------------------------------------------
 
-    if false # [ "${XBB_HOST_PLATFORM}" == "win32" ] && is_variable_set "IS_NATIVE_TEST"
+    if [ "${triplet}" == "arm-none-eabi" ]
     then
-      : # Skip Windows when non native (running on Wine).
+      # /Users/ilg/Work/xpack-dev-tools-build/arm-none-eabi-gcc-13.2.1-1.1/darwin-x64/application/lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/bin/ld: /Users/ilg/Work/xpack-dev-tools-build/arm-none-eabi-gcc-13.2.1-1.1/darwin-x64/application/lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/libg.a(libc_a-getentropyr.o): in function `_getentropy_r':
+      # (.text._getentropy_r+0x1c): undefined reference to `_getentropy'
+      # specs="-specs=rdimon.specs"
+      specs="-specs=nosys.specs"
+    elif [ "${triplet}" == "aarch64-none-elf" ]
+    then
+      # specs="-specs=rdimon.specs"
+      specs="-specs=nosys.specs"
+    elif [ "${triplet}" == "riscv-none-elf" ]
+    then
+      specs="-specs=semihost.specs"
     else
+      specs="-specs=nosys.specs"
+    fi
 
-      if [ "${triplet}" == "arm-none-eabi" ]
-      then
-        # /Users/ilg/Work/xpack-dev-tools-build/arm-none-eabi-gcc-13.2.1-1.1/darwin-x64/application/lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/bin/ld: /Users/ilg/Work/xpack-dev-tools-build/arm-none-eabi-gcc-13.2.1-1.1/darwin-x64/application/lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/libg.a(libc_a-getentropyr.o): in function `_getentropy_r':
-        # (.text._getentropy_r+0x1c): undefined reference to `_getentropy'
-        # specs="-specs=rdimon.specs"
-        specs="-specs=nosys.specs"
-      elif [ "${triplet}" == "aarch64-none-elf" ]
-      then
-        # specs="-specs=rdimon.specs"
-        specs="-specs=nosys.specs"
-      elif [ "${triplet}" == "riscv-none-elf" ]
-      then
-        specs="-specs=semihost.specs"
-      else
-        specs="-specs=nosys.specs"
-      fi
-
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > hello.c
+    # Note: __EOF__ is quoted to prevent substitutions here.
+    cat <<'__EOF__' > hello.c
 #include <stdio.h>
 
 int
@@ -945,19 +940,24 @@ main(int argc, char* argv[])
 }
 __EOF__
 
-      VERBOSE=""
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
-      then
-        VERBOSE="-v"
-      fi
+    VERBOSE=""
+    if [ "${XBB_IS_DEVELOP}" == "y" ]
+    then
+      VERBOSE="-v"
+    fi
 
-      run_host_app_verbose "${CC}" hello.c -o hello-c.elf "${specs}" -g -v
+    # Only compile tests, running the binaries via qemu is possible,
+    # but requires a minimum startup code.
 
-      run_host_app_verbose "${CC}" -c hello.c -o hello.c.o -flto ${VERBOSE}
-      run_host_app_verbose "${CC}" hello.c.o -o hello-c-lto.elf "${specs}" -flto ${VERBOSE}
+    run_host_app_verbose "${CC}" hello.c -o hello-c.elf "${specs}" -g -v
+    run_verbose file hello-c.elf
 
-      # Note: __EOF__ is quoted to prevent substitutions here.
-      cat <<'__EOF__' > hello.cpp
+    run_host_app_verbose "${CC}" -c hello.c -o hello.c.o -flto ${VERBOSE}
+    run_host_app_verbose "${CC}" hello.c.o -o hello-c-lto.elf "${specs}" -flto ${VERBOSE}
+    run_verbose file hello-c-lto.elf
+
+    # Note: __EOF__ is quoted to prevent substitutions here.
+    cat <<'__EOF__' > hello.cpp
 #include <iostream>
 
 int
@@ -974,13 +974,16 @@ __sync_synchronize()
 }
 __EOF__
 
-      run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp.elf "${specs}" -g ${VERBOSE}
+    run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp.elf "${specs}" -g ${VERBOSE}
+    run_verbose file hello-cpp.elf
 
-      run_host_app_verbose "${CXX}" -c hello.cpp -o hello.cpp.o  -flto
-      run_host_app_verbose "${CXX}" hello.cpp.o -o hello-cpp-lto.elf "${specs}" -flto ${VERBOSE}
+    run_host_app_verbose "${CXX}" -c hello.cpp -o hello.cpp.o  -flto
+    run_host_app_verbose "${CXX}" hello.cpp.o -o hello-cpp-lto.elf "${specs}" -flto ${VERBOSE}
+    run_verbose file hello-cpp-lto.elf
 
-      run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp-gcov.elf "${specs}" -fprofile-arcs -ftest-coverage -lgcov ${VERBOSE}
-    fi
+    run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp-gcov.elf "${specs}" -fprofile-arcs -ftest-coverage -lgcov ${VERBOSE}
+    run_verbose file hello-cpp-gcov.elf
+
   )
 }
 
