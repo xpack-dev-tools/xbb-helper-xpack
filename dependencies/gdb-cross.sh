@@ -152,8 +152,6 @@ function gdb_cross_build()
 
       LIBS=""
 
-      # libiconv is used by Python3.
-      # export LIBS="-liconv"
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
         # https://stackoverflow.com/questions/44150871/embeded-python3-6-with-mingw-in-c-fail-on-linking
@@ -175,9 +173,7 @@ function gdb_cross_build()
         local crt_clob_file_path="$(${CC} --print-file-name=CRT_glob.o)"
         LDFLAGS+=" -Wl,${crt_clob_file_path}"
 
-        # Workaround for undefined reference to `__strcpy_chk' in GCC 9.
-        # https://sourceforge.net/p/mingw-w64/bugs/818/
-        LIBS="-lssp -liconv"
+        # Workaround.
         # https://stackoverflow.com/questions/29046724/undefined-reference-to-imp-gmpz-init-building-gmp-program-on-cygwin
         # undefined reference to `__imp___gmpz_init'
         LIBS+=" -lgmp -lmpfr"
@@ -292,18 +288,18 @@ function gdb_cross_build()
 
           config_options+=("--disable-binutils") # Arm, AArch64
           config_options+=("--disable-as") # Arm, AArch64
-    # config_options+=("--disable-gas") # Arm, AArch64
+          config_options+=("--disable-gas") # Arm, AArch64
           config_options+=("--disable-gdbtk") # Arm, AArch64
-    # config_options+=("--disable-gprof")
-    # config_options+=("--disable-gold") # Arm, AArch64
+          # config_options+=("--disable-gprof")
+          config_options+=("--disable-gold") # Arm, AArch64
           config_options+=("--disable-ld") # Arm, AArch64
           config_options+=("--disable-nls") # Arm, AArch64
-    # config_options+=("--disable-objc-gc") # Arm, AArch64
+          config_options+=("--disable-objc-gc") # Arm, AArch64
           config_options+=("--disable-sim") # Arm, AArch64
-    # config_options+=("--disable-source-highlight") # Arm, AArch64
-      config_options+=("--disable-werror") # Arm, AArch64
+          config_options+=("--disable-source-highlight") # Arm, AArch64
+          config_options+=("--disable-werror") # Arm, AArch64
 
-    # config_options+=("--enable-gdb")
+          config_options+=("--enable-gdb")
           config_options+=("--enable-initfini-array") # Arm, AArch64
           config_options+=("--enable-build-warnings=no")
           config_options+=("--enable-plugins") # Arm, AArch64
@@ -314,16 +310,16 @@ function gdb_cross_build()
             config_options+=("--enable-targets=arm-none-eabi,aarch64-none-linux-gnu,aarch64-none-elf") # AArch64
           fi
 
-    # config_options+=("--without-babeltrace") # Arm, AArch64
-    # config_options+=("--without-debuginfod") # Arm, AArch64
-    # config_options+=("--without-guile") # Arm, AArch64
-    # config_options+=("--without-intel-pt") # Arm, AArch64
-    # config_options+=("--without-libunwind-ia64") # Arm, AArch64
-    # config_options+=("--without-lzma") # Arm, AArch64
+          config_options+=("--without-babeltrace") # Arm, AArch64
+          config_options+=("--without-debuginfod") # Arm, AArch64
+          config_options+=("--without-guile") # Arm, AArch64
+          config_options+=("--without-intel-pt") # Arm, AArch64
+          config_options+=("--without-libunwind-ia64") # Arm, AArch64
+          config_options+=("--without-lzma") # Arm, AArch64
           config_options+=("--without-tcl") # Arm, AArch64
           config_options+=("--without-tk") # Arm, AArch64
           config_options+=("--without-x") # Arm, AArch64
-    # config_options+=("--without-xxhash") # Arm, AArch64
+          config_options+=("--without-xxhash") # Arm, AArch64
 
           # In 2.42 the path is from the short `--with-xxx`, not `--with-xxx-prefix`
           # config_options+=("--with-expat") # Arm, AArch64
@@ -340,9 +336,9 @@ function gdb_cross_build()
           config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}") # AArch64
           # config_options+=("--with-libmpfr-type=static") # AArch64
 
-      config_options+=("--with-gdb-datadir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/share/gdb")
+          config_options+=("--with-gdb-datadir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}/share/gdb")
 
-    # config_options+=("--with-gnu-ld") # AArch64
+          config_options+=("--with-gnu-ld") # AArch64
 
           # No need to, we keep track of paths to shared libraries.
           # Plus that if fails the build:
