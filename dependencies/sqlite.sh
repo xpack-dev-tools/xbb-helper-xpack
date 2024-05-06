@@ -42,11 +42,12 @@ function sqlite_build()
   local sqlite_year="${2:-""}"
 
   # Alternative Source Code Formats - Snapshot of the complete (raw) source tree
-  # https://www.sqlite.org/2022/sqlite-src-3400100.zip
+  # https://www.sqlite.org/2024/sqlite-src-3450300.zip
   local sqlite_src_folder_name="sqlite-src-${sqlite_version}"
   local sqlite_archive="${sqlite_src_folder_name}.zip"
   local sqlite_url="https://www.sqlite.org/${sqlite_year}/${sqlite_archive}"
 
+  # Starting with 2024, pass the year explicitly.
   if [ "${sqlite_version}" == "3420000" ]
   then
     # 2023
