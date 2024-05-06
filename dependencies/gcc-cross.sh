@@ -274,9 +274,18 @@ function gcc_cross_download()
       mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
       run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
-      download_and_extract "${XBB_GCC_ARCHIVE_URL}" \
-        "${XBB_GCC_ARCHIVE_NAME}" "${XBB_GCC_SRC_FOLDER_NAME}" \
-        "${XBB_GCC_PATCH_FILE_NAME}"
+      if [ "${XBB_APPLICATION_TEST_PRERELEASE:-""}" == "y" ]
+      then
+        run_verbose git_clone \
+          "${XBB_GCC_GIT_URL}" \
+          "${XBB_GCC_GIT_BRANCH:-"master"}" \
+          "${XBB_GCC_GIT_COMMIT:-""}" \
+          "${XBB_GCC_SRC_FOLDER_NAME}"
+      else
+        download_and_extract "${XBB_GCC_ARCHIVE_URL}" \
+          "${XBB_GCC_ARCHIVE_NAME}" "${XBB_GCC_SRC_FOLDER_NAME}" \
+          "${XBB_GCC_PATCH_FILE_NAME}"
+      fi
     )
   fi
 }
