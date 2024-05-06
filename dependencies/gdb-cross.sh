@@ -72,7 +72,7 @@ function gdb_cross_build_dependencies()
 
       # Required by a Python 3 module.
       # https://www.sqlite.org/download.html
-      sqlite_build  "${XBB_SQLITE_VERSION}"
+      sqlite_build  "${XBB_SQLITE_VERSION}" "${XBB_SQLITE_YEAR:-""}"
 
       # Replacement for the old libcrypt.so.1; required by Python 3.
       # https://github.com/besser82/libxcrypt/releases
