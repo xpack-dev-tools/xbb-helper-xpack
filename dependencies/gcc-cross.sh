@@ -1050,6 +1050,15 @@ void
 __sync_synchronize()
 {
 }
+
+// Newlib 4.4
+extern "C" int
+_getentropy (void *, size_t);
+
+int
+_getentropy (void *, size_t)
+{
+}
 __EOF__
 
     run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp.elf "${specs}" -g ${VERBOSE}
