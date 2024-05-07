@@ -376,6 +376,23 @@ function test_compiler_c_cpp()
         expect_target_output "abcdefgh" "${prefix}sleepy-threads${suffix}${XBB_TARGET_DOT_EXE}" 8
       fi
 
+      if is_variable_set "XBB_SKIP_TEST_${prefix}sleepy-threads-cv${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}sleepy-threads-cv"
+      then
+        echo
+        echo "Skipping ${prefix}sleepy-threads-cv${suffix}..."
+      else
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+        then
+          run_host_app_verbose "${CXX}" "sleepy-threads-cv.cpp" -o "${prefix}sleepy-threads-cv${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -lpthread
+        else
+          run_host_app_verbose "${CXX}" "sleepy-threads-cv.cpp" -o "${prefix}sleepy-threads-cf${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        fi
+
+        expect_target_output "abcd" "${prefix}sleepy-threads-cv${suffix}${XBB_TARGET_DOT_EXE}" 4
+        expect_target_output "abcdefgh" "${prefix}sleepy-threads-cv${suffix}${XBB_TARGET_DOT_EXE}" 8
+      fi
+
       # -----------------------------------------------------------------------
 
       # Test borrowed from https://gist.github.com/floooh/10160514
