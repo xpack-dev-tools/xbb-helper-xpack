@@ -17,9 +17,16 @@ int counter = -1;
 // increase the counter, notify the remaining threads and terminate.
 void doSomething(int id)
 {
-    // Wait for the counter to reach this thread.
-    std::unique_lock<std::mutex> lk(cv_m);
-    cv.wait(lk, [&]{ return counter == id; });
+    {
+        // Wait for the counter to reach this thread.
+        std::unique_lock<std::mutex> lk(cv_m);
+        bool condition = cv.wait_for(lk, std::chrono::milliseconds(500), [&]{ return counter == id; });
+
+        if ( !condition ) {
+            std::cout << " " << letters[id] << ":timeout ";
+            return;
+        }
+    }
 
     // Print a single letter.
     std::cout << letters[id];
@@ -27,12 +34,16 @@ void doSomething(int id)
     // Spend some time.
     std::this_thread::sleep_for (std::chrono::milliseconds(10));
 
-    // Proceed to the next thread.
-    counter++;
+    {
+        std::unique_lock<std::mutex> lk(cv_m);
+
+        // Proceed to the next thread.
+        counter++;
+    }
 
     cv.notify_all();
 
-    // Return, the thread is done.
+    // Return, the thread done its job.
 }
 
 /*
@@ -47,14 +58,27 @@ void spawnThreads(int n)
         threads[i] = std::thread(doSomething, i);
     }
 
-    // Initiate the first thread (id=0).
-    counter++;
+    // Allow things to settle.
+    std::this_thread::sleep_for (std::chrono::milliseconds(n*20));
+
+    {
+        std::unique_lock<std::mutex> lk(cv_m);
+
+        // Initiate the first thread (id=0).
+        counter++;
+    }
+
     cv.notify_all();
 
-    // Wait the counter to reach the upper limit.
-    std::unique_lock<std::mutex> lk(cv_m);
-    cv.wait(lk, [&]{ return counter == n; });
+    {
+        // Wait for the counter to reach the upper limit.
+        std::unique_lock<std::mutex> lk(cv_m);
+        bool condition = cv.wait_for(lk, std::chrono::milliseconds((n+1)*100), [&]{ return counter == n; });
 
+        if ( !condition ) {
+            std::cout << " top:timeout" << std::endl;
+        }
+    }
     // All threads should be completed by now.
     for (auto& th : threads) {
         th.join();
