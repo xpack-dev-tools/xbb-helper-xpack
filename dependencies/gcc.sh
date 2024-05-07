@@ -941,10 +941,10 @@ function gcc_test()
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
-      if [[ "${gcc_version}" =~ 11[.]4[.]0 ]] || \
-         [[ "${gcc_version}" =~ 12[.]3[.]0 ]] || \
-         [[ "${gcc_version}" =~ 13[.]2[.]0 ]] || \
-         [[ "${gcc_version}" =~ 14[.]0[.]1 ]]
+      if [[ "${gcc_version}" =~ 11[.][4][.].* ]] || \
+         [[ "${gcc_version}" =~ 12[.][3][.].* ]] || \
+         [[ "${gcc_version}" =~ 13[.][2][.].* ]] || \
+         [[ "${gcc_version}" =~ 14[.][01][.].* ]]
       then
         # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
         # collect2.exe: error: ld returned 1 exit status
@@ -1194,7 +1194,7 @@ function gcc_test()
         # By default the references to libstdc++ are absolute and no rpath
         # is required.
 
-        if [[ "${gcc_version}" =~ 13[.]2[.]0 ]] && [ "${XBB_HOST_ARCH}" == "x64" ]
+        if [[ "${gcc_version}" =~ 13[.]2[.].* ]] && [ "${XBB_HOST_ARCH}" == "x64" ]
         then
           # On macOS Intel with CLT 15.3
           # terminate called after throwing an instance of 'std::exception'
@@ -1214,8 +1214,8 @@ function gcc_test()
           export XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
         fi
 
-        if [[ "${gcc_version}" =~ 14[.]0[.]1 ]] || \
-           [[ "${gcc_version}" =~ 15[.]0[.]0 ]]
+        if [[ "${gcc_version}" =~ 14[.][01][.].* ]] || \
+           [[ "${gcc_version}" =~ 15[.]0[.].* ]]
         then
           # Most likely an Apple linker issue.
           export XBB_SKIP_TEST_ALL_WEAK_UNDEF_C="y"
