@@ -1068,6 +1068,17 @@ function gcc_test()
       )
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
+
+      if [[ "${gcc_version}" =~ 14[.][01][.].* ]]
+      then
+        # sleepy-threads-cv
+        # Weird, only the static test dies with 'Segmentation fault'.
+        export XBB_SKIP_TEST_STATIC_SLEEPY_THREADS_CV="y"
+        export XBB_SKIP_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
+        export XBB_SKIP_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
+        export XBB_SKIP_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
+      fi
+
       if [ "${XBB_HOST_ARCH}" == "x64" ]
       then
         (
