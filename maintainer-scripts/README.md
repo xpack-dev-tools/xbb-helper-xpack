@@ -42,9 +42,9 @@ The full builds may take more than 1 day to complete:
 - `wksi`: ?
 - `xbbmi`: 7h03 (nuc)
 - `xbbma`: 3h37
-- `xbbli`: 316m (5h16) Linux, 395m (6h35) Windows
+- `xbbli`: 340m (5h40) + 60m clang on Linux, 395m (6h35) Windows
 - `berry5`: 1086m (18h06)
-- `ampere`: 546m (9h6) + 140m (2h20) clang
+- `ampere`: 577m (9h37) + 140m (2h20) clang
 - `xbbla`: 24h10 + 11h06 clang
 - `xbbla32`: 21h22 + 9h07 clang
 
@@ -110,6 +110,7 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 --deep-clean
 
 xpm run deep-clean --config linux-arm64 -C ~/Work/xpack-dev-tools/arm-none-eabi-gcc-xpack.git
+xpm run deep-clean --config linux-arm64 -C ~/Work/xpack-dev-tools/riscv-none-elf-gcc-xpack.git
 
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude ninja-build \
