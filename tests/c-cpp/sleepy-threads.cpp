@@ -7,7 +7,7 @@
 char letters[] = "abcdefghijklmnopqrstuvwxyz";
 
 void doSomething(int id) {
-    std::this_thread::sleep_for (std::chrono::milliseconds((id+5)*50));
+    std::this_thread::sleep_for (std::chrono::milliseconds((id+4)*75));
     std::cout << letters[id] ;
 }
 
