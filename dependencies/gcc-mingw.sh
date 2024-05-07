@@ -705,7 +705,8 @@ function gcc_mingw_test()
     if [[ "${gcc_version}" =~ 11[.][4][.].* ]] || \
        [[ "${gcc_version}" =~ 12[.][3][.].* ]] || \
        [[ "${gcc_version}" =~ 13[.][2][.].* ]] || \
-       [[ "${gcc_version}" =~ 14[.][01][.].* ]]
+       [[ "${gcc_version}" =~ 14[.][012][.].* ]] || \
+       [[ "${gcc_version}" =~ 15[.][012][.].* ]]
     then
 
       # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/install/lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
