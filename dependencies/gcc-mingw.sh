@@ -801,6 +801,8 @@ function gcc_mingw_test()
 
       # unwind-strong - fully functional.
 
+      # sleepy-threads-cv - fully functional.
+
     fi
 
     # Run tests in all cases.
