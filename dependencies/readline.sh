@@ -113,6 +113,10 @@ function readline_build()
             config_options+=("--with-curses")
           fi
 
+          # Add a reference to the TERMCAP libtinfo.so, otherwise
+          # python 3.12 fails to load the module.
+          config_options+=("--with-shared-termcap-library")
+
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${readline_src_folder_name}/configure" \
             "${config_options[@]}"
 
