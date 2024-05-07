@@ -177,6 +177,10 @@ function bzip2_build()
           mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
           run_verbose ${INSTALL} -v -c -m 644 "libbz2.${bzip2_version}.dylib" "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
+          run_verbose install_name_tool \
+            -id "@rpath/libbz2.${bzip2_version}.dylib" \
+            "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libbz2.${bzip2_version}.dylib"
+
           (
             run_verbose_develop cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
 
