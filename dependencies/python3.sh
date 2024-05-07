@@ -220,8 +220,6 @@ function python3_build()
         echo
         echo "Running python3 make..."
 
-        # export LD_RUN_PATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib"
-
         # Build.
         run_verbose make -j ${XBB_JOBS} # build_all
 
