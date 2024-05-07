@@ -181,6 +181,12 @@ function ncurses_build()
 
           fi
 
+          # To create the tinfo library, that defines the `UP` symbol
+          # referred by readline when included by python 3.12.
+          # libreadline.so.7: undefined symbol: UP
+          # https://stackoverflow.com/a/68556326/3073330
+          config_options+=("--with-termlib")
+
           config_options+=("--with-shared") # HB, Arch
           config_options+=("--with-normal")
           config_options+=("--with-cxx")
@@ -312,7 +318,7 @@ function ncurses_build()
             ln -sfv ncursesw "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
           fi
 
-          for lib in ncurses ncurses++ form panel menu
+          for lib in ncurses ncurses++ form panel menu tinfo
           do
             if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}" ] &&
                [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.${XBB_HOST_SHLIB_EXT}" ]
