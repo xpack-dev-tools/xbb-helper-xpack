@@ -967,6 +967,7 @@ function is_win_sys_dll()
     ole32.dll \
     oleaut32.dll \
     psapi.dll \
+    propsys.dll \
     rpcrt4.dll \
     setupapi.dll \
     shell32.dll \
