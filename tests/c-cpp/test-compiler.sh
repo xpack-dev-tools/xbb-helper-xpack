@@ -386,7 +386,7 @@ function test_compiler_c_cpp()
         then
           run_host_app_verbose "${CXX}" "sleepy-threads-cv.cpp" -o "${prefix}sleepy-threads-cv${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -lpthread
         else
-          run_host_app_verbose "${CXX}" "sleepy-threads-cv.cpp" -o "${prefix}sleepy-threads-cf${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+          run_host_app_verbose "${CXX}" "sleepy-threads-cv.cpp" -o "${prefix}sleepy-threads-cv${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
         fi
 
         expect_target_output "abcd" "${prefix}sleepy-threads-cv${suffix}${XBB_TARGET_DOT_EXE}" 4
