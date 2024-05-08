@@ -129,6 +129,15 @@ function gdb_cross_build()
 
       download_and_extract "${XBB_GDB_ARCHIVE_URL}" "${XBB_GDB_ARCHIVE_NAME}" \
           "${XBB_GDB_SRC_FOLDER_NAME}" "${XBB_GDB_PATCH_FILE_NAME}"
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      then
+        # Prevent a reference to /usr/lib/libncurses.5.4.dylib.
+        run_verbose sed -i.bak \
+          -e "s|for ac_lib in '' termcap |for ac_lib in '' |" \
+          "${XBB_GDB_SRC_FOLDER_NAME}/gdb/configure"
+
+        run_verbose diff "${XBB_GDB_SRC_FOLDER_NAME}/gdb/configure.bak" "${XBB_GDB_SRC_FOLDER_NAME}/gdb/configure" || true
+      fi
     fi
     # exit 1
 
@@ -360,6 +369,19 @@ function gdb_cross_build()
 
           # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib")
+
+          # Use the readline compiled from source, that allows to pass
+          # --with-shared-termcap-library.
+          config_options+=("--with-system-readline")
+
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          then
+            config_options+=("--without-curses")
+          else
+            # Use the curses library instead of the termcap library, on macOS
+            # it adds an extra reference to /usr/lib/libncurses.5.4.dylib.
+            config_options+=("--with-curses")
+          fi
 
           if [ "${name_suffix}" == "-py3" ]
           then
