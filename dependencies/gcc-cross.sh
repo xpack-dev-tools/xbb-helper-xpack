@@ -86,8 +86,17 @@ function gcc_cross_build_common()
         gcc_cross_build_final "${XBB_GCC_VERSION}" "${XBB_APPLICATION_TARGET_TRIPLET}"
       )
     else
-      # For macOS & GNU/Linux build the toolchain natively.
-      gcc_cross_build_all "${XBB_APPLICATION_TARGET_TRIPLET}"
+      (
+        if [ "${XBB_HOST_PLATFORM}" == "darwin" ] && \
+           [ "${XBB_APPLICATION_USE_GCC_FOR_GCC_ON_MACOS:-""}" == "y" ]
+        then
+          # Workaround for gcov failing to build with clang 17 on macOS.
+          xbb_prepare_gcc_env
+        fi
+
+        # For macOS & GNU/Linux build the toolchain natively.
+        gcc_cross_build_all "${XBB_APPLICATION_TARGET_TRIPLET}"
+      )
     fi
 
     gdb_cross_build "${XBB_APPLICATION_TARGET_TRIPLET}" ""
