@@ -131,7 +131,7 @@ function gcc_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
+      if is_develop
       then
         LDFLAGS="-DXBB_MARKER_TOP"
       else
@@ -181,7 +181,7 @@ function gcc_build()
 
         # The target may refer to the development libraries.
         # It does not need the bootstrap toolchain rpaths.
-        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        if is_develop
         then
           LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET"
         else
@@ -198,7 +198,7 @@ function gcc_build()
       then
         # The target may refer to the development libraries.
         # It does not need the bootstrap toolchain rpaths.
-        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        if is_develop
         then
           LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET"
         else
@@ -224,7 +224,7 @@ function gcc_build()
           echo
           echo "Running gcc configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/gcc/configure" --help
@@ -358,7 +358,7 @@ function gcc_build()
             # Build stage 1 with static system libraries.
             # The flags are added to the top LDFLAGS, so no need to repeat them.
             local ldflags_for_bootstrap
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if is_develop
             then
               ldflags_for_bootstrap="-DXBB_MARKER_STAGE1"
             else
@@ -378,7 +378,7 @@ function gcc_build()
             # to save some references to shared libraries.
             # The bootstrap toolchain rpaths are not needed.
             local ldflags_for_boot
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if is_develop
             then
               ldflags_for_boot="-DXBB_MARKER_BOOT"
             else
@@ -421,7 +421,7 @@ function gcc_build()
             # multiple rpaths in multilib cases.
             # The flags are added to the top LDFLAGS, so no need to repeat them.
             local ldflags_for_bootstrap
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if is_develop
             then
               ldflags_for_bootstrap="-DXBB_MARKER_STAGE1"
             else
@@ -437,7 +437,7 @@ function gcc_build()
             # to save some references to shared libraries.
             # The bootstrap toolchain rpaths are not needed.
             local ldflags_for_boot
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if is_develop
             then
               ldflags_for_boot="-DXBB_MARKER_BOOT"
             else
@@ -641,7 +641,7 @@ function gcc_build()
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if is_develop
             then
               make -k check || true
             fi
@@ -651,7 +651,7 @@ function gcc_build()
         echo
         echo "Running gcc make install..."
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

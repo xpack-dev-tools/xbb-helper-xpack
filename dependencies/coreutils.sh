@@ -78,7 +78,7 @@ function coreutils_build()
           echo
           echo "Running coreutils configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${coreutils_src_folder_name}/configure" --help
           fi
@@ -112,7 +112,7 @@ function coreutils_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -164,7 +164,7 @@ function coreutils_build()
             # 2022-10-01T12:53:19.6394770Z /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/strip: error: symbols referenced by indirect symbol table entries that can't be stripped in: /Users/ilg/Work/xbb-bootstrap-4.0/darwin-arm64/install/xbb-bootstrap/libexec/coreutils/_inst.24110_
             run_verbose make install
           else
-            if [ "${XBB_WITH_STRIP}" == "y" ]
+            if with_strip
             then
               run_verbose make install-strip
             else

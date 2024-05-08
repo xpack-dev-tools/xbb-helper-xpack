@@ -86,7 +86,7 @@ function findutils_build()
           echo
           echo "Running findutils configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${findutils_src_folder_name}/configure" --help
           fi
@@ -113,7 +113,7 @@ function findutils_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

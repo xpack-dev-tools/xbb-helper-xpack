@@ -305,3 +305,24 @@ function is_mingw_clang()
 }
 
 # -----------------------------------------------------------------------------
+
+function is_develop()
+{
+  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
+function with_strip()
+{
+  if [ "${XBB_WITH_STRIP}" == "y" ]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+# -----------------------------------------------------------------------------

@@ -80,7 +80,7 @@ function xbb_reset_env()
   # ---------------------------------------------------------------------------
 
   XBB_DASH_V=""
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  if is_develop
   then
     XBB_DASH_V="-v"
   fi
@@ -603,7 +603,7 @@ function xbb_set_extra_build_env()
   export XBB_BUILD_RANLIB
   export XBB_BUILD_OBJDUMP
 
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  if is_develop
   then
     echo "XBB_BUILD_STRIP=${XBB_BUILD_STRIP}"
     echo "XBB_BUILD_RANLIB=${XBB_BUILD_RANLIB}"
@@ -654,7 +654,7 @@ function xbb_set_extra_target_env()
 
   export XBB_CURRENT_TRIPLET
 
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  if is_develop
   then
     echo "XBB_TARGET_STRIP=${XBB_TARGET_STRIP}"
     echo "XBB_TARGET_RANLIB=${XBB_TARGET_RANLIB}"
@@ -686,7 +686,7 @@ function xbb_set_extra_host_env()
   export XBB_HOST_RANLIB
   export XBB_HOST_OBJDUMP
 
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  if is_develop
   then
     echo "XBB_HOST_STRIP=${XBB_HOST_STRIP}"
     echo "XBB_HOST_RANLIB=${XBB_HOST_RANLIB}"
@@ -994,7 +994,7 @@ function xbb_set_compiler_flags()
   fi
 
   XBB_LDFLAGS+=" -v"
-  if [ "${XBB_IS_DEVELOP}" == "y" ] && [ "${XBB_APPLICATION_ENABLE_LINK_VERBOSE:-""}" == "y" ]
+  if is_develop && [ "${XBB_APPLICATION_ENABLE_LINK_VERBOSE:-""}" == "y" ]
   then
     XBB_LDFLAGS+=" -Wl,-v"
   fi
@@ -1119,7 +1119,7 @@ function xbb_set_compiler_flags()
   XBB_CFLAGS_NO_W="${XBB_CFLAGS} -w"
   XBB_CXXFLAGS_NO_W="${XBB_CXXFLAGS} -w"
 
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  if is_develop
   then
     (
       set +u
@@ -1654,7 +1654,7 @@ function xbb_show_tools_versions()
 
     which ${CXX} && ${CXX} --version && echo || true
 
-    if [ "${XBB_IS_DEVELOP}" == "y" ]
+    if is_develop
     then
       which bash && bash --version && echo || true
       which curl && curl --version && echo || true
@@ -1682,7 +1682,7 @@ function xbb_show_env()
 
 function xbb_show_env_develop()
 {
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  if is_develop
   then
     xbb_show_env
   fi

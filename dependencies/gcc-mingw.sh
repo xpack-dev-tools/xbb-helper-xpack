@@ -249,7 +249,7 @@ function gcc_mingw_build_first()
           echo
           echo "Running ${name_prefix}gcc first configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             # For the native build, --disable-shared failed with errors in libstdc++-v3
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${mingw_gcc_src_folder_name}/configure" --help
@@ -455,7 +455,7 @@ function gcc_mingw_build_final()
       run_verbose make -j ${XBB_JOBS}
 
       # make install-strip
-      if [ "${XBB_WITH_STRIP}" == "y" ]
+      if with_strip
       then
         run_verbose make install-strip
       else
@@ -483,7 +483,7 @@ function gcc_mingw_build_final()
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}/make-final-output-$(ndate).txt"
 
     (
-      if [ "${XBB_WITH_STRIP}" == "y" ]
+      if with_strip
       then
 
         # Exception to the rule, it would be too complicated to express

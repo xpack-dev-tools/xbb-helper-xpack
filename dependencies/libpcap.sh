@@ -75,7 +75,7 @@ function libpcap_build()
           echo
           echo "Running libpcap configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libpcap_src_folder_name}/configure" --help
           fi

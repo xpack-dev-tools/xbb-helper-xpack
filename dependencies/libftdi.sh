@@ -85,7 +85,7 @@ function libftdi_build()
 
         config_options=()
 
-        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        if is_develop
         then
           config_options+=("-LAH") # display help for each variable
         fi
@@ -124,7 +124,7 @@ function libftdi_build()
         echo
         echo "Running libftdi make..."
 
-        if [ "${XBB_IS_DEVELOP}" == "y" ]
+        if is_develop
         then
           run_verbose "${CMAKE}" \
             --build . \

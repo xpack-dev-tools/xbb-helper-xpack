@@ -88,7 +88,7 @@ function readline_build()
           echo
           echo "Running readline configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${readline_src_folder_name}/configure" --help
           fi

@@ -185,7 +185,7 @@ function binutils_prepare_common_options()
 
   config_options+=("--disable-debug") # HB
   config_options+=("--disable-dependency-tracking") # HB
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  if is_develop
   then
     config_options+=("--disable-silent-rules")
   fi
@@ -318,7 +318,7 @@ function binutils_build()
           echo
           echo "Running ${name_prefix}binutils configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" --help
 
@@ -359,7 +359,7 @@ function binutils_build()
               LDFLAGS="" \
               check
             else
-              if [ "${XBB_IS_DEVELOP}" == "y" ]
+              if is_develop
               then
                 # TODO: investigate why tests on Arm fail.
                 run_verbose make CFLAGS_FOR_TARGET="-O2 -g" \
@@ -621,7 +621,7 @@ function binutils_build_ld_gold()
           echo
           echo "Running binutils-ld.gold configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/configure" --help
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/ld/configure" --help

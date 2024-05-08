@@ -132,7 +132,7 @@ function python3_build()
           echo
           echo "Running python3 configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${python3_src_folder_name}/configure" --help
           fi

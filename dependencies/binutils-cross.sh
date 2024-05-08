@@ -111,7 +111,7 @@ function binutils_cross_build()
           echo
           echo "Running cross ${name_prefix}binutils${name_suffix} configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_BINUTILS_SRC_FOLDER_NAME}/configure" --help
           fi

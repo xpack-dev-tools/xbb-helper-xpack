@@ -78,7 +78,7 @@ function termcap_build()
           echo
           echo "Running termcap configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${termcap_src_folder_name}/configure" --help
           fi

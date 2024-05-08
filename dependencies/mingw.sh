@@ -152,7 +152,7 @@ function mingw_build_headers()
           echo
           echo "Running ${name_prefix}headers configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-headers/configure" --help
           fi
@@ -198,7 +198,7 @@ function mingw_build_headers()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -290,7 +290,7 @@ function mingw_build_widl()
           echo
           echo "Running ${name_prefix}widl configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/widl/configure" --help
           fi
@@ -328,7 +328,7 @@ function mingw_build_widl()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -407,7 +407,7 @@ function mingw_build_libmangle()
           echo
           echo "Running ${name_prefix}libmangle configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/libmangle/configure" --help
           fi
@@ -437,7 +437,7 @@ function mingw_build_libmangle()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -527,7 +527,7 @@ function mingw_build_gendef()
           echo
           echo "Running ${name_prefix}gendef configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/gendef/configure" --help
           fi
@@ -561,7 +561,7 @@ function mingw_build_gendef()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -635,7 +635,7 @@ function mingw_build_crt()
       CXXFLAGS="-O2 -pipe -w"
 
       LDFLAGS=""
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
+      if is_develop
       then
         LDFLAGS+=" -v"
       fi
@@ -660,7 +660,7 @@ function mingw_build_crt()
           echo
           echo "Running ${name_prefix}crt configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-crt/configure" --help
           fi
@@ -716,7 +716,7 @@ function mingw_build_crt()
         # Apparently it'll be fixed in v11.
         run_verbose make -j1
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -791,7 +791,7 @@ function mingw_build_winpthreads()
       CXXFLAGS="-O2 -pipe -w"
 
       LDFLAGS=""
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
+      if is_develop
       then
         LDFLAGS+=" -v"
       fi
@@ -809,7 +809,7 @@ function mingw_build_winpthreads()
           echo
           echo "Running ${name_prefix}winpthreads configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winpthreads/configure" --help
           fi
@@ -853,7 +853,7 @@ function mingw_build_winpthreads()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -924,7 +924,7 @@ function mingw_build_winstorecompat()
       CXXFLAGS="-O2 -pipe -w"
 
       LDFLAGS=""
-      if [ "${XBB_IS_DEVELOP}" == "y" ]
+      if is_develop
       then
         LDFLAGS+=" -v"
       fi
@@ -942,7 +942,7 @@ function mingw_build_winstorecompat()
           echo
           echo "Running ${name_prefix}winstorecompat configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winstorecompat/configure" --help
           fi
@@ -971,7 +971,7 @@ function mingw_build_winstorecompat()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

@@ -89,7 +89,7 @@ function pkg_config_build()
           echo
           echo "Running pkg_config configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${pkg_config_src_folder_name}/configure" --help
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${pkg_config_src_folder_name}/glib/configure" --help
@@ -144,7 +144,7 @@ function pkg_config_build()
         # Build.
         run_verbose make -j ${XBB_JOBS} V=1
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

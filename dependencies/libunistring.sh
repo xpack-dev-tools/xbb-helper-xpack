@@ -75,7 +75,7 @@ function libunistring_build()
           echo
           echo "Running libunistring configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libunistring_src_folder_name}/configure" --help
           fi
@@ -95,7 +95,7 @@ function libunistring_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -117,7 +117,7 @@ function libunistring_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

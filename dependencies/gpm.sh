@@ -106,7 +106,7 @@ function gpm_build()
           echo
           echo "Running gpm configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "configure" --help
           fi
@@ -145,7 +145,7 @@ function gpm_build()
           run_verbose make -j1 check
         fi
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

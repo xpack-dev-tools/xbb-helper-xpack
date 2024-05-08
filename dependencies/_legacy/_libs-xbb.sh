@@ -78,7 +78,7 @@ function libtasn1_build()
           echo
           echo "Running libtasn1 configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libtasn1_src_folder_name}/configure" --help
           fi
@@ -121,7 +121,7 @@ function libtasn1_build()
         # Build.
         CODE_COVERAGE_LDFLAGS=${LDFLAGS} make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -225,7 +225,7 @@ function gnutls_build()
           echo
           echo "Running gnutls configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${gnutls_src_folder_name}/configure" --help
           fi
@@ -275,7 +275,7 @@ function gnutls_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -296,7 +296,7 @@ function gnutls_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -431,7 +431,7 @@ function xorg_util_macros_build()
           echo
           echo "Running xorg_util_macros configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${xorg_util_macros_src_folder_name}/configure" --help
           fi
@@ -449,7 +449,7 @@ function xorg_util_macros_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -468,7 +468,7 @@ function xorg_util_macros_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -562,7 +562,7 @@ function xorg_xproto_build()
           echo
           echo "Running xorg_xproto configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${xorg_xproto_src_folder_name}/configure" --help
           fi
@@ -586,7 +586,7 @@ function xorg_xproto_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -605,7 +605,7 @@ function xorg_xproto_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

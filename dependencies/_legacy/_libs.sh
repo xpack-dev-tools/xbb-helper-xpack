@@ -80,7 +80,7 @@ function libelf_build()
           echo
           echo "Running libelf configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libelf_src_folder_name}/configure" --help
           fi
@@ -119,7 +119,7 @@ function libelf_build()
           run_verbose make -j1 check
         fi
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -223,7 +223,7 @@ function python2_build()
           echo
           echo "Running python2 configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON2_SRC_FOLDER_NAME}/configure" --help
           fi
@@ -489,7 +489,7 @@ function xar_build()
           echo
           echo "Running xar configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "./configure" --help
           fi
@@ -526,7 +526,7 @@ function xar_build()
           run_verbose make -j1 check
         fi
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -615,7 +615,7 @@ function libgpg_error_build()
           echo
           echo "Running libgpg-error configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libgpg_error_src_folder_name}/configure" --help
           fi
@@ -636,7 +636,7 @@ function libgpg_error_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -659,7 +659,7 @@ function libgpg_error_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -767,7 +767,7 @@ function libgcrypt_build()
           echo
           echo "Running libgcrypt configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libgcrypt_src_folder_name}/configure" --help
           fi
@@ -805,7 +805,7 @@ function libgcrypt_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -835,7 +835,7 @@ function libgcrypt_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -985,7 +985,7 @@ function libassuan_build()
           echo
           echo "Running libassuan configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libassuan_src_folder_name}/configure" --help
           fi
@@ -1008,7 +1008,7 @@ function libassuan_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -1029,7 +1029,7 @@ function libassuan_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -1155,7 +1155,7 @@ function libksba_build()
           echo
           echo "Running libksba configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libksba_src_folder_name}/configure" --help
           fi
@@ -1178,7 +1178,7 @@ function libksba_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -1197,7 +1197,7 @@ function libksba_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -1316,7 +1316,7 @@ function npth_build()
           echo
           echo "Running npth configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${npth_src_folder_name}/configure" --help
           fi
@@ -1337,7 +1337,7 @@ function npth_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -1356,7 +1356,7 @@ function npth_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -1479,7 +1479,7 @@ function _libusb_build()
           echo
           echo "Running libusb configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libusb_src_folder_name}/configure" --help
           fi
@@ -1521,7 +1521,7 @@ function _libusb_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

@@ -86,7 +86,7 @@ function mpc_build()
           echo
           echo "Running mpc${name_suffix} configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${mpc_src_folder_name}/configure" --help
           fi
@@ -128,7 +128,7 @@ function mpc_build()
           run_verbose make -j1 check
         fi
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

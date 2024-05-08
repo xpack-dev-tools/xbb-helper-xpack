@@ -111,7 +111,7 @@ function libxcrypt_build()
           echo
           echo "Running libxcrypt configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}/configure" --help
           fi
@@ -162,7 +162,7 @@ function libxcrypt_build()
         rm -rfv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}"/lib/pkgconfig/libcrypt.pc
 
         # make install-strip
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -173,7 +173,7 @@ function libxcrypt_build()
         then
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if is_develop
             then
               # macOS FAIL: test/symbols-static.sh
               # macOS FAIL: test/symbols-renames.sh

@@ -111,7 +111,7 @@ function zlib_build()
             echo
             echo "Running zlib configure..."
 
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if is_develop
             then
               run_verbose bash "configure" --help
             fi

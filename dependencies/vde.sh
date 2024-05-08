@@ -89,7 +89,7 @@ function vde_build()
           echo
           echo "Running vde configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${vde_src_folder_name}/configure" --help
           fi
@@ -131,7 +131,7 @@ function vde_build()
           run_verbose make -j1 check
         fi
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

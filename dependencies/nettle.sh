@@ -81,7 +81,7 @@ function nettle_build()
           echo
           echo "Running nettle configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${nettle_src_folder_name}/configure" --help
           fi

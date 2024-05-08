@@ -133,7 +133,7 @@ function qemu_build()
           echo
           echo "Running qemu ${qemu_target} configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             # Although it shouldn't, the script checks python before --help.
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/configure" \

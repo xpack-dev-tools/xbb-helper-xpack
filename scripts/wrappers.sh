@@ -17,7 +17,7 @@ function ndate()
 
 function echo_develop()
 {
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  if is_develop
   then
     echo "$@"
   fi
@@ -40,7 +40,7 @@ function run_verbose_develop()
   local app_path="$1"
   shift
 
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  if is_develop
   then
     echo
     echo "[${app_path} $@]"

@@ -117,7 +117,7 @@ function openssl_build()
 
             # Version 3 has a simpler configuration.
 
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if is_develop
             then
               run_verbose "./Configure" --help || true
               run_verbose "./Configure" LIST
@@ -219,7 +219,7 @@ function openssl_build()
 
                 # This config does not use the standard GNU environment definitions.
                 # `Configure` is a Perl script.
-                if [ "${XBB_IS_DEVELOP}" == "y" ]
+                if is_develop
                 then
                   run_verbose "./Configure" --help || true
                 fi
@@ -242,7 +242,7 @@ function openssl_build()
 
               else
 
-                if [ "${XBB_IS_DEVELOP}" == "y" ]
+                if is_develop
                 then
                   run_verbose "./config" --help
                 fi

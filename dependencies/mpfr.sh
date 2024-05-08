@@ -83,7 +83,7 @@ function mpfr_build()
           echo
           echo "Running mpfr configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${mpfr_src_folder_name}/configure" --help
           fi
@@ -111,7 +111,7 @@ function mpfr_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -139,7 +139,7 @@ function mpfr_build()
           fi
         fi
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

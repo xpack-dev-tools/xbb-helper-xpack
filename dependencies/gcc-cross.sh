@@ -401,7 +401,7 @@ function gcc_cross_build_first()
           echo
           echo "Running cross ${name_prefix}gcc first stage configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
           fi
@@ -728,7 +728,7 @@ function gcc_cross_build_final()
           echo
           echo "Running cross ${name_prefix}gcc${name_suffix} final stage configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
           fi
@@ -884,7 +884,7 @@ function gcc_cross_build_final()
 
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if is_develop
             then
               run_verbose make -j ${XBB_JOBS} INHIBIT_LIBC_CFLAGS="-DUSE_TM_CLONE_REGISTRY=0"
             else
@@ -1028,7 +1028,7 @@ main(int argc, char* argv[])
 __EOF__
 
     VERBOSE=""
-    if [ "${XBB_IS_DEVELOP}" == "y" ]
+    if is_develop
     then
       VERBOSE="-v"
     fi
@@ -1170,7 +1170,7 @@ function gcc_cross_strip_libs()
 
   local triplet="$1"
 
-  if [ "${XBB_WITH_STRIP}" == "y" ]
+  if with_strip
   then
     (
       echo

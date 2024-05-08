@@ -129,7 +129,7 @@ function libxml2_build()
           echo
           echo "Running libxml2 configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "configure" --help
           fi
@@ -179,7 +179,7 @@ function libxml2_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

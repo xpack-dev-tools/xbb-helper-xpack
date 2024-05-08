@@ -227,7 +227,7 @@ function test_compiler_c_cpp()
     fi
 
     VERBOSE="-v"
-    if [ "${XBB_IS_DEVELOP}" == "y" ]
+    if is_develop
     then
       CFLAGS+=" -g -v"
       CXXFLAGS+=" -g -v"

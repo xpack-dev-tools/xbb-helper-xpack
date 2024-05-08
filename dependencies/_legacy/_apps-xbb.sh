@@ -205,7 +205,7 @@ function curl_build()
           echo
           echo "Running curl configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${curl_src_folder_name}/configure" --help
           fi
@@ -275,7 +275,7 @@ function curl_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -294,7 +294,7 @@ function curl_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -438,7 +438,7 @@ function tar_build()
           echo
           echo "Running tar configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "configure" --help
           fi
@@ -479,7 +479,7 @@ function tar_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -649,7 +649,7 @@ function gawk_build()
           echo
           echo "Running gawk configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${gawk_src_folder_name}/configure" --help
           fi
@@ -693,7 +693,7 @@ function gawk_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -714,7 +714,7 @@ function gawk_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -842,7 +842,7 @@ function patch_build()
           echo
           echo "Running patch configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${patch_src_folder_name}/configure" --help
           fi
@@ -862,7 +862,7 @@ function patch_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -881,7 +881,7 @@ function patch_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -1008,7 +1008,7 @@ function diffutils_build()
           echo
           echo "Running diffutils configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${diffutils_src_folder_name}/configure" --help
           fi
@@ -1028,7 +1028,7 @@ function diffutils_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -1049,7 +1049,7 @@ function diffutils_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -1191,7 +1191,7 @@ function make_build()
           echo
           echo "Running make configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${make_src_folder_name}/configure" --help
           fi
@@ -1213,7 +1213,7 @@ function make_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -1234,7 +1234,7 @@ function make_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -1366,7 +1366,7 @@ function bash_build()
           echo
           echo "Running bash configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${bash_src_folder_name}/configure" --help
           fi
@@ -1406,7 +1406,7 @@ function bash_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -1538,7 +1538,7 @@ function wget_build()
           echo
           echo "Running wget configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${wget_src_folder_name}/configure" --help
           fi
@@ -1569,7 +1569,7 @@ function wget_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -1591,7 +1591,7 @@ function wget_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -1883,7 +1883,7 @@ function perl_build()
           echo
           echo "Running perl configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "./Configure" --help || true
           fi
@@ -1914,7 +1914,7 @@ function perl_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -2104,7 +2104,7 @@ function tcl_build()
 
           if [ "${XBB_HOST_PLATFORM}" == "linux" ]
           then
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if is_develop
             then
               run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${tcl_src_folder_name}/unix/configure" --help
             fi
@@ -2121,7 +2121,7 @@ function tcl_build()
           elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
 
-            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            if is_develop
             then
               run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${tcl_src_folder_name}/macosx/configure" --help
             fi
@@ -2156,7 +2156,7 @@ function tcl_build()
         run_verbose make -j 1 # ${XBB_JOBS}
 
         # strip: /Host/home/ilg/Work/xbb-bootstrap-4.0.0/linux-x64/install/xbb-bootstrap/bin/_inst.15581_: file format not recognized
-        if false # [ "${XBB_WITH_STRIP}" == "y" ]
+        if false # with_strip
         then
           run_verbose make install-strip
         else
@@ -2323,7 +2323,7 @@ function git_build()
           echo
           echo "Running git configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "./configure" --help
           fi
@@ -2355,7 +2355,7 @@ function git_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -2655,7 +2655,7 @@ function rhash_build()
           echo
           echo "Running rhash configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash configure --help
           fi
@@ -2849,7 +2849,7 @@ function re2c_build()
           echo
           echo "Running re2c configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash configure --help
           fi
@@ -2869,7 +2869,7 @@ function re2c_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -2888,7 +2888,7 @@ function re2c_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -3037,7 +3037,7 @@ function gnupg_build()
           echo
           echo "Running gnupg configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${gnupg_src_folder_name}/configure" --help
           fi
@@ -3073,7 +3073,7 @@ function gnupg_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -3094,7 +3094,7 @@ function gnupg_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else
@@ -3243,7 +3243,7 @@ function makedepend_build()
           echo
           echo "Running makedepend configure..."
 
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${makedepend_src_folder_name}/configure" --help
           fi
@@ -3263,7 +3263,7 @@ function makedepend_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -3282,7 +3282,7 @@ function makedepend_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_STRIP}" == "y" ]
+        if with_strip
         then
           run_verbose make install-strip
         else

@@ -1317,7 +1317,7 @@ function patch_linux_elf_origin()
       fi
     fi
 
-    if [ "${XBB_IS_DEVELOP}" == "y" ]
+    if is_develop
     then
       readelf -d "${tmp_path}" | egrep '(RUNPATH|RPATH)'
       ldd "${tmp_path}"
@@ -1394,7 +1394,7 @@ function patch_linux_elf_set_rpath()
       fi
     fi
 
-    if [ "${XBB_IS_DEVELOP}" == "y" ]
+    if is_develop
     then
       readelf -d "${tmp_path}" | egrep '(RUNPATH|RPATH)'
       ldd "${tmp_path}"
@@ -1490,7 +1490,7 @@ function patch_linux_elf_add_rpath()
       fi
     fi
 
-    if [ "${XBB_IS_DEVELOP}" == "y" ]
+    if is_develop
     then
       readelf -d "${tmp_path}" | egrep '(RUNPATH|RPATH)'
       ldd "${tmp_path}"
@@ -1550,7 +1550,7 @@ function strip_binaries()
     folder_path="$1"
   fi
 
-  if [ "${XBB_WITH_STRIP}" == "y" ]
+  if with_strip
   then
     (
       echo

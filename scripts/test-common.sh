@@ -111,7 +111,7 @@ function tests_parse_options()
   export XBB_OUTPUT_FILE_NAME
   export XBB_USE_CACHED_ARCHIVE
 
-  if [ "${XBB_IS_DEVELOP}" == "y" ]
+  if is_develop
   then
     echo
     echo "XBB_RELEASE_VERSION=${XBB_RELEASE_VERSION}"
