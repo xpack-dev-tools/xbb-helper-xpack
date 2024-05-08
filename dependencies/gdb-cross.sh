@@ -370,10 +370,6 @@ function gdb_cross_build()
           # Use the zlib compiled from sources.
           config_options+=("--with-system-zlib")
 
-          # Use the readline compiled from source, that allows to pass
-          # --with-shared-termcap-library.
-          config_options+=("--with-system-readline")
-
           if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             config_options+=("--without-curses")
@@ -381,6 +377,10 @@ function gdb_cross_build()
             # Use the curses library instead of the termcap library, on macOS
             # it adds an extra reference to /usr/lib/libncurses.5.4.dylib.
             config_options+=("--with-curses")
+
+            # Use the readline compiled from source, that allows to pass
+            # --with-shared-termcap-library.
+            config_options+=("--with-system-readline")
           fi
 
           if [ "${name_suffix}" == "-py3" ]
