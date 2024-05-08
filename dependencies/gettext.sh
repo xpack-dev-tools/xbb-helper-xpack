@@ -193,7 +193,10 @@ function gettext_build()
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           # On macOS lang-c, lang-objc, lang-python-[12], lang-sh fail
-          make -j1 check || true
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          then
+            make -j1 check || true
+          fi
         fi
 
         if [ "${XBB_WITH_STRIP}" == "y" ]

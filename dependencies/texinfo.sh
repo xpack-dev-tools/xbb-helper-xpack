@@ -138,7 +138,10 @@ function texinfo_build()
         then
           if is_darwin
           then
-            run_verbose make -j1 check || true
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            then
+              run_verbose make -j1 check || true
+            fi
           else
             run_verbose make -j1 check
           fi

@@ -115,8 +115,11 @@ function pcre2_build()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          # On macOS RunGrepTest fails.
-          run_verbose make -j1 check || true
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          then
+            # On macOS RunGrepTest fails.
+            run_verbose make -j1 check || true
+          fi
         fi
 
         if [ "${XBB_WITH_STRIP}" == "y" ]

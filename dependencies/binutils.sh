@@ -359,12 +359,15 @@ function binutils_build()
               LDFLAGS="" \
               check
             else
-              # TODO: investigate why tests on Arm fail.
-              run_verbose make CFLAGS_FOR_TARGET="-O2 -g" \
-              CXXFLAGS="-O2 -no-pie -fno-PIC" \
-              CFLAGS="-O2 -no-pie" \
-              LDFLAGS="" \
-              check || true
+              if [ "${XBB_IS_DEVELOP}" == "y" ]
+              then
+                # TODO: investigate why tests on Arm fail.
+                run_verbose make CFLAGS_FOR_TARGET="-O2 -g" \
+                CXXFLAGS="-O2 -no-pie -fno-PIC" \
+                CFLAGS="-O2 -no-pie" \
+                LDFLAGS="" \
+                check || true
+              fi
             fi
           )
         fi

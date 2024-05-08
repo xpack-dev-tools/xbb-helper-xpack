@@ -641,7 +641,10 @@ function gcc_build()
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-            make -k check || true
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            then
+              make -k check || true
+            fi
           )
         fi
 

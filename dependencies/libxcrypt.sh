@@ -173,9 +173,12 @@ function libxcrypt_build()
         then
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
-            # macOS FAIL: test/symbols-static.sh
-            # macOS FAIL: test/symbols-renames.sh
-            run_verbose make -j1 check || true
+            if [ "${XBB_IS_DEVELOP}" == "y" ]
+            then
+              # macOS FAIL: test/symbols-static.sh
+              # macOS FAIL: test/symbols-renames.sh
+              run_verbose make -j1 check || true
+            fi
           else
             run_verbose make -j1 check
           fi

@@ -140,8 +140,11 @@ function autogen_build()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          # FAIL: cond.test
-          run_verbose make -j1 check || true
+          if [ "${XBB_IS_DEVELOP}" == "y" ]
+          then
+            # FAIL: cond.test
+            run_verbose make -j1 check || true
+          fi
         fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${autogen_folder_name}/make-output-$(ndate).txt"
