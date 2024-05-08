@@ -129,7 +129,8 @@ function gdb_cross_build()
 
       download_and_extract "${XBB_GDB_ARCHIVE_URL}" "${XBB_GDB_ARCHIVE_NAME}" \
           "${XBB_GDB_SRC_FOLDER_NAME}" "${XBB_GDB_PATCH_FILE_NAME}"
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+
+      if [ "${XBB_HOST_PLATFORM}" != "win32" ]
       then
         # Prevent a reference to /usr/lib/libncurses.5.4.dylib.
         run_verbose sed -i.bak \
