@@ -565,7 +565,7 @@ function xbb_set_compiler_env()
 
       xbb_prepare_gcc_env "${XBB_TARGET_TRIPLET}-"
     else
-      if [ "${XBB_APPLICATION_USE_CLANG_ON_LINUX:-}" == "y" ]
+      if [ "${XBB_APPLICATION_USE_CLANG_ON_LINUX:-""}" == "y" ]
       then
         xbb_prepare_clang_env
       else
@@ -574,7 +574,12 @@ function xbb_set_compiler_env()
     fi
   elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
-    xbb_prepare_clang_env
+    if [ "${XBB_APPLICATION_USE_GCC_ON_MACOS:-""}" == "y" ]
+    then
+      xbb_prepare_gcc_env
+    else
+      xbb_prepare_clang_env
+    fi
   elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
   then
     # Basically for running tests on Windows.
