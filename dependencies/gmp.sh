@@ -182,7 +182,7 @@ function gmp_build()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if false # [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" ]
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" -a "${XBB_HOST_ARCH}" == "arm64" ]
           then
             # FAIL: t-rand
             :
