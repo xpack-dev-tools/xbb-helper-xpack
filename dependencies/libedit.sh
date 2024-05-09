@@ -157,12 +157,24 @@ function libedit_build()
 
     )
 
+    (
+      libedit_test_libs
+    ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${libedit_folder_name}/test-output-$(ndate).txt"
+
     mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libedit_stamp_file_path}"
 
   else
     echo "Library libedit already installed"
   fi
+}
+
+function libedit_test_libs()
+{
+  echo
+  echo "Checking the libedit binaries shared libraries..."
+
+  show_host_libs "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libedit.${XBB_HOST_SHLIB_EXT}"
 }
 
 # -----------------------------------------------------------------------------
