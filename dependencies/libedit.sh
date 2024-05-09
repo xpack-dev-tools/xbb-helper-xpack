@@ -112,14 +112,14 @@ function libedit_build()
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          config_options+=("--disable-debug") # HB
+          # config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
           if is_develop
           then
             config_options+=("--disable-silent-rules") # HB
           fi
 
-          config_options+=("--disable-nls")
+          # config_options+=("--disable-nls")
 
           # config_options+=("--disable-shared")
 
