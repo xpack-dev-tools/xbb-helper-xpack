@@ -75,6 +75,11 @@ function libedit_build()
           echo "No include/ncurses folder"
           exit 1
         fi
+      elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      then
+        # To prevent a reference to /usr/lib/libncurses.5.4.dylib
+        export LIBS="-ltinfo"
+        :
       fi
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
