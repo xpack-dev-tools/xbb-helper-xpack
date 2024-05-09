@@ -264,23 +264,25 @@ function ncurses_build()
         fi
 
         # ln -s source /absolute/target => /absolute/target -> source
-        for lib in curses curses++
-        do
-          if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}" ] &&
-             [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libn${lib}.${XBB_HOST_SHLIB_EXT}" ]
-          then
-            ln -sfv libn${lib}.${XBB_HOST_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}"
-          fi
-
-          if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a" ] &&
-             [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libn${lib}.a" ]
-          then
-            ln -sfv libn${lib}.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a"
-          fi
-        done
 
         if [ "${XBB_NCURSES_DISABLE_WIDEC}" == "y" ]
         then
+          # The installed libraries do not have the `w` suffix.
+          for lib in curses curses++
+          do
+            if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}" ] &&
+              [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libn${lib}.${XBB_HOST_SHLIB_EXT}" ]
+            then
+              ln -sfv libn${lib}.${XBB_HOST_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}"
+            fi
+
+            if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a" ] &&
+              [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libn${lib}.a" ]
+            then
+              ln -sfv libn${lib}.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a"
+            fi
+          done
+
           # Fool packages looking to link to wide-character ncurses libraries
           if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw" ] &&
              [ -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses" ]
@@ -312,6 +314,22 @@ function ncurses_build()
             fi
           done
         else
+          # The installed libraries do have the `w` suffix.
+          for lib in curses curses++
+          do
+            if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}" ] &&
+              [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libn${lib}w.${XBB_HOST_SHLIB_EXT}" ]
+            then
+              ln -sfv libn${lib}w.${XBB_HOST_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}"
+            fi
+
+            if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a" ] &&
+              [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/libn${lib}w.a" ]
+            then
+              ln -sfv libn${lib}w.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a"
+            fi
+          done
+
           if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses" ] &&
              [ -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw" ]
           then
