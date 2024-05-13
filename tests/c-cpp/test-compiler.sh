@@ -36,6 +36,7 @@ function test_compiler_c_cpp()
     local is_static_lib="n"
     local use_crt="n"
     local use_libcxx="n"
+    local use_libcxx_abi="n"
     local use_libunwind="n"
     local use_lld="n"
     local use_libpthread="n"
@@ -98,6 +99,11 @@ function test_compiler_c_cpp()
           shift
           ;;
 
+        --libc++-abi )
+          use_libcxx_abi="y"
+          shift
+          ;;
+
         --libunwind )
           use_libunwind="y"
           shift
@@ -150,6 +156,11 @@ function test_compiler_c_cpp()
       CXXFLAGS+=" -stdlib=libc++"
       LDXXFLAGS+=" -stdlib=libc++"
       prefix="libcxx-${prefix}"
+    fi
+
+    if [ "${use_libcxx_abi}" == "y" ]
+    then
+      LDXXFLAGS+=" -lc++-abi"
     fi
 
     if [ "${use_libunwind}" == "y" ]
