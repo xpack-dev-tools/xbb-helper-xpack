@@ -49,6 +49,31 @@ function ncurses_build()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local ncurses_version="$1"
+  shift
+
+  local disable_widec="${XBB_NCURSES_DISABLE_WIDEC:-""}"
+  local hack_links=""
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --disable-widec )
+        disable_widec="y"
+        shift
+        ;;
+
+      --hack-links )
+        hack_links="y"
+        shift
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+  done
+
   local ncurses_version_major=$(xbb_get_version_major "${ncurses_version}")
   local ncurses_version_minor=$(xbb_get_version_minor "${ncurses_version}")
 
@@ -92,8 +117,6 @@ function ncurses_build()
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
-
-      XBB_NCURSES_DISABLE_WIDEC=${XBB_NCURSES_DISABLE_WIDEC:-""}
 
       if [ ! -f "config.status" ]
       then
@@ -220,7 +243,7 @@ function ncurses_build()
 
           config_options+=("--disable-db-install")
 
-          if [ "${XBB_NCURSES_DISABLE_WIDEC}" == "y" ]
+          if [ "${disable_widec}" == "y" ]
           then
             config_options+=("--disable-widec")
           else
@@ -272,7 +295,7 @@ function ncurses_build()
 
         # ln -s source /absolute/target => /absolute/target -> source
 
-        if [ "${XBB_NCURSES_DISABLE_WIDEC}" == "y" ]
+        if [ "${disable_widec}" == "y" ]
         then
           # The installed libraries do not have the `w` suffix.
           for lib in curses curses++
@@ -290,41 +313,44 @@ function ncurses_build()
             fi
           done
 
-          echo
-          echo "Creating links as wide..."
-
-          # Fool packages looking to link to wide-character ncurses libraries
-          if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw" ] &&
-             [ -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses" ]
+          if [ "${hack_links}" == "y" ]
           then
-            ln -sfv ncurses "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw"
+            echo
+            echo "Creating links as wide..."
+
+            # Fool packages looking to link to wide-character ncurses libraries
+            if [ ! -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw" ] &&
+              [ -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses" ]
+            then
+              ln -sfv ncurses "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw"
+            fi
+
+            for lib in ncurses ncurses++ form panel menu tinfo
+            do
+              if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.${XBB_HOST_SHLIB_EXT}" ] &&
+                [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}" ]
+              then
+                ln -sfv lib${lib}.${XBB_HOST_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.${XBB_HOST_SHLIB_EXT}"
+              fi
+
+              if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.a" ] &&
+                [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a" ]
+              then
+                ln -sfv lib${lib}.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.a"
+              fi
+
+              # ln -sv ${lib}.pc "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc"
+              if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc" ] &&
+                [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}.pc" ]
+              then
+                cat "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}.pc" | \
+                  sed \
+                    -e "s|Name: ${lib}|Name: ${lib}w|" \
+                    -e "s|-l${lib}|-l${lib}w|" \
+                  > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc"
+              fi
+            done
           fi
-
-          for lib in ncurses ncurses++ form panel menu tinfo
-          do
-            if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.${XBB_HOST_SHLIB_EXT}" ] &&
-               [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}" ]
-            then
-              ln -sfv lib${lib}.${XBB_HOST_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.${XBB_HOST_SHLIB_EXT}"
-            fi
-
-            if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.a" ] &&
-               [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a" ]
-            then
-              ln -sfv lib${lib}.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.a"
-            fi
-
-            # ln -sv ${lib}.pc "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc"
-            if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc" ] &&
-               [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}.pc" ]
-            then
-              cat "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}.pc" | \
-                sed \
-                  -e "s|Name: ${lib}|Name: ${lib}w|" \
-                  -e "s|-l${lib}|-l${lib}w|" \
-                > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc"
-            fi
-          done
         else
           # The installed libraries do have the `w` suffix.
           for lib in curses curses++
@@ -348,33 +374,36 @@ function ncurses_build()
             ln -sfv ncursesw "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
           fi
 
-          echo
-          echo "Creating links as non-wide..."
+          if [ "${hack_links}" == "y" ]
+          then
+            echo
+            echo "Creating links as non-wide..."
 
-          for lib in ncurses ncurses++ form panel menu tinfo
-          do
-            if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}" ] &&
-               [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.${XBB_HOST_SHLIB_EXT}" ]
-            then
-              ln -sfv lib${lib}w.${XBB_HOST_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}"
-            fi
+            for lib in ncurses ncurses++ form panel menu tinfo
+            do
+              if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}" ] &&
+                [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.${XBB_HOST_SHLIB_EXT}" ]
+              then
+                ln -sfv lib${lib}w.${XBB_HOST_SHLIB_EXT} "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.${XBB_HOST_SHLIB_EXT}"
+              fi
 
-            if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a" ] &&
-               [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.a" ]
-            then
-              ln -sfv lib${lib}w.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a"
-            fi
+              if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a" ] &&
+                [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}w.a" ]
+              then
+                ln -sfv lib${lib}w.a "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/lib${lib}.a"
+              fi
 
-            # ln -sv ${lib}.pc "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc"
-            if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}.pc" ] &&
-               [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc" ]
-            then
-              cat "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc" | \
-                sed \
-                  -e "s|Name: ${lib}w|Name: ${lib}|" \
-                > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}.pc"
-            fi
-          done
+              # ln -sv ${lib}.pc "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc"
+              if [ ! -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}.pc" ] &&
+                [ -f "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc" ]
+              then
+                cat "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}w.pc" | \
+                  sed \
+                    -e "s|Name: ${lib}w|Name: ${lib}|" \
+                  > "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/pkgconfig/${lib}.pc"
+              fi
+            done
+          fi
         fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${ncurses_folder_name}/make-output-$(ndate).txt"
