@@ -179,13 +179,13 @@ function ncurses_build()
             config_options+=("--enable-sigwinch") # HB
             config_options+=("--enable-pc-files")
 
-          fi
+            # To create the tinfo library, that defines the `UP` symbol
+            # referred by readline when included by python 3.12.
+            # libreadline.so.7: undefined symbol: UP
+            # https://stackoverflow.com/a/68556326/3073330
+            config_options+=("--with-termlib")
 
-          # To create the tinfo library, that defines the `UP` symbol
-          # referred by readline when included by python 3.12.
-          # libreadline.so.7: undefined symbol: UP
-          # https://stackoverflow.com/a/68556326/3073330
-          config_options+=("--with-termlib")
+          fi
 
           config_options+=("--with-shared") # HB, Arch
           config_options+=("--with-normal")
