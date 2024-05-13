@@ -65,16 +65,17 @@ function libedit_build()
 
       if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
-        if [ -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw" ]
-        then
-          CPPFLAGS+=" -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw"
-        elif [ -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses" ]
-        then
-          CPPFLAGS+=" -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
-        else
-          echo "No include/ncurses folder"
-          exit 1
-        fi
+        :
+        # if [ -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw" ]
+        # then
+        #   CPPFLAGS+=" -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncursesw"
+        # elif [ -d "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses" ]
+        # then
+        #   CPPFLAGS+=" -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
+        # else
+        #   echo "No include/ncurses folder"
+        #   exit 1
+        # fi
       elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
         # To prevent a reference to /usr/lib/libncurses.5.4.dylib
