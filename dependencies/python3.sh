@@ -103,7 +103,8 @@ function python3_build()
       xbb_activate_dependencies_dev
 
       # When wide, there must be links, no need to use ncursesw
-      CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
+      CPPFLAGS="${XBB_CPPFLAGS}"
+      # CPPFLAGS+=" -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 

@@ -194,7 +194,8 @@ function python2_build()
       # To pick the new libraries
       xbb_activate_dependencies_dev
 
-      CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
+      CPPFLAGS="${XBB_CPPFLAGS}"
+      # CPPFLAGS+=" -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/ncurses"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
