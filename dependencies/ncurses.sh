@@ -231,10 +231,8 @@ function ncurses_build()
           config_options+=("--enable-ext-colors")
           config_options+=("--enable-interop")
 
-          # Do not use, it disables the wide libraries.
-          # config_options+=("--disable-lib-suffixes")
-
           # config_options+=("--disable-overwrite")
+          config_options+=("--enable-overwrite")
 
           # /bin/bash ./run_tic.sh
           # Building terminfo database, please wait...
