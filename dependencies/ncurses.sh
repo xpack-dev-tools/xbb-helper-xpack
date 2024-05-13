@@ -248,6 +248,9 @@ function ncurses_build()
             config_options+=("--disable-widec")
           else
             config_options+=("--enable-widec") # Arch
+            # Suppress the "w", "t" or "tw" suffixes which normally would be added
+            # to the library names for the wide/pthread variants.
+            config_options+=("--disable-lib-suffixes")
           fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${ncurses_src_folder_name}/configure" \
