@@ -210,6 +210,8 @@ then
     run_verbose git -C ${WORK}/${name}-xpack.git status
   done
 
+  echo "Done"
+
   exit 0
 fi
 
@@ -228,6 +230,8 @@ then
       ${WORK}/${name}-xpack.git
 
   done
+
+  echo "Done"
 
   exit 0
 fi
