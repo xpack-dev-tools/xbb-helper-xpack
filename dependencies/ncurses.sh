@@ -52,6 +52,7 @@ function ncurses_build()
   shift
 
   local disable_widec="${XBB_NCURSES_DISABLE_WIDEC:-""}"
+  local disable_lib_suffixes=""
   # local hack_links=""
 
   while [ $# -gt 0 ]
@@ -59,6 +60,11 @@ function ncurses_build()
     case "$1" in
       --disable-widec )
         disable_widec="y"
+        shift
+        ;;
+
+      --disable-lib-suffixes )
+        disable_lib_suffixes="y"
         shift
         ;;
 
@@ -246,9 +252,12 @@ function ncurses_build()
             config_options+=("--disable-widec")
           else
             config_options+=("--enable-widec") # Arch
-            # Suppress the "w", "t" or "tw" suffixes which normally would be added
-            # to the library names for the wide/pthread variants.
-            config_options+=("--disable-lib-suffixes")
+            if [ "${disable_lib_suffixes}" == "y" ]
+            then
+              # Suppress the "w", "t" or "tw" suffixes which normally would be added
+              # to the library names for the wide/pthread variants.
+              config_options+=("--disable-lib-suffixes")
+            fi
           fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${ncurses_src_folder_name}/configure" \
