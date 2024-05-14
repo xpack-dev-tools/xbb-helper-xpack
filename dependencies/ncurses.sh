@@ -53,6 +53,7 @@ function ncurses_build()
 
   local disable_widec="${XBB_NCURSES_DISABLE_WIDEC:-""}"
   local disable_lib_suffixes=""
+  local with_termlib=""
   local hack_links=""
 
   while [ $# -gt 0 ]
@@ -66,6 +67,11 @@ function ncurses_build()
       # absolute "/usr/lib/libncurses.5.4.dylib" not one of the allowed libs
       --disable-lib-suffixes )
         disable_lib_suffixes="y"
+        shift
+        ;;
+
+      --with-termlib )
+        with_termlib="y"
         shift
         ;;
 
@@ -209,11 +215,14 @@ function ncurses_build()
             config_options+=("--enable-sigwinch") # HB
             config_options+=("--enable-pc-files")
 
-            # To create the tinfo library, that defines the `UP` symbol
-            # referred by readline when included by python 3.12.
-            # libreadline.so.7: undefined symbol: UP
-            # https://stackoverflow.com/a/68556326/3073330
-            config_options+=("--with-termlib")
+            if [ "${with_termlib}" == "y" ]
+            then
+              # To create the tinfo library, that defines the `UP` symbol
+              # referred by readline when included by python 3.12.
+              # libreadline.so.7: undefined symbol: UP
+              # https://stackoverflow.com/a/68556326/3073330
+              config_options+=("--with-termlib")
+            fi
 
           fi
 
