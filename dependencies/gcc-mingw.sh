@@ -342,7 +342,7 @@ function gcc_mingw_build_first()
 
           # config_options+=("--enable-threads=posix") # Arch
           # https://github.com/gcc-mirror/gcc/commit/9149a5b7e0a66b7b94d5b7db3194a975d18dea2f
-          config_options+=("--enable-threads")
+          config_options+=("--enable-threads=win32")
 
           # Fails with:
           # x86_64-w64-mingw32/bin/ld: cannot find -lgcc_s: No such file or directory
