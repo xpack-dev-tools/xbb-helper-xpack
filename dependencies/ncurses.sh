@@ -201,7 +201,10 @@ function ncurses_build()
             config_options+=("--with-terminfo-dirs=/etc/terminfo")
             config_options+=("--with-default-terminfo-dir=/etc/terminfo:/lib/terminfo:/usr/share/terminfo")
             config_options+=("--with-gpm")
-            config_options+=("--with-versioned-syms") # Arch
+
+            # libform.so: undefined reference to `_nc_wcrtomb'
+            # config_options+=("--with-versioned-syms") # Arch
+            
             config_options+=("--with-xterm-kbs=del") # Arch
 
             config_options+=("--disable-root-access") # Arch
