@@ -52,7 +52,7 @@ function ncurses_build()
   shift
 
   local disable_widec="${XBB_NCURSES_DISABLE_WIDEC:-""}"
-  local disable_lib_suffixes=""
+  local enable_lib_suffixes="n"
   local with_termlib=""
   local hack_links=""
 
@@ -64,9 +64,14 @@ function ncurses_build()
         shift
         ;;
 
+      --enable-lib-suffixes )
+        enable_lib_suffixes="y"
+        shift
+        ;;
+
       # absolute "/usr/lib/libncurses.5.4.dylib" not one of the allowed libs
       --disable-lib-suffixes )
-        disable_lib_suffixes="y"
+        enable_lib_suffixes="n"
         shift
         ;;
 
@@ -204,7 +209,7 @@ function ncurses_build()
 
             # libform.so: undefined reference to `_nc_wcrtomb'
             # config_options+=("--with-versioned-syms") # Arch
-            
+
             config_options+=("--with-xterm-kbs=del") # Arch
 
             config_options+=("--disable-root-access") # Arch
@@ -265,8 +270,11 @@ function ncurses_build()
             config_options+=("--disable-widec")
           else
             config_options+=("--enable-widec") # Arch
-            if [ "${disable_lib_suffixes}" == "y" ]
+
+            if [ "${enable_lib_suffixes}" == "y" ]
             then
+              config_options+=("--enable-lib-suffixes")
+            else
               # Suppress the "w", "t" or "tw" suffixes which normally would be added
               # to the library names for the wide/pthread variants.
               config_options+=("--disable-lib-suffixes")
@@ -296,7 +304,7 @@ function ncurses_build()
 
         if [ "${hack_links}" == "y" ] &&
            [ "${disable_widec}" != "y" ] &&
-           [ "${disable_lib_suffixes}" == "y" ]
+           [ "${enable_lib_suffixes}" == "y" ]
         then
           echo
           echo "Creating links as wide..."
