@@ -131,19 +131,14 @@ function gcc_build()
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
-      if is_develop
-      then
-        LDFLAGS="-DXBB_MARKER_TOP"
-      else
-        LDFLAGS=""
-      fi
-      LDFLAGS+=" ${XBB_LDFLAGS_APP}"
-
-      # Before LDFLAGS_FOR_TARGET & Co.
-      xbb_adjust_ldflags_rpath
-
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
+        # Reduce the risk of messing bootstrap libraries.
+        # LDFLAGS="${XBB_LDFLAGS_APP} ${XBB_LDFLAGS_STATIC_LIBS}"
+
+        # Mainly for the path to the libraries, rpath is not relevant.
+        xbb_adjust_ldflags_rpath
+
         export CC_FOR_BUILD="${XBB_NATIVE_CC}"
         export CXX_FOR_BUILD="${XBB_NATIVE_CXX}"
 
@@ -175,6 +170,17 @@ function gcc_build()
         CXXFLAGS+=" -fPIC"
       elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
+        if is_develop
+        then
+          LDFLAGS="-DXBB_MARKER_TOP"
+        else
+          LDFLAGS=""
+        fi
+        LDFLAGS+=" ${XBB_LDFLAGS_APP}"
+
+        # Before LDFLAGS_FOR_TARGET & Co.
+        xbb_adjust_ldflags_rpath
+
         # HomeBrew mentiones this:
         # GCC will suffer build errors if forced to use a particular linker.
         unset LD
@@ -196,6 +202,17 @@ function gcc_build()
         export LDFLAGS_FOR_TARGET
       elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
+        if is_develop
+        then
+          LDFLAGS="-DXBB_MARKER_TOP"
+        else
+          LDFLAGS=""
+        fi
+        LDFLAGS+=" ${XBB_LDFLAGS_APP}"
+
+        # Before LDFLAGS_FOR_TARGET & Co.
+        xbb_adjust_ldflags_rpath
+
         # The target may refer to the development libraries.
         # It does not need the bootstrap toolchain rpaths.
         if is_develop

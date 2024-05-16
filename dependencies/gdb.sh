@@ -83,7 +83,7 @@ function gdb_build()
         CPPFLAGS+=" -D_WIN32_WINNT=${XBB_APPLICATION_WIN32_WINNT:-0x0601}" # Windows 7
 
         # Reduce the risk of messing bootstrap libraries.
-        LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+        # LDFLAGS+=" ${XBB_LDFLAGS_STATIC_LIBS}"
 
         # Used to enable wildcard; inspired by arm-none-eabi-gcc.
         local crt_clob_file_path="$(${CC} --print-file-name=CRT_glob.o)"
