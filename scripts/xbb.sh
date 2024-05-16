@@ -1038,7 +1038,8 @@ function xbb_set_compiler_flags()
     # Do not try to link pthread statically, it must match the system glibc.
     XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
-    XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
+    # XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
+    XBB_LDFLAGS_STATIC_LIBS="-static-libgcc -static-libstdc++"
 
     XBB_TOOLCHAIN_RPATH="$(xbb_get_toolchain_library_path "${CXX}")"
 
@@ -1081,7 +1082,8 @@ function xbb_set_compiler_flags()
 
     XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,-dead_strip"
-    XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libstdc++"
+    # XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libstdc++"
+    XBB_LDFLAGS_STATIC_LIBS="-static-libstdc++"
     if [[ $(basename "${CC}") =~ .*gcc.* ]]
     then
       XBB_LDFLAGS_APP_STATIC_GCC+=" -static-libgcc"
@@ -1114,7 +1116,8 @@ function xbb_set_compiler_flags()
     # -static-libgcc avoids libgcc_s_sjlj-1.dll
     XBB_LDFLAGS_LIB="${XBB_LDFLAGS}"
     XBB_LDFLAGS_APP="${XBB_LDFLAGS} -Wl,--gc-sections"
-    XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
+    # XBB_LDFLAGS_APP_STATIC_GCC="${XBB_LDFLAGS_APP} -static-libgcc -static-libstdc++"
+    XBB_LDFLAGS_STATIC_LIBS="-static-libgcc -static-libstdc++"
   else
     echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
     exit 1
@@ -1153,7 +1156,8 @@ function xbb_set_compiler_flags()
 
       echo "XBB_LDFLAGS_LIB=${XBB_LDFLAGS_LIB}"
       echo "XBB_LDFLAGS_APP=${XBB_LDFLAGS_APP}"
-      echo "XBB_LDFLAGS_APP_STATIC_GCC=${XBB_LDFLAGS_APP_STATIC_GCC}"
+      # echo "XBB_LDFLAGS_APP_STATIC_GCC=${XBB_LDFLAGS_APP_STATIC_GCC}"
+      echo "XBB_LDFLAGS_STATIC_LIBS=${XBB_LDFLAGS_STATIC_LIBS}"
 
       echo "XBB_TOOLCHAIN_RPATH=${XBB_TOOLCHAIN_RPATH}"
     )
@@ -1173,7 +1177,8 @@ function xbb_set_compiler_flags()
   export XBB_LDFLAGS
   export XBB_LDFLAGS_LIB
   export XBB_LDFLAGS_APP
-  export XBB_LDFLAGS_APP_STATIC_GCC
+  # export XBB_LDFLAGS_APP_STATIC_GCC
+  export XBB_LDFLAGS_STATIC_LIBS
 
   export XBB_TOOLCHAIN_RPATH
 }
@@ -1222,7 +1227,7 @@ function xbb_set_flex_package_paths()
   export XBB_LDFLAGS+=" -L${XBB_FLEX_PACKAGE_PATH}/lib"
   export XBB_LDFLAGS_LIB+=" -L${XBB_FLEX_PACKAGE_PATH}/lib"
   export XBB_LDFLAGS_APP+=" -L${XBB_FLEX_PACKAGE_PATH}/lib"
-  export XBB_LDFLAGS_APP_STATIC_GCC+=" -L${XBB_FLEX_PACKAGE_PATH}/lib"
+  # export XBB_LDFLAGS_APP_STATIC_GCC+=" -L${XBB_FLEX_PACKAGE_PATH}/lib"
   echo_develop "XBB_FLEX_PACKAGE_PATH=${XBB_FLEX_PACKAGE_PATH}"
 }
 
