@@ -551,7 +551,8 @@ function xbb_set_compiler_env()
 {
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
-    if [ "${XBB_HOST_PLATFORM}" == "win32" -a "${XBB_TARGET_TRIPLET}" == "${XBB_HOST_TRIPLET}" ]
+    if [ "${XBB_HOST_PLATFORM}" == "win32" ] && \
+       [ "${XBB_TARGET_TRIPLET}" == "${XBB_HOST_TRIPLET}" ]
     then
       # Windows cross build case.
       export XBB_NATIVE_CC="$(which gcc 2>/dev/null || echo gcc)"
