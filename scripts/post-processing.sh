@@ -660,7 +660,7 @@ function copy_dependencies_recursive()
         then
           : # System DLL, no need to copy it.
         else
-          local full_path=$(${XBB_REQUESTED_TARGET_TRIPLET}-gcc -print-file-name=${lib_name})
+          local full_path=$(${CC} -print-file-name=${lib_name})
 
           if [ -f "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
           then
