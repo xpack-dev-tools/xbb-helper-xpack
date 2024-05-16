@@ -2070,6 +2070,9 @@ function create_archive()
 
     fi
 
+    echo
+    ls -l "${distribution_file_path}"
+
     cd "${XBB_DEPLOY_FOLDER_PATH}"
     if [ "${XBB_BUILD_UNAME}" == "Darwin" ]
     then
