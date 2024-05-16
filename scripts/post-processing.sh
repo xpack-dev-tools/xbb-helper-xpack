@@ -24,7 +24,7 @@ function make_standalone()
 
   (
     echo
-    echo "# Preparing ${folder_path} libraries..."
+    echo "# Post-processing ${folder_path} libraries..."
 
     # Otherwise `find` may fail.
     cd "${XBB_TARGET_WORK_FOLDER_PATH}"
@@ -156,6 +156,7 @@ function copy_dependencies_recursive()
 {
   if [ $# -lt 2 ]
   then
+    echo
     echo "copy_dependencies_recursive requires at least 2 arg"
     exit 1
   fi
@@ -178,6 +179,7 @@ function copy_dependencies_recursive()
 
     local destination_file_path="${destination_folder_path}/${source_file_name}"
 
+    echo_develop ""
     echo_develop "copy_dependencies_recursive $@"
 
     # The first step is to copy the file to the destination,
@@ -235,12 +237,13 @@ function copy_dependencies_recursive()
       fi
 
     else
-      echo_develop "already there ${destination_file_path}"
+      echo_develop ""
+      echo_develop "already there: ${destination_file_path}"
     fi
 
     # replace_loader_path "${actual_source_file_path}" "${actual_destination_file_path}"
 
-    if [ "${XBB_WITH_STRIP}" == "y" -a ! -L "${actual_destination_file_path}" ]
+    if [ "${XBB_WITH_STRIP}" == "y" ] && [ ! -L "${actual_destination_file_path}" ]
     then
       strip_binary "${actual_destination_file_path}"
     fi
@@ -615,7 +618,8 @@ function copy_dependencies_recursive()
         copied_file_path="${destination_folder_path}/${source_file_name}"
 
       else
-        echo_develop "${destination_folder_path}/${source_file_name} already there"
+        echo_develop ""
+        echo_develop "already there: ${destination_folder_path}/${source_file_name}"
       fi
 
       if [ ! -z "${actual_source_file_path}" ]
@@ -625,7 +629,7 @@ function copy_dependencies_recursive()
         actual_source_file_path="${source_file_path}"
       fi
 
-      if [ "${XBB_WITH_STRIP}" == "y" -a ! -L "${copied_file_path}" ]
+      if [ "${XBB_WITH_STRIP}" == "y" ] && [ ! -L "${copied_file_path}" ]
       then
         strip_binary "${copied_file_path}"
       fi
@@ -680,13 +684,14 @@ function copy_dependencies_recursive()
             copy_dependencies_recursive \
               "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
               "${destination_folder_path}"
-          elif [ "${XBB_DO_COPY_GCC_LIBS}" == "y" -a "${full_path}" != "${lib_name}" ]
+          elif [ "${XBB_DO_COPY_GCC_LIBS}" == "y" ] && [ "${full_path}" != "${lib_name}" ]
           then
             # -print-file-name outputs back the requested name if not found.
+            echo_develop "compiler library: ${lib_name} -> ${full_path}"
             copy_dependencies_recursive \
               "${full_path}" \
               "${destination_folder_path}"
-          elif false # [ "${XBB_DO_COPY_GCC_LIBS}" == "y" -a "${lib_name}" == "libwinpthread-1.dll" -a -f "${XBB_FOLDER_PATH}/usr/${XBB_TARGET_TRIPLET}/bin/libwinpthread-1.dll" ]
+          elif false # [ "${XBB_DO_COPY_GCC_LIBS}" == "y" ] && [ "${lib_name}" == "libwinpthread-1.dll" ] && [ -f "${XBB_FOLDER_PATH}/usr/${XBB_TARGET_TRIPLET}/bin/libwinpthread-1.dll" ]
           then
             copy_dependencies_recursive \
               "${XBB_FOLDER_PATH}/usr/${XBB_TARGET_TRIPLET}/bin/libwinpthread-1.dll" \
@@ -742,28 +747,36 @@ function is_target()
   if [ -f "${bin_path}" ]
   then
     # Return 0 (true) if found.
-    if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -a "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
+    if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ] && \
+       [ "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
     then
       file ${bin_path} | egrep -q ", x86-64, "
-    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -a \( "${XBB_REQUESTED_HOST_ARCH}" == "x32" -o "${XBB_REQUESTED_HOST_ARCH}" == "ia32" \) ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ] && \
+         [ "${XBB_REQUESTED_HOST_ARCH}" == "x32" -o "${XBB_REQUESTED_HOST_ARCH}" == "ia32" ]
     then
       file ${bin_path} | egrep -q ", Intel 80386, "
-    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -a "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ] && \
+         [ "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
     then
       file ${bin_path} | egrep -q ", ARM aarch64, "
-    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -a "${XBB_REQUESTED_HOST_ARCH}" == "arm" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ] && \
+         [ "${XBB_REQUESTED_HOST_ARCH}" == "arm" ]
     then
       file ${bin_path} | egrep -q ", ARM, "
-    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" -a "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ] && \
+         [ "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
     then
       file ${bin_path} | egrep -q "x86_64"
-    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" -a "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ] && \
+         [ "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
     then
       file ${bin_path} | egrep -q "arm64"
-    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" -a "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ] && \
+         [ "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
     then
       file ${bin_path} | egrep -q " x86-64 "
-    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" -a \( "${XBB_REQUESTED_HOST_ARCH}" == "x32" -o "${XBB_REQUESTED_HOST_ARCH}" == "ia32" \) ]
+    elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ] && \
+         [ "${XBB_REQUESTED_HOST_ARCH}" == "x32" -o "${XBB_REQUESTED_HOST_ARCH}" == "ia32" ]
     then
       file ${bin_path} | egrep -q " Intel 80386"
     else
