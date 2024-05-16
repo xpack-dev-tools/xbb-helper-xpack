@@ -283,8 +283,6 @@ function gcc_build()
           # Intel specific.
           config_options+=("--enable-cet=auto") # Arch
 
-          config_options+=("--enable-threads=posix")
-
           # It fails on macOS master with:
           # libstdc++-v3/include/bits/cow_string.h:630:9: error: no matching function for call to 'std::basic_string<wchar_t>::_Alloc_hider::_Alloc_hider(std::basic_string<wchar_t>::_Rep*)'
           # config_options+=("--enable-fully-dynamic-string")
@@ -342,6 +340,8 @@ function gcc_build()
             # make[2]: *** No rule to make target `emutls_s.o', needed by `libemutls_w.a'.  Stop.
             config_options+=("--enable-shared")
             # config_options+=("--disable-shared")
+
+            config_options+=("--enable-threads=posix")
 
             # This distribution expects the SDK to be installed
             # with the Command Line Tools, which have a fixed location,
@@ -412,6 +412,8 @@ function gcc_build()
             # Shared libraries remain problematic when refered from generated
             # programs, and require setting the executable rpath to work.
             config_options+=("--enable-shared")
+
+            config_options+=("--enable-threads=posix")
 
             config_options+=("--enable-bootstrap")
 
@@ -544,6 +546,8 @@ function gcc_build()
 
             # To keep -fPIC and generate  pic/libiberty.a
             config_options+=("--enable-host-shared")
+
+            config_options+=("--enable-threads=win32")
 
             if [ "${XBB_HOST_ARCH}" == "x64" ]
             then
