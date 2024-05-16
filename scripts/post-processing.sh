@@ -16,6 +16,9 @@
 # $1 = folder path (default ${XBB_APPLICATION_INSTALL_FOLDER_PATH})
 function make_standalone()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local folder_path="${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
   if [ $# -ge 1 ]
   then
@@ -156,6 +159,9 @@ function find_binaries()
 # $2 = destination folder path
 function copy_dependencies_recursive()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   if [ $# -lt 2 ]
   then
     echo
@@ -188,9 +194,6 @@ function copy_dependencies_recursive()
     local source_folder_path="$(dirname "${source_file_path}")"
 
     local destination_file_path="${destination_folder_path}/${source_file_name}"
-
-    echo_develop ""
-    echo_develop "copy_dependencies_recursive $@"
 
     # The first step is to copy the file to the destination,
     # if not already there.
@@ -667,44 +670,48 @@ function copy_dependencies_recursive()
       local lib_name
       for lib_name in ${libs}
       do
+
+        echo_develop
+        echo_develop "processing ${lib_name} of ${actual_destination_file_path}"
+
         if [ -f "${destination_folder_path}/${lib_name}" ]
         then
-          : # Already present in the same folder as the source.
+          # Already present in the same folder as the source.
+          echo_develop "already nearby: ${destination_folder_path}/${lib_name}"
         elif is_win_sys_dll "${lib_name}"
         then
-          : # System DLL, no need to copy it.
+          # System DLL, no need to copy it.
+          echo_develop "system DLL"
         else
           local full_path=$(${CC} -print-file-name=${lib_name})
 
           if [ -f "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
           then
             # GCC leaves some .DLLs in bin.
+            echo_develop "application/bin"
             copy_dependencies_recursive \
               "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
               "${destination_folder_path}"
           elif [ -f "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}/bin/${lib_name}" ]
           then
             # ... or in x86_64-w64-mingw32/bin
+            echo_develop "application/triplet/bin"
             copy_dependencies_recursive \
               "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_TARGET_TRIPLET}/bin/${lib_name}" \
               "${destination_folder_path}"
           elif [ -f "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" ]
           then
             # These scripts leave libraries in install/libs/bin.
+            echo_develop "dependencies/bin"
             copy_dependencies_recursive \
               "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin/${lib_name}" \
               "${destination_folder_path}"
           elif [ "${XBB_DO_COPY_GCC_LIBS}" == "y" ] && [ "${full_path}" != "${lib_name}" ]
           then
             # -print-file-name outputs back the requested name if not found.
-            echo_develop "compiler library: ${lib_name} -> ${full_path}"
+            echo_develop "compiler library: ${full_path}"
             copy_dependencies_recursive \
               "${full_path}" \
-              "${destination_folder_path}"
-          elif false # [ "${XBB_DO_COPY_GCC_LIBS}" == "y" ] && [ "${lib_name}" == "libwinpthread-1.dll" ] && [ -f "${XBB_FOLDER_PATH}/usr/${XBB_TARGET_TRIPLET}/bin/libwinpthread-1.dll" ]
-          then
-            copy_dependencies_recursive \
-              "${XBB_FOLDER_PATH}/usr/${XBB_TARGET_TRIPLET}/bin/libwinpthread-1.dll" \
               "${destination_folder_path}"
           else
             echo "${lib_name} required by ${source_file_name}, not found"
@@ -1816,6 +1823,8 @@ function check_binary_for_libraries()
       echo
       echo "${file_name}: (${file_path})"
       set +e
+
+      "${OBJDUMP}" -x "${file_path}" | egrep -i '\sDLL Name:\s'
 
       local dll_names=$("${OBJDUMP}" -x "${file_path}" \
         | egrep -i '\sDLL Name:\s' \
