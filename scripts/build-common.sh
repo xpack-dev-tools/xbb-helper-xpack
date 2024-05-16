@@ -38,7 +38,7 @@ function build_common_parse_options()
   XBB_WITH_HTML="n"
 
   XBB_WITH_TESTS="${XBB_ENVIRONMENT_WITH_TESTS:-"y"}"
-  
+
   XBB_WITHOUT_MULTILIB="${XBB_APPLICATION_WITHOUT_MULTILIB:-"n"}"
   XBB_TEST_ONLY="n"
 
@@ -212,6 +212,18 @@ function build_common_run()
     then
       # Run the final steps in the requested environment.
       xbb_reset_env
+
+      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      then
+        # Add the native XBB bin to the PATH to get the bootstrap compiler.
+        if is_variable_set "XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH" &&
+          [ -d "${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin" ]
+        then
+          PATH="${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin:$PATH"
+          echo_develop "PATH=${PATH}"
+        fi
+      fi
+
       xbb_set_target "requested"
 
       mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
