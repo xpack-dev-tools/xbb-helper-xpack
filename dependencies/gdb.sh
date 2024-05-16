@@ -77,6 +77,9 @@ function gdb_build()
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
+        # Reduce the risk of messing bootstrap libraries.
+        LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
+
         # Used to enable wildcard; inspired by arm-none-eabi-gcc.
         local crt_clob_file_path="$(${CC} --print-file-name=CRT_glob.o)"
         LDFLAGS+=" -Wl,${crt_clob_file_path}"
@@ -165,7 +168,7 @@ function gdb_build()
         echo "Running gdb make..."
 
         # Build.
-        run_verbose make -j ${XBB_JOBS} all-gdb
+        run_verbose make -j ${XBB_JOBS} all-gdb V=${XBB_MAKE_VERBOSITY}
 
         # install-strip fails, not only because of readline has no install-strip
         # but even after patching it tries to strip a non elf file
