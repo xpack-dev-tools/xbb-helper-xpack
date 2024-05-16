@@ -26,6 +26,7 @@ function make_standalone()
   fi
 
   rm -f "${XBB_LOGS_FOLDER_PATH}/post-processed"
+  touch "${XBB_LOGS_FOLDER_PATH}/post-processed"
 
   (
     echo
