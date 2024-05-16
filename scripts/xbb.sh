@@ -80,9 +80,11 @@ function xbb_reset_env()
   # ---------------------------------------------------------------------------
 
   XBB_DASH_V=""
+  XBB_MAKE_VERBOSITY=0
   if is_develop
   then
     XBB_DASH_V="-v"
+    XBB_MAKE_VERBOSITY=1
   fi
 
   XBB_RELEASE_VERSION="${XBB_RELEASE_VERSION:-$(xbb_get_current_version)}"
@@ -132,6 +134,7 @@ function xbb_reset_env()
   XBB_BOOTSTRAP_SUFFIX="-bootstrap"
 
   export XBB_DASH_V
+  export XBB_MAKE_VERBOSITY
 
   export XBB_BUILD_GIT_PATH
   export XBB_DISTRO_INFO_NAME
