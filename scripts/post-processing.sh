@@ -252,7 +252,7 @@ function copy_dependencies_recursive()
 
     else
       echo_develop ""
-      echo_develop "already there: ${destination_file_path}"
+      echo_develop "already in place: ${destination_file_path}"
     fi
 
     # replace_loader_path "${actual_source_file_path}" "${actual_destination_file_path}"
@@ -633,7 +633,7 @@ function copy_dependencies_recursive()
 
       else
         echo_develop ""
-        echo_develop "already there: ${destination_folder_path}/${source_file_name}"
+        echo_develop "already in place: ${destination_folder_path}/${source_file_name}"
       fi
 
       if [ ! -z "${actual_source_file_path}" ]
@@ -678,7 +678,7 @@ function copy_dependencies_recursive()
         if [ -f "${destination_folder_path}/${lib_name}" ]
         then
           # Already present in the same folder as the source.
-          echo_develop "already nearby: ${destination_folder_path}/${lib_name}"
+          echo_develop "already in same folder: ${destination_folder_path}/${lib_name}"
         elif is_win_sys_dll "${lib_name}"
         then
           # System DLL, no need to copy it.
