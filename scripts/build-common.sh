@@ -37,7 +37,12 @@ function build_common_parse_options()
   XBB_WITH_PDF="n"
   XBB_WITH_HTML="n"
 
-  XBB_WITH_TESTS="${XBB_ENVIRONMENT_WITH_TESTS:-"y"}"
+  if [ "${XBB_ENVIRONMENT_SKIP_CHECKS:-""}" == "y" ]
+  then
+    XBB_WITH_TESTS="n"
+  else
+    XBB_WITH_TESTS="y"
+  fi
 
   XBB_WITHOUT_MULTILIB="${XBB_APPLICATION_WITHOUT_MULTILIB:-"n"}"
   XBB_TEST_ONLY="n"
