@@ -164,9 +164,10 @@ function mingw_build_headers()
 
           config_options+=("--mandir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/share/man")
 
-          # https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=msvc-160
+          # https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt
           # Windows 7
-          config_options+=("--with-default-win32-winnt=0x601") # MS
+          config_options+=("--with-default-win32-winnt=${XBB_APPLICATION_WIN32_WINNT:-0x0601}") # MS
+          
           # `ucrt` is the new Windows Universal C Runtime:
           # https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c
           # config_options_common+=("--with-default-msvcrt=${MINGW_MSVCRT:-msvcrt}")
