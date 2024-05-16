@@ -22,6 +22,8 @@ function make_standalone()
     folder_path="$1"
   fi
 
+  rm -f "${XBB_LOGS_FOLDER_PATH}/post-processed"
+
   (
     echo
     echo "# Post-processing ${folder_path} libraries..."
@@ -170,6 +172,14 @@ function copy_dependencies_recursive()
 
     local source_file_path="$1"
     local destination_folder_path="$2"
+
+    # echo "[${source_file_path}->${destination_folder_path}]\n" >> "${XBB_LOGS_FOLDER_PATH}/post-processed"
+
+    if grep --fixed-strings "[${source_file_path}->${destination_folder_path}]" "${XBB_LOGS_FOLDER_PATH}/post-processed"
+    then
+      echo_develop "already processed"
+      return
+    fi
 
     XBB_DO_COPY_XBB_LIBS=${XBB_DO_COPY_XBB_LIBS:-'n'}
     XBB_DO_COPY_GCC_LIBS=${XBB_DO_COPY_GCC_LIBS:-'n'}
@@ -707,7 +717,9 @@ function copy_dependencies_recursive()
       exit 1
     fi
 
-    echo_develop "done with ${source_file_path}"
+    echo "[${source_file_path}->${destination_folder_path}]" >> "${XBB_LOGS_FOLDER_PATH}/post-processed"
+
+    echo_develop "done with ${source_file_path} ($(cat "${XBB_LOGS_FOLDER_PATH}/post-processed" | wc -l))"
   )
 }
 
