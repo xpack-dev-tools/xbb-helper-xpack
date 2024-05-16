@@ -36,7 +36,9 @@ function build_common_parse_options()
   XBB_WITH_STRIP="y"
   XBB_WITH_PDF="n"
   XBB_WITH_HTML="n"
-  XBB_WITH_TESTS="y"
+
+  XBB_WITH_TESTS="${XBB_ENVIRONMENT_WITH_TESTS:-"y"}"
+  
   XBB_WITHOUT_MULTILIB="${XBB_APPLICATION_WITHOUT_MULTILIB:-"n"}"
   XBB_TEST_ONLY="n"
 
