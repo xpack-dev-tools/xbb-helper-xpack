@@ -77,6 +77,11 @@ function gdb_build()
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
+        # bits/std_mutex.h:164:5: error: '__gthread_cond_t' does not name a type
+        # bits/gthr-defaults.h defines __GTHREAD_HAS_COND only if >=0x0600
+        # https://learn.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt?view=msvc-170
+        CPPFLAGS+=" -D_WIN32_WINNT=${XBB_APPLICATION_WIN32_WINNT:-0x0601}" # Windows 7
+
         # Reduce the risk of messing bootstrap libraries.
         LDFLAGS="${XBB_LDFLAGS_APP_STATIC_GCC}"
 
