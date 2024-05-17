@@ -1093,7 +1093,8 @@ function gcc_test()
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
 
-      if [[ "${gcc_version}" =~ 14[.][01][.].* ]]
+      if [[ "${gcc_version}" =~ 13[.].*[.].* ]] || \
+         [[ "${gcc_version}" =~ 14[.].*[.].* ]]
       then
         # sleepy-threads-cv
         # Weird, only the static test dies with 'Segmentation fault'.
