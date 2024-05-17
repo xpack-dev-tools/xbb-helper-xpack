@@ -37,7 +37,76 @@ function git_clone()
       run_verbose git -C "${folder_name}.download" rev-parse HEAD
     fi
     run_verbose git -C "${folder_name}.download" log -1 --format=%cd
-    
+
+    run_verbose mv "${folder_name}.download" "${folder_name}"
+  )
+}
+
+# Runs in the XBB_SOURCES_FOLDER_PATH folder.
+function git_clone2()
+{
+  local url="$1"
+  shift
+  local folder_name="$1"
+  shift
+
+  local branch=""
+  local commit=""
+  local patch_file_name=""
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --branch=* )
+        branch=$(xbb_parse_option "$1")
+        shift
+        ;;
+
+      --commit=* )
+        commit=$(xbb_parse_option "$1")
+        shift
+        ;;
+
+      --patch=* )
+        patch_file_name=$(xbb_parse_option "$1")
+        shift
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+  done
+
+  (
+    echo
+    echo "Cloning \"${folder_name}\" from \"${url}\"..."
+
+    run_verbose rm -rf "${folder_name}" "${folder_name}.download"
+    if [ -z "${branch}" ]
+    then
+      run_verbose git clone --verbose "${url}" "${folder_name}.download"
+    else
+      run_verbose git clone --verbose --branch "${branch}" "${url}" "${folder_name}.download"
+    fi
+
+    if [ -n "${commit}" ]
+    then
+      run_verbose git -C "${folder_name}.download" checkout -qf "${commit}"
+    else
+      run_verbose git -C "${folder_name}.download" rev-parse HEAD
+    fi
+    run_verbose git -C "${folder_name}.download" log -1 --format=%cd
+
+    if [ -n "${patch_file_name}" ]
+    then
+      (
+        cd "${folder_name}.download"
+        _do_patch "${patch_file_name}"
+      )
+    fi
+
     run_verbose mv "${folder_name}.download" "${folder_name}"
   )
 }
