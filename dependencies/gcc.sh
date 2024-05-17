@@ -565,7 +565,13 @@ function gcc_build()
             # To keep -fPIC and generate  pic/libiberty.a
             config_options+=("--enable-host-shared")
 
-            config_options+=("--enable-threads=win32")
+            if [ ${gcc_version_major} -ge 13 ]
+            then
+              # https://github.com/gcc-mirror/gcc/commit/9149a5b7e0a66b7b94d5b7db3194a975d18dea2f
+              config_options+=("--enable-threads=win32")
+            else
+              config_options+=("--enable-threads=posix")
+            fi
 
             if [ "${XBB_HOST_ARCH}" == "x64" ]
             then
