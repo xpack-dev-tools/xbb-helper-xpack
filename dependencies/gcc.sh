@@ -54,23 +54,24 @@ function gcc_download()
 
   local gcc_archive="${XBB_APPLICATION_GCC_ARCHIVE_NAME:-${XBB_GCC_SRC_FOLDER_NAME}.tar.xz}"
   local gcc_url="${XBB_APPLICATION_GCC_URL:-https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/${gcc_archive}}"
-  local gcc_patch_file_name="${XBB_GCC_PATCH_FILE_NAME}"
+
+  local gcc_patch_file_name="${XBB_GCC_PATCH_FILE_NAME:-""}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}"
 
   if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}" ]
   then
-
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
     run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
     if [ "${XBB_APPLICATION_TEST_PRERELEASE:-""}" == "y" ]
     then
-      run_verbose git_clone \
+      run_verbose git_clone2 \
         "${XBB_GCC_GIT_URL}" \
-        "${XBB_GCC_GIT_BRANCH:-"master"}" \
-        "${XBB_GCC_GIT_COMMIT:-""}" \
-        "${XBB_GCC_SRC_FOLDER_NAME}"
+        "${XBB_GCC_SRC_FOLDER_NAME}" \
+        --branch="${XBB_GCC_GIT_BRANCH:-""}" \
+        --commit="${XBB_GCC_GIT_COMMIT:-""}" \
+        --patch="${gcc_patch_file_name}"
     else
       download_and_extract "${gcc_url}" "${gcc_archive}" \
         "${XBB_GCC_SRC_FOLDER_NAME}" "${gcc_patch_file_name}"
@@ -963,12 +964,14 @@ function gcc_test()
     local gcc_version=$(run_host_app "${CC}" -dumpversion)
     echo "GCC: ${gcc_version}"
 
+    local gcc_version_major=$(xbb_get_version_major "${gcc_version}")
+
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
-      if [[ "${gcc_version}" =~ 11[.][4][.].* ]] || \
-         [[ "${gcc_version}" =~ 12[.][3][.].* ]] || \
-         [[ "${gcc_version}" =~ 13[.][2][.].* ]] || \
-         [[ "${gcc_version}" =~ 14[.][01][.].* ]]
+      if [ ${gcc_version_major} -eq 11 ] || \
+         [ ${gcc_version_major} -eq 12 ] || \
+         [ ${gcc_version_major} -eq 13 ] || \
+         [ ${gcc_version_major} -eq 14 ]
       then
         # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
         # collect2.exe: error: ld returned 1 exit status
@@ -1093,11 +1096,28 @@ function gcc_test()
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
 
-      if [[ "${gcc_version}" =~ 13[.].*[.].* ]] || \
-         [[ "${gcc_version}" =~ 14[.].*[.].* ]]
+      local distro=$(lsb_release -is)
+
+      if [ ${gcc_version_major} -eq 12 ]
+      then
+        # sleepy-threads
+        # Weird, only the static tests die with 'Segmentation fault'.
+        export XBB_SKIP_TEST_STATIC_SLEEPY_THREADS="y"
+        export XBB_SKIP_TEST_STATIC_GC_SLEEPY_THREADS="y"
+        export XBB_SKIP_TEST_STATIC_LTO_SLEEPY_THREADS="y"
+        export XBB_SKIP_TEST_STATIC_GC_LTO_SLEEPY_THREADS="y"
+
+        # sleepy-threads-cv
+        # Weird, only the static tests die with 'Segmentation fault'.
+        export XBB_SKIP_TEST_STATIC_SLEEPY_THREADS_CV="y"
+        export XBB_SKIP_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
+        export XBB_SKIP_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
+        export XBB_SKIP_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
+      elif [ ${gcc_version_major} -eq 13 ] || \
+           [ ${gcc_version_major} -eq 14 ]
       then
         # sleepy-threads-cv
-        # Weird, only the static test dies with 'Segmentation fault'.
+        # Weird, only the static tests die with 'Segmentation fault'.
         export XBB_SKIP_TEST_STATIC_SLEEPY_THREADS_CV="y"
         export XBB_SKIP_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
         export XBB_SKIP_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
@@ -1151,7 +1171,6 @@ function gcc_test()
         )
       fi
 
-      local distro=$(lsb_release -is)
       if [[ ${distro} == CentOS ]] || [[ ${distro} == RedHat* ]] || [[ ${distro} == Fedora ]]
       then
         # RedHat has no static libstdc++.
@@ -1230,7 +1249,7 @@ function gcc_test()
         # By default the references to libstdc++ are absolute and no rpath
         # is required.
 
-        if [[ "${gcc_version}" =~ 13[.]2[.].* ]] && [ "${XBB_HOST_ARCH}" == "x64" ]
+        if [ ${gcc_version_major} -eq 13 ] && [ "${XBB_HOST_ARCH}" == "x64" ]
         then
           # On macOS Intel with CLT 15.3
           # terminate called after throwing an instance of 'std::exception'
@@ -1250,8 +1269,8 @@ function gcc_test()
           export XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
         fi
 
-        if [[ "${gcc_version}" =~ 14[.][01][.].* ]] || \
-           [[ "${gcc_version}" =~ 15[.]0[.].* ]]
+        if [ ${gcc_version_major} -eq 14 ] || \
+           [ ${gcc_version_major} -eq 15 ]
         then
           # Most likely an Apple linker issue.
           export XBB_SKIP_TEST_ALL_WEAK_UNDEF_C="y"
