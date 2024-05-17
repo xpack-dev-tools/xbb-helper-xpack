@@ -481,7 +481,7 @@ function gcc_mingw_build_final()
       )
 
       # Remove weird files like x86_64-w64-mingw32-x86_64-w64-mingw32-c++.exe
-      run_verbose rm -rf "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${triplet}-${triplet}-"*
+      run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/${triplet}-${triplet}-"*
 
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${mingw_gcc_folder_name}/make-final-output-$(ndate).txt"
 
