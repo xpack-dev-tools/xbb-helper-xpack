@@ -707,13 +707,15 @@ function gcc_mingw_test()
     local gcc_version=$(run_host_app "${CC}" -dumpversion)
     echo "GCC: ${gcc_version}"
 
+    local gcc_version_major=$(xbb_get_version_major "${gcc_version}")
+
     # Skip tests known to fail.
 
-    if [[ "${gcc_version}" =~ 11[.][4][.].* ]] || \
-       [[ "${gcc_version}" =~ 12[.][3][.].* ]] || \
-       [[ "${gcc_version}" =~ 13[.][2][.].* ]] || \
-       [[ "${gcc_version}" =~ 14[.][012][.].* ]] || \
-       [[ "${gcc_version}" =~ 15[.][012][.].* ]]
+    if [ ${gcc_version_major} -eq 11 ] || \
+       [ ${gcc_version_major} -eq 12 ] || \
+       [ ${gcc_version_major} -eq 13 ] || \
+       [ ${gcc_version_major} -eq 14 ] || \
+       [ ${gcc_version_major} -eq 15 ]
     then
 
       # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/install/lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
