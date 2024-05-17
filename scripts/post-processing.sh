@@ -180,8 +180,6 @@ function copy_dependencies_recursive()
     local source_file_path="$1"
     local destination_folder_path="$2"
 
-    # echo "[${source_file_path}->${destination_folder_path}]\n" >> "${XBB_LOGS_FOLDER_PATH}/post-processed"
-
     if grep --fixed-strings "[${source_file_path}->${destination_folder_path}]" "${XBB_LOGS_FOLDER_PATH}/post-processed"
     then
       echo_develop "already processed"
