@@ -89,6 +89,9 @@ function git_clone()
 # $4 is the patch file name only, not the full path
 function download_and_extract()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local url="$1"
   local archive_name="$2"
   local folder_name="$3"
