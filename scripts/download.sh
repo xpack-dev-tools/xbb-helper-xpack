@@ -97,7 +97,7 @@ function download_and_extract()
   local folder_name="$3"
 
   download "${url}" "${archive_name}"
-  if [ $# -ge 4 ]
+  if [ $# -ge 4 ] && [ -n "$4" ]
   then
     extract "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}" "${folder_name}" "$4"
   else
@@ -167,7 +167,7 @@ function extract()
         fi
       fi
 
-      if [ $# -ge 3 ]
+      if [ $# -ge 3 ] && [ -n "$3" ]
       then
         cd "${folder_name}"
         _do_patch "$3"
