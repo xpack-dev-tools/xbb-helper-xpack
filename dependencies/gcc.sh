@@ -1104,7 +1104,8 @@ function gcc_test()
 
       local distro=$(lsb_release -is)
 
-      if [ ${gcc_version_major} -eq 12 ]
+      if [ ${gcc_version_major} -eq 11 ] || \
+         [ ${gcc_version_major} -eq 12 ]
       then
         # sleepy-threads
         # Weird, only the static tests die with 'Segmentation fault'.
