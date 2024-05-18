@@ -287,13 +287,14 @@ function gcc_cross_download()
       then
         run_verbose git_clone \
           "${XBB_GCC_GIT_URL}" \
-          "${XBB_GCC_GIT_BRANCH:-"master"}" \
-          "${XBB_GCC_GIT_COMMIT:-""}" \
-          "${XBB_GCC_SRC_FOLDER_NAME}"
+          "${XBB_GCC_SRC_FOLDER_NAME}" \
+          --branch="${XBB_GCC_GIT_BRANCH:-""}" \
+          --commit="${XBB_GCC_GIT_COMMIT:-""}" \
+          --patch="${XBB_GCC_PATCH_FILE_NAME:-""}"
       else
         download_and_extract "${XBB_GCC_ARCHIVE_URL}" \
           "${XBB_GCC_ARCHIVE_NAME}" "${XBB_GCC_SRC_FOLDER_NAME}" \
-          "${XBB_GCC_PATCH_FILE_NAME}"
+          "${XBB_GCC_PATCH_FILE_NAME:-""}"
       fi
     )
   fi

@@ -52,8 +52,11 @@ function qemu_build()
 
     if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}" ]
     then
-      git_clone "${XBB_QEMU_GIT_URL}" "${XBB_QEMU_GIT_BRANCH}" \
-          "${XBB_QEMU_GIT_COMMIT}" "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}"
+      run_verbose git_clone \
+        "${XBB_QEMU_GIT_URL}" \
+        "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}" \
+        --branch="${XBB_QEMU_GIT_BRANCH}" \
+        --commit="${XBB_QEMU_GIT_COMMIT}"
 
       if false # Disabled, since the fork is needed anyway for the macOS patches.
       then

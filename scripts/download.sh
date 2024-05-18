@@ -17,33 +17,8 @@
 
 # -----------------------------------------------------------------------------
 
-function git_clone()
-{
-  local url="$1"
-  local branch="$2"
-  local commit="$3"
-  local folder_name="$4"
-
-  (
-    echo
-    echo "Cloning \"${folder_name}\" from \"${url}\"..."
-
-    run_verbose rm -rf "${folder_name}" "${folder_name}.download"
-    run_verbose git clone --verbose --branch "${branch}" "${url}" "${folder_name}.download"
-    if [ -n "${commit}" ]
-    then
-      run_verbose git -C "${folder_name}.download" checkout -qf "${commit}"
-    else
-      run_verbose git -C "${folder_name}.download" rev-parse HEAD
-    fi
-    run_verbose git -C "${folder_name}.download" log -1 --format=%cd
-
-    run_verbose mv "${folder_name}.download" "${folder_name}"
-  )
-}
-
 # Runs in the XBB_SOURCES_FOLDER_PATH folder.
-function git_clone2()
+function git_clone()
 {
   local url="$1"
   shift

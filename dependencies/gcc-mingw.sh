@@ -159,13 +159,14 @@ function gcc_mingw_build_first()
     then
       run_verbose git_clone \
         "${XBB_GCC_GIT_URL}" \
-        "${XBB_GCC_GIT_BRANCH:-"master"}" \
-        "${XBB_GCC_GIT_COMMIT:-""}" \
-        "${mingw_gcc_src_folder_name}"
+        "${mingw_gcc_src_folder_name}" \
+        --branch="${XBB_GCC_GIT_BRANCH:-""}" \
+        --commit="${XBB_GCC_GIT_COMMIT:-""}" \
+        --patch="${XBB_MINGW_GCC_PATCH_FILE_NAME:-""}"
     else
       download_and_extract "${mingw_gcc_url}" "${mingw_gcc_archive}" \
         "${mingw_gcc_src_folder_name}" \
-        "${XBB_MINGW_GCC_PATCH_FILE_NAME:-none}"
+        "${XBB_MINGW_GCC_PATCH_FILE_NAME:-""}"
     fi
   fi
 
