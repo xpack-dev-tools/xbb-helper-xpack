@@ -239,6 +239,8 @@ function build_common_run()
           export XBB_DO_COPY_GCC_LIBS="y"
         fi
 
+        xbb_show_env_develop
+
         # Post processing.
         make_standalone
 
@@ -270,6 +272,7 @@ function build_common_run()
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
   (
     # Isolate the tests in a sub-shell to easily capture the output.
+    xbb_show_env_develop
 
     tests_run_final
   ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/tests-output-$(ndate).txt"
