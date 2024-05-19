@@ -915,6 +915,7 @@ function gcc_cross_build_final()
           # For Windows build only the GCC binaries, the libraries were copied
           # from the Linux build.
           # Parallel builds may fail.
+          # XBB_JOBS=1
           run_verbose make -j ${XBB_JOBS} all-gcc
           # make all-gcc
 
