@@ -1,3 +1,91 @@
+From 0a8e145c017eacd32634cd00f96b9a70227136b4 Mon Sep 17 00:00:00 2001
+From: Liviu Ionescu <ilg@livius.net>
+Date: Thu, 28 Apr 2022 19:22:18 +0300
+Subject: [PATCH] Try to add support for Apple Silicon
+
+---
+ gcc/config.host                          |  7 ++++-
+ gcc/config/aarch64/host-aarch64-darwin.c | 33 ++++++++++++++++++++++++
+ gcc/config/aarch64/x-darwin              |  2 ++
+ 3 files changed, 41 insertions(+), 1 deletion(-)
+ create mode 100644 gcc/config/aarch64/host-aarch64-darwin.c
+ create mode 100644 gcc/config/aarch64/x-darwin
+
+diff --git a/gcc/config.host b/gcc/config.host
+index 0a02c33cc80..81ff7ed1043 100644
+--- a/gcc/config.host
++++ b/gcc/config.host
+@@ -99,7 +99,8 @@ case ${host} in
+ esac
+
+ case ${host} in
+-  aarch64*-*-freebsd* | aarch64*-*-linux* | aarch64*-*-fuchsia*)
++  aarch64*-*-freebsd* | aarch64*-*-linux* | aarch64*-*-fuchsia* |\
++  aarch64*-*-darwin*)
+     case ${target} in
+       aarch64*-*-*)
+ 	host_extra_gcc_objs="driver-aarch64.o"
+@@ -251,6 +252,10 @@ case ${host} in
+     host_extra_gcc_objs="${host_extra_gcc_objs} driver-mingw32.o"
+     host_lto_plugin_soname=liblto_plugin.dll
+     ;;
++  aarch64*-*-darwin*)
++    out_host_hook_obj="${out_host_hook_obj} host-aarch64-darwin.o"
++    host_xmake_file="${host_xmake_file} aarch64/x-darwin"
++    ;;
+   i[34567]86-*-darwin* | x86_64-*-darwin*)
+     out_host_hook_obj="${out_host_hook_obj} host-i386-darwin.o"
+     host_xmake_file="${host_xmake_file} i386/x-darwin"
+diff --git a/gcc/config/aarch64/host-aarch64-darwin.c b/gcc/config/aarch64/host-aarch64-darwin.c
+new file mode 100644
+index 00000000000..d70f2df3bf1
+--- /dev/null
++++ b/gcc/config/aarch64/host-aarch64-darwin.c
+@@ -0,0 +1,33 @@
++/* aarch64/arm64-darwin host-specific hook definitions.
++
++Copyright The GNU Toolchain Authors.
++
++This file is part of GCC.
++
++GCC is free software; you can redistribute it and/or modify it under
++the terms of the GNU General Public License as published by the Free
++Software Foundation; either version 3, or (at your option) any later
++version.
++
++GCC is distributed in the hope that it will be useful, but WITHOUT ANY
++WARRANTY; without even the implied warranty of MERCHANTABILITY or
++FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++for more details.
++
++You should have received a copy of the GNU General Public License
++along with GCC; see the file COPYING3.  If not see
++<http://www.gnu.org/licenses/>.  */
++
++#define IN_TARGET_CODE 1
++
++#include "config.h"
++#include "system.h"
++#include "coretypes.h"
++#include "hosthooks.h"
++#include "hosthooks-def.h"
++#include "config/host-darwin.h"
++
++/* Darwin doesn't do anything special for arm64/aarch64 hosts; this file
++   exists just to include the generic config/host-darwin.h.  */
++
++const struct host_hooks host_hooks = HOST_HOOKS_INITIALIZER;
+diff --git a/gcc/config/aarch64/x-darwin b/gcc/config/aarch64/x-darwin
+new file mode 100644
+index 00000000000..575fe8c0950
+--- /dev/null
++++ b/gcc/config/aarch64/x-darwin
+@@ -0,0 +1,2 @@
++host-aarch64-darwin.o: $(srcdir)/config/aarch64/host-aarch64-darwin.c
++	$(COMPILER) -c $(ALL_COMPILERFLAGS) $(ALL_CPPFLAGS) $(INCLUDES) $<
+--
+2.32.1 (Apple Git-133)
+
 From 6af9e39ba66822921410b9a9bf5714698e38febc Mon Sep 17 00:00:00 2001
 From: Liviu Ionescu <ilg@livius.net>
 Date: Sun, 19 May 2024 15:36:14 +0300
@@ -67,6 +155,34 @@ index b13e9429577..ebb2c4f8a41 100644
  /* Some of glibc's string inlines cause warnings.  Plus we'd rather
     rely on (and therefore test) GCC's string builtins.  */
  #define __NO_STRING_INLINES
+-- 
+2.39.3 (Apple Git-146)
+
+From aba7455e6cfc98a4c278f99c3bfe689651a4028d Mon Sep 17 00:00:00 2001
+From: Liviu Ionescu <ilg@livius.net>
+Date: Sun, 19 May 2024 20:39:49 +0300
+Subject: [PATCH] Fix conflicting abort() in mingw
+
+---
+ gcc/system.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/gcc/system.h b/gcc/system.h
+index ebb2c4f8a41..6d58fed8843 100644
+--- a/gcc/system.h
++++ b/gcc/system.h
+@@ -769,7 +769,11 @@ extern int vsnprintf (char *, size_t, const char *, va_list);
+    reporting the location of the error in the source file.  */
+ extern void fancy_abort (const char *, int, const char *)
+ 					 ATTRIBUTE_NORETURN ATTRIBUTE_COLD;
++
++/* mingw-w64 defines a conflicting abort() in stdlib.h */
++#if ! defined(__MINGW32__)
+ #define abort() fancy_abort (__FILE__, __LINE__, __FUNCTION__)
++#endif
+ 
+ /* Use gcc_assert(EXPR) to test invariants.  */
+ #if ENABLE_ASSERT_CHECKING
 -- 
 2.39.3 (Apple Git-146)
 
