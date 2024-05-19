@@ -193,6 +193,7 @@ function _do_patch()
 
     if [ -f "${patch_path}" ]
     then
+      echo
       echo "Applying \"${patch_path}\"..."
       if [[ ${patch_path} == *.patch.diff ]] || [[ ${patch_path} == *.git.patch ]]
       then
