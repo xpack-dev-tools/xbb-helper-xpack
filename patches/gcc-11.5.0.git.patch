@@ -1,28 +1,72 @@
-From 02942cd13264b2b699eafaea2703b2a3341ae24f Mon Sep 17 00:00:00 2001
+From 6af9e39ba66822921410b9a9bf5714698e38febc Mon Sep 17 00:00:00 2001
 From: Liviu Ionescu <ilg@livius.net>
-Date: Thu, 7 Sep 2023 22:57:48 +0300
-Subject: [PATCH] system.h: do not define abort() on mingw
+Date: Sun, 19 May 2024 15:36:14 +0300
+Subject: [PATCH] Fix gcc/system.h
 
 ---
- gcc/system.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ gcc/system.h | 35 ++++++++++++++++-------------------
+ 1 file changed, 16 insertions(+), 19 deletions(-)
 
 diff --git a/gcc/system.h b/gcc/system.h
-index e10c34f70ec..3e6273e315b 100644
+index b13e9429577..ebb2c4f8a41 100644
 --- a/gcc/system.h
 +++ b/gcc/system.h
-@@ -779,7 +779,11 @@ extern int vsnprintf (char *, size_t, const char *, va_list);
-    reporting the location of the error in the source file.  */
- extern void fancy_abort (const char *, int, const char *)
- 					 ATTRIBUTE_NORETURN ATTRIBUTE_COLD;
-+
-+#if ! defined(__MINGW32__)
-+/* It fails with mingw-w64 10 or later. */
- #define abort() fancy_abort (__FILE__, __LINE__, __FUNCTION__)
-+#endif
+@@ -197,25 +197,6 @@ extern int fprintf_unlocked (FILE *, const char *, ...);
+ /* Include <string> before "safe-ctype.h" to avoid GCC poisoning
+    the ctype macros through safe-ctype.h */
  
- /* Use gcc_assert(EXPR) to test invariants.  */
- #if ENABLE_ASSERT_CHECKING
+-#ifdef __cplusplus
+-#ifdef INCLUDE_STRING
+-# include <string>
+-#endif
+-#endif
+-
+-/* There are an extraordinary number of issues with <ctype.h>.
+-   The last straw is that it varies with the locale.  Use libiberty's
+-   replacement instead.  */
+-#include "safe-ctype.h"
+-
+-#include <sys/types.h>
+-
+-#include <errno.h>
+-
+-#if !defined (errno) && defined (HAVE_DECL_ERRNO) && !HAVE_DECL_ERRNO
+-extern int errno;
+-#endif
+-
+ #ifdef __cplusplus
+ #if defined (INCLUDE_ALGORITHM) || !defined (HAVE_SWAP_IN_UTILITY)
+ # include <algorithm>
+@@ -229,6 +210,9 @@ extern int errno;
+ #ifdef INCLUDE_SET
+ # include <set>
+ #endif
++#ifdef INCLUDE_STRING
++# include <string>
++#endif
+ #ifdef INCLUDE_VECTOR
+ # include <vector>
+ #endif
+@@ -244,6 +228,19 @@ extern int errno;
+ # include <type_traits>
+ #endif
+ 
++/* There are an extraordinary number of issues with <ctype.h>.
++   The last straw is that it varies with the locale.  Use libiberty's
++   replacement instead.  */
++#include "safe-ctype.h"
++
++#include <sys/types.h>
++
++#include <errno.h>
++
++#if !defined (errno) && defined (HAVE_DECL_ERRNO) && !HAVE_DECL_ERRNO
++extern int errno;
++#endif
++
+ /* Some of glibc's string inlines cause warnings.  Plus we'd rather
+    rely on (and therefore test) GCC's string builtins.  */
+ #define __NO_STRING_INLINES
 -- 
-2.37.1 (Apple Git-137.1)
+2.39.3 (Apple Git-146)
 
