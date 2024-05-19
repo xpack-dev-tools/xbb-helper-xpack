@@ -460,6 +460,7 @@ function gcc_mingw_build_final()
       echo "Running ${name_prefix}gcc final make..."
 
       # Build.
+      # XBB_JOBS=1
       run_verbose make -j ${XBB_JOBS}
 
       # make install-strip
