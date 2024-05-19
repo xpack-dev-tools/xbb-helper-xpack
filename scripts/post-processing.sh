@@ -608,7 +608,7 @@ function copy_dependencies_recursive()
 
       echo
       echo "${actual_destination_file_path}:"
-      ${OBJDUMP} -x "${source_file_path}" | egrep -i '\sDLL Name:\s'  || true
+      ${OBJDUMP} -x "${source_file_path}" | egrep -i '\sDLL Name:\s.*[.]dll' | grep -v "${source_file_name}" || true
 
       local source_file_name="$(basename "${source_file_path}")"
       local source_folder_path="$(dirname "${source_file_path}")"
@@ -622,13 +622,10 @@ function copy_dependencies_recursive()
 
       if [ ! -f "${destination_folder_path}/${source_file_name}" ]
       then
-
         # On Windows don't bother with sym links, simply copy the file
         # to the destination.
-
         actual_source_file_path="$(${readlink} -f "${source_file_path}")"
         copied_file_path="${destination_folder_path}/${source_file_name}"
-
       else
         echo_develop ""
         echo_develop "already in place: ${destination_folder_path}/${source_file_name}"
@@ -663,7 +660,8 @@ function copy_dependencies_recursive()
       # echo "II. Processing ${source_file_path} dependencies..."
 
       local libs=$(${OBJDUMP} -x "${destination_folder_path}/${source_file_name}" \
-            | egrep -i '\sDLL Name:\s'  \
+            | egrep -i '\sDLL Name:\s.*[.]dll' \
+            | grep -v "${source_file_name}" \
             | sed -e 's/.*DLL Name: \(.*\)/\1/' \
           )
       local lib_name
@@ -1823,10 +1821,11 @@ function check_binary_for_libraries()
       echo "${file_name}: (${file_path})"
       set +e
 
-      "${OBJDUMP}" -x "${file_path}" | egrep -i '\sDLL Name:\s'
+      "${OBJDUMP}" -x "${file_path}" | egrep -i '\sDLL Name:\s.*[.]dll' | grep -v "${file_name}" \
 
       local dll_names=$("${OBJDUMP}" -x "${file_path}" \
-        | egrep -i '\sDLL Name:\s' \
+        | egrep -i '\sDLL Name:\s.*[.]dll' \
+        | grep -v "${file_name}" \
         | sed -e 's/.*DLL Name: \(.*\)/\1/' \
       )
 
@@ -1838,7 +1837,7 @@ function check_binary_for_libraries()
           if is_win_sys_dll "${n}"
           then
             :
-          elif [ "${n}${XBB_HAS_WINPTHREAD}" == "libwinpthread-1.dlly" ]
+          elif [ "${n}${XBB_HAS_WINPTHREAD:-""}" == "libwinpthread-1.dlly" ]
           then
             :
           else
