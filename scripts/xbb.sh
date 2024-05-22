@@ -1525,10 +1525,13 @@ function xbb_adjust_ldflags_rpath()
   # Add -L for the user libraries.
   LDFLAGS+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
 
-  if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  if [ "${XBB_HOST_PLATFORM}" == "darwin" ] && \
+     [ "${XBB_APPLICATION_SKIP_MACOS_TOOLCHAIN_LIBRARY_PATHS:-""}" != "y" ]
   then
     # Add -L for the toolchain libraries, otherwise the macOS linker will pick
-    # the system libraries, like libc++ (on Linux, `-rpath-link` does the trick).
+    # the system libraries, like /usr/lib/libc++
+    # (actually /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libc++.tbd).
+    # Note: on Linux it is not necessary since `-rpath-link` does the trick.
     LDFLAGS+=" $(xbb_expand_linker_library_paths "${XBB_TOOLCHAIN_RPATH}")"
   fi
 
@@ -1537,8 +1540,10 @@ function xbb_adjust_ldflags_rpath()
   then
     : # -rpath is not used on Windows.
   else
-    # Add -Wl,-rpath for both the user libraries and the toolchain libraries.
-    LDFLAGS+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}" "${XBB_TOOLCHAIN_RPATH}")"
+    # Add -Wl,-rpath for the user libraries.
+    LDFLAGS+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
+    # Add -Wl,-rpath for the toolchain libraries.
+    LDFLAGS+=" $(xbb_expand_linker_rpaths "${XBB_TOOLCHAIN_RPATH}")"
   fi
 
   LDFLAGS="${LDFLAGS# }" # Trim trailing spaces
