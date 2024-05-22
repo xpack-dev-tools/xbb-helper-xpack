@@ -93,6 +93,16 @@ function gdb_build()
         # to avoid 'undefined reference to BCryptGenRandom'.
         # Using LIBS does not work, the order is important.
         export DEBUGINFOD_LIBS="-lbcrypt"
+      elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      then
+        if [ "${XBB_APPLICATION_SKIP_MACOS_TOOLCHAIN_LIBRARY_PATHS:-""}" == "y" ]
+        then
+          # Add -L for the toolchain libraries, otherwise the macOS linker will pick
+          # the system libraries, like /usr/lib/libc++
+          # (actually /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libc++.tbd).
+          # Note: on Linux it is not necessary since `-rpath-link` does the trick.
+          LDFLAGS+=" $(xbb_expand_linker_library_paths "${XBB_TOOLCHAIN_RPATH}")"
+        fi
       fi
 
       xbb_adjust_ldflags_rpath
