@@ -196,7 +196,7 @@ function gcc_build()
         fi
         LDFLAGS_FOR_TARGET+=" ${XBB_LDFLAGS_APP}"
         LDFLAGS_FOR_TARGET+=" -v"
-        if is_develop && [ "${XBB_APPLICATION_ENABLE_LINK_VERBOSE:-""}" == "y" ]
+        if is_develop
         then
           LDFLAGS_FOR_TARGET+=" -Wl,-v"
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
@@ -419,7 +419,7 @@ function gcc_build()
               ldflags_for_boot=""
             fi
             ldflags_for_boot+=" -v"
-            if is_develop && [ "${XBB_APPLICATION_ENABLE_LINK_VERBOSE:-""}" == "y" ]
+            if is_develop
             then
               ldflags_for_boot+=" -Wl,-v"
               if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
@@ -488,7 +488,7 @@ function gcc_build()
               ldflags_for_boot=""
             fi
             ldflags_for_boot+=" -v"
-            if is_develop && [ "${XBB_APPLICATION_ENABLE_LINK_VERBOSE:-""}" == "y" ]
+            if is_develop
             then
               ldflags_for_boot+=" -Wl,-v"
               if [ "${XBB_HOST_PLATFORM}" == "darwin" ]

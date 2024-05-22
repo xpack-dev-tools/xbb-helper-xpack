@@ -998,7 +998,7 @@ function xbb_set_compiler_flags()
   fi
 
   XBB_LDFLAGS+=" -v"
-  if is_develop && [ "${XBB_APPLICATION_ENABLE_LINK_VERBOSE:-""}" == "y" ]
+  if is_develop
   then
     XBB_LDFLAGS+=" -Wl,-v"
     if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
