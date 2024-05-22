@@ -206,8 +206,10 @@ function gcc_build()
             LDFLAGS_FOR_TARGET+=" -Wl,-t,-t"
           fi
         fi
+
         # The static libiconv is used to avoid a reference in libstdc++.dylib
         LDFLAGS_FOR_TARGET+=" -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib"
+
         LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
         LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
 
@@ -429,7 +431,8 @@ function gcc_build()
                 ldflags_for_boot+=" -Wl,-t,-t"
               fi
             fi
-            ldflags_for_boot+=" -static-libstdc++ -static-libgcc ${XBB_LDFLAGS_APP}"
+            ldflags_for_boot+=" -static-libstdc++ -static-libgcc"
+            ldflags_for_boot+=" ${XBB_LDFLAGS_APP}"
 
             ldflags_for_boot+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
             ldflags_for_boot+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
@@ -1307,6 +1310,7 @@ function gcc_test()
         if [ ${gcc_version_major} -eq 14 ] || \
            [ ${gcc_version_major} -eq 15 ]
         then
+          # weak-undef.
           # Most likely an Apple linker issue.
           export XBB_SKIP_TEST_ALL_WEAK_UNDEF_C="y"
           # export XBB_SKIP_TEST_WEAK_UNDEF_C="y"
@@ -1318,6 +1322,7 @@ function gcc_test()
           # export XBB_SKIP_TEST_STATIC_LIB_LTO_WEAK_UNDEF_C="y"
           # export XBB_SKIP_TEST_STATIC_LIB_GC_LTO_WEAK_UNDEF_C="y"
 
+          # This one fails only with GC?!
           export XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
           export XBB_SKIP_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
         fi
