@@ -377,6 +377,14 @@ function expect_target_output()
 
     show_target_libs_develop "${app_name}"
 
+    set -e
+    trap "on_test_trap SIGQUIT ${app_name}" SIGQUIT # 3
+    trap "on_test_trap SIGILL ${app_name}" SIGILL # 4
+    trap "on_test_trap SIGABRT ${app_name}" SIGABRT # 6
+    trap "on_test_trap SIGBUS ${app_name}" SIGBUS # 10
+    trap "on_test_trap SIGSEGV ${app_name}" SIGSEGV # 11
+    trap "on_test_trap SIGSYS ${app_name}" SIGSYS # 12
+
     local output=""
 
     if [ "${XBB_BUILD_PLATFORM}" == "linux" -o "${XBB_BUILD_PLATFORM}" == "darwin" ]
@@ -434,6 +442,14 @@ function expect_target_output()
       exit 1
     fi
 
+    trap - SIGQUIT # 3
+    trap - SIGILL # 4
+    trap - SIGABRT # 6
+    trap - SIGBUS # 10
+    trap - SIGSEGV # 11
+    trap - SIGSYS # 12
+    set +e
+
     echo ${output}
 
     if [ "x${output}x" == "x${expected}x" ]
@@ -449,6 +465,16 @@ function expect_target_output()
       exit 1
     fi
   )
+}
+
+function on_test_trap()
+{
+  local sig="$1"
+  local name="$2"
+
+  echo
+  echo "Test \"${name}\" crashed, signal: ${sig} :-("
+  exit 1
 }
 
 function expect_target_succeed()
@@ -472,6 +498,14 @@ function expect_target_exit()
     local succeed=""
     local exit_code=0
 
+    set -e
+    trap "on_test_trap SIGQUIT ${app_name}" SIGQUIT # 3
+    trap "on_test_trap SIGILL ${app_name}" SIGILL # 4
+    trap "on_test_trap SIGABRT ${app_name}" SIGABRT # 6
+    trap "on_test_trap SIGBUS ${app_name}" SIGBUS # 10
+    trap "on_test_trap SIGSEGV ${app_name}" SIGSEGV # 11
+    trap "on_test_trap SIGSYS ${app_name}" SIGSYS # 12
+
     if [ "${XBB_BUILD_PLATFORM}" == "linux" -o "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
 
@@ -481,20 +515,22 @@ function expect_target_exit()
         echo "[${app_path} $@]"
         # This looks weird, but the purpose here is to run the command
         # within `if`, the result is the exit code in both cases.
-        if "${app_path}" "$@"
-        then
-          : # Nothing special to do, get the exit code below.
-        fi
+        # if "${app_path}" "$@"
+        # then
+        #   : # Nothing special to do, get the exit code below.
+        # fi
+        "${app_path}" "$@"
         exit_code=$?
 
       elif is_executable_script "${app_path}"
       then
         echo
         echo "[${app_path} $@]"
-        if "${app_path}" "$@"
-        then
-          :
-        fi
+        # if "${app_path}" "$@"
+        # then
+        #   :
+        # fi
+        "[${app_path} $@]"
         exit_code=$?
       elif is_pe64 "${app_path}"
       then
@@ -503,10 +539,11 @@ function expect_target_exit()
         then
           echo
           echo "[wine64 ${app_path} $@]"
-          if wine64 "${app_path}" "$@"
-          then
-            :
-          fi
+          # if wine64 "${app_path}" "$@"
+          # then
+          #   :
+          # fi
+          wine64 "${app_path}" "$@"
           exit_code=$?
         else
           echo
@@ -520,10 +557,11 @@ function expect_target_exit()
         then
           echo
           echo "[wine ${app_path} $@]"
-          if wine "${app_path}" "$@"
-          then
-            :
-          fi
+          # if wine "${app_path}" "$@"
+          # then
+          #   :
+          # fi
+          wine "${app_path}" "$@"
           exit_code=$?
         else
           echo
@@ -540,16 +578,25 @@ function expect_target_exit()
     then
       echo
       echo "[${app_path} $@]"
-      if "${app_path}" "$@"
-      then
-        :
-      fi
+      # if "${app_path}" "$@"
+      # then
+      #   :
+      # fi
+      "${app_path}" "$@"
       exit_code=$?
     else
       echo
       echo "Unsupported XBB_HOST_PLATFORM=${XBB_HOST_PLATFORM} in ${FUNCNAME[0]}()"
       exit 1
     fi
+
+    trap - SIGQUIT # 3
+    trap - SIGILL # 4
+    trap - SIGABRT # 6
+    trap - SIGBUS # 10
+    trap - SIGSEGV # 11
+    trap - SIGSYS # 12
+    set +e
 
     if [ ${exit_code} -eq ${expected_exit_code} ]
     then
