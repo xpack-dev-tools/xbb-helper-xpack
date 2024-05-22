@@ -436,15 +436,8 @@ function gcc_build()
 
             config_options+=("--with-boot-ldflags=${ldflags_for_boot}") # -v -Wl,-v
 
-            # Weird, but without it the stage 2 configure in gcc does not
-            # identify the custom libiconv.*.
-            # ld: Undefined symbols:
-            # _libiconv, referenced from:
-            # __ZL19convert_using_iconvPvPKhmP11_cpp_strbuf in libcpp.a[2](charset.o)
-            config_options+=("--disable-rpath")
-
-            # Do not install libraries with @rpath/library-name.
-            config_options+=("--enable-darwin-at-rpath=no")
+            # Do not install libraries with @rpath/library-name. Not needed.
+            # config_options+=("--enable-darwin-at-rpath=no")
 
             config_options+=("--disable-multilib")
 
