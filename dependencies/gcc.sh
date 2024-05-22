@@ -195,6 +195,17 @@ function gcc_build()
           LDFLAGS_FOR_TARGET=""
         fi
         LDFLAGS_FOR_TARGET+=" ${XBB_LDFLAGS_APP}"
+        LDFLAGS_FOR_TARGET+=" -v"
+        if is_develop && [ "${XBB_APPLICATION_ENABLE_LINK_VERBOSE:-""}" == "y" ]
+        then
+          LDFLAGS_FOR_TARGET+=" -Wl,-v"
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+          then
+            LDFLAGS_FOR_TARGET+=" -Wl,-t"
+          else
+            LDFLAGS_FOR_TARGET+=" -Wl,-t,-t"
+          fi
+        fi
         # The static libiconv is used to avoid a reference in libstdc++.dylib
         LDFLAGS_FOR_TARGET+=" -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib"
         LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
@@ -402,6 +413,17 @@ function gcc_build()
             else
               ldflags_for_boot=""
             fi
+            ldflags_for_boot+=" -v"
+            if is_develop && [ "${XBB_APPLICATION_ENABLE_LINK_VERBOSE:-""}" == "y" ]
+            then
+              ldflags_for_boot+=" -Wl,-v"
+              if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+              then
+                ldflags_for_boot+=" -Wl,-t"
+              else
+                ldflags_for_boot+=" -Wl,-t,-t"
+              fi
+            fi
             ldflags_for_boot+=" -static-libstdc++ -static-libgcc ${XBB_LDFLAGS_APP}"
 
             ldflags_for_boot+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
@@ -462,6 +484,17 @@ function gcc_build()
               ldflags_for_boot="-DXBB_MARKER_BOOT"
             else
               ldflags_for_boot=""
+            fi
+            ldflags_for_boot+=" -v"
+            if is_develop && [ "${XBB_APPLICATION_ENABLE_LINK_VERBOSE:-""}" == "y" ]
+            then
+              ldflags_for_boot+=" -Wl,-v"
+              if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+              then
+                ldflags_for_boot+=" -Wl,-t"
+              else
+                ldflags_for_boot+=" -Wl,-t,-t"
+              fi
             fi
             ldflags_for_boot+=" -static-libstdc++ -static-libgcc ${XBB_LDFLAGS_APP}"
             ldflags_for_boot+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
