@@ -377,7 +377,7 @@ function expect_target_output()
 
     show_target_libs_develop "${app_name}"
 
-    set -e
+    set +e
     trap "on_test_trap SIGQUIT ${app_name}" SIGQUIT # 3
     trap "on_test_trap SIGILL ${app_name}" SIGILL # 4
     trap "on_test_trap SIGABRT ${app_name}" SIGABRT # 6
@@ -448,7 +448,7 @@ function expect_target_output()
     trap - SIGBUS # 10
     trap - SIGSEGV # 11
     trap - SIGSYS # 12
-    set +e
+    set -e
 
     echo ${output}
 
@@ -498,7 +498,7 @@ function expect_target_exit()
     local succeed=""
     local exit_code=0
 
-    set -e
+    set +e
     trap "on_test_trap SIGQUIT ${app_name}" SIGQUIT # 3
     trap "on_test_trap SIGILL ${app_name}" SIGILL # 4
     trap "on_test_trap SIGABRT ${app_name}" SIGABRT # 6
@@ -596,7 +596,7 @@ function expect_target_exit()
     trap - SIGBUS # 10
     trap - SIGSEGV # 11
     trap - SIGSYS # 12
-    set +e
+    set -e
 
     if [ ${exit_code} -eq ${expected_exit_code} ]
     then
