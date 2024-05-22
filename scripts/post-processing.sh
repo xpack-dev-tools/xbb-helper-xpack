@@ -723,7 +723,7 @@ function copy_dependencies_recursive()
 
     echo "[${source_file_path}->${destination_folder_path}]" >> "${XBB_LOGS_FOLDER_PATH}/post-processed"
 
-    echo_develop "done with ${source_file_path} ($(cat "${XBB_LOGS_FOLDER_PATH}/post-processed" | wc -l))"
+    echo_develop "done with ${source_file_path} ($(cat "${XBB_LOGS_FOLDER_PATH}/post-processed" | wc -l | sed -e 's|^\s*||'))"
   )
 }
 
