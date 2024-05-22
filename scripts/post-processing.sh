@@ -856,34 +856,16 @@ function is_darwin_allowed_sys_dylib()
 {
   local lib_name="$1"
 
-  # Since there is no -static-libc++, the first attempt was to not
-  # define these here and have the 10.x ones copied to the application.
-  # Building CMake proved that this is ok with 10.11 and 10.12, but
-  # fails on 10.13 and 10.14 with:
-  # dyld: Symbol not found: __ZNSt3__118shared_timed_mutex13unlock_sharedEv
-  # Referenced from: /System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay
-  # Expected in: /Users/travis/test-cmake/xpack-cmake-3.17.1-1/bin/libc++.1.dylib
-  # in /System/Library/Frameworks/CoreDisplay.framework/Versions/A/CoreDisplay
-  #
-  # /usr/lib/libc++.dylib \
-  # /usr/lib/libc++.1.dylib \
-  # /usr/lib/libc++abi.dylib \
-
-  # Same for -static-libgcc; there were no cases which failed on later releases,
-  # but for consistency, they are also included here.
-  #
-  # /usr/lib/libgcc_s.1.dylib \
+  if [[ ${lib_name} == /System/Library/Frameworks/* ]]
+  then
+    # Allow all system frameworks.
+    return 0 # True
+  fi
 
   # /usr/lib/libz.1.dylib \
   # /usr/lib/libedit.3.dylib \
 
   local sys_libs=(\
-    /usr/lib/libgcc_s.1.dylib \
-    \
-    /usr/lib/libc++.dylib \
-    /usr/lib/libc++.1.dylib \
-    /usr/lib/libc++abi.dylib \
-    \
     /usr/lib/libSystem.B.dylib \
     /usr/lib/libobjc.A.dylib \
     /usr/lib/libicucore.A.dylib \
@@ -897,12 +879,6 @@ function is_darwin_allowed_sys_dylib()
     \
   )
 
-  if [[ ${lib_name} == /System/Library/Frameworks/* ]]
-  then
-    # Allow all system frameworks.
-    return 0 # True
-  fi
-
   local lib
   for lib in "${sys_libs[@]}"
   do
@@ -912,12 +888,40 @@ function is_darwin_allowed_sys_dylib()
     fi
   done
 
-  if [ ${lib_name}${XBB_APPLICATION_HAS_LIBZ1DYLIB:-""} == "/usr/lib/libz.1.dyliby" ]
+  if [ "${XBB_APPLICATION_HAS_LIBGCC:-""}" == "y" ] && \
+     [ "${lib_name}" == "/usr/lib/libgcc_s.1.dylib" ]
+  then
+    echo_develop "/usr/lib/libgcc_s.1.dylib reluctantly accepted"
+    return 0 # True
+  fi
+
+  if [ "${XBB_APPLICATION_HAS_LIBCXX:-""}" == "y" ]
+  then
+    local sys_libs_cxx=(\
+      /usr/lib/libc++.dylib \
+      /usr/lib/libc++.1.dylib \
+      /usr/lib/libc++abi.dylib \
+      \
+    )
+
+    for lib in "${sys_libs_cxx[@]}"
+    do
+      if [ "${lib}" == "${lib_name}" ]
+      then
+        return 0 # True
+      fi
+    done
+  fi
+
+  if [ "${XBB_APPLICATION_HAS_LIBZ1DYLIB:-""}" == "y" ] && \
+     [ "${lib_name}" == "/usr/lib/libz.1.dylib" ]
   then
     echo_develop "/usr/lib/libz.1.dylib reluctantly accepted"
     return 0 # True
   fi
-  if [ ${lib_name}${XBB_APPLICATION_HAS_LIBICONV2DYLIB:-""} == "/usr/lib/libiconv.2.dyliby" ]
+
+  if [ "${XBB_APPLICATION_HAS_LIBICONV2DYLIB:-""}" == "y" ] && \
+     [ "${lib_name}" == "/usr/lib/libiconv.2.dylib" ]
   then
     echo_develop "/usr/lib/libiconv.2.dylib reluctantly accepted"
     return 0 # True
