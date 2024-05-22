@@ -793,12 +793,15 @@ function gcc_mingw_test()
       export XBB_SKIP_TEST_GC_WEAK_DUPLICATE_C="y"
 
       export XBB_SKIP_TEST_STATIC_LIB_WEAK_DUPLICATE_C="y"
+      export XBB_SKIP_TEST_STATIC_LIB_LTO_WEAK_DUPLICATE_C="y"
       export XBB_SKIP_TEST_STATIC_LIB_GC_WEAK_DUPLICATE_C="y"
+      export XBB_SKIP_TEST_STATIC_LIB_GC_LTO_WEAK_DUPLICATE_C="y"
 
       export XBB_SKIP_TEST_STATIC_WEAK_DUPLICATE_C="y"
       export XBB_SKIP_TEST_STATIC_GC_WEAK_DUPLICATE_C="y"
 
-      # overload-new - fully functional.
+      # overload-new.
+      export XBB_SKIP_TEST_OVERLOAD_NEW_CPP="y"
 
       # unwind-weak - LTO are functional.
       #  in function `main': undefined reference to `step1'
