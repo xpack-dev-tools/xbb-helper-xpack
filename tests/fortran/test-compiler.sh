@@ -64,16 +64,31 @@ function test_compiler_fortran()
           echo
           echo "Skipping Fortran tests on Windows..."
         else
-          # Test a very simple Fortran (a print).
-          run_host_app_verbose "${F90}" hello.f90 -o "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}" ${bits_flags} ${LDFLAGS}
-          # The space is expected.
-          expect_target_output " Hello" "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}"
 
-          # Test a concurrent computation.
-          run_host_app_verbose "${F90}" concurrent.f90 -o "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}" ${bits_flags} ${LDFLAGS}
+          if is_variable_set "XBB_SKIP_TEST_${prefix}hello-f${suffix}"
+          then
+            echo
+            echo "Skipping ${prefix}hello-f${suffix}..."
+          else
+            # Test a very simple Fortran (a print).
+            run_host_app_verbose "${F90}" hello.f90 -o "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}" ${bits_flags} ${LDFLAGS}
+            
+            # The space is expected.
+            expect_target_output " Hello" "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}"
+          fi
 
-          show_target_libs_develop "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}"
-          expect_target_succeed "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}"
+          if is_variable_set "XBB_SKIP_TEST_${prefix}concurrent-f${suffix}"
+          then
+            echo
+            echo "Skipping ${prefix}concurrent-f${suffix}..."
+          else
+            # Test a concurrent computation.
+            run_host_app_verbose "${F90}" concurrent.f90 -o "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}" ${bits_flags} ${LDFLAGS}
+
+            show_target_libs_develop "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}"
+
+            expect_target_succeed "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}"
+          fi
         fi
       )
     else
