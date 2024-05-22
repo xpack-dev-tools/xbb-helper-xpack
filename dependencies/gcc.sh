@@ -401,6 +401,11 @@ function gcc_build()
             # then
             #   ldflags_for_bootstrap+=" -fuse-ld=lld" # Experimental
             fi
+
+            # Add -L for the toolchain libraries, otherwise the macOS linker will pick
+            # the system libraries, like libc++ (on Linux, `-rpath-link` does the trick).
+            ldflags_for_bootstrap+=" $(xbb_expand_linker_library_paths "${XBB_TOOLCHAIN_RPATH}")"
+
             config_options+=("--with-stage1-ldflags=${ldflags_for_bootstrap}") # -v -Wl,-v
 
             # Build the intermediate stages (2 & 3) with static system libraries,
@@ -427,10 +432,7 @@ function gcc_build()
             ldflags_for_boot+=" -static-libstdc++ -static-libgcc ${XBB_LDFLAGS_APP}"
 
             ldflags_for_boot+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
-
-            # XBB_TOOLCHAIN_RPATH is a hack to resolve the rogue reference to
-            # `@rpath/libunwind.1.dylib` in stage 2 `gcc/build/gencfn-macros`
-            ldflags_for_boot+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}" "${XBB_TOOLCHAIN_RPATH}")"
+            ldflags_for_boot+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
 
             config_options+=("--with-boot-ldflags=${ldflags_for_boot}") # -v -Wl,-v
 
