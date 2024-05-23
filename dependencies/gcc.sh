@@ -202,7 +202,8 @@ function gcc_build()
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             LDFLAGS_FOR_TARGET+=" -Wl,-t"
-          else
+          elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+          then
             LDFLAGS_FOR_TARGET+=" -Wl,-t,-t"
           fi
         fi
@@ -427,7 +428,8 @@ function gcc_build()
               if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
               then
                 ldflags_for_boot+=" -Wl,-t"
-              else
+              elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+              then
                 ldflags_for_boot+=" -Wl,-t,-t"
               fi
             fi
@@ -490,7 +492,8 @@ function gcc_build()
               if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
               then
                 ldflags_for_boot+=" -Wl,-t"
-              else
+              elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+              then
                 ldflags_for_boot+=" -Wl,-t,-t"
               fi
             fi
