@@ -113,7 +113,7 @@ function run_target_app_verbose()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          run_verbose wine64 "${app_path}" "$@"
+          run_verbose wine64 "${app_path}" "$@" | tr -d '\r'
         )
       else
         echo
@@ -127,7 +127,7 @@ function run_target_app_verbose()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          run_verbose wine64 "${app_path}.exe" "$@"
+          run_verbose wine64 "${app_path}.exe" "$@" | tr -d '\r'
         )
       else
         echo
@@ -141,7 +141,7 @@ function run_target_app_verbose()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          run_verbose wine "${app_path}" "$@"
+          run_verbose wine "${app_path}" "$@" | tr -d '\r'
         )
       else
         echo
@@ -155,7 +155,7 @@ function run_target_app_verbose()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          run_verbose wine "${app_path}.exe" "$@"
+          run_verbose wine "${app_path}.exe" "$@" | tr -d '\r'
         )
       else
         echo
@@ -210,7 +210,7 @@ function run_target_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine64 "${app_path}" "$@"
+          wine64 "${app_path}" "$@" | tr -d '\r'
         )
       else
         echo
@@ -224,7 +224,7 @@ function run_target_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine64 "${app_path}.exe" "$@"
+          wine64 "${app_path}.exe" "$@" | tr -d '\r'
         )
       else
         echo
@@ -238,7 +238,7 @@ function run_target_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine "${app_path}" "$@"
+          wine "${app_path}" "$@" | tr -d '\r'
         )
       else
         echo
@@ -252,7 +252,7 @@ function run_target_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine "${app_path}.exe" "$@"
+          wine "${app_path}.exe" "$@" | tr -d '\r'
         )
       else
         echo
@@ -408,7 +408,7 @@ function expect_target_output()
           echo
           echo "[wine64 ${app_path} $@]"
           # Remove the trailing CR present on Windows.
-          output="$(wine64 "${app_path}" "$@" | sed -e 's|\r$||')"
+          output="$(wine64 "${app_path}" "$@" | tr -d '\r')"
         else
           echo
           echo "wine64 ${app_name} $@ - not available in ${FUNCNAME[0]}()"
@@ -422,7 +422,7 @@ function expect_target_output()
           echo
           echo "[wine ${app_path} $@]"
           # Remove the trailing CR present on Windows.
-          output="$(wine "${app_path}" "$@" | sed -e 's|\r$||')"
+          output="$(wine "${app_path}" "$@" | tr -d '\r')"
         else
           echo
           echo "wine ${app_name} $@ - not available in ${FUNCNAME[0]}()"
@@ -543,7 +543,7 @@ function expect_target_exit()
           # then
           #   :
           # fi
-          wine64 "${app_path}" "$@"
+          wine64 "${app_path}" "$@" | tr -d '\r'
           exit_code=$?
         else
           echo
@@ -561,7 +561,7 @@ function expect_target_exit()
           # then
           #   :
           # fi
-          wine "${app_path}" "$@"
+          wine "${app_path}" "$@" | tr -d '\r'
           exit_code=$?
         else
           echo
@@ -626,7 +626,7 @@ function _run_mingw()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        run_verbose wine64 "${app_name}" "$@"
+        run_verbose wine64 "${app_name}" "$@" | tr -d '\r'
       else
         echo
         echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
@@ -638,7 +638,7 @@ function _run_mingw()
       local wine_path=$(which wine 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        run_verbose wine "${app_name}" "$@"
+        run_verbose wine "${app_name}" "$@" | tr -d '\r'
       else
         echo
         echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
