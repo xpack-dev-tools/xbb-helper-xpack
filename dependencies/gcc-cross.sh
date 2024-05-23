@@ -949,12 +949,35 @@ function gcc_cross_build_final()
 
 function gcc_cross_test()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local test_bin_path="$1"
   local triplet="$2"
 
   (
     CC="${test_bin_path}/${triplet}-gcc"
     CXX="${test_bin_path}/${triplet}-g++"
+
+    # -------------------------------------------------------------------------
+
+    xbb_show_env_develop
+
+    run_verbose uname
+    if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
+    then
+      run_verbose uname -o
+    fi
+
+    # -------------------------------------------------------------------------
+
+    local gcc_version=$(run_host_app "${CC}" -dumpversion)
+    echo
+    echo "$(basename ${CC}${XBB_HOST_DOT_EXE}): ${gcc_version} (${CC}${XBB_HOST_DOT_EXE})"
+
+    local gcc_version_major=$(xbb_get_version_major "${gcc_version}")
+
+    # -------------------------------------------------------------------------
 
     if [ "${XBB_BUILD_PLATFORM}" != "win32" ]
     then
@@ -975,7 +998,7 @@ function gcc_cross_test()
     fi
 
     echo
-    echo "Testing the ${triplet}-gcc configuration..."
+    echo "Showing the ${triplet}-gcc configuration..."
 
     run_host_app_verbose "${CC}" --help
     run_host_app_verbose "${CC}" -v

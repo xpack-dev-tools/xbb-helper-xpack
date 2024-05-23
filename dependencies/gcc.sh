@@ -838,6 +838,9 @@ function gcc_build()
 
 function gcc_test()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local test_bin_path="$1"
 
   (
@@ -862,6 +865,26 @@ function gcc_test()
         WIDL="${test_bin_path}/widl"
       fi
     fi
+
+    # -------------------------------------------------------------------------
+
+    xbb_show_env_develop
+
+    run_verbose uname
+    if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
+    then
+      run_verbose uname -o
+    fi
+
+    # -------------------------------------------------------------------------
+
+    local gcc_version=$(run_host_app "${CC}" -dumpversion)
+    echo
+    echo "$(basename ${CC}${XBB_HOST_DOT_EXE}): ${gcc_version} (${CC}${XBB_HOST_DOT_EXE})"
+
+    local gcc_version_major=$(xbb_get_version_major "${gcc_version}")
+
+    # -------------------------------------------------------------------------
 
     echo
     echo "Checking the gcc shared libraries..."
@@ -987,21 +1010,6 @@ function gcc_test()
     chmod -R a+w fortran
 
     # -------------------------------------------------------------------------
-
-    xbb_show_env_develop
-
-    run_verbose uname
-    if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
-    then
-      run_verbose uname -o
-    fi
-
-    # -------------------------------------------------------------------------
-
-    local gcc_version=$(run_host_app "${CC}" -dumpversion)
-    echo "GCC: ${gcc_version}"
-
-    local gcc_version_major=$(xbb_get_version_major "${gcc_version}")
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then

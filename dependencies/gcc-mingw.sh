@@ -550,8 +550,23 @@ function gcc_mingw_build_final()
 
 function gcc_mingw_test()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local test_bin_path="$1"
   local triplet="$2"
+
+  local bits
+  if [ "${triplet}" == "x86_64-w64-mingw32" ]
+  then
+    bits="--64"
+  elif [ "${triplet}" == "i686-w64-mingw32" ]
+  then
+    bits="--32"
+  else
+    echo "Unsupported triplet ${triplet}"
+    exit 1
+  fi
 
   xbb_set_extra_target_env "${triplet}"
 
@@ -574,7 +589,25 @@ function gcc_mingw_test()
     GENDEF="${test_bin_path}/${triplet}-gendef"
     WIDL="${test_bin_path}/${triplet}-widl"
 
+    # -------------------------------------------------------------------------
+
     xbb_show_env_develop
+
+    run_verbose uname
+    if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
+    then
+      run_verbose uname -o
+    fi
+
+    # -------------------------------------------------------------------------
+
+    local gcc_version=$(run_host_app "${CC}" -dumpversion)
+    echo
+    echo "$(basename ${CC}${XBB_HOST_DOT_EXE}): ${gcc_version} (${CC}${XBB_HOST_DOT_EXE})"
+
+    local gcc_version_major=$(xbb_get_version_major "${gcc_version}")
+
+    # -------------------------------------------------------------------------
 
     if [ "${XBB_BUILD_PLATFORM}" != "win32" ]
     then
@@ -686,31 +719,6 @@ function gcc_mingw_test()
 
     # -------------------------------------------------------------------------
 
-    # From https://wiki.winehq.org/Wine_User%27s_Guide#DLL_Overrides
-    # DLLs usually get loaded in the following order:
-    # - The directory the program was started from.
-    # - The current directory.
-    # - The Windows system directory.
-    # - The Windows directory.
-    # - The PATH variable directories.
-
-    local bits
-    if [ "${triplet}" == "x86_64-w64-mingw32" ]
-    then
-      bits="--64"
-    elif [ "${triplet}" == "i686-w64-mingw32" ]
-    then
-      bits="--32"
-    else
-      echo "Unsupported triplet ${triplet}"
-      exit 1
-    fi
-
-    local gcc_version=$(run_host_app "${CC}" -dumpversion)
-    echo "GCC: ${gcc_version}"
-
-    local gcc_version_major=$(xbb_get_version_major "${gcc_version}")
-
     # Skip tests known to fail.
 
     if [ ${gcc_version_major} -eq 11 ] || \
@@ -819,6 +827,15 @@ function gcc_mingw_test()
       # sleepy-threads-cv - fully functional.
 
     fi
+
+    # From https://wiki.winehq.org/Wine_User%27s_Guide#DLL_Overrides
+    # DLLs usually get loaded in the following order:
+    # - The directory the program was started from.
+    # - The current directory.
+    # - The Windows system directory.
+    # - The Windows directory.
+    # - The PATH variable directories.
+
 
     # Run tests in all cases.
     (
