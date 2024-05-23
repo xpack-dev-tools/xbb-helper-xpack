@@ -589,7 +589,7 @@ function copy_dependencies_recursive()
       fi
 
       (
-        set +e
+        set +o errexit # Do not exit if command fails
 
         lc_rpaths=$(darwin_get_lc_rpaths "${actual_destination_file_path}")
         lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
@@ -1823,7 +1823,7 @@ function check_binary_for_libraries()
     then
       echo
       echo "${file_name}: (${file_path})"
-      set +e
+      set +o errexit # Do not exit if command fails
 
       "${OBJDUMP}" -x "${file_path}" | egrep -i '\sDLL Name:\s.*[.]dll' | grep -v "${file_name}" \
 
@@ -1850,14 +1850,14 @@ function check_binary_for_libraries()
           fi
         fi
       done
-      set -e
+      set -o errexit # Exit if command fails
     elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
     then
       local lc_rpaths=$(darwin_get_lc_rpaths "${file_path}")
 
       echo
       (
-        set +e
+        set +o errexit # Do not exit if command fails
         cd ${folder_path}
         local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
         if [ ! -z "${lc_rpaths_line}" ]
@@ -1869,7 +1869,7 @@ function check_binary_for_libraries()
 
         # otool -L "${file_name}" | tail -n +2 || true
         "${XBB_TARGET_OBJDUMP}" --macho --dylibs-used "${file_name}" | tail -n +2 || true
-        set -e
+        set -o errexit # Exit if command fails
       )
 
       lib_paths=$(darwin_get_dylibs "${file_path}")
@@ -1950,7 +1950,7 @@ function check_binary_for_libraries()
 
       (
         # More or less deprecated by the above, but kept for just in case.
-        set +e
+        set +o errexit # Do not exit if command fails
         local unxp
         if [[ "${file_name}" =~ .*[.]dylib ]]
         then
@@ -1965,13 +1965,13 @@ function check_binary_for_libraries()
           echo "Unexpected |${unxp}|"
           exit 1
         fi
-        set -e
+        set -o errexit # Exit if command fails
       )
     elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
     then
       echo
       echo "${file_name}: (${file_path})"
-      set +e
+      set +o errexit # Do not exit if command fails
       readelf_shared_libs "${file_path}"
 
       local so_names=$(${READELF} -d "${file_path}" \
@@ -2018,7 +2018,7 @@ function check_binary_for_libraries()
           fi
         fi
       done
-      set -e
+      set -o errexit # Exit if command fails
     else
       echo "Unsupported XBB_REQUESTED_HOST_PLATFORM=${XBB_REQUESTED_HOST_PLATFORM} in ${FUNCNAME[0]}()"
       exit 1

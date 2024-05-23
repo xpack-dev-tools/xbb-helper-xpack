@@ -57,10 +57,10 @@ function libxcrypt_build()
     mkdir -pv "${XBB_SOURCES_FOLDER_PATH}"
     run_verbose_develop cd "${XBB_SOURCES_FOLDER_PATH}"
 
-    # set +e
+    # set +o errexit # Do not exit if command fails
     download_and_extract "${libxcrypt_url}" "${libxcrypt_archive}" \
       "${libxcrypt_src_folder_name}" "${libxcrypt_patch_file_path}"
-    # set -e
+    # set -o errexit # Exit if command fails
 
     if [ ! -x "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}/configure" ]
     then

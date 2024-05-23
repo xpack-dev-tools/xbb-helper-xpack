@@ -37,12 +37,12 @@ function show_host_libs()
         echo
         echo "[readelf -d ${abs_path} | egrep ...]"
         # Ignore errors in case it is not using shared libraries.
-        set +e
+        set +o errexit # Do not exit if command fails
         readelf_shared_libs "${abs_path}"
         echo
         echo "[ldd -v ${abs_path}]"
         ldd -v "${abs_path}" || true
-        set -e
+        set -o errexit # Exit if command fails
       elif is_pe "${abs_path}"
       then
         run_verbose ls -l "${abs_path}"
@@ -81,7 +81,7 @@ function show_host_libs()
         echo
         # echo "[otool -L ${abs_path}]"
         echo "[${XBB_HOST_OBJDUMP} --macho --dylibs-used ${abs_path}]"
-        set +e
+        set +o errexit # Do not exit if command fails
         local lc_rpaths=$(darwin_get_lc_rpaths "${abs_path}")
         local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
         if [ ! -z "${lc_rpaths_line}" ]
@@ -154,12 +154,12 @@ function show_target_libs()
         echo
         echo "[readelf -d ${abs_path} | egrep ...]"
         # Ignore errors in case it is not using shared libraries.
-        set +e
+        set +o errexit # Do not exit if command fails
         readelf_shared_libs "${abs_path}"
         echo
         echo "[ldd -v ${abs_path}]"
         ldd -v "${abs_path}" || true
-        set -e
+        set -o errexit # Exit if command fails
       elif is_pe "${abs_path}"
       then
         run_verbose ls -l "${abs_path}"
@@ -198,7 +198,7 @@ function show_target_libs()
         echo
         # echo "[otool -L ${abs_path}]"
         echo "[${XBB_TARGET_OBJDUMP} --macho --dylibs-used ${abs_path}]"
-        set +e
+        set +o errexit # Do not exit if command fails
         local lc_rpaths=$(darwin_get_lc_rpaths "${abs_path}")
         local lc_rpaths_line=$(echo "${lc_rpaths}" | tr '\n' ':' | sed -e 's|:$||')
         if [ ! -z "${lc_rpaths_line}" ]
@@ -280,7 +280,7 @@ function readelf_shared_libs()
   shift
 
   (
-    set +e
+    set +o errexit # Do not exit if command fails
 
     readelf -d "${file_path}" | egrep '(SONAME)' || true
     readelf -d "${file_path}" | egrep '(RUNPATH|RPATH)' || true
@@ -298,12 +298,12 @@ function _show_native_libs()
     echo
     echo "[readelf -d ${app_path} | egrep ...]"
     # Ignore errors in case it is not using shared libraries.
-    set +e
+    set +o errexit # Do not exit if command fails
     readelf_shared_libs "${app_path}"
     echo
     echo "[ldd -v ${app_path}]"
     ldd -v "${app_path}" || true
-    set -e
+    set -o errexit # Exit if command fails
   )
 }
 

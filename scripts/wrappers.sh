@@ -299,13 +299,13 @@ function _run_app_exit()
   fi
 
   (
-    set +e
+    set +o errexit # Do not exit if command fails
     echo
     echo "${app_path} $@"
     "${app_path}" "$@" 2>&1
     local actual_exit_code=$?
     echo "exit(${actual_exit_code})"
-    set -e
+    set -o errexit # Exit if command fails
     if [ ${actual_exit_code} -ne ${expected_exit_code} ]
     then
       exit ${actual_exit_code}
@@ -323,7 +323,7 @@ function expect_host_output()
   shift
 
   (
-    set +e
+    set +o errexit # Do not exit if command fails
 
     # Remove the trailing CR present on Windows.
     local output
@@ -377,13 +377,7 @@ function expect_target_output()
 
     show_target_libs_develop "${app_name}"
 
-    set +e
-    trap "on_test_trap SIGQUIT ${app_name}" SIGQUIT # 3
-    trap "on_test_trap SIGILL ${app_name}" SIGILL # 4
-    trap "on_test_trap SIGABRT ${app_name}" SIGABRT # 6
-    trap "on_test_trap SIGBUS ${app_name}" SIGBUS # 10
-    trap "on_test_trap SIGSEGV ${app_name}" SIGSEGV # 11
-    trap "on_test_trap SIGSYS ${app_name}" SIGSYS # 12
+    set +o errexit # Do not exit if command fails
 
     local output=""
 
@@ -442,13 +436,7 @@ function expect_target_output()
       exit 1
     fi
 
-    trap - SIGQUIT # 3
-    trap - SIGILL # 4
-    trap - SIGABRT # 6
-    trap - SIGBUS # 10
-    trap - SIGSEGV # 11
-    trap - SIGSYS # 12
-    set -e
+    set -o errexit # Exit if command fails
 
     echo ${output}
 
@@ -467,6 +455,7 @@ function expect_target_output()
   )
 }
 
+# Not yet used.
 function on_test_trap()
 {
   local sig="$1"
@@ -498,13 +487,7 @@ function expect_target_exit()
     local succeed=""
     local exit_code=0
 
-    set +e
-    trap "on_test_trap SIGQUIT ${app_name}" SIGQUIT # 3
-    trap "on_test_trap SIGILL ${app_name}" SIGILL # 4
-    trap "on_test_trap SIGABRT ${app_name}" SIGABRT # 6
-    trap "on_test_trap SIGBUS ${app_name}" SIGBUS # 10
-    trap "on_test_trap SIGSEGV ${app_name}" SIGSEGV # 11
-    trap "on_test_trap SIGSYS ${app_name}" SIGSYS # 12
+    set +o errexit # Do not exit if command fails
 
     if [ "${XBB_BUILD_PLATFORM}" == "linux" -o "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
@@ -513,12 +496,6 @@ function expect_target_exit()
       then
         echo
         echo "[${app_path} $@]"
-        # This looks weird, but the purpose here is to run the command
-        # within `if`, the result is the exit code in both cases.
-        # if "${app_path}" "$@"
-        # then
-        #   : # Nothing special to do, get the exit code below.
-        # fi
         "${app_path}" "$@"
         exit_code=$?
 
@@ -526,10 +503,6 @@ function expect_target_exit()
       then
         echo
         echo "[${app_path} $@]"
-        # if "${app_path}" "$@"
-        # then
-        #   :
-        # fi
         "[${app_path} $@]"
         exit_code=$?
       elif is_pe64 "${app_path}"
@@ -539,10 +512,6 @@ function expect_target_exit()
         then
           echo
           echo "[wine64 ${app_path} $@]"
-          # if wine64 "${app_path}" "$@"
-          # then
-          #   :
-          # fi
           wine64 "${app_path}" "$@" | tr -d '\r'
           exit_code=$?
         else
@@ -557,10 +526,6 @@ function expect_target_exit()
         then
           echo
           echo "[wine ${app_path} $@]"
-          # if wine "${app_path}" "$@"
-          # then
-          #   :
-          # fi
           wine "${app_path}" "$@" | tr -d '\r'
           exit_code=$?
         else
@@ -578,10 +543,6 @@ function expect_target_exit()
     then
       echo
       echo "[${app_path} $@]"
-      # if "${app_path}" "$@"
-      # then
-      #   :
-      # fi
       "${app_path}" "$@"
       exit_code=$?
     else
@@ -590,13 +551,7 @@ function expect_target_exit()
       exit 1
     fi
 
-    trap - SIGQUIT # 3
-    trap - SIGILL # 4
-    trap - SIGABRT # 6
-    trap - SIGBUS # 10
-    trap - SIGSEGV # 11
-    trap - SIGSYS # 12
-    set -e
+    set -o errexit # Exit if command fails
 
     if [ ${exit_code} -eq ${expected_exit_code} ]
     then

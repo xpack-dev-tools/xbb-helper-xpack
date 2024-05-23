@@ -17,7 +17,7 @@ function xbb_make_writable()
   if [ -f "/.dockerenv" ]
   then
     (
-      set +e
+      set +o errexit # Do not exit if command fails
 
       if [ -d "${project_folder_path}/build" ]
       then
@@ -1666,7 +1666,7 @@ function xbb_show_tools_versions()
   echo
 
   (
-    set +e
+    set +o errexit # Do not exit if command fails
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
