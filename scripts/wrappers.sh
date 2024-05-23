@@ -101,10 +101,10 @@ function run_target_app_verbose()
   then
     if is_elf "$(${REALPATH} ${app_path})"
     then
-      run_verbose "${app_path}" "$@"
+      run_verbose "${app_path}" "$@" | tr -d '\r'
     elif is_executable_script "$(${REALPATH} ${app_path})"
     then
-      run_verbose "${app_path}" "$@"
+      run_verbose "${app_path}" "$@" | tr -d '\r'
     elif is_pe64 "$(${REALPATH} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
@@ -198,10 +198,10 @@ function run_target_app()
   then
     if is_elf "$(${REALPATH} ${app_path})"
     then
-      "${app_path}" "$@"
+      "${app_path}" "$@" | tr -d '\r'
     elif is_executable_script "$(${REALPATH} ${app_path})"
     then
-      "${app_path}" "$@"
+      "${app_path}" "$@" | tr -d '\r'
     elif is_pe64 "$(${REALPATH} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
@@ -330,23 +330,23 @@ function expect_host_output()
     if [ "${app_path:0:1}" == "/" ]
     then
       show_host_libs "${app_path}"
-      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+      output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
     elif [ "${app_path:0:2}" == "./" ]
     then
       show_host_libs "${app_path}"
-      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+      output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
     elif [ -f "${app_path}.exe" ]
     then
       show_host_libs "${app_path}"
-      output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+      output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
     else
       if [ -x "${app_path}" ]
       then
         show_host_libs "${app_path}"
-        output="$(run_target_app "./${app_path}" "$@" | sed -e 's|\r$||')"
+        output="$(run_target_app "./${app_path}" "$@" | tr -d '\r')"
       else
         # bash case
-        output="$(run_target_app "${app_path}" "$@" | sed -e 's|\r$||')"
+        output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
       fi
     fi
 
@@ -394,12 +394,12 @@ function expect_target_output()
       then
         echo
         echo "[${app_path} $@]"
-        output="$("${app_path}" "$@" | sed -e 's|\r$||')"
+        output="$("${app_path}" "$@" | tr -d '\r')"
       elif is_executable_script "${app_path}"
       then
         echo
         echo "[${app_path} $@]"
-        output="$("${app_path}" "$@" | sed -e 's|\r$||')"
+        output="$("${app_path}" "$@" | tr -d '\r')"
       elif is_pe64 "${app_path}"
       then
         local wine_path=$(which wine64 2>/dev/null)
