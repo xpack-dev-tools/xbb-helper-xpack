@@ -809,7 +809,7 @@ function gcc_mingw_test()
       export XBB_SKIP_TEST_STATIC_GC_WEAK_DUPLICATE_C="y"
 
       # overload-new.
-      export XBB_SKIP_TEST_OVERLOAD_NEW_CPP="y"
+      export XBB_SKIP_TEST_ALL_OVERLOAD_NEW_CPP="y"
 
       # unwind-weak - LTO are functional.
       #  in function `main': undefined reference to `step1'
