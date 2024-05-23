@@ -1004,7 +1004,8 @@ function xbb_set_compiler_flags()
     if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       XBB_LDFLAGS+=" -Wl,-t"
-    else
+    elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    then
       XBB_LDFLAGS+=" -Wl,-t,-t"
     fi
   fi
