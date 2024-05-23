@@ -245,10 +245,12 @@ function test_compiler_c_cpp()
       LDFLAGS+=" -g -v"
       LDXXFLAGS+=" -g -v"
 
-      VERBOSE+=" -Wl,-t"
-      if [ "${XBB_TARGET_PLATFORM}" != "darwin" ]
+      if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
-        VERBOSE+=" -Wl,--verbose"
+        VERBOSE+=" -Wl,-t"
+      elif [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      then
+        VERBOSE+=" -Wl,-t,-t"
       fi
     fi
 
