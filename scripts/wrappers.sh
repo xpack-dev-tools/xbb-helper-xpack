@@ -604,7 +604,7 @@ function expect_target_exit()
       echo "Test \"${app_name} $@\" passed, got exit code: ${exit_code} :-)"
     else
       echo
-      echo "Test \"${app_name} $@\" failed, got exit code: ${exit_code}, expeted ${expected_exit_code} :-("
+      echo "Test \"${app_name} $@\" failed, got exit code: ${exit_code}, expected ${expected_exit_code} :-("
       echo
       exit 1
     fi
