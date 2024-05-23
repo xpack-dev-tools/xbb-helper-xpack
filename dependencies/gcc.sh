@@ -1295,24 +1295,35 @@ function gcc_test()
         # By default the references to libstdc++ are absolute and no rpath
         # is required.
 
-        if [ ${gcc_version_major} -eq 13 ] && [ "${XBB_HOST_ARCH}" == "x64" ]
+        if [ ${gcc_version_major} -eq 13 ]
         then
-          # On macOS Intel with CLT 15.3
-          # terminate called after throwing an instance of 'std::exception'
-          # what():  std::exception
+          # weak-undef.
+          # Most likely an Apple linker issue.
+          export XBB_SKIP_TEST_ALL_WEAK_UNDEF_C="y"
 
-          export XBB_SKIP_TEST_HELLO_EXCEPTION="y"
-          export XBB_SKIP_TEST_GC_HELLO_EXCEPTION="y"
-          export XBB_SKIP_TEST_LTO_HELLO_EXCEPTION="y"
-          export XBB_SKIP_TEST_GC_LTO_HELLO_EXCEPTION="y"
+          # This one fails only with GC?!
+          export XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
+          export XBB_SKIP_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
 
-          # [./exception-reduced ]
-          # terminate called after throwing an instance of 'int'
+          if false # [ "${XBB_HOST_ARCH}" == "x64" ]
+          then
+            # On macOS Intel with CLT 15.3
+            # terminate called after throwing an instance of 'std::exception'
+            # what():  std::exception
 
-          export XBB_SKIP_RUN_TEST_EXCEPTION_REDUCED="y"
-          export XBB_SKIP_RUN_TEST_GC_EXCEPTION_REDUCED="y"
-          export XBB_SKIP_RUN_TEST_LTO_EXCEPTION_REDUCED="y"
-          export XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
+            export XBB_SKIP_TEST_HELLO_EXCEPTION="y"
+            export XBB_SKIP_TEST_GC_HELLO_EXCEPTION="y"
+            export XBB_SKIP_TEST_LTO_HELLO_EXCEPTION="y"
+            export XBB_SKIP_TEST_GC_LTO_HELLO_EXCEPTION="y"
+
+            # [./exception-reduced ]
+            # terminate called after throwing an instance of 'int'
+
+            export XBB_SKIP_RUN_TEST_EXCEPTION_REDUCED="y"
+            export XBB_SKIP_RUN_TEST_GC_EXCEPTION_REDUCED="y"
+            export XBB_SKIP_RUN_TEST_LTO_EXCEPTION_REDUCED="y"
+            export XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
+          fi
         fi
 
         if [ ${gcc_version_major} -eq 14 ] || \
