@@ -280,7 +280,7 @@ function build_common_run()
   # ---------------------------------------------------------------------------
 
   # We're basically done, from now on, errors should not break the build.
-  set +e
+  set +o errexit # Do not exit if command fails
 
   if [ "${XBB_TEST_ONLY}" != "y" ]
   then

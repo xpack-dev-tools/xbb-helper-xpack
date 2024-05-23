@@ -508,7 +508,7 @@ function gcc_mingw_build_final()
         strip="$(which ${triplet}-strip)"
         ranlib="$(which ${triplet}-ranlib)"
 
-        set +e
+        set +o errexit # Do not exit if command fails
         find ${triplet} \
           -name '*.so' -type f \
           -print \
@@ -525,7 +525,7 @@ function gcc_mingw_build_final()
           -print \
           -exec "${strip}" --strip-debug '{}' ';' \
           -exec "${ranlib}" '{}' ';'
-        set -e
+        set -o errexit # Exit if command fails
 
       else
         echo "Stripping ${name_prefix}gcc libraries skipped..."
@@ -629,7 +629,7 @@ function gcc_mingw_test()
       show_host_libs "${GCOV}"
 
       (
-        set +e
+        set +o errexit # Do not exit if command fails
         show_host_libs "$(run_target_app ${CC} --print-prog-name=cc1 | sed -e 's|^z:||')"
         show_host_libs "$(run_target_app ${CC} --print-prog-name=cc1plus | sed -e 's|^z:||')"
         show_host_libs "$(run_target_app ${CC} --print-prog-name=collect2 | sed -e 's|^z:||')"
