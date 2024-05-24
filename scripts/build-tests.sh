@@ -116,7 +116,7 @@ function test_case_trap_handler()
 
   echo_develop "FAIL: ${PREFIX}${test_case_name}${SUFFIX}"
 
-  local recommend="$(echo XBB_SKIP_TEST_${PREFIX}${test_case_name}${SUFFIX} | tr "[:upper:]" "[:lower:]" | tr '-' '_')"
+  local recommend="$(echo XBB_SKIP_TEST_${PREFIX}${test_case_name}${SUFFIX} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
 
   if [ ! -z "${SUFFIX}" ] && \
      is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}${SUFFIX}" \
