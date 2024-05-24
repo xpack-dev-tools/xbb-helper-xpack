@@ -257,14 +257,28 @@ function test_compiler_c_cpp()
     (
       run_verbose_develop cd c-cpp
 
-      # Test C compile and link in a single step.
-      run_host_app_verbose "${CC}" "simple-hello.c" -o "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} ${VERBOSE}
-      expect_target_output "Hello" "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}simple-hello-c-one${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}simple-hello-c-one"
+      then
+        echo
+        echo "Skipping ${prefix}simple-hello-c-one${suffix}..."
+      else
+        # Test C compile and link in a single step.
+        run_host_app_verbose "${CC}" "simple-hello.c" -o "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} ${VERBOSE}
+        expect_target_output "Hello" "${prefix}simple-hello-c-one${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
 
-      # Test C compile and link in separate steps.
-      run_host_app_verbose "${CC}" -c "simple-hello.c" -o "simple-hello.c.o" ${CFLAGS}
-      run_host_app_verbose "${CC}" "simple-hello.c.o" -o "${prefix}simple-hello-c-two${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
-      expect_target_output "Hello" "${prefix}simple-hello-c-two${suffix}${XBB_TARGET_DOT_EXE}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}simple-hello-c-two${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}simple-hello-c-two"
+      then
+        echo
+        echo "Skipping ${prefix}simple-hello-c-two${suffix}..."
+      else
+        # Test C compile and link in separate steps.
+        run_host_app_verbose "${CC}" -c "simple-hello.c" -o "simple-hello.c.o" ${CFLAGS}
+        run_host_app_verbose "${CC}" "simple-hello.c.o" -o "${prefix}simple-hello-c-two${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+        expect_target_output "Hello" "${prefix}simple-hello-c-two${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
 
       # -----------------------------------------------------------------------
 
@@ -423,27 +437,48 @@ function test_compiler_c_cpp()
 
       # -----------------------------------------------------------------------
 
-      # Test borrowed from https://gist.github.com/floooh/10160514
-      if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+      if is_variable_set "XBB_SKIP_TEST_${prefix}atomic${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}atomic"
       then
-        run_host_app_verbose "${CXX}" "atomic.cpp" -o "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}" -Wno-format -latomic ${LDXXFLAGS}
+        echo
+        echo "Skipping ${prefix}atomic${suffix}..."
       else
-        run_host_app_verbose "${CXX}" "atomic.cpp" -o "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}" -Wno-format ${LDXXFLAGS}
+        # Test borrowed from https://gist.github.com/floooh/10160514
+        if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
+        then
+          run_host_app_verbose "${CXX}" "atomic.cpp" -o "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}" -Wno-format -latomic ${LDXXFLAGS}
+        else
+          run_host_app_verbose "${CXX}" "atomic.cpp" -o "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}" -Wno-format ${LDXXFLAGS}
+        fi
+        show_target_libs_develop "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}"
+        expect_target_succeed "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}"
       fi
-      show_target_libs_develop "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}"
-      expect_target_succeed "${prefix}atomic${suffix}${XBB_TARGET_DOT_EXE}"
 
       # -----------------------------------------------------------------------
       # Tests borrowed from the llvm-mingw project.
 
-      run_host_app_verbose "${CC}" "hello.c" -o "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
-      show_target_libs_develop "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}"
-      expect_target_succeed "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}hello${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}hello"
+      then
+        echo
+        echo "Skipping ${prefix}hello${suffix}..."
+      else
+        run_host_app_verbose "${CC}" "hello.c" -o "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
+        show_target_libs_develop "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}"
+        expect_target_succeed "${prefix}hello${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
 
-      # run_host_app_verbose "${CC}" "setjmp-patched.c" -o "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
-      run_host_app_verbose "${CC}" "setjmp.c" -o "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
-      show_target_libs_develop "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}"
-      expect_target_succeed "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}setjmp${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}setjmp"
+      then
+        echo
+        echo "Skipping ${prefix}setjmp${suffix}..."
+      else
+        # run_host_app_verbose "${CC}" "setjmp-patched.c" -o "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
+        run_host_app_verbose "${CC}" "setjmp.c" -o "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
+        show_target_libs_develop "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}"
+        expect_target_succeed "${prefix}setjmp${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
 
       if is_variable_set "XBB_SKIP_TEST_${prefix}hello-cpp${suffix}" \
                          "XBB_SKIP_TEST_${prefix}hello-cpp"
@@ -476,9 +511,16 @@ function test_compiler_c_cpp()
       fi
 
 
-      run_host_app_verbose "${CXX}" "longjmp-cleanup.cpp" -o "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
-      show_target_libs_develop "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
-      expect_target_succeed "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
+      if is_variable_set "XBB_SKIP_TEST_${prefix}longjmp-cleanup${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}longjmp-cleanup"
+      then
+        echo
+        echo "Skipping ${prefix}longjmp-cleanup${suffix}..."
+      else
+        run_host_app_verbose "${CXX}" "longjmp-cleanup.cpp" -o "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+        show_target_libs_develop "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
+        expect_target_succeed "${prefix}longjmp-cleanup${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
 
       if is_variable_set "XBB_SKIP_TEST_${prefix}hello-exception${suffix}" \
                          "XBB_SKIP_TEST_${prefix}hello-exception"
@@ -524,9 +566,16 @@ function test_compiler_c_cpp()
 
       if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
       then
-        run_host_app_verbose "${CC}" "hello-tls.c" -o "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
-        show_target_libs_develop "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
-        expect_target_succeed "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
+        if is_variable_set "XBB_SKIP_TEST_${prefix}hello-tls${suffix}" \
+                           "XBB_SKIP_TEST_${prefix}hello-tls"
+        then
+          echo
+          echo "Skipping ${prefix}hello-tls${suffix}..."
+        else
+          run_host_app_verbose "${CC}" "hello-tls.c" -o "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+          show_target_libs_develop "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
+          expect_target_succeed "${prefix}hello-tls${suffix}${XBB_TARGET_DOT_EXE}"
+        fi
 
         if false
         then
@@ -606,11 +655,19 @@ function test_compiler_c_cpp()
           run_host_app_verbose "${CXX}" -c "${name}.cpp" -o "${prefix}${name}${suffix}.cpp.o" ${CXXFLAGS}
         done
 
-        # normal
-        run_host_app_verbose "${CC}" "${prefix}main${suffix}.c.o" "${prefix}add2${suffix}.c.o" "${prefix}expected3${suffix}.c.o" "${prefix}dummy${suffix}.c.o" -o "${prefix}normal${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+        if is_variable_set "XBB_SKIP_TEST_ALL_normal${suffix}" \
+                           "XBB_SKIP_TEST_${prefix}normal${suffix}" \
+                           "XBB_SKIP_TEST_${prefix}normal"
+        then
+          echo
+          echo "Skipping ${prefix}normal${suffix}..."
+        else
+          # normal
+          run_host_app_verbose "${CC}" "${prefix}main${suffix}.c.o" "${prefix}add2${suffix}.c.o" "${prefix}expected3${suffix}.c.o" "${prefix}dummy${suffix}.c.o" -o "${prefix}normal${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
-        show_target_libs_develop "${prefix}normal${suffix}${XBB_TARGET_DOT_EXE}"
-        expect_target_succeed "${prefix}normal${suffix}${XBB_TARGET_DOT_EXE}"
+          show_target_libs_develop "${prefix}normal${suffix}${XBB_TARGET_DOT_EXE}"
+          expect_target_succeed "${prefix}normal${suffix}${XBB_TARGET_DOT_EXE}"
+        fi
 
         # TODO: investigate why it fails with GCC 14 on macOS.
         if is_variable_set "XBB_SKIP_TEST_ALL_weak-undef-c${suffix}" \
@@ -739,38 +796,45 @@ function test_compiler_c_cpp()
       if [ "${is_static}" != "y" ]
       then
         (
-          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
-          then
-            run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -o "throwcatch-lib.dll" -Wl,--out-implib,libthrowcatch-lib.dll.a ${LDXXFLAGS}
-          else
-            run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -fpic -o "libthrowcatch-lib.${XBB_TARGET_SHLIB_EXT}" ${LDXXFLAGS}
-
-            if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-            then
-              export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
-              echo
-              echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
-            fi
-          fi
-
-          # mingw-gcc on macOS throws
-          # multiple definition of `_Unwind_Resume'
-          if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
-          then
-            run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS}
-          else
-            run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS} -Wl,--allow-multiple-definition
-          fi
-
-          show_target_libs_develop "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
-
-          if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}throwcatch-main${suffix}" \
-                             "XBB_SKIP_RUN_TEST_${prefix}throwcatch-main"
+          if is_variable_set "XBB_SKIP_TEST_${prefix}throwcatch-main${suffix}" \
+                             "XBB_SKIP_TEST_${prefix}throwcatch-main"
           then
             echo
-            echo "Skipping running ${prefix}throwcatch-main${suffix}..."
+            echo "Skipping ${prefix}throwcatch-main${suffix}..."
           else
-            expect_target_succeed "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
+            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+            then
+              run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -o "throwcatch-lib.dll" -Wl,--out-implib,libthrowcatch-lib.dll.a ${LDXXFLAGS}
+            else
+              run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -fpic -o "libthrowcatch-lib.${XBB_TARGET_SHLIB_EXT}" ${LDXXFLAGS}
+
+              if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+              then
+                export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
+                echo
+                echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+              fi
+            fi
+
+            # mingw-gcc on macOS throws
+            # multiple definition of `_Unwind_Resume'
+            if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+            then
+              run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS}
+            else
+              run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS} -Wl,--allow-multiple-definition
+            fi
+
+            show_target_libs_develop "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
+
+            if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}throwcatch-main${suffix}" \
+                               "XBB_SKIP_RUN_TEST_${prefix}throwcatch-main"
+            then
+              echo
+              echo "Skipping running ${prefix}throwcatch-main${suffix}..."
+            else
+              expect_target_succeed "${prefix}throwcatch-main${suffix}${XBB_TARGET_DOT_EXE}"
+            fi
           fi
         )
       fi
@@ -794,37 +858,57 @@ function test_compiler_c_cpp()
         fi
 
         if [ "${is_static}" != "y" ]
-        then
-          run_host_app_verbose "${CC}" autoimport-lib.c -o autoimport-lib.dll -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${LDFLAGS}
-          show_target_libs_develop autoimport-lib.dll
-
-          run_host_app_verbose "${CC}" autoimport-main.c -o "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lautoimport-lib ${LDFLAGS}
-
-          show_target_libs_develop "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
-
-          if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}autoimport-main${suffix}" \
-                             "XBB_SKIP_RUN_TEST_${prefix}autoimport-main"
+          then
+          if is_variable_set "XBB_SKIP_TEST_${prefix}autoimport-main${suffix}" \
+                             "XBB_SKIP_TEST_${prefix}autoimport-main"
           then
             echo
-            echo "Skipping running ${prefix}autoimport-main${suffix}..."
+            echo "Skipping ${prefix}autoimport-main${suffix}..."
           else
-            expect_target_succeed "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
+            run_host_app_verbose "${CC}" autoimport-lib.c -o autoimport-lib.dll -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${LDFLAGS}
+            show_target_libs_develop autoimport-lib.dll
+
+            run_host_app_verbose "${CC}" autoimport-main.c -o "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}" -L. -lautoimport-lib ${LDFLAGS}
+
+            show_target_libs_develop "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
+
+            if is_variable_set "XBB_SKIP_RUN_TEST_${prefix}autoimport-main${suffix}" \
+                               "XBB_SKIP_RUN_TEST_${prefix}autoimport-main"
+            then
+              echo
+              echo "Skipping running ${prefix}autoimport-main${suffix}..."
+            else
+              expect_target_succeed "${prefix}autoimport-main${suffix}${XBB_TARGET_DOT_EXE}"
+            fi
           fi
         fi
 
-        # The IDL output isn't arch specific, but test each arch frontend
-        run_host_app_verbose "${WIDL}" idltest.idl -o idltest.h -h
-        run_host_app_verbose "${CC}" idltest.c -o "${prefix}idltest${suffix}${XBB_TARGET_DOT_EXE}" -I. -lole32 ${LDFLAGS}
-        show_target_libs_develop "${prefix}idltest${suffix}${XBB_TARGET_DOT_EXE}"
-        expect_target_succeed "${prefix}idltest${suffix}${XBB_TARGET_DOT_EXE}"
+        if is_variable_set "XBB_SKIP_TEST_${prefix}idltest${suffix}" \
+                           "XBB_SKIP_TEST_${prefix}idltest"
+        then
+          echo
+          echo "Skipping ${prefix}idltest${suffix}..."
+        else
+          # The IDL output isn't arch specific, but test each arch frontend
+          run_host_app_verbose "${WIDL}" idltest.idl -o idltest.h -h
+          run_host_app_verbose "${CC}" idltest.c -o "${prefix}idltest${suffix}${XBB_TARGET_DOT_EXE}" -I. -lole32 ${LDFLAGS}
+          show_target_libs_develop "${prefix}idltest${suffix}${XBB_TARGET_DOT_EXE}"
+          expect_target_succeed "${prefix}idltest${suffix}${XBB_TARGET_DOT_EXE}"
+        fi
       fi
 
       # -----------------------------------------------------------------------
 
-      # Test a very simple Objective-C (a printf).
-      run_host_app_verbose "${CC}" simple-objc.m -o "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
-      expect_target_output "Hello World" "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}"
-
+      if is_variable_set "XBB_SKIP_TEST_${prefix}simple-objc${suffix}" \
+                         "XBB_SKIP_TEST_${prefix}simple-objc"
+      then
+        echo
+        echo "Skipping ${prefix}simple-objc${suffix}..."
+      else
+        # Test a very simple Objective-C (a printf).
+        run_host_app_verbose "${CC}" simple-objc.m -o "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+        expect_target_output "Hello World" "${prefix}simple-objc${suffix}${XBB_TARGET_DOT_EXE}"
+      fi
     )
 
   )
