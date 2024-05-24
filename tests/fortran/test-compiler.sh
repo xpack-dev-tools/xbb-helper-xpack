@@ -22,23 +22,23 @@ function test_compiler_fortran()
   (
     unset IFS
 
-    local prefix=""
-    local suffix=""
-    local bits_flags=""
+    PREFIX=""
+    SUFFIX=""
+    BITS_FLAGS=""
 
     while [ $# -gt 0 ]
     do
       case "$1" in
 
         --64 )
-          bits_flags=" -m64"
-          suffix="-64"
+          BITS_FLAGS=" -m64"
+          SUFFIX="-64"
           shift
           ;;
 
         --32 )
-          bits_flags=" -m32"
-          suffix="-32"
+          BITS_FLAGS=" -m32"
+          SUFFIX="-32"
           shift
           ;;
 
@@ -52,10 +52,20 @@ function test_compiler_fortran()
 
     LDFLAGS=""
 
+    export LDFLAGS
+
+    export PREFIX
+    export SUFFIX
+    export bits
+
     if is_variable_set "F90"
     then
       (
         run_verbose_develop cd fortran
+
+        set +o errexit  # Do not exit if commands fail, to allow continuation.
+
+        # ---------------------------------------------------------------------
 
         if is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
         then
@@ -65,30 +75,10 @@ function test_compiler_fortran()
           echo "Skipping Fortran tests on Windows..."
         else
 
-          if is_variable_set "XBB_SKIP_TEST_${prefix}hello-f${suffix}"
-          then
-            echo
-            echo "Skipping ${prefix}hello-f${suffix}..."
-          else
-            # Test a very simple Fortran (a print).
-            run_host_app_verbose "${F90}" hello.f90 -o "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}" ${bits_flags} ${LDFLAGS}
-            
-            # The space is expected.
-            expect_target_output " Hello" "${prefix}hello-f${suffix}${XBB_TARGET_DOT_EXE}"
-          fi
+          test_case_hello_f
 
-          if is_variable_set "XBB_SKIP_TEST_${prefix}concurrent-f${suffix}"
-          then
-            echo
-            echo "Skipping ${prefix}concurrent-f${suffix}..."
-          else
-            # Test a concurrent computation.
-            run_host_app_verbose "${F90}" concurrent.f90 -o "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}" ${bits_flags} ${LDFLAGS}
+          test_case_concurrent_f
 
-            show_target_libs_develop "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}"
-
-            expect_target_succeed "${prefix}concurrent-f${suffix}${XBB_TARGET_DOT_EXE}"
-          fi
         fi
       )
     else
@@ -99,3 +89,54 @@ function test_compiler_fortran()
 }
 
 # -----------------------------------------------------------------------------
+
+function test_case_hello_f()
+{
+  local test_case_name="$(test_case_get_name)"
+  local skips=""
+
+  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+
+  # Test a very simple Fortran (a print).
+  run_host_app_verbose "${F90}" hello.f90 -o "${PREFIX}hello-f${SUFFIX}${XBB_TARGET_DOT_EXE}" ${BITS_FLAGS} ${LDFLAGS}
+
+  # The space is expected.
+  expect_target_output " Hello" "${PREFIX}hello-f${SUFFIX}${XBB_TARGET_DOT_EXE}"
+
+  test_case_pass "${test_case_name}"
+}
+
+function test_case_concurrent_f()
+{
+  local test_case_name="$(test_case_get_name)"
+  local skips=""
+
+  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+
+  # Test a concurrent computation.
+  run_host_app_verbose "${F90}" concurrent.f90 -o "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}" ${BITS_FLAGS} ${LDFLAGS}
+
+  show_target_libs_develop "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}"
+
+  expect_target_succeed "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}"
+
+  test_case_pass "${test_case_name}"
+}
+
+
+# -----------------------------------------------------------------------------
+
+# Template to acc new test cases.
+
+# -----------------------------------------------------------------------------
+
+function test_case_()
+{
+  local test_case_name="$(test_case_get_name)"
+  local skips=""
+
+  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+
+
+  test_case_pass "${test_case_name}"
+}
