@@ -18,6 +18,11 @@ function tests_initialize()
   mkdir -pv "$(dirname ${XBB_TEST_COMMANDS_FILE_PATH})"
   touch "${XBB_TEST_COMMANDS_FILE_PATH}"
 
+  export XBB_TEST_RESULTS_FILE_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/tests/results"
+  rm -rf "${XBB_TEST_RESULTS_FILE_PATH}"
+  mkdir -pv "$(dirname ${XBB_TEST_RESULTS_FILE_PATH})"
+  touch "${XBB_TEST_RESULTS_FILE_PATH}"
+
   XBB_WHILE_RUNNING_TESTS="n"
   export XBB_WHILE_RUNNING_TESTS
 }
@@ -53,8 +58,29 @@ function tests_run_final()
     fi
   done
 
-  echo
-  echo "Final tests completed successfuly"
+  local failed=$(grep -i "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | sed -e 's|\s*||')
+  if [ ${failed} -ge 0 ]
+  then
+    echo
+    echo "${failed} test(s) failed:"
+    echo
+    grep -i "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}"
+
+    local catastrophic=$(grep "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | sed -e 's|\s*||')
+    if [ ${catastrophic} -gt 0 ]
+    then
+      echo
+      echo "${catastrophic} failed unexpectedly."
+      echo "Final tests results cannot be accepted"
+      exit 1
+    else
+      echo
+      echo "Final tests results accepted"
+    fi
+  else
+    echo
+    echo "Final tests completed successfuly"
+  fi
 }
 
 function tests_prime_wine()
@@ -74,6 +100,48 @@ function tests_prime_wine()
       echo "Wine primed..."
     )
   fi
+}
+
+function test_case_get_name()
+{
+  echo "$(echo ${FUNCNAME[1]} | sed -e 's|test_case_||'  | tr '_' '-')"
+}
+
+function test_case_trap_handler()
+{
+  echo_develop "[${FUNCNAME[0]} $@ $#]"
+
+  local test_case_name="$1"
+  shift
+
+  echo_develop "FAIL: ${prefix}${test_case_name}${suffix}"
+
+  local recommend="$(echo XBB_SKIP_TEST_${prefix}${test_case_name}${suffix} | tr "[:upper:]" "[:lower:]" | tr '-' '_')"
+
+  if [ ! -z "${suffix}" ] && \
+     is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}${suffix}" \
+                     "XBB_SKIP_TEST_ALL_${test_case_name}" \
+                     "XBB_SKIP_TEST_${prefix}${test_case_name}${suffix}" \
+                     "XBB_SKIP_TEST_${prefix}${test_case_name}" \
+                     "$@" || \
+     is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}" \
+                     "XBB_SKIP_TEST_${prefix}${test_case_name}" \
+                     "$@"
+  then
+    # Lower case means the failure is expected.
+    echo "fail: ${prefix}${test_case_name}${suffix}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+  else
+    # Upper case means the failure is unexpected.
+    echo "FAIL: ${prefix}${test_case_name}${suffix} (${recommend})" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+  fi
+}
+
+function test_case_pass()
+{
+  local test_case_name="$1"
+
+  echo_develop "pass: ${prefix}${test_case_name}${suffix}"
+  echo "pass: ${prefix}${test_case_name}${suffix}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
 }
 
 # -----------------------------------------------------------------------------
