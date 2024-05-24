@@ -296,46 +296,60 @@ function test_compiler_c_cpp()
       if [ "${is_static}" != "y" ]
       then
         (
-          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+          if is_variable_set "XBB_SKIP_TEST_${prefix}adder-static${suffix}" \
+                            "XBB_SKIP_TEST_${prefix}adder-static"
           then
-            run_host_app_verbose "${CC}" -c "add.c" -o "${prefix}add${suffix}.c.o" ${CFLAGS}
+            echo
+            echo "Skipping ${prefix}adder-static${suffix}..."
           else
-            run_host_app_verbose "${CC}" -c "add.c" -o "${prefix}add${suffix}.c.o" -fpic ${CFLAGS}
-          fi
-
-          rm -rf libadd-static.a
-          run_host_app_verbose "${AR}" -r "lib${prefix}add-static${suffix}.a" "${prefix}add${suffix}.c.o"
-          run_host_app_verbose "${RANLIB}" "lib${prefix}add-static${suffix}.a"
-
-          run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" -l"${prefix}add-static${suffix}" -L . ${LDFLAGS}
-
-          expect_target_output "42" "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" 40 2
-
-          if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
-          then
-            # The `--out-implib` creates an import library, which can be
-            # directly used with -l.
-            run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.dll" -Wl,--out-implib,"lib${prefix}add-shared${suffix}.dll.a" -Wl,--subsystem,windows ${LDFLAGS}
-
-            # -ladd-shared is in fact libadd-shared.dll.a
-            # The library does not show as DLL, it is loaded dynamically.
-            run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
-          else
-            run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.${XBB_TARGET_SHLIB_EXT}" ${LDFLAGS}
-
-            # show_target_libs "lib${prefix}add-shared${suffix}.${XBB_TARGET_SHLIB_EXT}"
-
-            run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
-
-            if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
             then
-              export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
-              echo
-              echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+              run_host_app_verbose "${CC}" -c "add.c" -o "${prefix}add${suffix}.c.o" ${CFLAGS}
+            else
+              run_host_app_verbose "${CC}" -c "add.c" -o "${prefix}add${suffix}.c.o" -fpic ${CFLAGS}
             fi
+
+            rm -rf libadd-static.a
+            run_host_app_verbose "${AR}" -r "lib${prefix}add-static${suffix}.a" "${prefix}add${suffix}.c.o"
+            run_host_app_verbose "${RANLIB}" "lib${prefix}add-static${suffix}.a"
+
+            run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" -l"${prefix}add-static${suffix}" -L . ${LDFLAGS}
+
+            expect_target_output "42" "${prefix}adder-static${suffix}${XBB_TARGET_DOT_EXE}" 40 2
           fi
 
-          expect_target_output "42" "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" 40 2
+          if is_variable_set "XBB_SKIP_TEST_${prefix}adder-shared${suffix}" \
+                            "XBB_SKIP_TEST_${prefix}adder-shared"
+          then
+            echo
+            echo "Skipping ${prefix}adder-shared${suffix}..."
+          else
+            if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+            then
+              # The `--out-implib` creates an import library, which can be
+              # directly used with -l.
+              run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.dll" -Wl,--out-implib,"lib${prefix}add-shared${suffix}.dll.a" -Wl,--subsystem,windows ${LDFLAGS}
+
+              # -ladd-shared is in fact libadd-shared.dll.a
+              # The library does not show as DLL, it is loaded dynamically.
+              run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
+            else
+              run_host_app_verbose "${CC}" "${prefix}add${suffix}.c.o" -shared -o "lib${prefix}add-shared${suffix}.${XBB_TARGET_SHLIB_EXT}" ${LDFLAGS}
+
+              # show_target_libs "lib${prefix}add-shared${suffix}.${XBB_TARGET_SHLIB_EXT}"
+
+              run_host_app_verbose "${CC}" "adder.c" -o "${prefix}adder-shared${suffix}" -l"${prefix}add-shared${suffix}" -L . ${LDFLAGS}
+
+              if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+              then
+                export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH:-}
+                echo
+                echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+              fi
+            fi
+
+            expect_target_output "42" "${prefix}adder-shared${suffix}${XBB_TARGET_DOT_EXE}" 40 2
+          fi
         )
       fi
 
