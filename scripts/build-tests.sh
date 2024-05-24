@@ -114,25 +114,25 @@ function test_case_trap_handler()
   local test_case_name="$1"
   shift
 
-  echo_develop "FAIL: ${prefix}${test_case_name}${suffix}"
+  echo_develop "FAIL: ${PREFIX}${test_case_name}${SUFFIX}"
 
-  local recommend="$(echo XBB_SKIP_TEST_${prefix}${test_case_name}${suffix} | tr "[:upper:]" "[:lower:]" | tr '-' '_')"
+  local recommend="$(echo XBB_SKIP_TEST_${PREFIX}${test_case_name}${SUFFIX} | tr "[:upper:]" "[:lower:]" | tr '-' '_')"
 
-  if [ ! -z "${suffix}" ] && \
-     is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}${suffix}" \
+  if [ ! -z "${SUFFIX}" ] && \
+     is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}${SUFFIX}" \
                      "XBB_SKIP_TEST_ALL_${test_case_name}" \
-                     "XBB_SKIP_TEST_${prefix}${test_case_name}${suffix}" \
-                     "XBB_SKIP_TEST_${prefix}${test_case_name}" \
+                     "XBB_SKIP_TEST_${PREFIX}${test_case_name}${SUFFIX}" \
+                     "XBB_SKIP_TEST_${PREFIX}${test_case_name}" \
                      "$@" || \
      is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}" \
-                     "XBB_SKIP_TEST_${prefix}${test_case_name}" \
+                     "XBB_SKIP_TEST_${PREFIX}${test_case_name}" \
                      "$@"
   then
     # Lower case means the failure is expected.
-    echo "fail: ${prefix}${test_case_name}${suffix}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+    echo "fail: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
   else
     # Upper case means the failure is unexpected.
-    echo "FAIL: ${prefix}${test_case_name}${suffix} (${recommend})" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+    echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX} (${recommend})" >> "${XBB_TEST_RESULTS_FILE_PATH}"
   fi
 }
 
@@ -140,8 +140,8 @@ function test_case_pass()
 {
   local test_case_name="$1"
 
-  echo_develop "pass: ${prefix}${test_case_name}${suffix}"
-  echo "pass: ${prefix}${test_case_name}${suffix}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+  echo_develop "pass: ${PREFIX}${test_case_name}${SUFFIX}"
+  echo "pass: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
 }
 
 # -----------------------------------------------------------------------------
