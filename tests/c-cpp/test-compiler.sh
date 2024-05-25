@@ -52,7 +52,7 @@ function test_compiler_c_cpp()
     do
       case "$1" in
 
-        --SUFFIX=* )
+        --suffix=* )
           SUFFIX=$(xbb_parse_option "$1")
           shift
           ;;
