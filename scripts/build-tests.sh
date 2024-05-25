@@ -113,6 +113,10 @@ function test_case_trap_handler()
 
   local test_case_name="$1"
   shift
+  local exit_code="$1"
+  shift
+  local line_number="$1"
+  shift
 
   echo_develop "FAIL: ${PREFIX}${test_case_name}${SUFFIX}"
 
@@ -121,20 +125,18 @@ function test_case_trap_handler()
     if is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}${SUFFIX}" \
                        "XBB_SKIP_TEST_ALL_${test_case_name}" \
                        "XBB_SKIP_TEST_${PREFIX}${test_case_name}${SUFFIX}" \
-                       "XBB_SKIP_TEST_${PREFIX}${test_case_name}" \
-                       "$@"
+                       "XBB_SKIP_TEST_${PREFIX}${test_case_name}"
     then
       # Lower case means the failure is expected.
       echo "fail: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
     else
       # Upper case means the failure is unexpected.
       local recommend="$(echo XBB_SKIP_TEST_${PREFIX}${test_case_name}${SUFFIX} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
-      echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX} (${recommend})" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+      echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX} ${exit_code} ${line_number} (${recommend})" >> "${XBB_TEST_RESULTS_FILE_PATH}"
     fi
   else
     if is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}" \
-                       "XBB_SKIP_TEST_${PREFIX}${test_case_name}" \
-                       "$@"
+                       "XBB_SKIP_TEST_${PREFIX}${test_case_name}"
     then
       # Lower case means the failure is expected.
       echo "fail: ${PREFIX}${test_case_name}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
@@ -145,6 +147,7 @@ function test_case_trap_handler()
     fi
   fi
 
+  return 0 # "${exit_code}"
 }
 
 function test_case_pass()
