@@ -388,9 +388,8 @@ function test_compiler_c_cpp()
 function test_case_simple_hello_c_one()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # Test C compile and link in a single step.
   run_host_app_verbose "${CC}" "simple-hello.c" -o "${PREFIX}simple-hello-c-one${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} ${VERBOSE}
@@ -402,9 +401,8 @@ function test_case_simple_hello_c_one()
 function test_case_simple_hello_c_two()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # Test C compile and link in separate steps.
   run_host_app_verbose "${CC}" -c "simple-hello.c" -o "simple-hello.c.o" ${CFLAGS}
@@ -419,9 +417,8 @@ function test_case_simple_hello_c_two()
 function test_case_simple_hello_cpp_one()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # Test C++ compile and link in a single step.
   run_host_app_verbose "${CXX}" "simple-hello.cpp" -o "${PREFIX}simple-hello-cpp-one${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} ${VERBOSE}
@@ -433,9 +430,8 @@ function test_case_simple_hello_cpp_one()
 function test_case_simple_hello_cpp_two()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # Test C++ compile and link in separate steps.
   run_host_app_verbose "${CXX}" -c "simple-hello.cpp" -o "${PREFIX}simple-hello${SUFFIX}.cpp.o" ${CXXFLAGS}
@@ -450,9 +446,8 @@ function test_case_simple_hello_cpp_two()
 function test_case_adder_static()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
@@ -475,9 +470,8 @@ function test_case_adder_static()
 function test_case_adder_shared()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
@@ -513,9 +507,8 @@ function test_case_adder_shared()
 function test_case_simple_exception()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "simple-exception.cpp" -o "${PREFIX}simple-exception${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
   expect_target_output "MyException" "${PREFIX}simple-exception${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -526,9 +519,8 @@ function test_case_simple_exception()
 function test_case_simple_str_exception()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "simple-str-exception.cpp" -o "${PREFIX}simple-str-exception${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
   expect_target_output "MyStringException" "${PREFIX}simple-str-exception${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -539,9 +531,8 @@ function test_case_simple_str_exception()
 function test_case_simple_int_exception()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "simple-int-exception.cpp" -o "${PREFIX}simple-int-exception${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
   expect_target_output "42" "${PREFIX}simple-int-exception${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -554,9 +545,8 @@ function test_case_simple_int_exception()
 function test_case_sleepy_threads()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
   then
@@ -574,9 +564,8 @@ function test_case_sleepy_threads()
 function test_case_sleepy_threads_cv()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
   then
@@ -596,9 +585,8 @@ function test_case_sleepy_threads_cv()
 function test_case_atomic()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # Test borrowed from https://gist.github.com/floooh/10160514
   if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
@@ -618,9 +606,8 @@ function test_case_atomic()
 function test_case_hello()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CC}" "hello.c" -o "${PREFIX}hello${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
   show_target_libs_develop "${PREFIX}hello${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -634,9 +621,8 @@ function test_case_hello()
 function test_case_setjmp()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # run_host_app_verbose "${CC}" "setjmp-patched.c" -o "${PREFIX}setjmp${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
   run_host_app_verbose "${CC}" "setjmp.c" -o "${PREFIX}setjmp${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
@@ -649,9 +635,8 @@ function test_case_setjmp()
 function test_case_hello_cpp()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "hello-cpp.cpp" -o "${PREFIX}hello-cpp${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
   show_target_libs_develop "${PREFIX}hello-cpp${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -663,9 +648,8 @@ function test_case_hello_cpp()
 function test_case_global_terminate()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "global-terminate.cpp" -o "${PREFIX}global-terminate${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
   show_target_libs_develop "${PREFIX}global-terminate${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -678,9 +662,8 @@ function test_case_global_terminate()
 function test_case_longjmp_cleanup()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "longjmp-cleanup.cpp" -o "${PREFIX}longjmp-cleanup${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
   show_target_libs_develop "${PREFIX}longjmp-cleanup${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -692,9 +675,8 @@ function test_case_longjmp_cleanup()
 function test_case_hello_exception()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "hello-exception.cpp" -o "${PREFIX}hello-exception${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
   show_target_libs_develop "${PREFIX}hello-exception${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -706,9 +688,8 @@ function test_case_hello_exception()
 function test_case_exception_locale()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "exception-locale.cpp" -o "${PREFIX}exception-locale${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
   show_target_libs_develop "${PREFIX}exception-locale${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -720,9 +701,8 @@ function test_case_exception_locale()
 function test_case_exception_reduced()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "exception-reduced.cpp" -o "${PREFIX}exception-reduced${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
   show_target_libs_develop "${PREFIX}exception-reduced${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -735,9 +715,8 @@ function test_case_exception_reduced()
 function test_case_hello_tls()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CC}" "hello-tls.c" -o "${PREFIX}hello-tls${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
   show_target_libs_develop "${PREFIX}hello-tls${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -749,9 +728,8 @@ function test_case_hello_tls()
 function test_case_bufferoverflow()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CC}" "bufferoverflow.c" -o "${PREFIX}bufferoverflow${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -D_FORTIFY_SOURCE=2 -lssp
   show_target_libs_develop "${PREFIX}bufferoverflow${SUFFIX}${XBB_TARGET_DOT_EXE}"
@@ -773,9 +751,8 @@ function test_case_bufferoverflow()
 function test_case_crt_test()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # This test uses math functions. On Windows -lm is not mandatory.
   run_host_app_verbose "${CC}" crt-test.c -o "${PREFIX}crt-test${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
@@ -788,9 +765,8 @@ function test_case_crt_test()
 function test_case_hello_weak_c()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CC}" -c "hello-weak.c" -o "${PREFIX}hello-weak${SUFFIX}.c.o" ${CFLAGS}
   run_host_app_verbose "${CC}" -c "hello-f-weak.c" -o "${PREFIX}hello-f-weak${SUFFIX}.c.o" ${CFLAGS}
@@ -803,9 +779,8 @@ function test_case_hello_weak_c()
 function test_case_hello_weak_cpp()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" -c "hello-weak-cpp.cpp" -o "${PREFIX}hello-weak-cpp${SUFFIX}.cpp.o" ${CXXFLAGS}
   run_host_app_verbose "${CXX}" -c "hello-f-weak-cpp.cpp" -o "${PREFIX}hello-f-weak-cpp${SUFFIX}.cpp.o" ${CXXFLAGS}
@@ -818,9 +793,8 @@ function test_case_hello_weak_cpp()
 function test_case_normal()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CC}" "${PREFIX}main${SUFFIX}.c.o" "${PREFIX}add2${SUFFIX}.c.o" "${PREFIX}expected3${SUFFIX}.c.o" "${PREFIX}dummy${SUFFIX}.c.o" -o "${PREFIX}normal${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
@@ -833,9 +807,8 @@ function test_case_normal()
 function test_case_weak_undef_c()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CC}" "${PREFIX}main-weak${SUFFIX}.c.o" "${PREFIX}expected1${SUFFIX}.c.o" "${PREFIX}dummy${SUFFIX}.c.o" -o "${PREFIX}weak-undef-c${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
@@ -848,9 +821,8 @@ function test_case_weak_undef_c()
 function test_case_weak_defined_c()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CC}" "${PREFIX}main-weak${SUFFIX}.c.o" "${PREFIX}add2${SUFFIX}.c.o" "${PREFIX}expected3${SUFFIX}.c.o" "${PREFIX}dummy${SUFFIX}.c.o" -o "${PREFIX}weak-defined-c${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
@@ -863,9 +835,8 @@ function test_case_weak_defined_c()
 function test_case_weak_use_c()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CC}" "${PREFIX}main${SUFFIX}.c.o" "${PREFIX}add1-weak-dummy-chained${SUFFIX}.c.o" "${PREFIX}expected3${SUFFIX}.c.o" -o "${PREFIX}weak-use-c${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
@@ -878,9 +849,8 @@ function test_case_weak_use_c()
 function test_case_weak_override_c()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CC}" "${PREFIX}main${SUFFIX}.c.o" "${PREFIX}add1-weak-dummy-chained${SUFFIX}.c.o" "${PREFIX}add2${SUFFIX}.c.o" "${PREFIX}expected5${SUFFIX}.c.o" -o "${PREFIX}weak-override-c${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
@@ -893,9 +863,8 @@ function test_case_weak_override_c()
 function test_case_weak_duplicate_c()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CC}" "${PREFIX}main${SUFFIX}.c.o" "${PREFIX}add1-weak-dummy-chained${SUFFIX}.c.o" "${PREFIX}expected3-add1-weak${SUFFIX}.c.o" -o "${PREFIX}weak-duplicate-c${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
@@ -908,9 +877,8 @@ function test_case_weak_duplicate_c()
 function test_case_overload_new_cpp()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "${PREFIX}overload-new${SUFFIX}.cpp.o" -o "${PREFIX}overload-new-cpp${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
 
@@ -923,9 +891,8 @@ function test_case_overload_new_cpp()
 function test_case_unwind_weak_cpp()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "${PREFIX}unwind-weak${SUFFIX}.cpp.o" "${PREFIX}unwind-main${SUFFIX}.cpp.o" -o "${PREFIX}unwind-weak-cpp${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
 
@@ -938,9 +905,8 @@ function test_case_unwind_weak_cpp()
 function test_case_unwind_strong_cpp()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CXX}" "${PREFIX}unwind-weak-dummy${SUFFIX}.cpp.o" "${PREFIX}unwind-main${SUFFIX}.cpp.o" "${PREFIX}unwind-strong${SUFFIX}.cpp.o" -o "${PREFIX}unwind-strong-cpp${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
 
@@ -953,9 +919,8 @@ function test_case_unwind_strong_cpp()
 function test_case_weak_common()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   for name in add1-weak-dummy-chained dummy expected3-add1-weak expected5 main add2 expected1 expected3 main-weak
   do
@@ -973,9 +938,8 @@ function test_case_weak_common()
 function test_case_throwcatch_main()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
@@ -1009,9 +973,8 @@ function test_case_throwcatch_main()
 function test_case_tlstest_main()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # tlstest-lib.dll is dynamically loaded by tltest-main.cpp.
   run_host_app_verbose "${CXX}" tlstest-lib.cpp -o tlstest-lib.dll -shared -Wl,--out-implib,libtlstest-lib.dll.a ${LDXXFLAGS}
@@ -1027,9 +990,8 @@ function test_case_tlstest_main()
 function test_case_autoimport_main()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   run_host_app_verbose "${CC}" autoimport-lib.c -o autoimport-lib.dll -shared  -Wl,--out-implib,libautoimport-lib.dll.a ${LDFLAGS}
   show_target_libs_develop autoimport-lib.dll
@@ -1045,9 +1007,8 @@ function test_case_autoimport_main()
 function test_case_idltest()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # The IDL output isn't arch specific, but test each arch frontend
   run_host_app_verbose "${WIDL}" idltest.idl -o idltest.h -h
@@ -1063,9 +1024,8 @@ function test_case_idltest()
 function test_case_simple_objc()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # Test a very simple Objective-C (a printf).
   run_host_app_verbose "${CC}" simple-objc.m -o "${PREFIX}simple-objc${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
@@ -1083,9 +1043,8 @@ function test_case_simple_objc()
 function test_case_()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
 
   test_case_pass "${test_case_name}"

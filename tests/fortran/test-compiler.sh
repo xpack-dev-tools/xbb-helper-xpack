@@ -93,9 +93,8 @@ function test_compiler_fortran()
 function test_case_hello_f()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # Test a very simple Fortran (a print).
   run_host_app_verbose "${F90}" hello.f90 -o "${PREFIX}hello-f${SUFFIX}${XBB_TARGET_DOT_EXE}" ${BITS_FLAGS} ${LDFLAGS}
@@ -109,9 +108,8 @@ function test_case_hello_f()
 function test_case_concurrent_f()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # Test a concurrent computation.
   run_host_app_verbose "${F90}" concurrent.f90 -o "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}" ${BITS_FLAGS} ${LDFLAGS}
@@ -133,9 +131,8 @@ function test_case_concurrent_f()
 function test_case_()
 {
   local test_case_name="$(test_case_get_name)"
-  local skips=""
 
-  trap "test_case_trap_handler ${test_case_name} ${skips}; return" ERR
+  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
 
   test_case_pass "${test_case_name}"
