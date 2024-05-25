@@ -118,6 +118,7 @@ function test_case_trap_handler()
   local line_number="$1"
   shift
 
+  echo_develop
   echo_develop "FAIL: ${PREFIX}${test_case_name}${SUFFIX}"
 
   if [ ! -z "${SUFFIX}" ]
@@ -154,7 +155,9 @@ function test_case_pass()
 {
   local test_case_name="$1"
 
+  echo_develop
   echo_develop "pass: ${PREFIX}${test_case_name}${SUFFIX}"
+  
   echo "pass: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
 }
 
