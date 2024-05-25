@@ -69,13 +69,13 @@ function test_compiler_c_cpp()
 
         --64 )
           BITS_FLAGS="-m64"
-          SUFFIX="-64"
+          SUFFIX+="-64"
           shift
           ;;
 
         --32 )
           BITS_FLAGS="-m32"
-          SUFFIX="-32"
+          SUFFIX+="-32"
           shift
           ;;
 
