@@ -58,11 +58,12 @@ function tests_run_final()
     fi
   done
 
+  local passed=$(grep "pass:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | sed -e 's|\s*||')
   local failed=$(grep -i "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | sed -e 's|\s*||')
-  if [ ${failed} -ge 0 ]
+  if [ ${failed} -gt 0 ]
   then
     echo
-    echo "${failed} test(s) failed:"
+    echo "${passed} test(s) passed, ${failed} failed:"
     echo
     grep -i "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}"
 
@@ -79,6 +80,10 @@ function tests_run_final()
     fi
   else
     echo
+    if [ ${passed} -gt 0 ]
+    then
+      echo "${passed} test(s) passed"
+    fi
     echo "Final tests completed successfuly"
   fi
 }
@@ -157,7 +162,7 @@ function test_case_pass()
 
   echo_develop
   echo_develop "pass: ${PREFIX}${test_case_name}${SUFFIX}"
-  
+
   echo "pass: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
 }
 
