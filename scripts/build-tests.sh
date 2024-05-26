@@ -63,7 +63,7 @@ function tests_run_final()
   if [ ${failed} -gt 0 ]
   then
     echo
-    echo "${passed} test(s) passed, ${failed} failed:"
+    echo "${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} ${passed} test(s) passed, ${failed} failed:"
     echo
     grep -i "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}"
 
