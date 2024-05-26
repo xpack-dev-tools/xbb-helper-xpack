@@ -2,9 +2,492 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-05-26
+
+* v2.1.0 released
+* b3b8ee2 build-tests.sh: show platform-arch
+
+## 2024-05-25
+
+* 9cf4098 add make-test-skips.sh
+* 871ad51 build-tests.sh: show passed count
+* c276563 build-tests.sh: extra empty lines
+* efbb349 test-compiler.sh: rework trap invocation
+* 592bc43 build-tests.sh: test_case_trap_handler return 0
+* 88c1f7f test-compiler.sh: accumulate SUFFIX
+* 16f1401 test-compiler.sh: fix --suffix
+
+## 2024-05-24
+
+* f9239e5 build-tests.sh: rework trap handler
+* 5f92dc0 build-tests.sh: convert to upper case
+* 8dc41a5 rework fortran/test-compiler.sh for continuation
+* 874a888 upper case PREFIX/SUFFIX
+* d2f6e25 test-compiler.sh: rework with continuation
+* 7f6b59a build-tests.sh: rework to add continuation
+* 2272e0d test-compiler.sh: add more conditionals
+* a35448a test-compiler.sh: add conditional to adder-static|shared
+
+## 2024-05-23
+
+* 59d5f2b test-compiler.sh: fix verbosity for windows
+* c8d679e Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* ead054a gcc.sh: -Wl,-t,-t only for linux
+* 870cf59 xbb.sh: -Wl,-t,-t only for linux
+* 0f32f74 Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* 5e5ec62 make set +/-o more explicit
+* f691268 wrappers.sh: fix typo
+* 68c1a5e wrappers.sh: more \r trimming
+* 5d83a42 gcc-mingw.sh: cleanups for \r
+* d010e68 gcc-mingw.sh: XBB_SKIP_TEST_ALL_OVERLOAD_NEW_CPP
+* 27ac8af gcc.sh: update 13 skips
+* d804380 gcc*.sh: show CC version
+* b784cd4 wrappers.sh: filter out \r for wine output
+* beb14f2 gcc-mingw.sh: more skips
+* 3dc9b3c wrappers.sh: fix +/-e
+
+## 2024-05-22
+
+* 5c3f8c1 gcc.sh: cosmetics
+* ad6adba gcc.sh: remove --disable-rpath on macOS
+* 7cf2390 gdb.sh: add toolchain path on macOS
+* 80887af post-processing.sh: rework macOS allowed sys
+* ac84a75 gcc.sh: dismiss ENABLE_LINK_VERBOSE
+* e8f590c wrappers.sh: add traps
+* 6d56b71 test-compiler.sh: add -Wl,-t
+* af3e20b fortran/test-compiler.sh: add SKIP_TEST_*
+* c03112b more gcc patches
+* 66ae2e6 gcc.sh: XBB_TOOLCHAIN_RPATH only for bootstrap
+* 2839aea gcc.sh: -Wl,-t for various ldflags
+* 8eb6b6a xbb.sh: conditional linker library path on macOS
+* ab3ff69 xbb.sh: add -Wl,-t
+* 85e0853 post-processing.sh: cosmetics in messages
+
+## 2024-05-19
+
+* 853df96 remove gcc-11.5 & 12.4 cross.git.patch
+2024-05-19 * 34edc2b gcc-11.5*.patch update
+2024-05-19 * b250700 gcc-mingw.sh: cosmetics
+2024-05-19 * 320c19e Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+2024-05-19 * bd2b215 gcc-cross.sh: cosmetics
+2024-05-19 * d670a21 gcc-12.4.*.patch: add conditional abort()
+2024-05-19 * 1fb8b53 download.sh: verbosity
+2024-05-19 * 041718e rework gcc-11.5* patches
+2024-05-19 * b4570cd fix gcc-12.4* patches
+2024-05-19 * a9d7348 rework gcc/system.h patch for 12.4
+2024-05-19 * 51e6352 build-common.sh: more verbosity
+2024-05-19 * 2742b5e post-processing.sh: filter OBJDUMP *.dll better
+
+## 2024-05-18
+
+* 6783423 add more gcc-*-cross.git.patch
+* 4de54b8 download.sh: download_and_extract with empty patch
+* b26b351 download.sh: more verbose download_and_extract
+* 2062b96 rework git_clone with non-positional args
+* 91da472 add gcc-11.5.0.git.patch
+* 5a433d6 gcc.sh: skip tests for gcc 11
+* 602b4da gcc-mingw.sh: check only major in tests skips
+* de017a6 gcc*.sh: use thread win32 only if -ge 13
+
+## 2024-05-17
+
+* 98dfda5 add gcc-12.4.0.git.patch
+* e6cc135 gcc.sh: use git_clone2
+* cfcf22e download.sh: add git_clone2
+* 3700216 gcc.sh: disable tests for 13.* on linux
+* cb622f6 post-processing.sh: cleanup
+* 1d858cf gcc-mingw.sh: more verbosity
+* eb8ea49 post-processing.sh: cosmetics
+* 3fd9d9e commented out XBB_LDFLAGS_STATIC_LIBS
+* 25578f4 post-procesing.sh: create LOGS/post-processed
+* d7cfe34 post-processing.sh: more verbosity
+* 1fd8738 post-processing.sh: use LOGS/post-processed
+* 7852afb xbb.sh: define XBB_LDFLAGS_STATIC_LIBS
+* 1b5ea83 build-common.sh: use XBB_ENVIRONMENT_SKIP_CHECKS
+
+## 2024-05-16
+
+* 45ff9bc build-common.sh: adjust PATH on windows for bootstrap
+* f972259 post-processing.sh: cosmetics
+* e3c6bcc post-processing.sh: use ${CC} on windows
+* 3c3444e xbb.sh: cosmetics
+* 78263df xbb.sh: define XBB_MAKE_VERBOSITY
+* 11a1c1a mingw.sh: configurable --with-default-win32-winnt
+* 96f29a6 gdb.sh: define _WIN32_WINNT on windows
+* a22fadb gdb.sh: APP_STATIC_GCC on windows
+* ca56c02 post-processing.sh: show distribution file length
+* 3ee2862 gcc.sh: --enable-threads=win32
+* f8484b8 gcc-cross.sh: no need for --disable-lib-suffixes
+* e13978e ncurses.sh: reverse rule for --enable-lib-suffixes
+* eb329f6 gcc-cross.sh: ncurses --disable-lib-suffixes
+* 7c8e991 build-common.sh: use XBB_ENVIRONMENT_WITH_TESTS
+
+## 2024-05-15
+
+* 4218282 gcc-mingw.sh: try --enable-threads=win32
+* 912101c gcc-mingw.sh: try --enable-threads without value
+* 2d22060 ncurses.sh: remove --with-versioned-syms
+* 99189c6 libedit.sh: no reference to tinfo needed
+
+## 2024-05-14
+
+* 34c728e ncurses.sh: add option --with-termlib
+* c6bd9b8 build-all.sh: add echo Done
+* d960896 ncurses.sh: add --hack-links (take two)
+* 8888897 ncurses.sh: --disable-lib-suffixes
+* afc684f python3.sh: comment out include/ncurses
+* 3524ba3 libedit.sh: comment out include/ncurses
+
+## 2024-05-13
+
+* db15adc ncurses.sh: comment out hack
+* 092fe89 ncurses.sh: --enable-overwrite
+* 93b6284 ncurses.sh: --disable-lib-suffixes
+* 72e6773 ncurses.sh: options --disable-widec --hack-links
+* 10e1ae9 test-compiler.sh: add -lc++-abi
+* 5c7587c ncurses.sh: fix links
+* 8387fab ncurses.sh: --with-termlib only for linux&macOS
+
+## 2024-05-09
+
+* e711235 libedit.sh: LIBS="-ltinfo" on macOS
+* 81bae8b libedit.sh: comment out useless options
+* e92ad9f libedit.sh: add libedit_test_libs
+* 9eaca50 ncurses: fix libcurses.* sym links
+* af014c8 use is_develop and with_strip
+* 60b629d ignore test results only when is_debug
+
+## 2024-05-08
+
+* 92f8051 gcc-cross.sh: USE_GCC_FOR_GCC_ON_MACOS hack
+* e6d7563 gmp.sh: skip tests on macOS arm64
+* b83cc58 xbb.sh: XBB_APPLICATION_USE_GCC_ON_MACOS
+* 061c87c gdb-cross.sh: patch only non-windows
+* 8b9f787 gdb-cross.sh: no readline on windows
+* b70494d gdb-cross.sh: --with-curses
+* 595c0a6 Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* 1a46099 python3.sh: cleanup
+* 8802dce post-processing.sh: add propsys.dll
+
+## 2024-05-07
+
+* 3a17148 readline.sh: --with-shared-termcap-library
+* b3506a9 gcc-mingw.sh: add 15.* to tests
+* 397cb47 ncurses.sh: add --with-termlib for libtinfo
+* 3a5edc8 bzip2.sh: add -id on macOS
+* 3183f97 gcc.sh: skip static sleepy cv
+* cd700d4 sleepy-threads-cv: add timeouts
+* 553999d sleepy-threads.cpp: increase time
+* b1280bd gcc-mingw.sh: mention sleepy-threads-cv.cpp
+* b460a2d test-compiler.sh: fix typo
+* ef2996b test-compiler.sh: add sleepy-threads-cv
+* 1d82f3d README update
+* 6fcee4e gcc*.sh: test regex
+* 51d7e2e add gdb-14.2-cross.git.patch
+* 5a628cc gcc-cross.sh: add _getentropy() to C++ test
+* 3b4b972 gdb-cross.sh: re-enable all options
+* 45d0ed3 gdb-cross.sh: use short --with-xxx
+* dbc5a45 gdb-cross.sh: pass XBB_SQLITE_YEAR
+
+## 2024-05-06
+
+* abaa29e shlite.sh: comments
+* f111ad4 gc-cross.sh: use git_clone for pre-releases
+* af73143 gcc-cross.sh: add gcc_cross_build_common()
+* 28ba294 gcc-cross.sh: cleanups -lpthread
+* e04e3d9 gcc-cross.sh: run_verbose file * in tests
+* d70c2a7 gcc-cross.sh: fix +=" ...
+
+## 2024-05-05
+
+* 4ab11a8 add sleepy-threads-cv.cpp
+* ed2bf8f Revert "sleepy-threads.cpp: use condition variable"
+* 17dda0f README update
+* 35562ac sleepy-threads.cpp: use condition variable
+* e6a8967 sleepy-threads.cpp: increase time
+
+## 2024-05-04
+
+* 896475b README update
+* 60d1068 build-all.sh: reorder aarch64-none-elf-gcc
+* 46c16cf openssl.sh: fix darwin64-*
+* a30b3b4 openssl.sh: update for 3.x
+* 653f71c build-all.sh: fix syntax
+* 709989b texinfo.sh: disable tests
+* eb3e7b2 build-all.sh: reorder ninja first
+* 7123e5c post-processing.sh: use is_darwin_dylib
+* 106dacc post-processing.sh: update dylib id to rpath relative
+* f540380 build-all.sh: consider xpack-dev-tools-build
+* 2ba0db9 show-libs.sh: objdump tail +2
+* b7eec3f post-processing.sh: use OBJDUMP instead of otool -L
+* c334318 xbb.sh: echo LDFLAGS in xbb_adjust_ldflags_rpath
+
+## 2024-05-03
+
+* 1bee608 xbb.sh: add toolchain rpath to LDFLAGS on macOS
+* 3c2143d gcc.sh: add toolchain path to bootstrap
+* 53af3f4 openssl.sh: disable tests, too long
+* 44eefc7 xbb.sh: always add -L with -rpath
+* 2e9b921 flex.sh: ignore check on macOS
+* b2327d0 README update
+* 23c775c mpfr.sh: check only if 4.x or later
+* 42efb5a texinfo.sh: ignore check result on macOS
+* 20f55d4 m4.sh: ignore diff exit code
+* e3fafbd pcre2.sh: ignore check result
+* c64a6e4 git-commit.sh update
+* ddf6d2e gettext.sh: ignore check result
+
+## 2024-05-02
+
+* 06594c0 gcc.sh: update test skips for gcc 15
+* fab1fa9 c-cpp/test-compiler.sh: inherit *FLAGS
+
+## 2024-04-30
+
+* 84cdb50 fortran/test-fortran.sh: use expect_target_succeed
+* 33fcb82 test-compiler.sh: add exe to expect_target_succeed calls
+* 3e168c7 test-compiler.sh: use expect_target_succeed()
+* d7bfb0c test-compiler.sh: add -Wl,--verbose on non macOS
+* 074dc1d wrappers.sh: add expect_target_succeed()
+* 5d48245 wrappers.sh: rework expect_target_output
+* 43ba123 gcc.sh: cosmetics
+* 68614a3 test-compiler.sh: use VERBOSE
+
+## 2024-04-29
+
+* a9d0dc3 gcc.sh: cosmetics
+* 0a6b7df test-compiler.sh: add more conditionals
+* 66eea1a xbb.sh: fix xbb_get_toolchain_library_path fix "$@"
+* 3b83deb is-something.sh: cosmetics
+
+## 2024-04-27
+
+* b8d3e0d c-cpp/test-compiler.sh: rework static-lib flags for macOS
+* 37e5605 c-cpp/test-compiler.sh: reorder lld
+* 64caf02 gcc.sh: cosmetics
+* 7419636 gcc-mingw.sh: update for weak
+* 8b6f977 gcc.sh: cosmetics
+
+## 2024-04-26
+
+* b8b4c1d fix unwind-strong test
+* 64ca6a7 gcc.sh: add tests skips
+* f5ae0b7 c-cpp/test-compiler.sh: add conditionals
+* 1845858 remove alt weak-override
+* c3f88a7 gcc.sh: fix syntax
+* e4742ae move test functions to test-compiler.sh
+* d218a69 README update
+* 95de523 gcc.sh: cosmetics in tests
+* 5055e68 gcc.sh: skip unwind-strong onlinux
+* 0417528 compiler-tests.sh: add -g if is_develop
+* 4483407 overload-new.cpp: add commented out message
+* 2179fe5 gcc.sh: skip weak_undef & unwind_strong tests
+* 351ea31 compiler-tests.sh: enable commented out weak tests
+* 8437cd9 add README-DEVELOPER.md
+* 82cbc8e gmp.sh: -Wl,-ld_classic
+
+## 2024-04-25
+
+* e8036b3 gmp.sh: fix LDFLAGS
+* 2ad033e conditional -DCMAKE_OSX_DEPLOYMENT_TARGET
+* d68a55a xbb.sh: XBB_ENVIRONMENT_MACOSX_DEPLOYMENT_TARGET
+* 46d24df xbb.sh: fix rpath for clang
+* f8794c4 gmp.sh: workaround for ld: branch8 out of range
+* 393b3dc xbb.sh: conditional set MACOSX_DEPLOYMENT_TARGET
+* ff764d1 test-common.sh: show CLT version on macOS
+* d0b175b machine.sh: add XBB_BUILD_MACOS_VERSION
+* 50beb31 gcc.sh: cleanup bootstrap ldflags
+
+## 2024-04-24
+
+* e7eef4d gcc.sh: experiment with -static
+* 5fa6f1e add weak tests from Martin Storsjo
+
+## 2024-04-23
+
+* 25a03ae isl.sh: add isl_patch_file_name
+* 345a277 add isl-0.26.git.patch
+* 2120e6b sleepy-threads.sh: increase time
+* 10fffd7 sleepy-threads.sh: increase time
+* d5a1178 ncurses.sh: remove -ldl
+* 3350323 gmp.sh: cosmetics
+
+## 2024-04-22
+
+* 5e0f3b6 cleanups
+* 084ac86 rename test_compiler_*
+* 42cfc83 binutils.sh: fix make -O
+* e964f71 gcc-mingw.sh: cleanups
+* a9a91ba gcc-mingw.sh: add XX_FOR_BUILD
+* b62fb4e gcc.sh: cleanups
+* bcd3eae gcc cleanups for static lib tests
+* ed58aec mingw.sh: rm lib/libpthread.dll.a
+* 131e5c1 mingw.sh: rm -rf libpthread.dll.a
+* 4066e80 gcc.sh: cosmetics
+
+## 2024-04-21
+
+* 4a8c146 gcc.sh: --enable-host-shared for win32
+* 0d4df3c gcc.sh: explicit -fPIC for win32
+* 3708558 gdb test hacks
+* 1fa502a gcc.sh: disable some lto tests on win32
+
+## 2024-04-19
+
+* ee6e1d2 download.sh: show git clone last date and commit
+* 1494dd7 gcc.sh: rework report failures
+* 64c906a cosmetics
+* f9c0499 gcc.sh: add make check
+* f1ccf13 extract autogen, gc, guile from legacy
+* 8381e24 Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* 8eaf3c3 pkg-config.sh: disable tests
+* b5c44fa autotools.sh: bump autoconf 2.72
+
+## 2024-04-18
+
+* 3fe0f17 gdb.sh: ignore finale test on arm
+* c592d19 ignore otool exit code
+* b9cd17f sleepy-threads.cpp: increase sleep time
+* 2b93913 sleepy-threads.cpp: increase time
+* b6301f6 gcc.sh: cosmetics
+* e575670 gcc.sh: define *_FOR_BUILD
+* 431665a xbb.sh: define more XBB_NATIVE_*
+* 651c258 gcc.sh: fix libiconv.a hack
+* 927f251 gcc.sh: rework libiconv hack
+
+## 2024-04-17
+
+* b4b1396 binutils.sh: ignore test results on Arm
+* d8ba2f3 gcc-mingw.sh: add compiler_tests_single_fortran
+* 507411f binutils.sh: set LD_LIBRARY_PATH for checks
+* e0945ec rename compiler_tests_single
+* f553d6d gcc.sh use compiler_tests_single_fortran
+* 59d54b3 gcc.sh: show libs for 32-bit
+* bd55518 gcc.sh: include libiconv.a into libstdc++.a for linux
+* b1117ac compiler-tests.sh: separate compiler_tests_single_fortran
+* 3697f72 compiler-tests.sh: add -lpthread to sleepy-tests on linux
+* 791b916 update xbb_get_toolchain_library_path
+* 041219c libiconv.sh: add --32 --64
+* e7b71b1 sleepy-threads.sh: double sleep time
+* 72ce945 timer.sh: add line terminator
+* 602b5c1 gcc.sh: conditional XBB_MARKER only on IS_DEVELOP
+* b35b73e add sleepy-threads.cpp test
+* f93ad82 gcc.sh: remove wrong --libdir
+* c0c17be gcc*.sh: XBB_GCC_GIT
+* 0edd0d5 xbb.sh: deprecate xbb_get_libs_path & co
+
+## 2024-04-16
+
+* 8b21097 compiler-tests.sh: fix --static-lib on macOS
+* 3eaf687 gcc.sh: cleanups
+* 4f5bfcf gcc.sh: add --static-lib to macOS tests
+* 2b287dc gcc.sh: use xbb_get_toolchain_library_path
+* 52aead4 gcc.sh: explicit --libdir
+* 07168a9 gcc.sh: LDFLAGS_FOR_TARGET/*
+* 4196e91 gcc.sh: simplify stage1/boot/target defs
+* 962f1f2 xbb.sh: rework xbb_activate_dependencies_dev --with-flex
+* 14e3dd5 xbb.sh: add XBB_APPLICATION_ENABLE_LINK_VERBOSE
+* 2b0b613 xbb.sh: no more -lphtread for gcc
+* 525ae0a xbb.sh: deprecate xbb_set_flex_package_paths
+* 1be5dab gcc-mingw.sh: no more download stamp
+* 8c05bc9 gcc.sh: no more download stamp
+* ddda5e9 gdb.sh: which g++
+* 88a0bf4 gmp.sh: enable tests
+* 884af18 isl.sh: enable tests
+* 312b3b5 mpfr.sh: cosmetics
+* 27ca08c zstd.sh: enable first test only
+* 2d395f7 build-common.sh: enable tests
+* de2c149 binutils.sh: disable pic/libiberty
+* f43d5db binutils.sh: add tests, but result ignored
+
+## 2024-04-15
+
+* 67ff1a7 binutils.sh: install pic/libiberty.a
+* 54df087 gcc.sh: add -DXBB_MARKER_*
+* 3a8410c xbb.sh: remove binutils TODO
+* d6caa4b add application_check_binaries()
+* b7d5368 rename application_copy_files()
+* b04595b xbb.sh: always add to XBB_LIBRARY_PATH
+* f9228a9 xbb.sh: skip -rpath for windows
+
+## 2024-04-14
+
+* 6e4992b zstd.sh: add empty win32 case
+* 67d84f4 miscellaneous.sh: pyrealpath ignore options
+* 4bf0bd2 download.sh: fix git_clone
+* c561531 xbb.sh: fix toolchain rpath
+* 78d6b9f xbb.sh: fix uninitialised variable
+* 40c9824 xbb.sh: rework rpath
+* 723a5fd gcc.sh: more linux settings
+* 23c21af ssh.sh: fix clone args
+
+## 2024-04-13
+
+* e2a9dea download.sh: git_clone update
+* 28c6486 gcc.sh: use git_clone
+* 0feb177 xbb.sh: rework xbb_update_ld_library_path
+* 4fdb82d gcc.sh: many comments
+* 5039263 gcc.sh: LDFLAGS_FOR_TARGET macOS
+* 6c350ca gcc.sh: download from git
+* ac39734 gcc.sh: --enable-darwin-at-rpath=no
+* 01b72c3 gcc.sh: disable --lld tests
+* 9b97305 libiconv.sh: add --disable-shared
+* 3a5ec43 zstd: sed patch @rpath
+* f4bcefd zstd.sh: add zstd_test
+* 1109c25 post-processing.sh: reluctantly accepted
+
+## 2024-04-11
+
+* 35b499b post-processing.sh: XBB_APPLICATION_HAS_LIBICONV2DYLIB
+* db0acf5 gcc.sh: try tests without --lld
+* 37ccd99 gcc.sh: add XBB_APPLICATION_TEST_PRERELEASE
+* c93b475 download.sh: unzip -q
+
+## 2024-04-09
+
+* fd3f1fc xbb.sh: use realpath -m
+* 35e82d0 gcc.sh: enable bootstrap for linux
+* e03ae71 gcc.sh: comment out LDFLAGS_FOR_TARGET BOOT_LDFLAGS
+* 28f4dc0 xbb.sh: no need to manually create lib64
+* b500aea post-processing.sh: cosmetics
+* a1acde3 post-processing.sh: optimize install name tool if same lib path
+* aa69545 gcc.sh: cosmetics
+* 7b64efe gcc.sh: --disable-rpath for macOS
+* 8248011 gcc.sh: --enable-bootstrap for macOS
+
+## 2024-04-08
+
+* 30a8caa xbb.sh: pass all rpaths
+* a699b93 binutils.sh: comment out mkdir */lib
+* 1eefeff qemu.sh: re-install on macOS
+* ae45dc6 README update
+
+## 2024-04-07
+
+* 469d6e8 xbb.sh: explicit rpath for darwin
+* aef5f54 maintainer-scripts: add more git scripts
+* fa4b889 rename maintainer-scripts
+* cfc9563 xz.sh: add warning
+* 0480771 timer.sh: show minutes and hours
+* d1665f7 timer.sh: show minutes and hours
+* c2e8b0a xbb.sh: fix typo
+* 87112f5 binutils.sh: mkdir for rpath
+
+## 2024-04-06
+
+* 33d1549 xbb.sh: rework xbb_update_ld_library_path darwin
+
+## 2024-04-05
+
+* bddcbc1 maintainer/CHECKLIST.md reorder
+* bac791d xbb.sh: add -L with -rpath
+* ea2a15e xbb.sh: LDFLAGS -Wl,-v
+
 ## 2024-04-02
 
-* v2.0.9 released
+* d361423 build-common.sh: skip folders in xpack.bin definitions
+* 6ba0622 2.0.9
+* 5511609 prepare v2.0.9
 
 ## 2024-04-01
 
