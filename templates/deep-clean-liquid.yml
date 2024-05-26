@@ -33,7 +33,9 @@ jobs:
           env | sort | egrep '^[^ \t]+='
 
       - name: 'Clean working area'
-        run: rm -rf * .git*
+        run: |
+          chmod -R a+w *
+          rm -rf * .git*
 {% break -%}
 {% endif -%}
 {% endfor %}
@@ -56,7 +58,9 @@ jobs:
           env | sort | egrep '^[^ \t]+='
 
       - name: 'Clean working area'
-        run: rm -rf * .git*
+        run: |
+          chmod -R a+w *
+          rm -rf * .git*
 {% break -%}
 {% endif -%}
 {% endfor %}
@@ -78,7 +82,9 @@ jobs:
           env | sort | egrep '^[^ \t]+='
 
       - name: 'Clean working area'
-        run: rm -rf * .git*
+        run: |
+          chmod -R a+w *
+          rm -rf * .git*
 {% break -%}
 {% endif -%}
 {% endfor %}
@@ -104,7 +110,9 @@ jobs:
           env | sort | egrep '^[^ \t]+='
 
       - name: 'Clean working area'
-        run: rm -rf * .git*
+        run: |
+          chmod -R a+w *
+          rm -rf * .git*
 {% break -%}
 {% endif -%}
 {% endfor %}
@@ -130,7 +138,9 @@ jobs:
           env | sort | egrep '^[^ \t]+='
 
       - name: 'Clean working area'
-        run: rm -rf * .git*
+        run: |
+          chmod -R a+w *
+          rm -rf * .git*
 {% break -%}
 {% endif -%}
 {% endfor -%}

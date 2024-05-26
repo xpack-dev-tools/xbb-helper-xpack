@@ -73,7 +73,9 @@ jobs:
           env | sort | egrep '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
-        run: rm -rf * .git*
+        run: |
+          chmod -R a+w *
+          rm -rf * .git*
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
@@ -110,7 +112,9 @@ jobs:
           env | sort | egrep '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
-        run: rm -rf * .git*
+        run: |
+          chmod -R a+w *
+          rm -rf * .git*
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
@@ -147,7 +151,9 @@ jobs:
           env | sort | egrep '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
-        run: rm -rf * .git*
+        run: |
+          chmod -R a+w *
+          rm -rf * .git*
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
@@ -181,7 +187,9 @@ jobs:
           env | sort | egrep '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
-        run: rm -rf * .git*
+        run: |
+          chmod -R a+w *
+          rm -rf * .git*
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
