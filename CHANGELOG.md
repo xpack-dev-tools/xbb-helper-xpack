@@ -2,9 +2,17 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-05-28
+
+* v2.1.7 released
+* f1f8400 machine.sh: more elaborate logic for CLT version
+* 3a5d7a3 sleepy-threads-cv.cpp: increase timeouts
+* b77f404 common.sh: update create_macos_data_file
+* 4a6d514 2.1.6
+* 08af059 prepare v2.1.6
+
 ## 2024-05-27
 
-* v2.1.6 released
 * 8194463 test-compiler.sh: cosmetics order of -L .
 * 07f7f8b test-compiler.sh: disable -flto for static libraries
 * c2ca687 make-test-skips.sh: updates
