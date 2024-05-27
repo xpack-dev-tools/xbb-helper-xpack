@@ -57,26 +57,31 @@ function tests_run_final()
       echo "## Running \"${cmd_array[@]}\" completed"
     fi
   done
+}
 
-  local passed=$(grep "pass:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | sed -e 's|\s*||')
-  local failed=$(grep -i "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | sed -e 's|\s*||')
+function tests_report_results()
+{
+  local passed=$(grep "pass:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | tr -d '[:blank:]')
+  local failed=$(grep -i "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | tr -d '[:blank:]')
   if [ ${failed} -gt 0 ]
   then
     echo
-    echo "${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} ${passed} test(s) passed, ${failed} failed:"
+    echo "Tests report for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH}"
     echo
-    grep -i "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}"
+    echo "${passed} test(s) passed, ${failed} failed:"
+    echo
+    grep -i "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}" | sed -e 's|^|- |'
 
-    local catastrophic=$(grep "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | sed -e 's|\s*||')
+    local catastrophic=$(grep "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | tr -d '[:blank:]')
     if [ ${catastrophic} -gt 0 ]
     then
       echo
-      echo "${catastrophic} failed unexpectedly."
-      echo "Final tests results cannot be accepted"
+      echo "${catastrophic} failed unexpectedly"
+      echo "Result: ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} tests cannot be accepted"
       exit 1
     else
       echo
-      echo "Final tests results accepted"
+      echo "Result: ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} tests accepted"
     fi
   else
     echo
@@ -84,7 +89,7 @@ function tests_run_final()
     then
       echo "${passed} test(s) passed"
     fi
-    echo "Final tests completed successfuly"
+    echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} tests completed successfully"
   fi
 }
 

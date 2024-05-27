@@ -275,6 +275,8 @@ function build_common_run()
     xbb_show_env_develop
 
     tests_run_final
+
+    tests_report_results
   ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/tests-output-$(ndate).txt"
 
   # ---------------------------------------------------------------------------
