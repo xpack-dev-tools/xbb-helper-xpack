@@ -210,7 +210,8 @@ function tests_good_bye()
     elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
       run_verbose sw_vers
-      run_verbose pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
+      # Travis old images may not include CLT (like 10.15.7)
+      run_verbose pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || xcodebuild -version || true
     fi
   )
 }
