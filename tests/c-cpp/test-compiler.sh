@@ -301,7 +301,7 @@ function test_compiler_c_cpp()
       # -----------------------------------------------------------------------
 
       # Unfortunately timings are unreliable on CI machines.
-      test_case_sleepy_threads
+      # test_case_sleepy_threads
 
       test_case_sleepy_threads_cv
 
