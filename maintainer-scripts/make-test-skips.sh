@@ -37,5 +37,5 @@ script_folder_name="$(basename "${script_folder_path}")"
 # Pass the test case name as first argument.
 test_case_name="$1"
 
-grep "${test_case_name}" results | sed -e 's|F.*[(]|export |' -e 's|[)]|="y"|'
+grep "${test_case_name}" results | sed -e 's|^.*FAIL.*[(]|export |' -e 's|[)]|="y"|'
 
