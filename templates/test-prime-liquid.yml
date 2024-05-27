@@ -74,7 +74,7 @@ jobs:
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
-          chmod -R a+w *
+          chmod -Rf a+w * || true
           rm -rf * .git*
 
       # https://github.com/actions/checkout
@@ -113,7 +113,7 @@ jobs:
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
-          chmod -R a+w *
+          chmod -Rf a+w * || true
           rm -rf * .git*
 
       # https://github.com/actions/checkout
@@ -152,7 +152,7 @@ jobs:
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
-          chmod -R a+w *
+          chmod -Rf a+w * || true
           rm -rf * .git*
 
       # https://github.com/actions/checkout
@@ -188,7 +188,7 @@ jobs:
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
-          chmod -R a+w *
+          chmod -Rf a+w * || true
           rm -rf * .git*
 
       # https://github.com/actions/checkout

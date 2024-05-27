@@ -34,7 +34,7 @@ jobs:
 
       - name: 'Clean working area'
         run: |
-          chmod -R a+w *
+          chmod -Rf a+w * || true
           rm -rf * .git*
 {% break -%}
 {% endif -%}
@@ -59,7 +59,7 @@ jobs:
 
       - name: 'Clean working area'
         run: |
-          chmod -R a+w *
+          chmod -Rf a+w * || true
           rm -rf * .git*
 {% break -%}
 {% endif -%}
@@ -83,7 +83,7 @@ jobs:
 
       - name: 'Clean working area'
         run: |
-          chmod -R a+w *
+          chmod -Rf a+w * || true
           rm -rf * .git*
 {% break -%}
 {% endif -%}
@@ -111,7 +111,7 @@ jobs:
 
       - name: 'Clean working area'
         run: |
-          chmod -R a+w *
+          chmod -Rf a+w * || true
           rm -rf * .git*
 {% break -%}
 {% endif -%}
@@ -139,7 +139,7 @@ jobs:
 
       - name: 'Clean working area'
         run: |
-          chmod -R a+w *
+          chmod -Rf a+w * || true
           rm -rf * .git*
 {% break -%}
 {% endif -%}
