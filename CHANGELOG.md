@@ -4,7 +4,13 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-05-27
 
-* v2.1.5 released
+* v2.1.6 released
+* 8194463 test-compiler.sh: cosmetics order of -L .
+* 07f7f8b test-compiler.sh: disable -flto for static libraries
+* c2ca687 make-test-skips.sh: updates
+* 745bd0c egrep -E
+* f5697a5 2.1.5
+* dcd5f55 prepare v2.1.5
 * 9ec8242 test-compiler.sh: comment out sleepy threads
 * 57c7cdb 2.1.4
 * d59633f prepare v2.1.4
