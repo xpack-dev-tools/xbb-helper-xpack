@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-05-27
 
-* v2.1.4 released
+* v2.1.5 released
+* 9ec8242 test-compiler.sh: comment out sleepy threads
+* 57c7cdb 2.1.4
+* d59633f prepare v2.1.4
 * 1f60eb1 sleepy threads: increase timeouts
 * bf43779 2.1.3
 * 3e62738 prepare v2.1.3* 520b9e3 miscellaneous.sh: fix pyrealpath
