@@ -1467,10 +1467,13 @@ function xbb_get_toolchain_library_path()
 
         # Manually search for c++ & runtime libraries.
         libs_path=""
-        local libcpp_path=$(find "${lib_absolute_path}" -name 'libc++.dylib')
-        if [ -n "${libcpp_path}" ]
+        if [ -d "${lib_absolute_path}" ]
         then
-          libs_path="$(dirname ${libcpp_path}):"
+          local libcpp_path=$(find "${lib_absolute_path}" -name 'libc++.dylib')
+          if [ -n "${libcpp_path}" ]
+          then
+            libs_path="$(dirname ${libcpp_path}):"
+          fi
         fi
         libs_path+="$(dirname $("${CXX}" -print-libgcc-file-name))"
 
