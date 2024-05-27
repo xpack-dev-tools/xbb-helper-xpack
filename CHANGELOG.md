@@ -4,7 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-05-27
 
-* v2.1.1 released
+* v2.1.2 released
+* f4b1e1a templates: chmod -Rf a+w * || true
+* ae4cc96 xbb.sh: fix library path on native
+* ffa6dfd 2.1.1
+* dbacb2c prepare v2.1.1
 * 37310c8 test-common.sh: add initialise & report results
 * 961ec84 test-common.sh: source build-tests.sh
 * 30ebba6 separate tests_report_results
