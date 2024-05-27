@@ -290,7 +290,7 @@ function linux_get_rpaths_line()
   local file_path="$1"
 
   readelf -d "${file_path}" \
-    | egrep '(RUNPATH|RPATH)' \
+    | grep -E '(RUNPATH|RPATH)' \
     | sed -e 's|.*\[\(.*\)\]|\1|'
 
 }

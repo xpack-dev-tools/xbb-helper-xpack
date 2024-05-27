@@ -35,7 +35,7 @@ function show_host_libs()
           run_verbose file -L "${abs_path}"
         fi
         echo
-        echo "[readelf -d ${abs_path} | egrep ...]"
+        echo "[readelf -d ${abs_path} | grep ...]"
         # Ignore errors in case it is not using shared libraries.
         set +o errexit # Do not exit if command fails
         readelf_shared_libs "${abs_path}"
@@ -152,7 +152,7 @@ function show_target_libs()
           run_verbose file -L "${abs_path}"
         fi
         echo
-        echo "[readelf -d ${abs_path} | egrep ...]"
+        echo "[readelf -d ${abs_path} | grep ...]"
         # Ignore errors in case it is not using shared libraries.
         set +o errexit # Do not exit if command fails
         readelf_shared_libs "${abs_path}"
@@ -282,9 +282,9 @@ function readelf_shared_libs()
   (
     set +o errexit # Do not exit if command fails
 
-    readelf -d "${file_path}" | egrep '(SONAME)' || true
-    readelf -d "${file_path}" | egrep '(RUNPATH|RPATH)' || true
-    readelf -d "${file_path}" | egrep '(NEEDED)' || true
+    readelf -d "${file_path}" | grep -E '(SONAME)' || true
+    readelf -d "${file_path}" | grep -E '(RUNPATH|RPATH)' || true
+    readelf -d "${file_path}" | grep -E '(NEEDED)' || true
   )
 }
 
@@ -296,7 +296,7 @@ function _show_native_libs()
 
   (
     echo
-    echo "[readelf -d ${app_path} | egrep ...]"
+    echo "[readelf -d ${app_path} | grep ...]"
     # Ignore errors in case it is not using shared libraries.
     set +o errexit # Do not exit if command fails
     readelf_shared_libs "${app_path}"

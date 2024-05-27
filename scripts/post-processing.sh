@@ -89,7 +89,7 @@ function make_standalone()
           copy_dependencies_recursive "${bin_path}" \
             "$(dirname "${bin_path}")"
 
-          # echo $(basename "${bin_path}") $(${READELF} -d "${bin_path}" | egrep '(RUNPATH|RPATH)')
+          # echo $(basename "${bin_path}") $(${READELF} -d "${bin_path}" | grep -E '(RUNPATH|RPATH)')
         fi
       done
 
@@ -608,7 +608,7 @@ function copy_dependencies_recursive()
 
       echo
       echo "${actual_destination_file_path}:"
-      ${OBJDUMP} -x "${source_file_path}" | egrep -i '\sDLL Name:\s.*[.]dll' | grep -v "${source_file_name}" || true
+      ${OBJDUMP} -x "${source_file_path}" | grep -E -i '\sDLL Name:\s.*[.]dll' | grep -v "${source_file_name}" || true
 
       local source_file_name="$(basename "${source_file_path}")"
       local source_folder_path="$(dirname "${source_file_path}")"
@@ -660,7 +660,7 @@ function copy_dependencies_recursive()
       # echo "II. Processing ${source_file_path} dependencies..."
 
       local libs=$(${OBJDUMP} -x "${destination_folder_path}/${source_file_name}" \
-            | egrep -i '\sDLL Name:\s.*[.]dll' \
+            | grep -E -i '\sDLL Name:\s.*[.]dll' \
             | grep -v "${source_file_name}" \
             | sed -e 's/.*DLL Name: \(.*\)/\1/' \
           )
@@ -766,35 +766,35 @@ function is_target()
     if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ] && \
        [ "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
     then
-      file ${bin_path} | egrep -q ", x86-64, "
+      file ${bin_path} | grep -E -q ", x86-64, "
     elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ] && \
          [ "${XBB_REQUESTED_HOST_ARCH}" == "x32" -o "${XBB_REQUESTED_HOST_ARCH}" == "ia32" ]
     then
-      file ${bin_path} | egrep -q ", Intel 80386, "
+      file ${bin_path} | grep -E -q ", Intel 80386, "
     elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ] && \
          [ "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
     then
-      file ${bin_path} | egrep -q ", ARM aarch64, "
+      file ${bin_path} | grep -E -q ", ARM aarch64, "
     elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ] && \
          [ "${XBB_REQUESTED_HOST_ARCH}" == "arm" ]
     then
-      file ${bin_path} | egrep -q ", ARM, "
+      file ${bin_path} | grep -E -q ", ARM, "
     elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ] && \
          [ "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
     then
-      file ${bin_path} | egrep -q "x86_64"
+      file ${bin_path} | grep -E -q "x86_64"
     elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ] && \
          [ "${XBB_REQUESTED_HOST_ARCH}" == "arm64" ]
     then
-      file ${bin_path} | egrep -q "arm64"
+      file ${bin_path} | grep -E -q "arm64"
     elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ] && \
          [ "${XBB_REQUESTED_HOST_ARCH}" == "x64" ]
     then
-      file ${bin_path} | egrep -q " x86-64 "
+      file ${bin_path} | grep -E -q " x86-64 "
     elif [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ] && \
          [ "${XBB_REQUESTED_HOST_ARCH}" == "x32" -o "${XBB_REQUESTED_HOST_ARCH}" == "ia32" ]
     then
-      file ${bin_path} | egrep -q " Intel 80386"
+      file ${bin_path} | grep -E -q " Intel 80386"
     else
       return 1
     fi
@@ -825,7 +825,7 @@ function is_darwin_dylib()
   if [ -f "${real_path}" ]
   then
     # Return 0 (true) if found.
-    file ${real_path} | egrep -q "dynamically linked shared library"
+    file ${real_path} | grep -E -q "dynamically linked shared library"
   else
     return 1
   fi
@@ -1068,7 +1068,7 @@ function is_ar()
   if [ -f "${bin_path}" ]
   then
     # Return 0 (true) if found.
-    file ${bin_path} | egrep -q "ar archive"
+    file ${bin_path} | grep -E -q "ar archive"
   else
     return 1
   fi
@@ -1085,7 +1085,7 @@ function has_origin()
   local elf="$1"
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
   then
-    local origin=$(${READELF} -d ${elf} | egrep '(RUNPATH|RPATH)' | egrep '\$ORIGIN')
+    local origin=$(${READELF} -d ${elf} | grep -E '(RUNPATH|RPATH)' | grep -E '\$ORIGIN')
     if [ ! -z "${origin}" ]
     then
       return 0 # true
@@ -1127,7 +1127,7 @@ function has_rpath()
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" ]
   then
 
-    local rpath=$(${READELF} -d ${elf} | egrep '(RUNPATH|RPATH)')
+    local rpath=$(${READELF} -d ${elf} | grep -E '(RUNPATH|RPATH)')
     if [ ! -z "${rpath}" ]
     then
       return 0 # true
@@ -1316,7 +1316,7 @@ function patch_linux_elf_origin()
     local tmp_path=$(mktemp)
     rm -rf "${tmp_path}"
     cp "${file_path}" "${tmp_path}"
-    if "${patchelf}" --help 2>&1 | egrep -q -e '--output'
+    if "${patchelf}" --help 2>&1 | grep -E -q -e '--output'
     then
       patchelf_has_output="y"
     fi
@@ -1352,7 +1352,7 @@ function patch_linux_elf_origin()
 
     if is_develop
     then
-      readelf -d "${tmp_path}" | egrep '(RUNPATH|RPATH)'
+      readelf -d "${tmp_path}" | grep -E '(RUNPATH|RPATH)'
       ldd "${tmp_path}"
     fi
 
@@ -1397,7 +1397,7 @@ function patch_linux_elf_set_rpath()
       local tmp_path=$(mktemp)
       rm -rf "${tmp_path}"
       cp "${file_path}" "${tmp_path}"
-      if "${patchelf}" --help 2>&1 | egrep -q -e '--output'
+      if "${patchelf}" --help 2>&1 | grep -E -q -e '--output'
       then
         patchelf_has_output="y"
       fi
@@ -1429,7 +1429,7 @@ function patch_linux_elf_set_rpath()
 
     if is_develop
     then
-      readelf -d "${tmp_path}" | egrep '(RUNPATH|RPATH)'
+      readelf -d "${tmp_path}" | grep -E '(RUNPATH|RPATH)'
       ldd "${tmp_path}"
     fi
 
@@ -1502,7 +1502,7 @@ function patch_linux_elf_add_rpath()
       local tmp_path=$(mktemp)
       rm -rf "${tmp_path}"
       cp "${file_path}" "${tmp_path}"
-      if "${patchelf}" --help 2>&1 | egrep -q -e '--output'
+      if "${patchelf}" --help 2>&1 | grep -E -q -e '--output'
       then
         patchelf_has_output="y"
       fi
@@ -1525,7 +1525,7 @@ function patch_linux_elf_add_rpath()
 
     if is_develop
     then
-      readelf -d "${tmp_path}" | egrep '(RUNPATH|RPATH)'
+      readelf -d "${tmp_path}" | grep -E '(RUNPATH|RPATH)'
       ldd "${tmp_path}"
     fi
 
@@ -1825,10 +1825,10 @@ function check_binary_for_libraries()
       echo "${file_name}: (${file_path})"
       set +o errexit # Do not exit if command fails
 
-      "${OBJDUMP}" -x "${file_path}" | egrep -i '\sDLL Name:\s.*[.]dll' | grep -v "${file_name}" \
+      "${OBJDUMP}" -x "${file_path}" | grep -E -i '\sDLL Name:\s.*[.]dll' | grep -v "${file_name}" \
 
       local dll_names=$("${OBJDUMP}" -x "${file_path}" \
-        | egrep -i '\sDLL Name:\s.*[.]dll' \
+        | grep -E -i '\sDLL Name:\s.*[.]dll' \
         | grep -v "${file_name}" \
         | sed -e 's/.*DLL Name: \(.*\)/\1/' \
       )
@@ -1954,9 +1954,9 @@ function check_binary_for_libraries()
         local unxp
         if [[ "${file_name}" =~ .*[.]dylib ]]
         then
-          unxp=$(otool -L "${file_path}" | sed '1d' | sed '1d' | grep -v "${file_name}" | egrep -e "(macports|homebrew|opt|install)/") || true
+          unxp=$(otool -L "${file_path}" | sed '1d' | sed '1d' | grep -v "${file_name}" | grep -E -e "(macports|homebrew|opt|install)/") || true
         else
-          unxp=$(otool -L "${file_path}" | sed '1d' | grep -v "${file_name}" | egrep -e "(macports|homebrew|opt|install)/") || true
+          unxp=$(otool -L "${file_path}" | sed '1d' | grep -v "${file_name}" | grep -E -e "(macports|homebrew|opt|install)/") || true
         fi
 
         # echo "|${unxp}|"
@@ -1979,7 +1979,7 @@ function check_binary_for_libraries()
         | sed -e 's/.*Shared library: \[\(.*\)\]/\1/' \
       )
 
-      # local relative_path=$(${READELF} -d "${file_path}" | egrep '(RUNPATH|RPATH)' | sed -e 's/.*\[\$ORIGIN//' | sed -e 's/\].*//')
+      # local relative_path=$(${READELF} -d "${file_path}" | grep -E '(RUNPATH|RPATH)' | sed -e 's/.*\[\$ORIGIN//' | sed -e 's/\].*//')
       # echo $relative_path
       local linux_rpaths_line=$(linux_get_rpaths_line "${file_path}")
       local origin_prefix="\$ORIGIN"

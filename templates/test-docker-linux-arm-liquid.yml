@@ -63,7 +63,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -116,7 +116,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -164,7 +164,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -206,7 +206,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -260,7 +260,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -307,7 +307,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -347,7 +347,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -395,7 +395,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -435,7 +435,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -475,7 +475,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -527,7 +527,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -573,7 +573,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -613,7 +613,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
@@ -661,7 +661,7 @@ jobs:
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |

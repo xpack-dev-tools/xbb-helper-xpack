@@ -57,7 +57,7 @@ function is_pe()
 
   if [ -f "${bin_path}" ]
   then
-    file ${bin_path} | egrep -q "( PE )|( PE32 )|( PE32\+ )"
+    file ${bin_path} | grep -E -q "( PE )|( PE32 )|( PE32\+ )"
   else
     return 1
   fi
@@ -84,7 +84,7 @@ function is_pe64()
 
   if [ -f "${bin_path}" ]
   then
-    # file ${bin_path} | egrep -q "( PE )|( PE32 )|( PE32\+ )" | egrep -q "x86-64"
+    # file ${bin_path} | grep -E -q "( PE )|( PE32 )|( PE32\+ )" | grep -E -q "x86-64"
     file ${bin_path} | grep -q "PE32+ executable (console) x86-64"
   else
     return 1
@@ -136,11 +136,11 @@ function is_elf()
     # Return 0 (true) if found.
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
-      file ${bin_path} | egrep -q "( ELF )"
+      file ${bin_path} | grep -E -q "( ELF )"
     elif [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
     then
       # This proved to be very tricky.
-      file ${bin_path} | egrep -q "x86_64:Mach-O|arm64e:Mach-O|Mach-O.*x86_64|Mach-O.*arm64"
+      file ${bin_path} | grep -E -q "x86_64:Mach-O|arm64e:Mach-O|Mach-O.*x86_64|Mach-O.*arm64"
     else
       return 1
     fi
@@ -162,7 +162,7 @@ function is_elf_dynamic()
   if is_elf "${bin_path}"
   then
     # Return 0 (true) if found.
-    file ${bin_path} | egrep -q "dynamically"
+    file ${bin_path} | grep -E -q "dynamically"
   else
     return 1
   fi
@@ -182,7 +182,7 @@ function is_dynamic()
   if [ -f "${bin_path}" ]
   then
     # Return 0 (true) if found.
-    file ${bin_path} | egrep -q "dynamically"
+    file ${bin_path} | grep -E -q "dynamically"
   else
     return 1
   fi

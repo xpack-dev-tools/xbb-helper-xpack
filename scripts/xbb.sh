@@ -1701,7 +1701,7 @@ function xbb_show_env()
   echo
   echo "pwd: $(pwd)"
   echo
-  env | sort | egrep '^[^ \t]+='
+  env | sort | grep -E '^[^ \t]+='
 }
 
 function xbb_show_env_develop()
