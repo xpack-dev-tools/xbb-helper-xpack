@@ -4,8 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-05-27
 
-* v2.1.3 released
-* 520b9e3 miscellaneous.sh: fix pyrealpath
+* v2.1.4 released
+* 1f60eb1 sleepy threads: increase timeouts
+* bf43779 2.1.3
+* 3e62738 prepare v2.1.3* 520b9e3 miscellaneous.sh: fix pyrealpath
 * 55708fe 2.1.2
 * 57560b5 prepare v2.1.2
 * f4b1e1a templates: chmod -Rf a+w * || true
