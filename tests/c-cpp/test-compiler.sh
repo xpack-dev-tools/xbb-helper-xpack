@@ -454,6 +454,12 @@ function test_case_adder_static()
   if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
   then
     run_host_app_verbose "${CC}" -c "add.c" -o "${PREFIX}add${SUFFIX}.c.o" ${CFLAGS}
+  elif [ "${XBB_TARGET_PLATFORM}" == "linux" ] && [[ $(basename "${CC}") =~ .*clang.* ]]
+  then
+    # Old linkers (like Ubuntu 18, RedHat 8, Fedora 29)
+    # are not happy with clang IR, use object files.
+    CFLAGS_NO_LTO=$(echo ${CFLAGS} | sed -e 's|-flto||')
+    run_host_app_verbose "${CC}" -c "add.c" -o "${PREFIX}add${SUFFIX}.c.o" ${CFLAGS_NO_LTO}
   else
     run_host_app_verbose "${CC}" -c "add.c" -o "${PREFIX}add${SUFFIX}.c.o" -fpic ${CFLAGS}
   fi
