@@ -199,9 +199,6 @@ function tests_install_archive()
 function tests_good_bye()
 {
   (
-    echo
-    echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} tests completed successfully"
-
     run_verbose uname -a
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
@@ -384,6 +381,8 @@ function tests_perform_common()
   xbb_reset_env
   xbb_set_target "requested"
 
+  tests_initialize
+
   local archive_extension
   local archive_architecture="${XBB_BUILD_ARCH}"
   if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
@@ -420,6 +419,8 @@ function tests_perform_common()
       run_verbose cd "${XBB_TESTS_FOLDER_PATH}"
       tests_run_all "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/bin"
     fi
+
+    tests_report_results
 
     tests_good_bye
     timer_stop
