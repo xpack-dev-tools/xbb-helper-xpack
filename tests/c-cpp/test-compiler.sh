@@ -468,7 +468,7 @@ function test_case_adder_static()
   run_host_app_verbose "${AR}" -r "lib${PREFIX}add-static${SUFFIX}.a" "${PREFIX}add${SUFFIX}.c.o"
   run_host_app_verbose "${RANLIB}" "lib${PREFIX}add-static${SUFFIX}.a"
 
-  run_host_app_verbose "${CC}" "adder.c" -o "${PREFIX}adder-static${SUFFIX}${XBB_TARGET_DOT_EXE}" -l"${PREFIX}add-static${SUFFIX}" -L . ${LDFLAGS}
+  run_host_app_verbose "${CC}" "adder.c" -o "${PREFIX}adder-static${SUFFIX}${XBB_TARGET_DOT_EXE}" -L . -l"${PREFIX}add-static${SUFFIX}" ${LDFLAGS}
 
   expect_target_output "42" "${PREFIX}adder-static${SUFFIX}${XBB_TARGET_DOT_EXE}" 40 2
 
@@ -489,13 +489,13 @@ function test_case_adder_shared()
 
     # -ladd-shared is in fact libadd-shared.dll.a
     # The library does not show as DLL, it is loaded dynamically.
-    run_host_app_verbose "${CC}" "adder.c" -o "${PREFIX}adder-shared${SUFFIX}${XBB_TARGET_DOT_EXE}" -l"${PREFIX}add-shared${SUFFIX}" -L . ${LDFLAGS}
+    run_host_app_verbose "${CC}" "adder.c" -o "${PREFIX}adder-shared${SUFFIX}${XBB_TARGET_DOT_EXE}" -L . -l"${PREFIX}add-shared${SUFFIX}" ${LDFLAGS}
   else
     run_host_app_verbose "${CC}" "${PREFIX}add${SUFFIX}.c.o" -shared -o "lib${PREFIX}add-shared${SUFFIX}.${XBB_TARGET_SHLIB_EXT}" ${LDFLAGS}
 
     # show_target_libs "lib${PREFIX}add-shared${SUFFIX}.${XBB_TARGET_SHLIB_EXT}"
 
-    run_host_app_verbose "${CC}" "adder.c" -o "${PREFIX}adder-shared${SUFFIX}" -l"${PREFIX}add-shared${SUFFIX}" -L . ${LDFLAGS}
+    run_host_app_verbose "${CC}" "adder.c" -o "${PREFIX}adder-shared${SUFFIX}" -L . -l"${PREFIX}add-shared${SUFFIX}" ${LDFLAGS}
 
     if [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
