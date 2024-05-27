@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-05-27
 
-* v2.1.2 released
+* v2.1.3 released
+* 520b9e3 miscellaneous.sh: fix pyrealpath
+* 55708fe 2.1.2
+* 57560b5 prepare v2.1.2
 * f4b1e1a templates: chmod -Rf a+w * || true
 * ae4cc96 xbb.sh: fix library path on native
 * ffa6dfd 2.1.1
