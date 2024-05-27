@@ -20,7 +20,7 @@ void doSomething(int id)
     {
         // Wait for the counter to reach this thread.
         std::unique_lock<std::mutex> lk(cv_m);
-        bool condition = cv.wait_for(lk, std::chrono::milliseconds(500), [&]{ return counter == id; });
+        bool condition = cv.wait_for(lk, std::chrono::milliseconds(1000), [&]{ return counter == id; });
 
         if ( !condition ) {
             std::cout << " " << letters[id] << ":timeout ";
@@ -32,7 +32,7 @@ void doSomething(int id)
     std::cout << letters[id];
 
     // Spend some time.
-    std::this_thread::sleep_for (std::chrono::milliseconds(10));
+    std::this_thread::sleep_for (std::chrono::milliseconds(20));
 
     {
         std::unique_lock<std::mutex> lk(cv_m);
@@ -73,7 +73,7 @@ void spawnThreads(int n)
     {
         // Wait for the counter to reach the upper limit.
         std::unique_lock<std::mutex> lk(cv_m);
-        bool condition = cv.wait_for(lk, std::chrono::milliseconds((n+1)*100), [&]{ return counter == n; });
+        bool condition = cv.wait_for(lk, std::chrono::milliseconds((n+1)*200), [&]{ return counter == n; });
 
         if ( !condition ) {
             std::cout << " top:timeout" << std::endl;
