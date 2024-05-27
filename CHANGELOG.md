@@ -2,9 +2,19 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-05-27
+
+* v2.1.1 released
+* 37310c8 test-common.sh: add initialise & report results
+* 961ec84 test-common.sh: source build-tests.sh
+* 30ebba6 separate tests_report_results
+* 6b630a7 templates.sh: chmod -R a+w
+* 929f5e2 gcc*.sh: make c-cpp writeable
+
 ## 2024-05-26
 
-* v2.1.0 released
+* 253f818 2.1.0
+* df4ed43 prepare v2.1.0
 * b3b8ee2 build-tests.sh: show platform-arch
 
 ## 2024-05-25
