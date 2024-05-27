@@ -302,7 +302,7 @@ function linux_get_rpaths_line()
 function pyrealpath()
 {
   local path=""
-  while [ $# -gt 1 ]
+  while [ $# -gt 0 ]
   do
     if [ ${1:0:1} == "-" ]
     then
