@@ -232,7 +232,7 @@ function hidapi_build()
             -- \
             install
 
-        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${hidapi_folder_name}/build-output.txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${hidapi_folder_name}/build-output-$(ndate).txt"
 
         (
           run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}"

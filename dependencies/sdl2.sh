@@ -137,8 +137,8 @@ function sdl2_build()
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${sdl2_src_folder_name}/configure" \
             ${config_options[@]}
 
-          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${sdl2_folder_name}/config-log.txt"
-        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_folder_name}/configure-output.txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${sdl2_folder_name}/config-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_folder_name}/configure-output-$(ndate).txt"
 
       fi
 
@@ -151,7 +151,7 @@ function sdl2_build()
 
         run_verbose make install
 
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_folder_name}/make-output.txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
         "${XBB_SOURCES_FOLDER_PATH}/${sdl2_src_folder_name}" \
@@ -280,7 +280,7 @@ function sdl2_image_build()
             ${config_options[@]}
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${sdl2_image_folder_name}/config-log.txt"
-        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_image_folder_name}/configure-output.txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_image_folder_name}/configure-output-$(ndate).txt"
 
       fi
 
@@ -298,7 +298,7 @@ function sdl2_image_build()
           run_verbose make install
         fi
 
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_image_folder_name}/make-output.txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${sdl2_image_folder_name}/make-output-$(ndate).txt"
 
       copy_license \
         "${XBB_SOURCES_FOLDER_PATH}/${sdl2_image_src_folder_name}" \
