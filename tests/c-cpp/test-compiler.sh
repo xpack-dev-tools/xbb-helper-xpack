@@ -332,7 +332,7 @@ function test_compiler_c_cpp()
         fi
       fi
 
-      test_case_crt_test
+      test_case_cnrt_test
       test_case_hello_weak_c
       test_case_hello_weak_cpp
 
@@ -756,16 +756,16 @@ function test_case_bufferoverflow()
   test_case_pass "${test_case_name}"
 }
 
-function test_case_crt_test()
+function test_case_cnrt_test()
 {
   local test_case_name="$(test_case_get_name)"
 
   trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
   # This test uses math functions. On Windows -lm is not mandatory.
-  run_host_app_verbose "${CC}" crt-test.c -o "${PREFIX}crt-test${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
-  show_target_libs_develop "${PREFIX}crt-test${SUFFIX}${XBB_TARGET_DOT_EXE}"
-  expect_target_succeed "${PREFIX}crt-test${SUFFIX}${XBB_TARGET_DOT_EXE}"
+  run_host_app_verbose "${CC}" cnrt-test.c -o "${PREFIX}cnrt-test${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
+  show_target_libs_develop "${PREFIX}cnrt-test${SUFFIX}${XBB_TARGET_DOT_EXE}"
+  expect_target_succeed "${PREFIX}cnrt-test${SUFFIX}${XBB_TARGET_DOT_EXE}"
 
   test_case_pass "${test_case_name}"
 }
