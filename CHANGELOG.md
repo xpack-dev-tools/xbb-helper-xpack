@@ -4,7 +4,14 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-05-28
 
-* v2.1.7 released
+* v2.1.8 released
+* 24614db rework kernel & distro name & version
+* dea6dc9 test-compiler.sh: rename test hello-c
+* 6bfabb2 rename test cnrt
+* 3854b5a make-test-skips.sh: iterate tests in order
+* 6dc8ded fix log dates
+* e49905b 2.1.7
+* 981f366 prepare v2.1.7
 * f1f8400 machine.sh: more elaborate logic for CLT version
 * 3a5d7a3 sleepy-threads-cv.cpp: increase timeouts
 * b77f404 common.sh: update create_macos_data_file
