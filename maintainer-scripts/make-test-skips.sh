@@ -34,8 +34,15 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-# Pass the test case name as first argument.
-test_case_name="$1"
+# Pass the results file name as first argument.
+results_file_name="${1:-results}"
 
-grep "${test_case_name}" results | sed -e 's|^.*FAIL.*[(]|export |' -e 's|[)]|="y"|'
+# grep "${test_case_name}" results | sed -e 's|^.*FAIL.*[(]|export |' -e 's|[)]|="y"|'
+
+for f in $(grep 'FAIL:' "${results_file_name}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||'  -e 's|libcxx-||' 2>&1 | sort -u)
+do
+  echo
+  echo "# ${f}."
+  grep "${f}" "${results_file_name}" | grep 'FAIL:' | sed -e 's|^.*FAIL.*[(]|export |' -e 's|[)]|="y"|'
+done
 
