@@ -1053,14 +1053,14 @@ function xbb_set_compiler_flags()
   elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
     local xbb_build_clt_version_major=$(echo ${XBB_BUILD_CLT_VERSION} | sed  -e 's|[.].*||')
-    local xbb_build_macos_version_major=$(echo ${XBB_BUILD_MACOS_VERSION} | sed  -e 's|[.].*||')
+    local xbb_build_macos_version_major=$(echo ${XBB_BUILD_DISTRO_VERSION} | sed  -e 's|[.].*||')
 
     if [ ! -z "${XBB_ENVIRONMENT_MACOSX_DEPLOYMENT_TARGET:-""}" ]
     then
       if [ ${xbb_build_macos_version_major} -ge 14 ] &&
          [ "${XBB_APPLICATION_SKIP_MACOSX_DEPLOYMENT_TARGET:-""}" == "y" ]
       then
-        echo "macOS ${XBB_BUILD_MACOS_VERSION} is too recent, setting MACOSX_DEPLOYMENT_TARGET skipped."
+        echo "${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION} is too recent, setting MACOSX_DEPLOYMENT_TARGET skipped."
       else
         export MACOSX_DEPLOYMENT_TARGET="${XBB_ENVIRONMENT_MACOSX_DEPLOYMENT_TARGET}"
 

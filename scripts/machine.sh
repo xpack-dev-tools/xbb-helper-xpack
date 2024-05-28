@@ -20,9 +20,6 @@ function machine_detect()
   XBB_BUILD_MACHINE="$(uname -m | tr '[:upper:]' '[:lower:]')"
   XBB_BUILD_TRIPLET="$(xbb_config_guess)"
 
-  XBB_BUILD_DISTRO_NAME="?" # Linux distribution name (Ubuntu|CentOS|...)
-  XBB_BUILD_DISTRO_LOWER_CASE_NAME="?" # Same, in lower case.
-
   # Node.js process.platform (darwin|linux|win32)
   XBB_BUILD_PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')"
   # Travis uses Msys2; git for Windows uses mingw-w64.
@@ -42,9 +39,10 @@ function machine_detect()
   then
     # uname -p -> i386, arm
     # uname -m -> x86_64|arm64
+    # uname -o -> Darwin
+    # uname -s -> Darwin
+    # uname -r -> kernel version
 
-    XBB_BUILD_DISTRO_NAME=Darwin
-    XBB_BUILD_DISTRO_LOWER_CASE_NAME=darwin
 
     XBB_BUILD_BITS="64"
 
@@ -66,11 +64,14 @@ function machine_detect()
       exit 1
     fi
 
-    XBB_BUILD_MACOS_VERSION="$(sw_vers | grep ProductVersion | sed -e 's|[^0-9]*||')"
-    echo "XBB_BUILD_MACOS_VERSION=${XBB_BUILD_MACOS_VERSION}"
-    export XBB_BUILD_MACOS_VERSION
+    XBB_BUILD_KERNEL_NAME="$(uname -s)" # Darwin
+    XBB_BUILD_KERNEL_VERSION="$(uname -r | sed -e 's|[-].*||')" # Kernel version
 
-    export XBB_BUILD_CLT_VERSION="$(pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | grep version | sed -e 's|[^0-9]*||')"
+    # macOS
+    XBB_BUILD_DISTRO_NAME="$(sw_vers | grep ProductName | sed -e 's|[a-zA-Z]*[:]||' | tr -d '[:blank:]')"
+    XBB_BUILD_DISTRO_VERSION="$(sw_vers | grep ProductVersion | sed -e 's|[a-zA-Z]*[:]||' | tr -d '[:blank:]')"
+
+    XBB_BUILD_CLT_VERSION="$(pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | grep version | sed -e 's|[^0-9]*||')"
     if [ -z "${XBB_BUILD_CLT_VERSION}" ]
     then
      XBB_BUILD_CLT_VERSION=$(xcodebuild -version | sed -En 's/Xcode[[:space:]]+([0-9\.]*)/\1/p')
@@ -126,8 +127,11 @@ function machine_detect()
       exit 1
     fi
 
-    XBB_BUILD_DISTRO_NAME=$(lsb_release -si)
-    XBB_BUILD_DISTRO_LOWER_CASE_NAME=$(echo ${XBB_BUILD_DISTRO_NAME} | tr "[:upper:]" "[:lower:]")
+    XBB_BUILD_KERNEL_NAME="$(uname -s)"
+    XBB_BUILD_KERNEL_VERSION="$(uname -r | sed -e 's|[-].*||')" # Kernel version
+
+    XBB_BUILD_DISTRO_NAME="$(lsb_release -is)" # Like "Ubuntu"
+    XBB_BUILD_DISTRO_VERSION="$(lsb_release -rs)" # Like "22.04"
 
   elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
   then
@@ -152,24 +156,44 @@ function machine_detect()
       exit 1
     fi
 
-    # Git Bash returns "Msys".
-    XBB_BUILD_DISTRO_NAME=$(uname -o)
-    XBB_BUILD_DISTRO_LOWER_CASE_NAME=$(echo ${XBB_BUILD_DISTRO_NAME} | tr "[:upper:]" "[:lower:]")
+    # Git Bash returns "Msys", Linux returns "GNU/Linux".
+    if [ "$(uname -o)" == "GNU/Linux" ]
+    then
+      XBB_BUILD_KERNEL_NAME="$(uname -s)"
+      XBB_BUILD_KERNEL_VERSION="$(uname -r | sed -e 's|[-].*||')" # Kernel version
 
+      XBB_BUILD_DISTRO_NAME="$(lsb_release -is)" # Like "Ubuntu"
+      XBB_BUILD_DISTRO_VERSION="$(lsb_release -rs)" # Like "22.04"
+    elif [ "${XBB_BUILD_KERNEL_NAME}" == "Msys" ]
+    then
+      XBB_BUILD_KERNEL_NAME="Windows"
+      XBB_BUILD_KERNEL_VERSION="$(systeminfo | grep -E '^OS Version:' | sed -e  's|^OS Version:||' -e  's|\s*||'  -e  's|\s.*||')"
+
+      # On Windows things are reversed, uname is used to get Msys version.
+      XBB_BUILD_DISTRO_NAME="Msys"
+      XBB_BUILD_DISTRO_VERSION="$(uname -r | sed -e 's|[-].*||')"
+    else
+      echo "Unsupported uname -o ${XBB_BUILD_KERNEL_NAME} in ${FUNCNAME[0]}()"
+    fi
   else
     echo "Unsupported uname ${XBB_BUILD_UNAME} in ${FUNCNAME[0]}()"
     exit 1
   fi
 
+  # XBB_BUILD_DISTRO_LOWER_CASE_NAME=$(echo ${XBB_BUILD_DISTRO_NAME} | tr "[:upper:]" "[:lower:]")
+
   echo
-  echo "Running on ${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_ARCH} (${XBB_BUILD_BITS}-bit)..."
+  echo "Running on ${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION} ${XBB_BUILD_ARCH} (${XBB_BUILD_BITS}-bit)..."
   uname -a
 
   export XBB_BUILD_UNAME # uname
   export XBB_BUILD_MACHINE # lower case uname -m, x86_64|i386|i686|aarch64|armv7l|armv8l
   export XBB_BUILD_TRIPLET
+  export XBB_BUILD_KERNEL_NAME
+  export XBB_BUILD_KERNEL_VERSION
   export XBB_BUILD_DISTRO_NAME
-  export XBB_BUILD_DISTRO_LOWER_CASE_NAME
+  # export XBB_BUILD_DISTRO_LOWER_CASE_NAME
+  export XBB_BUILD_DISTRO_VERSION
   export XBB_BUILD_PLATFORM # node.js: darwin|linux|win32
   export XBB_BUILD_ARCH # node.js: ia32|x64|arm|arm64
   export XBB_BUILD_BITS # 64|32
