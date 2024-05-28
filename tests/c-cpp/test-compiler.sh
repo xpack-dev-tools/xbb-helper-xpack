@@ -312,7 +312,7 @@ function test_compiler_c_cpp()
       # -----------------------------------------------------------------------
       # Tests borrowed from the llvm-mingw project.
 
-      test_case_hello
+      test_case_hello_c
       test_case_setjmp
       test_case_hello_cpp
       test_case_global_terminate
@@ -611,7 +611,7 @@ function test_case_atomic()
 
 # -----------------------------------------------------------------------------
 
-function test_case_hello()
+function test_case_hello_c()
 {
   local test_case_name="$(test_case_get_name)"
 
