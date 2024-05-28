@@ -164,7 +164,7 @@ function machine_detect()
 
       XBB_BUILD_DISTRO_NAME="$(lsb_release -is)" # Like "Ubuntu"
       XBB_BUILD_DISTRO_VERSION="$(lsb_release -rs)" # Like "22.04"
-    elif [ "${XBB_BUILD_KERNEL_NAME}" == "Msys" ]
+    elif [ "$(uname -o)" == "Msys" ]
     then
       XBB_BUILD_KERNEL_NAME="Windows"
       XBB_BUILD_KERNEL_VERSION="$(systeminfo | grep -E '^OS Version:' | sed -e  's|^OS Version:||' -e  's|\s*||'  -e  's|\s.*||')"
