@@ -4,7 +4,9 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-05-28
 
-* v2.1.8 released
+* 0551fed machine.sh: fix win32 Msys
+* 7c8db5e 2.1.8
+* ad3119d prepare v2.1.8
 * 24614db rework kernel & distro name & version
 * dea6dc9 test-compiler.sh: rename test hello-c
 * 6bfabb2 rename test cnrt
