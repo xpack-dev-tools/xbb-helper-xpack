@@ -645,8 +645,10 @@ function test_case_setjmp()
 
   trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
-  # run_host_app_verbose "${CC}" "setjmp-patched.c" -o "${PREFIX}setjmp${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
-  run_host_app_verbose "${CC}" "setjmp.c" -o "${PREFIX}setjmp${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
+  # The patch compares floats using fabs and a small epsilon.
+  run_host_app_verbose "${CC}" "setjmp-patched.c" -o "${PREFIX}setjmp${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
+  # run_host_app_verbose "${CC}" "setjmp.c" -o "${PREFIX}setjmp${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} -lm
+
   show_target_libs_develop "${PREFIX}setjmp${SUFFIX}${XBB_TARGET_DOT_EXE}"
   expect_target_succeed "${PREFIX}setjmp${SUFFIX}${XBB_TARGET_DOT_EXE}"
 
