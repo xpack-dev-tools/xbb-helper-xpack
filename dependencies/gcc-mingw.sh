@@ -69,6 +69,28 @@ function gcc_mingw_build_dependencies()
 
 function gcc_mingw_build_all_triplets()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
+  local is_bootstrap=""
+  local bootstrap_option=""
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --bootstrap )
+        is_bootstrap="y"
+        bootstrap_option="$1"
+        shift
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+  done
+
   for triplet in "${XBB_MINGW_TRIPLETS[@]}"
   do
 
@@ -101,7 +123,7 @@ function gcc_mingw_build_all_triplets()
       )
 
       # With the run-time available, build the C/C++ libraries and the rest.
-      gcc_mingw_build_final --triplet="${triplet}"
+      gcc_mingw_build_final --triplet="${triplet}" "${bootstrap_option}"
     )
 
   done
@@ -407,11 +429,20 @@ function gcc_mingw_build_final()
   local triplet="${XBB_TARGET_TRIPLET}" # "x86_64-w64-mingw32"
   local name_prefix
 
+  local is_bootstrap=""
+  local bootstrap_option=""
+
   while [ $# -gt 0 ]
   do
     case "$1" in
       --triplet=* )
         triplet=$(xbb_parse_option "$1")
+        shift
+        ;;
+
+      --bootstrap )
+        is_bootstrap="y"
+        bootstrap_option="$1"
         shift
         ;;
 
@@ -545,7 +576,7 @@ function gcc_mingw_build_final()
     echo "Component ${name_prefix}gcc final already installed"
   fi
 
-  tests_add "gcc_mingw_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}"
+  tests_add "gcc_mingw_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}" "${bootstrap_option}"
 }
 
 function gcc_mingw_test()
@@ -554,7 +585,28 @@ function gcc_mingw_test()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local test_bin_path="$1"
-  local triplet="$2"
+  shift
+  local triplet="$1"
+  shift
+
+  local is_bootstrap=""
+  local bootstrap_option=""
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --bootstrap )
+        is_bootstrap="y"
+        bootstrap_option="$1"
+        shift
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+  done
 
   local bits
   if [ "${triplet}" == "x86_64-w64-mingw32" ]
@@ -852,26 +904,26 @@ function gcc_mingw_test()
         echo "WINEPATH=${WINEPATH}"
       fi
 
-      test_compiler_c_cpp "${test_bin_path}" ${bits}
-      test_compiler_c_cpp "${test_bin_path}" --gc ${bits}
-      test_compiler_c_cpp "${test_bin_path}" --lto ${bits}
-      test_compiler_c_cpp "${test_bin_path}" --gc --lto ${bits}
+      test_compiler_c_cpp "${test_bin_path}" ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp "${test_bin_path}" --gc ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp "${test_bin_path}" --lto ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp "${test_bin_path}" --gc --lto ${bits} "${bootstrap_option}"
 
-      test_compiler_fortran "${test_bin_path}" ${bits}
+      test_compiler_fortran "${test_bin_path}" ${bits} "${bootstrap_option}"
     )
 
     (
-      test_compiler_c_cpp "${test_bin_path}" --static-lib ${bits}
-      test_compiler_c_cpp "${test_bin_path}" --static-lib --gc ${bits}
-      test_compiler_c_cpp "${test_bin_path}" --static-lib --lto ${bits}
-      test_compiler_c_cpp "${test_bin_path}" --static-lib --gc --lto ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --static-lib ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp "${test_bin_path}" --static-lib --gc ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp "${test_bin_path}" --static-lib --lto ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp "${test_bin_path}" --static-lib --gc --lto ${bits} "${bootstrap_option}"
     )
 
     (
-      test_compiler_c_cpp "${test_bin_path}" --static ${bits}
-      test_compiler_c_cpp "${test_bin_path}" --static --gc ${bits}
-      test_compiler_c_cpp "${test_bin_path}" --static --lto ${bits}
-      test_compiler_c_cpp "${test_bin_path}" --static --gc --lto ${bits}
+      test_compiler_c_cpp "${test_bin_path}" --static ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp "${test_bin_path}" --static --gc ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp "${test_bin_path}" --static --lto ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp "${test_bin_path}" --static --gc --lto ${bits} "${bootstrap_option}"
     )
 
     # -------------------------------------------------------------------------
