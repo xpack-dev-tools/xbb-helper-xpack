@@ -146,26 +146,26 @@ function test_case_trap_handler()
   local filtered_suffix="$(echo "${SUFFIX}" | sed -e 's|-bootstrap$||')"
   if [ ! -z "${filtered_suffix}" ]
   then
-    if is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}${filtered_suffix}" \
-                       "XBB_SKIP_TEST_ALL_${test_case_name}" \
-                       "XBB_SKIP_TEST_${PREFIX}${test_case_name}${filtered_suffix}" \
-                       "XBB_SKIP_TEST_${PREFIX}${test_case_name}"
+    if is_variable_set "XBB_IGNORE_TEST_ALL_${test_case_name}${filtered_suffix}" \
+                       "XBB_IGNORE_TEST_ALL_${test_case_name}" \
+                       "XBB_IGNORE_TEST_${PREFIX}${test_case_name}${filtered_suffix}" \
+                       "XBB_IGNORE_TEST_${PREFIX}${test_case_name}"
     then
       # Lower case means the failure is expected.
       echo "fail: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
     else
       # Upper case means the failure is unexpected.
-      local recommend="$(echo XBB_SKIP_TEST_${PREFIX}${test_case_name}${filtered_suffix} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
+      local recommend="$(echo XBB_IGNORE_TEST_${PREFIX}${test_case_name}${filtered_suffix} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
       echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX} ${exit_code} ${line_number} (${recommend})" >> "${XBB_TEST_RESULTS_FILE_PATH}"
     fi
   else
-    if is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}" \
-                       "XBB_SKIP_TEST_${PREFIX}${test_case_name}"
+    if is_variable_set "XBB_IGNORE_TEST_ALL_${test_case_name}" \
+                       "XBB_IGNORE_TEST_${PREFIX}${test_case_name}"
     then
       # Lower case means the failure is expected.
       echo "fail: ${PREFIX}${test_case_name}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
     else
-      local recommend="$(echo XBB_SKIP_TEST_${PREFIX}${test_case_name} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
+      local recommend="$(echo XBB_IGNORE_TEST_${PREFIX}${test_case_name} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
       # Upper case means the failure is unexpected.
       echo "FAIL: ${PREFIX}${test_case_name} (${recommend})" >> "${XBB_TEST_RESULTS_FILE_PATH}"
     fi

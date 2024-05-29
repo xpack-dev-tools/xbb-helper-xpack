@@ -1022,94 +1022,79 @@ function gcc_test()
          [ ${gcc_version_major} -eq 13 ] || \
          [ ${gcc_version_major} -eq 14 ]
       then
-        # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
-        # collect2.exe: error: ld returned 1 exit status
 
-        # Interestingly, LTO tests pass.
-        export XBB_SKIP_TEST_HELLO_WEAK_C="y"
-        export XBB_SKIP_TEST_GC_HELLO_WEAK_C="y"
-
-        export XBB_SKIP_TEST_STATIC_LIB_HELLO_WEAK_C="y"
-        export XBB_SKIP_TEST_STATIC_LIB_GC_HELLO_WEAK_C="y"
-
-        export XBB_SKIP_TEST_STATIC_HELLO_WEAK_C="y"
-        export XBB_SKIP_TEST_STATIC_GC_HELLO_WEAK_C="y"
-
-        export XBB_SKIP_TEST_HELLO_WEAK_CPP="y"
-        export XBB_SKIP_TEST_GC_HELLO_WEAK_CPP="y"
-
-        export XBB_SKIP_TEST_STATIC_LIB_HELLO_WEAK_CPP="y"
-        export XBB_SKIP_TEST_STATIC_LIB_GC_HELLO_WEAK_CPP="y"
-
-        export XBB_SKIP_TEST_STATIC_HELLO_WEAK_CPP="y"
-        export XBB_SKIP_TEST_STATIC_GC_HELLO_WEAK_CPP="y"
-
-        # [wine64 ./lto-throwcatch-main.exe]
-        # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 03d8), starting debugger...
-        # Unhandled exception: page fault on execute access to 0x0000000122b1157c in 64-bit code (0x00000122b1157c).
-
-        export XBB_SKIP_RUN_TEST_LTO_THROWCATCH_MAIN="y"
-        export XBB_SKIP_RUN_TEST_GC_LTO_THROWCATCH_MAIN="y"
-
-        export XBB_SKIP_RUN_TEST_STATIC_LIB_LTO_THROWCATCH_MAIN="y"
-        export XBB_SKIP_RUN_TEST_STATIC_LIB_GC_LTO_THROWCATCH_MAIN="y"
-
+        # autoimport-main.
         # [wine64 ./lto-autoimport-main.exe]
         # Mingw-w64 runtime failure:
         # 32 bit pseudo relocation at 000000014000152A out of range, targeting 000000028846135C, yielding the value 000000014845FE2E.
+        export XBB_IGNORE_TEST_LTO_AUTOIMPORT_MAIN="y"
+        export XBB_IGNORE_TEST_GC_LTO_AUTOIMPORT_MAIN="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_LTO_AUTOIMPORT_MAIN="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_AUTOIMPORT_MAIN="y"
 
-        export XBB_SKIP_RUN_TEST_LTO_AUTOIMPORT_MAIN="y"
-        export XBB_SKIP_RUN_TEST_GC_LTO_AUTOIMPORT_MAIN="y"
+        # hello-weak-c.
+        # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
+        # collect2.exe: error: ld returned 1 exit status
+        # Interestingly, LTO tests pass.
+        export XBB_IGNORE_TEST_HELLO_WEAK_C="y"
+        export XBB_IGNORE_TEST_GC_HELLO_WEAK_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK_C="y"
+        export XBB_IGNORE_TEST_STATIC_HELLO_WEAK_C="y"
+        export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK_C="y"
 
-        export XBB_SKIP_RUN_TEST_STATIC_LIB_LTO_AUTOIMPORT_MAIN="y"
-        export XBB_SKIP_RUN_TEST_STATIC_LIB_GC_LTO_AUTOIMPORT_MAIN="y"
+        # hello-weak-cpp.
+        export XBB_IGNORE_TEST_HELLO_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_GC_HELLO_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_HELLO_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK_CPP="y"
 
-        # weak-defined - fully functional.
+        # overload-new.
+        # static lib and static are functional. (all on mingw!)
+        # Does not return success.
+        export XBB_IGNORE_TEST_OVERLOAD_NEW_CPP="y"
+        export XBB_IGNORE_TEST_GC_OVERLOAD_NEW_CPP="y"
+        export XBB_IGNORE_TEST_LTO_OVERLOAD_NEW_CPP="y"
+        export XBB_IGNORE_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
 
-        # weak-use - LTO variants are functional.
-        # in function `dummy': undefined reference to `func'
-        export XBB_SKIP_TEST_WEAK_USE_C="y"
-        export XBB_SKIP_TEST_GC_WEAK_USE_C="y"
+        # throwcatch-main.
+        # [wine64 ./lto-throwcatch-main.exe]
+        # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 03d8), starting debugger...
+        # Unhandled exception: page fault on execute access to 0x0000000122b1157c in 64-bit code (0x00000122b1157c).
+        export XBB_IGNORE_TEST_LTO_THROWCATCH_MAIN="y"
+        export XBB_IGNORE_TEST_GC_LTO_THROWCATCH_MAIN="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_LTO_THROWCATCH_MAIN="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_THROWCATCH_MAIN="y"
 
-        export XBB_SKIP_TEST_STATIC_LIB_WEAK_USE_C="y"
-        export XBB_SKIP_TEST_STATIC_LIB_GC_WEAK_USE_C="y"
-
-        export XBB_SKIP_TEST_STATIC_WEAK_USE_C="y"
-        export XBB_SKIP_TEST_STATIC_GC_WEAK_USE_C="y"
-
-        # weak-override - fully functional.
+        # unwind-weak.
+        # LTO are functional.
+        #  in function `main': undefined reference to `step1'
+        export XBB_IGNORE_TEST_UNWIND_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_GC_UNWIND_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_UNWIND_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_UNWIND_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_UNWIND_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_GC_UNWIND_WEAK_CPP="y"
 
         # weak-duplicate - LTO are functional.
         # in function `dummy': undefined reference to `func'
-        export XBB_SKIP_TEST_WEAK_DUPLICATE_C="y"
-        export XBB_SKIP_TEST_GC_WEAK_DUPLICATE_C="y"
+        export XBB_IGNORE_TEST_WEAK_DUPLICATE_C="y"
+        export XBB_IGNORE_TEST_GC_WEAK_DUPLICATE_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_WEAK_DUPLICATE_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_DUPLICATE_C="y"
+        export XBB_IGNORE_TEST_STATIC_WEAK_DUPLICATE_C="y"
+        export XBB_IGNORE_TEST_STATIC_GC_WEAK_DUPLICATE_C="y"
 
-        export XBB_SKIP_TEST_STATIC_LIB_WEAK_DUPLICATE_C="y"
-        export XBB_SKIP_TEST_STATIC_LIB_GC_WEAK_DUPLICATE_C="y"
-
-        export XBB_SKIP_TEST_STATIC_WEAK_DUPLICATE_C="y"
-        export XBB_SKIP_TEST_STATIC_GC_WEAK_DUPLICATE_C="y"
-
-        # overload-new - static lib and static are functional. (all on mingw!)
-        # Does not return success.
-        export XBB_SKIP_TEST_OVERLOAD_NEW_CPP="y"
-        export XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
-
-        export XBB_SKIP_TEST_LTO_OVERLOAD_NEW_CPP="y"
-        export XBB_SKIP_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
-
-        # unwind-weak - LTO are functional.
-        #  in function `main': undefined reference to `step1'
-        export XBB_SKIP_TEST_UNWIND_WEAK_CPP="y"
-        export XBB_SKIP_TEST_GC_UNWIND_WEAK_CPP="y"
-
-        export XBB_SKIP_TEST_STATIC_LIB_UNWIND_WEAK_CPP="y"
-        export XBB_SKIP_TEST_STATIC_LIB_GC_UNWIND_WEAK_CPP="y"
-
-        export XBB_SKIP_TEST_STATIC_UNWIND_WEAK_CPP="y"
-        export XBB_SKIP_TEST_STATIC_GC_UNWIND_WEAK_CPP="y"
-
-        # unwind-strong - fully functional.
+        # weak-use - LTO variants are functional.
+        # in function `dummy': undefined reference to `func'
+        export XBB_IGNORE_TEST_WEAK_USE_C="y"
+        export XBB_IGNORE_TEST_GC_WEAK_USE_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_WEAK_USE_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_USE_C="y"
+        export XBB_IGNORE_TEST_STATIC_WEAK_USE_C="y"
+        export XBB_IGNORE_TEST_STATIC_GC_WEAK_USE_C="y"
       fi
 
       (
@@ -1152,26 +1137,26 @@ function gcc_test()
       then
         # sleepy-threads
         # Weird, only the static tests die with 'Segmentation fault'.
-        export XBB_SKIP_TEST_STATIC_SLEEPY_THREADS="y"
-        export XBB_SKIP_TEST_STATIC_GC_SLEEPY_THREADS="y"
-        export XBB_SKIP_TEST_STATIC_LTO_SLEEPY_THREADS="y"
-        export XBB_SKIP_TEST_STATIC_GC_LTO_SLEEPY_THREADS="y"
+        export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS="y"
+        export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS="y"
+        export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS="y"
+        export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS="y"
 
         # sleepy-threads-cv
         # Weird, only the static tests die with 'Segmentation fault'.
-        export XBB_SKIP_TEST_STATIC_SLEEPY_THREADS_CV="y"
-        export XBB_SKIP_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
-        export XBB_SKIP_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
-        export XBB_SKIP_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
+        export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_CV="y"
+        export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
+        export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
+        export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
       elif [ ${gcc_version_major} -eq 13 ] || \
            [ ${gcc_version_major} -eq 14 ]
       then
         # sleepy-threads-cv
-        # Weird, only the static tests die with 'Segmentation fault'.
-        export XBB_SKIP_TEST_STATIC_SLEEPY_THREADS_CV="y"
-        export XBB_SKIP_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
-        export XBB_SKIP_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
-        export XBB_SKIP_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
+        # Weird, the static tests crash with 'Segmentation fault'.
+        export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_CV="y"
+        export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
+        export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
+        export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
       fi
 
       if [ "${XBB_HOST_ARCH}" == "x64" ]
@@ -1303,11 +1288,11 @@ function gcc_test()
         then
           # weak-undef.
           # Most likely an Apple linker issue.
-          export XBB_SKIP_TEST_ALL_WEAK_UNDEF_C="y"
+          export XBB_IGNORE_TEST_ALL_WEAK_UNDEF_C="y"
 
           # This one fails only with GC?!
-          export XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
-          export XBB_SKIP_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
+          export XBB_IGNORE_TEST_GC_OVERLOAD_NEW_CPP="y"
+          export XBB_IGNORE_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
 
           if false # [ "${XBB_HOST_ARCH}" == "x64" ]
           then
@@ -1315,18 +1300,18 @@ function gcc_test()
             # terminate called after throwing an instance of 'std::exception'
             # what():  std::exception
 
-            export XBB_SKIP_TEST_HELLO_EXCEPTION="y"
-            export XBB_SKIP_TEST_GC_HELLO_EXCEPTION="y"
-            export XBB_SKIP_TEST_LTO_HELLO_EXCEPTION="y"
-            export XBB_SKIP_TEST_GC_LTO_HELLO_EXCEPTION="y"
+            export XBB_IGNORE_TEST_HELLO_EXCEPTION="y"
+            export XBB_IGNORE_TEST_GC_HELLO_EXCEPTION="y"
+            export XBB_IGNORE_TEST_LTO_HELLO_EXCEPTION="y"
+            export XBB_IGNORE_TEST_GC_LTO_HELLO_EXCEPTION="y"
 
             # [./exception-reduced ]
             # terminate called after throwing an instance of 'int'
 
-            export XBB_SKIP_RUN_TEST_EXCEPTION_REDUCED="y"
-            export XBB_SKIP_RUN_TEST_GC_EXCEPTION_REDUCED="y"
-            export XBB_SKIP_RUN_TEST_LTO_EXCEPTION_REDUCED="y"
-            export XBB_SKIP_RUN_TEST_GC_LTO_EXCEPTION_REDUCED="y"
+            export XBB_IGNORE_TEST_EXCEPTION_REDUCED="y"
+            export XBB_IGNORE_TEST_GC_EXCEPTION_REDUCED="y"
+            export XBB_IGNORE_TEST_LTO_EXCEPTION_REDUCED="y"
+            export XBB_IGNORE_TEST_GC_LTO_EXCEPTION_REDUCED="y"
           fi
         fi
 
@@ -1335,19 +1320,19 @@ function gcc_test()
         then
           # weak-undef.
           # Most likely an Apple linker issue.
-          export XBB_SKIP_TEST_ALL_WEAK_UNDEF_C="y"
-          # export XBB_SKIP_TEST_WEAK_UNDEF_C="y"
-          # export XBB_SKIP_TEST_GC_WEAK_UNDEF_C="y"
-          # export XBB_SKIP_TEST_LTO_WEAK_UNDEF_C="y"
-          # export XBB_SKIP_TEST_GC_LTO_WEAK_UNDEF_C="y"
-          # export XBB_SKIP_TEST_STATIC_LIB_WEAK_UNDEF_C="y"
-          # export XBB_SKIP_TEST_STATIC_LIB_GC_WEAK_UNDEF_C="y"
-          # export XBB_SKIP_TEST_STATIC_LIB_LTO_WEAK_UNDEF_C="y"
-          # export XBB_SKIP_TEST_STATIC_LIB_GC_LTO_WEAK_UNDEF_C="y"
+          export XBB_IGNORE_TEST_ALL_WEAK_UNDEF_C="y"
+          # export XBB_IGNORE_TEST_WEAK_UNDEF_C="y"
+          # export XBB_IGNORE_TEST_GC_WEAK_UNDEF_C="y"
+          # export XBB_IGNORE_TEST_LTO_WEAK_UNDEF_C="y"
+          # export XBB_IGNORE_TEST_GC_LTO_WEAK_UNDEF_C="y"
+          # export XBB_IGNORE_TEST_STATIC_LIB_WEAK_UNDEF_C="y"
+          # export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_UNDEF_C="y"
+          # export XBB_IGNORE_TEST_STATIC_LIB_LTO_WEAK_UNDEF_C="y"
+          # export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_WEAK_UNDEF_C="y"
 
           # This one fails only with GC?!
-          export XBB_SKIP_TEST_GC_OVERLOAD_NEW_CPP="y"
-          export XBB_SKIP_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
+          export XBB_IGNORE_TEST_GC_OVERLOAD_NEW_CPP="y"
+          export XBB_IGNORE_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
         fi
 
         # ---------------------------------------------------------------------
