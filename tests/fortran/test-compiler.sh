@@ -11,6 +11,8 @@
 
 # test_bin_path
 # [--32|--64]
+# [--bootstrap]
+
 function test_compiler_fortran()
 {
   echo_develop
@@ -21,6 +23,8 @@ function test_compiler_fortran()
 
   (
     unset IFS
+
+    local is_bootstrap=""
 
     PREFIX=""
     SUFFIX=""
@@ -42,6 +46,11 @@ function test_compiler_fortran()
           shift
           ;;
 
+        --bootstrap )
+          is_bootstrap="y"
+          shift
+          ;;
+
         * )
           echo "Unsupported option $1 in ${FUNCNAME[0]}()"
           exit 1
@@ -49,6 +58,11 @@ function test_compiler_fortran()
 
       esac
     done
+
+    if [ "${is_bootstrap}" == "y" ]
+    then
+      SUFFIX+="-bootstrap"
+    fi
 
     LDFLAGS=""
 

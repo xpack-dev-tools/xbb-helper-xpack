@@ -10,7 +10,6 @@
 # -----------------------------------------------------------------------------
 
 # test_bin_path
-# [--suffix=("" | "-bootstrap")]
 # [--lto]
 # [--gc]
 # [--32|--64]
@@ -18,6 +17,8 @@
 # [--crt]
 # [--libunwind]
 # [--lld]
+# [--suffix="..."]
+# [--bootstrap]
 
 function test_compiler_c_cpp()
 {
@@ -44,6 +45,8 @@ function test_compiler_c_cpp()
     local use_libpthread="n"
     local use_libdl="n"
 
+    local is_bootstrap=""
+
     PREFIX=""
     SUFFIX=""
     BITS_FLAGS=""
@@ -53,7 +56,7 @@ function test_compiler_c_cpp()
       case "$1" in
 
         --suffix=* )
-          SUFFIX=$(xbb_parse_option "$1")
+          SUFFIX+=$(xbb_parse_option "$1")
           shift
           ;;
 
@@ -123,6 +126,11 @@ function test_compiler_c_cpp()
 
         --lld )
           use_lld="y"
+          shift
+          ;;
+
+        --bootstrap )
+          is_bootstrap="y"
           shift
           ;;
 
@@ -254,6 +262,11 @@ function test_compiler_c_cpp()
       then
         VERBOSE+=" -Wl,-t,-t"
       fi
+    fi
+
+    if [ "${is_bootstrap}" == "y" ]
+    then
+      SUFFIX+="-bootstrap"
     fi
 
     export CFLAGS
