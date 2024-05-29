@@ -66,7 +66,7 @@ function tests_report_results()
   if [ ${failed} -gt 0 ]
   then
     echo
-    echo "Tests report for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
+    echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
     echo
     echo "${passed} test(s) passed, ${failed} failed:"
     echo
@@ -77,7 +77,7 @@ function tests_report_results()
     then
       echo
       echo "${catastrophic} failed unexpectedly"
-      echo "Result: tests cannot be accepted"
+      echo "Verdict: tests cannot be accepted"
 
       echo
       echo "Possibly ignore some tests:"
@@ -93,7 +93,7 @@ function tests_report_results()
       exit 1
     else
       echo
-      echo "Result: tests accepted"
+      echo "Verdict: tests accepted"
     fi
   else
     echo
