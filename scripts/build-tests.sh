@@ -93,7 +93,7 @@ function tests_report_results()
       exit 1
     else
       echo
-      echo "Verdict: tests accepted"
+      echo "Verdict: tests reluctantly accepted"
     fi
   else
     echo
