@@ -66,7 +66,7 @@ function tests_report_results()
   if [ ${failed} -gt 0 ]
   then
     echo
-    echo "Tests report for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH}"
+    echo "Tests report for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
     echo
     echo "${passed} test(s) passed, ${failed} failed:"
     echo
@@ -77,11 +77,11 @@ function tests_report_results()
     then
       echo
       echo "${catastrophic} failed unexpectedly"
-      echo "Result: ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} tests cannot be accepted"
+      echo "Result: tests cannot be accepted"
       exit 1
     else
       echo
-      echo "Result: ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} tests accepted"
+      echo "Result: tests accepted"
     fi
   else
     echo
@@ -89,7 +89,7 @@ function tests_report_results()
     then
       echo "${passed} test(s) passed"
     fi
-    echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} tests completed successfully"
+    echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION}) tests completed successfully"
   fi
 }
 
