@@ -32,13 +32,13 @@ function test_compiler_fortran()
 
         --64 )
           BITS_FLAGS=" -m64"
-          SUFFIX="-64"
+          SUFFIX+="-64"
           shift
           ;;
 
         --32 )
           BITS_FLAGS=" -m32"
-          SUFFIX="-32"
+          SUFFIX+="-32"
           shift
           ;;
 
