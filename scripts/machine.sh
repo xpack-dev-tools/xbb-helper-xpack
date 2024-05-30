@@ -185,7 +185,27 @@ function machine_detect()
 
   echo
   echo "Running on ${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION} ${XBB_BUILD_ARCH} (${XBB_BUILD_BITS}-bit)..."
-  uname -a
+
+  run_verbose uname -a
+
+  # Platform specific verbosity.
+  if [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
+  then
+    run_verbose sw_vers
+    run_verbose xcode-select --print-path
+    if pkgutil --pkg-info=com.apple.pkg.CLTools_Executables 2>/dev/null >/dev/null
+    then
+      run_verbose pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
+    else
+      run_verbose xcodebuild -version
+    fi
+  elif [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+  then
+    run_verbose lsb_release -a
+  elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+  then
+    run_verbose systeminfo |  grep -E '^OS [NVCB].*:'
+  fi
 
   export XBB_BUILD_UNAME # uname
   export XBB_BUILD_MACHINE # lower case uname -m, x86_64|i386|i686|aarch64|armv7l|armv8l
