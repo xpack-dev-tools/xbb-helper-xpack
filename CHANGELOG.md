@@ -2,8 +2,27 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-05-30
+
+* v2.1.10 released
+* 4e31a83 templates: bump 5.2.1
+
+## 2024-05-29
+
+* dd7111b build-tests.sh: add 'reluctantly'
+* 7de47bf build-tests.sh: rephrases
+* ebc11b8 rename XBB_IGNORE_TEST_
+* ba9ed90 build-tests.sh: suggest tests to ignore
+* 5f19c25 test-compiler.sh: use setjmp-patched.c
+* a6f1e14 gcc-mingw.sh: add -bootstrap
+* 5664c8c build-tests.sh: add -bootstrap suffix
+* fa36286 fortran/test-compiler.sh: make SUFFIX cumulative
+* 5dfe3a5 build-tests.sh: cosmetise messages
+
 ## 2024-05-28
 
+* 53ebadb 2.1.9
+* 8812a2f * v2.1.9 released
 * 0551fed machine.sh: fix win32 Msys
 * 7c8db5e 2.1.8
 * ad3119d prepare v2.1.8
