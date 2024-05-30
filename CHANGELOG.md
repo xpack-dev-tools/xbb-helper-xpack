@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-05-30
 
-* v2.1.11 released
+* v2.1.12 released
+* 6533ee8 machine.sh: add platform specific verbosity
+* bc6d0d9 2.1.11
+* 9c0973c prepare v2.1.11
 * e5cff33 machine.sh: do not crash if no CLTools_Executables
 * 712ceb3 2.1.10
 * 989f370 prepare v2.1.10
