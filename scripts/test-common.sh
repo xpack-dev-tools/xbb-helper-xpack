@@ -211,7 +211,12 @@ function tests_good_bye()
     then
       run_verbose sw_vers
       # Travis old images may not include CLT (like 10.15.7)
-      run_verbose pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || xcodebuild -version || true
+      if pkgutil --pkg-info=com.apple.pkg.CLTools_Executables 2>/dev/null >/dev/null
+      then
+        run_verbose pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
+      else
+        run_verbose xcodebuild -version || true
+      fi
     fi
   )
 }
