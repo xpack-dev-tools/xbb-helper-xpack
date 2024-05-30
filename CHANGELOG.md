@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-05-30
 
-* v2.1.10 released
+* v2.1.11 released
+* e5cff33 machine.sh: do not crash if no CLTools_Executables
+* 712ceb3 2.1.10
+* 989f370 prepare v2.1.10
 * 4e31a83 templates: bump 5.2.1
 
 ## 2024-05-29
