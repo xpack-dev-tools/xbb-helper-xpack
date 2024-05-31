@@ -143,15 +143,17 @@ jobs:
     steps:
       - name: 'Environment'
         run: |
-          echo "pwd: $(pwd)"
-          echo "whoami: $(whoami)"
-          echo "node: $(node --version)"
-          echo "npm: $(npm --version)"
           uname -a
           sw_vers
+          sudo xcode-select --switch /Applications/Xcode_15.4.app
           xcode-select --print-path
-          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || xcodebuild -version
-          ls -l /Library/Developer/CommandLineTools/usr/include || true
+          xcodebuild -version || true
+          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true
+          ls -lA /Library/Developer/CommandLineTools/SDKs || true
+          ls -lA /Applications
+          clang++ -v
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
@@ -184,15 +186,17 @@ jobs:
     steps:
       - name: 'Environment'
         run: |
-          echo "pwd: $(pwd)"
-          echo "whoami: $(whoami)"
-          echo "node: $(node --version)"
-          echo "npm: $(npm --version)"
           uname -a
           sw_vers
+          sudo xcode-select --switch /Applications/Xcode_15.4.app
           xcode-select --print-path
-          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || xcodebuild -version
-          ls -l /Library/Developer/CommandLineTools/usr/include || true
+          xcodebuild -version || true
+          pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true
+          ls -lA /Library/Developer/CommandLineTools/SDKs || true
+          ls -lA /Applications
+          clang++ -v
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
