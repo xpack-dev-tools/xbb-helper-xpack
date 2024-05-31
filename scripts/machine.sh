@@ -43,7 +43,6 @@ function machine_detect()
     # uname -s -> Darwin
     # uname -r -> kernel version
 
-
     XBB_BUILD_BITS="64"
 
     if [ "${XBB_BUILD_MACHINE}" == "x86_64" ]
@@ -71,12 +70,17 @@ function machine_detect()
     XBB_BUILD_DISTRO_NAME="$(sw_vers | grep ProductName | sed -e 's|[a-zA-Z]*[:]||' | tr -d '[:blank:]')"
     XBB_BUILD_DISTRO_VERSION="$(sw_vers | grep ProductVersion | sed -e 's|[a-zA-Z]*[:]||' | tr -d '[:blank:]')"
 
-    if pkgutil --pkg-info=com.apple.pkg.CLTools_Executables 2>/dev/null >/dev/null
+    if xcodebuild 2>/dev/null >/dev/null
+    then
+      XBB_BUILD_CLT_VERSION="$(xcodebuild -version | sed -En 's/Xcode[[:space:]]+([0-9\.]*)/\1/p')"
+    elif pkgutil --pkg-info=com.apple.pkg.CLTools_Executables 2>/dev/null >/dev/null
     then
       XBB_BUILD_CLT_VERSION="$(pkgutil --pkg-info=com.apple.pkg.CLTools_Executables | grep version | sed -e 's|[^0-9]*||')"
     else
-      XBB_BUILD_CLT_VERSION="$(xcodebuild -version | sed -En 's/Xcode[[:space:]]+([0-9\.]*)/\1/p')"
+      echo "No Xcode or CLT installed"
+      exit 1
     fi
+
     echo "XBB_BUILD_CLT_VERSION=${XBB_BUILD_CLT_VERSION}"
     export XBB_BUILD_CLT_VERSION
 
@@ -193,11 +197,12 @@ function machine_detect()
   then
     run_verbose sw_vers
     run_verbose xcode-select --print-path
-    if pkgutil --pkg-info=com.apple.pkg.CLTools_Executables 2>/dev/null >/dev/null
+    if xcodebuild 2>/dev/null >/dev/null
+    then
+      run_verbose xcodebuild -version
+    elif pkgutil --pkg-info=com.apple.pkg.CLTools_Executables 2>/dev/null >/dev/null
     then
       run_verbose pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
-    else
-      run_verbose xcodebuild -version
     fi
   elif [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
