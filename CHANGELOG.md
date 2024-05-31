@@ -2,9 +2,17 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-05-31
+
+* v2.1.13 released
+* 1ea14cb show-libs.sh: avoid .exe warning
+* c71573f machine.sh: macOS capabilities
+* 7c461c1 templates/*.yml: more verbose show environment
+
 ## 2024-05-30
 
-* v2.1.12 released
+* bd736a5 2.1.12
+* d4f75ac prepare v2.1.12
 * 6533ee8 machine.sh: add platform specific verbosity
 * bc6d0d9 2.1.11
 * 9c0973c prepare v2.1.11
