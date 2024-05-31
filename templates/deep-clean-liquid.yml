@@ -23,7 +23,7 @@ jobs:
     timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64]
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           lsb_release -sd
@@ -48,7 +48,7 @@ jobs:
     runs-on: [self-hosted, linux, arm, xbbla32]
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           lsb_release -sd
@@ -72,7 +72,7 @@ jobs:
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm64, xbbla]
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           lsb_release -sd
@@ -100,7 +100,7 @@ jobs:
     runs-on: [self-hosted, macos, intel]
 {% endif %}
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           sw_vers # lsb_release -sd
@@ -128,7 +128,7 @@ jobs:
     runs-on: [self-hosted, macos, apple]
 {% endif %}
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           sw_vers # lsb_release -sd

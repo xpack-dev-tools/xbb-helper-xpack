@@ -53,7 +53,7 @@ jobs:
         shell: bash
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
@@ -129,7 +129,7 @@ jobs:
         shell: bash
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
@@ -205,7 +205,7 @@ jobs:
         shell: bash
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
@@ -281,7 +281,7 @@ jobs:
         shell: bash
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
@@ -355,7 +355,7 @@ jobs:
     runs-on: [self-hosted, macos, intel]
 {% endif %}
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           echo "pwd: $(pwd)"
           echo "whoami: $(whoami)"
@@ -436,7 +436,7 @@ jobs:
     runs-on: [self-hosted, macos, apple]
 {% endif %}
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           echo "pwd: $(pwd)"
           echo "whoami: $(whoami)"
