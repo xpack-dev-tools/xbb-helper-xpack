@@ -2,9 +2,23 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-02
+
+* v2.1.14 released
+* 2826a4d templates/*linux*: update -static
+* 45303a9 test-prime: links to GA images & cosmetics
+* ddb2e1d dot.npmignore: NOTES.md
+* 78916e5 gdb.sh: compile test with system g++
+* b6efc6d gcc.sh: enable static on redhat
+* 0d930b6 test-common.sh: add more libs (static, etc)
+
 ## 2024-05-31
 
-* v2.1.13 released
+* 1b3972e templates: 'Show environment:'
+* e029cd5 test-prime-liquid.yml: macos-14 for arm64
+* a306107 test-prime-liquid.yml: sudo xcode-select --switch
+* 174c3c3 2.1.13
+* e362250 prepare v2.1.13
 * 1ea14cb show-libs.sh: avoid .exe warning
 * c71573f machine.sh: macOS capabilities
 * 7c461c1 templates/*.yml: more verbose show environment
