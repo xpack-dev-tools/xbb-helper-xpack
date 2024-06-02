@@ -284,7 +284,11 @@ __EOF__
         # echo
         # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-        run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp -g -v -static-libstdc++ -static-libgcc
+        (
+          # Use the system compiler.
+          unset PATH
+          run_host_app_verbose g++ hello.cpp -o hello-cpp -g -v -static-libstdc++ -static-libgcc
+        )
 
         show_host_libs hello-cpp
 
@@ -333,7 +337,11 @@ __EOF__
           # echo
           # echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-          run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp -g -v -static-libstdc++
+          (
+            # Use the system compiler.
+            unset PATH
+            run_host_app_verbose clang++ hello.cpp -o hello-cpp -g -v -static-libstdc++
+          )
 
           show_host_libs hello-cpp
 
