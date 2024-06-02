@@ -323,7 +323,7 @@ function tests_update_system_common()
 
   echo
   echo "The system C/C++ libraries..."
-  find /usr/lib* /lib -name 'libc.*' -o -name 'libstdc++.*' -o -name 'libgcc_s.*'
+  find /usr/lib* /lib -name 'libc.*' -o -name 'libstdc++.*' -o -name 'libgcc_s.*' -name 'libm.*'
 }
 
 # Redefine it in the application if more updates are needed.
