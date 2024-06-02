@@ -152,7 +152,7 @@ function test_case_trap_handler()
                        "XBB_IGNORE_TEST_${PREFIX}${test_case_name}"
     then
       # Lower case means the failure is expected.
-      echo "fail: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+      echo "xfail: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
     else
       # Upper case means the failure is unexpected.
       local recommend="$(echo XBB_IGNORE_TEST_${PREFIX}${test_case_name}${filtered_suffix} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
@@ -163,7 +163,7 @@ function test_case_trap_handler()
                        "XBB_IGNORE_TEST_${PREFIX}${test_case_name}"
     then
       # Lower case means the failure is expected.
-      echo "fail: ${PREFIX}${test_case_name}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+      echo "xfail: ${PREFIX}${test_case_name}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
     else
       local recommend="$(echo XBB_IGNORE_TEST_${PREFIX}${test_case_name} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
       # Upper case means the failure is unexpected.
