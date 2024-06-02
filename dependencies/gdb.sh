@@ -286,7 +286,7 @@ __EOF__
 
         (
           # Use the system compiler.
-          unset PATH
+          export PATH="${XBB_SAVED_PATH}"
           export CXX="$(which g++)"
           run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp -g -v -static-libstdc++ -static-libgcc
         )
@@ -340,7 +340,7 @@ __EOF__
 
           (
             # Use the system compiler.
-            unset PATH
+            export PATH="${XBB_SAVED_PATH}"
             export CXX="$(which clang++)"
             run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp -g -v -static-libstdc++
           )
