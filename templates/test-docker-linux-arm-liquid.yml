@@ -151,7 +151,7 @@ jobs:
 
 
   # https://hub.docker.com/r/redhat/ubi8
-  # `-static` disabled, there is no static libc.a.
+  # For `-static` to work, explicit static packages must be present.
   redhat-arm64:
     name: 'arm64 {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test on RedHat stable'
     runs-on: [self-hosted, linux, arm64, xbbla]
@@ -193,7 +193,7 @@ jobs:
 
   # https://en.wikipedia.org/wiki/Fedora_version_history
   # https://hub.docker.com/_/fedora
-  # `-static` disabled, there is no static libc.a.
+  # For `-static` to work, explicit static packages must be present.
   fedora-arm64:
     name: 'arm64 {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test on Fedora stable'
     runs-on: [self-hosted, linux, arm64, xbbla]
