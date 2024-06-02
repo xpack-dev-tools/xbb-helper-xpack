@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-06-02
 
-* v2.1.14 released
+* v2.1.15 released
+* 66347f1 gdb.sh: use absolute path to system compiler
+* f1754a0 2.1.14
+* 3ec70ba prepare v2.1.14
 * 2826a4d templates/*linux*: update -static
 * 45303a9 test-prime: links to GA images & cosmetics
 * ddb2e1d dot.npmignore: NOTES.md
