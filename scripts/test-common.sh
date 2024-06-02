@@ -257,7 +257,7 @@ function tests_update_system_common()
   then
     run_verbose sudo apt-get update
     # To make 32-bit tests possible.
-    run_verbose sudo apt-get -qq install --yes g++-multilib
+    run_verbose sudo apt-get -qq install --yes g++ g++-multilib
   elif [[ ${image_name} == *raspbian* ]]
   then
     run_verbose apt-get -qq update
@@ -267,7 +267,7 @@ function tests_update_system_common()
     run_verbose apt-get -qq update
     run_verbose apt-get -qq install -y git-core curl tar gzip lsb-release binutils file
 
-    run_verbose apt-get -qq install --yes g++
+    run_verbose apt-get -qq install --yes build-essential g++ libc6-dev libstdc++6
     if [ "$(uname -m)" == "x86_64" ]
     then
       run_verbose apt-get -qq install --yes g++-multilib
@@ -277,20 +277,20 @@ function tests_update_system_common()
     run_verbose yum update --assumeyes --quiet
     run_verbose yum install --assumeyes --quiet git curl tar gzip redhat-lsb-core binutils which
 
-    run_verbose yum install --assumeyes --quiet gcc-c++ glibc glibc-common libstdc++ libatomic
+    run_verbose yum install --assumeyes --quiet gcc-c++ glibc glibc-common glibc-static libstdc++ libstdc++-static libatomic libgfortran glibc-devel libstdc++-devel make
     if [ "$(uname -m)" == "x86_64" ]
     then
-      run_verbose yum install --assumeyes --quiet libgcc*i686 libstdc++*i686 glibc*i686 libatomic*i686 # libgfortran*i686
+      run_verbose yum install --assumeyes --quiet libgcc*i686 libstdc++*i686 glibc*i686 libatomic*i686 libgfortran*i686
     fi
   elif [[ ${image_name} == *suse* ]]
   then
     run_verbose zypper --quiet --no-gpg-checks update --no-confirm
     run_verbose zypper --quiet --no-gpg-checks install --no-confirm git-core curl tar gzip lsb-release binutils findutils util-linux
 
-    run_verbose zypper --quiet --no-gpg-checks install --no-confirm gcc-c++ glibc
+    run_verbose zypper --quiet --no-gpg-checks install --no-confirm gcc-c++ glibc glibc-devel-static glibc-devel libstdc++6 make
     if [ "$(uname -m)" == "x86_64" ]
     then
-      run_verbose zypper --quiet --no-gpg-checks install --no-confirm gcc-32bit
+      run_verbose zypper --quiet --no-gpg-checks install --no-confirm gcc-32bit gcc-c++-32bit glibc-devel-32bit glibc-devel-static-32bit
     fi
   elif [[ ${image_name} == *manjaro* ]]
   then
@@ -301,7 +301,7 @@ function tests_update_system_common()
     # pacman -S -yy -u -q --noconfirm
     run_verbose pacman -S --quiet --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
 
-    run_verbose pacman -S --quiet --noconfirm --noprogressbar gcc
+    run_verbose pacman -S --quiet --noconfirm --noprogressbar gcc gcc-libs make
     if [ "$(uname -m)" == "x86_64" ]
     then
       run_verbose pacman -S --quiet --noconfirm --noprogressbar lib32-gcc-libs
@@ -314,7 +314,7 @@ function tests_update_system_common()
     # pacman -S -yy -u -q --noconfirm
     run_verbose pacman -S --quiet --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
 
-    run_verbose pacman -S --quiet --noconfirm --noprogressbar gcc
+    run_verbose pacman -S --quiet --noconfirm --noprogressbar gcc gcc-libs make
     if [ "$(uname -m)" == "x86_64" ]
     then
       run_verbose pacman -S --quiet --noconfirm --noprogressbar lib32-gcc-libs
