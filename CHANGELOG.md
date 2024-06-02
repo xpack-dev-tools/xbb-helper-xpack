@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-06-02
 
-* v2.1.15 released
+* v2.1.16 released
+* 2cb6c38 gdb.sh: fix path to saved
+* 72d5271 2.1.15
+* b79d223 prepare v2.1.15
 * 66347f1 gdb.sh: use absolute path to system compiler
 * f1754a0 2.1.14
 * 3ec70ba prepare v2.1.14
