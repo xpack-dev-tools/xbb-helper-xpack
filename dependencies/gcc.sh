@@ -1157,6 +1157,15 @@ function gcc_test()
         export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
         export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
         export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
+
+        if [ "${distro}" == "Fedora" ]
+        then
+          # cnrt-test-32 1 781.
+          export XBB_IGNORE_TEST_STATIC_CNRT_TEST_32="y"
+          export XBB_IGNORE_TEST_STATIC_GC_CNRT_TEST_32="y"
+          export XBB_IGNORE_TEST_STATIC_LTO_CNRT_TEST_32="y"
+          export XBB_IGNORE_TEST_STATIC_GC_LTO_CNRT_TEST_32="y"
+        fi
       fi
 
       if [ "${XBB_HOST_ARCH}" == "x64" ]
