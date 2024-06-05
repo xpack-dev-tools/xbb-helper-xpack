@@ -523,13 +523,13 @@ function gcc_build()
 
               # From Ubuntu 18.04.
               config_options+=("--enable-multiarch")
+              config_options+=("--with-arch=x86-64")
               config_options+=("--with-arch-32=i686")
               config_options+=("--with-abi=m64")
               # patchelf gets confused by x32 shared libraries.
               # config_options+=("--with-multilib-list=m32,m64,mx32")
               config_options+=("--with-multilib-list=m32,m64")
 
-              config_options+=("--with-arch=x86-64")
               config_options+=("--with-tune=generic")
               # Support for Intel Memory Protection Extensions (MPX).
               config_options+=("--enable-libmpx")
@@ -539,6 +539,7 @@ function gcc_build()
 
               config_options+=("--with-arch=i686")
               config_options+=("--with-arch-32=i686")
+
               config_options+=("--with-tune=generic")
               config_options+=("--enable-libmpx")
             elif [ "${XBB_HOST_ARCH}" == "arm64" ]
@@ -609,9 +610,11 @@ function gcc_build()
 
             if [ "${XBB_HOST_ARCH}" == "x64" ]
             then
+              config_options+=("--disable-multilib")
               config_options+=("--with-arch=x86-64")
             elif [ "${XBB_HOST_ARCH}" == "x32" -o "${XBB_HOST_ARCH}" == "ia32" ]
             then
+              config_options+=("--disable-multilib")
               config_options+=("--with-arch=i686")
 
               # https://stackoverflow.com/questions/15670169/what-is-difference-between-sjlj-vs-dwarf-vs-seh
@@ -633,8 +636,6 @@ function gcc_build()
             config_options+=("--enable-gnu-unique-object")
             config_options+=("--enable-gnu-indirect-function")
             config_options+=("--enable-linker-build-id")
-
-            config_options+=("--disable-multilib")
 
             # Inspired from mingw-w64; apart from --with-sysroot.
             config_options+=("--with-native-system-header-dir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/include")
