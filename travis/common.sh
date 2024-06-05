@@ -68,6 +68,9 @@ cat <<__EOF__ > "${data_file_path}"
           "script": [
             "uname -a",
             "sw_vers",
+            "xcode-select --print-path",
+            "xcodebuild -version",
+            "pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true",
             "pwd",
             "ls -lLA",
             "env | sort | grep -E '^[^ \t]+='",
@@ -85,6 +88,9 @@ cat <<__EOF__ > "${data_file_path}"
           "script": [
             "uname -a",
             "sw_vers",
+            "xcode-select --print-path",
+            "xcodebuild -version",
+            "pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true",
             "pwd",
             "ls -lLA",
             "env | sort | grep -E '^[^ \t]+='",
@@ -102,6 +108,9 @@ cat <<__EOF__ > "${data_file_path}"
           "script": [
             "uname -a",
             "sw_vers",
+            "xcode-select --print-path",
+            "xcodebuild -version",
+            "pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true",
             "pwd",
             "ls -lLA",
             "env | sort | grep -E '^[^ \t]+='",
@@ -119,6 +128,9 @@ cat <<__EOF__ > "${data_file_path}"
           "script": [
             "uname -a",
             "sw_vers",
+            "xcode-select --print-path",
+            "xcodebuild -version",
+            "pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true",
             "pwd",
             "ls -lLA",
             "env | sort | grep -E '^[^ \t]+='",
