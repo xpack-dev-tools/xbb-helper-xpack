@@ -4,8 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-06-05
 
-* v2.1.17 released
-* bfac2d2 travis/common.sh: add verbosity
+* v2.1.18 released
+* 84a8794 machine.sh: fix detect xcodebuild
+* 551e9d8 2.1.17
+* c9a48db prepare v2.1.17* bfac2d2 travis/common.sh: add verbosity
 * 2a48890 machine.sh: fix detect xcodebuild
 * 4b08fe0 overload-new.cpp: add verbosity
 
