@@ -1036,20 +1036,20 @@ function gcc_test()
         # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
         # collect2.exe: error: ld returned 1 exit status
         # Interestingly, LTO tests pass.
-        export XBB_IGNORE_TEST_HELLO_WEAK_C="y"
-        export XBB_IGNORE_TEST_GC_HELLO_WEAK_C="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK_C="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK_C="y"
-        export XBB_IGNORE_TEST_STATIC_HELLO_WEAK_C="y"
-        export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK_C="y"
+        export XBB_IGNORE_TEST_HELLO_WEAK1_C="y"
+        export XBB_IGNORE_TEST_GC_HELLO_WEAK1_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK1_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK1_C="y"
+        export XBB_IGNORE_TEST_STATIC_HELLO_WEAK1_C="y"
+        export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK1_C="y"
 
         # hello-weak-cpp.
-        export XBB_IGNORE_TEST_HELLO_WEAK_CPP="y"
-        export XBB_IGNORE_TEST_GC_HELLO_WEAK_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_HELLO_WEAK_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_HELLO_WEAK2_CPP="y"
+        export XBB_IGNORE_TEST_GC_HELLO_WEAK2_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK2_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK2_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_HELLO_WEAK2_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK2_CPP="y"
 
         # overload-new.
         # static lib and static are functional. (all on mingw!)
@@ -1137,10 +1137,10 @@ function gcc_test()
       then
         # sleepy-threads
         # Weird, only the static tests die with 'Segmentation fault'.
-        export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS="y"
-        export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS="y"
-        export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS="y"
-        export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS="y"
+        export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_SL="y"
+        export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_SL="y"
+        export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_SL="y"
+        export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_SL="y"
 
         # sleepy-threads-cv
         # Weird, only the static tests die with 'Segmentation fault'.

@@ -785,23 +785,23 @@ function gcc_mingw_test()
       # collect2: error: ld returned 1 exit status
 
       # Interestingly, LTO tests pass.
-      export XBB_IGNORE_TEST_HELLO_WEAK_C="y"
-      export XBB_IGNORE_TEST_HELLO_WEAK_CPP="y"
+      export XBB_IGNORE_TEST_HELLO_WEAK1_C="y"
+      export XBB_IGNORE_TEST_HELLO_WEAK2_CPP="y"
 
-      export XBB_IGNORE_TEST_GC_HELLO_WEAK_C="y"
-      export XBB_IGNORE_TEST_GC_HELLO_WEAK_CPP="y"
+      export XBB_IGNORE_TEST_GC_HELLO_WEAK1_C="y"
+      export XBB_IGNORE_TEST_GC_HELLO_WEAK2_CPP="y"
 
-      export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK_C="y"
-      export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK1_C="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK2_CPP="y"
 
-      export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK_C="y"
-      export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK1_C="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK2_CPP="y"
 
-      export XBB_IGNORE_TEST_STATIC_HELLO_WEAK_C="y"
-      export XBB_IGNORE_TEST_STATIC_HELLO_WEAK_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_HELLO_WEAK1_C="y"
+      export XBB_IGNORE_TEST_STATIC_HELLO_WEAK2_CPP="y"
 
-      export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK_C="y"
-      export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK1_C="y"
+      export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK2_CPP="y"
 
       # [wine64 ./lto-throwcatch-main.exe]
       # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 0394), starting debugger...
