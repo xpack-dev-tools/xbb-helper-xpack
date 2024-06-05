@@ -2,9 +2,23 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-05
+
+* v2.1.17 released
+* bfac2d2 travis/common.sh: add verbosity
+* 2a48890 machine.sh: fix detect xcodebuild
+* 4b08fe0 overload-new.cpp: add verbosity
+
+## 2024-06-03
+
+* 2a318c5 test-common.sh: show libm.* too
+* d951c43 build-tests.sh: xfail
+* 619f52e gcc.sh: exclude some static tests on fedora
+
 ## 2024-06-02
 
-* v2.1.16 released
+* 8bffaa1 2.1.16
+* f36a830 prepare v2.1.16
 * 2cb6c38 gdb.sh: fix path to saved
 * 72d5271 2.1.15
 * b79d223 prepare v2.1.15
