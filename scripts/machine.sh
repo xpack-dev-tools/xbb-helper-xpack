@@ -70,7 +70,7 @@ function machine_detect()
     XBB_BUILD_DISTRO_NAME="$(sw_vers | grep ProductName | sed -e 's|[a-zA-Z]*[:]||' | tr -d '[:blank:]')"
     XBB_BUILD_DISTRO_VERSION="$(sw_vers | grep ProductVersion | sed -e 's|[a-zA-Z]*[:]||' | tr -d '[:blank:]')"
 
-    if xcodebuild 2>/dev/null >/dev/null
+    if xcodebuild -version 2>/dev/null >/dev/null
     then
       XBB_BUILD_CLT_VERSION="$(xcodebuild -version | sed -En 's/Xcode[[:space:]]+([0-9\.]*)/\1/p')"
     elif pkgutil --pkg-info=com.apple.pkg.CLTools_Executables 2>/dev/null >/dev/null
