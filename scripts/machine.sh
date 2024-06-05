@@ -197,7 +197,7 @@ function machine_detect()
   then
     run_verbose sw_vers
     run_verbose xcode-select --print-path
-    if xcodebuild 2>/dev/null >/dev/null
+    if xcodebuild -version 2>/dev/null >/dev/null
     then
       run_verbose xcodebuild -version
     elif pkgutil --pkg-info=com.apple.pkg.CLTools_Executables 2>/dev/null >/dev/null
