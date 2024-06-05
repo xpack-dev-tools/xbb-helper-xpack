@@ -9,7 +9,7 @@ void operator delete(void *ptr) noexcept { deletes++; free(ptr); }
 int main(int argc, const char *argv[]) {
     std::cout << "";
     delete new int;
-    // std::cout << news << " " << deletes << std::endl;
+    std::cout << "news: " << news << ", deletes: " << deletes << std::endl;
 
-    return news == 0 || deletes == 0;;
+    return news == 0 || deletes == 0;
 }
