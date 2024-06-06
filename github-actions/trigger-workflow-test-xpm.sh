@@ -64,8 +64,8 @@ source "${helper_folder_path}/scripts/xbb.sh"
 message="Test ${XBB_APPLICATION_DESCRIPTION} with xpm install"
 
 branch="xpack-develop"
-version="$(xbb_get_current_package_version)"
-package_version="next"
+package_version="$(xbb_get_current_package_version)"
+version="$(echo "${package_version}" | sed -e 's|[.][0-9][0-9]*$||')"
 workflow_id="test-xpm.yml"
 helper_git_ref="v$(xbb_get_current_helper_version)"
 
