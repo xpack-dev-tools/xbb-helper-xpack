@@ -83,7 +83,7 @@ do
       package_version="$2"
       if [[ "${package_version}" =~ .*[.][0-9][0-9]* ]]
       then
-        version="$(echo "${package_version}" | sed -e '|[.][0-9]*||')"
+        version="$(echo "${package_version}" | sed -e 's|[.][0-9]*||')"
       fi
       shift 2
       ;;
