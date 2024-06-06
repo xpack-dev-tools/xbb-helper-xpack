@@ -23,7 +23,11 @@ function show_host_libs()
     fi
 
     local abs_path="$(${REALPATH} ${app_path})"
-    local abs_exe_path="$(${REALPATH} ${app_path}.exe)"
+    local abs_exe_path="${app_path}.exe"
+    if [ -f "${app_path}.exe" ]
+    then
+      abs_exe_path="$(${REALPATH} ${app_path}.exe)"
+    fi
 
     if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
     then
