@@ -12,6 +12,9 @@
 
 function trigger_github_workflow()
 {
+  echo
+  echo "[${FUNCNAME[0]} $@]"
+
   local github_org="$1"
   local github_repo="$2"
   local workflow_id="$3"
