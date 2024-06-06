@@ -165,9 +165,6 @@ function test_case_trap_handler()
   local line_number="$1"
   shift
 
-  echo_develop
-  echo_develop "FAIL: ${PREFIX}${test_case_name}${SUFFIX}"
-
   local filtered_suffix="$(echo "${SUFFIX}" | sed -e 's|-bootstrap$||')"
   if [ ! -z "${filtered_suffix}" ]
   then
@@ -177,9 +174,13 @@ function test_case_trap_handler()
                        "XBB_IGNORE_TEST_${PREFIX}${test_case_name}"
     then
       # Lower case means the failure is expected.
+      echo
+      echo "xfail: ${PREFIX}${test_case_name}${SUFFIX}"
       echo "xfail: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
     else
       # Upper case means the failure is unexpected.
+      echo
+      echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX}"
       local recommend="$(echo XBB_IGNORE_TEST_${PREFIX}${test_case_name}${filtered_suffix} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
       echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX} ${exit_code} ${line_number} (${recommend})" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
     fi
@@ -188,8 +189,12 @@ function test_case_trap_handler()
                        "XBB_IGNORE_TEST_${PREFIX}${test_case_name}"
     then
       # Lower case means the failure is expected.
+      echo
+      echo "xfail: ${PREFIX}${test_case_name}${SUFFIX}"
       echo "xfail: ${PREFIX}${test_case_name}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
     else
+      echo
+      echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX}"
       local recommend="$(echo XBB_IGNORE_TEST_${PREFIX}${test_case_name} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
       # Upper case means the failure is unexpected.
       echo "FAIL: ${PREFIX}${test_case_name} (${recommend})" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
@@ -203,8 +208,8 @@ function test_case_pass()
 {
   local test_case_name="$1"
 
-  echo_develop
-  echo_develop "pass: ${PREFIX}${test_case_name}${SUFFIX}"
+  echo
+  echo "pass: ${PREFIX}${test_case_name}${SUFFIX}"
 
   echo "pass: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
 }
