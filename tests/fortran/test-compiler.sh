@@ -110,31 +110,35 @@ function test_case_hello_f()
 {
   local test_case_name="$(test_case_get_name)"
 
-  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
+  (
+    trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
-  # Test a very simple Fortran (a print).
-  run_host_app_verbose "${F90}" hello.f90 -o "${PREFIX}hello-f${SUFFIX}${XBB_TARGET_DOT_EXE}" ${BITS_FLAGS} ${LDFLAGS}
+    # Test a very simple Fortran (a print).
+    run_host_app_verbose "${F90}" hello.f90 -o "${PREFIX}hello-f${SUFFIX}${XBB_TARGET_DOT_EXE}" ${BITS_FLAGS} ${LDFLAGS}
 
-  # The space is expected.
-  expect_target_output " Hello" "${PREFIX}hello-f${SUFFIX}${XBB_TARGET_DOT_EXE}"
+    # The space is expected.
+    expect_target_output " Hello" "${PREFIX}hello-f${SUFFIX}${XBB_TARGET_DOT_EXE}"
 
-  test_case_pass "${test_case_name}"
+    test_case_pass "${test_case_name}"
+  ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${PREFIX}${test_case_name}${SUFFIX}.txt"
 }
 
 function test_case_concurrent_f()
 {
   local test_case_name="$(test_case_get_name)"
 
-  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
+  (
+    trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
-  # Test a concurrent computation.
-  run_host_app_verbose "${F90}" concurrent.f90 -o "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}" ${BITS_FLAGS} ${LDFLAGS}
+    # Test a concurrent computation.
+    run_host_app_verbose "${F90}" concurrent.f90 -o "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}" ${BITS_FLAGS} ${LDFLAGS}
 
-  show_target_libs_develop "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}"
+    show_target_libs_develop "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}"
 
-  expect_target_succeed "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}"
+    expect_target_succeed "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}"
 
-  test_case_pass "${test_case_name}"
+    test_case_pass "${test_case_name}"
+  ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${PREFIX}${test_case_name}${SUFFIX}.txt"
 }
 
 
@@ -148,8 +152,10 @@ function test_case_()
 {
   local test_case_name="$(test_case_get_name)"
 
-  trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
+  (
+    trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
 
-  test_case_pass "${test_case_name}"
+    test_case_pass "${test_case_name}"
+  ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${PREFIX}${test_case_name}${SUFFIX}.txt"
 }
