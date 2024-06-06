@@ -104,11 +104,12 @@ function tests_report_results()
     echo "Verdict: tests reluctantly accepted"
     echo "\`\`\`"
 
+    echo
+    echo "The failing tests are:"
+
     IFS=$'\n\t'
     for test_name in $(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||'  -e 's|libcxx-||' 2>&1 | sort -u)
     do
-      echo
-      echo "The failing tests are:"
       echo
       echo "### ${test_name}"
       echo
