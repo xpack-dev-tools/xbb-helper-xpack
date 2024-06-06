@@ -71,7 +71,7 @@ function tests_report_results()
     echo "---"
     echo "# ${XBB_APPLICATION_NAME} $(echo "${XBB_RELEASE_VERSION}" | sed -e 's|[-].*||') test results"
     echo
-    echo "## ${XBB_BUILD_DISTRO_NAME}"
+    echo "## ${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_KERNEL_NAME} ${XBB_BUILD_MACHINE}"
     echo
     echo "\`\`\`console"
     echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
@@ -103,10 +103,12 @@ function tests_report_results()
     echo
     echo "Verdict: tests reluctantly accepted"
     echo "\`\`\`"
-    echo
+
     IFS=$'\n\t'
     for test_name in $(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||'  -e 's|libcxx-||' 2>&1 | sort -u)
     do
+      echo
+      echo "The failing tests are:"
       echo
       echo "### ${test_name}"
       echo
@@ -114,6 +116,9 @@ function tests_report_results()
       for test_case_name in $(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | grep "${test_name}" | sed -e 's|^.*: ||' -e 's| [(].*$||'  2>&1)
       do
         cat "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler"
+        echo
+        echo "-------------------------------------------------------------------------------"
+        echo
       done
       echo "\`\`\`"
     done
