@@ -133,8 +133,6 @@ function test_case_concurrent_f()
     # Test a concurrent computation.
     run_host_app_verbose "${F90}" concurrent.f90 -o "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}" ${BITS_FLAGS} ${LDFLAGS}
 
-    show_target_libs_develop "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}"
-
     expect_target_succeed "${PREFIX}concurrent-f${SUFFIX}${XBB_TARGET_DOT_EXE}"
 
     test_case_pass "${test_case_name}"
