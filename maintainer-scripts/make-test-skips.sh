@@ -34,8 +34,8 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-# Pass the results file name as first argument.
-results_file_name="${1:-results}"
+# Pass the results summary file name as first argument.
+results_file_name="${1:-summary}"
 
 # grep "${test_case_name}" results | sed -e 's|^.*FAIL.*[(]|export |' -e 's|[)]|="y"|'
 

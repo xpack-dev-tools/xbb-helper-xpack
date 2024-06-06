@@ -18,10 +18,12 @@ function tests_initialize()
   mkdir -pv "$(dirname ${XBB_TEST_COMMANDS_FILE_PATH})"
   touch "${XBB_TEST_COMMANDS_FILE_PATH}"
 
-  export XBB_TEST_RESULTS_FILE_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/tests/results"
-  rm -rf "${XBB_TEST_RESULTS_FILE_PATH}"
-  mkdir -pv "$(dirname ${XBB_TEST_RESULTS_FILE_PATH})"
-  touch "${XBB_TEST_RESULTS_FILE_PATH}"
+  export XBB_TEST_RESULTS_FOLDER_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/tests/results"
+  rm -rf "${XBB_TEST_RESULTS_FOLDER_PATH}"
+  mkdir -pv "${XBB_TEST_RESULTS_FOLDER_PATH}"
+
+  export XBB_TEST_RESULTS_SUMMARY_FILE_PATH="${XBB_TEST_RESULTS_FOLDER_PATH}/summary"
+  touch "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
 
   XBB_WHILE_RUNNING_TESTS="n"
   export XBB_WHILE_RUNNING_TESTS
@@ -61,8 +63,8 @@ function tests_run_final()
 
 function tests_report_results()
 {
-  local passed=$(grep "pass:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | tr -d '[:blank:]')
-  local failed=$(grep -i "fail:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | tr -d '[:blank:]')
+  local passed=$(grep "pass:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | wc -l | tr -d '[:blank:]')
+  local failed=$(grep -i "fail:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | wc -l | tr -d '[:blank:]')
   if [ ${failed} -gt 0 ]
   then
     echo
@@ -70,9 +72,9 @@ function tests_report_results()
     echo
     echo "${passed} test(s) passed, ${failed} failed:"
     echo
-    grep -i "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}" | sed -e 's|^|- |'
+    grep -i "FAIL:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^|- |'
 
-    local catastrophic=$(grep "FAIL:" "${XBB_TEST_RESULTS_FILE_PATH}" | wc -l | tr -d '[:blank:]')
+    local catastrophic=$(grep "FAIL:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | wc -l | tr -d '[:blank:]')
     if [ ${catastrophic} -gt 0 ]
     then
       echo
@@ -83,11 +85,11 @@ function tests_report_results()
       echo "Possibly ignore some tests:"
 
       IFS=$'\n\t'
-      for f in $(grep 'FAIL:' "${XBB_TEST_RESULTS_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||'  -e 's|libcxx-||' 2>&1 | sort -u)
+      for f in $(grep 'FAIL:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||'  -e 's|libcxx-||' 2>&1 | sort -u)
       do
         echo
         echo "# ${f}."
-        grep "${f}" "${XBB_TEST_RESULTS_FILE_PATH}" | grep 'FAIL:' | sed -e 's|^.*FAIL.*[(]|export |' -e 's|[)]|="y"|'
+        grep "${f}" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | grep 'FAIL:' | sed -e 's|^.*FAIL.*[(]|export |' -e 's|[)]|="y"|'
       done
 
       exit 1
@@ -152,22 +154,22 @@ function test_case_trap_handler()
                        "XBB_IGNORE_TEST_${PREFIX}${test_case_name}"
     then
       # Lower case means the failure is expected.
-      echo "xfail: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+      echo "xfail: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
     else
       # Upper case means the failure is unexpected.
       local recommend="$(echo XBB_IGNORE_TEST_${PREFIX}${test_case_name}${filtered_suffix} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
-      echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX} ${exit_code} ${line_number} (${recommend})" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+      echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX} ${exit_code} ${line_number} (${recommend})" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
     fi
   else
     if is_variable_set "XBB_IGNORE_TEST_ALL_${test_case_name}" \
                        "XBB_IGNORE_TEST_${PREFIX}${test_case_name}"
     then
       # Lower case means the failure is expected.
-      echo "xfail: ${PREFIX}${test_case_name}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+      echo "xfail: ${PREFIX}${test_case_name}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
     else
       local recommend="$(echo XBB_IGNORE_TEST_${PREFIX}${test_case_name} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
       # Upper case means the failure is unexpected.
-      echo "FAIL: ${PREFIX}${test_case_name} (${recommend})" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+      echo "FAIL: ${PREFIX}${test_case_name} (${recommend})" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
     fi
   fi
 
@@ -181,7 +183,7 @@ function test_case_pass()
   echo_develop
   echo_develop "pass: ${PREFIX}${test_case_name}${SUFFIX}"
 
-  echo "pass: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+  echo "pass: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
 }
 
 # -----------------------------------------------------------------------------

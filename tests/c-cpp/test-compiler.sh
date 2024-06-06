@@ -25,7 +25,7 @@ function test_compiler_c_cpp()
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
-  echo "[${FUNCNAME[0]} $@]" >> "${XBB_TEST_RESULTS_FILE_PATH}"
+  echo "[${FUNCNAME[0]} $@]" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
 
   local test_bin_path="$1"
   shift
