@@ -11,6 +11,18 @@
 # -----------------------------------------------------------------------------
 # Included by the application `scripts/test.sh`.
 
+function tests_get_current_version()
+{
+  local version_file_path="${scripts_folder_path}/VERSION"
+  if [ $# -ge 1 ]
+  then
+    version_file_path="$1"
+  fi
+
+  # Extract only the first line
+  cat "${version_file_path}" | sed -e '2,$d'
+}
+
 function tests_parse_options()
 {
   echo
@@ -21,7 +33,7 @@ function tests_parse_options()
 
   XBB_FORCE_32_BIT="n"
   XBB_IMAGE_NAME=""
-  XBB_RELEASE_VERSION="${XBB_RELEASE_VERSION:-$(xbb_get_current_version)}"
+  XBB_RELEASE_VERSION="${XBB_RELEASE_VERSION:-$(tests_get_current_version)}"
   XBB_BASE_URL="${XBB_BASE_URL:-}"
   XBB_DO_TEST_VIA_XPM="n"
   XBB_OUTPUT_FILE_NAME="tests"
