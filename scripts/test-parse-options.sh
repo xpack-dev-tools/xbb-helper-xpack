@@ -122,7 +122,7 @@ function tests_parse_options()
   export XBB_USE_CACHED_ARCHIVE
   export XBB_NPM_PACKAGE_VERSION
 
-  if is_develop
+  if [ "${XBB_IS_DEVELOP}" == "y" ] # is_develop is not yet defined
   then
     echo
     echo "XBB_RELEASE_VERSION=${XBB_RELEASE_VERSION}"
