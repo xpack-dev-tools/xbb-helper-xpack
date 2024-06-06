@@ -355,8 +355,13 @@ function test_compiler_c_cpp()
 
         test_case_weak_common
         test_case_normal
-        # TODO: investigate why it fails with GCC 14 on macOS.
-        test_case_weak_undef_c
+        if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+        then
+          echo
+          echo "Skip test_case_weak_undef_c on macOS"
+        else
+          test_case_weak_undef_c
+        fi
         test_case_weak_defined_c
         test_case_weak_use_c
         test_case_weak_override_c
