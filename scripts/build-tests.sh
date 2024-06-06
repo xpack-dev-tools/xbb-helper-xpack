@@ -112,15 +112,15 @@ function tests_report_results()
       echo
       echo "### ${test_name}"
       echo
-      echo "\`\`\`console"
       for test_case_name in $(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | grep "${test_name}" | sed -e 's|^.*: ||' -e 's| [(].*$||'  2>&1)
       do
-        cat "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler"
+        echo "#### ${test_case_name}"
         echo
-        echo "-------------------------------------------------------------------------------"
+        echo "\`\`\`console"
+        tail -n +2 "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler"
+        echo "\`\`\`"
         echo
       done
-      echo "\`\`\`"
     done
 
     echo "---"
