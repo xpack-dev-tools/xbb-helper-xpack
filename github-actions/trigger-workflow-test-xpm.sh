@@ -64,7 +64,8 @@ source "${helper_folder_path}/scripts/xbb.sh"
 message="Test ${XBB_APPLICATION_DESCRIPTION} with xpm install"
 
 branch="xpack-develop"
-version="$(xbb_get_current_package_version)"
+version="current" # "$(xbb_get_current_package_version)"
+package_version="next"
 workflow_id="test-xpm.yml"
 helper_git_ref="v$(xbb_get_current_helper_version)"
 
@@ -74,6 +75,16 @@ do
 
     --branch )
       branch="$2"
+      shift 2
+      ;;
+
+    --package-version )
+      # tags like "next" and "latest" also accepted.
+      package_version="$2"
+      if [[ "${package_version}" =~ .*[.][0-9][0-9]* ]]
+      then
+        version="$(echo "${package_version}" | sed -e '|[.][0-9]*||')"
+      fi
       shift 2
       ;;
 
@@ -105,6 +116,7 @@ cat <<__EOF__ > "${data_file_path}"
 {
   "ref": "${branch}",
   "inputs": {
+    "package-version": "${package_version}",
     "version": "${version}"
   }
 }
