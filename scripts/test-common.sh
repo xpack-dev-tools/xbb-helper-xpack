@@ -39,6 +39,7 @@ function tests_parse_options()
   XBB_DO_TEST_VIA_XPM="n"
   XBB_OUTPUT_FILE_NAME="tests"
   XBB_USE_CACHED_ARCHIVE="n"
+  XBB_NPM_PACKAGE_VERSION="next"
 
   while [ $# -gt 0 ]
   do
@@ -71,6 +72,12 @@ function tests_parse_options()
         then
           XBB_RELEASE_VERSION="$2"
         fi
+        shift 2
+        ;;
+
+      --package-version )
+        # tags like "next" and "latest" also accepted.
+        XBB_NPM_PACKAGE_VERSION="$2"
         shift 2
         ;;
 
@@ -114,6 +121,7 @@ function tests_parse_options()
   export XBB_DO_TEST_VIA_XPM
   export XBB_OUTPUT_FILE_NAME
   export XBB_USE_CACHED_ARCHIVE
+  export XBB_NPM_PACKAGE_VERSION
 
   if is_develop
   then
@@ -124,6 +132,7 @@ function tests_parse_options()
     echo "XBB_IMAGE_NAME=${XBB_IMAGE_NAME}"
     echo "XBB_DO_TEST_VIA_XPM=${XBB_DO_TEST_VIA_XPM}"
     echo "XBB_OUTPUT_FILE_NAME=${XBB_OUTPUT_FILE_NAME}"
+    echo "XBB_NPM_PACKAGE_VERSION=${XBB_NPM_PACKAGE_VERSION}"
   fi
 }
 
