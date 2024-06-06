@@ -26,6 +26,9 @@ source "${helper_folder_path}/scripts/build-tests.sh"
 
 function tests_parse_options()
 {
+  echo
+  echo "[${FUNCNAME[0]} $@]"
+
   XBB_IS_DEBUG="n"
   XBB_IS_DEVELOP="n"
 
