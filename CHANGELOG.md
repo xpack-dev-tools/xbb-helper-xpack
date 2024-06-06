@@ -2,9 +2,21 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-06
+
+* v2.1.19 released
+* 9f94023 test-compiler.sh: remove redundant show_libs
+* cb6af1f build-tests.sh: cosmetise messages
+* a88ae5f build-tests.sh: report failed tests output
+* 2682b39 test-compiler.sh: save each test output in a file
+* 66436e8 rename XBB_TEST_RESULTS_SUMMARY_FILE_PATH
+
 ## 2024-06-05
 
-* v2.1.18 released
+* f7f577d gcc.sh: cosmetic reorders
+* a2901fa rename test cases aiming unicity
+* 5ce50e7 2.1.18
+* 39e3ca8 prepare v2.1.18
 * 84a8794 machine.sh: fix detect xcodebuild
 * 551e9d8 2.1.17
 * c9a48db prepare v2.1.17* bfac2d2 travis/common.sh: add verbosity
