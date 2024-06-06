@@ -111,11 +111,11 @@ function tests_report_results()
     for test_name in $(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||'  -e 's|libcxx-||' 2>&1 | sort -u)
     do
       echo
-      echo "### ${test_name}"
+      echo "### Test ${test_name}"
       echo
       for test_case_name in $(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | grep "${test_name}" | sed -e 's|^.*: ||' -e 's| [(].*$||'  2>&1)
       do
-        echo "#### ${test_case_name}"
+        echo "#### Test case ${test_case_name}"
         echo
         echo "\`\`\`console"
         tail -n +2 "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler"
