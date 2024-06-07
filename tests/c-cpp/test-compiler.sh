@@ -355,7 +355,7 @@ function test_compiler_c_cpp()
 
         test_case_weak_common
         test_case_normal
-        if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+        if false # [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
         then
           echo
           echo "Skip test_case_weak_undef_c on macOS"
@@ -886,6 +886,12 @@ function test_case_weak_undef_c()
 
   (
     trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
+
+    if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
+    then
+      # The macOS linker does not accept undefined symbols.
+      LDFLAGS+=" -Wl,-U,_func"
+    fi
 
     run_host_app_verbose "${CC}" "${PREFIX}main-weak${SUFFIX}.c.o" "${PREFIX}expected1${SUFFIX}.c.o" "${PREFIX}dummy${SUFFIX}.c.o" -o "${PREFIX}${test_case_name}${SUFFIX}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
 
