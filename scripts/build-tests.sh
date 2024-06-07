@@ -134,7 +134,7 @@ function tests_report_results()
       for test_name in ${failed_test_names}
       do
         echo
-        echo "### Test ${test_name}"
+        echo "### Failed test ${test_name}"
         echo
         for test_case_name in $(grep "${test_name}" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" |  sed -e 's|^.*: ||' -e 's| [(].*$||'  2>&1)
         do
