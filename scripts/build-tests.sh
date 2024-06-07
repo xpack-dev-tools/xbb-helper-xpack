@@ -135,7 +135,7 @@ function tests_report_results()
       fi
       echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION}) tests completed successfully"
     fi
-  ) 2>&1 | tee "${XBB_ARTEFACTS_FOLDER_PATH}/tests-summary.md"
+  ) 2>&1 | tee "${XBB_ARTEFACTS_FOLDER_PATH}/tests-summary-${XBB_BUILD_PLATFORM}-${XBB_BUILD_ARCH}.md"
 
   echo "-------------------------------------------------------------------------------"
 }
