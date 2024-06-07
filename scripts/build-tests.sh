@@ -77,7 +77,7 @@ function tests_report_results()
     echo
     if [ ${failed} -gt 0 ]
     then
-      echo "\`\`\`console"
+      echo "\`\`\`txt"
       echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
       echo
       echo "${passed} test(s) passed, ${failed} failed:"
@@ -124,7 +124,7 @@ function tests_report_results()
           successful_count=$((successful_count + 1))
         fi
       done
-      
+
       if [ ${successful_count} -eq 0 ]
       then
         echo "- none"
@@ -143,8 +143,8 @@ function tests_report_results()
           then
             echo "- ${test_case_name} ✗"
             echo
-            echo "    \`\`\`console"
-            tail -n +2 "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler" | sed -E '{N;N; s|\n\n\n|\n| ;D}' | sed -E 's|^|    |'
+            echo "    \`\`\`txt"
+            tail -n +2 "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler" | cat -s | sed -E 's|^|    |'
             echo "    \`\`\`"
             echo
           else
