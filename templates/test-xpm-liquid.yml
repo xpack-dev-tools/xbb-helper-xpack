@@ -60,6 +60,13 @@ jobs:
         with:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+
+      - name: Upload tests summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summary-linux-x64
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/linux-x64/artefacts/tests-summary-*.md
+          overwrite: true
   {% when "linux-arm64" %}
   linux-arm64:
     name: 'Linux Arm 64-bit {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -99,6 +106,13 @@ jobs:
         with:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+
+      - name: Upload tests summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summary-linux-arm64
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/linux-arm64/artefacts/tests-summary-*.md
+          overwrite: true
   {% when "linux-arm" %}
   linux-arm32:
     name: 'Linux Arm 32-bit {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -138,6 +152,13 @@ jobs:
         with:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+
+      - name: Upload tests summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summary-linux-arm
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/linux-arm/artefacts/tests-summary-*.md
+          overwrite: true
   {% when "darwin-x64" %}
   macos-x64:
     name: 'macOS Intel 64-bit {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -181,6 +202,13 @@ jobs:
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
         run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+
+      - name: Upload tests summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summary-darwin-x64
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/darwin-x64/artefacts/tests-summary-*.md
+          overwrite: true
   {% when "darwin-arm64" %}
   macos-arm64:
     name: 'macOS Arm 64-bit {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -224,6 +252,13 @@ jobs:
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
         run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+
+      - name: Upload tests summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summary-darwin-arm64
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/darwin-arm64/artefacts/tests-summary-*.md
+          overwrite: true
   {% when "win32-x64" %}
   windows-x64:
     name: 'Windows 64-bit {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -259,6 +294,13 @@ jobs:
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
         run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+
+      - name: Upload tests summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-summary-win32-x64
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/win32-x64/artefacts/tests-summary-*.md
+          overwrite: true
   {% endcase -%}
 {% endfor %}
 # -----------------------------------------------------------------------------
