@@ -80,7 +80,7 @@ function tests_report_results()
       echo "\`\`\`txt"
       echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
       echo
-      echo "${passed} test(s) passed, ${failed} failed:"
+      echo "${passed} test cases passed, ${failed} failed:"
       echo
       grep -i "FAIL:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^|- |'
 
@@ -142,11 +142,11 @@ function tests_report_results()
           if [ ${is_failed} -gt 0 ]
           then
             echo "- ${test_case_name} ✗"
-            echo
+            # echo
             echo "    \`\`\`txt"
             tail -n +2 "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler" | cat -s | sed -E 's|^|    |'
             echo "    \`\`\`"
-            echo
+            # echo
           else
             echo "- ${test_case_name} ✓"
           fi
@@ -156,7 +156,7 @@ function tests_report_results()
       echo
       if [ ${passed} -gt 0 ]
       then
-        echo "${passed} test(s) passed"
+        echo "${passed} test cases passed"
       fi
       echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION}) tests completed successfully"
     fi
