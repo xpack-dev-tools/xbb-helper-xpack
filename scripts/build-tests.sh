@@ -109,22 +109,47 @@ function tests_report_results()
       echo "\`\`\`"
 
       echo
-      echo "The failing tests are:"
+      echo "### Successful tests"
+      echo
 
       IFS=$'\n\t'
-      for test_name in $(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||'  -e 's|libcxx-||' 2>&1 | sort -u)
+      local test_names="$(grep -i -E 'fail:|pass:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||'  -e 's|libcxx-||' 2>&1 | sort -u)"
+      local successful_count=0
+      for test_name in ${test_names}
+      do
+        local failed_this=$(grep -i "fail:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | grep "${test_name}" | wc -l | tr -d '[:blank:]')
+        if [ ${failed_this} -eq 0 ]
+        then
+          echo "- ${test_name} ✓"
+          successful_count=$((successful_count + 1))
+        fi
+      done
+      
+      if [ ${successful_count} -eq 0 ]
+      then
+        echo "- none"
+      fi
+
+      local failed_test_names="$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||'  -e 's|libcxx-||' 2>&1 | sort -u)"
+      for test_name in "${failed_test_names}"
       do
         echo
         echo "### Test ${test_name}"
         echo
-        for test_case_name in $(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | grep "${test_name}" | sed -e 's|^.*: ||' -e 's| [(].*$||'  2>&1)
+        for test_case_name in $(grep "${test_name}" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" |  sed -e 's|^.*: ||' -e 's| [(].*$||'  2>&1)
         do
-          echo "#### Test case ${test_case_name}"
-          echo
-          echo "\`\`\`console"
-          tail -n +2 "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler"
-          echo "\`\`\`"
-          echo
+          local is_failed=$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" |  sed -e 's|^.*: ||' -e 's| [(].*$||' | grep "^${test_case_name}$" | wc -l | tr -d '[:blank:]')
+          if [ ${is_failed} -gt 0 ]
+          then
+            echo "- ${test_case_name} ✗"
+            echo
+            echo "    \`\`\`console"
+            tail -n +2 "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler" | sed -E '{N;N; s|\n\n\n|\n| ;D}' | sed -E 's|^|    |'
+            echo "    \`\`\`"
+            echo
+          else
+            echo "- ${test_case_name} ✓"
+          fi
         done
       done
     else
@@ -137,6 +162,7 @@ function tests_report_results()
     fi
   ) 2>&1 | tee "${XBB_ARTEFACTS_FOLDER_PATH}/tests-summary-${XBB_BUILD_PLATFORM}-${XBB_BUILD_ARCH}.md"
 
+  echo
   echo "-------------------------------------------------------------------------------"
 }
 
