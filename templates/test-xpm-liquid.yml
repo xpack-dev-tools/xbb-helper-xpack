@@ -43,12 +43,12 @@ jobs:
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
@@ -82,12 +82,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
@@ -121,12 +121,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
@@ -167,12 +167,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
@@ -210,12 +210,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
@@ -245,12 +245,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: xpacks/@xpack-dev-tools/xbb-helper
