@@ -131,7 +131,7 @@ function tests_report_results()
       fi
 
       local failed_test_names="$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||'  -e 's|libcxx-||' 2>&1 | sort -u)"
-      for test_name in "${failed_test_names}"
+      for test_name in ${failed_test_names}
       do
         echo
         echo "### Test ${test_name}"
