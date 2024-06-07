@@ -69,7 +69,7 @@ function tests_report_results()
   echo "-------------------------------------------------------------------------------"
   echo
 
-  mkdir -pv "${XBB_ARTEFACTS_FOLDER_NAME}"
+  mkdir -pv "${XBB_ARTEFACTS_FOLDER_PATH}"
   (
     echo "# ${XBB_APPLICATION_NAME} $(echo "${XBB_RELEASE_VERSION}" | sed -e 's|[-].*||') test results"
     echo
@@ -135,7 +135,7 @@ function tests_report_results()
       fi
       echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION}) tests completed successfully"
     fi
-  ) 2>&1 | tee "${XBB_ARTEFACTS_FOLDER_NAME}/tests-summary.md"
+  ) 2>&1 | tee "${XBB_ARTEFACTS_FOLDER_PATH}/tests-summary.md"
 
   echo "-------------------------------------------------------------------------------"
 }
