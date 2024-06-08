@@ -97,7 +97,7 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image ubuntu:22.04 --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
   {% when "linux-arm" %}
-  linux-arm32:
+  linux-arm:
     name: 'Linux arm32 {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: [self-hosted, linux, arm, xbbla32]
 
