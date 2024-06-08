@@ -71,8 +71,8 @@ function tests_report_results()
 
   mkdir -pv "${XBB_ARTEFACTS_FOLDER_PATH}"
   (
-    echo "# ${XBB_APPLICATION_NAME} $(echo "${XBB_RELEASE_VERSION}" | sed -e 's|[-].*||') test results"
-    echo
+    # echo "# ${XBB_APPLICATION_NAME} $(echo "${XBB_RELEASE_VERSION}" | sed -e 's|[-].*||') test results"
+    # echo
     echo "## ${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_KERNEL_NAME} ${XBB_BUILD_MACHINE}"
     echo
     if [ ${failed} -gt 0 ]
@@ -163,7 +163,7 @@ function tests_report_results()
   ) 2>&1 | tee "${XBB_ARTEFACTS_FOLDER_PATH}/tests-summary-${XBB_BUILD_PLATFORM}-${XBB_BUILD_ARCH}.md"
 
   echo
-  echo "-------------------------------------------------------------------------------"
+  # echo "-------------------------------------------------------------------------------"
 }
 
 function tests_prime_wine()
