@@ -39,6 +39,9 @@ function tests_add()
 
 function tests_run_final()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   echo
   echo "# Running final tests..."
 
@@ -63,6 +66,9 @@ function tests_run_final()
 
 function tests_report_results()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local passed=$(grep "pass:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | wc -l | tr -d '[:blank:]')
   local failed=$(grep -i "fail:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | wc -l | tr -d '[:blank:]')
   echo
