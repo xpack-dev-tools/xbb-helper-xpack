@@ -149,15 +149,16 @@ function tests_report_results()
           then
             echo "- ${test_case_name} ✗"
             # echo
-            echo "    \`\`\`txt"
+            echo "  \`\`\`txt"
             tail -n +2 "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler" | cat -s | sed -E 's|^|  |'
-            echo "    \`\`\`"
+            echo "  \`\`\`"
             # echo
           else
             echo "- ${test_case_name} ✓"
           fi
         done
       done
+      echo
     else
       echo
       if [ ${passed} -gt 0 ]
