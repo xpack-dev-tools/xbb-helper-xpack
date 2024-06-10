@@ -61,10 +61,10 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-{{ platform }}
+          name: tests-reports-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% when "linux-arm64" %}
@@ -107,10 +107,10 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-{{ platform }}
+          name: tests-reports-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% when "linux-arm" %}
@@ -153,10 +153,10 @@ jobs:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-{{ platform }}
+          name: tests-reports-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% when "darwin-x64" %}
@@ -203,10 +203,10 @@ jobs:
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
         run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-{{ platform }}
+          name: tests-reports-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% when "darwin-arm64" %}
@@ -253,10 +253,10 @@ jobs:
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
         run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-{{ platform }}
+          name: tests-reports-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% when "win32-x64" %}
@@ -295,10 +295,10 @@ jobs:
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
         run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
-      - name: Upload tests summary
+      - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-summary-{{ platform }}
+          name: tests-reports-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% endcase -%}
@@ -318,7 +318,7 @@ jobs:
       - name: Concatenate platform test reports
         run: |
           ls -lR {% raw %}${{ github.workspace }}{% endraw %}/artefacts
-          cat -s {% for platform in platforms %}{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-summary-{{ platform }}.md {% endfor %} | tee {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          cat -s {% for platform in platforms %}{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-reports-{{ platform }}.md {% endfor %} | tee {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
 
       - name: Upload tests report
         uses: actions/upload-artifact@v4
