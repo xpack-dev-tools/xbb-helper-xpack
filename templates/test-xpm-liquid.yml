@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
   {% when "linux-arm64" %}
   {{ platform }}:
@@ -111,7 +111,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
   {% when "linux-arm" %}
   {{ platform }}:
@@ -157,7 +157,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
   {% when "darwin-x64" %}
   {{ platform }}:
@@ -207,7 +207,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
   {% when "darwin-arm64" %}
   {{ platform }}:
@@ -257,7 +257,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
   {% when "win32-x64" %}
   {{ platform }}:
@@ -299,7 +299,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
   {% endcase -%}
 {% endfor %}
