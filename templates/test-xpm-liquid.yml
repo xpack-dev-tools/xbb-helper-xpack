@@ -318,13 +318,26 @@ jobs:
       - name: Concatenate platform test reports
         run: |
           ls -lR {% raw %}${{ github.workspace }}{% endraw %}/artefacts
-          cat -s {% for platform in platforms %}{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report-{{ platform }}.md {% endfor %} | tee {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          touch {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "---" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "title: {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test results" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "permalink: /dev-tools/gcc/tests/{% raw %}${{ github.event.inputs.version }}{% endraw %}/" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "comments: true" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "date: $(date "+%Y-%m-%d %H:%M:%S %z")" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "---" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+
+          (cd {% raw %}${{ github.workspace }}{% endraw %}; cat -s {% for platform in platforms %}artefacts/tests-report-{{ platform }}.md {% endfor %} | tee -a artefacts/tests-report.md)
+          mv {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report-{% raw %}${{ github.event.inputs.version }}{% endraw %}.md
 
       - name: Upload tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report
-          path: {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report-{% raw %}${{ github.event.inputs.version }}{% endraw %}.md
           overwrite: true
 
 # -----------------------------------------------------------------------------
