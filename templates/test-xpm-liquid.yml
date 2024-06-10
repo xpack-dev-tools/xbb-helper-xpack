@@ -329,7 +329,6 @@ jobs:
           echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
           echo "---" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
           echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-
           (cd {% raw %}${{ github.workspace }}{% endraw %}; cat -s {% for platform in platforms %}artefacts/tests-report-{{ platform }}.md {% endfor %} | tee -a artefacts/tests-report.md)
           mv {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report-{% raw %}${{ github.event.inputs.version }}{% endraw %}.md
 
