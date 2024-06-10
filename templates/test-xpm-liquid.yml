@@ -64,7 +64,7 @@ jobs:
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-reports-{{ platform }}
+          name: tests-report-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% when "linux-arm64" %}
@@ -110,7 +110,7 @@ jobs:
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-reports-{{ platform }}
+          name: tests-report-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% when "linux-arm" %}
@@ -156,7 +156,7 @@ jobs:
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-reports-{{ platform }}
+          name: tests-report-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% when "darwin-x64" %}
@@ -206,7 +206,7 @@ jobs:
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-reports-{{ platform }}
+          name: tests-report-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% when "darwin-arm64" %}
@@ -256,7 +256,7 @@ jobs:
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-reports-{{ platform }}
+          name: tests-report-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% when "win32-x64" %}
@@ -298,7 +298,7 @@ jobs:
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-reports-{{ platform }}
+          name: tests-report-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-summary-*.md
           overwrite: true
   {% endcase -%}
@@ -318,7 +318,7 @@ jobs:
       - name: Concatenate platform test reports
         run: |
           ls -lR {% raw %}${{ github.workspace }}{% endraw %}/artefacts
-          cat -s {% for platform in platforms %}{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-reports-{{ platform }}.md {% endfor %} | tee {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          cat -s {% for platform in platforms %}{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report-{{ platform }}.md {% endfor %} | tee {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
 
       - name: Upload tests report
         uses: actions/upload-artifact@v4
