@@ -162,7 +162,7 @@ function tests_report_results()
     else
       if [ ${passed} -gt 0 ]
       then
-        echo "### All tests successful"
+        echo "### All tests were successful"
         echo
         IFS=$'\n\t'
         local test_names="$(grep -i -E 'pass:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
