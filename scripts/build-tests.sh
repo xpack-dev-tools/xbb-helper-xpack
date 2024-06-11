@@ -160,12 +160,20 @@ function tests_report_results()
       done
       echo
     else
-      echo
       if [ ${passed} -gt 0 ]
       then
-        echo "${passed} test cases passed"
+        echo "### All tests successful"
+        echo
+        IFS=$'\n\t'
+        local test_names="$(grep -i -E 'pass:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
+
+        for test_name in ${test_names}
+        do
+          echo "- ${test_name} ✓"
+        done
+      else
+        echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION}) tests completed successfully."
       fi
-      echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION}) tests completed successfully."
       echo
     fi
   ) 2>&1 | tee "${XBB_ARTEFACTS_FOLDER_PATH}/tests-report-${XBB_BUILD_PLATFORM}-${XBB_BUILD_ARCH}.md"
