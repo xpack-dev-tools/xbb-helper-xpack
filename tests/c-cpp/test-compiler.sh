@@ -286,13 +286,13 @@ function test_compiler_c_cpp()
 
       # -----------------------------------------------------------------------
 
-      test_case_simple_hello1_c_one
-      test_case_simple_hello1_c_two
+      test_case_simple_hello_printf_one
+      test_case_simple_hello_printf_two
 
       # -----------------------------------------------------------------------
 
-      test_case_simple_hello2_cpp_one
-      test_case_simple_hello2_cpp_two
+      test_case_simple_hello_cout_one
+      test_case_simple_hello_cout_two
 
       # -----------------------------------------------------------------------
 
@@ -405,7 +405,7 @@ function test_compiler_c_cpp()
 
 # -----------------------------------------------------------------------------
 
-function test_case_simple_hello1_c_one()
+function test_case_simple_hello_printf_one()
 {
   local test_case_name="$(test_case_get_name)"
 
@@ -423,7 +423,7 @@ function test_case_simple_hello1_c_one()
   ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${prefix}${test_case_name}${suffix}.txt"
 }
 
-function test_case_simple_hello1_c_two()
+function test_case_simple_hello_printf_two()
 {
   local test_case_name="$(test_case_get_name)"
 
@@ -444,7 +444,7 @@ function test_case_simple_hello1_c_two()
 
 # -----------------------------------------------------------------------------
 
-function test_case_simple_hello2_cpp_one()
+function test_case_simple_hello_cout_one()
 {
   local test_case_name="$(test_case_get_name)"
 
@@ -462,7 +462,7 @@ function test_case_simple_hello2_cpp_one()
   ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${prefix}${test_case_name}${suffix}.txt"
 }
 
-function test_case_simple_hello2_cpp_two()
+function test_case_simple_hello_cout_two()
 {
   local test_case_name="$(test_case_get_name)"
 
