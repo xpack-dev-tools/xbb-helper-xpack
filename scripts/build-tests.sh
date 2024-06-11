@@ -209,39 +209,42 @@ function test_case_trap_handler()
   local line_number="$1"
   shift
 
-  local filtered_suffix="$(echo "${SUFFIX}" | sed -e 's|-bootstrap$||')"
+  local prefix=${PREFIX:-""}
+  local suffix=${SUFFIX:-""}
+
+  local filtered_suffix="$(echo "${suffix}" | sed -e 's|-bootstrap$||')"
   if [ ! -z "${filtered_suffix}" ]
   then
     if is_variable_set "XBB_IGNORE_TEST_ALL_${test_case_name}${filtered_suffix}" \
                        "XBB_IGNORE_TEST_ALL_${test_case_name}" \
-                       "XBB_IGNORE_TEST_${PREFIX}${test_case_name}${filtered_suffix}" \
-                       "XBB_IGNORE_TEST_${PREFIX}${test_case_name}"
+                       "XBB_IGNORE_TEST_${prefix}${test_case_name}${filtered_suffix}" \
+                       "XBB_IGNORE_TEST_${prefix}${test_case_name}"
     then
       # Lower case means the failure is expected.
       echo
-      echo "xfail: ${PREFIX}${test_case_name}${SUFFIX}"
-      echo "xfail: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
+      echo "xfail: ${prefix}${test_case_name}${suffix}"
+      echo "xfail: ${prefix}${test_case_name}${suffix}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
     else
       # Upper case means the failure is unexpected.
       echo
-      echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX}"
-      local recommend="$(echo XBB_IGNORE_TEST_${PREFIX}${test_case_name}${filtered_suffix} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
-      echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX} ${exit_code} ${line_number} (${recommend})" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
+      echo "FAIL: ${prefix}${test_case_name}${suffix}"
+      local recommend="$(echo XBB_IGNORE_TEST_${prefix}${test_case_name}${filtered_suffix} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
+      echo "FAIL: ${prefix}${test_case_name}${suffix} ${exit_code} ${line_number} (${recommend})" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
     fi
   else
     if is_variable_set "XBB_IGNORE_TEST_ALL_${test_case_name}" \
-                       "XBB_IGNORE_TEST_${PREFIX}${test_case_name}"
+                       "XBB_IGNORE_TEST_${prefix}${test_case_name}"
     then
       # Lower case means the failure is expected.
       echo
-      echo "xfail: ${PREFIX}${test_case_name}${SUFFIX}"
-      echo "xfail: ${PREFIX}${test_case_name}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
+      echo "xfail: ${prefix}${test_case_name}${suffix}"
+      echo "xfail: ${prefix}${test_case_name}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
     else
       echo
-      echo "FAIL: ${PREFIX}${test_case_name}${SUFFIX}"
-      local recommend="$(echo XBB_IGNORE_TEST_${PREFIX}${test_case_name} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
+      echo "FAIL: ${prefix}${test_case_name}${suffix}"
+      local recommend="$(echo XBB_IGNORE_TEST_${prefix}${test_case_name} | tr "[:lower:]" "[:upper:]" | tr '-' '_')"
       # Upper case means the failure is unexpected.
-      echo "FAIL: ${PREFIX}${test_case_name} (${recommend})" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
+      echo "FAIL: ${prefix}${test_case_name} (${recommend})" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
     fi
   fi
 
@@ -252,10 +255,13 @@ function test_case_pass()
 {
   local test_case_name="$1"
 
-  echo
-  echo "pass: ${PREFIX}${test_case_name}${SUFFIX}"
+  local prefix=${PREFIX:-""}
+  local suffix=${SUFFIX:-""}
 
-  echo "pass: ${PREFIX}${test_case_name}${SUFFIX}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
+  echo
+  echo "pass: ${prefix}${test_case_name}${suffix}"
+
+  echo "pass: ${prefix}${test_case_name}${suffix}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
 }
 
 # -----------------------------------------------------------------------------
