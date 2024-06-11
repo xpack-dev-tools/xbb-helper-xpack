@@ -416,7 +416,7 @@ function test_case_simple_hello_printf_one()
     trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
     # Test C compile and link in a single step.
-    run_host_app_verbose "${CC}" "simple-hello1.c" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} ${VERBOSE}
+    run_host_app_verbose "${CC}" "simple-hello-printf.c" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} ${VERBOSE}
     expect_target_output "Hello" "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}"
 
     test_case_pass "${test_case_name}"
@@ -434,8 +434,8 @@ function test_case_simple_hello_printf_two()
     trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
     # Test C compile and link in separate steps.
-    run_host_app_verbose "${CC}" -c "simple-hello1.c" -o "simple-hello1.c.o" ${CFLAGS}
-    run_host_app_verbose "${CC}" "simple-hello1.c.o" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
+    run_host_app_verbose "${CC}" -c "simple-hello-printf.c" -o "simple-hello-printf.c.o" ${CFLAGS}
+    run_host_app_verbose "${CC}" "simple-hello-printf.c.o" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS}
     expect_target_output "Hello" "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}"
 
     test_case_pass "${test_case_name}"
@@ -455,7 +455,7 @@ function test_case_simple_hello_cout_one()
     trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
     # Test C++ compile and link in a single step.
-    run_host_app_verbose "${CXX}" "simple-hello2.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} ${VERBOSE}
+    run_host_app_verbose "${CXX}" "simple-hello-cout.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} ${VERBOSE}
     expect_target_output "Hello" "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}"
 
     test_case_pass "${test_case_name}"
@@ -473,8 +473,8 @@ function test_case_simple_hello_cout_two()
     trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
     # Test C++ compile and link in separate steps.
-    run_host_app_verbose "${CXX}" -c "simple-hello2.cpp" -o "${prefix}simple-hello2${suffix}.cpp.o" ${CXXFLAGS}
-    run_host_app_verbose "${CXX}" "${prefix}simple-hello2${suffix}.cpp.o" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+    run_host_app_verbose "${CXX}" -c "simple-hello-cout.cpp" -o "${prefix}simple-hello-cout${suffix}.cpp.o" ${CXXFLAGS}
+    run_host_app_verbose "${CXX}" "${prefix}simple-hello-cout${suffix}.cpp.o" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
     expect_target_output "Hello" "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}"
 
     test_case_pass "${test_case_name}"
