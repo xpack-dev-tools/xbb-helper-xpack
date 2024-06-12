@@ -61,7 +61,7 @@ sudo update-locale LANG=en_US.UTF-8
 # export TZ=UTC
 # ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-sudo apt-get --yes install tzdata
+sudo apt-get install --yes tzdata
 
 sudo apt-get -qq install -y \
   \
