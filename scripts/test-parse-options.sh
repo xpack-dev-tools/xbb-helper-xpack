@@ -39,13 +39,15 @@ function tests_parse_options()
   XBB_OUTPUT_FILE_NAME="tests"
   XBB_USE_CACHED_ARCHIVE="n"
   XBB_NPM_PACKAGE_VERSION="next"
+  XBB_TEST_SYSTEM_TOOLS="n"
+  XBB_EXTERNAL_BIN_PATH=""
 
   while [ $# -gt 0 ]
   do
     case "$1" in
 
       --help )
-        echo "usage: $(basename $0) [--32] [--version X.Y.Z] [--base-url URL]"
+        echo "usage: $(basename $0) [--32] [--package-version X.Y.Z-W.1] [--version X.Y.Z-Z] [--base-url URL] [--external folder]"
         exit 0
         ;;
 
@@ -92,6 +94,18 @@ function tests_parse_options()
         shift
         ;;
 
+      --system )
+        XBB_TEST_SYSTEM_TOOLS="y"
+        XBB_OUTPUT_FILE_NAME+="-system"
+        shift
+        ;;
+
+      --external-bin-path )
+        XBB_EXTERNAL_BIN_PATH="$2"
+        XBB_OUTPUT_FILE_NAME+="-external"
+        shift 2
+        ;;
+
       --cache )
         XBB_USE_CACHED_ARCHIVE="y"
         shift
@@ -112,6 +126,8 @@ function tests_parse_options()
 
   export XBB_IS_DEBUG
   export XBB_IS_DEVELOP
+  export XBB_TEST_SYSTEM_TOOLS
+  export XBB_EXTERNAL_BIN_PATH
 
   export XBB_RELEASE_VERSION
   export XBB_BASE_URL
@@ -132,6 +148,8 @@ function tests_parse_options()
     echo "XBB_DO_TEST_VIA_XPM=${XBB_DO_TEST_VIA_XPM}"
     echo "XBB_OUTPUT_FILE_NAME=${XBB_OUTPUT_FILE_NAME}"
     echo "XBB_NPM_PACKAGE_VERSION=${XBB_NPM_PACKAGE_VERSION}"
+    echo "XBB_TEST_SYSTEM_TOOLS=${XBB_TEST_SYSTEM_TOOLS}"
+    echo "XBB_EXTERNAL_BIN_PATH=${XBB_EXTERNAL_BIN_PATH}"
   fi
 }
 

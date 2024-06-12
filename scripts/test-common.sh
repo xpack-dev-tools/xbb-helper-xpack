@@ -304,7 +304,15 @@ function tests_perform_common()
   # The XBB_LOGS_FOLDER_PATH must be set at this point.
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
   (
-    if [ "${XBB_DO_TEST_VIA_XPM}" == "y" ]
+    if [ "${XBB_TEST_SYSTEM_TOOLS}" == "y" ]
+    then
+      run_verbose cd "${XBB_TESTS_FOLDER_PATH}"
+      tests_run_all ""
+    elif [ ! -z "${XBB_EXTERNAL_BIN_PATH}" ]
+    then
+      run_verbose cd "${XBB_TESTS_FOLDER_PATH}"
+      tests_run_all "${XBB_EXTERNAL_BIN_PATH}"
+    elif [ "${XBB_DO_TEST_VIA_XPM}" == "y" ]
     then
       tests_install_via_xpm "${XBB_TESTS_FOLDER_PATH}"
       tests_install_dependencies "${XBB_TESTS_FOLDER_PATH}" "${archive_suffix}"
