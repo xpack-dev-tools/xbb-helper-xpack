@@ -70,6 +70,7 @@ function tests_report_results()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local passed=$(grep "pass:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | wc -l | tr -d '[:blank:]')
+  local skipped=$(grep "skip:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | wc -l | tr -d '[:blank:]')
   local failed=$(grep -i "fail:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | wc -l | tr -d '[:blank:]')
   echo
   echo "-------------------------------------------------------------------------------"
@@ -86,7 +87,7 @@ function tests_report_results()
       echo "\`\`\`txt"
       echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
       echo
-      echo "${passed} test cases passed, ${failed} failed:"
+      echo "${passed} test cases passed, ${skipped} skipped, ${failed} failed:"
       echo
       grep -i "FAIL:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^|- |'
 
@@ -114,72 +115,99 @@ function tests_report_results()
       echo "Verdict: tests reluctantly accepted"
       echo "\`\`\`"
 
-      echo
-      echo "### Successful tests"
-      echo
-
-      IFS=$'\n\t'
-      local test_names="$(grep -i -E 'fail:|pass:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
-      local successful_count=0
-      for test_name in ${test_names}
-      do
-        local failed_this=$(grep -i "fail:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | grep "${test_name}" | wc -l | tr -d '[:blank:]')
-        if [ ${failed_this} -eq 0 ]
-        then
-          echo "- ${test_name} ✓"
-          successful_count=$((successful_count + 1))
-        fi
-      done
-
-      if [ ${successful_count} -eq 0 ]
-      then
-        echo "- none"
-      fi
-
-      local failed_test_names="$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
-      for test_name in ${failed_test_names}
-      do
-        echo
-        echo "### Failed test ${test_name}"
-        echo
-        for test_case_name in $(grep "${test_name}" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" |  sed -e 's|^.*: ||' -e 's| [(].*$||'  2>&1)
-        do
-          local is_failed=$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" |  sed -e 's|^.*: ||' -e 's| [(].*$||' | grep "^${test_case_name}$" | wc -l | tr -d '[:blank:]')
-          if [ ${is_failed} -gt 0 ]
-          then
-            echo "- ${test_case_name} ✗"
-            # echo
-            echo "  \`\`\`txt"
-            tail -n +2 "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler" | cat -s | sed -E 's|^|  |'
-            echo "  \`\`\`"
-            # echo
-          else
-            echo "- ${test_case_name} ✓"
-          fi
-        done
-      done
-      echo
+      tests_list_succesful
+      tests_list_skipped
+      tests_list_failed
     else
-      if [ ${passed} -gt 0 ]
+      if [ ${passed} -gt 0 -o ${skipped} -gt 0 ]
       then
-        echo "### All tests were successful"
+        echo "\`\`\`txt"
+        echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
         echo
-        IFS=$'\n\t'
-        local test_names="$(grep -i -E 'pass:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
+        echo "${passed} test cases passed, ${skipped} skipped"
+        echo "Verdict: tests accepted"
+        echo "\`\`\`"
 
-        for test_name in ${test_names}
-        do
-          echo "- ${test_name} ✓"
-        done
+        tests_list_succesful
+        tests_list_skipped
       else
         echo "All ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION}) tests completed successfully."
+        echo
       fi
-      echo
     fi
   ) 2>&1 | tee "${XBB_ARTEFACTS_FOLDER_PATH}/tests-report-${XBB_BUILD_PLATFORM}-${XBB_BUILD_ARCH}.md"
 
   echo
   # echo "-------------------------------------------------------------------------------"
+}
+
+function tests_list_succesful()
+{
+  echo
+  echo "### Successful tests"
+  echo
+
+  IFS=$'\n\t'
+  local test_names="$(grep -i -E 'fail:|pass:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
+  local successful_count=0
+  for test_name in ${test_names}
+  do
+    local failed_this=$(grep -i "fail:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | grep "${test_name}" | wc -l | tr -d '[:blank:]')
+    if [ ${failed_this} -eq 0 ]
+    then
+      echo "- ${test_name} ✓"
+      successful_count=$((successful_count + 1))
+    fi
+  done
+
+  if [ ${successful_count} -eq 0 ]
+  then
+    echo "- none"
+  fi
+}
+
+function tests_list_skipped()
+{
+  if [ ${skipped} -gt 0 ]
+  then
+    echo
+    echo "### Skipped tests"
+    echo
+
+    local skipped_tests="$(grep 'skip:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
+    for test_line in ${skipped_tests}
+    do
+      echo "- ${test_line}"
+    done
+    echo
+  fi
+}
+
+function tests_list_failed()
+{
+  local failed_test_names="$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| [(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
+  for test_name in ${failed_test_names}
+  do
+    echo
+    echo "### Failed test ${test_name}"
+    echo
+    for test_case_name in $(grep "${test_name}" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" |  sed -e 's|^.*: ||' -e 's| [(].*$||'  2>&1)
+    do
+      local is_failed=$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" |  sed -e 's|^.*: ||' -e 's| [(].*$||' | grep "^${test_case_name}$" | wc -l | tr -d '[:blank:]')
+      if [ ${is_failed} -gt 0 ]
+      then
+        echo "- ${test_case_name} ✗"
+        # echo
+        echo "  \`\`\`txt"
+        tail -n +2 "${XBB_TEST_RESULTS_FOLDER_PATH}/${test_case_name}.txt" | grep -v "is_variable_set XBB_IGNORE_TEST" | grep -v "test_case_trap_handler" | cat -s | sed -E 's|^|  |'
+        echo "  \`\`\`"
+        # echo
+      else
+        echo "- ${test_case_name} ✓"
+      fi
+    done
+  done
+  echo
 }
 
 function tests_prime_wine()
@@ -270,6 +298,20 @@ function test_case_pass()
   echo "pass: ${prefix}${test_case_name}${suffix}"
 
   echo "pass: ${prefix}${test_case_name}${suffix}" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
+}
+
+function test_case_skip()
+{
+  local test_case_name="$1"
+  skip
+
+  local prefix=${PREFIX:-""}
+  local suffix=${SUFFIX:-""}
+
+  echo
+  echo "skip: ${prefix}${test_case_name}${suffix} $@"
+
+  echo "skip: ${prefix}${test_case_name}${suffix} $@" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
 }
 
 # -----------------------------------------------------------------------------
