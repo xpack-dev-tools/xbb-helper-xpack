@@ -9,7 +9,6 @@
 
 # -----------------------------------------------------------------------------
 
-# test_bin_path
 # [--lto]
 # [--gc]
 # [--32|--64]
@@ -26,9 +25,6 @@ function test_compiler_c_cpp()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   echo "[${FUNCNAME[0]} $@]" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
-
-  local test_bin_path="$1"
-  shift
 
   (
     unset IFS
@@ -1273,5 +1269,5 @@ function test_case_()
 
 
     test_case_pass "${test_case_name}"
-  ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${PREFIX:-""}${test_case_name}${SUFFIX:-""}.txt"
+  ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${prefix}${test_case_name}${suffix}.txt"
 }

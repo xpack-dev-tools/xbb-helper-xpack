@@ -1109,24 +1109,24 @@ function gcc_test()
           echo "WINEPATH=${WINEPATH}"
         fi
 
-        test_compiler_c_cpp "${test_bin_path}"
-        test_compiler_c_cpp "${test_bin_path}" --gc
-        test_compiler_c_cpp "${test_bin_path}" --lto
-        test_compiler_c_cpp "${test_bin_path}" --gc --lto
+        test_compiler_c_cpp
+        test_compiler_c_cpp --gc
+        test_compiler_c_cpp --lto
+        test_compiler_c_cpp --gc --lto
 
-        test_compiler_fortran "${test_bin_path}"
+        test_compiler_fortran
       )
       (
-        test_compiler_c_cpp "${test_bin_path}" --static-lib
-        test_compiler_c_cpp "${test_bin_path}" --static-lib --gc
-        test_compiler_c_cpp "${test_bin_path}" --static-lib --lto
-        test_compiler_c_cpp "${test_bin_path}" --static-lib --gc --lto
+        test_compiler_c_cpp --static-lib
+        test_compiler_c_cpp --static-lib --gc
+        test_compiler_c_cpp --static-lib --lto
+        test_compiler_c_cpp --static-lib --gc --lto
       )
       (
-        test_compiler_c_cpp "${test_bin_path}" --static
-        test_compiler_c_cpp "${test_bin_path}" --static --gc
-        test_compiler_c_cpp "${test_bin_path}" --static --lto
-        test_compiler_c_cpp "${test_bin_path}" --static --gc --lto
+        test_compiler_c_cpp --static
+        test_compiler_c_cpp --static --gc
+        test_compiler_c_cpp --static --lto
+        test_compiler_c_cpp --static --gc --lto
       )
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
@@ -1176,12 +1176,12 @@ function gcc_test()
           echo
           echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-          test_compiler_c_cpp "${test_bin_path}" --64
-          test_compiler_c_cpp "${test_bin_path}" --64 --gc
-          test_compiler_c_cpp "${test_bin_path}" --64 --lto
-          test_compiler_c_cpp "${test_bin_path}" --64 --gc --lto
+          test_compiler_c_cpp --64
+          test_compiler_c_cpp --64 --gc
+          test_compiler_c_cpp --64 --lto
+          test_compiler_c_cpp --64 --gc --lto
 
-          test_compiler_fortran "${test_bin_path}" --64
+          test_compiler_fortran --64
         )
         if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
         then
@@ -1193,12 +1193,12 @@ function gcc_test()
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-            test_compiler_c_cpp "${test_bin_path}" --32
-            test_compiler_c_cpp "${test_bin_path}" --32 --gc
-            test_compiler_c_cpp "${test_bin_path}" --32 --lto
-            test_compiler_c_cpp "${test_bin_path}" --32 --gc --lto
+            test_compiler_c_cpp --32
+            test_compiler_c_cpp --32 --gc
+            test_compiler_c_cpp --32 --lto
+            test_compiler_c_cpp --32 --gc --lto
 
-            test_compiler_fortran "${test_bin_path}" --32
+            test_compiler_fortran --32
           )
         fi
       else
@@ -1207,12 +1207,12 @@ function gcc_test()
           echo
           echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-          test_compiler_c_cpp "${test_bin_path}"
-          test_compiler_c_cpp "${test_bin_path}" --gc
-          test_compiler_c_cpp "${test_bin_path}" --lto
-          test_compiler_c_cpp "${test_bin_path}" --gc --lto
+          test_compiler_c_cpp
+          test_compiler_c_cpp --gc
+          test_compiler_c_cpp --lto
+          test_compiler_c_cpp --gc --lto
 
-          test_compiler_fortran "${test_bin_path}"
+          test_compiler_fortran
         )
       fi
 
@@ -1225,10 +1225,10 @@ function gcc_test()
         if [ "${XBB_HOST_ARCH}" == "x64" ]
         then
           (
-            test_compiler_c_cpp "${test_bin_path}" --64 --static-lib
-            test_compiler_c_cpp "${test_bin_path}" --64 --static-lib --gc
-            test_compiler_c_cpp "${test_bin_path}" --64 --static-lib --lto
-            test_compiler_c_cpp "${test_bin_path}" --64 --static-lib --gc --lto
+            test_compiler_c_cpp --64 --static-lib
+            test_compiler_c_cpp --64 --static-lib --gc
+            test_compiler_c_cpp --64 --static-lib --lto
+            test_compiler_c_cpp --64 --static-lib --gc --lto
           )
           if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
           then
@@ -1236,18 +1236,18 @@ function gcc_test()
             echo "Skipping -m32 --static-lib tests..."
           else
             (
-              test_compiler_c_cpp "${test_bin_path}" --32 --static-lib
-              test_compiler_c_cpp "${test_bin_path}" --32 --static-lib --gc
-              test_compiler_c_cpp "${test_bin_path}" --32 --static-lib --lto
-              test_compiler_c_cpp "${test_bin_path}" --32 --static-lib --gc --lto
+              test_compiler_c_cpp --32 --static-lib
+              test_compiler_c_cpp --32 --static-lib --gc
+              test_compiler_c_cpp --32 --static-lib --lto
+              test_compiler_c_cpp --32 --static-lib --gc --lto
             )
           fi
         else
           (
-            test_compiler_c_cpp "${test_bin_path}" --static-lib
-            test_compiler_c_cpp "${test_bin_path}" --static-lib --gc
-            test_compiler_c_cpp "${test_bin_path}" --static-lib --lto
-            test_compiler_c_cpp "${test_bin_path}" --static-lib --gc --lto
+            test_compiler_c_cpp --static-lib
+            test_compiler_c_cpp --static-lib --gc
+            test_compiler_c_cpp --static-lib --lto
+            test_compiler_c_cpp --static-lib --gc --lto
           )
         fi
       fi
@@ -1263,28 +1263,28 @@ function gcc_test()
         if [ "${XBB_HOST_ARCH}" == "x64" ]
         then
           (
-            test_compiler_c_cpp "${test_bin_path}" --64 --static
-            test_compiler_c_cpp "${test_bin_path}" --64 --static --gc
-            test_compiler_c_cpp "${test_bin_path}" --64 --static --lto
-            test_compiler_c_cpp "${test_bin_path}" --64 --static --gc --lto
+            test_compiler_c_cpp --64 --static
+            test_compiler_c_cpp --64 --static --gc
+            test_compiler_c_cpp --64 --static --lto
+            test_compiler_c_cpp --64 --static --gc --lto
 
             if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
             then
               echo
               echo "Skipping -m32 --static tests..."
             else
-              test_compiler_c_cpp "${test_bin_path}" --32 --static
-              test_compiler_c_cpp "${test_bin_path}" --32 --static --gc
-              test_compiler_c_cpp "${test_bin_path}" --32 --static --lto
-              test_compiler_c_cpp "${test_bin_path}" --32 --static --gc --lto
+              test_compiler_c_cpp --32 --static
+              test_compiler_c_cpp --32 --static --gc
+              test_compiler_c_cpp --32 --static --lto
+              test_compiler_c_cpp --32 --static --gc --lto
             fi
           )
         else
           (
-            test_compiler_c_cpp "${test_bin_path}" --static
-            test_compiler_c_cpp "${test_bin_path}" --static --gc
-            test_compiler_c_cpp "${test_bin_path}" --static --lto
-            test_compiler_c_cpp "${test_bin_path}" --static --gc --lto
+            test_compiler_c_cpp --static
+            test_compiler_c_cpp --static --gc
+            test_compiler_c_cpp --static --lto
+            test_compiler_c_cpp --static --gc --lto
           )
         fi
       fi
@@ -1351,24 +1351,24 @@ function gcc_test()
         # explicit libraries or other options, otherwise tools used
         # during configuration (like meson) might fail probing for
         # capabilities.
-        test_compiler_c_cpp "${test_bin_path}"
+        test_compiler_c_cpp
 
         # ---------------------------------------------------------------------
 
         # Again, with various options.
-        test_compiler_c_cpp "${test_bin_path}" --gc
-        test_compiler_c_cpp "${test_bin_path}" --lto
-        test_compiler_c_cpp "${test_bin_path}" --gc --lto
+        test_compiler_c_cpp --gc
+        test_compiler_c_cpp --lto
+        test_compiler_c_cpp --gc --lto
 
-        test_compiler_fortran "${test_bin_path}"
+        test_compiler_fortran
 
         # ---------------------------------------------------------------------
 
         # Again, with -static-libstdc++
-        test_compiler_c_cpp "${test_bin_path}" --static-lib
-        test_compiler_c_cpp "${test_bin_path}" --gc --static-lib
-        test_compiler_c_cpp "${test_bin_path}" --lto --static-lib
-        test_compiler_c_cpp "${test_bin_path}" --gc --lto --static-lib
+        test_compiler_c_cpp --static-lib
+        test_compiler_c_cpp --gc --static-lib
+        test_compiler_c_cpp --lto --static-lib
+        test_compiler_c_cpp --gc --lto --static-lib
 
         # ---------------------------------------------------------------------
 
@@ -1378,10 +1378,10 @@ function gcc_test()
           echo "Skipping all --static on macOS..."
         else
           # Again, with -static
-          test_compiler_c_cpp "${test_bin_path}" --static
-          test_compiler_c_cpp "${test_bin_path}" --gc --static
-          test_compiler_c_cpp "${test_bin_path}" --lto --static
-          test_compiler_c_cpp "${test_bin_path}" --gc --lto --static-lib
+          test_compiler_c_cpp --static
+          test_compiler_c_cpp --gc --static
+          test_compiler_c_cpp --lto --static
+          test_compiler_c_cpp --gc --lto --static-lib
         fi
       )
     fi

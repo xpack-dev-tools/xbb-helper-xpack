@@ -904,26 +904,26 @@ function gcc_mingw_test()
         echo "WINEPATH=${WINEPATH}"
       fi
 
-      test_compiler_c_cpp "${test_bin_path}" ${bits} "${bootstrap_option}"
-      test_compiler_c_cpp "${test_bin_path}" --gc ${bits} "${bootstrap_option}"
-      test_compiler_c_cpp "${test_bin_path}" --lto ${bits} "${bootstrap_option}"
-      test_compiler_c_cpp "${test_bin_path}" --gc --lto ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp --gc ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp --lto ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp --gc --lto ${bits} "${bootstrap_option}"
 
-      test_compiler_fortran "${test_bin_path}" ${bits} "${bootstrap_option}"
+      test_compiler_fortran ${bits} "${bootstrap_option}"
     )
 
     (
-      test_compiler_c_cpp "${test_bin_path}" --static-lib ${bits} "${bootstrap_option}"
-      test_compiler_c_cpp "${test_bin_path}" --static-lib --gc ${bits} "${bootstrap_option}"
-      test_compiler_c_cpp "${test_bin_path}" --static-lib --lto ${bits} "${bootstrap_option}"
-      test_compiler_c_cpp "${test_bin_path}" --static-lib --gc --lto ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp --static-lib ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp --static-lib --gc ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp --static-lib --lto ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp --static-lib --gc --lto ${bits} "${bootstrap_option}"
     )
 
     (
-      test_compiler_c_cpp "${test_bin_path}" --static ${bits} "${bootstrap_option}"
-      test_compiler_c_cpp "${test_bin_path}" --static --gc ${bits} "${bootstrap_option}"
-      test_compiler_c_cpp "${test_bin_path}" --static --lto ${bits} "${bootstrap_option}"
-      test_compiler_c_cpp "${test_bin_path}" --static --gc --lto ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp --static ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp --static --gc ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp --static --lto ${bits} "${bootstrap_option}"
+      test_compiler_c_cpp --static --gc --lto ${bits} "${bootstrap_option}"
     )
 
     # -------------------------------------------------------------------------
