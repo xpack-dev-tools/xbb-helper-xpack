@@ -30,6 +30,7 @@ function tests_parse_options()
 
   XBB_IS_DEBUG="n"
   XBB_IS_DEVELOP="n"
+  XBB_SKIP_32_BIT_TESTS="n"
 
   XBB_FORCE_32_BIT="n"
   XBB_IMAGE_NAME=""
@@ -60,6 +61,11 @@ function tests_parse_options()
       --32 )
         XBB_FORCE_32_BIT="y"
         XBB_OUTPUT_FILE_NAME+="-32"
+        shift
+        ;;
+
+      --skip-32 )
+        XBB_SKIP_32_BIT_TESTS="y"
         shift
         ;;
 
