@@ -303,7 +303,7 @@ function test_case_pass()
 function test_case_skip()
 {
   local test_case_name="$1"
-  skip
+  shift
 
   local prefix=${PREFIX:-""}
   local suffix=${SUFFIX:-""}
