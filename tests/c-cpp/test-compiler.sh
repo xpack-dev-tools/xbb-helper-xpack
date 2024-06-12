@@ -646,9 +646,9 @@ function test_case_sleepy_threads_cv()
 
     if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
     then
-      run_host_app_verbose "${CXX}" "sleepy-threads-cv.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -lpthread
+      run_host_app_verbose "${CXX}" "sleepy-threads-cv.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -lpthread -std=c++11
     else
-      run_host_app_verbose "${CXX}" "sleepy-threads-cv.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+      run_host_app_verbose "${CXX}" "sleepy-threads-cv.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -std=c++11
     fi
 
     expect_target_output "abcd" "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" 4
@@ -826,7 +826,7 @@ function test_case_exception_reduced()
   (
     trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
-    run_host_app_verbose "${CXX}" "exception-reduced.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+    run_host_app_verbose "${CXX}" "exception-reduced.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -std=c++11
 
     expect_target_succeed "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}"
 
@@ -1122,7 +1122,7 @@ function test_case_weak_common()
 
     for name in overload-new unwind-main unwind-strong unwind-weak-dummy unwind-weak
     do
-      run_host_app_verbose "${CXX}" -c "${name}.cpp" -o "${prefix}${name}${suffix}.cpp.o" ${CXXFLAGS}
+      run_host_app_verbose "${CXX}" -c "${name}.cpp" -o "${prefix}${name}${suffix}.cpp.o" ${CXXFLAGS} -std=c++11
     done
 
     test_case_pass "${test_case_name}"
@@ -1141,9 +1141,9 @@ function test_case_throwcatch_main()
 
     if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
     then
-      run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -o "throwcatch-lib.dll" -Wl,--out-implib,libthrowcatch-lib.dll.a ${LDXXFLAGS}
+      run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -o "throwcatch-lib.dll" -Wl,--out-implib,libthrowcatch-lib.dll.a ${LDXXFLAGS} -std=c++11
     else
-      run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -fpic -o "libthrowcatch-lib.${XBB_TARGET_SHLIB_EXT}" ${LDXXFLAGS}
+      run_host_app_verbose "${CXX}" "throwcatch-lib.cpp" -shared -fpic -o "libthrowcatch-lib.${XBB_TARGET_SHLIB_EXT}" ${LDXXFLAGS} -std=c++11
 
       if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
@@ -1157,9 +1157,9 @@ function test_case_throwcatch_main()
     # multiple definition of `_Unwind_Resume'
     if [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
     then
-      run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS}
+      run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS} -std=c++11
     else
-      run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS} -Wl,--allow-multiple-definition
+      run_host_app_verbose "${CXX}" "throwcatch-main.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" -L. -lthrowcatch-lib ${LDXXFLAGS} -Wl,--allow-multiple-definition -std=c++11
     fi
 
     expect_target_succeed "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}"
@@ -1211,6 +1211,7 @@ function test_case_autoimport_main()
   ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${prefix}${test_case_name}${suffix}.txt"
 }
 
+# win32 specific.
 function test_case_idltest()
 {
   local test_case_name="$(test_case_get_name)"
