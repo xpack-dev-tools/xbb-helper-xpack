@@ -85,7 +85,12 @@ function tests_report_results()
     if [ ${failed} -gt 0 ]
     then
       echo "\`\`\`txt"
-      echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
+      if [ "${XBB_TEST_SYSTEM_TOOLS:-""}" == "y" ]
+      then
+        echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
+      else
+        echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
+      fi
       echo
       echo "${passed} test cases passed, ${skipped} skipped, ${failed} failed:"
       echo
@@ -122,7 +127,12 @@ function tests_report_results()
       if [ ${passed} -gt 0 -o ${skipped} -gt 0 ]
       then
         echo "\`\`\`txt"
-        echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
+        if [ "${XBB_TEST_SYSTEM_TOOLS:-""}" == "y" ]
+        then
+          echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
+        else
+          echo "Tests summary for ${XBB_APPLICATION_LOWER_CASE_NAME} ${XBB_RELEASE_VERSION} on ${XBB_REQUESTED_TARGET_PLATFORM}-${XBB_REQUESTED_TARGET_ARCH} (${XBB_BUILD_DISTRO_NAME} ${XBB_BUILD_DISTRO_VERSION})"
+        fi
         echo
         echo "${passed} test cases passed, ${skipped} skipped"
         echo "Verdict: tests accepted"
