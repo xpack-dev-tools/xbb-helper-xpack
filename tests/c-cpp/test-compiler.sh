@@ -206,6 +206,10 @@ function test_compiler_c_cpp()
       then
         LDFLAGS+=" -Wl,--gc-sections"
         LDXXFLAGS+=" -Wl,--gc-sections"
+      elif [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+      then
+        LDFLAGS+=" -Wl,--gc-sections"
+        LDXXFLAGS+=" -Wl,--gc-sections"
       elif [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
       then
         LDFLAGS+=" -Wl,-dead_strip"
