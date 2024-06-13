@@ -318,10 +318,42 @@ function test_case_skip()
   local prefix=${PREFIX:-""}
   local suffix=${SUFFIX:-""}
 
-  echo
-  echo "skip: ${prefix}${test_case_name}${suffix} $@"
+  local filtered_suffix="$(echo "${suffix}" | sed -e 's|-bootstrap$||')"
+  if [ ! -z "${filtered_suffix}" ]
+  then
+    if is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}${filtered_suffix}" \
+                       "XBB_SKIP_TEST_ALL_${test_case_name}" \
+                       "XBB_SKIP_TEST_${prefix}${test_case_name}${filtered_suffix}" \
+                       "XBB_SKIP_TEST_${prefix}${test_case_name}"
+    then
+      echo
+      echo "skip: ${prefix}${test_case_name}${suffix} $@"
 
-  echo "skip: ${prefix}${test_case_name}${suffix} $@" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
+      echo "skip: ${prefix}${test_case_name}${suffix} $@" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
+      return 0 # True
+    else
+      return 1
+    fi
+  else
+    if is_variable_set "XBB_SKIP_TEST_ALL_${test_case_name}" \
+                       "XBB_SKIP_TEST_${prefix}${test_case_name}"
+    then
+      echo
+      echo "skip: ${prefix}${test_case_name}${suffix} $@"
+
+      echo "skip: ${prefix}${test_case_name}${suffix} $@" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
+      return 0 # True
+    else
+      return 1
+    fi
+  fi
+
+
+
+
+
+
+
 }
 
 # -----------------------------------------------------------------------------
