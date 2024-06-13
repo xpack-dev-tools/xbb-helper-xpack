@@ -338,10 +338,8 @@ function test_compiler_c_cpp()
       then
         test_case_hello_tls
 
-        if is_variable_set "XBB_SKIP_TEST_BUFFEROVERFLOW"
+        if ! test_case_skip "bufferoverflow"
         then
-          test_case_skip "bufferoverflow" "(-lssp not available)"
-        else
           test_case_bufferoverflow
         fi
       fi
