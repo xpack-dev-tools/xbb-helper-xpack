@@ -354,13 +354,10 @@ function test_compiler_c_cpp()
 
         test_case_weak_common
         test_case_normal
-        if false # [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
-        then
-          echo
-          echo "Skip test_case_weak_undef_c on macOS"
-        else
-          test_case_weak_undef_c
-        fi
+
+        # Fixed with -Wl,-U,_func on macOS.
+        test_case_weak_undef_c
+
         test_case_weak_defined_c
         test_case_weak_use_c
         test_case_weak_override_c
