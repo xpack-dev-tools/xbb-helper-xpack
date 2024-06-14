@@ -166,7 +166,7 @@ function test_compiler_c_cpp()
 
     if [ "${use_libcxx_abi}" == "y" ]
     then
-      LDXXFLAGS+=" -lc++-abi"
+      LDXXFLAGS+=" -lc++abi"
     fi
 
     if [ "${use_libunwind}" == "y" ]
