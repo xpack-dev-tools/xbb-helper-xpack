@@ -166,7 +166,7 @@ function test_compiler_c_cpp()
 
     if [ "${use_libcxx_abi}" == "y" ]
     then
-      LDXXFLAGS+=" -lc++-abi"
+      LDXXFLAGS+=" -lc++abi"
     fi
 
     if [ "${use_libunwind}" == "y" ]
@@ -262,6 +262,7 @@ function test_compiler_c_cpp()
       then
         VERBOSE+=" -Wl,-t,-t"
       fi
+      LDXXFLAGS+=" ${VERBOSE}"
     fi
 
     if [ "${is_bootstrap}" == "y" ]
@@ -330,8 +331,12 @@ function test_compiler_c_cpp()
       test_case_hello2_cpp
       test_case_global_terminate
       test_case_longjmp_cleanup
+
+      # Exception in recursive calls.
       test_case_hello_exception
+
       test_case_exception_locale
+
       test_case_exception_reduced
 
       if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
@@ -354,19 +359,17 @@ function test_compiler_c_cpp()
 
         test_case_weak_common
         test_case_normal
-        if false # [ "${XBB_TARGET_PLATFORM}" == "darwin" ]
-        then
-          echo
-          echo "Skip test_case_weak_undef_c on macOS"
-        else
-          test_case_weak_undef_c
-        fi
+
+        # Fixed with -Wl,-U,_func on macOS.
+        test_case_weak_undef_c
+
         test_case_weak_defined_c
         test_case_weak_use_c
         test_case_weak_override_c
         test_case_weak_duplicate_c
         test_case_overload_new_cpp
         test_case_unwind_weak_cpp
+
         # TODO: investigate why it fails with GCC 14 on macOS.
         test_case_unwind_strong_cpp
       )
@@ -397,6 +400,8 @@ function test_compiler_c_cpp()
       # -----------------------------------------------------------------------
 
       test_case_simple_objc
+
+      # -----------------------------------------------------------------------
     )
 
   )
