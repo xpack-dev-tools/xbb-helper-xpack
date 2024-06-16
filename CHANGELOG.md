@@ -2,9 +2,100 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-13
+
+* v2.1.20 released
+* 0018964 test-compiler.sh: use if ! test_case_skip
+* 0dcd505 build-tests.sh: test_case_skip enhanced
+* 75c474d test-compiler.sh: use --gc-sections on windows
+
+## 2024-06-12
+
+* 84f045c build-tests.sh: cosmetics in messages
+* e49a755 test-parse-options.sh: add --skip-32
+* 0b5063d install-dependencies.sh: cosmetics
+* cb85448 test-common.sh: create tests folder
+* d5c4579 test-compiler.sh: add -std=c++11
+* 1983bf6 tests: parse --system & --external-bin-path
+* c82eb34 test-compiler.sh: remove unused test_bin_path
+* 5cba29d build-tests.sh: fix shift
+* f720e53 test-compiler.sh: XBB_SKIP_TEST_BUFFEROVERFLOW
+* 9eb7502 build-tests.sh: count skipped tests
+
+## 2024-06-11
+
+* 87084c2 build-tests.sh: cosmetics in messages
+* 936ace5 test-compiler.sh: update file names
+* d623b57 rename simple_hello_*
+* 7032b99 test-compiler.sh: make PREFIX/SUFFIX optional
+* 76fdf4a build-tests.sh: All tests successful with list
+* de1c31f build-tests.sh: make PREFIX/SUFFIX optional
+
+## 2024-06-10
+
+* 8180832 build-tests.sh: cosmetics
+* 48ba408 build-tests.sh: process -32 -64 in test case names
+* 1a17b90 test-xpm-liquid.xml: cosmetics
+* e548038 test-xpm-liquid.xml: cosmetics
+* 34e3052 test-xpm-liquid.xml: cosmetics
+* a13975d test-xpm-liquid.xml: add liquid header
+* ae8725f rename files tests-report-*
+* 066f07b test-xpm-liquid.xml: rename artefacts to report
+* 2e22836 test-xpm-liquid.xml: rename artefacts to reports
+
+## 2024-06-09
+
+* f410758 templates cosmetics
+* 4409b6b test-xpm-liquid.xml: add tests report
+* 10f80bc build-tests.md: cosmetics in messages
+* c422386 build-tests.md: block indentation 2
+* 252d7ac build-tests.md: more verbosity
+
+## 2024-06-08
+
+* 75a85e2 build-tests.sh: cosmetics in messages
+* 48cad83 build-tests.sh: Failed test
+* f715b65 build-tests.sh: remove empty lines in lists
+* e87c7d4 build-tests.sh: fix for syntax
+
+## 2024-06-07
+
+* c72d6c1 build-tests.sh: use cat -s
+* c8a7c8e build-tests.sh: report successful tests
+* 6c194ac test-compiler.sh: add -U,_func to macOS weak undef
+* 707b6dc test-xpm-liquid.yml: add upload-artifact
+* f71c423 templates/copyright-liquid.yml add links
+* db4b6d4 templates: use actions/checkout@v4
+* 4621891 build-tests.sh: tests-summary-*.md
+* 884b5e3 actually XBB_ARTEFACTS_FOLDER_PATH
+* 25c30ad build-tests.sh: create artefacts/tests-summary.md
+* b9f38a4 xbb.sh: define XBB_ARTEFACTS_FOLDER_NAME
+* 6a8111d test-compiler: skip weak_undef on macOS
+* 17cac1a build-tests.sh: more verbose messages
+* f59137a build-tests.sh: reorder messages
+* ede230c trigger-workflow-test-xpm.yml: use package.json version
+* 9c2b6f2 test-xpm.liquid.yml: xcode-select --switch
+* 9ae2759 trigger-workflow-test-xpm.yml: use actual version, not current
+* 2f46714 show-libs.sh: fix show_host_libs .exe
+* d93f6bd templates.sh/test.sh: reorder parse options
+* d69003b test-xpm-liquid.sh: add package-version
+* f7c508b build-tests.sh: use tail -n +2
+* f21bf75 test-xpm-liquid.yml: use macos-14
+* 6562a43 test-parse-options.sh: fix missing is_develop
+* 21d4ac7 test-parse-options.sh: local get version
+* 0ce0099 split test-parse-options.sh
+
 ## 2024-06-06
 
-* v2.1.19 released
+* 042cf87 trigger-workflow-test-xpm.sh: fix sed
+* 9e6665b trigger-workflow-test-xpm.sh: fix sed
+* 6e17b50 test-common.sh: add XBB_NPM_PACKAGE_VERSION
+* 207fefc trigger-workflow-test-xpm.sh: add package-version
+* 9beb5b8 common.sh: add verbosity
+* 391cb15 common.sh: add verbosity
+* 20e43ca build-tests.sh: cosmetise messages
+* 241367b 2.1.19
+* 6054415 prepare v2.1.19
 * 9f94023 test-compiler.sh: remove redundant show_libs
 * cb6af1f build-tests.sh: cosmetise messages
 * a88ae5f build-tests.sh: report failed tests output
