@@ -1,11 +1,11 @@
 {% render "xpacks/@xpack-dev-tools/xbb-helper/templates/copyright-liquid.yml" %}
 
 {% if platforms == "all" -%}
-  {% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
+{% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
-name: 'Build xPack {{ XBB_APPLICATION_NAME }} xbbla32'
+name: 'Build xPack {{ XBB_APPLICATION_NAME }} linux-x64'
 
 on:
   workflow_dispatch:
@@ -38,16 +38,20 @@ on:
         required: false
         type: string
         default: ''
+      helper-git-ref:
+        description: 'The helper branch, tag or SHA to checkout'
+        required: false
+        default: 'xpack-develop'
 
 jobs:
 {% for platform in platforms -%}
-{% if platform == "linux-arm" %}
-  linux-arm:
-    name: 'Linux Arm 32 - {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
-    timeout-minutes: 2880 # 2 days
-    runs-on: [self-hosted, linux, arm, xbbla32]
+{% if platform == "linux-x64" %}
+  {{ platform }}-build:
+    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+    timeout-minutes: 5760 # 4 days
+    runs-on: [self-hosted, linux, x64]
     container:
-      image: ilegeul/ubuntu:arm32v7-18.04-xbb-v5.2.1
+      image: ilegeul/ubuntu:amd64-18.04-xbb-v5.2.1
     defaults:
       run:
         shell: bash
@@ -55,16 +59,16 @@ jobs:
     steps:
       - name: 'Show environment'
         run: |
+          uname -a
+          lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           echo "node: $(node --version)"
           echo "npm: $(npm --version)"
-          uname -a
-          lsb_release -sd
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -84,18 +88,25 @@ jobs:
         timeout-minutes: 1440
         run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
 
-      - name: 'Build Linux arm32 binary'
+      - name: 'Build {{ platform }} binaries'
         timeout-minutes: 1440
         run: |
-          xpm install --config linux-arm --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
-          xpm run build --config linux-arm
+          xpm install --config {{ platform }} --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
+          xpm run build --config {{ platform }}
+
+      - name: Upload platform artefacts
+        uses: actions/upload-artifact@v3 # v3 for 18.04
+        with:
+          name: deploy-{{ platform }}
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/deploy/*
+          overwrite: true
 
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.13.0 # v1.13 for 18.04
         with:
           allowUpdates: true
-          artifacts: 'build/linux-arm/deploy/*'
+          artifacts: 'build/{{ platform }}/deploy/*'
           bodyFile: '.github/workflows/body-github-pre-releases-test.md'
           commit: 'master'
           draft: false
@@ -113,6 +124,44 @@ jobs:
       - name: 'Rename working area'
         # For just in case absolute paths remain unprocessed.
         run: mv -v build build-$(date -u +%Y%m%d-%H%M%S)
+
+  {{ platform }}-test:
+    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
+    runs-on: ubuntu-22.04
+    needs: [{{ platform }}-build]
+
+    steps:
+      - name: 'Show environment'
+        run: |
+          uname -a
+          lsb_release -sd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          ls -lLA
+          env | sort | grep -E '^[^ \t]+='
+
+      - name: 'Checkout project'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+
+      - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
+        uses: actions/checkout@v4
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: xpacks/@xpack-dev-tools/xbb-helper
+          ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
+          fetch-depth: 3
+
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
+        run: bash scripts/test.sh --image github-actions-ubuntu-latest --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url pre-release
+
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-{{ platform }}
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          overwrite: true
 {% break -%}
 {% endif -%}
 {% endfor -%}

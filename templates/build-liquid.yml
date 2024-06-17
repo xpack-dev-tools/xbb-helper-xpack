@@ -1,7 +1,7 @@
 {% render "xpacks/@xpack-dev-tools/xbb-helper/templates/copyright-liquid.yml" %}
 
 {% if platforms == "all" -%}
-  {% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
+{% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
@@ -41,7 +41,7 @@ on:
 
 jobs:
 {% for platform in platforms -%}
-  {% if platform == "linux-x64" %}
+{% if platform == "linux-x64" %}
   linux-x64-x:
     name: 'Linux Intel X - {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
     timeout-minutes: 5760 # 4 days
@@ -64,7 +64,7 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -84,7 +84,7 @@ jobs:
         timeout-minutes: 1440
         run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
 
-      - name: 'Build Linux x64 binary'
+      - name: 'Build Linux x64 binaries'
         timeout-minutes: 1440
         run: |
           xpm install --config linux-x64 --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
@@ -92,7 +92,7 @@ jobs:
 
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
           artifacts: 'build/linux-x64/deploy/*'
@@ -117,7 +117,7 @@ jobs:
 {% endif -%}
 {% endfor %}
 {% for platform in platforms -%}
-  {% if platform == "win32-x64" %}
+{% if platform == "win32-x64" %}
   linux-x64-w:
     name: 'Linux Intel W - {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
     timeout-minutes: 5760 # 4 days
@@ -140,7 +140,7 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -160,7 +160,7 @@ jobs:
         timeout-minutes: 1440
         run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
 
-      - name: 'Build Windows x64 binary'
+      - name: 'Build Windows x64 binaries'
         timeout-minutes: 1440
         run: |
           xpm install --config win32-x64 --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
@@ -168,7 +168,7 @@ jobs:
 
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
           artifacts: 'build/win32-x64/deploy/*'
@@ -194,8 +194,8 @@ jobs:
 {% endfor %}
 {% for platform in platforms -%}
 {% if platform == "linux-arm" %}
-  linux-arm:
-    name: 'Linux Arm 32 - {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+  {{ platform }}:
+    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm, xbbla32]
     container:
@@ -216,7 +216,7 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -236,18 +236,18 @@ jobs:
         timeout-minutes: 1440
         run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
 
-      - name: 'Build Linux arm32 binary'
+      - name: 'Build {{ platform }} binaries'
         timeout-minutes: 1440
         run: |
-          xpm install --config linux-arm --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
-          xpm run build --config linux-arm
+          xpm install --config {{ platform }} --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
+          xpm run build --config {{ platform }}
 
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
-          artifacts: 'build/linux-arm/deploy/*'
+          artifacts: 'build/{{ platform }}/deploy/*'
           bodyFile: '.github/workflows/body-github-pre-releases-test.md'
           commit: 'master'
           draft: false
@@ -270,8 +270,8 @@ jobs:
 {% endfor -%}
 {% for platform in platforms -%}
 {% if platform == "linux-arm64" %}
-  linux-arm64:
-    name: 'Linux Arm 64 - {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+ {{ platform }}:
+    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm64, xbbla]
     container:
@@ -292,7 +292,7 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -312,18 +312,18 @@ jobs:
         timeout-minutes: 1440
         run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
 
-      - name: 'Build Linux arm64 binary'
+      - name: 'Build Linux arm64 binaries'
         timeout-minutes: 1440
         run: |
-          xpm install --config linux-arm64 --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
-          xpm run build --config linux-arm64
+          xpm install --config {{ platform }} --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
+          xpm run build --config {{ platform }}
 
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
-          artifacts: 'build/linux-arm64/deploy/*'
+          artifacts: 'build/{{ platform }}/deploy/*'
           bodyFile: '.github/workflows/body-github-pre-releases-test.md'
           commit: 'master'
           draft: false
@@ -369,7 +369,7 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -390,18 +390,18 @@ jobs:
         run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
 
 {% for platform in platforms -%}
-  {% case platform -%}
-    {% when "darwin-x64" %}
-      - name: 'Build macOS x64 binary'
+{% case platform -%}
+{% when "darwin-x64" %}
+      - name: 'Build macOS x64 binaries'
         timeout-minutes: 1440
         run: |
           xpm install --config darwin-x64 --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
           xpm run build --config darwin-x64
-  {% endcase -%}
+{% endcase -%}
 {% endfor %}
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
           artifacts: 'build/darwin-x64/deploy/*'
@@ -450,7 +450,7 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -471,19 +471,19 @@ jobs:
         run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
 
 {% for platform in platforms -%}
-  {% case platform -%}
-    {% when "darwin-arm64" %}
-      - name: 'Build macOS arm64 binary'
+{% case platform -%}
+{% when "darwin-arm64" %}
+      - name: 'Build macOS arm64 binaries'
         timeout-minutes: 1440
         run: |
           xpm install --config darwin-arm64 --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
           xpm run build --config darwin-arm64
 
-  {% endcase -%}
+{% endcase -%}
 {% endfor %}
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
           artifacts: 'build/darwin-arm64/deploy/*'

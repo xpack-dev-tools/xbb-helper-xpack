@@ -1,7 +1,7 @@
 {% render "xpacks/@xpack-dev-tools/xbb-helper/templates/copyright-liquid.yml" %}
 
 {% if platforms == "all" -%}
-  {% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
+{% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
@@ -32,7 +32,7 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -42,8 +42,8 @@ jobs:
 
 {% for platform in platforms -%}
 {% if platform == "linux-arm" %}
-  linux-arm:
-    name: 'Linux Arm 32 - {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} clean'
+  {{ platform }}:
+    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} clean'
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm, xbbla32]
 
@@ -57,7 +57,7 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -67,8 +67,8 @@ jobs:
 
 {% for platform in platforms -%}
 {% if platform == "linux-arm64" %}
-  linux-arm64:
-    name: 'Linux Arm 64 - {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} clean'
+ {{ platform }}:
+    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} clean'
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm64, xbbla]
     steps:
@@ -81,7 +81,7 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -109,7 +109,7 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
@@ -137,7 +137,7 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area'
+      - name: 'Clean working area' # Mandatory for self-hosted runners.
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*

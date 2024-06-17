@@ -2,7 +2,7 @@
 {% render "xpacks/@xpack-dev-tools/xbb-helper/templates/copyright-liquid.yml" %}
 
 {% if platforms == "all" -%}
-  {% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
+{% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
@@ -46,8 +46,8 @@ on:
 # so `native-test.sh` should be fine, it already takes care of updates.
 jobs:
 {% for platform in platforms -%}
-  {% case platform -%}
-  {% when "linux-x64" %}
+{% case platform -%}
+{% when "linux-x64" %}
   # https://en.wikipedia.org/wiki/Ubuntu_version_history
   # https://hub.docker.com/_/ubuntu
   # The ubuntu:12.04 image fails to update.
@@ -425,6 +425,6 @@ jobs:
 
   # - https://hub.docker.com/r/gentoo/portage
   # docker://gentoo/portage - exec: "/bin/bash": stat /bin/bash: no such file or directory: unknown.
-  {% endcase -%}
+{% endcase -%}
 {% endfor %}
 # -----------------------------------------------------------------------------

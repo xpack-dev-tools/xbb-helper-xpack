@@ -2,7 +2,7 @@
 {% render "xpacks/@xpack-dev-tools/xbb-helper/templates/copyright-liquid.yml" %}
 
 {% if platforms == "all" -%}
-  {% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
+{% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
@@ -46,8 +46,8 @@ on:
 # so `native-test.sh` should be fine, it already takes care of updates.
 jobs:
 {% for platform in platforms -%}
-  {% case platform -%}
-  {% when "linux-arm64" %}
+{% case platform -%}
+{% when "linux-arm64" %}
   # https://en.wikipedia.org/wiki/Ubuntu_version_history
   # https://hub.docker.com/_/ubuntu
   # The ubuntu:12.04 image fails to update.
@@ -461,7 +461,7 @@ jobs:
         with:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image opensuse/tumbleweed --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
-  {% when "linux-arm" %}
+{% when "linux-arm" %}
   # https://hub.docker.com/r/arm32v7/ubuntu/
   ubuntu-arm:
     name: 'arm {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test on Ubuntu stable'
@@ -691,6 +691,6 @@ jobs:
   # - https://hub.docker.com/r/arm32v7/opensuse
   # arm32v7/opensuse:latest is leap 42.3 and fails due to http: URLs
   # (zypper lr -u)
-  {% endcase -%}
+{% endcase -%}
 {% endfor %}
 # -----------------------------------------------------------------------------

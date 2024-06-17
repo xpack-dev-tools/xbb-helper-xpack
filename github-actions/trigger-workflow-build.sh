@@ -69,6 +69,7 @@ version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 workflow_id="build-all.yml"
 xpm_version="latest"
 loglevel="info"
+helper_git_ref="v$(xbb_get_current_helper_version)"
 
 while [ $# -gt 0 ]
 do
@@ -84,8 +85,14 @@ do
       shift 2
       ;;
 
+    # deprecated, use --workflow
     --machine )
       workflow_id="build-${2}.yml"
+      shift 2
+      ;;
+
+    --workflow )
+      workflow_id="${2}"
       shift 2
       ;;
 
@@ -96,6 +103,11 @@ do
 
     --loglevel )
       loglevel="$2"
+      shift 2
+      ;;
+
+    --helper-git-ref )
+      helper_git_ref="$2"
       shift 2
       ;;
 
@@ -117,7 +129,8 @@ cat <<__EOF__ > "${data_file_path}"
   "inputs": {
     "version": "${version}",
     "xpm_version": "${xpm_version}",
-    "xpm_install_loglevel": "${loglevel}"
+    "xpm_install_loglevel": "${loglevel}",
+    "helper-git-ref": "${helper_git_ref}"
   }
 }
 __EOF__
