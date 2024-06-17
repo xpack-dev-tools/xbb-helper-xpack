@@ -57,6 +57,13 @@ jobs:
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
         run: bash scripts/test.sh --image github-actions-ubuntu-latest --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-{{ platform }}
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          overwrite: true
 {% when "linux-arm64" %}
   {{ platform }}-test:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -96,6 +103,13 @@ jobs:
         with:
           entrypoint: /bin/bash
           args: /github/workspace/scripts/test.sh --image ubuntu:22.04 --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-{{ platform }}
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          overwrite: true
 {% when "linux-arm" %}
   {{ platform }}-test:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -135,6 +149,13 @@ jobs:
         with:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/scripts/test.sh --image debian --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-{{ platform }}
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          overwrite: true
 {% when "darwin-x64" %}
   {{ platform }}-test:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -179,6 +200,13 @@ jobs:
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
         run: bash scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-{{ platform }}
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          overwrite: true
 {% when "darwin-arm64" %}
   {{ platform }}-test:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -223,6 +251,13 @@ jobs:
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
         run: bash scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-{{ platform }}
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          overwrite: true
 {% when "win32-x64" %}
   {{ platform }}-test:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
@@ -258,6 +293,49 @@ jobs:
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
         run: bash scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-{{ platform }}
+          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          overwrite: true
 {% endcase -%}
 {% endfor %}
+  generate-tests-report:
+    name: 'Generate tests report for {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %}'
+    runs-on: ubuntu-22.04
+    needs: [{{ platforms | join: "-test, " | append: "-test"}}]
+
+    steps:
+      - name: Download platform test reports
+        uses: actions/download-artifact@v4
+        with:
+          path: {% raw %}${{ github.workspace }}{% endraw %}/artefacts
+          merge-multiple: true
+
+      - name: Concatenate platform test reports
+        run: |
+          ls -lR {% raw %}${{ github.workspace }}{% endraw %}/artefacts
+          touch {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "---" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "title: {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test results" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "permalink: /dev-tools/{{ XBB_APPLICATION_LOWER_CASE_NAME }}/tests/{% raw %}${{ github.event.inputs.version }}{% endraw %}/" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "comments: true" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "date: $(date "+%Y-%m-%d %H:%M:%S %z")" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo "---" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
+          (cd {% raw %}${{ github.workspace }}{% endraw %}; cat -s {% for platform in platforms %}artefacts/tests-report-{{ platform }}.md {% endfor %} | tee -a artefacts/tests-report.md)
+          mv -v {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md {% raw %}${{ github.workspace }}{% endraw %}/artefacts/{% raw %}${{ github.event.inputs.version }}{% endraw %}.md
+
+      - name: Upload tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report
+          path: {% raw %}${{ github.workspace }}{% endraw %}/artefacts/{% raw %}${{ github.event.inputs.version }}{% endraw %}.md
+          overwrite: true
+
 # -----------------------------------------------------------------------------
