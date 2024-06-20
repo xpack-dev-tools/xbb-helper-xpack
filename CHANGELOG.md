@@ -2,6 +2,30 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-20
+
+* v2.1.21 released
+* 9e7d69f add XBB_WHILE_RUNNING_SEPARATE_TESTS to tests
+* 625bbb6 git-commit.sh update
+
+## 2024-06-17
+
+* 4a69c90 templates/test-prime-liquid.yml: add tests report
+* b764e11 templates/deep-clean-liquid.yml fix syntax
+* 469f4f1 rework workflow templates
+
+## 2024-06-16
+
+* 56fff97 2.1.20
+* c904060 Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* 11548e5 prepare v2.1.20
+
+## 2024-06-14
+
+* 39ec27f test-compiler.sh: cosmetics
+* cebbeb1 test-compiler.sh: weak_undef_c always
+* 68aae01 test-compiler.sh: fix -lc++abi
+
 ## 2024-06-13
 
 * v2.1.20 released
