@@ -304,7 +304,7 @@ function tests_perform_common()
   # The XBB_LOGS_FOLDER_PATH must be set at this point.
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}"
   mkdir -pv "${XBB_TESTS_FOLDER_PATH}"
-  
+
   (
     if [ "${XBB_TEST_SYSTEM_TOOLS}" == "y" ]
     then

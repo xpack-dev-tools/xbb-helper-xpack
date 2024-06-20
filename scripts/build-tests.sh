@@ -122,7 +122,13 @@ function tests_report_results()
 
       tests_list_succesful
       tests_list_skipped
-      tests_list_failed
+
+      # Show the detailed list of failed test cases only when
+      # explicitly running tests.
+      if [ "${XBB_WHILE_RUNNING_SEPARATE_TESTS:-""}" == "y" ]
+      then
+        tests_list_failed
+      fi
     else
       if [ ${passed} -gt 0 -o ${skipped} -gt 0 ]
       then
