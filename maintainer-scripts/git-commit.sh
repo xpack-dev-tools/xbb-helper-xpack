@@ -74,6 +74,19 @@ __EOF__
 
 # -----------------------------------------------------------------------------
 
+tmp_file_application="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_application}"
+cd "$1/.."
+
+echo
+echo $1
+git add scripts/application.sh
+git commit -m "application.sh: update"
+
+__EOF__
+
+# -----------------------------------------------------------------------------
+
 tmp_file_commit_all="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_all}"
 cd "$1/.."
@@ -161,7 +174,7 @@ git add package.json package-lock.json
 # git commit -m "package.json: bump deps & reorder git-log"
 # git commit -m "package.json: mkdir -pv cache"
 # git commit -m "package.json: bump deps"
-git commit -m "package.json: clang 17.0.6-1.1"
+# git commit -m "package.json: clang 17.0.6-1.1"
 # git commit -m "package.json: xpm-version 0.18.0"
 # git commit -m "package.json: update xpack-dev-tools path"
 # git commit -m "package.json: move scripts to actions"
@@ -172,6 +185,7 @@ git commit -m "package.json: clang 17.0.6-1.1"
 # git commit -m "package.json: rename xbbla"
 # git commit -m "package.json: rm xpack-dev-tools-build/*"
 # git commit -m "package.json: add linux32"
+git commit -m "package.json: rework generate workflows"
 
 __EOF__
 
@@ -181,11 +195,11 @@ set -x
 
 # UPDATE ME!
 # commands_file="${tmp_file_workflows}"
-
+# commands_file="${tmp_file_application}"
 
 # commands_file="${tmp_file_jekyll}"
-# commands_file="${tmp_file_commit_readmes}"
-commands_file="${tmp_file_commit_package}"
+commands_file="${tmp_file_commit_readmes}"
+# commands_file="${tmp_file_commit_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
