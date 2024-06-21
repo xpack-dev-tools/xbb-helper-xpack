@@ -187,13 +187,16 @@ function tests_list_skipped()
   if [ ${skipped} -gt 0 ]
   then
     echo
-    echo "### Skipped tests"
+    echo "### Skipped test cases"
     echo
 
-    local skipped_tests="$(grep 'skip:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
-    for test_line in ${skipped_tests}
+    local skipped_test_names="$(grep 'skip:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| .*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
+    for test_name in ${skipped_test_names}
     do
-      echo "- ${test_line}"
+      for test_case_line in "$(grep 'skip:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | grep "${test_name}" | sed -e 's|^.*: ||'  2>&1 )"
+      do
+        echo "- ${test_case_line}"
+      done
     done
     echo
   fi
