@@ -27,6 +27,9 @@ source "${helper_folder_path}/scripts/build-tests.sh"
 # Requires XBB_BASE_URL and lots of other variables.
 function tests_install_archive()
 {
+  echo
+  echo "[${FUNCNAME[0]} $@]"
+
   local tests_folder_path="$1"
 
   local archive_folder_name="${XBB_APPLICATION_DISTRO_LOWER_CASE_NAME}-${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}"
@@ -121,6 +124,9 @@ function tests_good_bye()
 
 function tests_install_via_xpm()
 {
+  echo
+  echo "[${FUNCNAME[0]} $@]"
+
   local tests_folder_path="$1"
 
   export XBB_XPACK_FOLDER_PATH="${tests_folder_path}/${XBB_APPLICATION_LOWER_CASE_NAME}-xpack"
@@ -148,6 +154,9 @@ function tests_install_via_xpm()
 
 function tests_update_system_common()
 {
+  echo
+  echo "[${FUNCNAME[0]} $@]"
+
   local image_name="$1"
 
   # Make sure that the minimum prerequisites are met.
@@ -234,6 +243,9 @@ function tests_update_system()
 
 function tests_perform_common()
 {
+  echo
+  echo "[${FUNCNAME[0]} $@]"
+
   # Avoid leaving files that cannot be removed by users.
   trap xbb_make_writable EXIT
 
