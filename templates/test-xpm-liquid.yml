@@ -306,7 +306,7 @@ jobs:
   generate-tests-report:
     name: 'Generate tests report for {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %}'
     runs-on: ubuntu-22.04
-    needs: [{{ platforms | join: ", "}}]
+    needs: [{{ platforms | join: "-test, " | append: "-test"}}]
 
     steps:
       - name: Download platform test reports
