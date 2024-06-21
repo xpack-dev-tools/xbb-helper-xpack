@@ -321,7 +321,10 @@ function test_compiler_c_cpp()
 
       # -----------------------------------------------------------------------
 
-      test_case_atomic
+      if [ "${is_static}" != "y" ] || ! test_case_skip_all_static "atomic"
+      then
+        test_case_atomic
+      fi
 
       # -----------------------------------------------------------------------
       # Tests borrowed from the llvm-mingw project.
