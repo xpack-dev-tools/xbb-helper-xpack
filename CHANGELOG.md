@@ -2,9 +2,17 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-22
+
+* v2.1.24 released
+* a6e8b9d deep-clean-liquid.yml update
+* 70081fa build-tests.sh: empty line after
+
 ## 2024-06-21
 
-* v2.1.23 released
+* b06f9ff test-xpm-liquid.yml update
+* 61f73d4 2.1.23
+* 8e3617d prepare v2.1.23
 * 1e1454b build-tests.sh: fix skipped sed
 * 3155de4 build-tests.sh: ### Skipped test cases
 * 1455094 build-tests.sh: improve fail sed
