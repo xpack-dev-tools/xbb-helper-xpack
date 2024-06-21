@@ -353,13 +353,42 @@ function test_case_skip()
       return 1
     fi
   fi
+}
 
+function test_case_skip_all_static()
+{
+  local test_case_name="$1"
+  shift
 
+  local prefix=${PREFIX:-""}
+  local suffix=${SUFFIX:-""}
 
+  local filtered_suffix="$(echo "${suffix}" | sed -e 's|-bootstrap$||')"
+  if [ ! -z "${filtered_suffix}" ]
+  then
+    if is_variable_set "XBB_SKIP_TEST_ALL_STATIC_${test_case_name}${filtered_suffix}" \
+                       "XBB_SKIP_TEST_ALL_STATIC_${test_case_name}"
+    then
+      echo
+      echo "skip: ${prefix}${test_case_name}${suffix} $@"
 
+      echo "skip: ${prefix}${test_case_name}${suffix} $@" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
+      return 0 # True
+    else
+      return 1
+    fi
+  else
+    if is_variable_set "XBB_SKIP_TEST_ALL_STATIC_${test_case_name}"
+    then
+      echo
+      echo "skip: ${prefix}${test_case_name}${suffix} $@"
 
-
-
+      echo "skip: ${prefix}${test_case_name}${suffix} $@" >> "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}"
+      return 0 # True
+    else
+      return 1
+    fi
+  fi
 }
 
 # -----------------------------------------------------------------------------
