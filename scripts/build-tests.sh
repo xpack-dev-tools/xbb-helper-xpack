@@ -114,11 +114,13 @@ function tests_report_results()
           grep "${f}" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | grep 'FAIL:' | sed -e 's|^.*FAIL.*[(]|export |' -e 's|[)]|="y"|'
         done
 
+        echo
         exit 1
       fi
       echo
       echo "Verdict: tests reluctantly accepted"
       echo "\`\`\`"
+      echo
 
       tests_list_succesful
       tests_list_skipped
@@ -143,6 +145,7 @@ function tests_report_results()
         echo "${passed} test cases passed, ${skipped} skipped"
         echo "Verdict: tests accepted"
         echo "\`\`\`"
+        echo
 
         tests_list_succesful
         tests_list_skipped
@@ -159,7 +162,6 @@ function tests_report_results()
 
 function tests_list_succesful()
 {
-  echo
   echo "### Successful tests"
   echo
 
@@ -180,13 +182,13 @@ function tests_list_succesful()
   then
     echo "- none"
   fi
+  echo
 }
 
 function tests_list_skipped()
 {
   if [ ${skipped} -gt 0 ]
   then
-    echo
     echo "### Skipped test cases"
     echo
 
@@ -207,7 +209,6 @@ function tests_list_failed()
   local failed_test_names="$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| .*[(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
   for test_name in ${failed_test_names}
   do
-    echo
     echo "### Failed test ${test_name}"
     echo
     for test_case_name in $(grep "${test_name}" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" |  sed -e 's|^.*: ||' -e 's| .*[(].*$||'  2>&1)
@@ -225,8 +226,8 @@ function tests_list_failed()
         echo "- ${test_case_name} ✓"
       fi
     done
+    echo
   done
-  echo
 }
 
 function tests_prime_wine()
