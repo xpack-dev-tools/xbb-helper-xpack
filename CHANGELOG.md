@@ -2,9 +2,20 @@
 
 Entries in this file are in reverse chronological order.
 
-## 2024-06-20
+## 2024-06-21
 
 * v2.1.21 released
+* b9d7998 build-tests.sh: fix sed FAIL
+* ae59685 test-compiler.sh: test_case_skip_all_static "atomic"
+* f6da7f1 build-tests.sh: add test_case_skip_all_static
+* bc97a35 build-tests.sh: fix sed for FAIL
+* 4ee824a build-tests.sh: unconditional verbosity
+* afea8ac test-common.sh: more verbosity
+
+## 2024-06-20
+
+* e1f00f3 2.1.21
+* 5c7397f prepare v2.1.21
 * 9e7d69f add XBB_WHILE_RUNNING_SEPARATE_TESTS to tests
 * 625bbb6 git-commit.sh update
 
