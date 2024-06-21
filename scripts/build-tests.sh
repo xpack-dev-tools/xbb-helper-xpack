@@ -13,6 +13,9 @@
 
 function tests_initialize()
 {
+  echo
+  echo "# Initialising tests..."
+
   export XBB_TEST_COMMANDS_FILE_PATH="${XBB_TARGET_WORK_FOLDER_PATH}/tests/commands"
   rm -rf "${XBB_TEST_COMMANDS_FILE_PATH}"
   mkdir -pv "$(dirname ${XBB_TEST_COMMANDS_FILE_PATH})"
@@ -39,9 +42,6 @@ function tests_add()
 
 function tests_run_final()
 {
-  echo_develop
-  echo_develop "[${FUNCNAME[0]} $@]"
-
   echo
   echo "# Running final tests..."
 
@@ -66,8 +66,8 @@ function tests_run_final()
 
 function tests_report_results()
 {
-  echo_develop
-  echo_develop "[${FUNCNAME[0]} $@]"
+  echo
+  echo "# Reporting tests results..."
 
   local passed=$(grep "pass:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | wc -l | tr -d '[:blank:]')
   local skipped=$(grep "skip:" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | wc -l | tr -d '[:blank:]')
