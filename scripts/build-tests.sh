@@ -209,7 +209,7 @@ function tests_list_failed()
     echo
     for test_case_name in $(grep "${test_name}" "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" |  sed -e 's|^.*: ||' -e 's| [(].*$||'  2>&1)
     do
-      local is_failed=$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" |  sed -e 's|^.*: ||' -e 's| [(].*$||' | grep "^${test_case_name}$" | wc -l | tr -d '[:blank:]')
+      local is_failed=$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" |  sed -e 's|^.*: ||' -e 's| .*[(].*$||' | grep "^${test_case_name}$" | wc -l | tr -d '[:blank:]')
       if [ ${is_failed} -gt 0 ]
       then
         echo "- ${test_case_name} ✗"
