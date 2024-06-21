@@ -4,7 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-06-21
 
-* v2.1.21 released
+* v2.1.23 released
+* 1e1454b build-tests.sh: fix skipped sed
+* 3155de4 build-tests.sh: ### Skipped test cases
+* 1455094 build-tests.sh: improve fail sed
+* 88b4fe6 2.1.22
+* f299aee prepare v2.1.22
 * b9d7998 build-tests.sh: fix sed FAIL
 * ae59685 test-compiler.sh: test_case_skip_all_static "atomic"
 * f6da7f1 build-tests.sh: add test_case_skip_all_static
