@@ -846,6 +846,10 @@ function gcc_test()
   echo_develop "[${FUNCNAME[0]} $@]"
 
   local test_bin_path="$1"
+  shift
+
+  local name_suffix=""
+  local name_prefix=""
 
   (
     run_verbose ls -l "${test_bin_path}"
@@ -870,6 +874,10 @@ function gcc_test()
       fi
     fi
 
+    export GCOV="${test_bin_path}/gcov"
+    export GCOV_DUMP="${test_bin_path}/gcov-dump"
+    export GCOV_TOOL="${test_bin_path}/gcov-tool"
+
     # -------------------------------------------------------------------------
 
     xbb_show_env_develop
@@ -891,11 +899,12 @@ function gcc_test()
     # -------------------------------------------------------------------------
 
     echo
-    echo "Checking the gcc shared libraries..."
+    echo "Checking the ${name_prefix}gcc shared libraries..."
 
     show_host_libs "${CC}"
     show_host_libs "${CXX}"
-    if [ -f "${F90}" ]
+
+    if [ -f "${F90}${XBB_HOST_DOT_EXE}" ]
     then
       show_host_libs "${F90}"
     fi
@@ -929,67 +938,13 @@ function gcc_test()
       show_host_libs "$(${CC} --print-file-name=libstdc++.dylib)"
     fi
 
-    echo
-    echo "Testing if the gcc binaries start properly..."
+    # -------------------------------------------------------------------------
 
-    run_host_app_verbose "${CC}" --version
-    run_host_app_verbose "${CXX}" --version
-    if [ -f "${F90}" ]
-    then
-      run_host_app_verbose "${F90}" --version
-    fi
+    test_case_gcc_binaries_start
 
-    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
-    then
-      # On Darwin they refer to existing Darwin tools
-      # which do not support --version
-      # TODO: On Windows: gcc-ar.exe: Cannot find binary 'ar'
-      run_host_app_verbose "${AR}" --version
-      run_host_app_verbose "${NM}" --version
-      run_host_app_verbose "${RANLIB}" --version
-    fi
+    test_case_gcc_configuration
 
-    run_host_app_verbose "${test_bin_path}/gcov" --version
-    run_host_app_verbose "${test_bin_path}/gcov-dump" --version
-    run_host_app_verbose "${test_bin_path}/gcov-tool" --version
-
-    echo
-    echo "Showing the gcc configurations..."
-
-    run_host_app_verbose "${CC}" --help
-    run_host_app_verbose "${CC}" -v
-    run_host_app_verbose "${CC}" -dumpversion
-    run_host_app_verbose "${CC}" -dumpmachine
-
-    run_host_app_verbose "${CC}" -print-search-dirs
-    run_host_app_verbose "${CC}" -print-libgcc-file-name
-    run_host_app_verbose "${CC}" -print-multi-directory
-    run_host_app_verbose "${CC}" -print-multi-lib
-    run_host_app_verbose "${CC}" -print-multi-os-directory
-    run_host_app_verbose "${CC}" -print-sysroot
-    run_host_app_verbose "${CC}" -print-prog-name=cc1
-
-    run_host_app_verbose "${CXX}" --help
-    run_host_app_verbose "${CXX}" -v
-    run_host_app_verbose "${CXX}" -dumpversion
-    run_host_app_verbose "${CXX}" -dumpmachine
-
-    run_host_app_verbose "${CXX}" -print-search-dirs
-    run_host_app_verbose "${CXX}" -print-libgcc-file-name
-    run_host_app_verbose "${CXX}" -print-multi-directory
-    run_host_app_verbose "${CXX}" -print-multi-lib
-    run_host_app_verbose "${CXX}" -print-multi-os-directory
-    run_host_app_verbose "${CXX}" -print-sysroot
-    run_host_app_verbose "${CXX}" -print-prog-name=cc1plus
-
-    if [ "${XBB_HOST_PLATFORM}" == "linux" ] && [ "${XBB_SKIP_32_BIT_TESTS:-""}" != "y" ]
-    then
-      run_host_app_verbose "${CC}" -m32 -print-search-dirs
-      run_host_app_verbose "${CC}" -m32 -print-multi-os-directory
-
-      run_host_app_verbose "${CXX}" -m32 -print-search-dirs
-      run_host_app_verbose "${CXX}" -m32 -print-multi-os-directory
-    fi
+    # -------------------------------------------------------------------------
 
     echo
     echo "Testing if gcc compiles simple programs..."
@@ -1027,6 +982,99 @@ function gcc_test()
       test_darwin
     fi
   )
+}
+
+# -----------------------------------------------------------------------------
+
+function test_case_gcc_binaries_start()
+{
+  local test_case_name="$(test_case_get_name)"
+
+  local prefix=${PREFIX:-""}
+  local suffix=${SUFFIX:-""}
+
+  (
+    trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
+
+    echo
+    echo "Testing if the ${prefix}gcc binaries start properly..."
+
+    run_host_app_verbose "${CC}" --version
+    run_host_app_verbose "${CXX}" --version
+
+    if [ -f "${F90}${XBB_HOST_DOT_EXE}" ]
+    then
+      run_host_app_verbose "${F90}" --version
+    fi
+
+    if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+    then
+      # On Darwin they refer to existing Darwin tools
+      # which do not support --version
+      # TODO: On Windows: gcc-ar.exe: Cannot find binary 'ar'
+      run_host_app_verbose "${AR}" --version
+      run_host_app_verbose "${NM}" --version
+      run_host_app_verbose "${RANLIB}" --version
+    fi
+
+    run_host_app_verbose "${GCOV}" --version
+    run_host_app_verbose "${GCOV_DUMP}" --version
+    run_host_app_verbose "${GCOV_TOOL}" --version
+
+    test_case_pass "${test_case_name}"
+  ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${prefix}${test_case_name}${suffix}.txt"
+}
+
+function test_case_gcc_configuration()
+{
+  local test_case_name="$(test_case_get_name)"
+
+  local prefix=${PREFIX:-""}
+  local suffix=${SUFFIX:-""}
+
+  (
+    trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
+
+    echo
+    echo "Testing the ${prefix}gcc configurations..."
+
+    run_host_app_verbose "${CC}" --help
+    run_host_app_verbose "${CC}" -v
+    run_host_app_verbose "${CC}" -dumpversion
+    run_host_app_verbose "${CC}" -dumpmachine
+
+    run_host_app_verbose "${CC}" -print-search-dirs
+    run_host_app_verbose "${CC}" -print-libgcc-file-name
+    run_host_app_verbose "${CC}" -print-multi-directory
+    run_host_app_verbose "${CC}" -print-multi-lib
+    run_host_app_verbose "${CC}" -print-multi-os-directory
+    run_host_app_verbose "${CC}" -print-sysroot
+    run_host_app_verbose "${CC}" -print-prog-name=cc1
+
+    run_host_app_verbose "${CXX}" --help
+    run_host_app_verbose "${CXX}" -v
+    run_host_app_verbose "${CXX}" -dumpversion
+    run_host_app_verbose "${CXX}" -dumpmachine
+
+    run_host_app_verbose "${CXX}" -print-search-dirs
+    run_host_app_verbose "${CXX}" -print-libgcc-file-name
+    run_host_app_verbose "${CXX}" -print-multi-directory
+    run_host_app_verbose "${CXX}" -print-multi-lib
+    run_host_app_verbose "${CXX}" -print-multi-os-directory
+    run_host_app_verbose "${CXX}" -print-sysroot
+    run_host_app_verbose "${CXX}" -print-prog-name=cc1plus
+
+    if [ "${XBB_HOST_PLATFORM}" == "linux" ] && [ "${XBB_SKIP_32_BIT_TESTS:-""}" != "y" ]
+    then
+      run_host_app_verbose "${CC}" -m32 -print-search-dirs
+      run_host_app_verbose "${CC}" -m32 -print-multi-os-directory
+
+      run_host_app_verbose "${CXX}" -m32 -print-search-dirs
+      run_host_app_verbose "${CXX}" -m32 -print-multi-os-directory
+    fi
+
+    test_case_pass "${test_case_name}"
+  ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${prefix}${test_case_name}${suffix}.txt"
 }
 
 # -----------------------------------------------------------------------------
@@ -1286,7 +1334,7 @@ function test_linux()
 
     elif [ "${XBB_HOST_ARCH}" == "arm64" ] || [ "${XBB_HOST_ARCH}" == "arm" ]
     then
-    
+
       # arm & aarch64 are non-multilib, no explicit -m32/-m64 needed.
       (
         # The shared libraries are in a custom location and require setting
