@@ -29,6 +29,7 @@ function test_compiler_c_cpp()
   (
     unset IFS
 
+    local is_probe="n"
     local is_gc="n"
     local is_lto="n"
     local is_static="n"
@@ -50,6 +51,11 @@ function test_compiler_c_cpp()
     while [ $# -gt 0 ]
     do
       case "$1" in
+
+        --probe )
+          is_probe="y"
+          shift
+          ;;
 
         --suffix=* )
           SUFFIX+=$(xbb_parse_option "$1")
@@ -287,6 +293,17 @@ function test_compiler_c_cpp()
 
       # -----------------------------------------------------------------------
 
+      if [ "${is_probe}" == "y" ]
+      then
+        # Probe if the compiler passes on minimal input, similar
+        # to cases when used to probe capabilities.
+
+        test_case_probe1
+        test_case_probe2
+
+        return
+      fi
+
       test_case_simple_hello_printf_one
       test_case_simple_hello_printf_two
 
@@ -408,6 +425,44 @@ function test_compiler_c_cpp()
     )
 
   )
+}
+
+# -----------------------------------------------------------------------------
+
+function test_case_probe1()
+{
+  local test_case_name="$(test_case_get_name)"
+
+  local prefix=${PREFIX:-""}
+  local suffix=${SUFFIX:-""}
+
+  (
+    trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
+
+    # Test C compile and link in a single step.
+    run_host_app_verbose "${CC}" "probe1.c" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDFLAGS} ${VERBOSE}
+    expect_target_succeed "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}"
+
+    test_case_pass "${test_case_name}"
+  ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${prefix}${test_case_name}${suffix}.txt"
+}
+
+function test_case_probe2()
+{
+  local test_case_name="$(test_case_get_name)"
+
+  local prefix=${PREFIX:-""}
+  local suffix=${SUFFIX:-""}
+
+  (
+    trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
+
+    # Test C++ compile and link in a single step.
+    run_host_app_verbose "${CXX}" "probe2.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} ${VERBOSE}
+    expect_target_succeed "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}"
+
+    test_case_pass "${test_case_name}"
+  ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${prefix}${test_case_name}${suffix}.txt"
 }
 
 # -----------------------------------------------------------------------------
