@@ -850,23 +850,23 @@ function gcc_test()
   (
     run_verbose ls -l "${test_bin_path}"
 
-    CC="${test_bin_path}/gcc"
-    CXX="${test_bin_path}/g++"
-    F90="${test_bin_path}/gfortran"
+    export CC="${test_bin_path}/gcc"
+    export CXX="${test_bin_path}/g++"
+    export F90="${test_bin_path}/gfortran"
 
     if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
-      AR="$(which ar)"
-      NM="$(which nm)"
-      RANLIB="$(which ranlib)"
+      export AR="$(which ar)"
+      export NM="$(which nm)"
+      export RANLIB="$(which ranlib)"
     else
-      AR="${test_bin_path}/gcc-ar"
-      NM="${test_bin_path}/gcc-nm"
-      RANLIB="${test_bin_path}/gcc-ranlib"
+      export AR="${test_bin_path}/gcc-ar"
+      export NM="${test_bin_path}/gcc-nm"
+      export RANLIB="${test_bin_path}/gcc-ranlib"
 
       if [ "${XBB_HOST_PLATFORM}" == "win32" ]
       then
-        WIDL="${test_bin_path}/widl"
+        export WIDL="${test_bin_path}/widl"
       fi
     fi
 
@@ -1105,6 +1105,7 @@ function gcc_test()
           export PATH="${cxx_lib_path}:${PATH:-}"
           echo "PATH=${PATH}"
         else
+          # Cross-compiling, use WineHQ.
           export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
           echo "WINEPATH=${WINEPATH}"
         fi
@@ -1116,18 +1117,17 @@ function gcc_test()
 
         test_compiler_fortran
       )
-      (
-        test_compiler_c_cpp --static-lib
-        test_compiler_c_cpp --static-lib --gc
-        test_compiler_c_cpp --static-lib --lto
-        test_compiler_c_cpp --static-lib --gc --lto
-      )
-      (
-        test_compiler_c_cpp --static
-        test_compiler_c_cpp --static --gc
-        test_compiler_c_cpp --static --lto
-        test_compiler_c_cpp --static --gc --lto
-      )
+
+      test_compiler_c_cpp --static-lib
+      test_compiler_c_cpp --static-lib --gc
+      test_compiler_c_cpp --static-lib --lto
+      test_compiler_c_cpp --static-lib --gc --lto
+
+      test_compiler_c_cpp --static
+      test_compiler_c_cpp --static --gc
+      test_compiler_c_cpp --static --lto
+      test_compiler_c_cpp --static --gc --lto
+
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
 
@@ -1169,130 +1169,162 @@ function gcc_test()
         fi
       fi
 
+      # It is mandatory for the compiler to run properly without any
+      # explicit libraries or other options, otherwise tools used
+      # during configuration (like meson) might fail probing for
+      # capabilities.
+      test_compiler_c_cpp --probe
+
       if [ "${XBB_HOST_ARCH}" == "x64" ]
       then
-        (
-          export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m64)"
-          echo
-          echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-          test_compiler_c_cpp --64
-          test_compiler_c_cpp --64 --gc
-          test_compiler_c_cpp --64 --lto
-          test_compiler_c_cpp --64 --gc --lto
+        for bits in 32 64
+        do
+          if [ ${bits} -eq 32 ]
+          then
+            local skip_32_tests=""
+            if is_variable_set "XBB_SKIP_32_BIT_TESTS"
+            then
+              skip_32_tests="${XBB_SKIP_32_BIT_TESTS}"
+            else
+              local libstdcpp_file_path="$(${CXX} -m32 -print-file-name=libstdc++.so)"
+              if [ "${libstdcpp_file_path}" == "libstdc++.so" ]
+              then
+                # If the compiler does not find the full path of the
+                # 32-bit c++ library, multilib support is not installed; skip.
+                skip_32_tests="y"
+              fi
+            fi
 
-          test_compiler_fortran --64
-        )
-        if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
-        then
-          echo
-          echo "Skipping -m32 tests..."
-        else
+            if [ "${skip_32_tests}" == "y" ]
+            then
+              echo
+              echo "Skipping gcc -m32 tests..."
+              continue
+            fi
+          fi
+
           (
-            export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}" -m32)"
+            # The shared libraries are in a custom location and require setting
+            # the libraries and rpath explicitly.
+
+            local toolchain_library_path="$(xbb_get_toolchain_library_path "${CXX}" -m${bits})"
+
+            # No -L required, -rpath-link does the trick.
+            LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+            LDXXFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+
+            export LDFLAGS
+            export LDXXFLAGS
+
             echo
-            echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+            echo "LDFLAGS=${LDFLAGS}"
 
-            test_compiler_c_cpp --32
-            test_compiler_c_cpp --32 --gc
-            test_compiler_c_cpp --32 --lto
-            test_compiler_c_cpp --32 --gc --lto
-
-            test_compiler_fortran --32
+            test_compiler_c_cpp --${bits}
+            test_compiler_c_cpp --${bits} --gc
+            test_compiler_c_cpp --${bits} --lto
+            test_compiler_c_cpp --${bits} --gc --lto
           )
-        fi
+
+          if is_variable_set "F90"
+          then
+            (
+              # The shared libraries are in a custom location and require setting
+              # the libraries and rpath explicitly.
+
+              local toolchain_library_path="$(xbb_get_toolchain_library_path "${F90}" -m${bits})"
+
+              # No -L required, -rpath-link does the trick.
+              LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+
+              export LDFLAGS
+
+              echo
+              echo "LDFLAGS=${LDFLAGS}"
+
+              test_compiler_fortran --${bits}
+            )
+          fi
+
+          test_compiler_c_cpp --${bits} --static-lib
+          test_compiler_c_cpp --${bits} --static-lib --gc
+          test_compiler_c_cpp --${bits} --static-lib --lto
+          test_compiler_c_cpp --${bits} --static-lib --gc --lto
+
+          # On Linux static linking is highly discouraged.
+          # On RedHat and derived, the static libraries must be installed explicitly.
+
+          test_compiler_c_cpp --${bits} --static
+          test_compiler_c_cpp --${bits} --static --gc
+          test_compiler_c_cpp --${bits} --static --lto
+          test_compiler_c_cpp --${bits} --static --gc --lto
+        done
+
       else
+
+        # arm & aarch64, non-multilib, no explicit -m32/-m64.
         (
-          export LD_LIBRARY_PATH="$(xbb_get_toolchain_library_path "${CXX}")"
+          # The shared libraries are in a custom location and require setting
+          # the libraries and rpath explicitly.
+
+          local toolchain_library_path="$(xbb_get_toolchain_library_path "${CXX}")"
+
+          # No -L required, -rpath-link does the trick.
+          LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+          LDXXFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+
+          export LDFLAGS
+          export LDXXFLAGS
+
           echo
-          echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
+          echo "LDFLAGS=${LDFLAGS}"
 
           test_compiler_c_cpp
           test_compiler_c_cpp --gc
           test_compiler_c_cpp --lto
           test_compiler_c_cpp --gc --lto
-
-          test_compiler_fortran
         )
-      fi
 
-      if false # [[ ${distro} == CentOS ]] || [[ ${distro} == RedHat* ]] || [[ ${distro} == Fedora ]]
-      then
-        # RedHat has no static libstdc++.
-        echo
-        echo "Skipping all --static-lib on ${distro}..."
-      else
-        if [ "${XBB_HOST_ARCH}" == "x64" ]
+        if is_variable_set "F90"
         then
           (
-            test_compiler_c_cpp --64 --static-lib
-            test_compiler_c_cpp --64 --static-lib --gc
-            test_compiler_c_cpp --64 --static-lib --lto
-            test_compiler_c_cpp --64 --static-lib --gc --lto
-          )
-          if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
-          then
+            # The shared libraries are in a custom location and require setting
+            # the libraries and rpath explicitly.
+
+            local toolchain_library_path="$(xbb_get_toolchain_library_path "${F90}")"
+
+            # No -L required, -rpath-link does the trick.
+            LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+
+            export LDFLAGS
+
             echo
-            echo "Skipping -m32 --static-lib tests..."
-          else
-            (
-              test_compiler_c_cpp --32 --static-lib
-              test_compiler_c_cpp --32 --static-lib --gc
-              test_compiler_c_cpp --32 --static-lib --lto
-              test_compiler_c_cpp --32 --static-lib --gc --lto
-            )
-          fi
-        else
-          (
-            test_compiler_c_cpp --static-lib
-            test_compiler_c_cpp --static-lib --gc
-            test_compiler_c_cpp --static-lib --lto
-            test_compiler_c_cpp --static-lib --gc --lto
+            echo "LDFLAGS=${LDFLAGS}"
+
+            test_compiler_fortran
           )
         fi
+
+        test_compiler_c_cpp --static-lib
+        test_compiler_c_cpp --static-lib --gc
+        test_compiler_c_cpp --static-lib --lto
+        test_compiler_c_cpp --static-lib --gc --lto
+
+        # On Linux static linking is highly discouraged.
+        # On RedHat and derived, the static libraries must be installed explicitly.
+
+        test_compiler_c_cpp --static
+        test_compiler_c_cpp --static --gc
+        test_compiler_c_cpp --static --lto
+        test_compiler_c_cpp --static --gc --lto
+
       fi
 
-      # On Linux static linking is highly discouraged.
-      # On RedHat and derived, the static libraries must be installed explicitly.
-
-      if false # [[ ${distro} == CentOS ]] || [[ ${distro} == RedHat* ]] || [[ ${distro} == Fedora ]] || [[ ${distro} == openSUSE ]]
-      then
-        echo
-        echo "Skipping all --static on ${distro}..."
-      else
-        if [ "${XBB_HOST_ARCH}" == "x64" ]
-        then
-          (
-            test_compiler_c_cpp --64 --static
-            test_compiler_c_cpp --64 --static --gc
-            test_compiler_c_cpp --64 --static --lto
-            test_compiler_c_cpp --64 --static --gc --lto
-
-            if [ "${XBB_SKIP_32_BIT_TESTS:-""}" == "y" ]
-            then
-              echo
-              echo "Skipping -m32 --static tests..."
-            else
-              test_compiler_c_cpp --32 --static
-              test_compiler_c_cpp --32 --static --gc
-              test_compiler_c_cpp --32 --static --lto
-              test_compiler_c_cpp --32 --static --gc --lto
-            fi
-          )
-        else
-          (
-            test_compiler_c_cpp --static
-            test_compiler_c_cpp --static --gc
-            test_compiler_c_cpp --static --lto
-            test_compiler_c_cpp --static --gc --lto
-          )
-        fi
-      fi
     elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
       (
-        # By default the references to libstdc++ are absolute and no rpath
-        # is required.
+        # On older machines the references to libstdc++ are absolute and no rpath
+        # is required, but on recent ones references are like @rpath/xxx.dylib.
 
         if [ ${gcc_version_major} -eq 13 ]
         then
@@ -1351,16 +1383,57 @@ function gcc_test()
         # explicit libraries or other options, otherwise tools used
         # during configuration (like meson) might fail probing for
         # capabilities.
-        test_compiler_c_cpp
+        test_compiler_c_cpp --probe
 
         # ---------------------------------------------------------------------
 
-        # Again, with various options.
-        test_compiler_c_cpp --gc
-        test_compiler_c_cpp --lto
-        test_compiler_c_cpp --gc --lto
+        (
+          # The shared libraries are in a custom location and require setting
+          # the libraries and rpath explicitly.
 
-        test_compiler_fortran
+          local toolchain_library_path="$(xbb_get_toolchain_library_path "${CXX}")"
+
+          # -L required, there is no -rpath-link like on Linux.
+          LDFLAGS+=" $(xbb_expand_linker_library_paths "${toolchain_library_path}")"
+          LDXXFLAGS+=" $(xbb_expand_linker_library_paths "${toolchain_library_path}")"
+
+          LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+          LDXXFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+
+          export LDFLAGS
+          export LDXXFLAGS
+
+          echo
+          echo "LDFLAGS=${LDFLAGS}"
+
+          test_compiler_c_cpp
+          test_compiler_c_cpp --gc
+          test_compiler_c_cpp --lto
+          test_compiler_c_cpp --gc --lto
+        )
+
+        if is_variable_set "F90"
+        then
+          (
+            # The shared libraries are in a custom location and require setting
+            # the libraries and rpath explicitly.
+
+            local toolchain_library_path="$(xbb_get_toolchain_library_path "${F90}")"
+
+            LDFLAGS+=" $(xbb_expand_linker_library_paths "${toolchain_library_path}")"
+            LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+
+            export LDFLAGS
+
+            echo
+            echo "LDFLAGS=${LDFLAGS}"
+
+            test_compiler_fortran
+          )
+        else
+          echo
+          echo "Skipping Fortran tests, compiler not available..."
+        fi
 
         # ---------------------------------------------------------------------
 
@@ -1372,17 +1445,8 @@ function gcc_test()
 
         # ---------------------------------------------------------------------
 
-        if true
-        then
-          echo
-          echo "Skipping all --static on macOS..."
-        else
-          # Again, with -static
-          test_compiler_c_cpp --static
-          test_compiler_c_cpp --gc --static
-          test_compiler_c_cpp --lto --static
-          test_compiler_c_cpp --gc --lto --static-lib
-        fi
+        echo
+        echo "Skipping all --static on macOS..."
       )
     fi
   )
@@ -1390,3 +1454,9 @@ function gcc_test()
 
 # -----------------------------------------------------------------------------
 
+function test_darwin()
+{
+  :
+}
+
+# -----------------------------------------------------------------------------
