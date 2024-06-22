@@ -1018,256 +1018,221 @@ function gcc_test()
 
     if [ "${XBB_HOST_PLATFORM}" == "win32" ]
     then
-      if [ ${gcc_version_major} -eq 11 ] || \
-         [ ${gcc_version_major} -eq 12 ] || \
-         [ ${gcc_version_major} -eq 13 ] || \
-         [ ${gcc_version_major} -eq 14 ]
-      then
-
-        # autoimport-main.
-        # [wine64 ./lto-autoimport-main.exe]
-        # Mingw-w64 runtime failure:
-        # 32 bit pseudo relocation at 000000014000152A out of range, targeting 000000028846135C, yielding the value 000000014845FE2E.
-        export XBB_IGNORE_TEST_LTO_AUTOIMPORT_MAIN="y"
-        export XBB_IGNORE_TEST_GC_LTO_AUTOIMPORT_MAIN="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_LTO_AUTOIMPORT_MAIN="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_AUTOIMPORT_MAIN="y"
-
-        # hello-weak-c.
-        # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
-        # collect2.exe: error: ld returned 1 exit status
-        # Interestingly, LTO tests pass.
-        export XBB_IGNORE_TEST_HELLO_WEAK1_C="y"
-        export XBB_IGNORE_TEST_GC_HELLO_WEAK1_C="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK1_C="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK1_C="y"
-        export XBB_IGNORE_TEST_STATIC_HELLO_WEAK1_C="y"
-        export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK1_C="y"
-
-        # hello-weak-cpp.
-        export XBB_IGNORE_TEST_HELLO_WEAK2_CPP="y"
-        export XBB_IGNORE_TEST_GC_HELLO_WEAK2_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK2_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK2_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_HELLO_WEAK2_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK2_CPP="y"
-
-        # overload-new.
-        # static lib and static are functional. (all on mingw!)
-        # Does not return success.
-        export XBB_IGNORE_TEST_OVERLOAD_NEW_CPP="y"
-        export XBB_IGNORE_TEST_GC_OVERLOAD_NEW_CPP="y"
-        export XBB_IGNORE_TEST_LTO_OVERLOAD_NEW_CPP="y"
-        export XBB_IGNORE_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
-
-        # throwcatch-main.
-        # [wine64 ./lto-throwcatch-main.exe]
-        # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 03d8), starting debugger...
-        # Unhandled exception: page fault on execute access to 0x0000000122b1157c in 64-bit code (0x00000122b1157c).
-        export XBB_IGNORE_TEST_LTO_THROWCATCH_MAIN="y"
-        export XBB_IGNORE_TEST_GC_LTO_THROWCATCH_MAIN="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_LTO_THROWCATCH_MAIN="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_THROWCATCH_MAIN="y"
-
-        # unwind-weak.
-        # LTO are functional.
-        #  in function `main': undefined reference to `step1'
-        export XBB_IGNORE_TEST_UNWIND_WEAK_CPP="y"
-        export XBB_IGNORE_TEST_GC_UNWIND_WEAK_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_UNWIND_WEAK_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_GC_UNWIND_WEAK_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_UNWIND_WEAK_CPP="y"
-        export XBB_IGNORE_TEST_STATIC_GC_UNWIND_WEAK_CPP="y"
-
-        # weak-duplicate - LTO are functional.
-        # in function `dummy': undefined reference to `func'
-        export XBB_IGNORE_TEST_WEAK_DUPLICATE_C="y"
-        export XBB_IGNORE_TEST_GC_WEAK_DUPLICATE_C="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_WEAK_DUPLICATE_C="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_DUPLICATE_C="y"
-        export XBB_IGNORE_TEST_STATIC_WEAK_DUPLICATE_C="y"
-        export XBB_IGNORE_TEST_STATIC_GC_WEAK_DUPLICATE_C="y"
-
-        # weak-use - LTO variants are functional.
-        # in function `dummy': undefined reference to `func'
-        export XBB_IGNORE_TEST_WEAK_USE_C="y"
-        export XBB_IGNORE_TEST_GC_WEAK_USE_C="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_WEAK_USE_C="y"
-        export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_USE_C="y"
-        export XBB_IGNORE_TEST_STATIC_WEAK_USE_C="y"
-        export XBB_IGNORE_TEST_STATIC_GC_WEAK_USE_C="y"
-      fi
-
-      (
-        if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-        then
-          cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
-          export PATH="${cxx_lib_path}:${PATH:-}"
-          echo "PATH=${PATH}"
-        else
-          # Cross-compiling, use WineHQ.
-          export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
-          echo "WINEPATH=${WINEPATH}"
-        fi
-
-        test_compiler_c_cpp
-        test_compiler_c_cpp --gc
-        test_compiler_c_cpp --lto
-        test_compiler_c_cpp --gc --lto
-
-        test_compiler_fortran
-      )
-
-      test_compiler_c_cpp --static-lib
-      test_compiler_c_cpp --static-lib --gc
-      test_compiler_c_cpp --static-lib --lto
-      test_compiler_c_cpp --static-lib --gc --lto
-
-      test_compiler_c_cpp --static
-      test_compiler_c_cpp --static --gc
-      test_compiler_c_cpp --static --lto
-      test_compiler_c_cpp --static --gc --lto
-
+      test_win32
     elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
     then
+      test_linux
+    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    then
+      test_darwin
+    fi
+  )
+}
 
-      local distro=$(lsb_release -is)
+# -----------------------------------------------------------------------------
 
-      if [ ${gcc_version_major} -eq 11 ] || \
-         [ ${gcc_version_major} -eq 12 ]
+function test_win32()
+{
+  (
+    if [ ${gcc_version_major} -eq 11 ] || \
+       [ ${gcc_version_major} -eq 12 ] || \
+       [ ${gcc_version_major} -eq 13 ] || \
+       [ ${gcc_version_major} -eq 14 ]
+    then
+
+      # autoimport-main.
+      # [wine64 ./lto-autoimport-main.exe]
+      # Mingw-w64 runtime failure:
+      # 32 bit pseudo relocation at 000000014000152A out of range, targeting 000000028846135C, yielding the value 000000014845FE2E.
+      export XBB_IGNORE_TEST_LTO_AUTOIMPORT_MAIN="y"
+      export XBB_IGNORE_TEST_GC_LTO_AUTOIMPORT_MAIN="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_LTO_AUTOIMPORT_MAIN="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_AUTOIMPORT_MAIN="y"
+
+      # hello-weak-c.
+      # z:/home/ilg/work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/application/bin/../lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld.exe: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
+      # collect2.exe: error: ld returned 1 exit status
+      # Interestingly, LTO tests pass.
+      export XBB_IGNORE_TEST_HELLO_WEAK1_C="y"
+      export XBB_IGNORE_TEST_GC_HELLO_WEAK1_C="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK1_C="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK1_C="y"
+      export XBB_IGNORE_TEST_STATIC_HELLO_WEAK1_C="y"
+      export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK1_C="y"
+
+      # hello-weak-cpp.
+      export XBB_IGNORE_TEST_HELLO_WEAK2_CPP="y"
+      export XBB_IGNORE_TEST_GC_HELLO_WEAK2_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK2_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK2_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_HELLO_WEAK2_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK2_CPP="y"
+
+      # overload-new.
+      # static lib and static are functional. (all on mingw!)
+      # Does not return success.
+      export XBB_IGNORE_TEST_OVERLOAD_NEW_CPP="y"
+      export XBB_IGNORE_TEST_GC_OVERLOAD_NEW_CPP="y"
+      export XBB_IGNORE_TEST_LTO_OVERLOAD_NEW_CPP="y"
+      export XBB_IGNORE_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
+
+      # throwcatch-main.
+      # [wine64 ./lto-throwcatch-main.exe]
+      # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 03d8), starting debugger...
+      # Unhandled exception: page fault on execute access to 0x0000000122b1157c in 64-bit code (0x00000122b1157c).
+      export XBB_IGNORE_TEST_LTO_THROWCATCH_MAIN="y"
+      export XBB_IGNORE_TEST_GC_LTO_THROWCATCH_MAIN="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_LTO_THROWCATCH_MAIN="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_THROWCATCH_MAIN="y"
+
+      # unwind-weak.
+      # LTO are functional.
+      #  in function `main': undefined reference to `step1'
+      export XBB_IGNORE_TEST_UNWIND_WEAK_CPP="y"
+      export XBB_IGNORE_TEST_GC_UNWIND_WEAK_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_UNWIND_WEAK_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_GC_UNWIND_WEAK_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_UNWIND_WEAK_CPP="y"
+      export XBB_IGNORE_TEST_STATIC_GC_UNWIND_WEAK_CPP="y"
+
+      # weak-duplicate - LTO are functional.
+      # in function `dummy': undefined reference to `func'
+      export XBB_IGNORE_TEST_WEAK_DUPLICATE_C="y"
+      export XBB_IGNORE_TEST_GC_WEAK_DUPLICATE_C="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_WEAK_DUPLICATE_C="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_DUPLICATE_C="y"
+      export XBB_IGNORE_TEST_STATIC_WEAK_DUPLICATE_C="y"
+      export XBB_IGNORE_TEST_STATIC_GC_WEAK_DUPLICATE_C="y"
+
+      # weak-use - LTO variants are functional.
+      # in function `dummy': undefined reference to `func'
+      export XBB_IGNORE_TEST_WEAK_USE_C="y"
+      export XBB_IGNORE_TEST_GC_WEAK_USE_C="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_WEAK_USE_C="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_USE_C="y"
+      export XBB_IGNORE_TEST_STATIC_WEAK_USE_C="y"
+      export XBB_IGNORE_TEST_STATIC_GC_WEAK_USE_C="y"
+    fi
+
+    (
+      if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
       then
-        # sleepy-threads
-        # Weird, only the static tests die with 'Segmentation fault'.
-        export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_SL="y"
-        export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_SL="y"
-        export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_SL="y"
-        export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_SL="y"
-
-        # sleepy-threads-cv
-        # Weird, only the static tests die with 'Segmentation fault'.
-        export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_CV="y"
-        export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
-        export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
-        export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
-      elif [ ${gcc_version_major} -eq 13 ] || \
-           [ ${gcc_version_major} -eq 14 ]
-      then
-        # sleepy-threads-cv
-        # Weird, the static tests crash with 'Segmentation fault'.
-        export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_CV="y"
-        export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
-        export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
-        export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
-
-        if [ "${distro}" == "Fedora" ]
-        then
-          # cnrt-test-32 1 781.
-          export XBB_IGNORE_TEST_STATIC_CNRT_TEST_32="y"
-          export XBB_IGNORE_TEST_STATIC_GC_CNRT_TEST_32="y"
-          export XBB_IGNORE_TEST_STATIC_LTO_CNRT_TEST_32="y"
-          export XBB_IGNORE_TEST_STATIC_GC_LTO_CNRT_TEST_32="y"
-        fi
+        cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
+        export PATH="${cxx_lib_path}:${PATH:-}"
+        echo "PATH=${PATH}"
+      else
+        # Cross-compiling, use WineHQ.
+        export WINEPATH="${test_bin_path}/../lib;${WINEPATH:-}"
+        echo "WINEPATH=${WINEPATH}"
       fi
 
-      # It is mandatory for the compiler to run properly without any
-      # explicit libraries or other options, otherwise tools used
-      # during configuration (like meson) might fail probing for
-      # capabilities.
-      test_compiler_c_cpp --probe
+      test_compiler_c_cpp
+      test_compiler_c_cpp --gc
+      test_compiler_c_cpp --lto
+      test_compiler_c_cpp --gc --lto
 
-      if [ "${XBB_HOST_ARCH}" == "x64" ]
+      test_compiler_fortran
+    )
+
+    test_compiler_c_cpp --static-lib
+    test_compiler_c_cpp --static-lib --gc
+    test_compiler_c_cpp --static-lib --lto
+    test_compiler_c_cpp --static-lib --gc --lto
+
+    test_compiler_c_cpp --static
+    test_compiler_c_cpp --static --gc
+    test_compiler_c_cpp --static --lto
+    test_compiler_c_cpp --static --gc --lto
+  )
+}
+
+# -----------------------------------------------------------------------------
+
+function test_linux()
+{
+  (
+    local distro=$(lsb_release -is)
+
+    if [ ${gcc_version_major} -eq 11 ] || \
+       [ ${gcc_version_major} -eq 12 ]
+    then
+      # sleepy-threads
+      # Weird, only the static tests die with 'Segmentation fault'.
+      export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_SL="y"
+      export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_SL="y"
+      export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_SL="y"
+      export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_SL="y"
+
+      # sleepy-threads-cv
+      # Weird, only the static tests die with 'Segmentation fault'.
+      export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_CV="y"
+      export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
+      export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
+      export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
+    elif [ ${gcc_version_major} -eq 13 ] || \
+         [ ${gcc_version_major} -eq 14 ]
+    then
+      # sleepy-threads-cv
+      # Weird, the static tests crash with 'Segmentation fault'.
+      export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_CV="y"
+      export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
+      export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
+      export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
+
+      if [ "${distro}" == "Fedora" ]
       then
+        # cnrt-test-32 1 781.
+        export XBB_IGNORE_TEST_STATIC_CNRT_TEST_32="y"
+        export XBB_IGNORE_TEST_STATIC_GC_CNRT_TEST_32="y"
+        export XBB_IGNORE_TEST_STATIC_LTO_CNRT_TEST_32="y"
+        export XBB_IGNORE_TEST_STATIC_GC_LTO_CNRT_TEST_32="y"
+      fi
+    fi
 
-        for bits in 32 64
-        do
-          if [ ${bits} -eq 32 ]
+    # -------------------------------------------------------------------------
+
+    # It is mandatory for the compiler to run properly without any
+    # explicit libraries or other options, otherwise tools used
+    # during configuration (like meson) might fail probing for
+    # capabilities.
+    test_compiler_c_cpp --probe
+
+    # -------------------------------------------------------------------------
+
+    if [ "${XBB_HOST_ARCH}" == "x64" ]
+    then
+
+      for bits in 32 64
+      do
+        if [ ${bits} -eq 32 ]
+        then
+          local skip_32_tests=""
+          if is_variable_set "XBB_SKIP_32_BIT_TESTS"
           then
-            local skip_32_tests=""
-            if is_variable_set "XBB_SKIP_32_BIT_TESTS"
+            skip_32_tests="${XBB_SKIP_32_BIT_TESTS}"
+          else
+            local libstdcpp_file_path="$(${CXX} -m32 -print-file-name=libstdc++.so)"
+            if [ "${libstdcpp_file_path}" == "libstdc++.so" ]
             then
-              skip_32_tests="${XBB_SKIP_32_BIT_TESTS}"
-            else
-              local libstdcpp_file_path="$(${CXX} -m32 -print-file-name=libstdc++.so)"
-              if [ "${libstdcpp_file_path}" == "libstdc++.so" ]
-              then
-                # If the compiler does not find the full path of the
-                # 32-bit c++ library, multilib support is not installed; skip.
-                skip_32_tests="y"
-              fi
-            fi
-
-            if [ "${skip_32_tests}" == "y" ]
-            then
-              echo
-              echo "Skipping gcc -m32 tests..."
-              continue
+              # If the compiler does not find the full path of the
+              # 32-bit c++ library, multilib support is not installed; skip.
+              skip_32_tests="y"
             fi
           fi
 
-          (
-            # The shared libraries are in a custom location and require setting
-            # the libraries and rpath explicitly.
-
-            local toolchain_library_path="$(xbb_get_toolchain_library_path "${CXX}" -m${bits})"
-
-            # No -L required, -rpath-link does the trick.
-            LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
-            LDXXFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
-
-            export LDFLAGS
-            export LDXXFLAGS
-
+          if [ "${skip_32_tests}" == "y" ]
+          then
             echo
-            echo "LDFLAGS=${LDFLAGS}"
-
-            test_compiler_c_cpp --${bits}
-            test_compiler_c_cpp --${bits} --gc
-            test_compiler_c_cpp --${bits} --lto
-            test_compiler_c_cpp --${bits} --gc --lto
-          )
-
-          if is_variable_set "F90"
-          then
-            (
-              # The shared libraries are in a custom location and require setting
-              # the libraries and rpath explicitly.
-
-              local toolchain_library_path="$(xbb_get_toolchain_library_path "${F90}" -m${bits})"
-
-              # No -L required, -rpath-link does the trick.
-              LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
-
-              export LDFLAGS
-
-              echo
-              echo "LDFLAGS=${LDFLAGS}"
-
-              test_compiler_fortran --${bits}
-            )
+            echo "Skipping gcc -m32 tests..."
+            continue
           fi
+        fi
 
-          test_compiler_c_cpp --${bits} --static-lib
-          test_compiler_c_cpp --${bits} --static-lib --gc
-          test_compiler_c_cpp --${bits} --static-lib --lto
-          test_compiler_c_cpp --${bits} --static-lib --gc --lto
-
-          # On Linux static linking is highly discouraged.
-          # On RedHat and derived, the static libraries must be installed explicitly.
-
-          test_compiler_c_cpp --${bits} --static
-          test_compiler_c_cpp --${bits} --static --gc
-          test_compiler_c_cpp --${bits} --static --lto
-          test_compiler_c_cpp --${bits} --static --gc --lto
-        done
-
-      else
-
-        # arm & aarch64, non-multilib, no explicit -m32/-m64.
         (
           # The shared libraries are in a custom location and require setting
           # the libraries and rpath explicitly.
 
-          local toolchain_library_path="$(xbb_get_toolchain_library_path "${CXX}")"
+          local toolchain_library_path="$(xbb_get_toolchain_library_path "${CXX}" -m${bits})"
 
           # No -L required, -rpath-link does the trick.
           LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
@@ -1279,10 +1244,10 @@ function gcc_test()
           echo
           echo "LDFLAGS=${LDFLAGS}"
 
-          test_compiler_c_cpp
-          test_compiler_c_cpp --gc
-          test_compiler_c_cpp --lto
-          test_compiler_c_cpp --gc --lto
+          test_compiler_c_cpp --${bits}
+          test_compiler_c_cpp --${bits} --gc
+          test_compiler_c_cpp --${bits} --lto
+          test_compiler_c_cpp --${bits} --gc --lto
         )
 
         if is_variable_set "F90"
@@ -1291,7 +1256,7 @@ function gcc_test()
             # The shared libraries are in a custom location and require setting
             # the libraries and rpath explicitly.
 
-            local toolchain_library_path="$(xbb_get_toolchain_library_path "${F90}")"
+            local toolchain_library_path="$(xbb_get_toolchain_library_path "${F90}" -m${bits})"
 
             # No -L required, -rpath-link does the trick.
             LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
@@ -1301,153 +1266,86 @@ function gcc_test()
             echo
             echo "LDFLAGS=${LDFLAGS}"
 
-            test_compiler_fortran
+            test_compiler_fortran --${bits}
           )
         fi
 
-        test_compiler_c_cpp --static-lib
-        test_compiler_c_cpp --static-lib --gc
-        test_compiler_c_cpp --static-lib --lto
-        test_compiler_c_cpp --static-lib --gc --lto
+        test_compiler_c_cpp --${bits} --static-lib
+        test_compiler_c_cpp --${bits} --static-lib --gc
+        test_compiler_c_cpp --${bits} --static-lib --lto
+        test_compiler_c_cpp --${bits} --static-lib --gc --lto
 
         # On Linux static linking is highly discouraged.
         # On RedHat and derived, the static libraries must be installed explicitly.
 
-        test_compiler_c_cpp --static
-        test_compiler_c_cpp --static --gc
-        test_compiler_c_cpp --static --lto
-        test_compiler_c_cpp --static --gc --lto
+        test_compiler_c_cpp --${bits} --static
+        test_compiler_c_cpp --${bits} --static --gc
+        test_compiler_c_cpp --${bits} --static --lto
+        test_compiler_c_cpp --${bits} --static --gc --lto
+      done
 
-      fi
-
-    elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    elif [ "${XBB_HOST_ARCH}" == "arm64" ] || [ "${XBB_HOST_ARCH}" == "arm" ]
     then
+    
+      # arm & aarch64 are non-multilib, no explicit -m32/-m64 needed.
       (
-        # On older machines the references to libstdc++ are absolute and no rpath
-        # is required, but on recent ones references are like @rpath/xxx.dylib.
+        # The shared libraries are in a custom location and require setting
+        # the libraries and rpath explicitly.
 
-        if [ ${gcc_version_major} -eq 13 ]
-        then
-          # weak-undef.
-          # Most likely an Apple linker issue.
-          export XBB_IGNORE_TEST_ALL_WEAK_UNDEF_C="y"
+        local toolchain_library_path="$(xbb_get_toolchain_library_path "${CXX}")"
 
-          # This one fails only with GC?!
-          export XBB_IGNORE_TEST_GC_OVERLOAD_NEW_CPP="y"
-          export XBB_IGNORE_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
+        # No -L required, -rpath-link does the trick.
+        LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+        LDXXFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
 
-          if false # [ "${XBB_HOST_ARCH}" == "x64" ]
-          then
-            # On macOS Intel with CLT 15.3
-            # terminate called after throwing an instance of 'std::exception'
-            # what():  std::exception
+        export LDFLAGS
+        export LDXXFLAGS
 
-            export XBB_IGNORE_TEST_HELLO_EXCEPTION="y"
-            export XBB_IGNORE_TEST_GC_HELLO_EXCEPTION="y"
-            export XBB_IGNORE_TEST_LTO_HELLO_EXCEPTION="y"
-            export XBB_IGNORE_TEST_GC_LTO_HELLO_EXCEPTION="y"
+        echo
+        echo "LDFLAGS=${LDFLAGS}"
 
-            # [./exception-reduced ]
-            # terminate called after throwing an instance of 'int'
+        test_compiler_c_cpp
+        test_compiler_c_cpp --gc
+        test_compiler_c_cpp --lto
+        test_compiler_c_cpp --gc --lto
+      )
 
-            export XBB_IGNORE_TEST_EXCEPTION_REDUCED="y"
-            export XBB_IGNORE_TEST_GC_EXCEPTION_REDUCED="y"
-            export XBB_IGNORE_TEST_LTO_EXCEPTION_REDUCED="y"
-            export XBB_IGNORE_TEST_GC_LTO_EXCEPTION_REDUCED="y"
-          fi
-        fi
-
-        if [ ${gcc_version_major} -eq 14 ] || \
-           [ ${gcc_version_major} -eq 15 ]
-        then
-          # weak-undef.
-          # Most likely an Apple linker issue.
-          export XBB_IGNORE_TEST_ALL_WEAK_UNDEF_C="y"
-          # export XBB_IGNORE_TEST_WEAK_UNDEF_C="y"
-          # export XBB_IGNORE_TEST_GC_WEAK_UNDEF_C="y"
-          # export XBB_IGNORE_TEST_LTO_WEAK_UNDEF_C="y"
-          # export XBB_IGNORE_TEST_GC_LTO_WEAK_UNDEF_C="y"
-          # export XBB_IGNORE_TEST_STATIC_LIB_WEAK_UNDEF_C="y"
-          # export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_UNDEF_C="y"
-          # export XBB_IGNORE_TEST_STATIC_LIB_LTO_WEAK_UNDEF_C="y"
-          # export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_WEAK_UNDEF_C="y"
-
-          # This one fails only with GC?!
-          export XBB_IGNORE_TEST_GC_OVERLOAD_NEW_CPP="y"
-          export XBB_IGNORE_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
-        fi
-
-        # ---------------------------------------------------------------------
-
-        # It is mandatory for the compiler to run properly without any
-        # explicit libraries or other options, otherwise tools used
-        # during configuration (like meson) might fail probing for
-        # capabilities.
-        test_compiler_c_cpp --probe
-
-        # ---------------------------------------------------------------------
-
+      if is_variable_set "F90"
+      then
         (
           # The shared libraries are in a custom location and require setting
           # the libraries and rpath explicitly.
 
-          local toolchain_library_path="$(xbb_get_toolchain_library_path "${CXX}")"
+          local toolchain_library_path="$(xbb_get_toolchain_library_path "${F90}")"
 
-          # -L required, there is no -rpath-link like on Linux.
-          LDFLAGS+=" $(xbb_expand_linker_library_paths "${toolchain_library_path}")"
-          LDXXFLAGS+=" $(xbb_expand_linker_library_paths "${toolchain_library_path}")"
-
+          # No -L required, -rpath-link does the trick.
           LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
-          LDXXFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
 
           export LDFLAGS
-          export LDXXFLAGS
 
           echo
           echo "LDFLAGS=${LDFLAGS}"
 
-          test_compiler_c_cpp
-          test_compiler_c_cpp --gc
-          test_compiler_c_cpp --lto
-          test_compiler_c_cpp --gc --lto
+          test_compiler_fortran
         )
+      fi
 
-        if is_variable_set "F90"
-        then
-          (
-            # The shared libraries are in a custom location and require setting
-            # the libraries and rpath explicitly.
+      test_compiler_c_cpp --static-lib
+      test_compiler_c_cpp --static-lib --gc
+      test_compiler_c_cpp --static-lib --lto
+      test_compiler_c_cpp --static-lib --gc --lto
 
-            local toolchain_library_path="$(xbb_get_toolchain_library_path "${F90}")"
+      # On Linux static linking is highly discouraged.
+      # On RedHat and derived, the static libraries must be installed explicitly.
 
-            LDFLAGS+=" $(xbb_expand_linker_library_paths "${toolchain_library_path}")"
-            LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+      test_compiler_c_cpp --static
+      test_compiler_c_cpp --static --gc
+      test_compiler_c_cpp --static --lto
+      test_compiler_c_cpp --static --gc --lto
 
-            export LDFLAGS
-
-            echo
-            echo "LDFLAGS=${LDFLAGS}"
-
-            test_compiler_fortran
-          )
-        else
-          echo
-          echo "Skipping Fortran tests, compiler not available..."
-        fi
-
-        # ---------------------------------------------------------------------
-
-        # Again, with -static-libstdc++
-        test_compiler_c_cpp --static-lib
-        test_compiler_c_cpp --gc --static-lib
-        test_compiler_c_cpp --lto --static-lib
-        test_compiler_c_cpp --gc --lto --static-lib
-
-        # ---------------------------------------------------------------------
-
-        echo
-        echo "Skipping all --static on macOS..."
-      )
+    else
+      echo "Unsupported XBB_HOST_ARCH=${XBB_HOST_ARCH} in ${FUNCNAME[0]}()"
+      exit 1
     fi
   )
 }
@@ -1456,7 +1354,112 @@ function gcc_test()
 
 function test_darwin()
 {
-  :
+  (
+    # On older machines the references to libstdc++ are absolute and no rpath
+    # is required, but on recent ones references are like @rpath/xxx.dylib.
+
+    # Surprise! GCC 12 passes all tests.
+
+    if [ ${gcc_version_major} -eq 13 ]
+    then
+      # weak-undef.
+      # Most likely an Apple linker issue.
+      export XBB_IGNORE_TEST_ALL_WEAK_UNDEF_C="y"
+
+      # This one fails only with GC?!
+      export XBB_IGNORE_TEST_GC_OVERLOAD_NEW_CPP="y"
+      export XBB_IGNORE_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
+    elif [ ${gcc_version_major} -eq 14 ] || \
+         [ ${gcc_version_major} -eq 15 ]
+    then
+      # weak-undef.
+      # Most likely an Apple linker issue.
+      export XBB_IGNORE_TEST_ALL_WEAK_UNDEF_C="y"
+      # export XBB_IGNORE_TEST_WEAK_UNDEF_C="y"
+      # export XBB_IGNORE_TEST_GC_WEAK_UNDEF_C="y"
+      # export XBB_IGNORE_TEST_LTO_WEAK_UNDEF_C="y"
+      # export XBB_IGNORE_TEST_GC_LTO_WEAK_UNDEF_C="y"
+      # export XBB_IGNORE_TEST_STATIC_LIB_WEAK_UNDEF_C="y"
+      # export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_UNDEF_C="y"
+      # export XBB_IGNORE_TEST_STATIC_LIB_LTO_WEAK_UNDEF_C="y"
+      # export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_WEAK_UNDEF_C="y"
+
+      # This one fails only with GC?!
+      export XBB_IGNORE_TEST_GC_OVERLOAD_NEW_CPP="y"
+      export XBB_IGNORE_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
+    fi
+
+    # ---------------------------------------------------------------------
+
+    # It is mandatory for the compiler to run properly without any
+    # explicit libraries or other options, otherwise tools used
+    # during configuration (like meson) might fail probing for
+    # capabilities.
+    test_compiler_c_cpp --probe
+
+    # ---------------------------------------------------------------------
+
+    (
+      # The shared libraries are in a custom location and require setting
+      # the libraries and rpath explicitly.
+
+      local toolchain_library_path="$(xbb_get_toolchain_library_path "${CXX}")"
+
+      # -L required, there is no -rpath-link like on Linux.
+      LDFLAGS+=" $(xbb_expand_linker_library_paths "${toolchain_library_path}")"
+      LDXXFLAGS+=" $(xbb_expand_linker_library_paths "${toolchain_library_path}")"
+
+      LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+      LDXXFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+
+      export LDFLAGS
+      export LDXXFLAGS
+
+      echo
+      echo "LDFLAGS=${LDFLAGS}"
+
+      test_compiler_c_cpp
+      test_compiler_c_cpp --gc
+      test_compiler_c_cpp --lto
+      test_compiler_c_cpp --gc --lto
+    )
+
+    if is_variable_set "F90"
+    then
+      (
+        # The shared libraries are in a custom location and require setting
+        # the libraries and rpath explicitly.
+
+        local toolchain_library_path="$(xbb_get_toolchain_library_path "${F90}")"
+
+        LDFLAGS+=" $(xbb_expand_linker_library_paths "${toolchain_library_path}")"
+        LDFLAGS+=" $(xbb_expand_linker_rpaths "${toolchain_library_path}")"
+
+        export LDFLAGS
+
+        echo
+        echo "LDFLAGS=${LDFLAGS}"
+
+        test_compiler_fortran
+      )
+    else
+      echo
+      echo "Skipping Fortran tests, compiler not available..."
+    fi
+
+    # ---------------------------------------------------------------------
+
+    # Again, with -static-libstdc++
+    test_compiler_c_cpp --static-lib
+    test_compiler_c_cpp --gc --static-lib
+    test_compiler_c_cpp --lto --static-lib
+    test_compiler_c_cpp --gc --lto --static-lib
+
+    # ---------------------------------------------------------------------
+
+    echo
+    echo "Skipping all --static on macOS..."
+  )
 }
 
 # -----------------------------------------------------------------------------
