@@ -101,6 +101,7 @@ function tests_report_results()
       then
         echo
         echo "${catastrophic} failed unexpectedly"
+        echo
         echo "Verdict: tests cannot be accepted"
 
         echo
@@ -143,6 +144,7 @@ function tests_report_results()
         fi
         echo
         echo "${passed} test cases passed, ${skipped} skipped"
+        echo
         echo "Verdict: tests accepted"
         echo "\`\`\`"
         echo
