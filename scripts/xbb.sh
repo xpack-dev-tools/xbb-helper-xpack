@@ -1487,23 +1487,20 @@ function xbb_get_toolchain_library_path()
       fi
     elif [[ "$(basename ${1})" =~ .*g[c+][c+].* ]]
     then
-      # ./lib64/libasan.so
-      # ./lib64/libgcc_s.so
-      # ./lib64/libgomp.so
-      # ./lib64/libitm.so
-      # ./lib64/libssp.so
-      # ./lib64/libatomic.so
-      # ./lib64/libstdc++.so
-      # ./lib64/libgfortran.so
-      # ./lib64/libubsan.so
-      # ./lib64/liblsan.so
-      # ./lib64/libcc1.so
-      # ./lib64/libtsan.so
-      # ./lib64/libhwasan.so
-      local libstdcpp_path="$("$@" -print-file-name=libstdc++.so)"
+      # On macOS all libraries are in lib.
+      # On Linux x64 they are in lib64/lib32
+      # On Linux arm64/arm they are in lib.
+      local libstdcpp_path="$("$@" -print-file-name=libstdc++.a)"
+      libs_path="$(dirname $("${REALPATH}" -m "${libstdcpp_path}"))"
+    elif [[ "$(basename ${1})" =~ .*gfortran.* ]]
+    then
+      # On macOS all libraries are in lib.
+      # On Linux x64 they are in lib64/lib32
+      # On Linux arm64/arm they are in lib.
+      local libstdcpp_path="$("$@" -print-file-name=libgfortran.a)"
       libs_path="$(dirname $("${REALPATH}" -m "${libstdcpp_path}"))"
     else
-      echo "TODO: compute rpath for ${CC}"
+      echo "TODO: compute library path for ${1}"
       exit 1
     fi
   fi
