@@ -852,31 +852,61 @@ function gcc_test()
   local name_prefix=""
 
   (
-    run_verbose ls -l "${test_bin_path}"
+    echo
+    echo "Testing the ${name_prefix}gcc binaries..."
 
-    export CC="${test_bin_path}/gcc"
-    export CXX="${test_bin_path}/g++"
-    export F90="${test_bin_path}/gfortran"
-
-    if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+    if [ "${XBB_TEST_SYSTEM_TOOLS:-""}" == "y" ]
     then
-      export AR="$(which ar)"
-      export NM="$(which nm)"
-      export RANLIB="$(which ranlib)"
-    else
-      export AR="${test_bin_path}/gcc-ar"
-      export NM="${test_bin_path}/gcc-nm"
-      export RANLIB="${test_bin_path}/gcc-ranlib"
+      export CC="$(which gcc)"
+      export CXX="$(which g++)"
+      export F90="$(which gfortran)"
 
-      if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
-        export WIDL="${test_bin_path}/widl"
-      fi
-    fi
+        export AR="$(which ar)"
+        export NM="$(which nm)"
+        export RANLIB="$(which ranlib)"
+      else
+        export AR="$(which gcc-ar)"
+        export NM="$(which gcc-nm)"
+        export RANLIB="$(which gcc-ranlib)"
 
-    export GCOV="${test_bin_path}/gcov"
-    export GCOV_DUMP="${test_bin_path}/gcov-dump"
-    export GCOV_TOOL="${test_bin_path}/gcov-tool"
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+        then
+          export WIDL="$(which widl)"
+        fi
+      fi
+
+      export GCOV="$(which gcov)"
+      export GCOV_DUMP="$(which gcov-dump)"
+      export GCOV_TOOL="$(which gcov-tool)"
+    else
+      run_verbose ls -l "${test_bin_path}"
+
+      export CC="${test_bin_path}/gcc"
+      export CXX="${test_bin_path}/g++"
+      export F90="${test_bin_path}/gfortran"
+
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      then
+        export AR="$(which ar)"
+        export NM="$(which nm)"
+        export RANLIB="$(which ranlib)"
+      else
+        export AR="${test_bin_path}/gcc-ar"
+        export NM="${test_bin_path}/gcc-nm"
+        export RANLIB="${test_bin_path}/gcc-ranlib"
+
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+        then
+          export WIDL="${test_bin_path}/widl"
+        fi
+      fi
+
+      export GCOV="${test_bin_path}/gcov"
+      export GCOV_DUMP="${test_bin_path}/gcov-dump"
+      export GCOV_TOOL="${test_bin_path}/gcov-tool"
+    fi
 
     # -------------------------------------------------------------------------
 
