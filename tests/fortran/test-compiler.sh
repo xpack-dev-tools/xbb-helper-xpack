@@ -62,7 +62,7 @@ function test_compiler_fortran()
       SUFFIX+="-bootstrap"
     fi
 
-    LDFLAGS=""
+    LDFLAGS="${LDFLAGS:-""}"
 
     export LDFLAGS
 
@@ -70,33 +70,27 @@ function test_compiler_fortran()
     export SUFFIX
     export bits
 
-    if is_variable_set "F90"
-    then
-      (
-        run_verbose_develop cd fortran
+    (
+      run_verbose_develop cd fortran
 
-        set +o errexit  # Do not exit if commands fail, to allow continuation.
+      set +o errexit  # Do not exit if commands fail, to allow continuation.
 
-        # ---------------------------------------------------------------------
+      # ---------------------------------------------------------------------
 
-        if is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
-        then
-          # error while loading shared libraries: api-ms-win-crt-time-l1-1-0.dll: cannot open shared object file: No such file or directory
-          # The api-ms-win-crt-runtime-l1-1-0.dll file is included in Microsoft Visual C++ Redistributable for Visual Studio 2015
-          echo
-          echo "Skipping Fortran tests on Windows..."
-        else
+      if is_gcc && [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+      then
+        # error while loading shared libraries: api-ms-win-crt-time-l1-1-0.dll: cannot open shared object file: No such file or directory
+        # The api-ms-win-crt-runtime-l1-1-0.dll file is included in Microsoft Visual C++ Redistributable for Visual Studio 2015
+        echo
+        echo "Skipping Fortran tests on Windows..."
+      else
 
-          test_case_hello_f
+        test_case_hello_f
 
-          test_case_concurrent_f
+        test_case_concurrent_f
 
-        fi
-      )
-    else
-      echo
-      echo "Skipping Fortran tests, compiler not available..."
-    fi
+      fi
+    )
   )
 }
 
