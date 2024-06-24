@@ -16,7 +16,7 @@ Minimum requirements and supported SDKs:
 
 ## Prerequisites to run tests on docker images
 
-Some examples of docker images:
+### x64 and arm64 docker images
 
 ```sh
 # https://hub.docker.com/u/redhat
@@ -47,9 +47,11 @@ docker run -it debian:latest
 docker run -it debian:testing
 ```
 
-For [arm32v7](https://hub.docker.com/u/arm32v7):
+### arm32v7 docker images
 
 ```sh
+# https://hub.docker.com/u/arm32v7
+
 docker run -it arm32v7/fedora:latest
 
 docker run -it arm32v7/debian:bullseye
@@ -64,7 +66,7 @@ docker run -it arm32v7/ubuntu:latest
 docker run -it arm32v7/ubuntu:devel
 ```
 
-Minimum prerequisites:
+Installinimum prerequisites:
 
 ```sh
 yum update --assumeyes
