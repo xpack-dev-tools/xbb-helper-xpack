@@ -31,13 +31,6 @@ docker run -it opensuse/leap:15
 docker run -it opensuse/leap:latest
 docker run -it opensuse/tumbleweed:latest
 
-# https://hub.docker.com/_/ubuntu
-docker run -it ubuntu:20.04
-docker run -it ubuntu:22.04
-docker run -it ubuntu:24.04
-docker run -it ubuntu:latest
-docker run -it ubuntu:devel
-
 # https://hub.docker.com/_/debian
 # 12=bookworm, 11=bullseye, 10=buster
 docker run -it debian:10
@@ -45,6 +38,13 @@ docker run -it debian:11
 docker run -it debian:12
 docker run -it debian:latest
 docker run -it debian:testing
+
+# https://hub.docker.com/_/ubuntu
+docker run -it ubuntu:20.04
+docker run -it ubuntu:22.04
+docker run -it ubuntu:24.04
+docker run -it ubuntu:latest
+docker run -it ubuntu:devel
 ```
 
 ### arm32v7 docker images
@@ -66,17 +66,23 @@ docker run -it arm32v7/ubuntu:latest
 docker run -it arm32v7/ubuntu:devel
 ```
 
-Installinimum prerequisites:
+### Minimum prerequisites
+
+RedHat/Fedora:
 
 ```sh
 yum update --assumeyes
 yum install --assumeyes git
 ```
 
+SuSE:
+
 ```sh
 zypper --no-gpg-checks update --no-confirm
 zypper --no-gpg-checks install --no-confirm git-core
 ```
+
+Debian/Ubuntu:
 
 ```sh
 apt-get update
