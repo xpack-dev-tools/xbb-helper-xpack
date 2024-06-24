@@ -4,7 +4,13 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-06-24
 
-* v2.1.25 released
+* v2.1.26 released
+* 028a884 README update
+* 100dd3e README update
+* 984bb20 README update
+* 50ab85c test-compiler.sh: skip static sleepy-threads-cv
+* 5b336ec 2.1.25
+* b6833a3 prepare v2.1.25
 * 9b0c281 remove gcc 12.4.0 patch
 
 ## 2024-06-23
