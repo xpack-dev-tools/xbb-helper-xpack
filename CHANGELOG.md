@@ -2,9 +2,27 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-24
+
+* v2.1.25 released
+* 9b0c281 remove gcc 12.4.0 patch
+
+## 2024-06-23
+
+* f95dff4 gcc.sh: update url
+
 ## 2024-06-22
 
-* v2.1.24 released
+* 17c17b4 build-tests.sh: cosmetics in messages
+* 62ced57 gcc.sh: add support for XBB_TEST_SYSTEM_TOOLS
+* cf5aa48 gcc.sh: separate _binaries_start & _configuration
+* 8d1a691 gcc.sh: separate platform specific tests
+* b1f8a9e gcc.sh: use --probe and 32/64 loop
+* 9ba8626 xbb.sh: xbb_get_toolchain_library_path add fortran
+* b58bb80 tests/c-cpp: add --probe
+* 99af786 fortran/test-compiler.sh: inherit LDFLAGS
+* 47146e0 2.1.24
+* 4a7666d prepare v2.1.24
 * a6e8b9d deep-clean-liquid.yml update
 * 70081fa build-tests.sh: empty line after
 
