@@ -334,7 +334,10 @@ function test_compiler_c_cpp()
       # Unfortunately timings are unreliable on CI machines.
       # test_case_sleepy_threads_sl
 
-      test_case_sleepy_threads_cv
+      if [ "${is_static}" != "y" ] || ! test_case_skip_all_static "sleepy-threads-cv"
+      then
+        test_case_sleepy_threads_cv
+      fi
 
       # -----------------------------------------------------------------------
 
