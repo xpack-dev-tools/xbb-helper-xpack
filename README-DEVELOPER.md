@@ -45,6 +45,9 @@ docker run -it ubuntu:22.04
 docker run -it ubuntu:24.04
 docker run -it ubuntu:latest
 docker run -it ubuntu:devel
+
+# https://hub.docker.com/_/archlinux
+docker run -it archlinux:latest
 ```
 
 ### arm32v7 docker images
@@ -87,4 +90,15 @@ Debian/Ubuntu:
 ```sh
 apt-get update
 apt-get install --yes git-core
+```
+
+Arch:
+
+```sh
+rm -rf /etc/pacman.d/gnupg/*
+pacman-key --init
+pacman-key --populate archlinux
+pacman -S archlinux-keyring --noconfirm
+pacman -S --refresh --noconfirm --sysupgrade
+pacman -S --noconfirm --noprogressbar git
 ```
