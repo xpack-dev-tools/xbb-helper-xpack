@@ -92,13 +92,13 @@ apt-get update
 apt-get install --yes git-core
 ```
 
-Arch:
+Arch (-u --sysupgrade, -y --refresh, -yy force --refresh):
 
 ```sh
-rm -rf /etc/pacman.d/gnupg/*
 pacman-key --init
 pacman-key --populate archlinux
-pacman -S archlinux-keyring --noconfirm
-pacman -S --refresh --noconfirm --sysupgrade
-pacman -S --noconfirm --noprogressbar git
+pacman --sync --noconfirm --refresh
+pacman --sync --noconfirm archlinux-keyring
+pacman --sync --noconfirm --sysupgrade
+pacman --sync --noconfirm --noprogressbar git
 ```
