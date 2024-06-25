@@ -2,9 +2,17 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-25
+
+* v2.1.27 released
+* 69c19b0 README update
+* 050c1e6 gcc-12.4.0 simple patch added
+* d854430 README update
+
 ## 2024-06-24
 
-* v2.1.26 released
+* d916315 2.1.26
+* cfba6be prepare v2.1.26
 * 028a884 README update
 * 100dd3e README update
 * 984bb20 README update
