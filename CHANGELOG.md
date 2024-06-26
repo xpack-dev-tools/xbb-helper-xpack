@@ -2,9 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-26
+
+* v2.1.28 released
+* f79f473 gcc.sh: update linux ignores for 12
+
 ## 2024-06-25
 
-* v2.1.27 released
+* 200e082 2.1.27
+* da8af5a prepare v2.1.27
 * 69c19b0 README update
 * 050c1e6 gcc-12.4.0 simple patch added
 * d854430 README update
