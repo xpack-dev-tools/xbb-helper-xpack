@@ -4,7 +4,21 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-06-26
 
-* v2.1.28 released
+* v2.1.29 released
+* a5d3faa gcc-mingw.sh: improve logic to set PATH
+* 1de8ae0 gcc-mingw.sh: print libstdc++.a path
+* 78d5f6d gcc-mingw.sh: add ignores for gcc 10
+* 3b9f8bf gcc-mingw.sh: add support for --system
+* 4aa23fe binutils.sh: add support for --system
+* 6153153 xbb.sh: improve logic for get_version_*
+* 03e42da sleepy-threads-cv.cpp: add explicit include mutex
+* d51d5d8 gcc-mingw.sh: add defs for system tests
+* ea73fbe fortran/test-compiler.sh: ignore empty args
+* 73da0cb test-compiler.sh: ignore empty args
+* 14bdf24 gcc-mingw.sh: ignore empty args
+* c742ab1 gcc-mingw.sh: update bootstrap_option, bits_option
+* f4fffdb 2.1.28
+* 4ea13d3 prepare v2.1.28
 * f79f473 gcc.sh: update linux ignores for 12
 
 ## 2024-06-25
