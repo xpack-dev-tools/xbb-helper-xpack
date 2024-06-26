@@ -929,11 +929,12 @@ function gcc_mingw_test()
       # The DLLs are available in the /lib folder.
       if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
       then
-        cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++-6.dll | sed -e 's|:||' | sed -e 's|^|/|'))
+        cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++.a | sed -e 's|:||' | sed -e 's|^|/|'))
         export PATH="${cxx_lib_path}:${PATH:-}"
         echo "PATH=${PATH}"
       else
-        export WINEPATH="${test_bin_path}/../${XBB_CURRENT_TRIPLET}/lib;${WINEPATH:-}"
+        cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++.a))
+        export WINEPATH="${cxx_lib_path};${WINEPATH:-}"
         echo "WINEPATH=${WINEPATH}"
       fi
 
