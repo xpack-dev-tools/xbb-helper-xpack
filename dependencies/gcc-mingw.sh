@@ -813,29 +813,90 @@ function gcc_mingw_test()
        [ ${gcc_version_major} -eq 14 ] || \
        [ ${gcc_version_major} -eq 15 ]
     then
-
-      # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/install/lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
-      # collect2: error: ld returned 1 exit status
-
+      # Weak symbols have a problem.
       # Interestingly, LTO tests pass.
-      export XBB_IGNORE_TEST_HELLO_WEAK1_C="y"
-      export XBB_IGNORE_TEST_HELLO_WEAK2_CPP="y"
 
-      export XBB_IGNORE_TEST_GC_HELLO_WEAK1_C="y"
-      export XBB_IGNORE_TEST_GC_HELLO_WEAK2_CPP="y"
+      # To save some time, eventually skip tests known to fail.
+      if false
+      then
+        export XBB_SKIP_TEST_ALL_HELLO_WEAK1_C="y"
+        export XBB_SKIP_TEST_ALL_HELLO_WEAK2_CPP="y"
+        export XBB_SKIP_TEST_ALL_WEAK_USE_C="y"
+        export XBB_SKIP_TEST_ALL_WEAK_DUPLICATE_C="y"
+        export XBB_SKIP_TEST_ALL_UNWIND_WEAK_CPP="y"
+      else
+        # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build/win32-x64/x86_64-pc-linux-gnu/install/lib/gcc/x86_64-w64-mingw32/12.3.0/../../../../x86_64-w64-mingw32/bin/ld: hello-weak.c.o:hello-weak.c:(.text+0x15): undefined reference to `world'
+        # collect2: error: ld returned 1 exit status
 
-      export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK1_C="y"
-      export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK2_CPP="y"
+        export XBB_IGNORE_TEST_HELLO_WEAK1_C="y"
+        export XBB_IGNORE_TEST_HELLO_WEAK2_CPP="y"
 
-      export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK1_C="y"
-      export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK2_CPP="y"
+        export XBB_IGNORE_TEST_GC_HELLO_WEAK1_C="y"
+        export XBB_IGNORE_TEST_GC_HELLO_WEAK2_CPP="y"
 
-      export XBB_IGNORE_TEST_STATIC_HELLO_WEAK1_C="y"
-      export XBB_IGNORE_TEST_STATIC_HELLO_WEAK2_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK1_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_HELLO_WEAK2_CPP="y"
 
-      export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK1_C="y"
-      export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK2_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK1_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_HELLO_WEAK2_CPP="y"
 
+        export XBB_IGNORE_TEST_STATIC_HELLO_WEAK1_C="y"
+        export XBB_IGNORE_TEST_STATIC_HELLO_WEAK2_CPP="y"
+
+        export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK1_C="y"
+        export XBB_IGNORE_TEST_STATIC_GC_HELLO_WEAK2_CPP="y"
+
+        # weak-use - LTO variants are functional.
+        # in function `dummy': undefined reference to `func'
+        # export XBB_IGNORE_TEST_WEAK_USE_C="y"
+        # export XBB_IGNORE_TEST_GC_WEAK_USE_C="y"
+
+        export XBB_IGNORE_TEST_STATIC_LIB_WEAK_USE_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_USE_C="y"
+
+        export XBB_IGNORE_TEST_STATIC_WEAK_USE_C="y"
+        export XBB_IGNORE_TEST_STATIC_GC_WEAK_USE_C="y"
+
+        # weak-duplicate - LTO are functional.
+        # in function `dummy': undefined reference to `func'
+        export XBB_IGNORE_TEST_WEAK_DUPLICATE_C="y"
+        export XBB_IGNORE_TEST_GC_WEAK_DUPLICATE_C="y"
+
+        export XBB_IGNORE_TEST_STATIC_LIB_WEAK_DUPLICATE_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_LTO_WEAK_DUPLICATE_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_DUPLICATE_C="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_WEAK_DUPLICATE_C="y"
+
+        export XBB_IGNORE_TEST_STATIC_WEAK_DUPLICATE_C="y"
+        export XBB_IGNORE_TEST_STATIC_GC_WEAK_DUPLICATE_C="y"
+
+        # unwind-weak - LTO are functional.
+        # in function `main': undefined reference to `step1'
+        export XBB_IGNORE_TEST_UNWIND_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_GC_UNWIND_WEAK_CPP="y"
+
+        export XBB_IGNORE_TEST_STATIC_LIB_UNWIND_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_LIB_GC_UNWIND_WEAK_CPP="y"
+
+        export XBB_IGNORE_TEST_STATIC_UNWIND_WEAK_CPP="y"
+        export XBB_IGNORE_TEST_STATIC_GC_UNWIND_WEAK_CPP="y"
+      fi
+
+      # autoimport-main.
+      # [wine64 ./lto-autoimport-main.exe]
+      # Mingw-w64 runtime failure:
+      # 32 bit pseudo relocation at 000000014000152A out of range, targeting 000000028846135C, yielding the value 000000014845FE2E.
+
+      export XBB_IGNORE_TEST_LTO_AUTOIMPORT_MAIN_64="y"
+      export XBB_IGNORE_TEST_GC_LTO_AUTOIMPORT_MAIN_64="y"
+
+      export XBB_IGNORE_TEST_STATIC_LIB_LTO_AUTOIMPORT_MAIN_64="y"
+      export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_AUTOIMPORT_MAIN_64="y"
+
+      # overload-new. ALL.
+      export XBB_IGNORE_TEST_ALL_OVERLOAD_NEW_CPP="y"
+
+      # throwcatch-main.
       # [wine64 ./lto-throwcatch-main.exe]
       # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 0394), starting debugger...
       # Unhandled exception: page fault on execute access to 0x0000000122b1157c in 64-bit code (0x00000122b1157c).
@@ -857,61 +918,6 @@ function gcc_mingw_test()
 
       export XBB_IGNORE_TEST_STATIC_LIB_LTO_THROWCATCH_MAIN_32="y"
       export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_THROWCATCH_MAIN_32="y"
-
-      # [wine64 ./lto-autoimport-main.exe]
-      # Mingw-w64 runtime failure:
-      # 32 bit pseudo relocation at 000000014000152A out of range, targeting 000000028846135C, yielding the value 000000014845FE2E.
-
-      export XBB_IGNORE_TEST_LTO_AUTOIMPORT_MAIN_64="y"
-      export XBB_IGNORE_TEST_GC_LTO_AUTOIMPORT_MAIN_64="y"
-
-      export XBB_IGNORE_TEST_STATIC_LIB_LTO_AUTOIMPORT_MAIN_64="y"
-      export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_AUTOIMPORT_MAIN_64="y"
-
-      # weak-use - LTO variants are functional.
-      # in function `dummy': undefined reference to `func'
-      export XBB_IGNORE_TEST_WEAK_USE_C="y"
-      export XBB_IGNORE_TEST_GC_WEAK_USE_C="y"
-
-      export XBB_IGNORE_TEST_STATIC_LIB_WEAK_USE_C="y"
-      export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_USE_C="y"
-
-      export XBB_IGNORE_TEST_STATIC_WEAK_USE_C="y"
-      export XBB_IGNORE_TEST_STATIC_GC_WEAK_USE_C="y"
-
-      # weak-override - fully functional.
-
-      # weak-duplicate - LTO are functional.
-      # in function `dummy': undefined reference to `func'
-      export XBB_IGNORE_TEST_WEAK_DUPLICATE_C="y"
-      export XBB_IGNORE_TEST_GC_WEAK_DUPLICATE_C="y"
-
-      export XBB_IGNORE_TEST_STATIC_LIB_WEAK_DUPLICATE_C="y"
-      export XBB_IGNORE_TEST_STATIC_LIB_LTO_WEAK_DUPLICATE_C="y"
-      export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_DUPLICATE_C="y"
-      export XBB_IGNORE_TEST_STATIC_LIB_GC_LTO_WEAK_DUPLICATE_C="y"
-
-      export XBB_IGNORE_TEST_STATIC_WEAK_DUPLICATE_C="y"
-      export XBB_IGNORE_TEST_STATIC_GC_WEAK_DUPLICATE_C="y"
-
-      # overload-new.
-      export XBB_IGNORE_TEST_ALL_OVERLOAD_NEW_CPP="y"
-
-      # unwind-weak - LTO are functional.
-      #  in function `main': undefined reference to `step1'
-      export XBB_IGNORE_TEST_UNWIND_WEAK_CPP="y"
-      export XBB_IGNORE_TEST_GC_UNWIND_WEAK_CPP="y"
-
-      export XBB_IGNORE_TEST_STATIC_LIB_UNWIND_WEAK_CPP="y"
-      export XBB_IGNORE_TEST_STATIC_LIB_GC_UNWIND_WEAK_CPP="y"
-
-      export XBB_IGNORE_TEST_STATIC_UNWIND_WEAK_CPP="y"
-      export XBB_IGNORE_TEST_STATIC_GC_UNWIND_WEAK_CPP="y"
-
-      # unwind-strong - fully functional.
-
-      # sleepy-threads-cv - fully functional.
-
     fi
 
     # From https://wiki.winehq.org/Wine_User%27s_Guide#DLL_Overrides
