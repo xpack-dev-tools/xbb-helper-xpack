@@ -136,6 +136,10 @@ function test_compiler_c_cpp()
           shift
           ;;
 
+        "" )
+          shift
+          ;;
+
         * )
           echo "Unsupported option $1 in ${FUNCNAME[0]}()"
           exit 1
