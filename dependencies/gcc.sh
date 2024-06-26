@@ -1233,26 +1233,12 @@ function test_linux()
     local distro=$(lsb_release -is)
 
     if [ ${gcc_version_major} -eq 11 ] || \
-       [ ${gcc_version_major} -eq 12 ]
+       [ ${gcc_version_major} -eq 12 ] || \
+       [ ${gcc_version_major} -eq 13 ] || \
+       [ ${gcc_version_major} -eq 14 ]
     then
-      # sleepy-threads
-      # Weird, only the static tests die with 'Segmentation fault'.
-      export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_SL="y"
-      export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_SL="y"
-      export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_SL="y"
-      export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_SL="y"
-
-      # sleepy-threads-cv
-      # Weird, only the static tests die with 'Segmentation fault'.
-      export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_CV="y"
-      export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
-      export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
-      export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
-    elif [ ${gcc_version_major} -eq 13 ] || \
-         [ ${gcc_version_major} -eq 14 ]
-    then
-      # sleepy-threads-cv
-      # Weird, the static tests crash with 'Segmentation fault'.
+      # sleepy-threads-cv.
+      # The static tests crash with 'Segmentation fault'.
       export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_CV="y"
       export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
       export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
@@ -1260,7 +1246,8 @@ function test_linux()
 
       if [ "${distro}" == "Fedora" ]
       then
-        # cnrt-test-32 1 781.
+        # cnrt-test-32.
+        # undefined reference to `fmod'
         export XBB_IGNORE_TEST_STATIC_CNRT_TEST_32="y"
         export XBB_IGNORE_TEST_STATIC_GC_CNRT_TEST_32="y"
         export XBB_IGNORE_TEST_STATIC_LTO_CNRT_TEST_32="y"
