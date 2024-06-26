@@ -496,7 +496,7 @@ function binutils_test()
       show_host_libs "${ELFEDIT}"
       show_host_libs "${GPROF}"
       show_host_libs "${LD}"
-      if [ -f  "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
+      if [ -f "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
       then
         # No ld.gold on Windows.
         show_host_libs "${LD_GOLD}"
@@ -519,7 +519,7 @@ function binutils_test()
     run_host_app_verbose "${ELFEDIT}" --version
     run_host_app_verbose "${GPROF}" --version
     run_host_app_verbose "${LD}" --version
-    if [ -f  "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
+    if [ -f "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
       run_host_app_verbose "${LD_GOLD}" --version
@@ -541,7 +541,7 @@ function binutils_test()
     run_host_app_verbose "${ELFEDIT}" --help
     run_host_app_verbose "${GPROF}" --help
     run_host_app_verbose "${LD}" --help
-    if [ "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
+    if [ -f "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
       run_host_app_verbose "${LD_GOLD}" --help
