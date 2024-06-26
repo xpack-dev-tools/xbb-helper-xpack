@@ -1727,17 +1727,18 @@ function xbb_strip_version_pre_release()
 
 function xbb_get_version_major()
 {
-  echo "$1" | sed -e 's|\([0-9][0-9]*\).*|\1|'
+  echo "$1" | sed -e 's|-[a-zA-Z].*||' -e 's|\([0-9][0-9]*\).*|\1|'
 }
 
+# For mingw won't work, it returns only major.
 function xbb_get_version_minor()
 {
-  echo "$1" | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\).*|\2|'
+  echo "$1" | sed -e 's|-[a-zA-Z].*||' -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\).*|\2|'
 }
 
 function xbb_get_version_patch()
 {
-  echo "$1" | sed -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.]\([0-9][0-9]*\).*|\3|'
+  echo "$1" | sed -e 's|-[a-zA-Z].*||' -e 's|\([0-9][0-9]*\)[.]\([0-9][0-9]*\)[.]\([0-9][0-9]*\).*|\3|'
 }
 
 function xbb_strip_macosx_version_min()
