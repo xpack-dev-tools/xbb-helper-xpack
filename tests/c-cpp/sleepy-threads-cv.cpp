@@ -3,6 +3,7 @@
 #include <vector>
 #include <chrono>
 #include <cassert>
+#include <mutex>
 #include <condition_variable>
 
 char letters[] = "abcdefghijklmnopqrstuvwxyz";
