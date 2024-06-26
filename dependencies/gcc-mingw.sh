@@ -926,15 +926,35 @@ function gcc_mingw_test()
     # Run tests in all cases.
     (
       # For libstdc++-6.dll & co.
-      # The DLLs are available in the /lib folder.
+      # The DLLs are available in the /lib, but may also bein the /bin folder.
+      # Search for the .a, not the .dll, since the compiler does
+      # not identify files in bin.
       if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
       then
         cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++.a | sed -e 's|:||' | sed -e 's|^|/|'))
-        export PATH="${cxx_lib_path}:${PATH:-}"
+        if [ -f "${cxx_lib_path}/libstdc++-6.dll" ]
+        then
+          export PATH="${cxx_lib_path}:${PATH:-}"
+        elif [ -f "${cxx_lib_path}/../bin/libstdc++-6.dll" ]
+        then
+          export PATH="$(${REALPATH} ${cxx_lib_path}/../bin);${PATH:-}"
+        else
+          echo "Cannot locate libstdc++-6.dll"
+          exit 1
+        fi
         echo "PATH=${PATH}"
       else
         cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++.a))
-        export WINEPATH="${cxx_lib_path};${WINEPATH:-}"
+        if [ -f "${cxx_lib_path}/libstdc++-6.dll" ]
+        then
+          export WINEPATH="${cxx_lib_path};${WINEPATH:-}"
+        elif [ -f "${cxx_lib_path}/../bin/libstdc++-6.dll" ]
+        then
+          export WINEPATH="$(${REALPATH} ${cxx_lib_path}/../bin);${WINEPATH:-}"
+        else
+          echo "Cannot locate libstdc++-6.dll"
+          exit 1
+        fi
         echo "WINEPATH=${WINEPATH}"
       fi
 
