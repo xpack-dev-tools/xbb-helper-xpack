@@ -637,7 +637,7 @@ function gcc_mingw_test()
     then
       CC="$(which ${triplet}-gcc)"
       CXX="$(which ${triplet}-g++)"
-      F90="$(which ${triplet}-gfortran)"
+      F90="$(which ${triplet}-gfortran || true)"
 
       AR="$(which ${triplet}-gcc-ar)"
       NM="$(which ${triplet}-gcc-nm)"
@@ -650,7 +650,7 @@ function gcc_mingw_test()
       GCOV_TOOL="$(which ${triplet}-gcov-tool)"
 
       DLLTOOL="$(which ${triplet}-dlltool)"
-      GENDEF="$(which ${triplet}-gendef)"
+      GENDEF="$(which ${triplet}-gendef || which gendef)"
       WIDL="$(which ${triplet}-widl)"
     else
       CC="${test_bin_path}/${triplet}-gcc"
@@ -689,6 +689,7 @@ function gcc_mingw_test()
     echo "$(basename ${CC}${XBB_HOST_DOT_EXE}): ${gcc_version} (${CC}${XBB_HOST_DOT_EXE})"
 
     local gcc_version_major=$(xbb_get_version_major "${gcc_version}")
+    # echo ${gcc_version_major}
 
     # -------------------------------------------------------------------------
 
@@ -701,7 +702,7 @@ function gcc_mingw_test()
       # it is behind a script or a .cmd shim.
       show_host_libs "${CC}"
       show_host_libs "${CXX}"
-      if [ -f "${F90}" -o -f "${F90}${XBB_HOST_DOT_EXE}" ]
+      if [ -f "${F90}${XBB_HOST_DOT_EXE}" ]
       then
         show_host_libs "${F90}"
       fi
@@ -726,7 +727,7 @@ function gcc_mingw_test()
 
     run_host_app_verbose "${CC}" --version
     run_host_app_verbose "${CXX}" --version
-    if [ -f "${F90}" ]
+    if [ -f "${F90}${XBB_HOST_DOT_EXE}" ]
     then
       run_host_app_verbose "${F90}" --version
     fi
@@ -940,7 +941,10 @@ function gcc_mingw_test()
       test_compiler_c_cpp --lto ${bits_option} ${bootstrap_option}
       test_compiler_c_cpp --gc --lto ${bits_option} ${bootstrap_option}
 
-      test_compiler_fortran ${bits_option} ${bootstrap_option}
+      if [ -f "${F90}${XBB_HOST_DOT_EXE}" ]
+      then
+        test_compiler_fortran ${bits_option} ${bootstrap_option}
+      fi
     )
 
     (
