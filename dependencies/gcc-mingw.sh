@@ -446,6 +446,10 @@ function gcc_mingw_build_final()
         shift
         ;;
 
+      "" )
+        shift
+        ;;
+        
       * )
         echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
         exit 1
