@@ -449,7 +449,7 @@ function gcc_mingw_build_final()
       "" )
         shift
         ;;
-        
+
       * )
         echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
         exit 1
@@ -580,7 +580,7 @@ function gcc_mingw_build_final()
     echo "Component ${name_prefix}gcc final already installed"
   fi
 
-  tests_add "gcc_mingw_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}" "${bootstrap_option}"
+  tests_add "gcc_mingw_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}" ${bootstrap_option}
 }
 
 function gcc_mingw_test()
@@ -592,6 +592,9 @@ function gcc_mingw_test()
   shift
   local triplet="$1"
   shift
+
+  local name_suffix=""
+  local name_prefix=""
 
   local is_bootstrap=""
   local bootstrap_option=""
@@ -627,23 +630,47 @@ function gcc_mingw_test()
   xbb_set_extra_target_env "${triplet}"
 
   (
-    CC="${test_bin_path}/${triplet}-gcc"
-    CXX="${test_bin_path}/${triplet}-g++"
-    F90="${test_bin_path}/${triplet}-gfortran"
+    echo
+    echo "Testing the ${name_prefix}${triplet}-gcc binaries..."
 
-    AR="${test_bin_path}/${triplet}-gcc-ar"
-    NM="${test_bin_path}/${triplet}-gcc-nm"
-    RANLIB="${test_bin_path}/${triplet}-gcc-ranlib"
+    if [ "${XBB_TEST_SYSTEM_TOOLS:-""}" == "y" ]
+    then
+      CC="$(which ${triplet}-gcc)"
+      CXX="$(which ${triplet}-g++)"
+      F90="$(which ${triplet}-gfortran)"
 
-    OBJDUMP="${test_bin_path}/${triplet}-objdump"
+      AR="$(which ${triplet}-gcc-ar)"
+      NM="$(which ${triplet}-gcc-nm)"
+      RANLIB="$(which ${triplet}-gcc-ranlib)"
 
-    GCOV="${test_bin_path}/${triplet}-gcov"
-    GCOV_DUMP="${test_bin_path}/${triplet}-gcov-dump"
-    GCOV_TOOL="${test_bin_path}/${triplet}-gcov-tool"
+      OBJDUMP="$(which ${triplet}-objdump)"
 
-    DLLTOOL="${test_bin_path}/${triplet}-dlltool"
-    GENDEF="${test_bin_path}/${triplet}-gendef"
-    WIDL="${test_bin_path}/${triplet}-widl"
+      GCOV="$(which ${triplet}-gcov)"
+      GCOV_DUMP="$(which ${triplet}-gcov-dump)"
+      GCOV_TOOL="$(which ${triplet}-gcov-tool)"
+
+      DLLTOOL="$(which ${triplet}-dlltool)"
+      GENDEF="$(which ${triplet}-gendef)"
+      WIDL="$(which ${triplet}-widl)"
+    else
+      CC="${test_bin_path}/${triplet}-gcc"
+      CXX="${test_bin_path}/${triplet}-g++"
+      F90="${test_bin_path}/${triplet}-gfortran"
+
+      AR="${test_bin_path}/${triplet}-gcc-ar"
+      NM="${test_bin_path}/${triplet}-gcc-nm"
+      RANLIB="${test_bin_path}/${triplet}-gcc-ranlib"
+
+      OBJDUMP="${test_bin_path}/${triplet}-objdump"
+
+      GCOV="${test_bin_path}/${triplet}-gcov"
+      GCOV_DUMP="${test_bin_path}/${triplet}-gcov-dump"
+      GCOV_TOOL="${test_bin_path}/${triplet}-gcov-tool"
+
+      DLLTOOL="${test_bin_path}/${triplet}-dlltool"
+      GENDEF="${test_bin_path}/${triplet}-gendef"
+      WIDL="${test_bin_path}/${triplet}-widl"
+    fi
 
     # -------------------------------------------------------------------------
 
@@ -908,26 +935,26 @@ function gcc_mingw_test()
         echo "WINEPATH=${WINEPATH}"
       fi
 
-      test_compiler_c_cpp ${bits_option} "${bootstrap_option}"
-      test_compiler_c_cpp --gc ${bits_option} "${bootstrap_option}"
-      test_compiler_c_cpp --lto ${bits_option} "${bootstrap_option}"
-      test_compiler_c_cpp --gc --lto ${bits_option} "${bootstrap_option}"
+      test_compiler_c_cpp ${bits_option} ${bootstrap_option}
+      test_compiler_c_cpp --gc ${bits_option} ${bootstrap_option}
+      test_compiler_c_cpp --lto ${bits_option} ${bootstrap_option}
+      test_compiler_c_cpp --gc --lto ${bits_option} ${bootstrap_option}
 
-      test_compiler_fortran ${bits_option} "${bootstrap_option}"
+      test_compiler_fortran ${bits_option} ${bootstrap_option}
     )
 
     (
-      test_compiler_c_cpp --static-lib ${bits_option} "${bootstrap_option}"
-      test_compiler_c_cpp --static-lib --gc ${bits_option} "${bootstrap_option}"
-      test_compiler_c_cpp --static-lib --lto ${bits_option} "${bootstrap_option}"
-      test_compiler_c_cpp --static-lib --gc --lto ${bits_option} "${bootstrap_option}"
+      test_compiler_c_cpp --static-lib ${bits_option} ${bootstrap_option}
+      test_compiler_c_cpp --static-lib --gc ${bits_option} ${bootstrap_option}
+      test_compiler_c_cpp --static-lib --lto ${bits_option} ${bootstrap_option}
+      test_compiler_c_cpp --static-lib --gc --lto ${bits_option} ${bootstrap_option}
     )
 
     (
-      test_compiler_c_cpp --static ${bits_option} "${bootstrap_option}"
-      test_compiler_c_cpp --static --gc ${bits_option} "${bootstrap_option}"
-      test_compiler_c_cpp --static --lto ${bits_option} "${bootstrap_option}"
-      test_compiler_c_cpp --static --gc --lto ${bits_option} "${bootstrap_option}"
+      test_compiler_c_cpp --static ${bits_option} ${bootstrap_option}
+      test_compiler_c_cpp --static --gc ${bits_option} ${bootstrap_option}
+      test_compiler_c_cpp --static --lto ${bits_option} ${bootstrap_option}
+      test_compiler_c_cpp --static --gc --lto ${bits_option} ${bootstrap_option}
     )
 
     # -------------------------------------------------------------------------
