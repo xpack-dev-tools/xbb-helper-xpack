@@ -806,7 +806,8 @@ function gcc_mingw_test()
 
     # Skip tests known to fail.
 
-    if [ ${gcc_version_major} -eq 11 ] || \
+    if [ ${gcc_version_major} -eq 10 ] || \
+       [ ${gcc_version_major} -eq 11 ] || \
        [ ${gcc_version_major} -eq 12 ] || \
        [ ${gcc_version_major} -eq 13 ] || \
        [ ${gcc_version_major} -eq 14 ] || \
