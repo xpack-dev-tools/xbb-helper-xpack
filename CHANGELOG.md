@@ -2,9 +2,18 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-27
+
+* v2.1.30 released
+* 753bd17 binutils.sh: fix tests
+
 ## 2024-06-26
 
-* v2.1.29 released
+* d8705f6 2.1.29
+* 8fa5bca prepare v2.1.29
+* 440420a gcc-mingw.sh: both skips and ignores
+* 7028754 add skips for weak tests
+* fc1d6d7 gcc-mingw.sh: set path even for --static-lib
 * a5d3faa gcc-mingw.sh: improve logic to set PATH
 * 1de8ae0 gcc-mingw.sh: print libstdc++.a path
 * 78d5f6d gcc-mingw.sh: add ignores for gcc 10
