@@ -377,8 +377,16 @@ function test_compiler_c_cpp()
       fi
 
       test_case_cnrt_test
-      test_case_hello_weak1_c
-      test_case_hello_weak2_cpp
+
+      if ! test_case_skip "hello-weak1-c"
+      then
+        test_case_hello_weak1_c
+      fi
+
+      if ! test_case_skip "hello-weak2-cpp"
+      then
+        test_case_hello_weak2_cpp
+      fi
 
       # Test weak.
       (
@@ -389,16 +397,28 @@ function test_compiler_c_cpp()
 
         # Fixed with -Wl,-U,_func on macOS.
         test_case_weak_undef_c
-
         test_case_weak_defined_c
-        test_case_weak_use_c
+
         test_case_weak_override_c
-        test_case_weak_duplicate_c
         test_case_overload_new_cpp
-        test_case_unwind_weak_cpp
 
         # TODO: investigate why it fails with GCC 14 on macOS.
         test_case_unwind_strong_cpp
+
+        if ! test_case_skip "weak-use-c"
+        then
+          test_case_weak_use_c
+        fi
+
+        if ! test_case_skip "weak-duplicate-c"
+        then
+          test_case_weak_duplicate_c
+        fi
+
+        if ! test_case_skip "unwind-weak-cpp"
+        then
+          test_case_unwind_weak_cpp
+        fi
       )
 
       # Test if exceptions thrown from shared libraries are caught.
