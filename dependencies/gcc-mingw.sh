@@ -967,9 +967,8 @@ function gcc_mingw_test()
       then
         test_compiler_fortran ${bits_option} ${bootstrap_option}
       fi
-    )
 
-    (
+      # These are not fully static, they might need libwinpthread.dll.
       test_compiler_c_cpp --static-lib ${bits_option} ${bootstrap_option}
       test_compiler_c_cpp --static-lib --gc ${bits_option} ${bootstrap_option}
       test_compiler_c_cpp --static-lib --lto ${bits_option} ${bootstrap_option}
