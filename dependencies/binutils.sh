@@ -453,77 +453,107 @@ function binutils_test()
   local name_prefix="${2:-""}"
 
   (
+    if [ "${XBB_TEST_SYSTEM_TOOLS:-""}" == "y" ]
+    then
+      export AR="$(which ${name_prefix}ar)"
+      export AS="$(which ${name_prefix}as)"
+      export ELFEDIT="$(which ${name_prefix}elfedit)"
+      export GPROF="$(which ${name_prefix}gprof)"
+      export LD="$(which ${name_prefix}ld)"
+      export LD_GOLD="$(which ${name_prefix}ld.gold)"
+      export NM="$(which ${name_prefix}nm)"
+      export OBJCOPY="$(which ${name_prefix}objcopy)"
+      export OBJDUMP="$(which ${name_prefix}objdump)"
+      export RANLIB="$(which ${name_prefix}ranlib)"
+      export READELF="$(which ${name_prefix}readelf)"
+      export SIZE="$(which ${name_prefix}size)"
+      export STRINGS="$(which ${name_prefix}strings)"
+      export STRIP="$(which ${name_prefix}strip)"
+    else
+      export AR="${test_bin_path}/${name_prefix}ar"
+      export AS="${test_bin_path}/${name_prefix}as"
+      export ELFEDIT="${test_bin_path}/${name_prefix}elfedit"
+      export GPROF="${test_bin_path}/${name_prefix}gprof"
+      export LD="${test_bin_path}/${name_prefix}ld"
+      export LD_GOLD="${test_bin_path}/${name_prefix}ld.gold"
+      export NM="${test_bin_path}/${name_prefix}nm"
+      export OBJCOPY="${test_bin_path}/${name_prefix}objcopy"
+      export OBJDUMP="${test_bin_path}/${name_prefix}objdump"
+      export RANLIB="${test_bin_path}/${name_prefix}ranlib"
+      export READELF="${test_bin_path}/${name_prefix}readelf"
+      export SIZE="${test_bin_path}/${name_prefix}size"
+      export STRINGS="${test_bin_path}/${name_prefix}strings"
+      export STRIP="${test_bin_path}/${name_prefix}strip"
+    fi
+
     if [ "${XBB_BUILD_PLATFORM}" != "win32" ]
     then
       echo
       echo "Checking the ${name_prefix}binutils shared libraries..."
 
-      show_host_libs "${test_bin_path}/${name_prefix}ar"
-      show_host_libs "${test_bin_path}/${name_prefix}as"
-      show_host_libs "${test_bin_path}/${name_prefix}elfedit"
-      show_host_libs "${test_bin_path}/${name_prefix}gprof"
-      show_host_libs "${test_bin_path}/${name_prefix}ld"
-      if [ -f  "${test_bin_path}/${name_prefix}ld.gold" -o \
-           -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
+      show_host_libs "${AR}"
+      show_host_libs "${AS}"
+      show_host_libs "${ELFEDIT}"
+      show_host_libs "${GPROF}"
+      show_host_libs "${LD}"
+      if [ -f  "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
       then
         # No ld.gold on Windows.
-        show_host_libs "${test_bin_path}/${name_prefix}ld.gold"
+        show_host_libs "${LD_GOLD}"
       fi
-      show_host_libs "${test_bin_path}/${name_prefix}nm"
-      show_host_libs "${test_bin_path}/${name_prefix}objcopy"
-      show_host_libs "${test_bin_path}/${name_prefix}objdump"
-      show_host_libs "${test_bin_path}/${name_prefix}ranlib"
-      show_host_libs "${test_bin_path}/${name_prefix}readelf"
-      show_host_libs "${test_bin_path}/${name_prefix}size"
-      show_host_libs "${test_bin_path}/${name_prefix}strings"
-      show_host_libs "${test_bin_path}/${name_prefix}strip"
+      show_host_libs "${NM}"
+      show_host_libs "${OBJCOPY}"
+      show_host_libs "${OBJDUMP}"
+      show_host_libs "${RANLIB}"
+      show_host_libs "${READELF}"
+      show_host_libs "${SIZE}"
+      show_host_libs "${STRINGS}"
+      show_host_libs "${STRIP}"
     fi
 
     echo
     echo "Testing if ${name_prefix}binutils start properly..."
 
-    run_host_app_verbose "${test_bin_path}/${name_prefix}ar" --version
-    run_host_app_verbose "${test_bin_path}/${name_prefix}as" --version
-    run_host_app_verbose "${test_bin_path}/${name_prefix}elfedit" --version
-    run_host_app_verbose "${test_bin_path}/${name_prefix}gprof" --version
-    run_host_app_verbose "${test_bin_path}/${name_prefix}ld" --version
-    if [ -f  "${test_bin_path}/${name_prefix}ld.gold" -o \
-         -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
+    run_host_app_verbose "${AR}" --version
+    run_host_app_verbose "${AS}" --version
+    run_host_app_verbose "${ELFEDIT}" --version
+    run_host_app_verbose "${GPROF}" --version
+    run_host_app_verbose "${LD}" --version
+    if [ -f  "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
-      run_host_app_verbose "${test_bin_path}/${name_prefix}ld.gold" --version
+      run_host_app_verbose "${LD_GOLD}" --version
     fi
-    run_host_app_verbose "${test_bin_path}/${name_prefix}nm" --version
-    run_host_app_verbose "${test_bin_path}/${name_prefix}objcopy" --version
-    run_host_app_verbose "${test_bin_path}/${name_prefix}objdump" --version
-    run_host_app_verbose "${test_bin_path}/${name_prefix}ranlib" --version
-    run_host_app_verbose "${test_bin_path}/${name_prefix}readelf" --version
-    run_host_app_verbose "${test_bin_path}/${name_prefix}size" --version
-    run_host_app_verbose "${test_bin_path}/${name_prefix}strings" --version
-    run_host_app_verbose "${test_bin_path}/${name_prefix}strip" --version
+    run_host_app_verbose "${NM}" --version
+    run_host_app_verbose "${OBJCOPY}" --version
+    run_host_app_verbose "${OBJDUMP}" --version
+    run_host_app_verbose "${RANLIB}" --version
+    run_host_app_verbose "${READELF}" --version
+    run_host_app_verbose "${SIZE}" --version
+    run_host_app_verbose "${STRINGS}" --version
+    run_host_app_verbose "${STRIP}" --version
 
     echo
     echo "Testing if ${name_prefix}binutils binaries display help..."
 
-    run_host_app_verbose "${test_bin_path}/${name_prefix}ar" --help
-    run_host_app_verbose "${test_bin_path}/${name_prefix}as" --help
-    run_host_app_verbose "${test_bin_path}/${name_prefix}elfedit" --help
-    run_host_app_verbose "${test_bin_path}/${name_prefix}gprof" --help
-    run_host_app_verbose "${test_bin_path}/${name_prefix}ld" --help
-    if [ -f  "${test_bin_path}/${name_prefix}ld.gold" -o \
-         -f  "${test_bin_path}/${name_prefix}ld.gold${XBB_HOST_DOT_EXE}" ]
+    run_host_app_verbose "${AR}" --help
+    run_host_app_verbose "${AS}" --help
+    run_host_app_verbose "${ELFEDIT}" --help
+    run_host_app_verbose "${GPROF}" --help
+    run_host_app_verbose "${LD}" --help
+    if [ "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
     then
       # No ld.gold on Windows.
-      run_host_app_verbose "${test_bin_path}/${name_prefix}ld.gold" --help
+      run_host_app_verbose "${LD_GOLD}" --help
     fi
-    run_host_app_verbose "${test_bin_path}/${name_prefix}nm" --help
-    run_host_app_verbose "${test_bin_path}/${name_prefix}objcopy" --help
-    run_host_app_verbose "${test_bin_path}/${name_prefix}objdump" --help
-    run_host_app_verbose "${test_bin_path}/${name_prefix}ranlib" --help
-    run_host_app_verbose "${test_bin_path}/${name_prefix}readelf" --help
-    run_host_app_verbose "${test_bin_path}/${name_prefix}size" --help
-    run_host_app_verbose "${test_bin_path}/${name_prefix}strings" --help
-    run_host_app_verbose "${test_bin_path}/${name_prefix}strip" --help || true
+    run_host_app_verbose "${NM}" --help
+    run_host_app_verbose "${OBJCOPY}" --help
+    run_host_app_verbose "${OBJDUMP}" --help
+    run_host_app_verbose "${RANLIB}" --help
+    run_host_app_verbose "${READELF}" --help
+    run_host_app_verbose "${SIZE}" --help
+    run_host_app_verbose "${STRINGS}" --help
+    run_host_app_verbose "${STRIP}" --help || true
   )
 }
 
