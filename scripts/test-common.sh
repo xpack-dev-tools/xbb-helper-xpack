@@ -172,9 +172,9 @@ function tests_update_system_common()
   elif [[ ${image_name} == *ubuntu* ]] || [[ ${image_name} == *debian* ]] || [[ ${image_name} == *raspbian* ]]
   then
     run_verbose apt-get -qq update
-    run_verbose apt-get -qq install -y git-core curl tar gzip lsb-release binutils file
-
-    run_verbose apt-get -qq install --yes build-essential g++ libc6-dev libstdc++6
+    run_verbose apt-get -qq install --yes \
+      git-core curl tar gzip lsb-release binutils file \
+      build-essential g++ libc6-dev libstdc++6
     if [ "$(uname -m)" == "x86_64" ]
     then
       run_verbose apt-get -qq install --yes g++-multilib
@@ -182,9 +182,9 @@ function tests_update_system_common()
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
     run_verbose yum update --assumeyes --quiet
-    run_verbose yum install --assumeyes --quiet git curl tar gzip redhat-lsb-core binutils which
-
-    run_verbose yum install --assumeyes --quiet gcc-c++ glibc glibc-common glibc-static libstdc++ libstdc++-static libatomic libgfortran glibc-devel libstdc++-devel make
+    run_verbose yum install --assumeyes --quiet \
+      git curl tar gzip redhat-lsb-core binutils which \
+      gcc-c++ glibc glibc-common glibc-static libstdc++ libstdc++-static libatomic libgfortran glibc-devel libstdc++-devel make
     if [ "$(uname -m)" == "x86_64" ]
     then
       run_verbose yum install --assumeyes --quiet libgcc*i686 libstdc++*i686 glibc*i686 libatomic*i686 libgfortran*i686
@@ -192,39 +192,29 @@ function tests_update_system_common()
   elif [[ ${image_name} == *suse* ]]
   then
     run_verbose zypper --quiet --no-gpg-checks update --no-confirm
-    run_verbose zypper --quiet --no-gpg-checks install --no-confirm git-core curl tar gzip lsb-release binutils findutils util-linux
-
-    run_verbose zypper --quiet --no-gpg-checks install --no-confirm gcc-c++ glibc glibc-devel-static glibc-devel libstdc++6 make
+    run_verbose zypper --quiet --no-gpg-checks install --no-confirm \
+      git-core curl tar gzip lsb-release binutils findutils util-linux \
+      gcc-c++ glibc glibc-devel-static glibc-devel libstdc++6 make
     if [ "$(uname -m)" == "x86_64" ]
     then
       run_verbose zypper --quiet --no-gpg-checks install --no-confirm gcc-32bit gcc-c++-32bit glibc-devel-32bit glibc-devel-static-32bit
     fi
-  elif [[ ${image_name} == *manjaro* ]]
+  elif [[ ${image_name} == *archlinux* ]] || [[ ${image_name} == *manjaro* ]]
   then
-    # run_verbose pacman-mirrors -g
-    run_verbose pacman -S --noconfirm --quiet --noconfirm --sysupgrade
+    #
+    run_verbose pacman-key --init
+    run_verbose pacman-key --populate archlinux
+    run_verbose pacman --sync --noconfirm --refresh # -yy
+    # For just in case the keys get messed.
+    run_verbose pacman --sync --noconfirm archlinux-keyring
+    run_verbose pacman --sync --noconfirm --sysupgrade # -u
 
-    # Update even if up to date (-yy) & upgrade (-u).
-    # pacman -S -yy -u -q --noconfirm
-    run_verbose pacman -S --quiet --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
-
-    run_verbose pacman -S --quiet --noconfirm --noprogressbar gcc gcc-libs make
+    run_verbose pacman --sync --noconfirm --noprogressbar \
+      git curl tar gzip lsb-release binutils which \
+      gcc gcc-libs make
     if [ "$(uname -m)" == "x86_64" ]
     then
-      run_verbose pacman -S --quiet --noconfirm --noprogressbar lib32-gcc-libs
-    fi
-  elif [[ ${image_name} == *archlinux* ]]
-  then
-    run_verbose pacman -S --refresh --quiet --noconfirm --sysupgrade
-
-    # Update even if up to date (-yy) & upgrade (-u).
-    # pacman -S -yy -u -q --noconfirm
-    run_verbose pacman -S --quiet --noconfirm --noprogressbar git curl tar gzip lsb-release binutils which
-
-    run_verbose pacman -S --quiet --noconfirm --noprogressbar gcc gcc-libs make
-    if [ "$(uname -m)" == "x86_64" ]
-    then
-      run_verbose pacman -S --quiet --noconfirm --noprogressbar lib32-gcc-libs
+      run_verbose pacman --sync --quiet --noconfirm --noprogressbar lib32-gcc-libs
     fi
   fi
 
