@@ -2,9 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-06-28
+
+* v2.1.33 released
+
 ## 2024-06-27
 
-* v2.1.32 released
+* 963db64 test-common.sh: cosmetise update common
+* 064ce8f 2.1.32
+* d4fd3d5 prepare v2.1.32
 * cfab534 gcc-mingw.sh: rework path for tests
 * ffad969 2.1.31
 * bcf6690 prepare v2.1.31
