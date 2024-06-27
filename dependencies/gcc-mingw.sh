@@ -848,8 +848,8 @@ function gcc_mingw_test()
 
         # weak-use - LTO variants are functional.
         # in function `dummy': undefined reference to `func'
-        # export XBB_IGNORE_TEST_WEAK_USE_C="y"
-        # export XBB_IGNORE_TEST_GC_WEAK_USE_C="y"
+        export XBB_IGNORE_TEST_WEAK_USE_C="y"
+        export XBB_IGNORE_TEST_GC_WEAK_USE_C="y"
 
         export XBB_IGNORE_TEST_STATIC_LIB_WEAK_USE_C="y"
         export XBB_IGNORE_TEST_STATIC_LIB_GC_WEAK_USE_C="y"
