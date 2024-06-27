@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-06-27
 
-* v2.1.31 released
+* v2.1.32 released
+* cfab534 gcc-mingw.sh: rework path for tests
+* ffad969 2.1.31
+* bcf6690 prepare v2.1.31
 * b4d47a8 gc-mingw.sh: update ignores
 * 0e8b953 2.1.30
 * ef97792 prepare v2.1.30
