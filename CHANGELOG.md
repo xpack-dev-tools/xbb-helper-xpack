@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-06-27
 
-* v2.1.30 released
+* v2.1.31 released
+* b4d47a8 gc-mingw.sh: update ignores
+* 0e8b953 2.1.30
+* ef97792 prepare v2.1.30
 * 753bd17 binutils.sh: fix tests
 
 ## 2024-06-26
