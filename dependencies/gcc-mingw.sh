@@ -937,7 +937,13 @@ function gcc_mingw_test()
       # not identify files in bin.
       if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
       then
-        cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++.a | sed -e 's|:||' | sed -e 's|^|/|'))
+        libstdcpp_file_path=$(${CXX} -print-file-name=libstdc++.a)
+        if [ "${libstdcpp_file_path}" == "libstdc++.a" ]
+        then
+          echo "Cannot get libstdc++.a path"
+          exit 1
+        fi
+        cxx_lib_path=$(dirname $(echo "${libstdcpp_file_path}" | sed -e 's|:||' | sed -e 's|^|/|'))
         if [ -f "${cxx_lib_path}/libstdc++-6.dll" ]
         then
           export PATH="${cxx_lib_path}:${PATH:-}"
@@ -950,10 +956,16 @@ function gcc_mingw_test()
         fi
         echo "PATH=${PATH}"
       else
-        cxx_lib_path=$(dirname $(${CXX} -print-file-name=libstdc++.a))
+        local libstdcpp_file_path=$(run_host_app ${CXX} -print-file-name=libstdc++.a)
+        if [ "${libstdcpp_file_path}" == "libstdc++.a" ]
+        then
+          echo "Cannot get libstdc++.a path"
+          exit 1
+        fi
+        local cxx_lib_path=$(dirname $(echo ${libstdcpp_file_path} | sed -e 's|[A-Z]:||'))
         if [ -f "${cxx_lib_path}/libstdc++-6.dll" ]
         then
-          export WINEPATH="${cxx_lib_path};${WINEPATH:-}"
+          export WINEPATH="$(${REALPATH} ${cxx_lib_path});${WINEPATH:-}"
         elif [ -f "${cxx_lib_path}/../bin/libstdc++-6.dll" ]
         then
           export WINEPATH="$(${REALPATH} ${cxx_lib_path}/../bin);${WINEPATH:-}"
