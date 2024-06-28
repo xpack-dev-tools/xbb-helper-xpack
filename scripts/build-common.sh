@@ -196,6 +196,19 @@ function build_common_run()
   # Prime it early
   tests_prime_wine
 
+  if [ -f "/.dockerenv" ]
+  then
+    (
+      cd "${HOME}"
+      if [ ! -d "work" ]
+      then
+        # This is a hack, required by GCC 12, which returns lower case paths
+        # to `-print-file-name`.
+        ln -s Work work
+      fi
+    )
+  fi
+
   (
     # Isolate the build in a sub-shell, to run the tests in a clean environment.
 
