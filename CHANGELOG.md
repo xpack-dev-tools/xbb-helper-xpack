@@ -4,8 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-06-28
 
-* v2.1.34 released
-* 5445b87 gcc-mingw.sh: re-enable binutils
+* v2.1.35 released
+* b5bd96a gcc-mingw.sh: remove sed kludge
+* c397b97 build-common.sh: ln -s Work work hack
+* 663f6ae 2.1.34
+* 73fb661 prepare v2.1.34* 5445b87 gcc-mingw.sh: re-enable binutils
 * 8cc6162 gcc-mingw.sh: upper case /Work/ kludge
 * b147b4e 2.1.33
 * 2992f92 prepare v2.1.33
