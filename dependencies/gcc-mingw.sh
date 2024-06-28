@@ -97,7 +97,7 @@ function gcc_mingw_build_all_triplets()
     # Set XBB_TARGET_STRIP, _RANLIB & _OBJDUMP
     xbb_set_extra_target_env "${triplet}"
 
-#    binutils_build "${XBB_BINUTILS_VERSION}" --triplet="${triplet}" --program-prefix="${triplet}-"
+    binutils_build "${XBB_BINUTILS_VERSION}" --triplet="${triplet}" --program-prefix="${triplet}-"
 
     # Deploy the headers, they are needed by the compiler.
     mingw_build_headers --triplet="${triplet}"
@@ -961,7 +961,7 @@ function gcc_mingw_test()
           echo "Cannot get libstdc++.a path"
           exit 1
         fi
-        
+
         # For unknown reasons, upper case letters are converted to lower case,
         # thus the need to restore `/Work/`, but this is an ugly kludge.
         local cxx_lib_path=$(dirname $(echo ${libstdcpp_file_path} | sed -e 's|[a-zA-Z]:||' -e 's|/work/|/Work/|'))
