@@ -962,9 +962,7 @@ function gcc_mingw_test()
           exit 1
         fi
 
-        # For unknown reasons, upper case letters are converted to lower case,
-        # thus the need to restore `/Work/`, but this is an ugly kludge.
-        local cxx_lib_path=$(dirname $(echo ${libstdcpp_file_path} | sed -e 's|[a-zA-Z]:||' -e 's|/work/|/Work/|'))
+        local cxx_lib_path=$(dirname $(echo ${libstdcpp_file_path} | sed -e 's|[a-zA-Z]:||' ))
         if [ -f "${cxx_lib_path}/libstdc++-6.dll" ]
         then
           export WINEPATH="$(${REALPATH} ${cxx_lib_path});${WINEPATH:-}"
