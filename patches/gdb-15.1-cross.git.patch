@@ -1,24 +1,31 @@
-From c21d201d7ce8b39efffb70f1bf9e9081ac4f2c75 Mon Sep 17 00:00:00 2001
+From bb6ccc22cc37ff34063dee8d3ebd6032dca53b80 Mon Sep 17 00:00:00 2001
 From: Liviu Ionescu <ilg@livius.net>
-Date: Tue, 15 Aug 2023 23:32:34 +0300
-Subject: [PATCH] use CONFIG_PYTHON_PREFIX in python-config.py
+Date: Fri, 19 Jul 2024 20:56:46 +0300
+Subject: [PATCH] python-config.py uses CONFIG_PYTHON_PREFIX
 
+# Conflicts:
+#	gdb/python/python-config.py
 ---
- gdb/python/python-config.py | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ gdb/python/python-config.py | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
 diff --git a/gdb/python/python-config.py b/gdb/python/python-config.py
-index e89e0fd40bb..51b4c665e32 100644
+index 061eae1ac64..51b4c665e32 100644
 --- a/gdb/python/python-config.py
 +++ b/gdb/python/python-config.py
-@@ -3,6 +3,7 @@
+@@ -1,9 +1,10 @@
+ # Program to fetch python compilation parameters.
+ # Copied from python-config of the 2.7 release.
  
+-import getopt
+-import os
  import sys
- import os
++import os
 +import platform
- import getopt
++import getopt
  import sysconfig
  
+ valid_opts = ["prefix", "exec-prefix", "includes", "libs", "cflags", "ldflags", "help"]
 @@ -49,10 +50,22 @@ def to_unix_path(path):
  
  for opt in opt_flags:
@@ -61,5 +68,5 @@ index e89e0fd40bb..51b4c665e32 100644
 +        sys.stderr.write ("%s -> [%s]\n" % (opt, tmp))
 +        print (tmp)
 -- 
-2.37.1 (Apple Git-137.1)
+2.39.3 (Apple Git-146)
 
