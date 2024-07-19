@@ -53,7 +53,8 @@ function gcc_download()
   export XBB_GCC_SRC_FOLDER_NAME="gcc-${gcc_version}"
 
   local gcc_archive="${XBB_APPLICATION_GCC_ARCHIVE_NAME:-${XBB_GCC_SRC_FOLDER_NAME}.tar.xz}"
-  # https://gcc.gnu.org/ftp/gcc/releases/gcc-12.4.0/gcc-12.4.0.tar.xz
+  # https://gcc.gnu.org/ftp/gcc/releases/gcc-12.4.0/gcc-12.4.0.tar.xz <--
+  # https://gcc.gnu.org/pub/gcc/releases/gcc-11.5.0/gcc-11.5.0.tar.xz
   local gcc_url="${XBB_APPLICATION_GCC_URL:-https://gcc.gnu.org/ftp/gcc/releases/gcc-${gcc_version}/${gcc_archive}}"
 
   local gcc_patch_file_name="${XBB_GCC_PATCH_FILE_NAME:-""}"
