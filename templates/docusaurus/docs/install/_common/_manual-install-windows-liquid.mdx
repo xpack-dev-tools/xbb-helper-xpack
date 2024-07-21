@@ -1,0 +1,30 @@
+import CodeBlock from '@theme/CodeBlock';
+
+import customField from '@site/src/libs/customField';
+
+{/* ------------------------------------------------------------------------ */}
+
+### Download
+
+The Windows versions of **xPack {{ appName }}**
+are packed as `.zip` files.
+Download the latest version named like:
+
+* <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-win32-x64.zip</code>
+
+:::note
+
+In case you wonder where the suffix comes
+from, it is exactly the Node.js `process.platform` and `process.arch`.
+The `win32` part is confusing, but we have to live with it.
+
+:::
+
+### Unpack
+
+To manually install the <b>xPack {{ appName }}</b>,
+unpack the archive and move it to the
+<code>%USERPROFILE%\\AppData\\Roaming\\xPacks\\{{ appLcName }}\\xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code> folder
+(for example <code>C:\\Users\\ilg\\AppData\\Roaming\\xPacks\\{{ appLcName }}\\xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code>);
+according to Microsoft, <code>AppData\\Roaming</code> is the recommended location for
+installing user specific packages.
