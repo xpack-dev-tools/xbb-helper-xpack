@@ -65,7 +65,7 @@ then
   : # echo "ignored"
 elif [[ "$(basename "$from")" =~ .*-liquid.* ]]
 then
-  mkdir -p "$(dirname $2/\$to)"
+  mkdir -p "$(dirname $2/$to)"
 __EOF__
 
 # Note: __EOF__ is NOT quoted to allow substitutions.
