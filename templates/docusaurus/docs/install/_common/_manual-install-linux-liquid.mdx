@@ -1,0 +1,36 @@
+import CodeBlock from '@theme/CodeBlock';
+
+import customField from '@site/src/libs/customField';
+
+{/* ------------------------------------------------------------------------ */}
+
+### Download
+
+The GNU/Linux versions of **xPack {{ appName }}**
+are packed as `.tar.gz` archives.
+Download the latest version named like:
+
+* <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-linux-x64.tar.gz</code>
+* <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-linux-arm.tar.gz</code>
+* <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-linux-arm64.tar.gz</code>
+
+:::note
+
+In case you wonder where the suffix comes
+from, it is exactly the Node.js `process.platform` and `process.arch`.
+
+:::
+
+### Unpack
+
+To manually install the <b>xPack {{ appName }}</b>,
+unpack the archive and move it
+to <code>~/.local/xPacks/{{ appLcName }}/xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code>:
+
+<CodeBlock language="console"> {
+`mkdir -p ~/.local/xPacks/{{ appLcName }}
+cd ~/.local/xPacks/{{ appLcName }}
+
+tar xvf ~/Downloads/xpack-{{ appLcName }}-${ customField('upstreamVersion') }-${ customField('xpackSubversion') }-linux-x64.tar.gz
+chmod -R -w xpack-{{ appLcName }}-${ customField('upstreamVersion') }-${ customField('xpackSubversion') }`
+} </CodeBlock>
