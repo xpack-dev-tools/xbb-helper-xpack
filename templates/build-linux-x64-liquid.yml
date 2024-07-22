@@ -49,7 +49,7 @@ jobs:
   {{ platform }}-build:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
     timeout-minutes: 5760 # 4 days
-    runs-on: [self-hosted, linux, x64]
+    runs-on: [self-hosted, linux, x64, xbblix]
     container:
       image: ilegeul/ubuntu:amd64-18.04-xbb-v5.2.1
     defaults:
@@ -94,11 +94,30 @@ jobs:
           xpm install --config {{ platform }} --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
           xpm run build --config {{ platform }}
 
+  {{ platform }}-upload:
+    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} upload'
+    timeout-minutes: 5760 # 4 days
+    runs-on: [self-hosted, linux, x64, xbblix]
+    defaults:
+      run:
+        shell: bash
+    needs: [{{ platform }}-build]
+
+    steps:
+      - name: 'Show environment'
+        run: |
+          uname -a
+          lsb_release -sd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          ls -lLA
+          env | sort | grep -E '^[^ \t]+='
+
       - name: Upload platform artefacts
-        uses: actions/upload-artifact@v3 # v3 for 18.04
+        uses: actions/upload-artifact@v4
         with:
-          name: deploy-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/deploy/*
+          name: deploy-linux-x64
+          path: ${{ github.workspace }}/build/linux-x64/deploy/*
           overwrite: true
 
       - name: 'Publish pre-release'
@@ -123,12 +142,12 @@ jobs:
 
       - name: 'Rename working area'
         # For just in case absolute paths remain unprocessed.
-        run: mv -v build build-$(date -u +%Y%m%d-%H%M%S)
+        run: echo mv -v build build-$(date -u +%Y%m%d-%H%M%S)
 
   {{ platform }}-test:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: ubuntu-22.04
-    needs: [{{ platform }}-build]
+    needs: [{{ platform }}-upload]
 
     steps:
       - name: 'Show environment'

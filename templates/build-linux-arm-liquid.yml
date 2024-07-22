@@ -94,8 +94,29 @@ jobs:
           xpm install --config {{ platform }} --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
           xpm run build --config {{ platform }}
 
+  {{ platform }}-upload:
+    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} upload'
+    timeout-minutes: 2880 # 2 days
+    runs-on: [self-hosted, linux, arm, xbbla32]
+    defaults:
+      run:
+        shell: bash
+    needs: [{{ platform }}-build]
+
+    steps:
+      - name: 'Show environment'
+        run: |
+          uname -a
+          lsb_release -sd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          echo "node: $(node --version)"
+          echo "npm: $(npm --version)"
+          ls -lLA
+          env | sort | grep -E '^[^ \t]+='
+
       - name: Upload platform artefacts
-        uses: actions/upload-artifact@v3 # v3 for 18.04
+        uses: actions/upload-artifact@v4
         with:
           name: deploy-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/deploy/*
@@ -123,12 +144,12 @@ jobs:
 
       - name: 'Rename working area'
         # For just in case absolute paths remain unprocessed.
-        run: mv -v build build-$(date -u +%Y%m%d-%H%M%S)
+        run: echo mv -v build build-$(date -u +%Y%m%d-%H%M%S)
 
   {{ platform }}-test:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: [self-hosted, linux, arm, xbbla32]
-    needs: [{{ platform }}-build]
+    needs: [{{ platform }}-upload]
 
     steps:
       - name: 'Show environment'
@@ -147,7 +168,7 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3 # v3 for 18.04
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
@@ -166,7 +187,7 @@ jobs:
           args: /github/workspace/scripts/test.sh --image debian --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url pre-release
 
       - name: Upload platform tests report
-        uses: actions/upload-artifact@v3 # v3 for 18.04
+        uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
           path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
