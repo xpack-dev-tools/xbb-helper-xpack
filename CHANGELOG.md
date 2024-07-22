@@ -2,9 +2,32 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-07-22
+
+* v2.1.36 released
+* f885148 templates/docusaurus updates
+
+## 2024-07-21
+
+* 1cbf30c templates/docusaurus cleanups
+* cb7985e add docusaurus template
+* 2a68255 add gcc-11.5.0-cross.git.patch
+* 468d2e0 gcc-cross.sh: add test_compiler_c_cpp()
+
+## 2024-07-19
+
+* 4d7552d gdb-15.1 patch update
+* b3c5331 add gdb-15.1-cross.git.patch
+* cd2bf3f patches/gcc-11.5.0 update
+* c137ea4 gcc.sh: comments
+* 3c97cf1 templates/publish update
+
 ## 2024-06-28
 
-* v2.1.35 released
+* 8f7bf9f 2.1.35
+* a02c459 add templates/publish-github-pages.yml
+* 8a6cbd8 prepare v2.1.35
+* f2420ee Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
 * b5bd96a gcc-mingw.sh: remove sed kludge
 * c397b97 build-common.sh: ln -s Work work hack
 * 663f6ae 2.1.34
