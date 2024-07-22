@@ -1,11 +1,11 @@
-{% render "xpacks/@xpack-dev-tools/xbb-helper/templates/copyright-liquid.yml" %}
+{% render "xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/copyright-liquid.yml" %}
 
 {% if platforms == "all" -%}
 {% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
-name: 'Build xPack {{ XBB_APPLICATION_NAME }} darwin-x64'
+name: 'Build xPack {{ XBB_APPLICATION_NAME }} darwin-arm64'
 
 on:
   workflow_dispatch:
@@ -45,14 +45,14 @@ on:
 
 jobs:
 {% for platform in platforms -%}
-{% if platform == "darwin-x64" %}
+{% if platform == "darwin-arm64" %}
   {{ platform }}-build:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
     timeout-minutes: 2880 # 2 days
-{% if MACOS_INTEL_VERSION %}
-    runs-on: [self-hosted, macos, intel, {{ MACOS_INTEL_VERSION }}]
+{% if MACOS_ARM_VERSION %}
+    runs-on: [self-hosted, macos, apple, {{ MACOS_ARM_VERSION }}]
 {% else %}
-    runs-on: [self-hosted, macos, intel]
+    runs-on: [self-hosted, macos, apple]
 {% endif %}
     steps:
       - name: 'Show environment'
@@ -131,8 +131,8 @@ jobs:
 
   {{ platform }}-test:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    # https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md
-    runs-on: macos-12
+    # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md
+    runs-on: macos-14
     needs: [{{ platform }}-build]
 
     steps:
@@ -142,7 +142,7 @@ jobs:
           sw_vers
           ls -lA /Library/Developer/CommandLineTools/SDKs || true
           ls -lA /Applications
-          sudo xcode-select --switch /Applications/Xcode_14.2.app
+          sudo xcode-select --switch /Applications/Xcode_15.4.app
           xcode-select --print-path
           xcodebuild -version || true
           pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true

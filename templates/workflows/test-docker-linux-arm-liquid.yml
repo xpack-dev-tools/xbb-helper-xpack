@@ -1,5 +1,5 @@
 
-{% render "xpacks/@xpack-dev-tools/xbb-helper/templates/copyright-liquid.yml" %}
+{% render "xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/copyright-liquid.yml" %}
 
 {% if platforms == "all" -%}
 {% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}

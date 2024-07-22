@@ -1,22 +1,22 @@
 
-{% render "xpacks/@xpack-dev-tools/xbb-helper/templates/copyright-liquid.yml" %}
+{% render "xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/copyright-liquid.yml" %}
 
 {% if platforms == "all" -%}
 {% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
-name: 'Test xPack {{ XBB_APPLICATION_NAME }} on supported platforms'
+name: 'Test xPack {{ XBB_APPLICATION_NAME }} via xpm'
 
 on:
   workflow_dispatch:
     inputs:
-      base_url:
-        description: 'The folder part of the URL where binaries are stored'
+      package-version:
+        description: 'The semver of the npm release'
         required: false
-        default: 'release'
+        default: 'next'
       version:
-        description: 'The semver of the release'
+        description: 'The GitHub release version'
         required: false
         default: 'current'
       helper-git-ref:
@@ -29,7 +29,7 @@ jobs:
 {% case platform -%}
 {% when "linux-x64" %}
   {{ platform }}-test:
-    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
+    name: '{{ platform }} {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: ubuntu-22.04
 
     steps:
@@ -55,8 +55,11 @@ jobs:
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
-        run: bash scripts/test.sh --image github-actions-ubuntu-latest --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test'
+        uses: docker://node:lts-slim
+        with:
+          entrypoint: /bin/bash
+          args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
@@ -66,7 +69,7 @@ jobs:
           overwrite: true
 {% when "linux-arm64" %}
   {{ platform }}-test:
-    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
+    name: '{{ platform }} {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: [self-hosted, linux, arm64, xbbla]
 
     steps:
@@ -98,11 +101,11 @@ jobs:
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} docker test'
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test'
         uses: docker://node:lts-slim # Currently based on debian:12-slim
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/scripts/test.sh --image ubuntu:22.04 --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+          args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
@@ -112,7 +115,7 @@ jobs:
           overwrite: true
 {% when "linux-arm" %}
   {{ platform }}-test:
-    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
+    name: '{{ platform }} {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: [self-hosted, linux, arm, xbbla32]
 
     steps:
@@ -144,11 +147,11 @@ jobs:
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} docker test'
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm docker test'
         uses: docker://arm32v7/node:lts-slim # Currently based on debian:12-slim
         with:
           entrypoint: /bin/bash # /usr/bin/linux32
-          args: /github/workspace/scripts/test.sh --image debian --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+          args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
@@ -158,8 +161,7 @@ jobs:
           overwrite: true
 {% when "darwin-x64" %}
   {{ platform }}-test:
-    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    # https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md
+    name: '{{ platform }} {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: macos-12
 
     steps:
@@ -198,8 +200,8 @@ jobs:
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
-        run: bash scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
+        run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
@@ -209,8 +211,7 @@ jobs:
           overwrite: true
 {% when "darwin-arm64" %}
   {{ platform }}-test:
-    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md
+    name: '{{ platform }} {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: macos-14
 
     steps:
@@ -249,8 +250,8 @@ jobs:
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
-        run: bash scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
+        run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
@@ -260,7 +261,7 @@ jobs:
           overwrite: true
 {% when "win32-x64" %}
   {{ platform }}-test:
-    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
+    name: '{{ platform }} {{ XBB_APPLICATION_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: windows-2022
     defaults:
       run:
@@ -291,8 +292,8 @@ jobs:
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
-        run: bash scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url {% raw %}${{ github.event.inputs.base_url }}{% endraw %}
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
+        run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4

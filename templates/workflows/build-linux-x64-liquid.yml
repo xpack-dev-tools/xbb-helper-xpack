@@ -1,11 +1,11 @@
-{% render "xpacks/@xpack-dev-tools/xbb-helper/templates/copyright-liquid.yml" %}
+{% render "xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/copyright-liquid.yml" %}
 
 {% if platforms == "all" -%}
 {% assign platforms = "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64" -%}
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
-name: 'Build xPack {{ XBB_APPLICATION_NAME }} linux-arm'
+name: 'Build xPack {{ XBB_APPLICATION_NAME }} linux-x64'
 
 on:
   workflow_dispatch:
@@ -45,13 +45,13 @@ on:
 
 jobs:
 {% for platform in platforms -%}
-{% if platform == "linux-arm" %}
+{% if platform == "linux-x64" %}
   {{ platform }}-build:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
-    timeout-minutes: 2880 # 2 days
-    runs-on: [self-hosted, linux, arm, xbbla32]
+    timeout-minutes: 5760 # 4 days
+    runs-on: [self-hosted, linux, x64, xbblix]
     container:
-      image: ilegeul/ubuntu:arm32v7-18.04-xbb-v5.2.1
+      image: ilegeul/ubuntu:amd64-18.04-xbb-v5.2.1
     defaults:
       run:
         shell: bash
@@ -96,8 +96,8 @@ jobs:
 
   {{ platform }}-upload:
     name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} upload'
-    timeout-minutes: 2880 # 2 days
-    runs-on: [self-hosted, linux, arm, xbbla32]
+    timeout-minutes: 5760 # 4 days
+    runs-on: [self-hosted, linux, x64, xbblix]
     defaults:
       run:
         shell: bash
@@ -110,16 +110,14 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          echo "node: $(node --version)"
-          echo "npm: $(npm --version)"
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       - name: Upload platform artefacts
         uses: actions/upload-artifact@v4
         with:
-          name: deploy-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/deploy/*
+          name: deploy-linux-x64
+          path: ${{ github.workspace }}/build/linux-x64/deploy/*
           overwrite: true
 
       - name: 'Publish pre-release'
@@ -147,8 +145,8 @@ jobs:
         run: echo mv -v build build-$(date -u +%Y%m%d-%H%M%S)
 
   {{ platform }}-test:
-    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }}@{% raw %}${{ github.event.inputs.version }}{% endraw %} test'
-    runs-on: [self-hosted, linux, arm, xbbla32]
+    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
+    runs-on: ubuntu-22.04
     needs: [{{ platform }}-upload]
 
     steps:
@@ -161,12 +159,6 @@ jobs:
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
-      - name: 'Clean working area' # Mandatory for self-hosted runners.
-        run: |
-          chmod -Rf a+w * || true
-          rm -rf * .git*
-
-      # https://github.com/actions/checkout
       - name: 'Checkout project'
         uses: actions/checkout@v4
         with:
@@ -180,11 +172,8 @@ jobs:
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} docker test'
-        uses: docker://arm32v7/node:lts-slim # Currently based on debian:12-slim
-        with:
-          entrypoint: /bin/bash # /usr/bin/linux32
-          args: /github/workspace/scripts/test.sh --image debian --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url pre-release
+      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
+        run: bash scripts/test.sh --image github-actions-ubuntu-latest --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url pre-release
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
