@@ -34,7 +34,7 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-
+# set -x
 helper_folder="$(dirname "${script_folder_path}")"
 
 project_folder="$(dirname $(dirname $(dirname $(dirname "${script_folder_path}"))))"
@@ -44,12 +44,15 @@ project_folder="$(dirname $(dirname $(dirname $(dirname "${script_folder_path}")
 
 cd "${project_folder}"
 
-appName=$(grep -e "\"appName\":[[:space:]]\"" package.json | sed -e 's|^[[:space:]]*\"appName\":[[:space:]]*"||' -e 's|".*||')
-appLcName=$(grep -e "\"appLcName\":[[:space:]]\"" package.json | sed -e 's|^[[:space:]]*\"appLcName\":[[:space:]]*"||' -e 's|".*||')
-platforms=$(grep -e "\"platforms\":[[:space:]]\"" package.json | sed -e 's|^[[:space:]]*\"platforms\":[[:space:]]*"||' -e 's|".*||')
+# Use liquidjs to extract properties from package.json.
+appName="$(liquidjs --context @package.json --template '{{ xpack.properties.appName }}')"
+appLcName="$(liquidjs --context @package.json --template '{{ xpack.properties.appLcName }}')"
+platforms="$(liquidjs --context @package.json --template '{{ xpack.properties.platforms }}')"
 
-# set -x
-tmp_script_file="$(mktemp)"
+# tmp_context_file="$(mktemp) -t context"
+# echo "{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"
+
+tmp_script_file="$(mktemp) -t script"
 # Note: __EOF__ is quoted to prevent substitutions.
 cat <<'__EOF__' >"${tmp_script_file}"
 
@@ -91,6 +94,8 @@ cd "${helper_folder}/templates/docusaurus/common"
 
 find . -type f -print0 | sort -zn | \
    xargs -0 -I '{}' bash "${tmp_script_file}" '{}' "${project_folder}/website"
+
+rm -f "${tmp_script_file}"
 
 echo
 
