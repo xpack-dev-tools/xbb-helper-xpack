@@ -214,9 +214,9 @@ set -x
 
 # commands_file="${tmp_file_jekyll}"
 # commands_file="${tmp_file_scripts}"
-commands_file="${tmp_file_npmignore}"
+# commands_file="${tmp_file_npmignore}"
 
-# commands_file="${tmp_file_commit_readmes}"
+commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
