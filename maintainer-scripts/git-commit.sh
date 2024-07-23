@@ -120,7 +120,8 @@ cd "$1/.."
 echo
 echo $1
 git add scripts
-git commit -m "scripts cosmetics"
+# git commit -m "scripts cosmetics"
+git commit -m "re-generate scripts"
 
 __EOF__
 
@@ -134,6 +135,19 @@ echo
 echo $1
 git add .vscode/settings.json
 git commit -m ".vscode/settings.json ignoreWords"
+
+__EOF__
+
+# -----------------------------------------------------------------------------
+
+tmp_file_npmignore="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_npmignore}"
+cd "$1/.."
+
+echo
+echo $1
+git add .npmignore
+git commit -m ".npmignore update"
 
 __EOF__
 
@@ -186,6 +200,7 @@ git add package.json package-lock.json
 # git commit -m "package.json: rm xpack-dev-tools-build/*"
 # git commit -m "package.json: add linux32"
 git commit -m "package.json: rework generate workflows"
+# git commit -m "package.json: loglevel info"
 
 __EOF__
 
@@ -198,7 +213,10 @@ set -x
 # commands_file="${tmp_file_application}"
 
 # commands_file="${tmp_file_jekyll}"
-commands_file="${tmp_file_commit_readmes}"
+# commands_file="${tmp_file_scripts}"
+commands_file="${tmp_file_npmignore}"
+
+# commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
