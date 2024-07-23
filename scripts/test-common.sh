@@ -59,7 +59,7 @@ function tests_install_archive()
     XBB_BASE_URL=https://github.com/xpack-dev-tools/pre-releases/releases/download/test
   elif [ "${XBB_BASE_URL}" == "release" ]
   then
-    XBB_BASE_URL=https://github.com/xpack-dev-tools/${XBB_APPLICATION_LOWER_CASE_NAME}-xpack/releases/download/${XBB_RELEASE_VERSION}
+    XBB_BASE_URL=https://github.com/xpack-dev-tools/${XBB_APPLICATION_LOWER_CASE_NAME}-xpack/releases/download/v${XBB_RELEASE_VERSION}
   fi
 
   if [ "${XBB_USE_CACHED_ARCHIVE}" == "y" ] && [ -f "${tests_folder_path}/../${archive_name}" ]
