@@ -2,9 +2,21 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-07-23
+
+* v2.1.37 released
+
 ## 2024-07-22
 
-* v2.1.36 released
+* a3f0656 move to templates/workflows
+* e23ca6f patches: move all gcc here
+* a0834ce Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* 5780306 templates/build updates
+* b5c59f6 Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* 75d7c63 add gcc-12.4.0-cross.git.patch
+* 0afddf0 add gcc-11.5.0-cross-darwin.git.patch
+* b8135fb 2.1.36
+* ecfb5bc prepare v2.1.36
 * f885148 templates/docusaurus updates
 
 ## 2024-07-21
