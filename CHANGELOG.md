@@ -2,9 +2,23 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-07-24
+
+* v2.1.38 released
+* aa07b55 copyright-liquid.yml: cosmetics
+* 5565bbe publish-github-pages.yml: add copyright
+* 2bce042 generate-website-commons.sh: use liquidjs
+* db1da92 gcc-cross.sh: unset IFS
+* 64fee01 test-common.sh: fix url for releases
+
 ## 2024-07-23
 
-* v2.1.37 released
+* 862e216 git-commit.sh update
+* e516f84 templates/docusaurus add top authors.yml
+* 6130b7b templates/docusaurus: move content to common
+* cde83b3 maintainer scripts updates
+* 84376d6 2.1.37
+* 76e264e prepare v2.1.37
 
 ## 2024-07-22
 
