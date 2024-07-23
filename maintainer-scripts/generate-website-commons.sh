@@ -86,7 +86,7 @@ __EOF__
 
 # cat ${tmp_script_file}
 # exit 1
-cd "${helper_folder}/templates/docusaurus"
+cd "${helper_folder}/templates/docusaurus/common"
 # pwd
 
 find . -type f -print0 | sort -zn | \
