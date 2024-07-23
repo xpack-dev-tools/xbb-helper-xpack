@@ -956,6 +956,10 @@ function gcc_cross_test()
   local triplet="$2"
 
   (
+    # Otherwise CFLAGS is passed as a single string.
+    # TODO: investigate.
+    unset IFS
+
     CC="${test_bin_path}/${triplet}-gcc"
     CXX="${test_bin_path}/${triplet}-g++"
 
@@ -1030,12 +1034,11 @@ function gcc_cross_test()
     then
       # /Users/ilg/Work/xpack-dev-tools-build/arm-none-eabi-gcc-13.2.1-1.1/darwin-x64/application/lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/bin/ld: /Users/ilg/Work/xpack-dev-tools-build/arm-none-eabi-gcc-13.2.1-1.1/darwin-x64/application/lib/gcc/arm-none-eabi/13.2.1/../../../../arm-none-eabi/lib/libg.a(libc_a-getentropyr.o): in function `_getentropy_r':
       # (.text._getentropy_r+0x1c): undefined reference to `_getentropy'
-      # specs="-specs=rdimon.specs"
+
       export LDFLAGS="-specs=nosys.specs"
       test_compiler_c_cpp
     elif [ "${triplet}" == "aarch64-none-elf" ]
     then
-      # specs="-specs=rdimon.specs"
       export LDFLAGS="-specs=nosys.specs"
       test_compiler_c_cpp
     elif [ "${triplet}" == "riscv-none-elf" ]
@@ -1091,11 +1094,11 @@ __EOF__
     # Only compile tests, running the binaries via qemu is possible,
     # but requires a minimum startup code.
 
-    run_host_app_verbose "${CC}" hello.c -o hello-c.elf ${CFLAGS} "${LDFLAGS}" -g -v
+    run_host_app_verbose "${CC}" hello.c -o hello-c.elf ${CFLAGS} ${LDFLAGS} -g -v
     run_verbose file hello-c.elf
 
-    run_host_app_verbose "${CC}" -c hello.c -o hello.c.o ${CFLAGS} -flto ${VERBOSE}
-    run_host_app_verbose "${CC}" hello.c.o -o hello-c-lto.elf "${LDFLAGS}" ${CFLAGS} -flto ${VERBOSE}
+    run_host_app_verbose "${CC}" -c hello.c -o hello.c.o ${CFLAGS} -flto ${VERBOSE[@]}
+    run_host_app_verbose "${CC}" hello.c.o -o hello-c-lto.elf ${LDFLAGS} ${CFLAGS} -flto ${VERBOSE}
     run_verbose file hello-c-lto.elf
 
     # Note: __EOF__ is quoted to prevent substitutions here.
@@ -1126,14 +1129,14 @@ _getentropy (void *, size_t)
 }
 __EOF__
 
-    run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp.elf ${CFLAGS} "${LDFLAGS}" -g ${VERBOSE}
+    run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp.elf ${CFLAGS} ${LDFLAGS} -g ${VERBOSE}
     run_verbose file hello-cpp.elf
 
     run_host_app_verbose "${CXX}" -c hello.cpp -o hello.cpp.o ${CFLAGS} -flto
-    run_host_app_verbose "${CXX}" hello.cpp.o -o hello-cpp-lto.elf ${CFLAGS} "${LDFLAGS}" -flto ${VERBOSE}
+    run_host_app_verbose "${CXX}" hello.cpp.o -o hello-cpp-lto.elf ${CFLAGS} ${LDFLAGS} -flto ${VERBOSE}
     run_verbose file hello-cpp-lto.elf
 
-    run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp-gcov.elf ${CFLAGS}  "${LDFLAGS}" -fprofile-arcs -ftest-coverage -lgcov ${VERBOSE}
+    run_host_app_verbose "${CXX}" hello.cpp -o hello-cpp-gcov.elf ${CFLAGS}  ${LDFLAGS} -fprofile-arcs -ftest-coverage -lgcov ${VERBOSE}
     run_verbose file hello-cpp-gcov.elf
   )
 }
