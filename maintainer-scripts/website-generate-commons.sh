@@ -56,12 +56,50 @@ tmp_script_file="$(mktemp) -t script"
 # Note: __EOF__ is quoted to prevent substitutions.
 cat <<'__EOF__' >"${tmp_script_file}"
 
+# xargs stops only for exit code 255.
+function trap_handler()
+{
+  local from_file="$1"
+  shift
+  local line_number="$1"
+  shift
+  local exit_code="$1"
+  shift
+
+  echo "FAIL ${from_file} line: ${line_number} exit: ${exit_code}"
+  return 255
+}
+
 # echo $@
 
-# set -x
+do_force="n"
+if [ "$1" == "--force" ]
+then
+  do_force="y"
+  shift
+fi
+
 from=$(echo "$1" | sed -e 's|^\.\/||')
 to=$(echo "$from" | sed -e 's|-liquid||')
 # echo $from
+
+trap 'trap_handler ${from} $LINENO $?; return 255' ERR
+
+if [ "${do_force}" != "y" ]
+then
+  if [ -f "$2/$to" ]
+  then
+    echo "$2/$to already present"
+    exit 0
+  fi
+
+  if [ -d "$2/$to" ]
+  then
+    echo "$2/$to is a folder!"
+    exit 1
+  fi
+  # set -x
+fi
 
 if [ "$(basename "$from")" == ".DS_Store" ]
 then
@@ -73,7 +111,7 @@ __EOF__
 
 # Note: __EOF__ is NOT quoted to allow substitutions.
 cat <<__EOF__ >>"${tmp_script_file}"
-  echo liquidjs "@\$from" -> "\$2/\$to"
+  echo liquidjs "@\$from" '->' "\$2/\$to"
    liquidjs --context '{ "appName": "${appName}", "appLcName": "${appLcName}", "platforms": "${platforms}" }' --template "@\$from" --output "\$2/\$to" --strict-variables --strict-filters
 __EOF__
 
@@ -89,8 +127,21 @@ __EOF__
 
 # cat ${tmp_script_file}
 # exit 1
+
 cd "${helper_folder}/templates/docusaurus/common"
 # pwd
+
+echo
+echo "Common files, overriden..."
+
+find . -type f -print0 | sort -zn | \
+   xargs -0 -I '{}' bash "${tmp_script_file}" --force '{}' "${project_folder}/website"
+
+cd "${helper_folder}/templates/docusaurus/first-time"
+# pwd
+
+echo
+echo "First time versions..."
 
 find . -type f -print0 | sort -zn | \
    xargs -0 -I '{}' bash "${tmp_script_file}" '{}' "${project_folder}/website"
@@ -98,5 +149,6 @@ find . -type f -print0 | sort -zn | \
 rm -f "${tmp_script_file}"
 
 echo
+echo "Done"
 
 # -----------------------------------------------------------------------------
