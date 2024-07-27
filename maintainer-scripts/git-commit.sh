@@ -55,7 +55,7 @@ echo
 echo $1
 git add scripts/templates/body-jekyll-release-post-part-*-liquid.md
 # git add scripts/templates/body-jekyll-release-post-part-2-liquid.md
-git commit -m "body-jekyll update"
+git commit -m "templates/jekyll update"
 
 __EOF__
 
@@ -199,8 +199,9 @@ git add package.json package-lock.json
 # git commit -m "package.json: rename xbbla"
 # git commit -m "package.json: rm xpack-dev-tools-build/*"
 # git commit -m "package.json: add linux32"
-git commit -m "package.json: rework generate workflows"
+# git commit -m "package.json: rework generate workflows"
 # git commit -m "package.json: loglevel info"
+git commit -m "package.json: add actions, bump deps"
 
 __EOF__
 
@@ -216,8 +217,8 @@ set -x
 # commands_file="${tmp_file_scripts}"
 # commands_file="${tmp_file_npmignore}"
 
-commands_file="${tmp_file_commit_readmes}"
-# commands_file="${tmp_file_commit_package}"
+# commands_file="${tmp_file_commit_readmes}"
+commands_file="${tmp_file_commit_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
