@@ -12,19 +12,8 @@
  * be obtained from https://opensource.org/licenses/MIT/.
  */
 
-import clsx from 'clsx';
+import customField from '@site/src/libs/customField';
 
-export default function LinksVsForwarders({isWindows}): JSX.Element {
-  if (isWindows)
-    return (
-        <>
-          <code>.cmd</code> forwarders
-        </>
-      )
-  else
-    return (
-      <>
-        symbolic links
-      </>
-    )
+export default function getVersionMajor() {
+  return parseInt(customField('upstreamVersion').replace(/[.].*/, ''), 10);
 }

@@ -1,3 +1,6 @@
+{/* DO NOT EDIT! */}
+{/* Automatically generated from xbb-helper/templates/docusaurus/common. */}
+
 import CodeBlock from '@theme/CodeBlock';
 
 import customField from '@site/src/libs/customField';
@@ -23,11 +26,12 @@ from, it is exactly the Node.js `process.platform` and `process.arch`.
 ### Unpack
 
 To manually install the <b>xPack {{ appName }}</b>,
-unpack the archive and move it to <code>~/.local/xPacks/{{ appLcName }}/xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code>:
+unpack the archive and move it to <code>~/Library/xPacks/{{ appLcName }} }</code> folder,
+for example <code>/Users/ilg/Library/xPacks/{{ appLcName }}/xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code>:
 
 <CodeBlock language="console"> {
-`mkdir -p ~/.local/xPacks/{{ appLcName }}
-cd ~/.local/xPacks/{{ appLcName }}
+`mkdir -p ~/Library/xPacks/{{ appLcName }}
+cd ~/Library/xPacks/{{ appLcName }}
 
 tar xvf ~/Downloads/xpack-{{ appLcName }}-${ customField('upstreamVersion') }-${ customField('xpackSubversion') }-darwin-x64.tar.gz
 chmod -R -w xpack-{{ appLcName }}-${ customField('upstreamVersion') }-${ customField('xpackSubversion') }`
