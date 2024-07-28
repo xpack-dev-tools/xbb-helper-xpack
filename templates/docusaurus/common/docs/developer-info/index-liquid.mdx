@@ -26,7 +26,8 @@ This page is intended for those who want to build the
 **xPack {{ appName }}**
 binaries themselves.
 
-## The xPack Build Box
+<details>
+<summary>The xPack Build Box</summary>
 
 The build scripts in this project use the **xPack Build Box** (**XBB**)
 tools, which require the usual native development tools
@@ -47,6 +48,122 @@ these scripts are probably too complicated and therefore are not recommended
 for inexperienced users.
 
 :::
+
+</details>
+
+<details>
+<summary>xPack build configurations</summary>
+
+The xPack framework supports projects with **multiple build configurations**.
+
+Build configurations are sets of **properties**, **actions** and **dependencies**
+that apply to a specific build. Build configurations can inherit from
+other build configurations.
+
+For simple projects, the typical use case is with two configurations,
+**Debug** and **Release**.
+
+For building the xPack binary tools, there is one configuration
+for each platform:
+
+- `darwin-x64`
+- `darwin-arm64`
+- `linux-x64`
+- `win32-x64`
+- `linux-arm64`
+- `linux-arm`
+
+:::note
+
+In case you wonder where these names come
+from, they are exactly the Node.js `process.platform` and `process.arch`
+for each platform.
+
+:::
+
+The build configurations are defined in the `package.json` file, in the
+`xpack` section.
+
+{% raw %}
+```json
+{
+  "...":"...",
+  "xpack": {
+    "buildConfigurations": {
+       "...": {
+       },
+      "win32-x64": {
+        "inherit": [
+          "common-dependencies",
+          "common-actions",
+          "common-docker"
+        ],
+        "devDependencies": {
+          "@xpack-dev-tools/gcc": "13.2.0-2.1",
+          "@xpack-dev-tools/mingw-w64-gcc": "13.2.0-1.1",
+          "@xpack-dev-tools/wine": "8.0.2-1.1"
+        },
+        "properties": {
+          "dockerImage": "ilegeul/ubuntu:amd64-18.04-xbb-v5.1.1"
+        },
+        "actions": {
+          "build": "{{ properties.commandBashBuild }} --windows",
+          "build-development": "{{ properties.commandBashBuild }} --windows --develop",
+          "build-development-debug": "{{ properties.commandBashBuild }} --windows --develop --debug",
+          "build-development-tests-only": "{{ properties.commandBashBuild }} --windows --develop --tests-only"
+        }
+      }
+    }
+  }
+}
+```
+{% endraw %}
+
+To ask **xpm** to perform a specific action on a given build configuration,
+use the `--config <name>` option.
+
+For example:
+
+```sh
+xpm install --config darwin-x64
+xpm run build --config darwin-x64
+```
+
+</details>
+
+<details>
+<summary>xPack actions</summary>
+
+The xPack actions are extensions of npm scripts, i.e. named sequences
+of commands that are invoked via `xpm run <name>` to perform specific
+operations.
+together in a sub-shell .
+
+The commands are invoked in a sub-shell with an adjusted PATH,
+having the `xpacks/.bin`
+folder prepended. This ensures the locally installed tools are
+prefered to the system tools.
+
+Actions can be defined for the entire project or for a specific build
+configuration.
+
+The actions are defined in the `package.json` file, in the
+`xpack` section, at the top or inside build configurations.
+
+</details>
+
+<details>
+<summary>Visual Studio Code integration</summary>
+
+xPack actions and build configurations are supported in Visual Studio via the
+[xPack C/C++ Managed Build Tools](https://marketplace.visualstudio.com/items?itemName=ilg-vscode.xpack) extension.
+
+With this extension installed, xPack actions can be very conveniently
+invoked via a single mouse click, for example:
+
+![xPack actions](https://github.com/xpack/vscode-xpack-extension-ts/raw/master/assets/docs-images/xpack-actions.png)
+
+</details>
 
 ## Prerequisites
 
@@ -82,7 +199,8 @@ git clone \
   ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git
 ```
 
-## Get helper sources (optional, for development purposes)
+<details>
+<summary>Get helper sources (optional, for development purposes)</summary>
 
 The project has a dependency to a common **helper**, that is
 normally installed as a read-only dependency; **for development
@@ -104,6 +222,8 @@ For more details the how a writable helper can be used via
 `xpm link`, please see the
 [XBB](https://xpack.github.io/xbb/#writable-helper-scripts) documentation.
 
+</details>
+
 <OtherRepositories/>
 
 ## How to build
@@ -123,21 +243,6 @@ and, if needed, the helper, when using a writable helper:
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 ```
-
-### xPack actions
-
-The following instructions make use of xPack actions, which are a
-an extension of npm scripts, i.e. sequences of commands executed
-via `xpm run <name>` in an
-environment where the PATH is adjusted to include the current project
-dependencies.
-
-To see the commands associated with each action, see the `xpack.actions`
-definitions in the `package.json` file.
-
-The [xPack C/C++ Managed Build Tools](https://marketplace.visualstudio.com/items?itemName=ilg-vscode.xpack)
-Visual Studio Code extension
-provides convenient upport to invoke xPack actions from the VS Code.
 
 ### macOS builds
 

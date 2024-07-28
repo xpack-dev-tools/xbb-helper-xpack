@@ -30,13 +30,16 @@ To prepare the native build on { platforms[props.platform].machineName }:
 xpm install --config ${ props.platform } -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git`
 } </CodeBlock>
 
-or, with the writable helper:
+<details>
+<summary>... or, with the writable helper ...</summary>
 
 <CodeBlock language="sh"> {
 `xpm run install -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git && \\
 xpm run link-deps -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git && \\
 xpm install --config ${ props.platform } -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git`
 } </CodeBlock>
+
+</details>
 
 To run the build:
 
