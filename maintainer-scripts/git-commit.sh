@@ -195,7 +195,7 @@ git add package.json package-lock.json
 # git commit -m "package.json: minXpm 0.16.3 & @xpack-dev-tools/xbb-helper"
 # git commit -m "package.json: liquidjs --context --template"
 # git commit -m "package.json: reorder build actions"
-# git commit -m "package.json: add build-develop-debug"
+# git commit -m "package.json: add build-development-debug"
 # git commit -m "package.json: rename xbbla"
 # git commit -m "package.json: rm xpack-dev-tools-build/*"
 # git commit -m "package.json: add linux32"
