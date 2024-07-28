@@ -45,9 +45,11 @@ project_folder="$(dirname $(dirname $(dirname $(dirname "${script_folder_path}")
 cd "${project_folder}"
 
 # Use liquidjs to extract properties from package.json.
-appName="$(liquidjs --context @package.json --template '{{ xpack.properties.appName }}')"
-appLcName="$(liquidjs --context @package.json --template '{{ xpack.properties.appLcName }}')"
-platforms="$(liquidjs --context @package.json --template '{{ xpack.properties.platforms }}')"
+export appName="$(liquidjs --context @package.json --template '{{ xpack.properties.appName }}')"
+export appLcName="$(liquidjs --context @package.json --template '{{ xpack.properties.appLcName }}')"
+export platforms="$(liquidjs --context @package.json --template '{{ xpack.properties.platforms }}')"
+
+export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }"
 
 # tmp_context_file="$(mktemp) -t context"
 # echo "{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"
@@ -107,17 +109,9 @@ then
 elif [[ "$(basename "$from")" =~ .*-liquid.* ]]
 then
   mkdir -p "$(dirname $2/$to)"
-__EOF__
 
-# Note: __EOF__ is NOT quoted to allow substitutions.
-cat <<__EOF__ >>"${tmp_script_file}"
-  echo liquidjs "@\$from" '->' "\$2/\$to"
-   liquidjs --context '{ "appName": "${appName}", "appLcName": "${appLcName}", "platforms": "${platforms}" }' --template "@\$from" --output "\$2/\$to" --strict-variables --strict-filters
-__EOF__
-
-# Note: __EOF__ is quoted to prevent substitutions.
-cat <<'__EOF__' >>"${tmp_script_file}"
-
+  echo liquidjs "@$from" '->' "$2/$to"
+  liquidjs --context "${context}" --template "@$from" --output "$2/$to" --strict-variables --strict-filters
 else
   mkdir -p "$(dirname $2/$to)"
   cp -v "$from" "$2/$to"
@@ -135,7 +129,7 @@ echo
 echo "Common files, overriden..."
 
 find . -type f -print0 | sort -zn | \
-   xargs -0 -I '{}' bash "${tmp_script_file}" --force '{}' "${project_folder}/website"
+  xargs -0 -I '{}' bash "${tmp_script_file}" --force '{}' "${project_folder}/website"
 
 cd "${helper_folder}/templates/docusaurus/first-time"
 # pwd
@@ -144,9 +138,22 @@ echo
 echo "First time versions..."
 
 find . -type f -print0 | sort -zn | \
-   xargs -0 -I '{}' bash "${tmp_script_file}" '{}' "${project_folder}/website"
+  xargs -0 -I '{}' bash "${tmp_script_file}" '{}' "${project_folder}/website"
 
 rm -f "${tmp_script_file}"
+
+cd "${helper_folder}/templates/docusaurus/other"
+
+# Regenerate top README.md.
+if [ $(cat "${project_folder}/README.md" | wc -l | tr -d '[:blank:]') -lt 42 ]
+then
+  echo
+  echo liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder}/README.md"
+  liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder}/README.md" --strict-variables --strict-filters
+else
+  echo
+  echo "Top README preserved."
+fi
 
 echo
 echo "Done"
