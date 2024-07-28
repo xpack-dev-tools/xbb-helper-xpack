@@ -170,7 +170,11 @@ then
 fi
 
 # Fix RISC-V references to Install.
-sed -i.bak -e 's|.How to install the RISC-V toolchain...{{ site.baseurl }}/riscv-none-embed-gcc/install/) page.|[Install Guide](/docs/install/).|' "$2/$to"
+sed -i.bak -e 's|.How to install the RISC-V toolchain...{{ site.baseurl }}/riscv-none-embed-gcc/install/. page.|[Install Guide](/docs/install/).|' "$2/$to"
+
+sed -i.bak -e 's|separate .Install.... site.baseurl ../riscv-none-embed-gcc/install/. page.|[Install Guide](/docs/install/).|' "$2/$to"
+
+sed -i.bak -e 's|separate .Install.... site.baseurl ../dev-tools/riscv-none-elf-gcc/install/. page.|[Install Guide](/docs/install/).|' "$2/$to"
 
 # Fix other references to Install.
 sed -i.bak -e 's|.Install.... site.baseurl ../dev-tools/.*/install/)|[Install Guide](/docs/install/)|' "$2/$to"
