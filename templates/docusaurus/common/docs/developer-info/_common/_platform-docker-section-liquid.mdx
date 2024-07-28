@@ -55,10 +55,10 @@ To run the build:
 `xpm run docker-build --config ${ props.platform } -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git`
 } </CodeBlock>
 
-or, for more verbosity:
+or, for more verbosity, invoke the development build:
 
 <CodeBlock language="sh"> {
-`xpm run docker-build-develop --config ${ props.platform } -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git`
+`xpm run docker-build-development --config ${ props.platform } -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git`
 } </CodeBlock>
 
 { durations[ props.platform ] }, the output of the build script is a compressed

@@ -294,7 +294,7 @@ do
       then
         echo "Skipping real action for ${name}..."
       else
-        xpm run build-develop --config ${config} -C ${WORK}/${name}-xpack.git
+        xpm run build-development --config ${config} -C ${WORK}/${name}-xpack.git
       fi
     elif [ "$(uname)" == "Linux" ]
     then
@@ -304,9 +304,9 @@ do
 
       if [ "${do_dry_run}" == "y" ]
       then
-        echo "would run [xpm run docker-build-develop --config ${config} -C ${WORK}/${name}-xpack.git]"
+        echo "would run [xpm run docker-build-development --config ${config} -C ${WORK}/${name}-xpack.git]"
       else
-        xpm run docker-build-develop --config ${config} -C ${WORK}/${name}-xpack.git
+        xpm run docker-build-development --config ${config} -C ${WORK}/${name}-xpack.git
       fi
       xpm run docker-remove --config ${config} -C ${WORK}/${name}-xpack.git
     fi
