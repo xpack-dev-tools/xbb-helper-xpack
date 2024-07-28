@@ -1,7 +1,7 @@
 ---
 title:  The project has a new web site
 
-date:   2024-07-12 22:20:00 +0300
+date:   2024-MM-DD hh:mm:00 +0300
 
 authors: ilg-ul
 

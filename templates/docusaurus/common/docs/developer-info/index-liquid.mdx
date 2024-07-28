@@ -26,6 +26,12 @@ This page is intended for those who want to build the
 **xPack {{ appName }}**
 binaries themselves.
 
+:::note
+
+The content of this page is still work in progress and will be updated shortly.
+
+:::
+
 <details>
 <summary>The xPack Build Box</summary>
 
@@ -150,6 +156,16 @@ configuration.
 The actions are defined in the `package.json` file, in the
 `xpack` section, at the top or inside build configurations.
 
+:::tip
+
+For those who, for various reasons, can not use **xpm**, it is
+perfectly possible to manually adjust the PATH and to invoke the
+sequence of commands in order, just that it is more tedious,
+since multiple substitutions must be performed to compose the
+commands.
+
+:::
+
 </details>
 
 <details>
@@ -179,6 +195,22 @@ The project is hosted on GitHub:
 
 - https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git
 
+<details>
+<summary>Branches</summary>
+
+Apart from the unused `master` branch, there are two active branches:
+
+- `xpack`, with the latest stable version (default)
+- `xpack-develop`, with the current development version
+
+All development is done in the `xpack-develop` branch, and contributions via
+Pull Requests should be directed to this branch.
+
+When new releases are published, the `xpack-develop` branch is merged
+into `xpack`.
+
+</details>
+
 To clone the stable branch (`xpack`), run the following commands in a
 terminal (on Windows use the _Git Bash_ console):
 
@@ -188,7 +220,8 @@ git clone https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git \
   ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git
 ```
 
-For development purposes, clone the `xpack-develop` branch:
+<details>
+<summary>For development purposes, clone the `xpack-develop` branch.</summary>
 
 ```sh
 rm -rf ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git && \
@@ -199,8 +232,10 @@ git clone \
   ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git
 ```
 
+</details>
+
 <details>
-<summary>Get helper sources (optional, for development purposes)</summary>
+<summary>Get the helper sources (optional, for development purposes)</summary>
 
 The project has a dependency to a common **helper**, that is
 normally installed as a read-only dependency; **for development
@@ -238,11 +273,14 @@ Intel macOS and Apple Silicon macOS).
 git -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git pull
 ```
 
-and, if needed, the helper, when using a writable helper:
+<details>
+<summary>... and the helper (when using a writable helper) ...</summary>
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 ```
+
+</details>
 
 ### macOS builds
 
