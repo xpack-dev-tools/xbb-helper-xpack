@@ -190,12 +190,19 @@ sed -i.bak -e "s|.{{ page.upstream_commit }}..https://github.com/openocd-org/[a-
 # Fix openocd documentation autolink.
 sed -i.bak -e "s|- <https://openocd.org/doc/pdf/openocd.pdf>|- https://openocd.org/doc/pdf/openocd.pdf|" "$2/$to"
 
-# Fix openocd code.
+# Fix openocd code blocks.
 s='/```sh/{N;N;s|```sh\n~/Library/xPacks/@xpack-dev-tools/openocd/{{ page.version }}.{{ page.npm_subversion }}/.content/bin/openocd -f board/stm32f4discovery.cfg\n```|<CodeBlock language="sh"> {\n`~/Library/xPacks/@xpack-dev-tools/openocd/${ frontMatter.version }.${ frontMatter.npm_subversion }/.content/bin/openocd -f board/stm32f4discovery.cfg`\n} </CodeBlock>|;}'
 sed -i.bak -e "$s" "$2/$to"
 
 s='/```sh/{N;s|```sh\n~/Library/xPacks/@xpack-dev-tools/openocd/{{ page.version }}.{{ page.npm_subversion }}/.content/bin/openocd -f board/stm32f4discovery.cfg|<CodeBlock language="console"> {\n`% ~/Library/xPacks/@xpack-dev-tools/openocd/${ frontMatter.version }.${ frontMatter.npm_subversion }/.content/bin/openocd -f board/stm32f4discovery.cfg|;}'
 sed -i.bak -e "$s" "$2/$to"
+
+# Add 'import CodeBlock ...'.
+if grep '<CodeBlock' "$2/$to" >/dev/null
+then
+  s="/import Image from / { print; print \"import CodeBlock from '@theme/CodeBlock';\"; next }1"
+  awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+fi
 
 s='/\^Cshutdown command invoked/{N;s|\^Cshutdown command invoked\n```|^Cshutdown command invoked`\n} </CodeBlock>|;}'
 sed -i.bak -e "$s" "$2/$to"
