@@ -34,6 +34,10 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
+doForce="n"
+doForce="y"
+export doForce
+
 # set -x
 helper_folder="$(dirname "${script_folder_path}")"
 

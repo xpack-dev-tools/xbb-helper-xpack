@@ -63,7 +63,7 @@ to=$(echo "$from" | sed -e 's|-liquid||')
 # Used to enforce an exit code of 255, required by xargs.
 trap 'trap_handler ${from} $LINENO $?; return 255' ERR
 
-if [ -f "$2/$to" ]
+if [ -f "$2/$to" ] && [ "${doForce}" == "n" ]
 then
   echo "$2/$to already present"
   exit 0
@@ -104,14 +104,14 @@ sed -i.bak -e "s|  - this release ...Github All Releases.*|$s|" "$2/$to"
 # Add the yaml end tag after download_url and a custom tag for the delete.
 if grep '<Image ' "$2/$to" >/dev/null
 then
-  s="/download_url:/ { print; print \"\"; print \"---\"; print \"\"; print \"import Image from '@theme/IdealImage';\"; print \"-----\"; next }1"
+  s="/download_url:/ { print; print \"\"; print \"---\"; print \"\"; print \"import Image from '@theme/IdealImage';\"; print \"--e-n-d-\"; next }1"
 else
-  s="/download_url:/ { print; print \"\"; print \"---\"; print \"-----\"; next }1"
+  s="/download_url:/ { print; print \"\"; print \"---\"; print \"--e-n-d-\"; next }1"
 fi
 awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
 # Remove extra frontmatter properties.
-sed -i.bak -e '/^-----$/,/^---$/d' "$2/$to"
+sed -i.bak -e '/^--e-n-d-$/,/^---$/d' "$2/$to"
 
 # Add summary to post body.
 if [ ! -z "${summary}" ]
@@ -143,23 +143,23 @@ awk '/{% include note.html content="TUI is not available on Windows." %}/ { prin
 awk '/{% include note.html content="Due to memory limitations during the build, there is no Arm 32-bit image." %}/ { print ":::note"; print ""; print "Due to memory limitations during the build, there is no Arm 32-bit image."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
 # Remove from Easy install to Compliance.
-if grep '### Easy install' "$2/$to" >/dev/null
+if grep '### Easy install' "$2/$to" >/dev/null && grep '## Compliance' "$2/$to" >/dev/null
 then
-  awk '/## Compliance/ {print "-----"; print; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+  awk '/## Compliance/ {print "--e-n-d-"; print; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
-  sed -i.bak -e '/^### Easy install$/,/^-----$/d' "$2/$to"
+  sed -i.bak -e '/^### Easy install$/,/^--e-n-d-$/d' "$2/$to"
 fi
 
 # Remove from ## Shared libraries to ## Documentation.
-if grep '## Shared libraries' "$2/$to" >/dev/null
+if grep '## Shared libraries' "$2/$to" >/dev/null && grep '## Documentation' "$2/$to" >/dev/null
 then
-  awk '/## Documentation/ { print "-----"; print; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+  awk '/## Documentation/ { print "--e-n-d-"; print; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
-  sed -i.bak -e '/^## Shared libraries$/,/^-----$/d' "$2/$to"
+  sed -i.bak -e '/^## Shared libraries$/,/^--e-n-d-$/d' "$2/$to"
 fi
 
 # Change link to GitHub Releases to html to allow variables.
-sed -i.bak -e 's|GitHub .Releases.... page.download_url ...|<a href={ frontMatter.download_url }>GitHub Releases</a>|' "$2/$to"
+sed -i.bak -e 's|\[GitHub Releases\]... page.download_url ...|<a href={ frontMatter.download_url }>GitHub Releases</a>|' "$2/$to"
 
 # Change link to binary files to html to allow variables.
 if grep -e 'Binary files .* page.download_url' "$2/$to" >/dev/null
@@ -170,14 +170,15 @@ then
 fi
 
 # Fix RISC-V references to Install.
-sed -i.bak -e 's|.How to install the RISC-V toolchain...{{ site.baseurl }}/riscv-none-embed-gcc/install/. page.|[Install Guide](/docs/install/).|' "$2/$to"
+sed -i.bak -e 's|the separate \[How to install the RISC-V toolchain\?\].{{ site.baseurl }}/riscv-none-embed-gcc/install/. page.|the project [README](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack).|' "$2/$to"
 
-sed -i.bak -e 's|separate .Install.... site.baseurl ../riscv-none-embed-gcc/install/. page.|[Install Guide](/docs/install/).|' "$2/$to"
+sed -i.bak -e 's|separate .Install.... site.baseurl ../riscv-none-embed-gcc/install/. page.|project [README](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack).|' "$2/$to"
 
 sed -i.bak -e 's|separate .Install.... site.baseurl ../dev-tools/riscv-none-elf-gcc/install/. page.|[Install Guide](/docs/install/).|' "$2/$to"
 
 # Fix other references to Install.
-sed -i.bak -e 's|.Install.... site.baseurl ../dev-tools/.*/install/)|[Install Guide](/docs/install/)|' "$2/$to"
+sed -i.bak -e 's|separate \[.*\]... site.baseurl ../dev-tools/.*/install/) page|[Install Guide](/docs/install/)|' "$2/$to"
+sed -i.bak -e 's|\[.*\]... site.baseurl ../dev-tools/.*/install/)|[Install Guide](/docs/install/)|' "$2/$to"
 
 # Fix references to README-BUILD.md.
 s="[Maintainer Info](/docs/maintainer-info/)"
@@ -189,11 +190,27 @@ sed -i.bak -e "s|.{{ page.upstream_commit }}..https://github.com/openocd-org/[a-
 # Fix openocd documentation autolink.
 sed -i.bak -e "s|- <https://openocd.org/doc/pdf/openocd.pdf>|- https://openocd.org/doc/pdf/openocd.pdf|" "$2/$to"
 
+# Fix openocd code.
 s='/```sh/{N;N;s|```sh\n~/Library/xPacks/@xpack-dev-tools/openocd/{{ page.version }}.{{ page.npm_subversion }}/.content/bin/openocd -f board/stm32f4discovery.cfg\n```|<CodeBlock language="sh"> {\n`~/Library/xPacks/@xpack-dev-tools/openocd/${ frontMatter.version }.${ frontMatter.npm_subversion }/.content/bin/openocd -f board/stm32f4discovery.cfg`\n} </CodeBlock>|;}'
 sed -i.bak -e "$s" "$2/$to"
 
+s='/```sh/{N;s|```sh\n~/Library/xPacks/@xpack-dev-tools/openocd/{{ page.version }}.{{ page.npm_subversion }}/.content/bin/openocd -f board/stm32f4discovery.cfg|<CodeBlock language="console"> {\n`% ~/Library/xPacks/@xpack-dev-tools/openocd/${ frontMatter.version }.${ frontMatter.npm_subversion }/.content/bin/openocd -f board/stm32f4discovery.cfg|;}'
+sed -i.bak -e "$s" "$2/$to"
+
+s='/\^Cshutdown command invoked/{N;s|\^Cshutdown command invoked\n```|^Cshutdown command invoked`\n} </CodeBlock>|;}'
+sed -i.bak -e "$s" "$2/$to"
+
+# Preserve Eclipse variable syntax.
+sed -i.bak -e 's|update the \`${openocd_path}\` variable|update the `$\\{openocd_path\\}` variable|' "$2/$to"
+
+# Fix project web path
+sed -i.bak -e 's|https://xpack.github.io/dev-tools/\([a-z-]*\)/|https://xpack-dev-tools.github.io/\1-xpack|' "$2/$to"
+
 # Replace `page.` with `frontMatter.` when using variables.
 sed -i.bak -e 's|{{ page[.]\([a-z_]*\) }}|{ frontMatter.\1 }|g' "$2/$to"
+
+# Fix local images url.
+sed -i.bak -e 's|{{ site.baseurl }}/assets/images|/img|g' "$2/$to"
 
 # Remove the `site.baseurl` from links.
 sed -i.bak -e 's|{{ site.baseurl }}||g' "$2/$to"
