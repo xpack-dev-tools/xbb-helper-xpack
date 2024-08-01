@@ -191,9 +191,9 @@ All actions are defined as **xPack actions** and can be conveniently
 triggered via the VS Code graphical interface, using the
 [xPack extension](https://marketplace.visualstudio.com/items?itemName=ilg-vscode.xpack).
 
-#### x86_64 macOS
+#### x64 macOS
 
-For x86_64 macOS, first run the build on the development machine
+For x64 macOS, first run the build on the development machine
 (`wksi`, a recent macOS):
 
 ```sh
@@ -285,7 +285,7 @@ archive and its SHA signature, created in the `deploy` folder:
 * <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-darwin-arm64.tar.gz</code>
 * <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-darwin-arm64.tar.gz.sha</code>
 
-#### x86_64 GNU/Linux
+#### x64 GNU/Linux
 
 Run the docker build on the production machine (`xbbli`);
 start a VS Code remote session, or connect with a terminal:
@@ -294,7 +294,7 @@ start a VS Code remote session, or connect with a terminal:
 caffeinate ssh xbbli
 ```
 
-##### Build the x86_64 GNU/Linux binaries
+##### Build the x64 GNU/Linux binaries
 
 Update the build scripts (or clone them at the first use):
 
@@ -318,7 +318,7 @@ archive and its SHA signature, created in the `deploy` folder:
 * <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-linux-x64.tar.gz</code>
 * <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-linux-x64.tar.gz.sha</code>
 
-##### Build the x86_64 Windows binaries
+##### Build the x64 Windows binaries
 
 Clean the build folder and prepare the docker container:
 
