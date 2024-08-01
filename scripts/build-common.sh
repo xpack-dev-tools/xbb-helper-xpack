@@ -348,6 +348,8 @@ function build_common_run()
 
       run_verbose ls -l "${XBB_DEPLOY_FOLDER_PATH}"
 
+      run_verbose tree -L 2 "${XBB_DEPLOY_FOLDER_PATH}" || true
+
     ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/post-lists-output-$(ndate).txt"
   fi
 
