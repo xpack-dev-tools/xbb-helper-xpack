@@ -11,6 +11,7 @@ ci/
 docs/
 # tests*/
 example/
+templates/
 
 .clang-*
 .cmake-format
