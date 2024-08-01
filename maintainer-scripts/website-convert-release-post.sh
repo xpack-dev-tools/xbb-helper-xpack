@@ -142,6 +142,9 @@ awk '/{% include note.html content="TUI is not available on Windows." %}/ { prin
 # Convert admonition.
 awk '/{% include note.html content="Due to memory limitations during the build, there is no Arm 32-bit image." %}/ { print ":::note"; print ""; print "Due to memory limitations during the build, there is no Arm 32-bit image."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
+# Convert ninja-build admonition.
+awk '/{% include note.html content="For consistency with the Node.js naming/ { print ":::note"; print ""; print "For consistency with the Node.js naming conventions, the names of the Intel 32-bit images are now suffixed with `-ia32`."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+
 # Remove from Easy install to Compliance.
 if grep '### Easy install' "$2/$to" >/dev/null && grep '## Compliance' "$2/$to" >/dev/null
 then

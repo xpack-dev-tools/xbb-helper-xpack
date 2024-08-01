@@ -51,7 +51,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
-          path: xpacks/@xpack-dev-tools/xbb-helper
+          path: {{ prefix }}/xpacks/@xpack-dev-tools/xbb-helper
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
@@ -59,13 +59,13 @@ jobs:
         uses: docker://node:lts-slim
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+          args: /github/workspace/{{ prefix }}/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
 {% when "linux-arm64" %}
   {{ platform }}-test:
@@ -97,7 +97,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
-          path: xpacks/@xpack-dev-tools/xbb-helper
+          path: {{ prefix }}/xpacks/@xpack-dev-tools/xbb-helper
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
@@ -105,13 +105,13 @@ jobs:
         uses: docker://node:lts-slim # Currently based on debian:12-slim
         with:
           entrypoint: /bin/bash
-          args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+          args: /github/workspace/{{ prefix }}/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
 {% when "linux-arm" %}
   {{ platform }}-test:
@@ -143,7 +143,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
-          path: xpacks/@xpack-dev-tools/xbb-helper
+          path: {{ prefix }}/xpacks/@xpack-dev-tools/xbb-helper
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
@@ -151,13 +151,13 @@ jobs:
         uses: docker://arm32v7/node:lts-slim # Currently based on debian:12-slim
         with:
           entrypoint: /bin/bash # /usr/bin/linux32
-          args: /github/workspace/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+          args: /github/workspace/{{ prefix }}/scripts/test.sh --image debian --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
 {% when "darwin-x64" %}
   {{ platform }}-test:
@@ -196,18 +196,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
-          path: xpacks/@xpack-dev-tools/xbb-helper
+          path: {{ prefix }}/xpacks/@xpack-dev-tools/xbb-helper
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
-        run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+        run: bash {{ prefix }}/scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
 {% when "darwin-arm64" %}
   {{ platform }}-test:
@@ -246,18 +246,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
-          path: xpacks/@xpack-dev-tools/xbb-helper
+          path: {{ prefix }}/xpacks/@xpack-dev-tools/xbb-helper
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
-        run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+        run: bash {{ prefix }}/scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
 {% when "win32-x64" %}
   {{ platform }}-test:
@@ -288,18 +288,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
-          path: xpacks/@xpack-dev-tools/xbb-helper
+          path: {{ prefix }}/xpacks/@xpack-dev-tools/xbb-helper
           ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
           fetch-depth: 3
 
       - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} xpm test'
-        run: bash scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
+        run: bash {{ prefix }}/scripts/test.sh --package-version {% raw %}${{ github.event.inputs.package-version }}{% endraw %} --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --xpm
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/build/{{ platform }}/artefacts/tests-report-*.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/build/{{ platform }}/artefacts/tests-report-*.md
           overwrite: true
 {% endcase -%}
 {% endfor %}
@@ -312,31 +312,31 @@ jobs:
       - name: Download platform test reports
         uses: actions/download-artifact@v4
         with:
-          path: {% raw %}${{ github.workspace }}{% endraw %}/artefacts
+          path: {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts
           merge-multiple: true
 
       - name: Concatenate platform test reports
         run: |
-          ls -lR {% raw %}${{ github.workspace }}{% endraw %}/artefacts
-          touch {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-          echo "---" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-          echo "title: {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test results" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-          echo "permalink: /dev-tools/{{ XBB_APPLICATION_LOWER_CASE_NAME }}/tests/{% raw %}${{ github.event.inputs.version }}{% endraw %}/" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-          echo "comments: true" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-          echo "date: $(date "+%Y-%m-%d %H:%M:%S %z")" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-          echo "---" >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-          echo >>{% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md
-          (cd {% raw %}${{ github.workspace }}{% endraw %}; cat -s {% for platform in platforms %}artefacts/tests-report-{{ platform }}.md {% endfor %} | tee -a artefacts/tests-report.md)
-          mv -v {% raw %}${{ github.workspace }}{% endraw %}/artefacts/tests-report.md {% raw %}${{ github.workspace }}{% endraw %}/artefacts/{% raw %}${{ github.event.inputs.version }}{% endraw %}.md
+          ls -lR {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts
+          touch {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
+          echo "---" >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
+          echo "title: {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test results" >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
+          echo "permalink: /dev-tools/{{ XBB_APPLICATION_LOWER_CASE_NAME }}/tests/{% raw %}${{ github.event.inputs.version }}{% endraw %}/" >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
+          echo "comments: true" >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
+          echo "date: $(date "+%Y-%m-%d %H:%M:%S %z")" >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
+          echo "---" >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
+          echo >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
+          (cd {% raw %}${{ github.workspace }}{% endraw %}; cat -s {% for platform in platforms %}artefacts/tests-report-{{ platform }}.md {% endfor %} | tee -a {{ prefix }}/artefacts/tests-report.md)
+          mv -v {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/{% raw %}${{ github.event.inputs.version }}{% endraw %}.md
 
       - name: Upload tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report
-          path: {% raw %}${{ github.workspace }}{% endraw %}/artefacts/{% raw %}${{ github.event.inputs.version }}{% endraw %}.md
+          path: {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/{% raw %}${{ github.event.inputs.version }}{% endraw %}.md
           overwrite: true
 
 # -----------------------------------------------------------------------------

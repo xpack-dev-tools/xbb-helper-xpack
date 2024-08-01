@@ -41,14 +41,21 @@ export doForce
 # set -x
 helper_folder="$(dirname "${script_folder_path}")"
 
-project_folder="$(dirname $(dirname $(dirname $(dirname "${script_folder_path}"))))"
+# This is the folder where the build is started (build-assets).
+root_folder="$(dirname $(dirname $(dirname $(dirname "${script_folder_path}"))))"
+if [ "$(basename "${root_folder}")" == "build-assets" ]
+then
+  project_folder="$(dirname "${root_folder}")"
+else
+  project_folder="${root_folder}"
+fi
 
 xpack_www_releases="$(dirname $(dirname $(dirname "${project_folder}")))/xpack.github/www/web-jekyll-xpack.git/_posts/releases"
 
 # which liquidjs
 # liquidjs --help
 
-cd "${project_folder}"
+cd "${root_folder}"
 
 # Use liquidjs to extract properties from package.json.
 export appName="$(liquidjs --context @package.json --template '{{ xpack.properties.appName }}')"

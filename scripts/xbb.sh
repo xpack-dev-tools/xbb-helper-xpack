@@ -19,28 +19,28 @@ function xbb_make_writable()
     (
       set +o errexit # Do not exit if command fails
 
-      if [ -d "${project_folder_path}/build" ]
+      if [ -d "${root_folder_path}/build" ]
       then
         echo
         echo "Make the build folder writable by all..."
 
-        run_verbose chmod -R a+w "${project_folder_path}/build"
+        run_verbose chmod -R a+w "${root_folder_path}/build"
       fi
 
 
-      if [ -d "${project_folder_path}/xpacks" ]
+      if [ -d "${root_folder_path}/xpacks" ]
       then
         echo
         echo "Make the xpacks folder writable by all..."
 
-        run_verbose find "${project_folder_path}/xpacks" -type d -exec chmod a+w '{}' ';'
+        run_verbose find "${root_folder_path}/xpacks" -type d -exec chmod a+w '{}' ';'
 
         # Non-recursive! (Recursive fails with exit code 2)
-        # run_verbose chmod a+w "${project_folder_path}/xpacks"
+        # run_verbose chmod a+w "${root_folder_path}/xpacks"
 
-        # if [ -d "${project_folder_path}/xpacks/.bin" ]
+        # if [ -d "${root_folder_path}/xpacks/.bin" ]
         # then
-        #   run_verbose chmod a+w "${project_folder_path}/xpacks/.bin"
+        #   run_verbose chmod a+w "${root_folder_path}/xpacks/.bin"
         # fi
       fi
     )
@@ -104,10 +104,10 @@ function xbb_reset_env()
   elif [ ! -z "${XBB_REQUESTED_BUILD_RELATIVE_FOLDER:-}" ]
   then
     # If the user provides an explicit relative folder, use it.
-    XBB_TARGET_WORK_FOLDER_PATH="${project_folder_path}/${XBB_REQUESTED_BUILD_RELATIVE_FOLDER}"
+    XBB_TARGET_WORK_FOLDER_PATH="${root_folder_path}/${XBB_REQUESTED_BUILD_RELATIVE_FOLDER}"
   else
     # The default is inside the project build folder.
-    XBB_TARGET_WORK_FOLDER_PATH="${project_folder_path}/build/${XBB_TARGET_FOLDER_NAME}"
+    XBB_TARGET_WORK_FOLDER_PATH="${root_folder_path}/build/${XBB_TARGET_FOLDER_NAME}"
   fi
   XBB_BUILD_GIT_PATH="${project_folder_path}"
 
@@ -742,7 +742,7 @@ function xbb_prepare_gcc_env()
   local with_lto="n"
   if [ $# -ge 1 ]
   then
-    if [ "${1}" == "--lto" ]
+    if [ "$1" == "--lto" ]
     then
       with_lto="y"
       shift
@@ -1330,7 +1330,7 @@ function xbb_activate_dependencies_dev()
 
   if [ $# -gt 0 ]
   then
-    priority_path="${1}"
+    priority_path="$1"
     shift
   fi
 
@@ -1435,7 +1435,7 @@ function xbb_get_toolchain_library_path()
      [ "${XBB_BUILD_PLATFORM}" == "darwin" ]
   then
 
-    if [[ "$(basename ${1})" =~ .*clang.* ]] # Must be the first!
+    if [[ "$(basename $1)" =~ .*clang.* ]] # Must be the first!
     then
       if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
       then
@@ -1485,14 +1485,14 @@ function xbb_get_toolchain_library_path()
         echo "Unsupported XBB_BUILD_PLATFORM=${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
         exit 1
       fi
-    elif [[ "$(basename ${1})" =~ .*g[c+][c+].* ]]
+    elif [[ "$(basename $1)" =~ .*g[c+][c+].* ]]
     then
       # On macOS all libraries are in lib.
       # On Linux x64 they are in lib64/lib32
       # On Linux arm64/arm they are in lib.
       local libstdcpp_path="$("$@" -print-file-name=libstdc++.a)"
       libs_path="$(dirname $("${REALPATH}" -m "${libstdcpp_path}"))"
-    elif [[ "$(basename ${1})" =~ .*gfortran.* ]]
+    elif [[ "$(basename $1)" =~ .*gfortran.* ]]
     then
       # On macOS all libraries are in lib.
       # On Linux x64 they are in lib64/lib32
@@ -1500,7 +1500,7 @@ function xbb_get_toolchain_library_path()
       local libstdcpp_path="$("$@" -print-file-name=libgfortran.a)"
       libs_path="$(dirname $("${REALPATH}" -m "${libstdcpp_path}"))"
     else
-      echo "TODO: compute library path for ${1}"
+      echo "TODO: compute library path for $1"
       exit 1
     fi
   fi
@@ -1519,7 +1519,7 @@ function xbb_adjust_ldflags_rpath()
   local priority_path
   if [ $# -gt 0 ]
   then
-    priority_path="${1}"
+    priority_path="$1"
 
     # Insert the priority path at the beginning.
     path="${priority_path}:${path}"
@@ -1565,7 +1565,7 @@ function xbb_expand_linker_rpaths()
 
   while [ $# -gt 0 ]
   do
-    path+=":${1}"
+    path+=":$1"
     shift
   done
 
@@ -1610,7 +1610,7 @@ function xbb_expand_linker_library_paths()
 
   while [ $# -gt 0 ]
   do
-    path+=":${1}"
+    path+=":$1"
     shift
   done
 
@@ -1650,7 +1650,22 @@ function xbb_expand_linker_library_paths()
 # STDOUT!
 function xbb_get_current_package_version()
 {
-  local package_file_path="${1:-"${project_folder_path}/package.json"}"
+  local package_file_path
+  if [ $# -ge 1 ]
+  then
+    package_file_path="$1"
+  else
+    if [ -f "${root_folder_path}/package.json" ]
+    then
+      package_file_path="${root_folder_path}/package.json"
+    elif [ -f "${project_folder_path}/package.json" ]
+    then
+      package_file_path="${project_folder_path}/package.json"
+    else
+      echo "No package.json in ${FUNCNAME[0]}()"
+      exit 1
+    fi
+  fi
 
   # Extract only the first line
   grep '"version":' "${package_file_path}" | sed -e 's|.*"version": "\(.*\)".*|\1|'
@@ -1659,7 +1674,22 @@ function xbb_get_current_package_version()
 # STDOUT!
 function xbb_get_current_helper_version()
 {
-  local package_file_path="${1:-"${project_folder_path}/package.json"}"
+  local package_file_path
+  if [ $# -ge 1 ]
+  then
+    package_file_path="$1"
+  else
+    if [ -f "${root_folder_path}/package.json" ]
+    then
+      package_file_path="${root_folder_path}/package.json"
+    elif [ -f "${project_folder_path}/package.json" ]
+    then
+      package_file_path="${project_folder_path}/package.json"
+    else
+      echo "No package.json in ${FUNCNAME[0]}()"
+      exit 1
+    fi
+  fi
 
   # Extract the semver.
   grep '"@xpack-dev-tools/xbb-helper": "' "${package_file_path}" | sed -e 's|.*"\^\([0-9.]*\).*|\1|'

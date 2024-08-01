@@ -41,8 +41,14 @@ script_folder_name="$(basename "${script_folder_path}")"
 # =============================================================================
 
 helper_folder_path="$(dirname ${script_folder_path})"
-project_folder_path="$(dirname $(dirname $(dirname "${helper_folder_path}")))"
-scripts_folder_path="${project_folder_path}/scripts"
+root_folder_path="$(dirname $(dirname $(dirname "${helper_folder_path}")))"
+if [ "$(basename "${root_folder}")" == "build-assets" ]
+then
+  project_folder_path="$(dirname "${root_folder_path}")"
+else
+  project_folder_path="${root_folder_path}"
+fi
+scripts_folder_path="${root_folder_path}/scripts"
 
 # -----------------------------------------------------------------------------
 
