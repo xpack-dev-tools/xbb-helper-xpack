@@ -56,8 +56,8 @@ source "${scripts_folder_path}/application.sh"
 
 # Helper functions
 source "${helper_folder_path}/github-actions/common.sh"
-source "${helper_folder_path}/scripts/xbb.sh"
-source "${helper_folder_path}/scripts/wrappers.sh"
+source "${helper_folder_path}/build-scripts/xbb.sh"
+source "${helper_folder_path}/build-scripts/wrappers.sh"
 
 # -----------------------------------------------------------------------------
 

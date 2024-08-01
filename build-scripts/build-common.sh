@@ -11,16 +11,16 @@
 # -----------------------------------------------------------------------------
 # Included by the application `scripts/build.sh`.
 
-source "${helper_folder_path}/scripts/timer.sh"
-source "${helper_folder_path}/scripts/machine.sh"
-source "${helper_folder_path}/scripts/is-something.sh"
-source "${helper_folder_path}/scripts/wrappers.sh"
-source "${helper_folder_path}/scripts/xbb.sh"
-source "${helper_folder_path}/scripts/build-tests.sh"
-source "${helper_folder_path}/scripts/download.sh"
-source "${helper_folder_path}/scripts/post-processing.sh"
-source "${helper_folder_path}/scripts/show-libs.sh"
-source "${helper_folder_path}/scripts/miscellaneous.sh"
+source "${helper_folder_path}/build-scripts/timer.sh"
+source "${helper_folder_path}/build-scripts/machine.sh"
+source "${helper_folder_path}/build-scripts/is-something.sh"
+source "${helper_folder_path}/build-scripts/wrappers.sh"
+source "${helper_folder_path}/build-scripts/xbb.sh"
+source "${helper_folder_path}/build-scripts/build-tests.sh"
+source "${helper_folder_path}/build-scripts/download.sh"
+source "${helper_folder_path}/build-scripts/post-processing.sh"
+source "${helper_folder_path}/build-scripts/show-libs.sh"
+source "${helper_folder_path}/build-scripts/miscellaneous.sh"
 
 # -----------------------------------------------------------------------------
 
