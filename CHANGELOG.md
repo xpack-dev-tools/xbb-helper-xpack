@@ -4,7 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-08-02
 
-* v3.0.0 released
+* v3.0.1 released
+* 27adf3d template/docusaurus: update config.ts logic for package.json
+* bba4a4d templates/docusaurus updates
+* 901240c 3.0.0
+* 6aef52b package.json cleanups
+* 04fb04d CHANGELOG update
 * a554075 build-scripts: fix case syntax
 * 6e31c88 is-something.sh: fix is_development
 * d90c3a6 post-processing.sh: use root_folder_path
