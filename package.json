@@ -4,9 +4,7 @@
   "description": "A source xPack with scripts and other files to support XBB builds",
   "main": "",
   "scripts": {
-    "postversion": "git push origin --all && git push origin --tags",
-    "postinstall": "ln -s build-scripts scripts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postversion": "git push origin --all && git push origin --tags"
   },
   "repository": {
     "type": "git",
