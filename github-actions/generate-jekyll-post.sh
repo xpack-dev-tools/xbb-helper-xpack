@@ -42,11 +42,13 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 helper_folder_path="$(dirname ${script_folder_path})"
 root_folder_path="$(dirname $(dirname $(dirname "${helper_folder_path}")))"
-if [ "$(basename "${root_folder}")" == "build-assets" ]
+if [ "$(basename "${root_folder_path}")" == "build-assets" ]
 then
   project_folder_path="$(dirname "${root_folder_path}")"
+  website_blog_path="${project_folder_path}/website/blog"
 else
   project_folder_path="${root_folder_path}"
+  website_blog_path="${HOME}/Desktop"
 fi
 scripts_folder_path="${root_folder_path}/scripts"
 
@@ -66,10 +68,11 @@ source "${helper_folder_path}/build-scripts/wrappers.sh"
 # -----------------------------------------------------------------------------
 
 echo
-echo "Generating the ${XBB_APPLICATION_DESCRIPTION} release Jekyll post page..."
+echo "Generating the ${XBB_APPLICATION_DESCRIPTION} blog release page..."
 
 # -----------------------------------------------------------------------------
 
+set -x
 destination_folder_path="${HOME}/Downloads/xpack-binaries/${XBB_APPLICATION_LOWER_CASE_NAME}"
 
 download_binaries "${destination_folder_path}"
@@ -82,7 +85,7 @@ cat "${destination_folder_path}"/*.sha
 
 version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 release_date="$(date '+%Y-%m-%d %H:%M:%S %z')"
-post_file_path="${HOME}/Desktop/$(date -u '+%Y-%m-%d')-${XBB_APPLICATION_LOWER_CASE_NAME}-v$(echo ${version} | tr '.' '-')-released.md"
+post_file_path="${website_blog_path}/$(date -u '+%Y-%m-%d')-${XBB_APPLICATION_LOWER_CASE_NAME}-v$(echo ${version} | tr '.' '-')-released.md"
 echo
 echo "Move '${post_file_path}' to the Jekyll _posts/releases/${XBB_APPLICATION_LOWER_CASE_NAME} folder."
 
