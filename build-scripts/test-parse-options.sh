@@ -52,8 +52,7 @@ function tests_parse_options()
         exit 0
         ;;
 
-      --develop )
-      --development )
+      --develop | --development )
         XBB_IS_DEVELOPMENT="y"
         XBB_OUTPUT_FILE_NAME+="-develop"
         shift

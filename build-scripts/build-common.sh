@@ -78,8 +78,7 @@ function build_common_parse_options()
         shift
         ;;
 
-      --develop )
-      --development )
+      --develop | --development )
         XBB_IS_DEVELOPMENT="y"
         shift
         ;;
