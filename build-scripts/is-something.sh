@@ -306,7 +306,7 @@ function is_mingw_clang()
 
 # -----------------------------------------------------------------------------
 
-function is_developmentment()
+function is_development()
 {
   if [ "${XBB_IS_DEVELOPMENT}" == "y" ]
   then
