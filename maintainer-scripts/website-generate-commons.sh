@@ -42,8 +42,10 @@ root_folder="$(dirname $(dirname $(dirname $(dirname "${script_folder_path}"))))
 if [ "$(basename "${root_folder}")" == "build-assets" ]
 then
   project_folder="$(dirname "${root_folder}")"
+  branch="xpack-development"
 else
   project_folder="${root_folder}"
+  branch="xpack-develop"
 fi
 
 # which liquidjs
@@ -56,7 +58,7 @@ export appName="$(liquidjs --context @package.json --template '{{ xpack.properti
 export appLcName="$(liquidjs --context @package.json --template '{{ xpack.properties.appLcName }}')"
 export platforms="$(liquidjs --context @package.json --template '{{ xpack.properties.platforms }}')"
 
-export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }"
+export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\" }"
 
 # tmp_context_file="$(mktemp) -t context"
 # echo "{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"

@@ -86,7 +86,7 @@ function expat_build()
           echo
           echo "Running expat configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${expat_src_folder_name}/configure" --help
           fi

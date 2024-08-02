@@ -153,7 +153,7 @@ function newlib_cross_build()
           echo
           echo "Running cross ${name_prefix}newlib${name_suffix} configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_NEWLIB_SRC_FOLDER_NAME}/configure" --help
           fi

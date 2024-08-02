@@ -82,7 +82,7 @@ function gc_build()
           echo
           echo "Running gc configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${gc_src_folder_name}/configure" --help
           fi

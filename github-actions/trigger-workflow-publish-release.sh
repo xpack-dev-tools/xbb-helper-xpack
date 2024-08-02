@@ -68,7 +68,7 @@ source "${helper_folder_path}/build-scripts/xbb.sh"
 
 message="Build ${XBB_APPLICATION_NAME}"
 
-branch="xpack-develop"
+branch="xpack-development"
 version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 workflow_id="publish-release.yml"
 helper_git_ref="v$(xbb_get_current_helper_version)"

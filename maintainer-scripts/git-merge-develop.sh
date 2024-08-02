@@ -42,9 +42,9 @@ echo
 echo $1
 git push
 git switch xpack
-git merge xpack-develop
+git merge xpack-development
 git push
-git switch xpack-develop
+git switch xpack-development
 
 __EOF__
 

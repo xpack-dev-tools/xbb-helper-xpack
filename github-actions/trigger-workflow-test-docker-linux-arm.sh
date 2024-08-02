@@ -69,7 +69,7 @@ source "${helper_folder_path}/build-scripts/xbb.sh"
 
 message="Test ${XBB_APPLICATION_DESCRIPTION} on Intel Docker platforms"
 
-branch="xpack-develop"
+branch="xpack-development"
 base_url="pre-release"
 version="${XBB_RELEASE_VERSION:-$(xbb_get_current_version)}"
 workflow_id="test-docker-linux-arm.yml"

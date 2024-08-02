@@ -258,7 +258,7 @@ function test_compiler_c_cpp()
     fi
 
     VERBOSE="-v"
-    if is_develop
+    if is_development
     then
       CFLAGS+=" -g -v"
       CXXFLAGS+=" -g -v"

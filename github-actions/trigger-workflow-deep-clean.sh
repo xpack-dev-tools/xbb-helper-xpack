@@ -70,7 +70,7 @@ source "${helper_folder_path}/build-scripts/xbb.sh"
 
 message="Deep clean ${XBB_APPLICATION_NAME}"
 
-branch="xpack-develop"
+branch="xpack-development"
 version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 workflow_id="deep-clean.yml"
 

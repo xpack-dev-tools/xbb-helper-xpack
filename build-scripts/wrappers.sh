@@ -17,7 +17,7 @@ function ndate()
 
 function echo_develop()
 {
-  if is_develop
+  if is_development
   then
     echo "$@"
   fi
@@ -40,7 +40,7 @@ function run_verbose_develop()
   local app_path="$1"
   shift
 
-  if is_develop
+  if is_development
   then
     echo
     echo "[${app_path} $@]"

@@ -78,7 +78,7 @@ function texinfo_build()
           echo
           echo "Running texinfo configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${texinfo_src_folder_name}/configure" --help
           fi
@@ -98,7 +98,7 @@ function texinfo_build()
 
           # config_options+=("--disable-debug") # HB but not recognised
           config_options+=("--disable-dependency-tracking") # HB
-          if is_develop
+          if is_development
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -138,7 +138,7 @@ function texinfo_build()
         then
           if is_darwin
           then
-            if is_develop
+            if is_development
             then
               run_verbose make -j1 check || true
             fi

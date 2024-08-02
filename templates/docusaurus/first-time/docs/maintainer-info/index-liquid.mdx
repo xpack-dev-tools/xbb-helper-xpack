@@ -48,13 +48,13 @@ git clone https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git \
   ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git
 ```
 
-For development purposes, clone the `xpack-develop` branch:
+For development purposes, clone the <code>{{ branch }}</code> branch:
 
 ```sh
 rm -rf ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git && \
 mkdir -p ~/Work/xpack-dev-tools && \
 git clone \
-  --branch xpack-develop \
+  --branch {{ branch }} \
   https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git \
   ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git
 ```
@@ -70,13 +70,13 @@ git -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git pull
 The project has a dependency to a common **helper**, that is
 normally installed as a read-only dependency; for development
 purposes, to be able to make changes to the helper, clone the
-`xpack-develop` branch and link it to the central xPacks store:
+`xpack-development` branch and link it to the central xPacks store:
 
 ```sh
 rm -rf ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
 mkdir -p ~/Work/xpack-dev-tools && \
 git clone \
-  --branch xpack-develop \
+  --branch xpack-development \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
   ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
@@ -107,14 +107,14 @@ The build scripts are available in the `scripts` folder of the
 [`xpack-dev-tools/{{ appLcName }}-xpack`](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack)
 Git repo.
 
-To download them on a new machine, clone the `xpack-develop` branch,
+To download them on a new machine, clone the <code>{{ branch }}</code> branch,
 as seen above.
 
 ### Check Git
 
 In the `xpack-dev-tools/{{ appLcName }}-xpack` Git repo:
 
-- switch to the `xpack-develop` branch
+- switch to the <code>{{ branch }}</code> branch
 - pull new changes
 - if needed, merge the `xpack` branch
 
@@ -223,7 +223,7 @@ xpm run build-development-debug --config darwin-x64 -C ~/Work/xpack-dev-tools/{{
 
 The build takes about 7 minutes.
 
-When functional, push the `xpack-develop` branch to GitHub.
+When functional, push the <code>{{ branch }}</code> branch to GitHub.
 
 Run the native build on the production machine
 (`xbbmi`, an older macOS);
@@ -483,7 +483,7 @@ screen -S ga
 
 ### Push the build scripts
 
-- push the `xpack-develop` branch to GitHub
+- push the <code>{{ branch }}</code> branch to GitHub
 - possibly push the helper project too
 
 From here it'll be cloned on the production machines.
@@ -531,7 +531,7 @@ Settings → Action →
 [Secrets](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/settings/secrets/actions)
 page.
 
-These commands use the `xpack-develop` branch of this repo.
+These commands use the <code>{{ branch }}</code> branch of this repo.
 
 ## Durations & results
 
@@ -572,7 +572,7 @@ bash ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/xpacks/@xpack-dev-tools/xb
 These scripts require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
 in the environment.
 
-These actions use the `xpack-develop` branch of this repo and the
+These actions use the <code>{{ branch }}</code> branch of this repo and the
 [pre-releases/test](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/)
 binaries.
 
@@ -677,7 +677,7 @@ launcher).
 - in `CHANGELOG.md`, add the release date and a message like _* v{ customField('upstreamVersion') }-{ customField('xpackSubversion') } released_
 - commit with _CHANGELOG update_
 - check and possibly update the `templates/body-github-release-liquid.md`
-- push the `xpack-develop` branch
+- push the <code>{{ branch }}</code> branch
 - run the xPack action `trigger-workflow-publish-release`
 
 The workflow result and logs are available from the
@@ -689,7 +689,7 @@ tagged like **v{ customField('upstreamVersion') }-{ customField('xpackSubversion
 named like **xPack {{ appName }} v{ customField('upstreamVersion') }-{ customField('xpackSubversion') }** (mind the dash),
 with all binaries attached.
 
-- edit the draft and attach it to the `xpack-develop` branch (important!)
+- edit the draft and attach it to the <code>{{ branch }}</code> branch (important!)
 - save the draft (do **not** publish yet!)
 
 ## Prepare a new blog post
@@ -741,7 +741,7 @@ watching this project.
 
 ## Update package.json binaries
 
-- select the `xpack-develop` branch
+- select the <code>{{ branch }}</code> branch
 - run the xPack action `update-package-binaries`
 - open the `package.json` file
 - check the `baseUrl:` it should match the file URLs (including the tag/version);
@@ -754,7 +754,7 @@ watching this project.
 
 ## Publish on the npmjs.com server
 
-- select the `xpack-develop` branch
+- select the <code>{{ branch }}</code> branch
 - check the latest commits `npm run git-log`
 - update `CHANGELOG.md`, add a line like _* v{ customField('upstreamVersion') }-{ customField('xpackSubversion') } published on npmjs.com_
 - commit with a message like _CHANGELOG: publish npm v{ customField('upstreamVersion') }-{ customField('xpackSubversion') }.{ customField('npmSubversion') }_
@@ -782,7 +782,7 @@ The tests results are available from the
 
 ## Update the repo
 
-- merge `xpack-develop` into `xpack`
+- merge <code>{{ branch }}</code> into `xpack`
 - push to GitHub
 
 ## Tag the npm package as `latest`

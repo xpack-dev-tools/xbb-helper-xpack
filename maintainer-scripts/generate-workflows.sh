@@ -55,9 +55,11 @@ if [ "$(basename "${root_folder}")" == "build-assets" ]
 then
   project_folder="$(dirname "${root_folder}")"
   prefix="build-assets"
+  branch="xpack-development"
 else
   project_folder="${root_folder}"
   prefix="."
+  branch="xpack-develop"
 fi
 
 # which liquidjs
@@ -70,7 +72,7 @@ export appName="$(liquidjs --context @package.json --template '{{ xpack.properti
 export appLcName="$(liquidjs --context @package.json --template '{{ xpack.properties.appLcName }}')"
 export platforms="$(liquidjs --context @package.json --template '{{ xpack.properties.platforms }}')"
 
-export context="{ \"XBB_APPLICATION_NAME\": \"${appName}\", \"XBB_APPLICATION_LOWER_CASE_NAME\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"prefix\": \"${prefix}\" }"
+export context="{ \"XBB_APPLICATION_NAME\": \"${appName}\", \"XBB_APPLICATION_LOWER_CASE_NAME\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"prefix\": \"${prefix}\", \"branch\": \"${branch}\" }"
 
 # The template files include
 # "xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/copyright-liquid.yml"

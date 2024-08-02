@@ -173,7 +173,7 @@ function gcc_build()
         CXXFLAGS+=" -fPIC"
       elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
       then
-        if is_develop
+        if is_development
         then
           LDFLAGS="-DXBB_MARKER_TOP"
         else
@@ -190,7 +190,7 @@ function gcc_build()
 
         # The target may refer to the development libraries.
         # It does not need the bootstrap toolchain rpaths.
-        if is_develop
+        if is_development
         then
           LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET"
         else
@@ -198,7 +198,7 @@ function gcc_build()
         fi
         LDFLAGS_FOR_TARGET+=" ${XBB_LDFLAGS_APP}"
         LDFLAGS_FOR_TARGET+=" -v"
-        if is_develop
+        if is_development
         then
           LDFLAGS_FOR_TARGET+=" -Wl,-v"
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
@@ -219,7 +219,7 @@ function gcc_build()
         export LDFLAGS_FOR_TARGET
       elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
-        if is_develop
+        if is_development
         then
           LDFLAGS="-DXBB_MARKER_TOP"
         else
@@ -232,7 +232,7 @@ function gcc_build()
 
         # The target may refer to the development libraries.
         # It does not need the bootstrap toolchain rpaths.
-        if is_develop
+        if is_development
         then
           LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET"
         else
@@ -258,7 +258,7 @@ function gcc_build()
           echo
           echo "Running gcc configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/gcc/configure" --help
@@ -392,7 +392,7 @@ function gcc_build()
             # Build stage 1 with static system libraries.
             # The flags are added to the top LDFLAGS, so no need to repeat them.
             local ldflags_for_bootstrap
-            if is_develop
+            if is_development
             then
               ldflags_for_bootstrap="-DXBB_MARKER_STAGE1"
             else
@@ -417,14 +417,14 @@ function gcc_build()
             # to save some references to shared libraries.
             # The bootstrap toolchain rpaths are not needed.
             local ldflags_for_boot
-            if is_develop
+            if is_development
             then
               ldflags_for_boot="-DXBB_MARKER_BOOT"
             else
               ldflags_for_boot=""
             fi
             ldflags_for_boot+=" -v"
-            if is_develop
+            if is_development
             then
               ldflags_for_boot+=" -Wl,-v"
               if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
@@ -465,7 +465,7 @@ function gcc_build()
             # multiple rpaths in multilib cases.
             # The flags are added to the top LDFLAGS, so no need to repeat them.
             local ldflags_for_bootstrap
-            if is_develop
+            if is_development
             then
               ldflags_for_bootstrap="-DXBB_MARKER_STAGE1"
             else
@@ -481,14 +481,14 @@ function gcc_build()
             # to save some references to shared libraries.
             # The bootstrap toolchain rpaths are not needed.
             local ldflags_for_boot
-            if is_develop
+            if is_development
             then
               ldflags_for_boot="-DXBB_MARKER_BOOT"
             else
               ldflags_for_boot=""
             fi
             ldflags_for_boot+=" -v"
-            if is_develop
+            if is_development
             then
               ldflags_for_boot+=" -Wl,-v"
               if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
@@ -706,7 +706,7 @@ function gcc_build()
             echo
             echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}"
 
-            if is_develop
+            if is_development
             then
               make -k check || true
             fi

@@ -111,7 +111,7 @@ function libxcrypt_build()
           echo
           echo "Running libxcrypt configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libxcrypt_src_folder_name}/configure" --help
           fi
@@ -173,7 +173,7 @@ function libxcrypt_build()
         then
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
-            if is_develop
+            if is_development
             then
               # macOS FAIL: test/symbols-static.sh
               # macOS FAIL: test/symbols-renames.sh

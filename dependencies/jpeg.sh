@@ -81,7 +81,7 @@ function jpeg_build()
           echo
           echo "Running jpeg configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${jpeg_src_folder_name}/configure" --help
           fi

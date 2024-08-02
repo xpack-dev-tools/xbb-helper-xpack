@@ -66,7 +66,7 @@ source "${helper_folder_path}/build-scripts/xbb.sh"
 
 message="Test ${XBB_APPLICATION_DESCRIPTION} on macOS platforms"
 
-branch="xpack-develop"
+branch="xpack-development"
 base_url="pre-release"
 version="${XBB_RELEASE_VERSION:-$(xbb_get_current_version)}"
 helper_git_ref="v$(xbb_get_current_helper_version)"

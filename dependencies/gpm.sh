@@ -106,7 +106,7 @@ function gpm_build()
           echo
           echo "Running gpm configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "configure" --help
           fi

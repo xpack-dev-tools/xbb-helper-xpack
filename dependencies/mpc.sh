@@ -86,7 +86,7 @@ function mpc_build()
           echo
           echo "Running mpc${name_suffix} configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${mpc_src_folder_name}/configure" --help
           fi

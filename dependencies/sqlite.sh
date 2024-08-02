@@ -117,7 +117,7 @@ function sqlite_build()
           echo
           echo "Running sqlite configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${sqlite_src_folder_name}/configure" --help
           fi
@@ -137,7 +137,7 @@ function sqlite_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if is_develop
+          if is_development
           then
             config_options+=("--disable-silent-rules") # HB
           fi

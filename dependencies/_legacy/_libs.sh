@@ -80,7 +80,7 @@ function libelf_build()
           echo
           echo "Running libelf configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libelf_src_folder_name}/configure" --help
           fi
@@ -224,7 +224,7 @@ function python2_build()
           echo
           echo "Running python2 configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON2_SRC_FOLDER_NAME}/configure" --help
           fi
@@ -490,7 +490,7 @@ function xar_build()
           echo
           echo "Running xar configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "./configure" --help
           fi
@@ -616,7 +616,7 @@ function libgpg_error_build()
           echo
           echo "Running libgpg-error configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libgpg_error_src_folder_name}/configure" --help
           fi
@@ -637,7 +637,7 @@ function libgpg_error_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if is_develop
+          if is_development
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -768,7 +768,7 @@ function libgcrypt_build()
           echo
           echo "Running libgcrypt configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libgcrypt_src_folder_name}/configure" --help
           fi
@@ -806,7 +806,7 @@ function libgcrypt_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if is_develop
+          if is_development
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -986,7 +986,7 @@ function libassuan_build()
           echo
           echo "Running libassuan configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libassuan_src_folder_name}/configure" --help
           fi
@@ -1009,7 +1009,7 @@ function libassuan_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if is_develop
+          if is_development
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -1156,7 +1156,7 @@ function libksba_build()
           echo
           echo "Running libksba configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libksba_src_folder_name}/configure" --help
           fi
@@ -1179,7 +1179,7 @@ function libksba_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if is_develop
+          if is_development
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -1317,7 +1317,7 @@ function npth_build()
           echo
           echo "Running npth configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${npth_src_folder_name}/configure" --help
           fi
@@ -1338,7 +1338,7 @@ function npth_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if is_develop
+          if is_development
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -1480,7 +1480,7 @@ function _libusb_build()
           echo
           echo "Running libusb configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libusb_src_folder_name}/configure" --help
           fi

@@ -225,7 +225,7 @@ then
     run_verbose rm -rf ${WORK}/${name}-xpack.git && \
     run_verbose mkdir -p ${WORK} && \
     run_verbose git clone \
-      --branch xpack-develop \
+      --branch xpack-development \
       https://github.com/xpack-dev-tools/${name}-xpack.git \
       ${WORK}/${name}-xpack.git
 
@@ -258,7 +258,7 @@ do
       run_verbose git -C ${WORK}/${name}-xpack.git pull
     else
       run_verbose git clone \
-        --branch xpack-develop \
+        --branch xpack-development \
         https://github.com/xpack-dev-tools/${name}-xpack.git \
         ${WORK}/${name}-xpack.git
     fi

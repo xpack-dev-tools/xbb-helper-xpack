@@ -61,7 +61,7 @@ To enable the travis tests:
 ### Test work flow
 
 Travis tests are manually triggered, and use the files in the project repo,
-so it is necessary to push latest changes in the `xpack-develop` branch
+so it is necessary to push latest changes in the `xpack-development` branch
 to GitHub.
 
 The first step is one of the top `trigger-travis-*.sh` scripts,

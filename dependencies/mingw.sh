@@ -152,7 +152,7 @@ function mingw_build_headers()
           echo
           echo "Running ${name_prefix}headers configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-headers/configure" --help
           fi
@@ -167,7 +167,7 @@ function mingw_build_headers()
           # https://docs.microsoft.com/en-us/cpp/porting/modifying-winver-and-win32-winnt
           # Windows 7
           config_options+=("--with-default-win32-winnt=${XBB_APPLICATION_WIN32_WINNT:-0x0601}") # MS
-          
+
           # `ucrt` is the new Windows Universal C Runtime:
           # https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c
           # config_options_common+=("--with-default-msvcrt=${MINGW_MSVCRT:-msvcrt}")
@@ -291,7 +291,7 @@ function mingw_build_widl()
           echo
           echo "Running ${name_prefix}widl configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/widl/configure" --help
           fi
@@ -408,7 +408,7 @@ function mingw_build_libmangle()
           echo
           echo "Running ${name_prefix}libmangle configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/libmangle/configure" --help
           fi
@@ -528,7 +528,7 @@ function mingw_build_gendef()
           echo
           echo "Running ${name_prefix}gendef configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-tools/gendef/configure" --help
           fi
@@ -636,7 +636,7 @@ function mingw_build_crt()
       CXXFLAGS="-O2 -pipe -w"
 
       LDFLAGS=""
-      if is_develop
+      if is_development
       then
         LDFLAGS+=" -v"
       fi
@@ -661,7 +661,7 @@ function mingw_build_crt()
           echo
           echo "Running ${name_prefix}crt configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-crt/configure" --help
           fi
@@ -792,7 +792,7 @@ function mingw_build_winpthreads()
       CXXFLAGS="-O2 -pipe -w"
 
       LDFLAGS=""
-      if is_develop
+      if is_development
       then
         LDFLAGS+=" -v"
       fi
@@ -810,7 +810,7 @@ function mingw_build_winpthreads()
           echo
           echo "Running ${name_prefix}winpthreads configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winpthreads/configure" --help
           fi
@@ -925,7 +925,7 @@ function mingw_build_winstorecompat()
       CXXFLAGS="-O2 -pipe -w"
 
       LDFLAGS=""
-      if is_develop
+      if is_development
       then
         LDFLAGS+=" -v"
       fi
@@ -943,7 +943,7 @@ function mingw_build_winstorecompat()
           echo
           echo "Running ${name_prefix}winstorecompat configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_MINGW_SRC_FOLDER_NAME}/mingw-w64-libraries/winstorecompat/configure" --help
           fi

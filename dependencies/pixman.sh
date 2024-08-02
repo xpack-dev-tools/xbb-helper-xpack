@@ -141,7 +141,7 @@ function pixman_build()
             echo
             echo "Running pixman configure..."
 
-            if is_develop
+            if is_development
             then
               run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${pixman_src_folder_name}/configure" --help
             fi

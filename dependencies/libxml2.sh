@@ -129,7 +129,7 @@ function libxml2_build()
           echo
           echo "Running libxml2 configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "configure" --help
           fi

@@ -1350,7 +1350,7 @@ function patch_linux_elf_origin()
       fi
     fi
 
-    if is_develop
+    if is_development
     then
       readelf -d "${tmp_path}" | grep -E '(RUNPATH|RPATH)'
       ldd "${tmp_path}"
@@ -1427,7 +1427,7 @@ function patch_linux_elf_set_rpath()
       fi
     fi
 
-    if is_develop
+    if is_development
     then
       readelf -d "${tmp_path}" | grep -E '(RUNPATH|RPATH)'
       ldd "${tmp_path}"
@@ -1523,7 +1523,7 @@ function patch_linux_elf_add_rpath()
       fi
     fi
 
-    if is_develop
+    if is_development
     then
       readelf -d "${tmp_path}" | grep -E '(RUNPATH|RPATH)'
       ldd "${tmp_path}"

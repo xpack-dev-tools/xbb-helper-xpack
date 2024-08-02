@@ -32,7 +32,7 @@ function build_common_parse_options()
   XBB_REQUEST_TARGET_BE_WINDOWS="n"
 
   XBB_IS_DEBUG="n"
-  XBB_IS_DEVELOP="n"
+  XBB_IS_DEVELOPMENT="n"
   XBB_WITH_STRIP="y"
   XBB_WITH_PDF="n"
   XBB_WITH_HTML="n"
@@ -79,7 +79,8 @@ function build_common_parse_options()
         ;;
 
       --develop )
-        XBB_IS_DEVELOP="y"
+      --development )
+        XBB_IS_DEVELOPMENT="y"
         shift
         ;;
 
@@ -149,7 +150,11 @@ function build_common_parse_options()
   fi
 
   export XBB_IS_DEBUG
-  export XBB_IS_DEVELOP
+  export XBB_IS_DEVELOPMENT
+
+  # DEPRECATED!
+  export XBB_IS_DEVELOP="${XBB_IS_DEVELOPMENT}"
+
   export XBB_WITH_STRIP
   export XBB_WITH_PDF
   export XBB_WITH_HTML

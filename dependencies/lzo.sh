@@ -74,7 +74,7 @@ function lzo_build()
           echo
           echo "Running lzo configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${lzo_src_folder_name}/configure" --help
           fi

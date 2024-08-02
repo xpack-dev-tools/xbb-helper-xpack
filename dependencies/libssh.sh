@@ -100,7 +100,7 @@ function libssh_build()
 
           config_options=()
 
-          if is_develop
+          if is_development
           then
             config_options+=("-LAH") # display help for each variable
           fi
@@ -145,7 +145,7 @@ function libssh_build()
         echo
         echo "Running libssh make..."
 
-        if is_develop
+        if is_development
         then
           run_verbose "${CMAKE}" \
             --build . \

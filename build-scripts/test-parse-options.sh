@@ -29,7 +29,7 @@ function tests_parse_options()
   echo "[${FUNCNAME[0]} $@]"
 
   XBB_IS_DEBUG="n"
-  XBB_IS_DEVELOP="n"
+  XBB_IS_DEVELOPMENT="n"
   XBB_SKIP_32_BIT_TESTS="n"
 
   XBB_FORCE_32_BIT="n"
@@ -53,7 +53,8 @@ function tests_parse_options()
         ;;
 
       --develop )
-        XBB_IS_DEVELOP="y"
+      --development )
+        XBB_IS_DEVELOPMENT="y"
         XBB_OUTPUT_FILE_NAME+="-develop"
         shift
         ;;
@@ -131,7 +132,11 @@ function tests_parse_options()
   done
 
   export XBB_IS_DEBUG
-  export XBB_IS_DEVELOP
+  export XBB_IS_DEVELOPMENT
+
+  # DEPRECATED!
+  export XBB_IS_DEVELOP="${XBB_IS_DEVELOPMENT}"
+
   export XBB_TEST_SYSTEM_TOOLS
   export XBB_EXTERNAL_BIN_PATH
 
@@ -144,7 +149,7 @@ function tests_parse_options()
   export XBB_USE_CACHED_ARCHIVE
   export XBB_NPM_PACKAGE_VERSION
 
-  if [ "${XBB_IS_DEVELOP}" == "y" ] # is_develop is not yet defined
+  if [ "${XBB_IS_DEVELOPMENT}" == "y" ] # is_development is not yet defined
   then
     echo
     echo "XBB_RELEASE_VERSION=${XBB_RELEASE_VERSION}"

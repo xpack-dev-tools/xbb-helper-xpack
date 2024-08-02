@@ -88,7 +88,7 @@ function mpdecimal_build()
           echo
           echo "Running mpdecimal configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "configure" --help
           fi

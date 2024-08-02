@@ -82,7 +82,7 @@ function libusb1_build()
           echo
           echo "Running libusb1 configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libusb1_src_folder_name}/configure" --help
           fi

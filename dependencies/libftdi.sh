@@ -85,7 +85,7 @@ function libftdi_build()
 
         config_options=()
 
-        if is_develop
+        if is_development
         then
           config_options+=("-LAH") # display help for each variable
         fi
@@ -124,7 +124,7 @@ function libftdi_build()
         echo
         echo "Running libftdi make..."
 
-        if is_develop
+        if is_development
         then
           run_verbose "${CMAKE}" \
             --build . \

@@ -17,7 +17,7 @@ on:
       helper-git-ref:
         description: 'The helper branch, tag or SHA to checkout'
         required: false
-        default: 'xpack-develop'
+        default: '{{ branch }}'
 
 jobs:
   create-release:
@@ -60,7 +60,7 @@ jobs:
         with:
           allowUpdates: false
           bodyFile: '.github/workflows/body-github-release.md'
-          commit: 'xpack-develop'
+          commit: '{{ branch }}'
           draft: true
           name: 'xPack {{ XBB_APPLICATION_NAME }} v{% raw %}${{ github.event.inputs.version }}{% endraw %}'
           omitBodyDuringUpdate: true
@@ -83,7 +83,7 @@ jobs:
         with:
           allowUpdates: true
           artifacts: '~/Downloads/xpack-binaries/{{ XBB_APPLICATION_LOWER_CASE_NAME }}/*'
-          commit: 'xpack-develop'
+          commit: '{{ branch }}'
           draft: true
           omitBodyDuringUpdate: true
           omitDraftDuringUpdate: true

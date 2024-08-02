@@ -29,13 +29,13 @@ git clone \
   ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 ```
 
-For development purposes, clone the `xpack-develop` branch:
+For development purposes, clone the `xpack-development` branch:
 
 ```sh
 rm -rf ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
 mkdir -p ~/Work/xpack-dev-tools && \
 git clone \
-  --branch xpack-develop \
+  --branch xpack-development \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
   ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 ```
@@ -64,7 +64,7 @@ Before starting the build, perform some checks and tweaks.
 
 In the `xpack-dev-tools/xbb-helper-xpack` Git repo:
 
-- switch to the `xpack-develop` branch
+- switch to the `xpack-development` branch
 - pull new changes
 - if needed, merge the `xpack` branch
 
@@ -115,12 +115,12 @@ Use the new version, suffixed by `pre`, like `3.0.0-pre`.
 
 ### Publish on the npmjs.com server
 
-- select the `xpack-develop` branch
+- select the `xpack-development` branch
 - commit all changes
 - `npm pack` and check the content of the archive;
   possibly adjust `.npmignore`
 - `npm version patch`, `npm version minor`, `npm version major`
-- push the `xpack-develop` branch to GitHub
+- push the `xpack-development` branch to GitHub
 - the `postversion` npm script should also update tags via `git push origin --tags`
 
 ### Publish
@@ -134,7 +134,7 @@ The version is visible at:
 
 ### Update the repo
 
-- merge `xpack-develop` into `xpack`
+- merge `xpack-development` into `xpack`
 - push to GitHub
 
 ### Tag the npm package as `latest`

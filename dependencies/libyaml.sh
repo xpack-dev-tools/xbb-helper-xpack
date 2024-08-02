@@ -65,7 +65,7 @@ function libyaml_build()
           echo
           echo "Running libyaml configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libyaml_src_folder_name}/configure" --help
           fi

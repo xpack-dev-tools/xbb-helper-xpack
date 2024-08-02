@@ -81,7 +81,7 @@ function libtool_build()
           echo
           echo "Running libtool configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${libtool_src_folder_name}/configure" --help
           fi
@@ -106,7 +106,7 @@ function libtool_build()
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           config_options+=("--disable-dependency-tracking") # HB
-          if is_develop
+          if is_development
           then
             config_options+=("--disable-silent-rules") # HB
           fi

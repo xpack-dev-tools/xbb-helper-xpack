@@ -74,7 +74,7 @@ function pcre2_build()
           echo
           echo "Running pcre2 configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${pcre2_src_folder_name}/configure" --help
           fi
@@ -115,7 +115,7 @@ function pcre2_build()
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
-          if is_develop
+          if is_development
           then
             # On macOS RunGrepTest fails.
             run_verbose make -j1 check || true

@@ -85,7 +85,7 @@ function automake_build()
           echo
           echo "Running automake configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${automake_src_folder_name}/configure" --help
           fi

@@ -97,7 +97,7 @@ function sdl2_build()
           echo
           echo "Running sdl2 configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${sdl2_src_folder_name}/configure" --help
           fi
@@ -233,7 +233,7 @@ function sdl2_image_build()
           echo
           echo "Running sdl2-image configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${sdl2_image_src_folder_name}/configure" --help
           fi

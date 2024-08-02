@@ -306,6 +306,17 @@ function is_mingw_clang()
 
 # -----------------------------------------------------------------------------
 
+function is_developmentment()
+{
+  if [ "${XBB_IS_DEVELOPMENT}" == "y" ]
+  then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# DEPRECATED, use is_development()
 function is_develop()
 {
   if [ "${XBB_IS_DEVELOP}" == "y" ]

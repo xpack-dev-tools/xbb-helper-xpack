@@ -83,7 +83,7 @@ fi
 
 # -----------------------------------------------------------------------------
 
-help_message="    bash $0 [--win] [--debug] [--develop] [--jobs N] [--help]"
+help_message="    bash $0 [--win] [--debug] [--development] [--jobs N] [--help]"
 build_common_parse_options "${help_message}" "$@"
 
 build_common_run

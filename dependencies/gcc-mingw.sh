@@ -272,7 +272,7 @@ function gcc_mingw_build_first()
           echo
           echo "Running ${name_prefix}gcc first configure..."
 
-          if is_develop
+          if is_development
           then
             # For the native build, --disable-shared failed with errors in libstdc++-v3
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${mingw_gcc_src_folder_name}/configure" --help

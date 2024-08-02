@@ -100,7 +100,7 @@ function patchelf_build()
           echo
           echo "Running patchelf configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${patchelf_src_folder_name}/configure" --help
           fi
@@ -120,7 +120,7 @@ function patchelf_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if is_develop
+          if is_development
           then
             config_options+=("--disable-silent-rules") # HB
           fi

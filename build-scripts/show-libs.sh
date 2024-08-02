@@ -34,7 +34,7 @@ function show_host_libs()
       if is_elf "${abs_path}"
       then
         run_verbose ls -l "${abs_path}"
-        if is_develop
+        if is_development
         then
           run_verbose file -L "${abs_path}"
         fi
@@ -50,7 +50,7 @@ function show_host_libs()
       elif is_pe "${abs_path}"
       then
         run_verbose ls -l "${abs_path}"
-        if is_develop
+        if is_development
         then
           run_verbose file "${abs_path}"
         fi
@@ -60,7 +60,7 @@ function show_host_libs()
       elif is_pe "${abs_exe_path}"
       then
         run_verbose ls -l "${abs_exe_path}"
-        if is_develop
+        if is_development
         then
           run_verbose file "${abs_exe_path}"
         fi
@@ -78,7 +78,7 @@ function show_host_libs()
       if is_elf "${abs_path}"
       then
         run_verbose ls -l "${abs_path}"
-        if is_develop
+        if is_development
         then
           run_verbose file -L "${abs_path}"
         fi
@@ -105,7 +105,7 @@ function show_host_libs()
     elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
     then
       run_verbose ls -l "${abs_path}"
-      if is_develop
+      if is_development
       then
         run_verbose file -L "${abs_path}"
       fi
@@ -155,7 +155,7 @@ function show_target_libs()
       if is_elf "${abs_path}"
       then
         run_verbose ls -l "${abs_path}"
-        if is_develop
+        if is_development
         then
           run_verbose file -L "${abs_path}"
         fi
@@ -171,7 +171,7 @@ function show_target_libs()
       elif is_pe "${abs_path}"
       then
         run_verbose ls -l "${abs_path}"
-        if is_develop
+        if is_development
         then
           run_verbose file "${abs_path}"
         fi
@@ -181,7 +181,7 @@ function show_target_libs()
       elif is_pe "${abs_exe_path}"
       then
         run_verbose ls -l "${abs_exe_path}"
-        if is_develop
+        if is_development
         then
           run_verbose file "${abs_exe_path}"
         fi
@@ -199,7 +199,7 @@ function show_target_libs()
       if is_elf "${abs_path}"
       then
         run_verbose ls -l "${abs_path}"
-        if is_develop
+        if is_development
         then
           run_verbose file -L "${abs_path}"
         fi
@@ -220,7 +220,7 @@ function show_target_libs()
       elif is_pe "${abs_path}"
       then
         run_verbose ls -l "${abs_path}"
-        if is_develop
+        if is_development
         then
           run_verbose file "${abs_path}"
         fi
@@ -230,7 +230,7 @@ function show_target_libs()
       elif is_pe "${abs_exe_path}"
       then
         run_verbose ls -l "${abs_exe_path}"
-        if is_develop
+        if is_development
         then
           run_verbose file "${abs_exe_path}"
         fi
@@ -246,7 +246,7 @@ function show_target_libs()
     elif [ "${XBB_BUILD_PLATFORM}" == "win32" ]
     then
       run_verbose ls -l "${abs_path}"
-      if is_develop
+      if is_development
       then
         run_verbose file -L "${abs_path}"
       fi
@@ -274,7 +274,7 @@ function show_target_libs()
 
 function show_target_libs_develop()
 {
-  if is_develop
+  if is_development
   then
     show_target_libs "$@"
   fi
@@ -325,7 +325,7 @@ function _show_dlls()
     if is_pe "${exe_path}"
     then
       run_verbose ls -l "${exe_path}"
-      if is_develop
+      if is_development
       then
         run_verbose file "${exe_path}"
       fi

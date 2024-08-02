@@ -111,7 +111,7 @@ function zlib_build()
             echo
             echo "Running zlib configure..."
 
-            if is_develop
+            if is_development
             then
               run_verbose bash "configure" --help
             fi

@@ -81,7 +81,7 @@ function xbb_reset_env()
 
   XBB_DASH_V=""
   XBB_MAKE_VERBOSITY=0
-  if is_develop
+  if is_development
   then
     XBB_DASH_V="-v"
     XBB_MAKE_VERBOSITY=1
@@ -180,7 +180,7 @@ function xbb_set_actual_commands()
 
 function xbb_prepare_pkg_config()
 {
-  if [ ! -z "$(which pkg-config)" -a "${XBB_IS_DEVELOP}" == "y" ]
+  if [ ! -z "$(which pkg-config)" -a "${XBB_IS_DEVELOPMENT}" == "y" ]
   then
     # Extra: pkg-config-verbose.
     run_verbose ${INSTALL} -d -m 0755 "${XBB_NATIVE_DEPENDENCIES_INSTALL_FOLDER_PATH}/bin"
@@ -611,7 +611,7 @@ function xbb_set_extra_build_env()
   export XBB_BUILD_RANLIB
   export XBB_BUILD_OBJDUMP
 
-  if is_develop
+  if is_development
   then
     echo "XBB_BUILD_STRIP=${XBB_BUILD_STRIP}"
     echo "XBB_BUILD_RANLIB=${XBB_BUILD_RANLIB}"
@@ -662,7 +662,7 @@ function xbb_set_extra_target_env()
 
   export XBB_CURRENT_TRIPLET
 
-  if is_develop
+  if is_development
   then
     echo "XBB_TARGET_STRIP=${XBB_TARGET_STRIP}"
     echo "XBB_TARGET_RANLIB=${XBB_TARGET_RANLIB}"
@@ -694,7 +694,7 @@ function xbb_set_extra_host_env()
   export XBB_HOST_RANLIB
   export XBB_HOST_OBJDUMP
 
-  if is_develop
+  if is_development
   then
     echo "XBB_HOST_STRIP=${XBB_HOST_STRIP}"
     echo "XBB_HOST_RANLIB=${XBB_HOST_RANLIB}"
@@ -1002,7 +1002,7 @@ function xbb_set_compiler_flags()
   fi
 
   XBB_LDFLAGS+=" -v"
-  if is_develop
+  if is_development
   then
     XBB_LDFLAGS+=" -Wl,-v"
     if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
@@ -1137,7 +1137,7 @@ function xbb_set_compiler_flags()
   XBB_CFLAGS_NO_W="${XBB_CFLAGS} -w"
   XBB_CXXFLAGS_NO_W="${XBB_CXXFLAGS} -w"
 
-  if is_develop
+  if is_development
   then
     (
       set +u
@@ -1290,7 +1290,7 @@ function xbb_activate_installed_bin()
 
   # Update PKG_CONFIG, in case it was compiled locally
   # and now it shows up in the new PATH.
-  if [ ! -z "$(which pkg-config-verbose)" -a "${XBB_IS_DEVELOP}" == "y" ]
+  if [ ! -z "$(which pkg-config-verbose)" -a "${XBB_IS_DEVELOPMENT}" == "y" ]
   then
     export PKG_CONFIG="$(which pkg-config-verbose)"
     echo_develop "PKG_CONFIG=${PKG_CONFIG}"
@@ -1709,7 +1709,7 @@ function xbb_show_tools_versions()
 
     which ${CXX} && ${CXX} --version && echo || true
 
-    if is_develop
+    if is_development
     then
       which bash && bash --version && echo || true
       which curl && curl --version && echo || true
@@ -1737,7 +1737,7 @@ function xbb_show_env()
 
 function xbb_show_env_develop()
 {
-  if is_develop
+  if is_development
   then
     xbb_show_env
   fi

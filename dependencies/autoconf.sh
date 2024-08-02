@@ -73,7 +73,7 @@ function autoconf_build()
           echo
           echo "Running autoconf configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${autoconf_src_folder_name}/configure" --help
           fi

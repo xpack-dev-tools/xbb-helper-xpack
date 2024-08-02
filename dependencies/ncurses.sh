@@ -148,7 +148,7 @@ function ncurses_build()
           echo
           echo "Running ncurses configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${ncurses_src_folder_name}/configure" --help
           fi

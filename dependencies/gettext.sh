@@ -85,7 +85,7 @@ function gettext_build()
           echo
           echo "Running gettext configure..."
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/configure" --help
           fi
@@ -138,7 +138,7 @@ function gettext_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
-          if is_develop
+          if is_development
           then
             config_options+=("--disable-silent-rules") # HB
           fi
@@ -193,7 +193,7 @@ function gettext_build()
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
           # On macOS lang-c, lang-objc, lang-python-[12], lang-sh fail
-          if is_develop
+          if is_development
           then
             make -j1 check || true
           fi
