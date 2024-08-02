@@ -4,7 +4,14 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-08-02
 
-* v3.0.1 released
+* v3.0.2 released
+* c0f62fe templates/workflows/publish: update
+* 079b025 templates/workflows/publish: update templates path
+* 0d615fa travis/common.sh update for build-assets
+* 53fdfb4 remove scripts link
+* 4e7825c travis/common.sh update for build-assets
+* 661485d 3.0.1
+* d7289e3 prepare v3.0.1
 * 27adf3d template/docusaurus: update config.ts logic for package.json
 * bba4a4d templates/docusaurus updates
 * 901240c 3.0.0
