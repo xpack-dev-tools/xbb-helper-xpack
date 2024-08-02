@@ -57,7 +57,7 @@ function trap_handler()
 from=$(echo "$1" | sed -e 's|^\.\/||')
 
 # The destination file name. Change `.md` to `.mdx`.
-to=$(echo "$from" | sed -e 's|-liquid||')
+to=$(echo "$from" | sed -e 's|-liquid||')x
 # echo $from
 
 # Used to enforce an exit code of 255, required by xargs.
