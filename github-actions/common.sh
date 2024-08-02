@@ -59,7 +59,7 @@ function download_binaries()
     mkdir -pv "${destination_folder_path}"
     cd "${destination_folder_path}"
 
-    local package_file_path="${project_folder_path}/package.json"
+    local package_file_path="${root_folder_path}/package.json"
 
     # Extract the xpack.properties platforms. There are also in xpack.binaries.
     local platforms=$(grep '"platforms": "' "${package_file_path}" | sed -e 's|.*: "||' | sed -e 's|".*||' | sed 's|,| |g')
