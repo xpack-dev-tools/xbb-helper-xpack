@@ -75,7 +75,7 @@ cat <<__EOF__ > "${data_file_path}"
             "ls -lLA",
             "env | sort | grep -E '^[^ \t]+='",
             "git clone -b xpack-development https://github.com/xpack-dev-tools/xbb-helper-xpack build-assets/xpacks/@xpack-dev-tools/xbb-helper",
-            "(cd xpacks/@xpack-dev-tools/xbb-helper; git checkout ${helper_git_ref})",
+            "(cd build-assets/xpacks/@xpack-dev-tools/xbb-helper; git checkout ${helper_git_ref})",
             "DEBUG=${DEBUG} bash build-assets/scripts/test.sh --base-url ${base_url}"
           ]
         },
@@ -95,7 +95,7 @@ cat <<__EOF__ > "${data_file_path}"
             "ls -lLA",
             "env | sort | grep -E '^[^ \t]+='",
             "git clone -b xpack-development https://github.com/xpack-dev-tools/xbb-helper-xpack build-assets/xpacks/@xpack-dev-tools/xbb-helper",
-            "(cd xpacks/@xpack-dev-tools/xbb-helper; git checkout ${helper_git_ref})",
+            "(cd build-assets/xpacks/@xpack-dev-tools/xbb-helper; git checkout ${helper_git_ref})",
             "DEBUG=${DEBUG} bash build-assets/scripts/test.sh --base-url ${base_url}"
           ]
         },
@@ -115,7 +115,7 @@ cat <<__EOF__ > "${data_file_path}"
             "ls -lLA",
             "env | sort | grep -E '^[^ \t]+='",
             "git clone -b xpack-development https://github.com/xpack-dev-tools/xbb-helper-xpack build-assets/xpacks/@xpack-dev-tools/xbb-helper",
-            "(cd xpacks/@xpack-dev-tools/xbb-helper; git checkout ${helper_git_ref})",
+            "(cd build-assets/xpacks/@xpack-dev-tools/xbb-helper; git checkout ${helper_git_ref})",
             "DEBUG=${DEBUG} bash build-assets/scripts/test.sh --base-url ${base_url}"
           ]
         },
@@ -135,7 +135,7 @@ cat <<__EOF__ > "${data_file_path}"
             "ls -lLA",
             "env | sort | grep -E '^[^ \t]+='",
             "git clone -b xpack-development https://github.com/xpack-dev-tools/xbb-helper-xpack build-assets/xpacks/@xpack-dev-tools/xbb-helper",
-            "(cd xpacks/@xpack-dev-tools/xbb-helper; git checkout ${helper_git_ref})",
+            "(cd build-assets/xpacks/@xpack-dev-tools/xbb-helper; git checkout ${helper_git_ref})",
             "DEBUG=${DEBUG} bash build-assets/scripts/test.sh --base-url ${base_url}"
           ]
         }
