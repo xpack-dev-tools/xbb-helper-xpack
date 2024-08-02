@@ -4,6 +4,7 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-08-02
 
+* v3.0.0 released
 * 71ec8fb templates/docusaurus first-time updates
 * 3c5f095 templates/docusaurus install updates
 
