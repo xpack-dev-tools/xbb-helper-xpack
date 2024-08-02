@@ -51,8 +51,8 @@ jobs:
       - name: 'Create body'
         run: |
           ls -lLA
-          npm --prefix build-assets install -dd
-          ./build-assets/node_modules/.bin/liquidjs --context '{ "XBB_RELEASE_VERSION": "{% raw %}${{ github.event.inputs.version }}{% endraw %}" }' --template @{{ prefix }}/templates/body-github-release-liquid.md --output .github/workflows/body-github-release.md
+          npm --prefix {{ prefix }} install -dd
+          ./{{ prefix }}/node_modules/.bin/liquidjs --context '{ "XBB_RELEASE_VERSION": "{% raw %}${{ github.event.inputs.version }}{% endraw %}" }' --template @{{ prefix }}/templates/body-github-release-liquid.md --output .github/workflows/body-github-release.md
           cat .github/workflows/body-github-release.md
 
       - name: 'Publish release'
@@ -76,7 +76,7 @@ jobs:
           token: {% raw %}${{ secrets.PUBLISH_TOKEN }}{% endraw %}
 
       - name: 'Gather artifacts'
-        run: 'bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/download-all-binaries.sh'
+        run: 'bash {{ prefix }}/xpacks/@xpack-dev-tools/xbb-helper/github-actions/download-all-binaries.sh'
 
       - name: 'Publish artifacts'
         # https://github.com/ncipollo/release-action
