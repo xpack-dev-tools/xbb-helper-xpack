@@ -42,9 +42,10 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
+# set -x
 helper_folder_path="$(dirname ${script_folder_path})"
 root_folder_path="$(dirname $(dirname $(dirname "${helper_folder_path}")))"
-if [ "$(basename "${root_folder}")" == "build-assets" ]
+if [ "$(basename "${root_folder_path}")" == "build-assets" ]
 then
   project_folder_path="$(dirname "${root_folder_path}")"
 else

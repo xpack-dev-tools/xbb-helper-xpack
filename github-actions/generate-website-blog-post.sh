@@ -72,7 +72,7 @@ echo "Generating the ${XBB_APPLICATION_DESCRIPTION} blog release page..."
 
 # -----------------------------------------------------------------------------
 
-set -x
+# set -x
 destination_folder_path="${HOME}/Downloads/xpack-binaries/${XBB_APPLICATION_LOWER_CASE_NAME}"
 
 download_binaries "${destination_folder_path}"
