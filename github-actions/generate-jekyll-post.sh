@@ -92,7 +92,7 @@ echo "Move '${post_file_path}' to the Jekyll _posts/releases/${XBB_APPLICATION_L
 rm -rf "${post_file_path}"
 touch "${post_file_path}"
 
-liquidjs --context "{ \"XBB_RELEASE_VERSION\": \"${version}\", \"RELEASE_DATE\": \"${release_date}\" }" --template @"scripts/templates/body-jekyll-release-post-part-1-liquid.md" >> "${post_file_path}"
+liquidjs --context "{ \"XBB_RELEASE_VERSION\": \"${version}\", \"RELEASE_DATE\": \"${release_date}\" }" --template @"scripts/templates/body-blog-release-post-part-1-liquid.md" >> "${post_file_path}"
 
 echo >> "${post_file_path}"
 echo '```txt'  >> "${post_file_path}"
@@ -102,7 +102,7 @@ cat "${destination_folder_path}"/*.sha \
   >> "${post_file_path}"
 echo '```'  >> "${post_file_path}"
 
-liquidjs --context "{ \"XBB_RELEASE_VERSION\": \"${version}\", \"RELEASE_DATE\": \"${release_date}\" }" --template @"scripts/templates/body-jekyll-release-post-part-2-liquid.md" >> "${post_file_path}"
+liquidjs --context "{ \"XBB_RELEASE_VERSION\": \"${version}\", \"RELEASE_DATE\": \"${release_date}\" }" --template @"scripts/templates/body-blog-release-post-part-2-liquid.md" >> "${post_file_path}"
 
 echo "Don't forget to manually solve the two TODO action points!"
 
