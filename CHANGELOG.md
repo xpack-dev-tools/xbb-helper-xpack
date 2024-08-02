@@ -2,9 +2,63 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-08-02
+
+* 71ec8fb templates/docusaurus first-time updates
+* 3c5f095 templates/docusaurus install updates
+
+## 2024-08-01
+
+* 0194b59 templates/docusaurus update
+* 4c37e8c rename build-scripts
+* 267ce33 package.json: postinstall ln -s
+* c736055 add symlink to build-scripts
+* 30b4fdf move to build-scripts
+* a8fda82 .npmignore templates
+* 49b2b86 build-common.sh: update
+* f52ab37 build-common.sh: update
+* 02e3213 build-common.sh: add tree -L 2
+* 06ed418 add support for scripts-assets
+* a8af17f templates/docusaurus update
+* 9022f31 templates/docusaurus update
+* 158ff50 templates/docusaurus update
+
+## 2024-07-31
+
+* 3a91a65 templates/docusaurus: updates
+* 2180ce3 templates/docusaurus: update following Tommy's feedback
+
+## 2024-07-30
+
+* 03f250d templates/workflows/publish-github.yml: fetch-depth: 0
+
+## 2024-07-29
+
+* ee3c664 website-convert-release import CodeBlock
+* 12a02c2 website-import-releases updates
+* 641434b templates/docusaurus: fix manual install syntax
+
+## 2024-07-28
+
+* c5b8725 templates/docusaurus update
+* bf50543 templates/docusaurus updates
+* e7fcd5b templates: add README-TOP
+* 8a0c156 templates/docusaurus: developer-info updates
+* ce7b1d2 templates/docusaurus: menu Documentation
+* 99933ce rename build-development*
+* 0e2f2d7 website-convert-release-post update
+* 725c00e git-commit.sh update
+
+## 2024-07-27
+
+* f47d950 templates/docusaurus: all except maintainer
+* 02e742c maintainer-scripts updates
+* bd7f7aa git-commit.sh update
+
 ## 2024-07-24
 
-* v2.1.38 released
+* f0c1f22 2.1.38
+* 3f17ee0 prepare v2.1.38
 * aa07b55 copyright-liquid.yml: cosmetics
 * 5565bbe publish-github-pages.yml: add copyright
 * 2bce042 generate-website-commons.sh: use liquidjs
