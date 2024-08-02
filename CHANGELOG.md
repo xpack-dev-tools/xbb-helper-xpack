@@ -5,6 +5,13 @@ Entries in this file are in reverse chronological order.
 ## 2024-08-02
 
 * v3.0.0 released
+* a554075 build-scripts: fix case syntax
+* 6e31c88 is-something.sh: fix is_development
+* d90c3a6 post-processing.sh: use root_folder_path
+* 2633f79 templates: fix root_folder_path
+* 1c43b78 rename is_development, xpack-development
+* cce1a3b prepare v3.0.0
+* 038226b CHANGELOG update
 * 71ec8fb templates/docusaurus first-time updates
 * 3c5f095 templates/docusaurus install updates
 
