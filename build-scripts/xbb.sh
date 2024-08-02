@@ -1655,10 +1655,7 @@ function xbb_get_current_package_version()
   then
     package_file_path="$1"
   else
-    if [ -f "${root_folder_path}/package.json" ]
-    then
-      package_file_path="${root_folder_path}/package.json"
-    elif [ -f "${project_folder_path}/package.json" ]
+    if [ -f "${project_folder_path}/package.json" ]
     then
       package_file_path="${project_folder_path}/package.json"
     else
