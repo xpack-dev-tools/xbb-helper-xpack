@@ -57,8 +57,9 @@ cd "${root_folder}"
 export appName="$(liquidjs --context @package.json --template '{{ xpack.properties.appName }}')"
 export appLcName="$(liquidjs --context @package.json --template '{{ xpack.properties.appLcName }}')"
 export platforms="$(liquidjs --context @package.json --template '{{ xpack.properties.platforms }}')"
+export showGnuMcuAnalytics="$(liquidjs --context @package.json --template '{{ xpack.properties.showGnuMcuAnalytics }}')"
 
-export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\" }"
+export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"showGnuMcuAnalytics\": \"${showGnuMcuAnalytics}\" }"
 
 # tmp_context_file="$(mktemp) -t context"
 # echo "{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"
@@ -120,7 +121,8 @@ then
   mkdir -p "$(dirname $2/$to)"
 
   echo liquidjs "@$from" '->' "$2/$to"
-  liquidjs --context "${context}" --template "@$from" --output "$2/$to" --strict-variables --strict-filters
+  # --strict-variables --strict-filters for isGnuMcu
+  liquidjs --context "${context}" --template "@$from" --output "$2/$to" --no-greedy
 else
   mkdir -p "$(dirname $2/$to)"
   cp -v "$from" "$2/$to"
