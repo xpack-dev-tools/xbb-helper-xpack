@@ -127,12 +127,20 @@ then
 
   echo liquidjs "@$from" '->' "$2/$to"
   liquidjs --context "${context}" --template "@$from" --output "$2/$to" --strict-variables --strict-filters
-  chmod -w "$2/$to"
+
+  if [ "${do_force}" != "y" ]
+  then
+    chmod -w "$2/$to"
+  fi
 else
   mkdir -p "$(dirname $2/$to)"
 
   cp -v "$from" "$2/$to"
-  chmod -w "$2/$to"
+
+  if [ "${do_force}" != "y" ]
+  then
+    chmod -w "$2/$to"
+  fi
 fi
 
 __EOF__
