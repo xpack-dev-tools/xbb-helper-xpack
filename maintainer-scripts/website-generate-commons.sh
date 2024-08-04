@@ -79,7 +79,7 @@ function trap_handler()
   shift
 
   echo "FAIL ${from_file} line: ${line_number} exit: ${exit_code}"
-  return 255
+  exit 255
 }
 
 # echo $@
@@ -113,6 +113,11 @@ then
   # set -x
 fi
 
+if [ -f "$2/$to" ]
+then
+  chmod +w "$2/$to"
+fi
+
 if [ "$(basename "$from")" == ".DS_Store" ]
 then
   : # echo "ignored"
@@ -121,11 +126,13 @@ then
   mkdir -p "$(dirname $2/$to)"
 
   echo liquidjs "@$from" '->' "$2/$to"
-  # --strict-variables --strict-filters for isGnuMcu
-  liquidjs --context "${context}" --template "@$from" --output "$2/$to" --no-greedy
+  liquidjs --context "${context}" --template "@$from" --output "$2/$to" --strict-variables --strict-filters
+  chmod -w "$2/$to"
 else
   mkdir -p "$(dirname $2/$to)"
+
   cp -v "$from" "$2/$to"
+  chmod -w "$2/$to"
 fi
 
 __EOF__
