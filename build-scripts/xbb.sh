@@ -110,6 +110,7 @@ function xbb_reset_env()
     XBB_TARGET_WORK_FOLDER_PATH="${root_folder_path}/build/${XBB_TARGET_FOLDER_NAME}"
   fi
   XBB_BUILD_GIT_PATH="${project_folder_path}"
+  XBB_BUILD_ROOT_PATH="${root_folder_path}"
 
   XBB_DOWNLOAD_FOLDER_PATH="${XBB_DOWNLOAD_FOLDER_PATH:-"${HOME}/Work/cache"}"
 
@@ -140,6 +141,7 @@ function xbb_reset_env()
   export XBB_MAKE_VERBOSITY
 
   export XBB_BUILD_GIT_PATH
+  export XBB_BUILD_ROOT_PATH
   export XBB_DISTRO_INFO_NAME
 
   export XBB_TARGET_WORK_FOLDER_PATH

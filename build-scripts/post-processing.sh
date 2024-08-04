@@ -1717,7 +1717,7 @@ function copy_distro_files()
     echo
     echo "# Copying xPack files..."
 
-    cd "${XBB_BUILD_GIT_PATH}"
+    cd "${XBB_BUILD_ROOT_PATH}"
     local readme_out_file_name="${readme_out_file_name:-README-OUT.md}"
     run_verbose ${INSTALL} -v -c -m 644 "${root_folder_path}/scripts/${readme_out_file_name}" \
       "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/README.md"

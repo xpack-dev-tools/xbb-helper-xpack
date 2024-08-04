@@ -75,7 +75,7 @@ function copy_build_files()
     rm -rf "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/scripts"
     rm -rf "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}/patches"
 
-    cd "${XBB_BUILD_GIT_PATH}"
+    cd "${XBB_BUILD_ROOT_PATH}"
 
     # Ignore hidden folders/files (like .DS_Store).
     find scripts -type d ! -iname '.*' \
@@ -96,6 +96,8 @@ function copy_build_files()
         -exec ${INSTALL} -v -c -m 644 \
           '{}' "${XBB_APPLICATION_INSTALL_FOLDER_PATH}/${XBB_DISTRO_INFO_NAME}"/'{}' ';'
     fi
+
+    cd "${XBB_BUILD_GIT_PATH}"
 
     if [ -f CHANGELOG.txt ]
     then

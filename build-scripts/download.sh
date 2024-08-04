@@ -184,7 +184,8 @@ function _do_patch()
   if [ ! -z "$1" ]
   then
     local patch_file_name="$1"
-    local patch_path="${XBB_BUILD_GIT_PATH}/patches/${patch_file_name}"
+
+    local patch_path="${XBB_BUILD_ROOT_PATH}/patches/${patch_file_name}"
     if [ ! -f "${patch_path}" ]
     then
       # If not local in the project, try in the common helper.
@@ -214,7 +215,7 @@ function check_patch()
 {
   local patch_file_name="$1"
 
-  local patch_path="${XBB_BUILD_GIT_PATH}/patches/${patch_file_name}"
+  local patch_path="${XBB_BUILD_ROOT_PATH}/patches/${patch_file_name}"
   if [ ! -f "${patch_path}" ]
   then
     # If not local in the project, try in the common helper.
