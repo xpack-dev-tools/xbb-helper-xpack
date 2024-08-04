@@ -28,13 +28,13 @@ xpm install --config ${ props.platform } -C ~/Work/xpack-dev-tools/{{ appLcName 
 
 </details>
 
-To run the build:
+To run the native build:
 
 <CodeBlock language="sh"> {
 `xpm run build --config ${ props.platform } -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets`
 } </CodeBlock>
 
-or, for more verbosity, invoke the development build:
+or, for more verbosity, run the similar development build:
 
 <CodeBlock language="sh"> {
 `xpm run build-development --config ${ props.platform } -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets`
