@@ -1004,6 +1004,7 @@ function gcc_cross_test()
     echo
     echo "Showing the ${triplet}-gcc configuration..."
 
+    run_host_app_verbose "${CC}" --version
     run_host_app_verbose "${CC}" --help
     run_host_app_verbose "${CC}" -v
     run_host_app_verbose "${CC}" -dumpversion
