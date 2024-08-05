@@ -9,6 +9,19 @@ Always use Iain's branches for macOS builds (native and RISC-V).
 
 In reverse chronological order.
 
+## gcc 14.2
+
+A new patch was prepared based on upstream and Iain Sandoe:
+
+- <https://github.com/gcc-mirror/gcc/commits/releases/gcc-14.2.0>
+- <https://github.com/iains/gcc-14-branch/commits/gcc-14.2-darwin-r0>
+
+```sh
+rm -rf ~/tmp/gcc-14-branch.git
+git clone https://github.com/iains/gcc-14-branch.git ~/tmp/gcc-14-branch.git
+git -C ~/tmp/gcc-14-branch.git diff releases/gcc-14.2.0..gcc-14.2-darwin-r0 >~/Work/xpack-dev-tools/xbb-helper-xpack.git/patches/gcc-14.2.0-darwin.git.patch
+```
+
 ## gcc 11.5
 
 A new patch was prepared based on upstream and Iain Sandoe:
