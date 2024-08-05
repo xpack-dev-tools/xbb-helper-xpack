@@ -157,6 +157,13 @@ tmp_file_commit_readmes="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_readmes}"
 cd "$1/.."
 
+prefix=""
+if [ -d build-assets ]
+then
+  cd build-assets
+  prefix="build-assets/"
+fi
+
 echo
 echo $1
 # git add README-RELEASE.md
@@ -187,7 +194,7 @@ git add package.json package-lock.json
 # git commit -m "package.json: update Work/xpacks"
 # git commit -m "package.json: bump deps & reorder git-log"
 # git commit -m "package.json: mkdir -pv cache"
-# git commit -m "package.json: bump deps"
+git commit -m "package.json: bump deps"
 # git commit -m "package.json: clang 17.0.6-1.1"
 # git commit -m "package.json: xpm-version 0.18.0"
 # git commit -m "package.json: update xpack-dev-tools path"
@@ -201,7 +208,28 @@ git add package.json package-lock.json
 # git commit -m "package.json: add linux32"
 # git commit -m "package.json: rework generate workflows"
 # git commit -m "package.json: loglevel info"
-git commit -m "package.json: add actions, bump deps"
+# git commit -m "package.json: add actions, bump deps"
+# git commit -m "package.json: update generate-workflows"
+
+__EOF__
+
+tmp_file_commit_build_assets_package="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_commit_build_assets_package}"
+cd "$1/.."
+
+prefix=""
+if [ -d build-assets ]
+then
+  cd build-assets
+  prefix="build-assets/"
+fi
+
+echo
+echo $1
+
+git add package.json package-lock.json
+
+git commit -m "${prefix}package.json: build-development & docker 5.2.2"
 
 __EOF__
 
@@ -219,6 +247,7 @@ set -x
 
 # commands_file="${tmp_file_commit_readmes}"
 commands_file="${tmp_file_commit_package}"
+# commands_file="${tmp_file_commit_build_assets_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
