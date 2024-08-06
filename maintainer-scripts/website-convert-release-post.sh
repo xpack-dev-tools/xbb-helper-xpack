@@ -145,6 +145,27 @@ awk '/{% include note.html content="Due to memory limitations during the build, 
 # Convert ninja-build admonition.
 awk '/{% include note.html content="For consistency with the Node.js naming/ { print ":::note"; print ""; print "For consistency with the Node.js naming conventions, the names of the Intel 32-bit images are now suffixed with `-ia32`."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
+# convert arm-none-eabi-gcc admonition.
+awk '/{% include note.html content="Compared to the Arm distribution/ { print ":::note"; print ""; print "Compared to the Arm distribution, the Aarch64 binaries are not yet available."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+
+# convert arm-none-eabi-gcc admonition.
+awk '/{% include note.html content="Release 10.3.1-1.1, corresponding to Arm release/ { print ":::note"; print ""; print "Release 10.3.1-1.1, corresponding to Arm release 10.3-2021.07, was skipped."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+
+# convert qemu-arm admonition.
+awk '/% include note.html content="The method to select the path/ { print ":::note"; print ""; print "The method to select the path based on the xPack version was already added to the Eclipse plug-in, but for now is only available in the version published on the test site (https://gnu-mcu-eclipse.netlify.com/v4-neon-updates-test/)."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+
+# convert qemu-arm admonition.
+awk '/{% include warning.html content="In this old release/ { print ":::caution"; print ""; print "In this old release, support for hardware floating point on Cortex-M4 devices is not available."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+
+# convert windows-build-tools admonition.
+awk '/{% include note.html content="In preparation for the xPack distribution,/ { print ":::note"; print ""; print "In preparation for the xPack distribution, only portable archives are provided; Windows setups are no longer supported."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+
+# convert windows-build-tools admonition.
+awk '/{% include note.html content="By design, installing the xPack binaries/ { print ":::note"; print ""; print "By design, installing the xPack binaries does not require administrative rights, thus only portable archives are provided; Windows setups are no longer supported."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+
+# convert windows-build-tools admonition.
+awk '/{% include warning.html content="This version is affected by the Windows UCRT bug/ { print ":::caution"; print ""; print "This version is affected by the Windows UCRT bug, `make` throws _Error -1073741819_; please use v4.3.x or later. Thank you for your understanding."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+
 # Remove from Easy install to Compliance.
 if grep '### Easy install' "$2/$to" >/dev/null && grep '## Compliance' "$2/$to" >/dev/null
 then
@@ -217,7 +238,7 @@ sed -i.bak -e 's|update the \`${openocd_path}\` variable|update the `$\\{openocd
 sed -i.bak -e 's|https://xpack.github.io/dev-tools/\([a-z-]*\)/|https://xpack-dev-tools.github.io/\1-xpack|' "$2/$to"
 
 # Replace `page.` with `frontMatter.` when using variables.
-sed -i.bak -e 's|{{ page[.]\([a-z_]*\) }}|{ frontMatter.\1 }|g' "$2/$to"
+sed -i.bak -e 's|{{ page[.]\([a-z0-9_]*\) }}|{ frontMatter.\1 }|g' "$2/$to"
 
 # Fix local images url.
 sed -i.bak -e 's|{{ site.baseurl }}/assets/images|/img|g' "$2/$to"
