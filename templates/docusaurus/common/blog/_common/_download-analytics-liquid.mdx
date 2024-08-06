@@ -9,13 +9,16 @@ import Image from '@theme/IdealImage';
 
 - GitHub [xpack-dev-tools/{{ appLcName }}-xpack](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/)
   - this release <a href={ `https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/v${ props.version }/` } ><Image img={ `https://img.shields.io/github/downloads/xpack-dev-tools/{{ appLcName }}-xpack/v${ props.version }/total.svg` } alt='Github Release' /></a>
-  - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{ appLcName }}-xpack/total.svg)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/){% if showGnuMcuAnalytics == 'true' %}
-  - all GNU MCU Eclipse releases [![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/{{ appLcName }}/total.svg)](https://github.com/gnu-mcu-eclipse/{{ appLcName }}/releases/){% endif %}
+  - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{ appLcName }}-xpack/total.svg)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/){% if showDeprecatedGnuMcuAnalytics == 'true' %}
+  - all GNU MCU Eclipse releases [![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/{{ appLcName }}/total.svg)](https://github.com/gnu-mcu-eclipse/{{ appLcName }}/releases/){% endif %}{% if showDeprecatedRiscvGccAnalytics == 'true' %}
+  - deprecated xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/riscv-none-embed-gcc-xpack/total.svg)](https://github.com/xpack-dev-tools/riscv-none-embed-gcc-xpack/releases/)
+  - all GNU MCU Eclipse releases [![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/riscv-none-gcc/total.svg)](https://github.com/gnu-mcu-eclipse/riscv-none-gcc/releases/){% endif %}
   - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=xpack-dev-tools&repository={{ appLcName }}-xpack) (grouped per release)
 - npmjs.com [@xpack-dev-tools/{{ appLcName }}](https://www.npmjs.com/package/@xpack-dev-tools/{{ appLcName }})
   - latest releases [![npm](https://img.shields.io/npm/dw/@xpack-dev-tools/{{ appLcName }}.svg)](https://www.npmjs.com/package/@xpack-dev-tools/{{ appLcName }}/)
-  - all @xpack-dev-tools releases [![npm](https://img.shields.io/npm/dt/@xpack-dev-tools/{{ appLcName }}.svg)](https://www.npmjs.com/package/@xpack-dev-tools/{{ appLcName }}/){% if showGnuMcuAnalytics == 'true' %}
-  - all @gnu-mcu-eclipse releases [![npm](https://img.shields.io/npm/dt/@gnu-mcu-eclipse/{{ appLcName }}.svg)](https://www.npmjs.com/package/@gnu-mcu-eclipse/{{ appLcName }}/){% endif %}
+  - all @xpack-dev-tools releases [![npm](https://img.shields.io/npm/dt/@xpack-dev-tools/{{ appLcName }}.svg)](https://www.npmjs.com/package/@xpack-dev-tools/{{ appLcName }}/){% if showDeprecatedGnuMcuAnalytics == 'true' %}
+  - all @gnu-mcu-eclipse releases [![npm](https://img.shields.io/npm/dt/@gnu-mcu-eclipse/{{ appLcName }}.svg)](https://www.npmjs.com/package/@gnu-mcu-eclipse/{{ appLcName }}/){% endif %}{% if showDeprecatedRiscvGccAnalytics == 'true' %}
+  - all @gnu-mcu-eclipse releases [![npm](https://img.shields.io/npm/dt/@gnumcu-eclipse/riscv-none-gcc.svg)](https://www.npmjs.com/package/@gnu-mcu-eclipse/riscv-none-gcc/){% endif %}
 
 Credit to [Shields IO](https://shields.io) for the badges and to
 [Somsubhra/github-release-stats](https://github.com/Somsubhra/github-release-stats)
