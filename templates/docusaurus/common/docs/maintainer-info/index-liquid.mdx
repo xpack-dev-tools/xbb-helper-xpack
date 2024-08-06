@@ -60,13 +60,13 @@ git clone https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git \
   ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git
 ```
 
-For **development** purposes, clone the `{{ branch }}` branch:
+For **development** purposes, clone the `xpack-development` branch:
 
 ```sh
 rm -rf ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git && \
 mkdir -p ~/Work/xpack-dev-tools && \
 git clone \
-  --branch {{ branch }} \
+  --branch xpack-development \
   https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git \
   ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git
 ```
@@ -89,7 +89,7 @@ the central xPacks store:
 rm -rf ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
 mkdir -p ~/Work/xpack-dev-tools && \
 git clone \
-  --branch xpack-development \
+  --branchxpack-development \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
   ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
@@ -116,14 +116,14 @@ The build scripts are available in the `build-assets/scripts` folder of the
 [`xpack-dev-tools/{{ appLcName }}-xpack`](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack)
 Git repo.
 
-To download them on a new machine, clone the `{{ branch }}` branch,
+To download them on a new machine, clone the `xpack-development` branch,
 as seen above.
 
 ### Check Git
 
 In the `xpack-dev-tools/{{ appLcName }}-xpack` Git repo:
 
-- switch to the `{{ branch }}` branch
+- switch to the `xpack-development` branch
 - pull new changes
 - if needed, merge the `xpack` branch
 
@@ -250,7 +250,7 @@ xpm run build-development-debug --config darwin-x64 -C ~/Work/xpack-dev-tools/{{
 
 The build takes { durations["work"] }.
 
-When functional, push the `{{ branch }}` branch to GitHub.
+When functional, push the `xpack-development` branch to GitHub.
 
 Run the native build on the production machine
 (`xbbmi`, an older macOS);
@@ -370,10 +370,6 @@ place them in the XBB cache (`Work/cache`) and restart the build.
 
 The automation is provided by GitHub Actions and three self-hosted runners.
 
-### Generate the GitHub workflows
-
-Run the `generate-workflows` to re-generate the
-GitHub workflow files; commit and push if necessary.
 
 ### Start the self-hosted runners
 
@@ -428,31 +424,51 @@ The status of all self-hosted runners is available at:
 - https://github.com/organizations/xpack-dev-tools/settings/actions/runners
 
 
-### Push the build scripts
-
-- push the `{{ branch }}` branch to GitHub
-- possibly push the helper project too
-
-From here it'll be cloned on the production machines.
-
 ### Publish the helper
 
-Publish a new release of the helper and update the reference
-in `build-assets/package.json`.
+Publish a new release of the helper on **npmjs**.
+
+### Update the dependency to the new helper
+
+In `build-assets/package.json`, update the reference
+to `"@xpack-dev-tools/xbb-helper":`
+(possibly in all xPack projects).
+
+### Commit the changes to `build-assets/package.json`
+
+Use the message **build-assets/package.json: bump deps**.
 
 ### Check for disk space
 
 Check if the build machines have enough free space and eventually
 do some cleanups
 
-- GNU/Linux: `df -BG -H /`
-- macOS: `df -gH /`
+GNU/Linux:
 
-To remove previous builds, use:
+```sh
+df -BG -H /
+```
+
+macOS:
+```
+df -gH /
+```
+
+To free the space used by previous builds:
 
 ```sh
 rm -rf ~/Work/xpack-dev-tools/*/build-assets/build ~/Work/xpack-dev-tools/*/build
 ```
+
+### Generate the GitHub workflows
+
+Run the **`generate-workflows`** to update the
+GitHub workflow files.
+
+### Commit and push
+
+- commit with the message **Re-generate workflows**
+- push the `xpack-dependency` branch to GitHub
 
 ### Manually trigger the build GitHub Actions
 
@@ -482,7 +498,7 @@ Settings → Action →
 [Secrets](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/settings/secrets/actions)
 page.
 
-These commands use the `{{ branch }}` branch of this repo.
+These commands use the `xpack-development` branch of this repo.
 
 ### Durations & resulting binaries
 
@@ -517,7 +533,7 @@ bash ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets/xpacks/@xpack
 These scripts require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
 in the environment.
 
-These actions use the `{{ branch }}` branch of this repo and the
+These actions use the `xpack-development` branch of this repo and the
 [pre-releases/test](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/)
 binaries.
 
@@ -575,7 +591,7 @@ xattr -cr ${HOME}/Downloads/xpack-*
   like _**\* v{ customField('upstreamVersion') }-{ customField('xpackSubversion') } released**_
 - commit with _**CHANGELOG update**_
 - check and possibly update the `build-assets/templates/body-github-release-liquid.mdx`
-- push the `{{ branch }}` branch
+- push the `xpack-development` branch
 - run the xPack action
   - **`trigger-workflow-publish-release`**
 
@@ -588,7 +604,7 @@ tagged like **v{ customField('upstreamVersion') }-{ customField('xpackSubversion
 named like **xPack {{ appName }} v{ customField('upstreamVersion') }-{ customField('xpackSubversion') }** (mind the dash),
 with all binaries attached.
 
-- edit the draft and attach it to the `{{ branch }}` branch (important!)
+- edit the draft and attach it to the `xpack-development` branch (important!)
 - save the draft (do **not** publish yet!)
 
 ### Prepare a new blog post
@@ -624,7 +640,7 @@ watching this project.
 
 ### Update the package.json list of binaries
 
-- select the `{{ branch }}` branch
+- select the `xpack-development` branch
 - run the xPack action
   - **`update-package-binaries`**
 - open the top `package.json` file
@@ -638,7 +654,7 @@ watching this project.
 
 ### Publish on the npmjs.com server
 
-- select the `{{ branch }}` branch
+- select the `xpack-development` branch
 - check the latest commits `npm run git-log`
 - update `CHANGELOG.md`, add a line like _**\* v{ customField('upstreamVersion') }-{ customField('xpackSubversion') } published on npmjs.com**_
 - commit with a message like _**CHANGELOG: publish npm v{ customField('upstreamVersion') }-{ customField('xpackSubversion') }.{ customField('npmSubversion') }**_
