@@ -73,7 +73,8 @@ then
   xpm run website-generate-commons -C build-assets
   xpm run website-import-releases -C build-assets
 
-else
+elif false
+then
 
   # Skip if build-assets not created.
   if [ ! -d build-assets ]
@@ -89,6 +90,67 @@ else
   cd templates
   mv body-jekyll-release-post-part-1-liquid.md body-blog-release-post-part-1-liquid.md
   mv body-jekyll-release-post-part-2-liquid.md body-blog-release-post-part-2-liquid.md
+
+elif false
+then
+
+  # Skip if build-assets not created.
+  if [ ! -d build-assets ]
+  then
+    exit 0
+  fi
+
+  git add build-assets scripts README-*.md package*.json
+  if [ -d extras ]
+  then
+    git add extras
+  fi
+  if [ -d patches ]
+  then
+  git add patches
+  fi
+  if [ -d wrappers ]
+  then
+  git add wrappers
+  fi
+
+elif false
+then
+
+  # Skip if build-assets not created.
+  if [ ! -d build-assets ]
+  then
+    exit 0
+  fi
+
+  git add .github .gitignore .npmignore
+  git commit -m "re-generate workflows"
+
+elif false
+then
+
+  # Skip if build-assets not created.
+  if [ ! -d build-assets ]
+  then
+    exit 0
+  fi
+
+  git add website
+  git commit -m "website: preliminary content"
+
+elif true
+then
+
+  # Skip if build-assets not created.
+  if [ ! -d build-assets ]
+  then
+    exit 0
+  fi
+
+  git checkout xpack
+  git merge xpack-development
+  git push
+  git checkout xpack-development
 
 fi
 
