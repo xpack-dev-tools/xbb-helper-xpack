@@ -57,9 +57,10 @@ cd "${root_folder}"
 export appName="$(liquidjs --context @package.json --template '{{ xpack.properties.appName }}')"
 export appLcName="$(liquidjs --context @package.json --template '{{ xpack.properties.appLcName }}')"
 export platforms="$(liquidjs --context @package.json --template '{{ xpack.properties.platforms }}')"
-export showGnuMcuAnalytics="$(liquidjs --context @package.json --template '{{ xpack.properties.showGnuMcuAnalytics }}')"
+export showDeprecatedGnuMcuAnalytics="$(liquidjs --context @package.json --template '{{ xpack.properties.showDeprecatedGnuMcuAnalytics }}')"
+export showDeprecatedRiscvGccAnalytics="$(liquidjs --context @package.json --template '{{ xpack.properties.showDeprecatedRiscvGccAnalytics }}')"
 
-export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"showGnuMcuAnalytics\": \"${showGnuMcuAnalytics}\" }"
+export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"showDeprecatedGnuMcuAnalytics\": \"${showDeprecatedGnuMcuAnalytics}\", \"showDeprecatedRiscvGccAnalytics\": \"${showDeprecatedRiscvGccAnalytics}\" }"
 
 # tmp_context_file="$(mktemp) -t context"
 # echo "{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"
@@ -128,7 +129,7 @@ then
   echo liquidjs "@$from" '->' "$2/$to"
   liquidjs --context "${context}" --template "@$from" --output "$2/$to" --strict-variables --strict-filters
 
-  if [ "${do_force}" != "y" ]
+  if [ "${do_force}" == "y" ]
   then
     chmod -w "$2/$to"
   fi
@@ -137,7 +138,7 @@ else
 
   cp -v "$from" "$2/$to"
 
-  if [ "${do_force}" != "y" ]
+  if [ "${do_force}" == "y" ]
   then
     chmod -w "$2/$to"
   fi
