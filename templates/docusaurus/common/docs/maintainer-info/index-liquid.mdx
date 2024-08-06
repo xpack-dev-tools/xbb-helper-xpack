@@ -156,16 +156,17 @@ when the package is published to the `npm` server.
 Use the new version, suffixed by `.pre`,
 like <code>{ customField('upstreamVersion') }-{ customField('xpackSubversion') }.{ customField('npmSubversion') }.pre</code>.
 
-### Restart local web server
+### Start the local web server
 
-Execute the npm script `start` in the website sub-project,
+Execute the npm script `clean` then `start` in the website sub-project,
 or run the following in a terminal:
 
 ```sh
-(cd ~/Work/xpack-dev-tools/xbb-helper-xpack.git/website; npm run start)
+(cd ~/Work/xpack-dev-tools/xbb-helper-xpack.git/website; npm run clean; npm run start)
 ```
 
-Navigate to the **Maintainer Info** page.
+Navigate to the **Maintainer Info** page,
+the **Update the version specific code** section.
 
 <UpdateVersionSpecific/>
 
@@ -175,6 +176,18 @@ Navigate to the **Maintainer Info** page.
 - check if all previous fixed issues are in
 - add a new entry like _**\* v{ customField('upstreamVersion') }-{ customField('xpackSubversion') } prepared**_
 - commit with a message like _**prepare v{ customField('upstreamVersion') }-{ customField('xpackSubversion') }**_
+
+### Push the changes to Git
+
+Be sure that the latest commit that updates `VERSION` is pushed
+to the `xpack-development` branch!
+
+:::caution
+
+This is really important, otherwise the next steps
+will build again the previous release!
+
+:::
 
 ## Run the development builds
 
@@ -190,6 +203,19 @@ triggered via the VS Code graphical interface, using the
 [xPack extension](https://marketplace.visualstudio.com/items?itemName=ilg-vscode.xpack).
 
 <Patches/>
+
+### Restart the docker daemons
+
+If, for any reasons, the docker builds need to be canceled, it is very
+likely that some processes will continue to run in the background.
+
+To completely terminate them, and ensure that docker runs
+from a clean slate, restart the docker daemons on all GNU/Linux
+machines:
+
+```sh
+sudo systemctl restart docker
+```
 
 ### Build the x64 macOS binaries
 
@@ -295,11 +321,12 @@ caffeinate ssh xbbla32
 ### Update the trees in the Install Guide page
 
 Copy the trees displayed at the end of the test builds and paste to
-**Folder hierarchy** section in the web files:
+**Folder hierarchy** section in the web file:
 
-- `website/docs/install/_install-linux.mdx`
-- `website/docs/install/_install-macos.mdx`
-- `website/docs/install/_install-windows.mdx`
+- `website/docs/install/_miscellaneous.mdx`
+
+Replace **{ customField('upstreamVersion') }** with
+`${ customField('upstreamVersion') }` (there must be 6 occurences).
 
 :::tip
 
@@ -339,13 +366,13 @@ locations (like
 https://github.com/xpack-dev-tools/files-cache/tree/master/libs),
 place them in the XBB cache (`Work/cache`) and restart the build.
 
-## Run the CI/CD builds
+## Run the production builds
 
 The automation is provided by GitHub Actions and three self-hosted runners.
 
 ### Generate the GitHub workflows
 
-Run the `generate-workflows` to re-generate the
+Run the `generate-workflows` to re-generate the
 GitHub workflow files; commit and push if necessary.
 
 ### Start the self-hosted runners
@@ -361,26 +388,45 @@ caffeinate ssh xbbla
 caffeinate ssh xbbla32
 ```
 
-For `xbbli` & `xbbla` start two runners:
+Start the runner inside a `screen` session:
 
 ```sh
 screen -S ga
+```
 
+To quit it, use `# Ctrl-a Ctrl-d`.
+
+For `xbbli` & `xbbla` start two runners:
+
+```sh
 ~/actions-runners/xpack-dev-tools/1/run.sh &
 ~/actions-runners/xpack-dev-tools/2/run.sh &
-
-# Ctrl-a Ctrl-d
 ```
 
 On all other machines start a single runner:
 
 ```sh
-screen -S ga
-
 ~/actions-runners/xpack-dev-tools/run.sh &
-
-# Ctrl-a Ctrl-d
 ```
+
+To check the status of the runners locally:
+
+```sh
+ps -a | grep 'Runner.Listener'
+```
+
+To kill them:
+
+```sh
+killall Runner.Listener
+```
+
+### Check the status of the runners
+
+The status of all self-hosted runners is available at:
+
+- https://github.com/organizations/xpack-dev-tools/settings/actions/runners
+
 
 ### Push the build scripts
 
@@ -389,7 +435,7 @@ screen -S ga
 
 From here it'll be cloned on the production machines.
 
-### Publish helper
+### Publish the helper
 
 Publish a new release of the helper and update the reference
 in `build-assets/package.json`.
@@ -578,7 +624,7 @@ watching this project.
 
 ### Update the package.json list of binaries
 
-- select the `{{ branch }}` branch
+- select the `{{ branch }}` branch
 - run the xPack action
   - **`update-package-binaries`**
 - open the top `package.json` file
@@ -592,7 +638,7 @@ watching this project.
 
 ### Publish on the npmjs.com server
 
-- select the `{{ branch }}` branch
+- select the `{{ branch }}` branch
 - check the latest commits `npm run git-log`
 - update `CHANGELOG.md`, add a line like _**\* v{ customField('upstreamVersion') }-{ customField('xpackSubversion') } published on npmjs.com**_
 - commit with a message like _**CHANGELOG: publish npm v{ customField('upstreamVersion') }-{ customField('xpackSubversion') }.{ customField('npmSubversion') }**_
