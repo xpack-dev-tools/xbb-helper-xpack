@@ -2,9 +2,62 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-08-06
+
+* v3.0.3 released
+* 0397e13 templates/docusaurus updates
+* 3da2cdd git-push.sh update
+
+## 2024-08-05
+
+* e78cd20 README update
+* df74c7b add gcc-14.2.0-darwin.git.patch
+* 3eb76f9 templates/docusaurus: install update
+* 76daa0b templates/docusaurus: rework install
+* 59caa23 move-to-build-assets.sh added
+* 673272d git-commit.sh update
+
+## 2024-08-04
+
+* a7de65b templates/docusaurus developer-info update
+* 1f99a8b build-all.sh update docker image
+* fba4272 gcc-cross.sh: gcc --version
+* b05e491 build-scripts: use XBB_BUILD_ROOT_PATH
+* c71f200 templates/docusaurus updates
+* 4662848 website-generate-commons.sh update for chmod -w
+* a1c2759 templates/docusaurus updates
+* d5a6375 website-generate-common: make files read-only
+
+## 2024-08-03
+
+* ea20e3b templates/docusaurus developer-info update
+* 22234e3 templates/docusaurus maintainer-info updates
+* 4eacd7d templates/docusaurus developer-info updates
+* f3df69d templates/docusaurus maintainer-info add _common
+* fed5dbc templates/docusaurus _gcc-release-schedule add DO NOT EDIT
+* 6d9bdc2 templates/docusaurus remove work in progress
+* dfcaddf templates/docusaurus config blogSidebarCount: 8
+* d407937 templates/docusaurus maintainer-info updates
+* b7a14b6 templates/blog: add common
+* e235d7d website-generate-commons.sh add showGnuMcuAnalytics
+* 3be7364 tmplates/docusaurus/maintainer-info updates
+* 5448deb tmplates/docusaurus/user-info updates
+* 5c6c9af website-convert-release-post.sh: change to .mdx
+* 13dbfd7 github-actions: updates
+* 33e8dd3 xbb.sh: fix xbb_get_current_package_version
+* fe73b32 templates/docusaurus update
+* f68e872 github-actions common.sh fix path
+* 85a79cd githb-actions: update
+* 9b438e5 github-actions update
+* 723aeda github-actions updates
+
 ## 2024-08-02
 
-* v3.0.2 released
+* 80300a3 templates/workflows/publish: update
+* a4d7c6f templates/workflows/publish: update
+* 6a55403 templates/workflows/publish: update
+* ea82544 3.0.2
+* 6c9451f prepare v3.0.2
 * c0f62fe templates/workflows/publish: update
 * 079b025 templates/workflows/publish: update templates path
 * 0d615fa travis/common.sh update for build-assets
