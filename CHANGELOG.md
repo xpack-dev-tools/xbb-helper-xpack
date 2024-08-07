@@ -2,9 +2,29 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-08-07
+
+* v3.0.4 released
+* e6e86ab templates/docusaururs: updates
+* 0d57b96 templates/docusaurus remove -info
+* b8617b7 templates/docusaurus: Xxx Information
+* a20f8c9 templates/docusaurus: How to xxx
+* 77356d3 templates/docusaurus: user global store
+* f905cd2 template/docusaurus fix syntax
+* 6e82be0 template/docusaurus updates
+* 791829b git-commit.sh update
+* c36a91d github-actions: update
+* c05cddd templates/docusaurus updates
+* 16ec0f6 move-to-build-assets.sh update
+* 3189619 website-convert-release-post.sh updates
+
 ## 2024-08-06
 
-* v3.0.3 released
+* 329cfe0 website-generate-commons.sh: add showDeprecatedGnuMcuAnalytics
+2024-08-06 * 59c999f rename templates/docusaurus _github-actions-durations.mdx
+2024-08-06 * 3b83822 templates/docusaurus updates
+2024-08-06 * e8bdd1f 3.0.3
+2024-08-06 * 843510a prepare v3.0.3
 * 0397e13 templates/docusaurus updates
 * 3da2cdd git-push.sh update
 
