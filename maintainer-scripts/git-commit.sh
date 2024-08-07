@@ -217,19 +217,19 @@ tmp_file_commit_build_assets_package="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_build_assets_package}"
 cd "$1/.."
 
-prefix=""
-if [ -d build-assets ]
-then
-  cd build-assets
-  prefix="build-assets/"
-fi
-
 echo
 echo $1
 
-git add package.json package-lock.json
+cd build-assets
 
-git commit -m "${prefix}package.json: build-development & docker 5.2.2"
+git add package.json
+if [ -f package-lock.json ]
+then
+  git add package-lock.json
+fi
+
+# git commit -m "build-assets/package.json: build-development & docker 5.2.2"
+git commit -m "build-assets/package.json: updates"
 
 __EOF__
 
@@ -246,8 +246,8 @@ set -x
 # commands_file="${tmp_file_npmignore}"
 
 # commands_file="${tmp_file_commit_readmes}"
-commands_file="${tmp_file_commit_package}"
-# commands_file="${tmp_file_commit_build_assets_package}"
+# commands_file="${tmp_file_commit_package}"
+commands_file="${tmp_file_commit_build_assets_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
