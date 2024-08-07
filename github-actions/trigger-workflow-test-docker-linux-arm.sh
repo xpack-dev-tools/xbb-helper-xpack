@@ -67,7 +67,7 @@ source "${helper_folder_path}/build-scripts/xbb.sh"
 
 # GITHUB_API_DISPATCH_TOKEN must be present in the environment.
 
-message="Test ${XBB_APPLICATION_DESCRIPTION} on Intel Docker platforms"
+message="Test ${XBB_APPLICATION_DESCRIPTION} on x64 Docker platforms"
 
 branch="xpack-development"
 base_url="pre-release"

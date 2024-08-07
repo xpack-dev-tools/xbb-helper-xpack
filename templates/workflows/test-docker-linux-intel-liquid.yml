@@ -24,7 +24,7 @@
 
 # -----------------------------------------------------------------------------
 
-name: 'Test xPack {{ XBB_APPLICATION_NAME }} on Intel Docker platforms'
+name: 'Test xPack {{ XBB_APPLICATION_NAME }} on x64 Docker platforms'
 
 on:
   workflow_dispatch:

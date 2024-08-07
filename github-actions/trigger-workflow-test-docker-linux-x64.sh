@@ -62,12 +62,12 @@ source "${helper_folder_path}/build-scripts/xbb.sh"
 
 # -----------------------------------------------------------------------------
 
-# Script to trigger a set of Intel Linux Docker tests via GitHub Actions.
+# Script to trigger a set of x64 Linux Docker tests via GitHub Actions.
 # The binaries are downloaded from the mandatory `--base-url` parameter.
 
 # GITHUB_API_DISPATCH_TOKEN must be present in the environment.
 
-message="Test ${XBB_APPLICATION_DESCRIPTION} on Intel Docker platforms"
+message="Test ${XBB_APPLICATION_DESCRIPTION} on x64 Docker platforms"
 
 branch="xpack-development"
 base_url="pre-release"

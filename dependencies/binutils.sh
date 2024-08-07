@@ -151,7 +151,7 @@ function binutils_prepare_common_options()
   else
     if [ "${XBB_HOST_PLATFORM}" == "linux" -a "${XBB_HOST_ARCH}" == "x64" ]
     then
-      # Only Intel Linux supports multilib.
+      # Only x64 Linux supports multilib.
       config_options+=("--enable-multilib") # HB
     else
       # All other platforms do not.

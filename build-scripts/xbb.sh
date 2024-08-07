@@ -265,7 +265,7 @@ function xbb_set_requested()
         XBB_REQUESTED_HOST_MACHINE="x86_64"
         XBB_REQUESTED_HOST_TRIPLET="x86_64-w64-mingw32"
       else
-        echo "Windows cross builds are available only on Intel GNU/Linux"
+        echo "Windows cross builds are available only on x64 GNU/Linux"
         exit 1
       fi
       ;;
