@@ -87,7 +87,6 @@ version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 release_date="$(date '+%Y-%m-%d %H:%M:%S %z')"
 post_file_path="${website_blog_path}/$(date -u '+%Y-%m-%d')-${XBB_APPLICATION_LOWER_CASE_NAME}-v$(echo ${version} | tr '.' '-')-released.md"
 echo
-echo "Move '${post_file_path}' to the Jekyll _posts/releases/${XBB_APPLICATION_LOWER_CASE_NAME} folder."
 
 rm -rf "${post_file_path}"
 touch "${post_file_path}"
@@ -104,7 +103,7 @@ echo '```'  >> "${post_file_path}"
 
 liquidjs --context "{ \"XBB_RELEASE_VERSION\": \"${version}\", \"RELEASE_DATE\": \"${release_date}\" }" --template @"${root_folder_path}/templates/body-blog-release-post-part-2-liquid.mdx" >> "${post_file_path}"
 
-echo "Don't forget to manually solve the two TODO action points!"
+echo "Don't forget to manually solve the TODO action point!"
 
 echo
 echo "Done"
