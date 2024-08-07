@@ -205,7 +205,7 @@ sed -i.bak -e 's|separate \[.*\]... site.baseurl ../dev-tools/.*/install/) page|
 sed -i.bak -e 's|\[.*\]... site.baseurl ../dev-tools/.*/install/)|[Install Guide](/docs/install/)|' "$2/$to"
 
 # Fix references to README-BUILD.md.
-s="[Maintainer Info](/docs/maintainer-info/)"
+s="[Maintainer Info](/docs/maintainer/)"
 sed -i.bak -e "s|.How to build..https://github.com/xpack-dev-tools/.*-xpack/blob/xpack/README-BUILD.md.|$s|" "$2/$to"
 
 # Convert parametrised link to html.
