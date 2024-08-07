@@ -2,9 +2,17 @@
 
 Entries in this file are in reverse chronological order.
 
-## 2024-08-07
+## 2024-08-08
 
 * v3.0.4 released
+* f5279a5 try new 14.2.0-darwin.git.patch
+
+## 2024-08-07
+
+* da35a11 templates/docusaurus: updates
+* d05f20d x64 cosmetics
+* d173b17 3.0.4
+* 3fcd4e9 prepare v3.0.4
 * e6e86ab templates/docusaururs: updates
 * 0d57b96 templates/docusaurus remove -info
 * b8617b7 templates/docusaurus: Xxx Information
