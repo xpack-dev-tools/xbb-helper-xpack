@@ -243,6 +243,9 @@ sed -i.bak -e 's|{{ page[.]\([a-z0-9_]*\) }}|{ frontMatter.\1 }|g' "$2/$to"
 # Fix local images url.
 sed -i.bak -e 's|{{ site.baseurl }}/assets/images|/img|g' "$2/$to"
 
+# Fix link to tests results.
+sed -i.bak -e 's|/dev-tools/gcc/|/docs/|g' "$2/$to"
+
 # Remove the `site.baseurl` from links.
 sed -i.bak -e 's|{{ site.baseurl }}||g' "$2/$to"
 
