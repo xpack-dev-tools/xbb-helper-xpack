@@ -62,7 +62,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
@@ -110,7 +110,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
@@ -152,7 +152,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
@@ -189,7 +189,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
@@ -238,7 +238,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
@@ -278,7 +278,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
@@ -313,7 +313,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
@@ -362,7 +362,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
@@ -397,7 +397,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout

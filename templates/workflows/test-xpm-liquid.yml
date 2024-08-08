@@ -39,7 +39,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Checkout project'
@@ -79,7 +79,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -125,7 +125,7 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -178,7 +178,7 @@ jobs:
           clang++ -v
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -228,7 +228,7 @@ jobs:
           clang++ -v
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       - name: 'Clean working area' # Mandatory for self-hosted runners.
@@ -275,7 +275,7 @@ jobs:
           systeminfo # lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          ls -lLA && ls -lLA build-assets
+          ls -lLA
           env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
