@@ -320,9 +320,6 @@ jobs:
           touch {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
           echo "---" >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
           echo "title: {{ XBB_APPLICATION_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test results" >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
-          echo "permalink: /dev-tools/{{ XBB_APPLICATION_LOWER_CASE_NAME }}/tests/{% raw %}${{ github.event.inputs.version }}{% endraw %}/" >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
-          echo >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
-          echo "comments: true" >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
           echo >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
           echo "date: $(date "+%Y-%m-%d %H:%M:%S %z")" >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
           echo >>{% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/artefacts/tests-report.md
