@@ -35,23 +35,23 @@ script_folder_name="$(basename "${script_folder_path}")"
 # =============================================================================
 
 # set -x
-helper_folder="$(dirname "${script_folder_path}")"
+helper_folder_path="$(dirname "${script_folder_path}")"
 
 # This is the folder where the build is started (build-assets).
-root_folder="$(dirname $(dirname $(dirname $(dirname "${script_folder_path}"))))"
-if [ "$(basename "${root_folder}")" == "build-assets" ]
+root_folder_path="$(dirname $(dirname $(dirname $(dirname "${script_folder_path}"))))"
+if [ "$(basename "${root_folder_path}")" == "build-assets" ]
 then
-  project_folder="$(dirname "${root_folder}")"
+  project_folder_path="$(dirname "${root_folder_path}")"
   branch="xpack-development"
 else
-  project_folder="${root_folder}"
+  project_folder_path="${root_folder_path}"
   branch="xpack-develop"
 fi
 
 # which liquidjs
 # liquidjs --help
 
-cd "${root_folder}"
+cd "${root_folder_path}"
 
 # Use liquidjs to extract properties from package.json.
 export appName="$(liquidjs --context @package.json --template '{{ xpack.properties.appName }}')"
@@ -150,34 +150,34 @@ __EOF__
 # cat ${tmp_script_file}
 # exit 1
 
-cd "${helper_folder}/templates/docusaurus/common"
+cd "${helper_folder_path}/templates/docusaurus/common"
 # pwd
 
 echo
 echo "Common files, overriden..."
 
 find . -type f -print0 | sort -zn | \
-  xargs -0 -I '{}' bash "${tmp_script_file}" --force '{}' "${project_folder}/website"
+  xargs -0 -I '{}' bash "${tmp_script_file}" --force '{}' "${project_folder_path}/website"
 
-cd "${helper_folder}/templates/docusaurus/first-time"
+cd "${helper_folder_path}/templates/docusaurus/first-time"
 # pwd
 
 echo
 echo "First time versions..."
 
 find . -type f -print0 | sort -zn | \
-  xargs -0 -I '{}' bash "${tmp_script_file}" '{}' "${project_folder}/website"
+  xargs -0 -I '{}' bash "${tmp_script_file}" '{}' "${project_folder_path}/website"
 
 rm -f "${tmp_script_file}"
 
-cd "${helper_folder}/templates/docusaurus/other"
+cd "${helper_folder_path}/templates/docusaurus/other"
 
 # Regenerate top README.md.
-if [ $(cat "${project_folder}/README.md" | wc -l | tr -d '[:blank:]') -lt 42 ]
+if [ $(cat "${project_folder_path}/README.md" | wc -l | tr -d '[:blank:]') -lt 42 ]
 then
   echo
-  echo liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder}/README.md"
-  liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder}/README.md" --strict-variables --strict-filters
+  echo liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder_path}/README.md"
+  liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder_path}/README.md" --strict-variables --strict-filters
 else
   echo
   echo "Top README preserved."

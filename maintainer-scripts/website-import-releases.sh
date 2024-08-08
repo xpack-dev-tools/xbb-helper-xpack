@@ -39,23 +39,23 @@ doForce="y"
 export doForce
 
 # set -x
-helper_folder="$(dirname "${script_folder_path}")"
+helper_folder_path="$(dirname "${script_folder_path}")"
 
 # This is the folder where the build is started (build-assets).
-root_folder="$(dirname $(dirname $(dirname $(dirname "${script_folder_path}"))))"
-if [ "$(basename "${root_folder}")" == "build-assets" ]
+root_folder_path="$(dirname $(dirname $(dirname $(dirname "${script_folder_path}"))))"
+if [ "$(basename "${root_folder_path}")" == "build-assets" ]
 then
-  project_folder="$(dirname "${root_folder}")"
+  project_folder_path="$(dirname "${root_folder_path}")"
 else
-  project_folder="${root_folder}"
+  project_folder_path="${root_folder_path}"
 fi
 
-xpack_www_releases="$(dirname $(dirname $(dirname "${project_folder}")))/xpack.github/www/web-jekyll-xpack.git/_posts/releases"
+xpack_www_releases="$(dirname $(dirname $(dirname "${project_folder_path}")))/xpack.github/www/web-jekyll-xpack.git/_posts/releases"
 
 # which liquidjs
 # liquidjs --help
 
-cd "${root_folder}"
+cd "${root_folder_path}"
 
 # Use liquidjs to extract properties from package.json.
 export appName="$(liquidjs --context @package.json --template '{{ xpack.properties.appName }}')"
@@ -69,12 +69,12 @@ echo
 echo "Release posts..."
 
 find . -type f -print0 | \
-   xargs -0 -I '{}' bash "${script_folder_path}/website-convert-release-post.sh" '{}' "${project_folder}/website/blog"
+   xargs -0 -I '{}' bash "${script_folder_path}/website-convert-release-post.sh" '{}' "${project_folder_path}/website/blog"
 
 echo
 echo "Validating..."
 
-if grep -r -e '{{' "${project_folder}/website/blog"/* || grep -r -e '{%' "${project_folder}/website/blog"/*
+if grep -r -e '{{' "${project_folder_path}/website/blog"/* || grep -r -e '{%' "${project_folder_path}/website/blog"/*
 then
   exit 1
 fi
