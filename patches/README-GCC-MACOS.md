@@ -14,13 +14,16 @@ In reverse chronological order.
 A new patch was prepared based on upstream and Iain Sandoe:
 
 - <https://github.com/gcc-mirror/gcc/commits/releases/gcc-14.2.0>
-- <https://github.com/iains/gcc-14-branch/commits/gcc-14.2-darwin-r0>
+- <https://github.com/iains/gcc-14-branch/commits/b50a0534fd2b8abfa298501f90cc019e797cbf59>
 
 ```sh
 rm -rf ~/tmp/gcc-14-branch.git
 git clone https://github.com/iains/gcc-14-branch.git ~/tmp/gcc-14-branch.git
-git -C ~/tmp/gcc-14-branch.git diff releases/gcc-14.2.0..gcc-14.2-darwin-r0 >~/Work/xpack-dev-tools/xbb-helper-xpack.git/patches/gcc-14.2.0-darwin.git.patch
+git -C ~/tmp/gcc-14-branch.git diff releases/gcc-14.2.0..b50a0534fd2b8abfa298501f90cc019e797cbf59 >~/Work/xpack-dev-tools/xbb-helper-xpack.git/patches/gcc-14.2.0-darwin.git.patch
 ```
+
+Tag gcc-14.1-darwin-r0 had a problem and gcc-14.1-darwin-r1 came one day later.
+
 
 ## gcc 11.5
 
