@@ -59,9 +59,9 @@ export appLcName="$(liquidjs --context @package.json --template '{{ xpack.proper
 export platforms="$(liquidjs --context @package.json --template '{{ xpack.properties.platforms }}')"
 export showDeprecatedGnuMcuAnalytics="$(liquidjs --context @package.json --template '{{ xpack.properties.showDeprecatedGnuMcuAnalytics }}')"
 export showDeprecatedRiscvGccAnalytics="$(liquidjs --context @package.json --template '{{ xpack.properties.showDeprecatedRiscvGccAnalytics }}')"
-export showTestResults="$(liquidjs --context @package.json --template '{{ xpack.properties.showTestResults }}')"
+export showTestsResults="$(liquidjs --context @package.json --template '{{ xpack.properties.showTestsResults }}')"
 
-export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"showDeprecatedGnuMcuAnalytics\": \"${showDeprecatedGnuMcuAnalytics}\", \"showDeprecatedRiscvGccAnalytics\": \"${showDeprecatedRiscvGccAnalytics}\", \"showTestResults\": \"${showTestResults}\" }"
+export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"showDeprecatedGnuMcuAnalytics\": \"${showDeprecatedGnuMcuAnalytics}\", \"showDeprecatedRiscvGccAnalytics\": \"${showDeprecatedRiscvGccAnalytics}\", \"showTestsResults\": \"${showTestsResults}\" }"
 
 # tmp_context_file="$(mktemp) -t context"
 # echo "{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"
