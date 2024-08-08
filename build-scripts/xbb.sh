@@ -25,6 +25,8 @@ function xbb_make_writable()
         echo "Make the build folder writable by all..."
 
         run_verbose chmod -R a+w "${root_folder_path}/build"
+
+        run_verbose ls -l "${root_folder_path}/build"
       fi
 
 
