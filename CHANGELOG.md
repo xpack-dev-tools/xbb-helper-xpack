@@ -2,9 +2,30 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-08-09
+
+* v3.0.5 released
+* 6d970cd templates/docusaurus updates
+* f86631d website-generate-commons.sh: showTestsResults
+* e243d24 generate-workflows: use platform
+
 ## 2024-08-08
 
-* v3.0.4 released
+* 8e8ebe6 templates/docusaurus update sidebar-liquid.ts
+* bb00b04 README updates
+* 5a403c1 package.json: update git+https
+* b17c891 templates/workflows: test-xpm updates
+* 92f5a9d templates/workflows: test-prime updates
+* e2d3072 templates/docusaurus updates for showTestResults
+* 5d8e685 website-generate-commons.sh: add showTestResults
+* fc61692 templates/docusaurus updates
+* 79f8bb0 templates/workflows: revert to ls -lLA
+* 50c7568 xbb.sh: chmod -R a+rwx at the end
+* eecb436 workflows: ls -lLA build-assets
+* 7899357 website-convert-release-post.sh update
+* af8a697 xbb.sh: add ls -l build at the end
+* de19510 3.0.5
+* 2a055f9 prepare v3.0.5
 * f5279a5 try new 14.2.0-darwin.git.patch
 
 ## 2024-08-07
