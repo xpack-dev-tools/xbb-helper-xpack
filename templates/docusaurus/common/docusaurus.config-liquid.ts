@@ -243,7 +243,11 @@ const config: Config = {
             {
               label: 'Releases',
               to: '/docs/releases'
-            }
+            },{% if showTestResults == 'true' %}
+            {
+              label: 'Test Results',
+              to: '/docs/tests'
+            },{% endif %}
           ]
         },
         {
