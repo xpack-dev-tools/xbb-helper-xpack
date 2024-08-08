@@ -4,7 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-08-09
 
-* v3.0.5 released
+* v3.0.7 released
+* 3e3f116 maintainer-scripts: rename *_path
+* e181d7c travis: rename root_folder_path
+* 3b3fa74 github-actions: rename root_folder_path
+* 2f2fd80 3.0.6
+* c2affa7 prepare v3.0.6
 * 6d970cd templates/docusaurus updates
 * f86631d website-generate-commons.sh: showTestsResults
 * e243d24 generate-workflows: use platform
