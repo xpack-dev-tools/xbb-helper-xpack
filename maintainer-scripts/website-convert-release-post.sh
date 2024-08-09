@@ -234,6 +234,9 @@ sed -i.bak -e "$s" "$2/$to"
 # Preserve Eclipse variable syntax.
 sed -i.bak -e 's|update the \`${openocd_path}\` variable|update the `$\\{openocd_path\\}` variable|' "$2/$to"
 
+# Fix links to tests.
+sed -i.bak -e "s|/dev-tools/${appLcName}/tests/|/docs/tests/|" "$2/$to"
+
 # Fix project web path
 sed -i.bak -e 's|https://xpack.github.io/dev-tools/\([a-z-]*\)/|https://xpack-dev-tools.github.io/\1-xpack|' "$2/$to"
 
