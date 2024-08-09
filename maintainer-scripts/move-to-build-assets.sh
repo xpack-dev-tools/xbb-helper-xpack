@@ -138,7 +138,7 @@ then
   git add website
   git commit -m "website: preliminary content"
 
-elif true
+elif false
 then
 
   # Skip if build-assets not created.
@@ -151,6 +151,25 @@ then
   git merge xpack-development
   git push
   git checkout xpack-development
+
+elif true
+then
+
+  # Skip if build-assets not created.
+  if [ ! -d build-assets ]
+  then
+    exit 0
+  fi
+
+  if [ -f "build-assets/templates/body-blog-release-post-part-1-liquid.md" ]
+  then
+    mv -v "build-assets/templates/body-blog-release-post-part-1-liquid.md" "build-assets/templates/body-blog-release-post-part-1-liquid.mdx"
+  fi
+
+  if [ -f "build-assets/templates/body-blog-release-post-part-2-liquid.md" ]
+  then
+    mv -v "build-assets/templates/body-blog-release-post-part-2-liquid.md" "build-assets/templates/body-blog-release-post-part-2-liquid.mdx"
+  fi
 
 fi
 
