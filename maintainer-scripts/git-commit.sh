@@ -34,28 +34,29 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-tmp_file_commit_body_jekyll="$(mktemp)"
-cat <<'__EOF__' >"${tmp_file_commit_body_jekyll}"
-cd "$1/.."
+tmp_file_commit_body_blog="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_commit_body_blog}"
+cd "$1/../build-assets"
 
 echo
 echo $1
-git add scripts/templates/body-jekyll-release-post*.md
-git commit -m "templates/body-jekyll: fix jekyll raw/endraw"
+git add templates/body-blog-release-post*.mdx
+git commit -m "templates/body-blog: fix jekyll raw/endraw"
 
 __EOF__
 
 # -----------------------------------------------------------------------------
 
-tmp_file_jekyll="$(mktemp)"
-cat <<'__EOF__' >"${tmp_file_jekyll}"
-cd "$1/.."
+tmp_file_blog="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_blog}"
+cd "$1/../build-assets"
 
 echo
 echo $1
-git add scripts/templates/body-jekyll-release-post-part-*-liquid.md
-# git add scripts/templates/body-jekyll-release-post-part-2-liquid.md
-git commit -m "templates/jekyll update"
+git add templates/body-blog-release-post-part-*-liquid.mdx
+# git add templates
+# git add templates/body-blog-release-post-part-2-liquid.mdx
+git commit -m "templates/body-blog update"
 
 __EOF__
 
@@ -157,19 +158,12 @@ tmp_file_commit_readmes="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_readmes}"
 cd "$1/.."
 
-prefix=""
-if [ -d build-assets ]
-then
-  cd build-assets
-  prefix="build-assets/"
-fi
-
 echo
 echo $1
 # git add README-RELEASE.md
 # git add README-MAINTAINER.md
 # git add README*.md scripts/README*.md
-git add README*.md
+git add README*.md build-assets/README*.md
 
 git commit -m "READMEs update"
 # git commit -m "READMEs update prerequisites"
@@ -188,13 +182,17 @@ echo
 echo $1
 
 # git add package.json
-git add package.json package-lock.json
+git add package.json
+if [ -f package-lock.json ]
+then
+  git add package-lock.json
+fi
 
 # git commit -m "package.json: add scripts"
 # git commit -m "package.json: update Work/xpacks"
 # git commit -m "package.json: bump deps & reorder git-log"
 # git commit -m "package.json: mkdir -pv cache"
-git commit -m "package.json: bump deps"
+# git commit -m "package.json: bump deps"
 # git commit -m "package.json: clang 17.0.6-1.1"
 # git commit -m "package.json: xpm-version 0.18.0"
 # git commit -m "package.json: update xpack-dev-tools path"
@@ -210,17 +208,16 @@ git commit -m "package.json: bump deps"
 # git commit -m "package.json: loglevel info"
 # git commit -m "package.json: add actions, bump deps"
 # git commit -m "package.json: update generate-workflows"
+git commit -m "package.json: git+https"
 
 __EOF__
 
 tmp_file_commit_build_assets_package="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_build_assets_package}"
-cd "$1/.."
+cd "$1/../build-assets"
 
 echo
 echo $1
-
-cd build-assets
 
 git add package.json
 if [ -f package-lock.json ]
@@ -241,13 +238,13 @@ set -x
 # commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_application}"
 
-# commands_file="${tmp_file_jekyll}"
+# commands_file="${tmp_file_blog}"
 # commands_file="${tmp_file_scripts}"
 # commands_file="${tmp_file_npmignore}"
 
-# commands_file="${tmp_file_commit_readmes}"
+commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
-commands_file="${tmp_file_commit_build_assets_package}"
+# commands_file="${tmp_file_commit_build_assets_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
