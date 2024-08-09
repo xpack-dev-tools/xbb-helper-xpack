@@ -2064,6 +2064,8 @@ function create_archive()
       "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"/* \
       "${XBB_ARCHIVE_FOLDER_PATH}/${distribution_folder_name}"
 
+    # Ensure the archived files are RW.
+    run_verbose chmod -R ug+rw "${XBB_ARCHIVE_FOLDER_PATH}"
     cd "${XBB_ARCHIVE_FOLDER_PATH}"
 
     local distribution_file_path

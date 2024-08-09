@@ -53,6 +53,7 @@ function tests_install_archive()
   run_verbose rm -rf "${tests_folder_path}"
 
   run_verbose mkdir -pv "${tests_folder_path}"
+  run_verbose chmod ug+rw "${tests_folder_path}"
 
   if [ "${XBB_BASE_URL}" == "pre-release" ]
   then
