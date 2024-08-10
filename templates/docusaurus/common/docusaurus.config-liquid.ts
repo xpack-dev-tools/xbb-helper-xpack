@@ -29,10 +29,17 @@ function getCustomFields() {
 
   logger.info(`package version: ${topPackageJson.version}`);
 
+  // Remove the first part, up to the last dot.
   const npmSubversion = jsonVersion.replace(/^.*[.]/, '');
+
+  // Remove from the last dot to the end.
   const rest1 = jsonVersion.replace(/[.][0-9]*$/, '');
+
+  // Remove the first part, up to the dash.
   const xpackSubversion = rest1.replace(/^.*[-]/, '');
-  const upstreamVersion = rest1.replace(/[-][0-9]*$/, '');
+
+  // Remove from the dash to the end.
+  const upstreamVersion = rest1.replace(/[-].*$/, '');
 
   let rootPackageJson
   try {

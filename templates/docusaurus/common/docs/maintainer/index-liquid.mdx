@@ -12,9 +12,10 @@ date: 2024-07-12 20:11:00 +0300
 import CodeBlock from '@theme/CodeBlock';
 
 import customField from '@site/src/libs/customField';
+import isXpackSubversionDouble from '@site/src/libs/isXpackSubversionDouble';
 
 import MoreRepos from './_more-repos.mdx';
-import ReleaseSchedule from './_release-schedule.mdx';
+import ReleaseSchedule from '../getting-started/_release-schedule.mdx';
 import CheckUpstreamRelease from './_check-upstream-release.mdx'
 import UpdateVersionSpecific from './_update-version-specific.mdx'
 import GitHubActionsDurations from './_github-actions-durations.mdx'
@@ -33,9 +34,9 @@ import PlatformDockerBuild from './_common/_platform-docker-build.mdx'
 [![GitHub issues](https://img.shields.io/github/issues/xpack-dev-tools/{{ appLcName }}-xpack.svg)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/issues/)
 [![GitHub pulls](https://img.shields.io/github/issues-pr/xpack-dev-tools/{{ appLcName }}-xpack.svg)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/pulls)
 
-This page is intended for those who maintain
+This page is intended for those who maintain the
 **xPack {{ appName }}**
-and documents how to make new releases.
+project and documents how to make new releases.
 
 ## Prerequisites
 
@@ -150,9 +151,9 @@ and fix them; assign them to a milestone (like <code>{ customField('upstreamVers
 Determine the version (like <code>{ customField('upstreamVersion') }</code>)
 and update the `build-assets/scripts/VERSION` file; the format
 is <code>{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code>.
-The fourth number is the xPack release number
-of this version. A fifth number will be added to the version in `package.json`
-when the package is published to the `npm` server.
+{ isXpackSubversionDouble() ?
+'The fourth & fifth numbers are the xPack release number of this version. A sixth number will be added to the version in `package.json` when the package is published to the `npm` server' :
+'The fourth number is the xPack release number of this version. A fifth number will be added to the version in `package.json` when the package is published to the `npm` server' }.
 
 ### Update the version in top `package.json` to a pre-release
 

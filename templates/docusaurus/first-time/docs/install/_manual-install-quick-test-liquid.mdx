@@ -1,9 +1,5 @@
 
-import CodeBlock from '@theme/CodeBlock';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-import customField from '@site/src/libs/customField';
+import ManualInstallQuickTest from './_common/_manual-install-quick-test.mdx'
 
 export const appName = '{{ appName }}';
 export const appLcName = '{{ appLcName }}';
@@ -12,35 +8,9 @@ export const branding = '{{ appLcName }} (xPack {{ appName }} x86_64) ';
 
 {/* ------------------------------------------------------------------------ */}
 
-### Quick test {#manual-install-quick-test}
-
-(`_manual-install-quick-test.mdx`)
-
-To check if the xPack { appName } installed manually starts properly, use something like:
-
-<Tabs groupId="operating-systems">
-<TabItem value="windows" label="Windows" default>
-
-<CodeBlock language="console"> {
-`C:\\> %USERPROFILE%\\AppData\\Roaming\\xPacks\\${ appLcName }\\xpack-${ appLcName }-${ customField('upstreamVersion') }-${ customField('xpackSubversion') }\\bin\\${ programName }.exe --version
-${ branding }${ customField('upstreamVersion') }`
-} </CodeBlock>
-
-</TabItem>
-<TabItem value="macos" label="macOS">
-
-<CodeBlock language="console"> {
-`% ~/Library/xPacks/${ appLcName }/xpack-${ appLcName }-${ customField('upstreamVersion') }-${ customField('xpackSubversion') }/bin/${ programName } --version
-${ branding }${ customField('upstreamVersion') }`
-} </CodeBlock>
-
-</TabItem>
-<TabItem value="linux" label="GNU/Linux">
-
-<CodeBlock language="console"> {
-`$ ~/.local/xPacks/${ appLcName }/xpack-${ appLcName }-${ customField('upstreamVersion') }-${ customField('xpackSubversion') }/bin/${ programName } --version
-${ branding }${ customField('upstreamVersion') }`
-} </CodeBlock>
-
-</TabItem>
-</Tabs>
+<ManualInstallQuickTest
+  appName={ appName }
+  appLcName={ appLcName }
+  programName={ programName }
+  branding={ branding }
+/>
