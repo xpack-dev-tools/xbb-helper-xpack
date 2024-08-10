@@ -99,6 +99,17 @@ to=$(echo "$from" | sed -e 's|-liquid||')
 
 trap 'trap_handler ${from} $LINENO $?; return 255' ERR
 
+if [ -d "${from}" ] && [ "$(basename "${from}")" == "_common" ]
+then
+  if [ -d "$2/$to" ]
+  then
+    chmod -R +w "$2/$to"
+    rm -rf "$2/$to"
+    echo "rm $2/$to"
+  fi
+  exit 0
+fi
+
 if [ "${do_force}" != "y" ]
 then
   if [ -f "$2/$to" ]
@@ -154,8 +165,17 @@ cd "${helper_folder_path}/templates/docusaurus/common"
 # pwd
 
 echo
+echo "Common files, cleanups..."
+
+# Preliminary pass to remove _common folders.
+find . -type d -name '_common' -print0 | sort -zn | \
+  xargs -0 -I '{}' bash "${tmp_script_file}" --force '{}' "${project_folder_path}/website"
+
+echo
 echo "Common files, overriden..."
 
+
+# Main pass to copy/generate common
 find . -type f -print0 | sort -zn | \
   xargs -0 -I '{}' bash "${tmp_script_file}" --force '{}' "${project_folder_path}/website"
 
@@ -163,7 +183,7 @@ cd "${helper_folder_path}/templates/docusaurus/first-time"
 # pwd
 
 echo
-echo "First time versions..."
+echo "First time proposals..."
 
 find . -type f -print0 | sort -zn | \
   xargs -0 -I '{}' bash "${tmp_script_file}" '{}' "${project_folder_path}/website"
