@@ -131,13 +131,6 @@ In the `xpack-dev-tools/{{ appLcName }}-xpack` Git repo:
 The `xpack` branch should be unchanged since the previous release
 and will be updated when the new release is out.
 
-### Update helper & other dependencies
-
-Check the latest versions at https://github.com/xpack-dev-tools/ and
-update the dependencies in `build-assets/package.json`.
-
-<CheckUpstreamRelease/>
-
 ### Fix possible open issues
 
 Check GitHub issues and pull requests:
@@ -145,6 +138,13 @@ Check GitHub issues and pull requests:
 - https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/issues/
 
 and fix them; assign them to a milestone (like <code>{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code>).
+
+### Update helper & other dependencies
+
+Check the latest versions at https://github.com/xpack-dev-tools/ and
+update the dependencies in `build-assets/package.json`.
+
+<CheckUpstreamRelease/>
 
 ### Increase the version and update VERSION
 
@@ -159,6 +159,11 @@ is <code>{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</
 
 Use the new version, suffixed by `.pre`,
 like <code>{ customField('upstreamVersion') }-{ customField('xpackSubversion') }.{ customField('npmSubversion') }.pre</code>.
+
+### Update the `customFields` (if needed)
+
+If the project uses `customFierlds` in `build-assets/package.json`,
+update the release specific properties (if any).
 
 ### Start the local web server
 
@@ -373,7 +378,6 @@ place them in the XBB cache (`Work/cache`) and restart the build.
 ## Run the production builds
 
 The automation is provided by GitHub Actions and three self-hosted runners.
-
 
 ### Start the self-hosted runners
 
@@ -830,7 +834,7 @@ The results are available from the
 - GitHub [`xpack-dev-tools/{{ appLcName }}-xpack`](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/) repo
   - latest xPack release
 [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{ appLcName }}-xpack/latest/total.svg)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/)
-  - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{ appLcName }}-xpack/total.svg)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/){% if showDeprecatedGnuMcuAnalytics == 'true' %}
+  - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{ appLcName }}-xpack/total.svg)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/){% if customFields.showDeprecatedGnuMcuAnalytics == 'true' %}
   - previous GNU MCU Eclipse all releases [![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/{{ appLcName }}/total.svg)](https://github.com/gnu-mcu-eclipse/{{ appLcName }}/releases/){% endif %}
   - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=xpack-dev-tools&repository={{ appLcName }}-xpack) (grouped per release)
 - npmjs.com [`@xpack-dev-tools/{{ appLcName }}`](https://www.npmjs.com/package/@xpack-dev-tools/{{ appLcName }}/) xPack

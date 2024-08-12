@@ -57,11 +57,10 @@ cd "${root_folder_path}"
 export appName="$(liquidjs --context @package.json --template '{{ xpack.properties.appName }}')"
 export appLcName="$(liquidjs --context @package.json --template '{{ xpack.properties.appLcName }}')"
 export platforms="$(liquidjs --context @package.json --template '{{ xpack.properties.platforms }}')"
-export showDeprecatedGnuMcuAnalytics="$(liquidjs --context @package.json --template '{{ xpack.properties.showDeprecatedGnuMcuAnalytics }}')"
-export showDeprecatedRiscvGccAnalytics="$(liquidjs --context @package.json --template '{{ xpack.properties.showDeprecatedRiscvGccAnalytics }}')"
-export showTestsResults="$(liquidjs --context @package.json --template '{{ xpack.properties.showTestsResults }}')"
 
-export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"showDeprecatedGnuMcuAnalytics\": \"${showDeprecatedGnuMcuAnalytics}\", \"showDeprecatedRiscvGccAnalytics\": \"${showDeprecatedRiscvGccAnalytics}\", \"showTestsResults\": \"${showTestsResults}\" }"
+export customFields="$(liquidjs --context @package.json --template '{{ xpack.properties.customFields | json }}')"
+
+export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"customFields\": ${customFields} }"
 
 # tmp_context_file="$(mktemp) -t context"
 # echo "{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"
@@ -139,7 +138,8 @@ then
   mkdir -p "$(dirname $2/$to)"
 
   echo liquidjs "@$from" '->' "$2/$to"
-  liquidjs --context "${context}" --template "@$from" --output "$2/$to" --strict-variables --strict-filters
+  # --strict-variables
+  liquidjs --context "${context}" --template "@$from" --output "$2/$to"  --strict-filters
 
   if [ "${do_force}" == "y" ]
   then
