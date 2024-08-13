@@ -814,6 +814,7 @@ function gcc_cross_build_final()
           elif [ "${triplet}" == "aarch64-none-elf" ]
           then
             config_options+=("--disable-libatomic") # ABE
+            config_options+=("--with-headers=yes") # ABE
           elif [ "${triplet}" == "riscv-none-elf" ]
           then
             config_options+=("--with-abi=${XBB_APPLICATION_GCC_ABI}")
