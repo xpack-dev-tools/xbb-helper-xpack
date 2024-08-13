@@ -155,6 +155,12 @@ function binutils_cross_build()
           config_options+=("--disable-werror")
 
           config_options+=("--enable-initfini-array") # Arm, AArch64
+
+          # ld.gold requested to compile the Android kernel.
+          config_options+=("--enable-gold")
+          # ld added explicitly for consistency.
+          config_options+=("--enable-ld")
+
           config_options+=("--enable-lto")
           config_options+=("--enable-plugins") # Arm, AArch64
           config_options+=("--enable-build-warnings=no")
