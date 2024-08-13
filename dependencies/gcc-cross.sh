@@ -770,11 +770,11 @@ function gcc_cross_build_final()
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${triplet}")
 
-          config_options+=("--disable-libgomp") # ABE
-          config_options+=("--disable-libmudflap") # ABE
-          config_options+=("--disable-libquadmath") # ABE
-          config_options+=("--disable-libsanitizer") # ABE
-          config_options+=("--disable-libssp") # ABE
+          # config_options+=("--disable-libgomp") # ABE
+          # config_options+=("--disable-libmudflap") # ABE
+          # config_options+=("--disable-libquadmath") # ABE
+          # config_options+=("--disable-libsanitizer") # ABE
+          # config_options+=("--disable-libssp") # ABE
 
           config_options+=("--disable-nls") # Arm, AArch64
           config_options+=("--disable-shared") # Arm, AArch64
@@ -782,6 +782,7 @@ function gcc_cross_build_final()
           config_options+=("--disable-tls") # Arm, AArch64
 
           config_options+=("--enable-checking=release") # Arm, AArch64
+          # Arm has no fortran
           config_options+=("--enable-languages=c,c++,fortran") # Arm, AArch64
 
           if [ "${XBB_HOST_PLATFORM}" == "win32" ]
@@ -802,7 +803,8 @@ function gcc_cross_build_final()
 
           if [ "${triplet}" == "arm-none-eabi" ]
           then
-            config_options+=("--disable-libatomic") # ABE
+            # config_options+=("--disable-libatomic") # ABE
+            config_options+=("--with-headers=yes") # ABE
 
             if [ "${XBB_WITHOUT_MULTILIB}" == "y" ]
             then
