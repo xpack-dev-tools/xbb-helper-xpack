@@ -197,16 +197,30 @@ function binutils_cross_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        if [ "${XBB_WITH_TESTS}" == "y" ]
-        then
-          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+        (
+          unset CFLAGS
+          unset CPPFLAGS
+          unset CXXFLAGS
+          unset LDFLAGS
+
+          xbb_show_env_develop
+
+          if [ "${XBB_WITH_TESTS}" == "y" ]
           then
-            # /bin/bash: DSYMUTIL@: command not found
-            :
-          else
-            run_verbose make check
+            if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+            then
+              # /bin/bash: DSYMUTIL@: command not found
+              # gcctestdir/ld: -arch: unknown option
+              :
+            elif [ "${XBB_HOST_PLATFORM}" == "linux" ] && [ "${XBB_HOST_ARCH}" == "x64" ]
+            then
+              # gcctestdir/collect-ld: fatal error: /usr/lib/x86_64-linux-gnu/Scrt1.o: unsupported ELF machine number 62
+              :
+            else
+              run_verbose make check
+            fi
           fi
-        fi
+        )
 
         # Avoid strip here, it may interfere with patchelf.
         # make install-strip
