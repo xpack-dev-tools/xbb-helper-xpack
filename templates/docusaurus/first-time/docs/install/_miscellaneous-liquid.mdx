@@ -22,7 +22,7 @@ After install, the package creates a folder hierarchy like the following
 <TabItem value="windows" label="Windows" default>
 
 <CodeBlock language="console"> {
-`C:\> tree /f %USERPROFILE%\\AppData\\Roaming\\xPacks\\@xpack-dev-tools\\{{ appLcName }}\\${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }\\.content
+`C:\> tree /f %USERPROFILE%\\AppData\\Roaming\\xPacks\\@xpack-dev-tools\\{{appLcName}}\\${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}\\.content
 Folder PATH listing
 Volume serial number is B02D-925C
 ├── README.md
@@ -35,8 +35,8 @@ TODO
 <TabItem value="macos" label="macOS">
 
 <CodeBlock language="console"> {
-`$ tree -L 2 ~/Library/xPacks/\@xpack-dev-tools/{{ appLcName }}/${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }/.content/
-/Users/ilg/Library/xPacks/\@xpack-dev-tools/{{ appLcName }}/${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }/.content/
+`$ tree -L 2 ~/Library/xPacks/\@xpack-dev-tools/{{appLcName}}/${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}/.content/
+/Users/ilg/Library/xPacks/\@xpack-dev-tools/{{appLcName}}/${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}/.content/
 ├── README.md
 ├── bin
 TODO
@@ -47,8 +47,8 @@ TODO
 <TabItem value="linux" label="GNU/Linux">
 
 <CodeBlock language="console"> {
-`$ tree -L 2 ~/.local/xPacks/\@xpack-dev-tools/{{ appLcName }}/${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }/.content/
-/home/ilg/.local/xPacks/\@xpack-dev-tools/{{ appLcName }}/${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }/.content/
+`$ tree -L 2 ~/.local/xPacks/\@xpack-dev-tools/{{appLcName}}/${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}/.content/
+/home/ilg/.local/xPacks/\@xpack-dev-tools/{{appLcName}}/${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}/.content/
 ├── README.md
 ├── bin
 TODO

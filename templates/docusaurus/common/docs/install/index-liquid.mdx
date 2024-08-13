@@ -3,7 +3,7 @@
 # DO NOT EDIT!
 # Automatically generated from xbb-helper/templates/docusaurus/common.
 
-title: How to install the xPack {{ appName }} binaries
+title: How to install the xPack {{appName}} binaries
 
 hide_table_of_contents: false
 
@@ -26,15 +26,15 @@ import Testing from './_testing.mdx';
 
 {/* ------------------------------------------------------------------------ */}
 
-The **xPack {{ appName }}** can be installed automatically, using the `xpm` command
+The **xPack {{appName}}** can be installed automatically, using the `xpm` command
 (the recommended method), or manually, by downloading and unpacking one of the
 portable archives.
 
 ## Automated install
 
-The easiest (and recommended) way to install {{ appName }}
+The easiest (and recommended) way to install {{appName}}
 is by using the **binary xPack**, available
-as <a href={ `https://www.npmjs.com/package/@xpack-dev-tools/{{ appLcName }}` }><code>@xpack-dev-tools/{{ appLcName }}</code></a> from
+as <a href={`https://www.npmjs.com/package/@xpack-dev-tools/{{appLcName}}`}><code>@xpack-dev-tools/{{appLcName}}</code></a> from
 the [`npmjs.com`](https://www.npmjs.com) registry.
 
 <details>
@@ -103,7 +103,7 @@ Therefore, similarly to the way **npm** installs the JavaScript packages into
 `node_modules`, **xpm** installs the binary tools into
 `xpacks`. Here there will be separate folders with the installed
 packages, for example
-<code>xpacks/@xpack-dev-tools/{{ appLcName }}</code>.
+<code>xpacks/@xpack-dev-tools/{{appLcName}}</code>.
 
 Each such folder includes the `package.json` file with the
 project metadata and a sub-folder `.content` with the extracted
@@ -211,10 +211,10 @@ mandatory to identify the package as an **xPack**.
 ### Install into the project
 
 The next step is to install the
-**{{ appLcName }}** package into the project:
+**{{appLcName}}** package into the project:
 
 <CodeBlock language="sh"> {
-`xpm install @xpack-dev-tools/{{ appLcName }}@latest --verbose`
+`xpm install @xpack-dev-tools/{{appLcName}}@latest --verbose`
 } </CodeBlock>
 
 <Tabs groupId="operating-systems">
@@ -304,20 +304,20 @@ export PATH=<...project-path...>/xpacks/.bin:$PATH
 The above `xpm install` command will do the following:
 
 * identify the platform specific archive for the latest available version
-  of {{ appName }}, download it into a cache and unpack
+  of {{appName}}, download it into a cache and unpack
   it into a versioned folder
   in the **user global xPacks store** (if not already there);
   check the output of the `xpm install` command for the actual
   folder used on your platform;
 * create a local symbolic link
-  like <code>xpacks/@xpack-dev-tools/{{ appLcName }}</code> pointing to the
+  like <code>xpacks/@xpack-dev-tools/{{appLcName}}</code> pointing to the
   versioned folder in the user global xPacks store
 * add links/forwarders into
   the local `xpacks/.bin` folder, referring to the binaries in
-  <code>xpacks/@xpack-dev-tools/{{ appLcName }}/.content/bin</code>;
-* add <code>@xpack-dev-tools/{{ appLcName }}</code> to
+  <code>xpacks/@xpack-dev-tools/{{appLcName}}/.content/bin</code>;
+* add <code>@xpack-dev-tools/{{appLcName}}</code> to
   `package.json` as a
-  development dependency; this associates a specific version of {{ appName }} with
+  development dependency; this associates a specific version of {{appName}} with
   the current project (details below).
 
 :::tip
@@ -347,8 +347,8 @@ The result looks like this:
     "minimumXpmRequired": "0.19.1",
     "dependencies": {},
     "devDependencies": {
-      "@xpack-dev-tools/{{ appLcName }}": {
-        "specifier": "${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }",
+      "@xpack-dev-tools/{{appLcName}}": {
+        "specifier": "${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}",
         "local": "link",
         "platforms": "all"
       }
@@ -361,7 +361,7 @@ The result looks like this:
 
 If the `package.json` is saved in the revision system, the above
 definition acts as a hard reference to the specific version of
-**xPack {{ appName }}**.
+**xPack {{appName}}**.
 
 After cloning the project into a different location, the command `xpm install`
 can be used to install all development dependencies.
@@ -373,7 +373,7 @@ This is particularly useful for CI/CD environments.
 ### Install globally
 
 For older development environments,
-it is also possible to install {{ appName }} only globally in
+it is also possible to install {{appName}} only globally in
 the **user global xPacks store**, without any
 local links/forwarders; it
 is the developer's responsibility to configure the path to the tools.
@@ -381,7 +381,7 @@ is the developer's responsibility to configure the path to the tools.
 No other files are installed in any system folders or other locations.
 
 <CodeBlock language="sh"> {
-`xpm install @xpack-dev-tools/{{ appLcName }}@latest --global --verbose`
+`xpm install @xpack-dev-tools/{{appLcName}}@latest --global --verbose`
 } </CodeBlock>
 
 :::note
@@ -405,7 +405,7 @@ the project build configurations need a PATH adjustment:
 <TabItem value="windows" label="Windows" default>
 
 <CodeBlock language="sh"> {
-`export PATH=$HOME/AppData/Roaming/xPacks/\@pack-dev-tools/{{ appLcName }} /${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }/.content/bin:$PATH`
+`export PATH=$HOME/AppData/Roaming/xPacks/\@pack-dev-tools/{{appLcName}} /${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}/.content/bin:$PATH`
 } </CodeBlock>
 
 :::tip
@@ -420,7 +420,7 @@ corresponding shell.
 <TabItem value="macos" label="macOS">
 
 <CodeBlock language="sh"> {
-`export PATH=$HOME/Library/xPacks/\@pack-dev-tools/{{ appLcName }} /${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }/.content/bin:$PATH`
+`export PATH=$HOME/Library/xPacks/\@pack-dev-tools/{{appLcName}} /${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}/.content/bin:$PATH`
 } </CodeBlock>
 
 </TabItem>
@@ -428,7 +428,7 @@ corresponding shell.
 <TabItem value="linux" label="GNU/Linux">
 
 <CodeBlock language="sh"> {
-`export PATH=$HOME/.local/xPacks/@xpack-dev-tools/{{ appLcName }} /${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }/.content/bin:$PATH`
+`export PATH=$HOME/.local/xPacks/@xpack-dev-tools/{{appLcName}} /${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}/.content/bin:$PATH`
 } </CodeBlock>
 
 </TabItem>
@@ -442,12 +442,12 @@ corresponding shell.
 
 The binaries do not use any form of installer; instead they
 are distributed as
-portable { props.isWindows ? <code>.zip</code> : <code>.tar.gz</code> } archives;
+portable {props.isWindows ? <code>.zip</code> : <code>.tar.gz</code>} archives;
 therefore they do not require to run any uninstaller; simply removing the
 links and possibly the user global xPack store folder and
 the user xPack cache folder is enough.
 
-To remove the <LinksVsForwarders isWindows={ props.isWindows }/> created by
+To remove the <LinksVsForwarders isWindows={props.isWindows}/> created by
 **xpm** in the current project,
 go to the project folder:
 
@@ -458,13 +458,13 @@ cd my-project
 and ask **xpm** to uninstall the package:
 
 <CodeBlock language="sh"> {
-`xpm uninstall @xpack-dev-tools/{{ appLcName }} --verbose`
+`xpm uninstall @xpack-dev-tools/{{appLcName}} --verbose`
 } </CodeBlock>
 
 To completely remove the package from the user global xPack store:
 
 <CodeBlock language="sh"> {
-`xpm uninstall --global @xpack-dev-tools/{{ appLcName }} --verbose`
+`xpm uninstall --global @xpack-dev-tools/{{appLcName}} --verbose`
 } </CodeBlock>
 
 <details>
@@ -509,11 +509,11 @@ broken paths.
 
 ## Manual install
 
-For all platforms, the **xPack {{ appName }}** binaries are released as portable
+For all platforms, the **xPack {{appName}}** binaries are released as portable
 archives that can be installed in any location.
 
 The archives can be downloaded from
-the <a href={ `https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/` }>GitHub Releases</a> pages.
+the <a href={`https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/`}>GitHub Releases</a> pages.
 
 ### Download & unpack {#manual-install-download-and-unpack}
 
@@ -521,11 +521,11 @@ the <a href={ `https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases
 
 <TabItem value="windows" label="Windows" default>
 
-The Windows versions of **xPack {{ appName }}**
+The Windows versions of **xPack {{appName}}**
 are packed as `.zip` files.
 Download the latest version named like:
 
-* <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-win32-x64.zip</code>
+* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-win32-x64.zip</code>
 
 :::note
 
@@ -535,12 +535,12 @@ The `win32` part is confusing, but we have to live with it.
 
 :::
 
-To manually install the <b>xPack {{ appName }}</b>,
+To manually install the <b>xPack {{appName}}</b>,
 unpack the archive and move it to a location of your choice.
 
 The recommended location is
-the <code>%USERPROFILE%\\AppData\\Roaming\\xPacks\\{{ appLcName }}</code> folder, for
-example <code>C:\\Users\\ilg\\AppData\\Roaming\\xPacks\\{{ appLcName }}\\xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code>.
+the <code>%USERPROFILE%\\AppData\\Roaming\\xPacks\\{{appLcName}}</code> folder, for
+example <code>C:\\Users\\ilg\\AppData\\Roaming\\xPacks\\{{appLcName}}\\xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}</code>.
 
 :::note
 
@@ -553,12 +553,12 @@ installing user specific packages.
 
 <TabItem value="macos" label="macOS">
 
-The macOS versions of **xPack {{ appName }}**
+The macOS versions of **xPack {{appName}}**
 are packed as `.tar.gz` archives.
 Download the latest version named like:
 
-* <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-darwin-x64.tar.gz</code>
-* <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-darwin-arm64.tar.gz</code>
+* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-x64.tar.gz</code>
+* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-arm64.tar.gz</code>
 
 :::note
 
@@ -567,32 +567,32 @@ from, it is exactly the Node.js `process.platform` and `process.arch`.
 
 :::
 
-To manually install the <b>xPack {{ appName }}</b>,
+To manually install the <b>xPack {{appName}}</b>,
 unpack the archive and move it to a location of your choice.
 
 The recommended location is
-the <code>~/Library/xPacks/{{ appLcName }}</code> folder, for
-example <code>/Users/ilg/Library/xPacks/{{ appLcName }}/xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code>:
+the <code>~/Library/xPacks/{{appLcName}}</code> folder, for
+example <code>/Users/ilg/Library/xPacks/{{appLcName}}/xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}</code>:
 
 <CodeBlock language="console"> {
-`mkdir -p ~/Library/xPacks/{{ appLcName }}
-cd ~/Library/xPacks/{{ appLcName }}
+`mkdir -p ~/Library/xPacks/{{appLcName}}
+cd ~/Library/xPacks/{{appLcName}}
 
-tar xvf ~/Downloads/xpack-{{ appLcName }}-${ customField('upstreamVersion') }-${ customField('xpackSubversion') }-darwin-x64.tar.gz
-chmod -R -w xpack-{{ appLcName }}-${ customField('upstreamVersion') }-${ customField('xpackSubversion') }`
+tar xvf ~/Downloads/xpack-{{appLcName}}-${customField('upstreamVersion')}-${customField('xpackSubversion')}-darwin-x64.tar.gz
+chmod -R -w xpack-{{appLcName}}-${customField('upstreamVersion')}-${customField('xpackSubversion')}`
 } </CodeBlock>
 
 </TabItem>
 
 <TabItem value="linux" label="GNU/Linux">
 
-The GNU/Linux versions of **xPack {{ appName }}**
+The GNU/Linux versions of **xPack {{appName}}**
 are packed as `.tar.gz` archives.
 Download the latest version named like:
 
-* <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-darwin-x64.tar.gz</code>
-* <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-darwin-arm64.tar.gz</code>
-* <code>xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }-darwin-arm.tar.gz</code>
+* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-x64.tar.gz</code>
+* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-arm64.tar.gz</code>
+* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-arm.tar.gz</code>
 
 :::note
 
@@ -601,19 +601,19 @@ from, it is exactly the Node.js `process.platform` and `process.arch`.
 
 :::
 
-To manually install the <b>xPack {{ appName }}</b>,
+To manually install the <b>xPack {{appName}}</b>,
 unpack the archive and move it to a location of your choice.
 
 The recommended location is
-the <code>~/.local/xPacks/{{ appLcName }}</code> folder, for
-example <code>/home/ilg/.local/xPacks/{{ appLcName }}/xpack-{{ appLcName }}-{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code>:
+the <code>~/.local/xPacks/{{appLcName}}</code> folder, for
+example <code>/home/ilg/.local/xPacks/{{appLcName}}/xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}</code>:
 
 <CodeBlock language="console"> {
-`mkdir -p ~/.local/xPacks/{{ appLcName }}
-cd ~/.local/xPacks/{{ appLcName }}
+`mkdir -p ~/.local/xPacks/{{appLcName}}
+cd ~/.local/xPacks/{{appLcName}}
 
-tar xvf ~/Downloads/xpack-{{ appLcName }}-${ customField('upstreamVersion') }-${ customField('xpackSubversion') }-linux-x64.tar.gz
-chmod -R -w xpack-{{ appLcName }}-${ customField('upstreamVersion') }-${ customField('xpackSubversion') }`
+tar xvf ~/Downloads/xpack-{{appLcName}}-${customField('upstreamVersion')}-${customField('xpackSubversion')}-linux-x64.tar.gz
+chmod -R -w xpack-{{appLcName}}-${customField('upstreamVersion')}-${customField('xpackSubversion')}`
 } </CodeBlock>
 
 </TabItem>

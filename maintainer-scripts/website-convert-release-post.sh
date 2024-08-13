@@ -98,7 +98,7 @@ s="/^title:/ { print; print \"\"; print \"date: ${date}\"; print \"\"; print \"a
 awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
 # Fix the badge to releases.
-s="  - this release <a href={ \`https://github.com/xpack-dev-tools/${appLcName}-xpack/releases/v\$\{ frontMatter.version }/\` } ><Image img={ \`https://img.shields.io/github/downloads/xpack-dev-tools/${appLcName}-xpack/v\$\{ frontMatter.version }/total.svg\` } alt='Github Release' /></a>"
+s="  - this release <a href={\`https://github.com/xpack-dev-tools/${appLcName}-xpack/releases/v\$\{frontMatter.version}/\`} ><Image img={\`https://img.shields.io/github/downloads/xpack-dev-tools/${appLcName}-xpack/v\$\{frontMatter.version}/total.svg\`} alt='Github Release' /></a>"
 sed -i.bak -e "s|  - this release ...Github All Releases.*|$s|" "$2/$to"
 
 # Add the yaml end tag after download_url and a custom tag for the delete.
@@ -183,14 +183,14 @@ then
 fi
 
 # Change link to GitHub Releases to html to allow variables.
-sed -i.bak -e 's|\[GitHub Releases\]... page.download_url ...|<a href={ frontMatter.download_url }>GitHub Releases</a>|' "$2/$to"
+sed -i.bak -e 's|\[GitHub Releases\]... page.download_url ...|<a href={frontMatter.download_url}>GitHub Releases</a>|' "$2/$to"
 
 # Change link to binary files to html to allow variables.
 if grep -e 'Binary files .* page.download_url' "$2/$to" >/dev/null
 then
   awk '/Binary files .* page.download_url/ { print "<!-- truncate -->"; print ""; print; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
-  sed -i.bak -e 's|^.Binary files ..... page.download_url ...|<p><a href={ frontMatter.download_url }>Binary files »</a></p>|' "$2/$to"
+  sed -i.bak -e 's|^.Binary files ..... page.download_url ...|<p><a href={frontMatter.download_url}>Binary files »</a></p>|' "$2/$to"
 fi
 
 # Fix RISC-V references to Install.
@@ -209,16 +209,16 @@ s="[Maintainer Info](/docs/maintainer/)"
 sed -i.bak -e "s|.How to build..https://github.com/xpack-dev-tools/.*-xpack/blob/xpack/README-BUILD.md.|$s|" "$2/$to"
 
 # Convert parametrised link to html.
-sed -i.bak -e "s|.{{ page.upstream_commit }}..https://github.com/openocd-org/[a-z-]*/commit/{{ page.upstream_commit }}/)|<a href={ \`https://github.com/openocd-org/${appLcName}/commit/\$\{ frontMatter.upstream_commit }/\` }>{ frontMatter.upstream_commit }</a>|" "$2/$to"
+sed -i.bak -e "s|.{{ page.upstream_commit }}..https://github.com/openocd-org/[a-z-]*/commit/{{ page.upstream_commit }}/)|<a href={\`https://github.com/openocd-org/${appLcName}/commit/\$\{frontMatter.upstream_commit}/\`}>{frontMatter.upstream_commit}</a>|" "$2/$to"
 
 # Fix openocd documentation autolink.
 sed -i.bak -e "s|- <https://openocd.org/doc/pdf/openocd.pdf>|- https://openocd.org/doc/pdf/openocd.pdf|" "$2/$to"
 
 # Fix openocd code blocks.
-s='/```sh/{N;N;s|```sh\n~/Library/xPacks/@xpack-dev-tools/openocd/{{ page.version }}.{{ page.npm_subversion }}/.content/bin/openocd -f board/stm32f4discovery.cfg\n```|<CodeBlock language="sh"> {\n`~/Library/xPacks/@xpack-dev-tools/openocd/${ frontMatter.version }.${ frontMatter.npm_subversion }/.content/bin/openocd -f board/stm32f4discovery.cfg`\n} </CodeBlock>|;}'
+s='/```sh/{N;N;s|```sh\n~/Library/xPacks/@xpack-dev-tools/openocd/{{ page.version }}.{{ page.npm_subversion }}/.content/bin/openocd -f board/stm32f4discovery.cfg\n```|<CodeBlock language="sh"> {\n`~/Library/xPacks/@xpack-dev-tools/openocd/${frontMatter.version}.${frontMatter.npm_subversion}/.content/bin/openocd -f board/stm32f4discovery.cfg`\n} </CodeBlock>|;}'
 sed -i.bak -e "$s" "$2/$to"
 
-s='/```sh/{N;s|```sh\n~/Library/xPacks/@xpack-dev-tools/openocd/{{ page.version }}.{{ page.npm_subversion }}/.content/bin/openocd -f board/stm32f4discovery.cfg|<CodeBlock language="console"> {\n`% ~/Library/xPacks/@xpack-dev-tools/openocd/${ frontMatter.version }.${ frontMatter.npm_subversion }/.content/bin/openocd -f board/stm32f4discovery.cfg|;}'
+s='/```sh/{N;s|```sh\n~/Library/xPacks/@xpack-dev-tools/openocd/{{ page.version }}.{{ page.npm_subversion }}/.content/bin/openocd -f board/stm32f4discovery.cfg|<CodeBlock language="console"> {\n`% ~/Library/xPacks/@xpack-dev-tools/openocd/${frontMatter.version}.${frontMatter.npm_subversion}/.content/bin/openocd -f board/stm32f4discovery.cfg|;}'
 sed -i.bak -e "$s" "$2/$to"
 
 # Add 'import CodeBlock ...'.
@@ -241,7 +241,7 @@ sed -i.bak -e "s|/dev-tools/${appLcName}/tests/|/docs/tests/|" "$2/$to"
 sed -i.bak -e 's|https://xpack.github.io/dev-tools/\([a-z-]*\)/|https://xpack-dev-tools.github.io/\1-xpack|' "$2/$to"
 
 # Replace `page.` with `frontMatter.` when using variables.
-sed -i.bak -e 's|{{ page[.]\([a-z0-9_]*\) }}|{ frontMatter.\1 }|g' "$2/$to"
+sed -i.bak -e 's|{{ page[.]\([a-z0-9_]*\) }}|{frontMatter.\1}|g' "$2/$to"
 
 # Fix local images url.
 sed -i.bak -e 's|{{ site.baseurl }}/assets/images|/img|g' "$2/$to"

@@ -1,5 +1,5 @@
 ---
-title: The xPack {{ appName }} Frequently Asked Questions
+title: The xPack {{appName}} Frequently Asked Questions
 
 hide_table_of_contents: true
 

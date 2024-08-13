@@ -1,8 +1,8 @@
 // DO NOT EDIT!
 // Automatically generated from xbb-helper/templates/docusaurus/common.
 
-import { themes as prismThemes } from 'prism-react-renderer';
-import type { Config } from '@docusaurus/types';
+import {themes as prismThemes} from 'prism-react-renderer';
+import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import logger from '@docusaurus/logger';
 
@@ -11,7 +11,7 @@ import logger from '@docusaurus/logger';
 // so the entire initialisation code must be in this file, that is
 // not processed by webpack.
 
-import { fileURLToPath } from 'node:url';
+import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import fs from 'node:fs';
 
@@ -67,20 +67,20 @@ const customFields = getCustomFields();
 logger.info(customFields);
 
 const config: Config = {
-  title: 'xPack {{ appName }}',
-  tagline: 'A binary distribution of {{ appName }}',
+  title: 'xPack {{appName}}',
+  tagline: 'A binary distribution of {{appName}}',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
   url: 'https://xpack-dev-tools.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/{{ appLcName }}-xpack',
+  baseUrl: '/{{appLcName}}-xpack',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'xpack-dev-tools', // Usually your GitHub org/user name.
-  projectName: '{{ appLcName }}-xpack', // Usually your repo name.
+  projectName: '{{appLcName}}-xpack', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
@@ -106,7 +106,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/edit/xpack/website/',
+            'https://github.com/xpack-dev-tools/{{appLcName}}-xpack/edit/xpack/website/',
           // showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
@@ -219,7 +219,7 @@ const config: Config = {
         alt: 'xPack Logo',
         src: 'img/components-256.png',
         // href: 'https://xpack.github.io/',
-        // href: 'https://xpack-dev-tools.github.io/{{ appLcName }}-xpack/'
+        // href: 'https://xpack-dev-tools.github.io/{{appLcName}}-xpack/'
       },
       items: [
         {
@@ -277,7 +277,7 @@ const config: Config = {
           ]
         },
         {
-          href: 'https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/',
+          href: 'https://github.com/xpack-dev-tools/{{appLcName}}-xpack/',
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',
@@ -285,7 +285,7 @@ const config: Config = {
         {
           label: `v${customFields.upstreamVersion}-${customFields.xpackSubversion}`,
           position: 'right',
-          href: `https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/tag/v${customFields.upstreamVersion}-${customFields.xpackSubversion}`,
+          href: `https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/tag/v${customFields.upstreamVersion}-${customFields.xpackSubversion}`,
         },
         {
           href: 'https://github.com/xpack-dev-tools/',
@@ -344,8 +344,8 @@ const config: Config = {
               to: '/blog',
             },
             {
-              label: 'GitHub {{ appLcName }}-xpack',
-              href: 'https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/',
+              label: 'GitHub {{appLcName}}-xpack',
+              href: 'https://github.com/xpack-dev-tools/{{appLcName}}-xpack/',
             },
             {
               label: 'GitHub xpack-dev-tools',

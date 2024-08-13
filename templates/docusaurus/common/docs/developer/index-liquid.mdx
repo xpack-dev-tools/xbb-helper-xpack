@@ -3,7 +3,7 @@
 # DO NOT EDIT!
 # Automatically generated from xbb-helper/templates/docusaurus/common.
 
-title: How to build the xPack {{ appName }}
+title: How to build the xPack {{appName}}
 
 date: 2024-11-12 20:33:00 +0300
 
@@ -22,10 +22,10 @@ import More from './_more.mdx'
 
 {/* ------------------------------------------------------------------------ */}
 
-[![license](https://img.shields.io/github/license/xpack-dev-tools/{{ appLcName }}-xpack)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/blob/xpack/LICENSE)
+[![license](https://img.shields.io/github/license/xpack-dev-tools/{{appLcName}}-xpack)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/blob/xpack/LICENSE)
 
 This page is intended for those who want to build the
-**xPack {{ appName }}**
+**xPack {{appName}}**
 binaries themselves.
 
 <details>
@@ -92,8 +92,8 @@ The build configurations are defined in the `package.json` file, in the
   "...":"...",
   "xpack": {
     "buildConfigurations": {
-       "...": {
-       },
+      "...": {
+      },
       "win32-x64": {
         "inherit": [
           "common-dependencies",
@@ -109,10 +109,10 @@ The build configurations are defined in the `package.json` file, in the
           "dockerImage": "ilegeul/ubuntu:amd64-18.04-xbb-v5.2.2"
         },
         "actions": {
-          "build": "{{ properties.commandBashBuild }} --windows",
-          "build-development": "{{ properties.commandBashBuild }} --windows --development",
-          "build-development-debug": "{{ properties.commandBashBuild }} --windows --development --debug",
-          "build-development-tests-only": "{{ properties.commandBashBuild }} --windows --development --tests-only"
+          "build": "{{properties.commandBashBuild}} --windows",
+          "build-development": "{{properties.commandBashBuild}} --windows --development",
+          "build-development-debug": "{{properties.commandBashBuild}} --windows --development --debug",
+          "build-development-tests-only": "{{properties.commandBashBuild}} --windows --development --tests-only"
         }
       }
     }
@@ -189,7 +189,7 @@ For details on installing the prerequisites, please read the
 
 The project is hosted on GitHub:
 
-- https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git
+- https://github.com/xpack-dev-tools/{{appLcName}}-xpack.git
 
 <details>
 <summary>Branches</summary>
@@ -215,21 +215,21 @@ To clone the stable branch (`xpack`), run the following commands in a
 terminal (on Windows use the _Git Bash_ console):
 
 ```sh
-rm -rf ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git && \
-git clone https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git \
-  ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git
+rm -rf ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git && \
+git clone https://github.com/xpack-dev-tools/{{appLcName}}-xpack.git \
+  ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git
 ```
 
 <details>
 <summary>For development purposes, clone the `xpack-development` branch.</summary>
 
 ```sh
-rm -rf ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git && \
+rm -rf ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git && \
 mkdir -p ~/Work/xpack-dev-tools && \
 git clone \
   --branch xpack-development \
-  https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git \
-  ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git
+  https://github.com/xpack-dev-tools/{{appLcName}}-xpack.git \
+  ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git
 ```
 
 </details>
@@ -270,7 +270,7 @@ x64 macOS and arm64 macOS).
 ### Update the repo
 
 ```sh
-git -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git pull
+git -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git pull
 ```
 
 <details>

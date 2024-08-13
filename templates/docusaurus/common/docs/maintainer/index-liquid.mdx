@@ -3,7 +3,7 @@
 # DO NOT EDIT!
 # Automatically generated from xbb-helper/templates/docusaurus/common.
 
-title: How to make new xPack {{ appName }} releases
+title: How to make new xPack {{appName}} releases
 
 date: 2024-07-12 20:11:00 +0300
 
@@ -22,7 +22,7 @@ import GitHubActionsDurations from './_github-actions-durations.mdx'
 import MoreTests from './_more-tests.mdx'
 import ShareCustom from './_share-custom.mdx'
 import FirstProductionRun from './_first-production-run.mdx'
-import { developmentDurations } from './_development-durations.mdx'
+import {developmentDurations} from './_development-durations.mdx'
 import Patches from './_patches.mdx'
 
 import PlatformNativeBuild from './_common/_platform-native-build.mdx'
@@ -30,12 +30,12 @@ import PlatformDockerBuild from './_common/_platform-docker-build.mdx'
 
 {/* ------------------------------------------------------------------------ */}
 
-[![license](https://img.shields.io/github/license/xpack-dev-tools/{{ appLcName }}-xpack)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/blob/xpack/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/xpack-dev-tools/{{ appLcName }}-xpack.svg)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/issues/)
-[![GitHub pulls](https://img.shields.io/github/issues-pr/xpack-dev-tools/{{ appLcName }}-xpack.svg)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/pulls)
+[![license](https://img.shields.io/github/license/xpack-dev-tools/{{appLcName}}-xpack)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/blob/xpack/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/xpack-dev-tools/{{appLcName}}-xpack.svg)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/issues/)
+[![GitHub pulls](https://img.shields.io/github/issues-pr/xpack-dev-tools/{{appLcName}}-xpack.svg)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/pulls)
 
 This page is intended for those who maintain the
-**xPack {{ appName }}**
+**xPack {{appName}}**
 project and documents how to make new releases.
 
 ## Prerequisites
@@ -50,32 +50,32 @@ For details on installing the prerequisites, please read the
 
 The project is hosted on GitHub:
 
-- https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git
+- https://github.com/xpack-dev-tools/{{appLcName}}-xpack.git
 
 To clone the **stable** branch (`xpack`), run the following commands in a
 terminal (on Windows use the _Git Bash_ console):
 
 ```sh
-rm -rf ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git && \
-git clone https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git \
-  ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git
+rm -rf ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git && \
+git clone https://github.com/xpack-dev-tools/{{appLcName}}-xpack.git \
+  ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git
 ```
 
 For **development** purposes, clone the `xpack-development` branch:
 
 ```sh
-rm -rf ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git && \
+rm -rf ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git && \
 mkdir -p ~/Work/xpack-dev-tools && \
 git clone \
   --branch xpack-development \
-  https://github.com/xpack-dev-tools/{{ appLcName }}-xpack.git \
-  ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git
+  https://github.com/xpack-dev-tools/{{appLcName}}-xpack.git \
+  ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git
 ```
 
 Or, if the repo was already cloned:
 
 ```sh
-git -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git pull
+git -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git pull
 ```
 
 ## Get the writable helper sources
@@ -114,7 +114,7 @@ Before starting the build, perform some checks and tweaks.
 ### Download the build scripts
 
 The build scripts are available in the `build-assets/scripts` folder of the
-[`xpack-dev-tools/{{ appLcName }}-xpack`](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack)
+[`xpack-dev-tools/{{appLcName}}-xpack`](https://github.com/xpack-dev-tools/{{appLcName}}-xpack)
 Git repo.
 
 To download them on a new machine, clone the `xpack-development` branch,
@@ -122,7 +122,7 @@ as seen above.
 
 ### Check Git
 
-In the `xpack-dev-tools/{{ appLcName }}-xpack` Git repo:
+In the `xpack-dev-tools/{{appLcName}}-xpack` Git repo:
 
 - switch to the `xpack-development` branch
 - pull new changes
@@ -135,9 +135,9 @@ and will be updated when the new release is out.
 
 Check GitHub issues and pull requests:
 
-- https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/issues/
+- https://github.com/xpack-dev-tools/{{appLcName}}-xpack/issues/
 
-and fix them; assign them to a milestone (like <code>{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code>).
+and fix them; assign them to a milestone (like <code>{customField('upstreamVersion')}-{customField('xpackSubversion')}</code>).
 
 ### Update helper & other dependencies
 
@@ -148,17 +148,17 @@ update the dependencies in `build-assets/package.json`.
 
 ### Increase the version and update VERSION
 
-Determine the version (like <code>{ customField('upstreamVersion') }</code>)
+Determine the version (like <code>{customField('upstreamVersion')}</code>)
 and update the `build-assets/scripts/VERSION` file; the format
-is <code>{ customField('upstreamVersion') }-{ customField('xpackSubversion') }</code>.
-{ isXpackSubversionDouble() ?
+is <code>{customField('upstreamVersion')}-{customField('xpackSubversion')}</code>.
+{isXpackSubversionDouble() ?
 'The fourth & fifth numbers are the xPack release number of this version. A sixth number will be added to the version in `package.json` when the package is published to the `npm` server' :
-'The fourth number is the xPack release number of this version. A fifth number will be added to the version in `package.json` when the package is published to the `npm` server' }.
+'The fourth number is the xPack release number of this version. A fifth number will be added to the version in `package.json` when the package is published to the `npm` server'}.
 
 ### Update the version in top `package.json` to a pre-release
 
 Use the new version, suffixed by `.pre`,
-like <code>{ customField('upstreamVersion') }-{ customField('xpackSubversion') }.{ customField('npmSubversion') }.pre</code>.
+like <code>{customField('upstreamVersion')}-{customField('xpackSubversion')}.{customField('npmSubversion')}.pre</code>.
 
 ### Update the `customFields` (if needed)
 
@@ -183,8 +183,8 @@ the **Update the version specific code** section.
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _**\* v{ customField('upstreamVersion') }-{ customField('xpackSubversion') } prepared**_
-- commit with a message like _**prepare v{ customField('upstreamVersion') }-{ customField('xpackSubversion') }**_
+- add a new entry like _**\* v{customField('upstreamVersion')}-{customField('xpackSubversion')} prepared**_
+- commit with a message like _**prepare v{customField('upstreamVersion')}-{customField('xpackSubversion')}**_
 
 ### Push the changes to Git
 
@@ -236,28 +236,28 @@ export XBB_ENVIRONMENT_SKIP_CHECKS="y"
 ```
 
 ```sh
-rm -f ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/package-lock.json
-git -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git pull
+rm -f ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/package-lock.json
+git -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git pull
 
-xpm run install -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run install -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 
-xpm run link-deps -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run link-deps -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 
-xpm run deep-clean --config darwin-x64  -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets && \
-xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets && \
-xpm run build-development --config darwin-x64 -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run deep-clean --config darwin-x64  -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets && \
+xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets && \
+xpm run build-development --config darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
 For a debug build:
 
 ```sh
-xpm run build-development-debug --config darwin-x64 -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run build-development-debug --config darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
-The build takes { developmentDurations["work"] }.
+The build takes {developmentDurations["work"]}.
 
 When functional, push the `xpack-development` branch to GitHub.
 
@@ -334,8 +334,8 @@ Copy the trees displayed at the end of the test builds and paste to
 
 - `website/docs/install/_miscellaneous.mdx`
 
-Replace **{ customField('upstreamVersion') }** with
-`${ customField('upstreamVersion') }`.
+Replace **{customField('upstreamVersion')}** with
+`${customField('upstreamVersion')}`.
 
 :::tip
 
@@ -472,7 +472,7 @@ Run the **generate-workflows** xPack action to update the
 GitHub workflow files.
 
 ```sh
-xpm run generate-workflows -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run generate-workflows -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
 ### Commit and push
@@ -494,19 +494,19 @@ To trigger the GitHub Actions builds, use the xPack actions:
 - **trigger-workflow-build-linux-arm**
 
 ```sh
-xpm run trigger-workflow-build-darwin-x64 -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
-xpm run trigger-workflow-build-darwin-arm64 -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
-xpm run trigger-workflow-build-linux-x64 -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
-xpm run trigger-workflow-build-win32-x64 -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
-xpm run trigger-workflow-build-darwin-x64 -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
-xpm run trigger-workflow-build-darwin-x64 -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run trigger-workflow-build-darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-workflow-build-darwin-arm64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-workflow-build-linux-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-workflow-build-win32-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-workflow-build-darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-workflow-build-darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
 The scripts behind these actions require the `GITHUB_API_DISPATCH_TOKEN`
 variable to be present
 in the environment, and the organization `PUBLISH_TOKEN` to be visible in the
 Settings → Action →
-[Secrets](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/settings/secrets/actions)
+[Secrets](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/settings/secrets/actions)
 page.
 
 These commands use the `xpack-development` branch of this repo.
@@ -516,7 +516,7 @@ These commands use the `xpack-development` branch of this repo.
 <GitHubActionsDurations/>
 
 The workflow results and logs are available from the
-[GitHub Actions](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/actions/) page.
+[GitHub Actions](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/actions/) page.
 
 Update the values in `website/docs/maintainer/_github-actions-durations.mdx`
 with those shown by GitHub Actions.
@@ -537,9 +537,9 @@ To trigger the GitHub Actions tests, run the xPack actions:
 - **trigger-workflow-test-docker-linux-arm**
 
 ```sh
-xpm run trigger-workflow-test-prime -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
-xpm run trigger-workflow-test-docker-linux-x64 -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
-xpm run trigger-workflow-test-docker-linux-arm -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run trigger-workflow-test-prime -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-workflow-test-docker-linux-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-workflow-test-docker-linux-arm -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
 The scripts behind these accesible require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
@@ -563,14 +563,14 @@ runner, the multi-version macOS tests run on Travis.
 To trigger the Travis test, run the **trigger-travis-macos** xPack action:
 
 ```sh
-xpm run trigger-travis-macos -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run trigger-travis-macos -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
 This script requires the `TRAVIS_COM_TOKEN` variable to be present
 in the environment.
 
 The test results are available from
-[Travis CI](https://app.travis-ci.com/github/xpack-dev-tools/{{ appLcName }}-xpack/builds/).
+[Travis CI](https://app.travis-ci.com/github/xpack-dev-tools/{{appLcName}}-xpack/builds/).
 
 ### Manual tests
 
@@ -578,9 +578,9 @@ To download the pre-released archive for the specific platform
 and run the tests, use:
 
 ```sh
-git -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git pull
-xpm run install -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
-xpm run test-pre-release -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+git -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git pull
+xpm run install -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run test-pre-release -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
 For even more tests, on each platform (MacOS, GNU/Linux, Windows),
@@ -601,23 +601,23 @@ xattr -cr ${HOME}/Downloads/xpack-*
 ### Create a new GitHub pre-release draft
 
 - in `CHANGELOG.md`, add the release date and a message
-  like _**\* v{ customField('upstreamVersion') }-{ customField('xpackSubversion') } released**_
+  like _**\* v{customField('upstreamVersion')}-{customField('xpackSubversion')} released**_
 - commit with _**CHANGELOG update**_
 - check and possibly update the `build-assets/templates/body-github-release-liquid.mdx`
 - push the `xpack-development` branch to GitHub
 - run the **trigger-workflow-publish-release** xPack action:
 
 ```sh
-xpm run trigger-workflow-publish-release -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run trigger-workflow-publish-release -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
 The workflow result and logs are available from the
 [GitHub Actions](https://github.com/xpack-dev-tools/openocd-xpack/actions/) page.
 
 The result is a
-[draft pre-release](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/)
-tagged like **v{ customField('upstreamVersion') }-{ customField('xpackSubversion') }** (mind the dash in the middle!) and
-named like **xPack {{ appName }} v{ customField('upstreamVersion') }-{ customField('xpackSubversion') }** (mind the dash),
+[draft pre-release](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/)
+tagged like **v{customField('upstreamVersion')}-{customField('xpackSubversion')}** (mind the dash in the middle!) and
+named like **xPack {{appName}} v{customField('upstreamVersion')}-{customField('xpackSubversion')}** (mind the dash),
 with all binaries attached.
 
 - edit the draft and attach it to the `xpack-development` branch (important!)
@@ -630,16 +630,16 @@ with all binaries attached.
 this will add a file in the `website/blog` folder:
 
 ```sh
-xpm run generate-website-blog-post -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run generate-website-blog-post -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
 - edit the front matter properties
 - select the correct summary
-- commit with _**blog post release { customField('upstreamVersion') }-{ customField('xpackSubversion') } published**_
+- commit with _**blog post release {customField('upstreamVersion')}-{customField('xpackSubversion')} published**_
 
 ### Create the GitHub pre-release
 
-- go to the [GitHub Releases](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/) page
+- go to the [GitHub Releases](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/) page
 - perform the final edits and check if everything is fine
 - **keep the pre-release button enabled**
 - do not enable Discussions yet
@@ -667,7 +667,7 @@ watching this project.
 - run the **update-package-binaries** xPack action:
 
 ```sh
-xpm run update-package-binaries -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run update-package-binaries -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
 - open the top `package.json` file
@@ -677,14 +677,14 @@ xpm run update-package-binaries -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.
 - compare the SHA sums with those shown by `cat *.sha`
 - check the executable names
 - commit all changes, use a message like
-  _**package.json: update urls for { customField('upstreamVersion') }-{ customField('xpackSubversion') }.{ customField('npmSubversion') } release**_
+  _**package.json: update urls for {customField('upstreamVersion')}-{customField('xpackSubversion')}.{customField('npmSubversion')} release**_
 
 ### Publish on the npmjs.com server
 
 - select the `xpack-development` branch
 - check the latest commits `npm run git-log`
-- update `CHANGELOG.md`, add a line like _**\* v{ customField('upstreamVersion') }-{ customField('xpackSubversion') } published on npmjs.com**_
-- commit with a message like _**CHANGELOG: publish npm v{ customField('upstreamVersion') }-{ customField('xpackSubversion') }.{ customField('npmSubversion') }**_
+- update `CHANGELOG.md`, add a line like _**\* v{customField('upstreamVersion')}-{customField('xpackSubversion')} published on npmjs.com**_
+- commit with a message like _**CHANGELOG: publish npm v{customField('upstreamVersion')}-{customField('xpackSubversion')}.{customField('npmSubversion')}**_
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
   possibly adjust `.npmignore`
@@ -692,7 +692,7 @@ xpm run update-package-binaries -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.
   GitHub release; the fifth number is the npm specific version:
 
 <CodeBlock language="sh"> {
-`npm version ${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }
+`npm version ${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}
 `} </CodeBlock>
 
 - the commits and the tag should have been pushed by the `postversion` script;
@@ -710,20 +710,20 @@ npm publish --access public
 ```
 
 After a few moments the version will be visible at
-<a href="https://www.npmjs.com/package/@xpack-dev-tools/{{ appLcName }}?activeTab=versions">npmjs.com</a>.
+<a href="https://www.npmjs.com/package/@xpack-dev-tools/{{appLcName}}?activeTab=versions">npmjs.com</a>.
 
 ### Test if the binaries can be installed with xpm
 
 Run the **trigger-workflow-test-xpm** xPack action:
 
 ```sh
-xpm run trigger-workflow-test-xpm -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run trigger-workflow-test-xpm -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
 This will install the package via `xpm install` on all supported platforms.
 
 The tests results are available from the
-[GitHub Actions](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/actions/) page.
+[GitHub Actions](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/actions/) page.
 
 ### Copy the test results
 
@@ -740,15 +740,15 @@ Commit with _**website: add tests results**_.
 When the release is considered stable, promote it as `latest`:
 
 <CodeBlock language="sh"> {
-`npm dist-tag ls @xpack-dev-tools/{{ appLcName }}
-npm dist-tag add @xpack-dev-tools/{{ appLcName }}@${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') } latest
-npm dist-tag ls @xpack-dev-tools/{{ appLcName }}`
+`npm dist-tag ls @xpack-dev-tools/{{appLcName}}
+npm dist-tag add @xpack-dev-tools/{{appLcName}}@${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')} latest
+npm dist-tag ls @xpack-dev-tools/{{appLcName}}`
 } </CodeBlock>
 
 In case the previous version is not functional and needs to be unpublished:
 
 <CodeBlock language="sh"> {
-`npm unpublish @xpack-dev-tools/{{ appLcName }}@${ customField('upstreamVersion') }-${ customField('xpackSubversion') }.${ customField('npmSubversion') }`
+`npm unpublish @xpack-dev-tools/{{appLcName}}@${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}`
 } </CodeBlock>
 
 ### Build the static website locally
@@ -767,7 +767,7 @@ npm --prefix website run build
 At this moment an automated GitHub Action will generate and publish the website.
 
 - the new release blog post is
-in https://xpack-dev-tools.github.io/{{ appLcName }}-xpack/blog/
+in https://xpack-dev-tools.github.io/{{appLcName}}-xpack/blog/
 - remember the post URL, since it must be used to update the release page
 and the X/Twitter announcement
 
@@ -787,7 +787,7 @@ Avoid further updates to the `xpack` branch until the next release.
 
 ### Create the final GitHub release
 
-- go to the [GitHub Releases](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/) page
+- go to the [GitHub Releases](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/) page
 - check the download counter, it should match the number of tests
 - add a link to the Web blog `[Continue reading »]()`; use an same blog URL
 - remove the _tests only_ notice
@@ -796,7 +796,7 @@ Avoid further updates to the `xpack` branch until the next release.
 
 ### Check SourceForge mirror
 
-- https://sourceforge.net/projects/{{ appLcName }}-xpack/files/
+- https://sourceforge.net/projects/{{appLcName}}-xpack/files/
 
 ## Cleanups
 
@@ -810,38 +810,38 @@ Avoid further updates to the `xpack` branch until the next release.
 Run the **trigger-workflow-deep-clean** xPack action
 
 ```sh
-xpm run trigger-workflow-deep-clean -C ~/Work/xpack-dev-tools/{{ appLcName }}-xpack.git/build-assets
+xpm run trigger-workflow-deep-clean -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
 This will remove the build folders on all self-hosted runners.
 
 The results are available from the
-[GitHub Actions](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/actions/) page.
+[GitHub Actions](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/actions/) page.
 
 ## Share on Twitter
 
 - in a separate browser windows, open [X/Twitter](https://twitter.com)
 - using the **`@xpack_project`** account
-- paste the release name like _**xPack {{ appName }} v{ customField('upstreamVersion') }-{ customField('xpackSubversion') } released**_
+- paste the release name like _**xPack {{appName}} v{customField('upstreamVersion')}-{customField('xpackSubversion')} released**_
 - paste the link to the blog post
-  [release](https://xpack.github.io/{{ appLcName }}/releases/)
+  [release](https://xpack.github.io/{{appLcName}}/releases/)
 - click the **Tweet** button
 
 <ShareCustom/>
 
 ## Analytics
 
-- GitHub [`xpack-dev-tools/{{ appLcName }}-xpack`](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/) repo
+- GitHub [`xpack-dev-tools/{{appLcName}}-xpack`](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/) repo
   - latest xPack release
-[![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{ appLcName }}-xpack/latest/total.svg)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/)
-  - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{ appLcName }}-xpack/total.svg)](https://github.com/xpack-dev-tools/{{ appLcName }}-xpack/releases/){% if customFields.showDeprecatedGnuMcuAnalytics == 'true' %}
-  - previous GNU MCU Eclipse all releases [![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/{{ appLcName }}/total.svg)](https://github.com/gnu-mcu-eclipse/{{ appLcName }}/releases/){% endif %}
-  - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=xpack-dev-tools&repository={{ appLcName }}-xpack) (grouped per release)
-- npmjs.com [`@xpack-dev-tools/{{ appLcName }}`](https://www.npmjs.com/package/@xpack-dev-tools/{{ appLcName }}/) xPack
+[![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{appLcName}}-xpack/latest/total.svg)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/)
+  - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{appLcName}}-xpack/total.svg)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/){% if customFields.showDeprecatedGnuMcuAnalytics == 'true' %}
+  - previous GNU MCU Eclipse all releases [![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/{{appLcName}}/total.svg)](https://github.com/gnu-mcu-eclipse/{{appLcName}}/releases/){% endif %}
+  - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=xpack-dev-tools&repository={{appLcName}}-xpack) (grouped per release)
+- npmjs.com [`@xpack-dev-tools/{{appLcName}}`](https://www.npmjs.com/package/@xpack-dev-tools/{{appLcName}}/) xPack
   - latest release, per month
-[![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/{{ appLcName }}.svg)](https://www.npmjs.com/package/@xpack-dev-tools/{{ appLcName }}/)
-[![npm](https://img.shields.io/npm/dm/@xpack-dev-tools/{{ appLcName }}.svg)](https://www.npmjs.com/package/@xpack-dev-tools/{{ appLcName }}/)
-  - all releases [![npm](https://img.shields.io/npm/dt/@xpack-dev-tools/{{ appLcName }}.svg)](https://www.npmjs.com/package/@xpack-dev-tools/{{ appLcName }}/)
+[![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/{{appLcName}}.svg)](https://www.npmjs.com/package/@xpack-dev-tools/{{appLcName}}/)
+[![npm](https://img.shields.io/npm/dm/@xpack-dev-tools/{{appLcName}}.svg)](https://www.npmjs.com/package/@xpack-dev-tools/{{appLcName}}/)
+  - all releases [![npm](https://img.shields.io/npm/dt/@xpack-dev-tools/{{appLcName}}.svg)](https://www.npmjs.com/package/@xpack-dev-tools/{{appLcName}}/)
 
 Credit to [Shields IO](https://shields.io) for the badges and to
 [Somsubhra/github-release-stats](https://github.com/Somsubhra/github-release-stats)
