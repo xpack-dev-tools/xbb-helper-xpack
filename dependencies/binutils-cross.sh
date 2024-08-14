@@ -254,6 +254,7 @@ function binutils_cross_test_libs()
   show_host_libs "${test_bin_path}/${triplet}-ar"
   show_host_libs "${test_bin_path}/${triplet}-as"
   show_host_libs "${test_bin_path}/${triplet}-ld"
+  show_host_libs "${test_bin_path}/${triplet}-ld.gold"
   show_host_libs "${test_bin_path}/${triplet}-nm"
   show_host_libs "${test_bin_path}/${triplet}-objcopy"
   show_host_libs "${test_bin_path}/${triplet}-objdump"
@@ -275,6 +276,7 @@ function binutils_cross_test()
     show_host_libs "${test_bin_path}/${triplet}-ar"
     show_host_libs "${test_bin_path}/${triplet}-as"
     show_host_libs "${test_bin_path}/${triplet}-ld"
+    show_host_libs "${test_bin_path}/${triplet}-ld.gold"
     show_host_libs "${test_bin_path}/${triplet}-nm"
     show_host_libs "${test_bin_path}/${triplet}-objcopy"
     show_host_libs "${test_bin_path}/${triplet}-objdump"
@@ -289,6 +291,7 @@ function binutils_cross_test()
     run_host_app_verbose "${test_bin_path}/${triplet}-ar" --version
     run_host_app_verbose "${test_bin_path}/${triplet}-as" --version
     run_host_app_verbose "${test_bin_path}/${triplet}-ld" --version
+    run_host_app_verbose "${test_bin_path}/${triplet}-ld.gold" --version
     run_host_app_verbose "${test_bin_path}/${triplet}-nm" --version
     run_host_app_verbose "${test_bin_path}/${triplet}-objcopy" --version
     run_host_app_verbose "${test_bin_path}/${triplet}-objdump" --version
