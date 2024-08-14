@@ -174,42 +174,21 @@ function newlib_cross_build()
           if [ "${is_nano}" != "y" ]
           then
 
-            # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
-            # newlib_configure=' --disable-newlib-supplied-syscalls
-            # --enable-newlib-io-long-long --enable-newlib-io-c99-formats
-            # --enable-newlib-mb --enable-newlib-reent-check-verify
-            # --target=arm-none-eabi --prefix=/'
-
-            # 11.2-2022.02-darwin-x86_64-aarch64-none-elf-manifest.txt
-            # newlib_configure=' --disable-newlib-supplied-syscalls
-            # --enable-newlib-io-long-long --enable-newlib-io-c99-formats
-            # --enable-newlib-mb --enable-newlib-reent-check-verify
-            # --target=aarch64-none-elf --prefix=/'
-
-            # Checked for AArch64 12.3.rel1
+            # Check arm-gnu-toolchain-arm-none-eabi-abe-manifest.txt
+            # 13.3.rel1 ok.
             config_options+=("--disable-newlib-supplied-syscalls") # Arm, AArch64
 
-            config_options+=("--enable-newlib-io-c99-formats") # Arm, AArch64
-
             config_options+=("--enable-newlib-io-long-long") # Arm, AArch64
+            config_options+=("--enable-newlib-io-c99-formats") # Arm, AArch64
             config_options+=("--enable-newlib-mb") # Arm, AArch64
             config_options+=("--enable-newlib-reent-check-verify") # Arm, AArch64
-
             config_options+=("--enable-newlib-register-fini") # Arm, AArch64
-
             config_options+=("--enable-newlib-retargetable-locking") # Arm, AArch64
 
           else
 
-            # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
-            # newlib_nano_configure=' --disable-newlib-supplied-syscalls
-            # --enable-newlib-nano-malloc --disable-newlib-unbuf-stream-opt
-            # --enable-newlib-reent-small --disable-newlib-fseek-optimization
-            # --enable-newlib-nano-formatted-io
-            # --disable-newlib-fvwrite-in-streamio --disable-newlib-wide-orient
-            # --enable-lite-exit --enable-newlib-global-atexit
-            # --enable-newlib-reent-check-verify
-            # --target=arm-none-eabi --prefix=/'
+            # Check arm-gnu-toolchain-arm-none-eabi-nano-abe-manifest.txt
+            # 13.3.rel1 ok.
 
             # --enable-newlib-io-long-long and --enable-newlib-io-c99-formats
             # are currently ignored if --enable-newlib-nano-formatted-io.
