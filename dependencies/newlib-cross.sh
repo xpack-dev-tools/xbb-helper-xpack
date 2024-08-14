@@ -174,8 +174,9 @@ function newlib_cross_build()
           if [ "${is_nano}" != "y" ]
           then
 
-            # Check arm-gnu-toolchain-arm-none-eabi-abe-manifest.txt
-            # 13.3.rel1 ok.
+            # 13.3.rel1/arm-gnu-toolchain-arm-none-eabi-abe-manifest.txt
+            # newlib_configure="--disable-newlib-supplied-syscalls --enable-newlib-io-long-long --enable-newlib-io-c99-formats --enable-newlib-mb --enable-newlib-reent-check-verify --enable-newlib-register-fini --enable-newlib-retargetable-locking"
+
             config_options+=("--disable-newlib-supplied-syscalls") # Arm, AArch64
 
             config_options+=("--enable-newlib-io-long-long") # Arm, AArch64
@@ -187,9 +188,11 @@ function newlib_cross_build()
 
           else
 
-            # Check arm-gnu-toolchain-arm-none-eabi-nano-abe-manifest.txt
-            # 13.3.rel1 ok.
+            # 13.3.rel1/arm-gnu-toolchain-arm-none-eabi-nano-abe-manifest.txt
+            # newlib_configure="--disable-newlib-fseek-optimization --disable-newlib-fvwrite-in-streamio --disable-newlib-supplied-syscalls --disable-newlib-unbuf-stream-opt --disable-newlib-wide-orient --enable-lite-exit --enable-newlib-global-atexit --enable-newlib-nano-formatted-io --enable-newlib-nano-malloc --enable-newlib-reent-check-verify --enable-newlib-reent-small --enable-newlib-retargetable-locking"
 
+            # -----------------------------------------------------------------
+            
             # --enable-newlib-io-long-long and --enable-newlib-io-c99-formats
             # are currently ignored if --enable-newlib-nano-formatted-io.
             # --enable-newlib-register-fini is debatable, was removed.

@@ -407,28 +407,13 @@ function gcc_cross_build_first()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
           fi
 
-          # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
-          # gcc1_configure='--target=arm-none-eabi
-          # --prefix=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/install//
-          # --with-gmp=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --with-mpfr=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --with-mpc=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --with-isl=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --disable-shared --disable-nls --disable-threads --disable-tls
-          # --enable-checking=release --enable-languages=c --without-cloog
-          # --without-isl --with-newlib --without-headers
-          # --with-multilib-list=aprofile,rmprofile'
+          # 13.3.rel1 arm-gnu-toolchain-arm-none-eabi-abe-manifest.txt (nano is the same)
+          # gcc_stage1_flags="--with-mpc=${local_builds}/destdir/${host} --with-mpfr=${local_builds}/destdir/${host} --with-gmp=${local_builds}/destdir/${host} --disable-libatomic --disable-libsanitizer --disable-libssp --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-shared --disable-nls --disable-threads --disable-tls --enable-checking=release --enable-languages=c --without-cloog --without-isl --with-newlib --without-headers  --with-gnu-as --with-gnu-ld --with-multilib-list=aprofile,rmprofile --with-sysroot=${local_builds}/sysroot-arm-none-eabi"
 
-          # 11.2-2022.02-darwin-x86_64-aarch64-none-elf-manifest.txt
-          # gcc1_configure='--target=aarch64-none-elf
-          # --prefix=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/install//
-          # --with-gmp=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/host-tools
-          # --with-mpfr=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/host-tools
-          # --with-mpc=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/host-tools
-          # --with-isl=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/host-tools
-          # --disable-shared --disable-nls --disable-threads --disable-tls
-          # --enable-checking=release --enable-languages=c --without-cloog
-          # --without-isl --with-newlib --without-headers'
+          # 13.3.rel1 arm-gnu-toolchain-aarch64-none-elf-abe-manifest.txt
+          # gcc_stage1_flags="--with-mpc=${local_builds}/destdir/${host} --with-mpfr=${local_builds}/destdir/${host} --with-gmp=${local_builds}/destdir/${host} --disable-libatomic --disable-libsanitizer --disable-libssp --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-shared --disable-nls --disable-threads --disable-tls --enable-checking=release --enable-languages=c --without-cloog --without-isl --with-newlib --without-headers --with-gnu-as --with-gnu-ld --with-sysroot=${local_builds}/sysroot-aarch64-none-elf"
+
+          # -------------------------------------------------------------------
 
           # From: https://gcc.gnu.org/install/configure.html
           # --enable-shared[=package[,…]] build shared versions of libraries
@@ -734,6 +719,14 @@ function gcc_cross_build_final()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" --help
           fi
 
+          # 13.3.rel1/arm-gnu-toolchain-arm-none-eabi-abe-manifest.txt (nano is the same)
+          # gcc_stage2_flags="--with-mpc=${local_builds}/destdir/${host} --with-mpfr=${local_builds}/destdir/${host} --with-gmp=${local_builds}/destdir/${host} --disable-shared --disable-nls --disable-threads --disable-tls --enable-checking=release --enable-languages=c,c++ --with-newlib --with-gnu-as --with-headers=yes --with-gnu-ld --with-native-system-header-dir=/include --with-multilib-list=aprofile,rmprofile --with-sysroot=${local_builds}/destdir/${host}/arm-none-eabi"
+
+          # 13.3.rel1/arm-gnu-toolchain-aarch64-none-elf-abe-manifest.txt
+          # gcc_stage2_flags="--target=aarch64-none-elf --with-mpc=${local_builds}/destdir/${host} --with-mpfr=${local_builds}/destdir/${host} --with-gmp=${local_builds}/destdir/${host} --disable-shared --disable-nls --disable-threads --disable-tls --enable-checking=release --enable-languages=c,c++ --with-newlib --with-gnu-as --with-headers=yes --with-gnu-ld --with-native-system-header-dir=/include  --with-sysroot=${local_builds}/destdir/${host}/aarch64-none-elf"
+
+          # -------------------------------------------------------------------
+
           # https://gcc.gnu.org/install/configure.html
           # --enable-shared[=package[,…]] build shared versions of libraries
           # --enable-tls specify that the target supports TLS (Thread Local Storage).
@@ -834,39 +827,6 @@ function gcc_cross_build_final()
             echo "Unsupported triplet ${triplet} in ${FUNCNAME[0]}()"
             exit 1
           fi
-
-          # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
-          # gcc2_configure='--target=arm-none-eabi
-          # --prefix=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/install//
-          # --with-gmp=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --with-mpfr=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --with-mpc=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --with-isl=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --disable-shared --disable-nls --disable-threads --disable-tls
-          # --enable-checking=release --enable-languages=c,c++,fortran
-          # --with-newlib --with-multilib-list=aprofile,rmprofile'
-
-          # 11.2-2022.02-darwin-x86_64-aarch64-none-elf-manifest.txt
-          # gcc2_configure='--target=aarch64-none-elf
-          # --prefix=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/install//
-          # --with-gmp=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/host-tools
-          # --with-mpfr=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/host-tools
-          # --with-mpc=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/host-tools
-          # --with-isl=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/host-tools
-          # --disable-shared --disable-nls --disable-threads --disable-tls
-          # --enable-checking=release --enable-languages=c,c++,fortran
-          # --with-newlib 			 			 			'
-
-          # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
-          # gcc2_nano_configure='--target=arm-none-eabi
-          # --prefix=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/nano_install//
-          # --with-gmp=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --with-mpfr=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --with-mpc=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --with-isl=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --disable-shared --disable-nls --disable-threads --disable-tls
-          # --enable-checking=release --enable-languages=c,c++,fortran
-          # --with-newlib --with-multilib-list=aprofile,rmprofile'
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_GCC_SRC_FOLDER_NAME}/configure" \
             "${config_options[@]}"

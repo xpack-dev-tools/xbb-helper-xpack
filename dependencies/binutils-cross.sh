@@ -116,18 +116,11 @@ function binutils_cross_build()
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${XBB_BINUTILS_SRC_FOLDER_NAME}/configure" --help
           fi
 
-          # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
-          # binutils_configure='--enable-initfini-array --disable-nls
-          # --without-x --disable-gdbtk --without-tcl --without-tk
-          # --enable-plugins --disable-gdb --without-gdb --target=arm-none-eabi
-          # --prefix=/'
+          # 13.3.rel1/arm-gnu-toolchain-arm-none-eabi-abe-manifest.txt
+          # binutils_configure="--enable-initfini-array --disable-nls --without-x --disable-gdbtk --without-tcl --without-tk --enable-plugins --disable-gdb --without-gdb --with-sysroot=${sysroots}"
 
-          # 11.2-2022.02-darwin-x86_64-aarch64-none-elf-manifest.txt
-          # binutils_configure='--enable-64-bit-bfd
-          # --enable-targets=arm-none-eabi,aarch64-none-linux-gnu,aarch64-none-elf
-          # --enable-initfini-array --disable-nls --without-x --disable-gdbtk
-          # --without-tcl --without-tk --enable-plugins --disable-gdb
-          # --without-gdb --target=aarch64-none-elf --prefix=/'
+          # 13.3.rel1/arm-gnu-toolchain-aarch64-none-elf-abe-manifest.txt
+          # binutils_configure="--enable-64-bit-bfd --enable-initfini-array --disable-nls --without-x --disable-gdbtk --without-tcl --without-tk --enable-plugins --disable-gdb --without-gdb --with-sysroot=${sysroots}"
 
           # ? --without-python --without-curses, --with-expat
 

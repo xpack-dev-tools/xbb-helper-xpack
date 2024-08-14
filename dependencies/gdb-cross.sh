@@ -250,6 +250,14 @@ function gdb_cross_build()
 
           fi
 
+          # 13.3.rel1/arm-gnu-toolchain-arm-none-eabi-abe-manifest.txt (same for nano)
+          # gdb_configure="--with-gnu-ld --enable-plugins --enable-tui --with-pkgversion=Linaro_GDB-2019.12 --disable-gas --disable-binutils --disable-ld --disable-gold --disable-gprof --with-python=yes --with-mpfr=${local_builds}/destdir/${host} --with-gmp=${local_builds}/destdir/${host} --with-libgmp-prefix=${local_builds}/destdir/${host}"
+          # gdb_mingw_extraconf="--disable-tui --with-python=${local_snapshots}/python-2.7.4-mingw32 CFLAGS=-I${local_builds}/destdir/${host}/usr/include LDFLAGS=-L${local_builds}/destdir/${host}/usr/lib"
+
+          # 13.3.rel1/arm-gnu-toolchain-aarch64-none-elf-abe-manifest.txt
+          # gdb_configure="--with-gnu-ld --enable-plugins --enable-tui --with-pkgversion=Linaro_GDB-2019.12 --disable-gas --disable-binutils --disable-ld --disable-gold --disable-gprof --with-python=yes --enable-sim --with-mpfr=${local_builds}/destdir/${host} --with-gmp=${local_builds}/destdir/${host} --with-libgmp-prefix=${local_builds}/destdir/${host}"
+          # gdb_mingw_extraconf="--disable-tui --with-python=${local_snapshots}/python-2.7.4-mingw32 CFLAGS=-I${local_builds}/destdir/${host}/usr/include LDFLAGS=-L${local_builds}/destdir/${host}/usr/lib"
+
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
