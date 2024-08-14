@@ -250,36 +250,6 @@ function gdb_cross_build()
 
           fi
 
-          # 11.2-2022.02-darwin-x86_64-arm-none-eabi-manifest.txt:
-          # gdb_configure='--enable-initfini-array --disable-nls --without-x
-          # --disable-gdbtk --without-tcl --without-tk --disable-werror
-          # --without-expat --without-libunwind-ia64 --without-lzma
-          # --without-babeltrace --without-intel-pt --without-xxhash
-          # --without-debuginfod --without-guile --disable-source-highlight
-          # --disable-objc-gc --with-python=no --disable-binutils
-          # --disable-sim --disable-as --disable-ld --enable-plugins
-          # --target=arm-none-eabi --prefix=/ --with-mpfr
-          # --with-libmpfr-prefix=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --with-libmpfr-type=static
-          # --with-libgmp-prefix=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-arm-none-eabi/host-tools
-          # --with-libgmp-type=static'
-
-          # 11.2-2022.02-darwin-x86_64-aarch64-none-elf-manifest.txt
-          # gdb_configure='--enable-64-bit-bfd
-          # --enable-targets=arm-none-eabi,aarch64-none-linux-gnu,aarch64-none-elf
-          # --enable-initfini-array --disable-nls --without-x --disable-gdbtk
-          # --without-tcl --without-tk --disable-werror --without-expat
-          # --without-libunwind-ia64 --without-lzma --without-babeltrace
-          # --without-intel-pt --without-xxhash  --without-debuginfod
-          # --without-guile --disable-source-highlight --disable-objc-gc
-          # --with-python=no --disable-binutils --disable-sim --disable-as
-          # --disable-ld --enable-plugins --target=aarch64-none-elf --prefix=/
-          # --with-mpfr
-          # --with-libmpfr-prefix=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/host-tools
-          # --with-libmpfr-type=static
-          # --with-libgmp-prefix=/Volumes/data/jenkins/workspace/GNU-toolchain/arm-11/build-aarch64-none-elf/host-tools
-          # --with-libgmp-type=static'
-
           config_options=()
 
           config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
@@ -297,20 +267,20 @@ function gdb_cross_build()
           config_options+=("--program-suffix=${name_suffix}")
 
           config_options+=("--disable-binutils") # Arm, AArch64
-          config_options+=("--disable-as") # Arm, AArch64
+      # config_options+=("--disable-as") # Arm, AArch64
           config_options+=("--disable-gas") # Arm, AArch64
-          config_options+=("--disable-gdbtk") # Arm, AArch64
-          # config_options+=("--disable-gprof")
+      # config_options+=("--disable-gdbtk") # Arm, AArch64
+          config_options+=("--disable-gprof") # Arm
           config_options+=("--disable-gold") # Arm, AArch64
           config_options+=("--disable-ld") # Arm, AArch64
-          config_options+=("--disable-nls") # Arm, AArch64
-          config_options+=("--disable-objc-gc") # Arm, AArch64
-          config_options+=("--disable-sim") # Arm, AArch64
-          config_options+=("--disable-source-highlight") # Arm, AArch64
+      # config_options+=("--disable-nls") # Arm, AArch64
+      # config_options+=("--disable-objc-gc") # Arm, AArch64
+      # config_options+=("--disable-sim") # Arm, AArch64
+      # config_options+=("--disable-source-highlight") # Arm, AArch64
           config_options+=("--disable-werror") # Arm, AArch64
 
           config_options+=("--enable-gdb")
-          config_options+=("--enable-initfini-array") # Arm, AArch64
+      # config_options+=("--enable-initfini-array") # Arm, AArch64
           config_options+=("--enable-build-warnings=no")
           config_options+=("--enable-plugins") # Arm, AArch64
 
@@ -320,16 +290,16 @@ function gdb_cross_build()
             config_options+=("--enable-targets=arm-none-eabi,aarch64-none-linux-gnu,aarch64-none-elf") # AArch64
           fi
 
-          config_options+=("--without-babeltrace") # Arm, AArch64
-          config_options+=("--without-debuginfod") # Arm, AArch64
-          config_options+=("--without-guile") # Arm, AArch64
-          config_options+=("--without-intel-pt") # Arm, AArch64
-          config_options+=("--without-libunwind-ia64") # Arm, AArch64
-          config_options+=("--without-lzma") # Arm, AArch64
-          config_options+=("--without-tcl") # Arm, AArch64
-          config_options+=("--without-tk") # Arm, AArch64
-          config_options+=("--without-x") # Arm, AArch64
-          config_options+=("--without-xxhash") # Arm, AArch64
+      # config_options+=("--without-babeltrace") # Arm, AArch64
+      # config_options+=("--without-debuginfod") # Arm, AArch64
+      # config_options+=("--without-guile") # Arm, AArch64
+      # config_options+=("--without-intel-pt") # Arm, AArch64
+      # config_options+=("--without-libunwind-ia64") # Arm, AArch64
+      # config_options+=("--without-lzma") # Arm, AArch64
+      # config_options+=("--without-tcl") # Arm, AArch64
+      # config_options+=("--without-tk") # Arm, AArch64
+      # config_options+=("--without-x") # Arm, AArch64
+      # config_options+=("--without-xxhash") # Arm, AArch64
 
           # In 2.42 the path is from the short `--with-xxx`, not `--with-xxx-prefix`
           # config_options+=("--with-expat") # Arm, AArch64
