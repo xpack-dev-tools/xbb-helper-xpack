@@ -182,6 +182,7 @@ function binutils_cross_build()
           config_options+=("--with-system-zlib")
 
           # Arm --with-sysroot=${sysroots}"
+          config_options+=("--with-sysroot=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/${triplet}")
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_BINUTILS_SRC_FOLDER_NAME}/configure" \
             "${config_options[@]}"
