@@ -2,9 +2,69 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-08-14
+
+* v3.0.8 released
+* ea1f75a templates/docusaurus update
+* 608b76a gcc-cross.sh: cleanup ${VERBOSE[@]}
+* 3379fec dependencies: *-cross.sh: add config from abe manifests
+* e6d8bd3 binutils-cross.sh: test ld.gold
+* 19dde59 binutils-cross.sh: add sysroot
+* c742091 gcc-cross.sh: disable fortran
+* 401ec00 templates/docusaurus update
+* 637a8c2 templates/docusaurus update
+* 4cf74b9 templates/docusaurus update
+* 813a5b7 templates/docusaurus update
+* c88cbe8 templates/docusaurus update
+* 3c87181 templates/docusaurus update
+* 1dad63b newlib-cross.sh: simplify
+* e6ef624 gdbcross.sh: simplify
+* f150783 templates/docusaurus update
+* c36cfed gcc-cross.sh: comment out --disable-libssp & other
+
+## 2024-08-13
+
+* 53adbc3 website update
+* 01b1f1f templates/docusaurus updates
+* c033a34 binutils-cross.sh: unset flags for make check
+* 39bc29c binutils-cross.ld: --enable-gold
+* 79e30f2 templates/docusaurus updates
+* b0cf1bd gcc-cross.sh: update --with headers=yes for aarch64
+* 67c710e templates/docusaurus updates
+* b02b55c templates/docusaurus: `} </CodeBlock>
+* ffa7842 templates/docusaurus: remove { } spaces
+* 89b583b templates/docusaurus: add more _arm-toolchain-*.mdx
+* 1fc460e templates/docusaurus: svg stroke-width="1.6"
+* bd93ada templates/workflows: add build-assets/package.json
+
+## 2024-08-12
+
+* bafa87e templates/docusaurus cleanups
+* c05afcf templates/docusaurus: add _arm-toolchain-versioning-liquid.mdx
+* e3bf62b templates/docusaurus: process separate customFields
+* bbd58f9 templates/docusaurus: add _first-production-run.mdx
+* 6fcb51a templates/docusaurus: support uses documentation from getting started
+
+## 2024-08-10
+
+* d26ba53 template/docusaurus updates
+* b8ba304 add xpm-run-website-*
+* 083cb50 templates/docusaurus rework *-install-quick-test.mdx
+* 3a28a18 website-generate-common.sh: cleanups
+
 ## 2024-08-09
 
-* v3.0.7 released
+* 5e27e32 templates/docusaurus updates
+* e5836ec templates/workflows publish update
+* a7fc292 website-convert-release.sh update
+* 15a8fa6 git-commit.sh update
+* 21fa456 post-processing.sh: chmod -R u+rw
+* 09ba953 build-scripts: chmod ug+rw
+* 801c7e8 move-to-build-assets.sh updates
+* ca72e50 templates/docusaurus fix typo
+* 3ac51e2 test-prime: update prefix
+* eaf085e 3.0.7
+* ad60da2 prepare v3.0.7
 * 3e3f116 maintainer-scripts: rename *_path
 * e181d7c travis: rename root_folder_path
 * 3b3fa74 github-actions: rename root_folder_path
