@@ -1063,7 +1063,7 @@ __EOF__
     run_host_app_verbose "${CC}" hello.c -o hello-c.elf ${CFLAGS} ${LDFLAGS} -g -v
     run_verbose file hello-c.elf
 
-    run_host_app_verbose "${CC}" -c hello.c -o hello.c.o ${CFLAGS} -flto ${VERBOSE[@]}
+    run_host_app_verbose "${CC}" -c hello.c -o hello.c.o ${CFLAGS} -flto ${VERBOSE}
     run_host_app_verbose "${CC}" hello.c.o -o hello-c-lto.elf ${LDFLAGS} ${CFLAGS} -flto ${VERBOSE}
     run_verbose file hello-c-lto.elf
 
