@@ -36,7 +36,14 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 tmp_file_commit_body_blog="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_body_blog}"
-cd "$1/../build-assets"
+cd "$1/.."
+
+if [ ! -d build-assets ]
+then
+  exit 0
+fi
+
+cd build-assets
 
 echo
 echo $1
@@ -49,7 +56,14 @@ __EOF__
 
 tmp_file_blog="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_blog}"
-cd "$1/../build-assets"
+cd "$1/.."
+
+if [ ! -d build-assets ]
+then
+  exit 0
+fi
+
+cd build-assets
 
 echo
 echo $1
@@ -214,7 +228,14 @@ __EOF__
 
 tmp_file_commit_build_assets_package="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_build_assets_package}"
-cd "$1/../build-assets"
+cd "$1/.."
+
+if [ ! -d build-assets ]
+then
+  exit 0
+fi
+
+cd build-assets
 
 echo
 echo $1
@@ -242,9 +263,9 @@ set -x
 # commands_file="${tmp_file_scripts}"
 # commands_file="${tmp_file_npmignore}"
 
-commands_file="${tmp_file_commit_readmes}"
+# commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
-# commands_file="${tmp_file_commit_build_assets_package}"
+commands_file="${tmp_file_commit_build_assets_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
