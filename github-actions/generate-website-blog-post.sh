@@ -85,7 +85,7 @@ cat "${destination_folder_path}"/*.sha
 
 version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 release_date="$(date '+%Y-%m-%d %H:%M:%S %z')"
-post_file_path="${website_blog_path}/$(date -u '+%Y-%m-%d')-${XBB_APPLICATION_LOWER_CASE_NAME}-v$(echo ${version} | tr '.' '-')-released.md"
+post_file_path="${website_blog_path}/$(date -u '+%Y-%m-%d')-${XBB_APPLICATION_LOWER_CASE_NAME}-v$(echo ${version} | tr '.' '-')-released.mdx"
 echo
 
 rm -rf "${post_file_path}"
