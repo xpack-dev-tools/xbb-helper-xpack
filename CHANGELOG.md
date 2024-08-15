@@ -4,8 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-08-15
 
-* v3.0.9 released
-* cca81c5 build-scripts/test-common.sh: tar x --no-same-owner
+* v3.0.10 released
+* 8fba44c build-scripts/test-common.sh: fix syntax
+* f1de1be templates/docusaurus update
+* 36b5b25 3.0.9
+* c0ab67d prepare v3.0.9* cca81c5 build-scripts/test-common.sh: tar x --no-same-owner
 
 ## 2024-08-14
 
