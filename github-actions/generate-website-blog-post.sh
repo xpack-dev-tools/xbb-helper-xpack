@@ -91,7 +91,17 @@ echo
 rm -rf "${post_file_path}"
 touch "${post_file_path}"
 
-liquidjs --context "{ \"XBB_RELEASE_VERSION\": \"${version}\", \"RELEASE_DATE\": \"${release_date}\" }" --template @"${root_folder_path}/templates/body-blog-release-post-part-1-liquid.mdx" >> "${post_file_path}"
+customFields="$(liquidjs --context "@${root_folder_path}/package.json" --template '{{ xpack.properties.customFields | json }}')"
+if [ -z "${customFields}" ]
+then
+  customFields='{}'
+fi
+
+upstreamVersion="$(echo ${version} | sed -e 's|-.*||')"
+
+context="{ \"XBB_RELEASE_VERSION\": \"${version}\", \"RELEASE_DATE\": \"${release_date}\", \"upstreamVersion\": \"${upstreamVersion}\", \"customFields\": ${customFields} }"
+
+liquidjs --context "${context}" --template "@${root_folder_path}/templates/body-blog-release-post-part-1-liquid.mdx" >> "${post_file_path}"
 
 echo >> "${post_file_path}"
 echo '```txt'  >> "${post_file_path}"
@@ -101,7 +111,7 @@ cat "${destination_folder_path}"/*.sha \
   >> "${post_file_path}"
 echo '```'  >> "${post_file_path}"
 
-liquidjs --context "{ \"XBB_RELEASE_VERSION\": \"${version}\", \"RELEASE_DATE\": \"${release_date}\" }" --template @"${root_folder_path}/templates/body-blog-release-post-part-2-liquid.mdx" >> "${post_file_path}"
+liquidjs --context "${context}" --template "@${root_folder_path}/templates/body-blog-release-post-part-2-liquid.mdx" >> "${post_file_path}"
 
 echo "Don't forget to manually solve the TODO action point!"
 
