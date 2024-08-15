@@ -91,12 +91,12 @@ function tests_install_archive()
     # fatal error: bits/gthr-default.h: No such file or directory
     run_verbose mv "${XBB_ARCHIVE_INSTALL_FOLDER_PATH}" "${tests_folder_path}/archive"
     export XBB_ARCHIVE_INSTALL_FOLDER_PATH="${tests_folder_path}/archive"
-  else if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
   then
     # On Debian it fails with
     # Cannot change mode to rwxrwxrwx: Operation not permitted
     run_verbose tar xf "${tests_folder_path}/../${archive_name}" --no-same-owner
-  else if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  elif [ "${XBB_HOST_PLATFORM}" == "darwin" ]
   then
     run_verbose tar xf "${tests_folder_path}/../${archive_name}"
   else
