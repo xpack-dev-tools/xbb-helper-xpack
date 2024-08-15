@@ -2,9 +2,16 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-08-15
+
+* v3.0.9 released
+* cca81c5 build-scripts/test-common.sh: tar x --no-same-owner
+
 ## 2024-08-14
 
-* v3.0.8 released
+* 6e45a2d git-commit.sh update
+* 72b1678 3.0.8
+* a0e9a5f prepare v3.0.8
 * ea1f75a templates/docusaurus update
 * 608b76a gcc-cross.sh: cleanup ${VERBOSE[@]}
 * 3379fec dependencies: *-cross.sh: add config from abe manifests
