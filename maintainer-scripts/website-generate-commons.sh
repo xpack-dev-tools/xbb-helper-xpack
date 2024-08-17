@@ -54,11 +54,18 @@ fi
 cd "${root_folder_path}"
 
 # Use liquidjs to extract properties from package.json.
-export appName="$(liquidjs --context @package.json --template '{{ xpack.properties.appName }}')"
-export appLcName="$(liquidjs --context @package.json --template '{{ xpack.properties.appLcName }}')"
-export platforms="$(liquidjs --context @package.json --template '{{ xpack.properties.platforms }}')"
+export appName="$(liquidjs --context @package.json --template '{{xpack.properties.appName}}')"
+export appLcName="$(liquidjs --context @package.json --template '{{xpack.properties.appLcName}}')"
+export platforms="$(liquidjs --context @package.json --template '{{xpack.properties.platforms}}')"
 
-export customFields="$(liquidjs --context @package.json --template '{{ xpack.properties.customFields | json }}')"
+customFields="$(liquidjs --context @package.json --template '{{xpack.properties.customFields | json}}')"
+
+if [ -z "${customFields}" ]
+then
+  customFields='{}'
+fi
+
+export customFields
 
 export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"customFields\": ${customFields} }"
 
