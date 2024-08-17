@@ -80,7 +80,7 @@ then
   platforms_with_commas=",linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64,"
 fi
 
-export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"prefix\": \"${prefix}\", \"branch\": \"${branch}\" }"
+export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }"
 
 # The template files include
 # "xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/copyright-liquid.yml"
