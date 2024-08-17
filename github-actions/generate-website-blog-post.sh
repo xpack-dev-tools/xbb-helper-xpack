@@ -83,23 +83,23 @@ ls -lL "${destination_folder_path}"
 echo
 cat "${destination_folder_path}"/*.sha
 
-version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
+release_version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 release_date="$(date '+%Y-%m-%d %H:%M:%S %z')"
-post_file_path="${website_blog_path}/$(date -u '+%Y-%m-%d')-${XBB_APPLICATION_LOWER_CASE_NAME}-v$(echo ${version} | tr '.' '-')-released.mdx"
+post_file_path="${website_blog_path}/$(date -u '+%Y-%m-%d')-${XBB_APPLICATION_LOWER_CASE_NAME}-v$(echo ${release_version} | tr '.' '-')-released.mdx"
 echo
 
 rm -rf "${post_file_path}"
 touch "${post_file_path}"
 
-customFields="$(liquidjs --context "@${root_folder_path}/package.json" --template '{{ xpack.properties.customFields | json }}')"
+customFields="$(liquidjs --context "@${root_folder_path}/package.json" --template '{{xpack.properties.customFields | json}}')"
 if [ -z "${customFields}" ]
 then
   customFields='{}'
 fi
 
-upstreamVersion="$(echo ${version} | sed -e 's|-.*||')"
+upstreamVersion="$(echo ${release_version} | sed -e 's|-.*||')"
 
-context="{ \"XBB_RELEASE_VERSION\": \"${version}\", \"RELEASE_DATE\": \"${release_date}\", \"upstreamVersion\": \"${upstreamVersion}\", \"customFields\": ${customFields} }"
+context="{ \"releaseVersion\": \"${release_version}\", \"releaseDate\": \"${release_date}\", \"upstreamVersion\": \"${upstreamVersion}\", \"customFields\": ${customFields} }"
 
 liquidjs --context "${context}" --template "@${root_folder_path}/templates/body-blog-release-post-part-1-liquid.mdx" >> "${post_file_path}"
 
