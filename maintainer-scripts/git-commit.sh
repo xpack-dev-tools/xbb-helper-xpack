@@ -34,8 +34,8 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-tmp_file_commit_body_blog="$(mktemp)"
-cat <<'__EOF__' >"${tmp_file_commit_body_blog}"
+tmp_file_template_github="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_template_github}"
 cd "$1/.."
 
 if [ ! -d build-assets ]
@@ -47,8 +47,8 @@ cd build-assets
 
 echo
 echo $1
-git add templates/body-blog-release-post*.mdx
-git commit -m "templates/body-blog: fix jekyll raw/endraw"
+git add templates/body-github*.md*
+git commit -m "templates/body-github: update"
 
 __EOF__
 
@@ -256,6 +256,7 @@ __EOF__
 set -x
 
 # UPDATE ME!
+commands_file="${tmp_file_template_github}"
 # commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_application}"
 
@@ -265,7 +266,7 @@ set -x
 
 # commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
-commands_file="${tmp_file_commit_build_assets_package}"
+# commands_file="${tmp_file_commit_build_assets_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
