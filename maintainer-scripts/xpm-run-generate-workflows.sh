@@ -38,6 +38,13 @@ tmp_script_file="$(mktemp)"
 cat <<'__EOF__' >"${tmp_script_file}"
 cd "$1/.."
 
+if [ ! -d build-assets ]
+then
+  exit 0
+fi
+
+cd build-assets
+
 xpm run generate-workflows
 __EOF__
 
