@@ -43,7 +43,7 @@ jobs:
 {% for platform in platforms -%}
 {% if platform == "linux-x64" %}
   linux-x64-x:
-    name: 'Linux x64 X - {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+    name: 'Linux x64 X - {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} build'
     timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64]
     container:
@@ -77,17 +77,17 @@ jobs:
       - name: 'Install xpm'
         timeout-minutes: 1440
         run: |
-          npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm_version }}{% endraw %}
+          npm install --location=global xpm@{% raw %}${{github.event.inputs.xpm_version}}{% endraw %}
           xpm --version
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %} -C {{ prefix }}
+        run: xpm install --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %} -C {{prefix}}
 
       - name: 'Build Linux x64 binaries'
         timeout-minutes: 1440
         run: |
-          xpm install --config linux-x64 --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
+          xpm install --config linux-x64 --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %}
           xpm run build --config linux-x64
 
       - name: 'Publish pre-release'
@@ -108,18 +108,18 @@ jobs:
           replacesArtifacts: true
           repo: 'pre-releases'
           tag: 'test'
-          token: {% raw %}${{ secrets.PUBLISH_TOKEN }}{% endraw %}
+          token: {% raw %}${{secrets.PUBLISH_TOKEN}}{% endraw %}
 
       - name: 'Rename working area'
         # For just in case absolute paths remain unprocessed.
-        run: mv -v {{ prefix }}/build {{ prefix }}/build-$(date -u +%Y%m%d-%H%M%S)
+        run: mv -v {{prefix}}/build {{prefix}}/build-$(date -u +%Y%m%d-%H%M%S)
 {% break -%}
 {% endif -%}
 {% endfor %}
 {% for platform in platforms -%}
 {% if platform == "win32-x64" %}
   linux-x64-w:
-    name: 'Linux x64 W - {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+    name: 'Linux x64 W - {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} build'
     timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64]
     container:
@@ -153,17 +153,17 @@ jobs:
       - name: 'Install xpm'
         timeout-minutes: 1440
         run: |
-          npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm_version }}{% endraw %}
+          npm install --location=global xpm@{% raw %}${{github.event.inputs.xpm_version}}{% endraw %}
           xpm --version
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %} -C {{ prefix }}
+        run: xpm install --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %} -C {{prefix}}
 
       - name: 'Build Windows x64 binaries'
         timeout-minutes: 1440
         run: |
-          xpm install --config win32-x64 --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
+          xpm install --config win32-x64 --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %}
           xpm run build --config win32-x64
 
       - name: 'Publish pre-release'
@@ -184,18 +184,18 @@ jobs:
           replacesArtifacts: true
           repo: 'pre-releases'
           tag: 'test'
-          token: {% raw %}${{ secrets.PUBLISH_TOKEN }}{% endraw %}
+          token: {% raw %}${{secrets.PUBLISH_TOKEN}}{% endraw %}
 
       - name: 'Rename working area'
         # For just in case absolute paths remain unprocessed.
-        run: mv -v {{ prefix }}/build {{ prefix }}/build-$(date -u +%Y%m%d-%H%M%S)
+        run: mv -v {{prefix}}/build {{prefix}}/build-$(date -u +%Y%m%d-%H%M%S)
 {% break -%}
 {% endif -%}
 {% endfor %}
 {% for platform in platforms -%}
 {% if platform == "linux-arm" %}
-  {{ platform }}:
-    name: '{{ platform }} {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+  {{platform}}:
+    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} build'
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm, xbbla32]
     container:
@@ -229,25 +229,25 @@ jobs:
       - name: 'Install xpm'
         timeout-minutes: 1440
         run: |
-          npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm_version }}{% endraw %}
+          npm install --location=global xpm@{% raw %}${{github.event.inputs.xpm_version}}{% endraw %}
           xpm --version
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %} -C {{ prefix }}
+        run: xpm install --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %} -C {{prefix}}
 
-      - name: 'Build {{ platform }} binaries'
+      - name: 'Build {{platform}} binaries'
         timeout-minutes: 1440
         run: |
-          xpm install --config {{ platform }} --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %} -C {{ prefix }}
-          xpm run build --config {{ platform }} -C {{ prefix }}
+          xpm install --config {{platform}} --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %} -C {{prefix}}
+          xpm run build --config {{platform}} -C {{prefix}}
 
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
         uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
-          artifacts: '{{ prefix }}/build/{{ platform }}/deploy/*'
+          artifacts: '{{prefix}}/build/{{platform}}/deploy/*'
           bodyFile: '.github/workflows/body-github-pre-releases-test.md'
           commit: 'master'
           draft: false
@@ -260,18 +260,18 @@ jobs:
           replacesArtifacts: true
           repo: 'pre-releases'
           tag: 'test'
-          token: {% raw %}${{ secrets.PUBLISH_TOKEN }}{% endraw %}
+          token: {% raw %}${{secrets.PUBLISH_TOKEN}}{% endraw %}
 
       - name: 'Rename working area'
         # For just in case absolute paths remain unprocessed.
-        run: mv -v {{ prefix }}/build {{ prefix }}/build-$(date -u +%Y%m%d-%H%M%S)
+        run: mv -v {{prefix}}/build {{prefix}}/build-$(date -u +%Y%m%d-%H%M%S)
 {% break -%}
 {% endif -%}
 {% endfor -%}
 {% for platform in platforms -%}
 {% if platform == "linux-arm64" %}
- {{ platform }}:
-    name: '{{ platform }} {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+ {{platform}}:
+    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} build'
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm64, xbbla]
     container:
@@ -305,25 +305,25 @@ jobs:
       - name: 'Install xpm'
         timeout-minutes: 1440
         run: |
-          npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm_version }}{% endraw %}
+          npm install --location=global xpm@{% raw %}${{github.event.inputs.xpm_version}}{% endraw %}
           xpm --version
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %} -C {{ prefix }}
+        run: xpm install --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %} -C {{prefix}}
 
       - name: 'Build Linux arm64 binaries'
         timeout-minutes: 1440
         run: |
-          xpm install --config {{ platform }} --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %} -C {{ prefix }}
-          xpm run build --config {{ platform }} -C {{ prefix }}
+          xpm install --config {{platform}} --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %} -C {{prefix}}
+          xpm run build --config {{platform}} -C {{prefix}}
 
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
         uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
-          artifacts: '{{ prefix }}/build/{{ platform }}/deploy/*'
+          artifacts: '{{prefix}}/build/{{platform}}/deploy/*'
           bodyFile: '.github/workflows/body-github-pre-releases-test.md'
           commit: 'master'
           draft: false
@@ -336,21 +336,21 @@ jobs:
           replacesArtifacts: true
           repo: 'pre-releases'
           tag: 'test'
-          token: {% raw %}${{ secrets.PUBLISH_TOKEN }}{% endraw %}
+          token: {% raw %}${{secrets.PUBLISH_TOKEN}}{% endraw %}
 
       - name: 'Rename working area'
         # For just in case absolute paths remain unprocessed.
-        run: mv -v {{ prefix }}/build {{ prefix }}/build-$(date -u +%Y%m%d-%H%M%S)
+        run: mv -v {{prefix}}/build {{prefix}}/build-$(date -u +%Y%m%d-%H%M%S)
 {% break -%}
 {% endif -%}
 {% endfor -%}
 {% for platform in platforms -%}
 {% if platform == "darwin-x64" %}
   macos-x64:
-    name: 'macOS Intel - {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+    name: 'macOS Intel - {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} build'
     timeout-minutes: 2880 # 2 days
 {% if MACOS_INTEL_VERSION %}
-    runs-on: [self-hosted, macos, intel, {{ MACOS_INTEL_VERSION }}]
+    runs-on: [self-hosted, macos, intel, {{MACOS_INTEL_VERSION}}]
 {% else %}
     runs-on: [self-hosted, macos, intel]
 {% endif %}
@@ -382,12 +382,12 @@ jobs:
       - name: 'Install xpm'
         timeout-minutes: 1440
         run: |
-          npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm_version }}{% endraw %}
+          npm install --location=global xpm@{% raw %}${{github.event.inputs.xpm_version}}{% endraw %}
           xpm --version
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %} -C {{ prefix }}
+        run: xpm install --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %} -C {{prefix}}
 
 {% for platform in platforms -%}
 {% case platform -%}
@@ -395,7 +395,7 @@ jobs:
       - name: 'Build macOS x64 binaries'
         timeout-minutes: 1440
         run: |
-          xpm install --config darwin-x64 --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
+          xpm install --config darwin-x64 --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %}
           xpm run build --config darwin-x64
 {% endcase -%}
 {% endfor %}
@@ -417,21 +417,21 @@ jobs:
           replacesArtifacts: true
           repo: 'pre-releases'
           tag: 'test'
-          token: {% raw %}${{ secrets.PUBLISH_TOKEN }}{% endraw %}
+          token: {% raw %}${{secrets.PUBLISH_TOKEN}}{% endraw %}
 
       - name: 'Rename working area'
         # For just in case absolute paths remain unprocessed.
-        run: mv -v {{ prefix }}/build {{ prefix }}/build-$(date -u +%Y%m%d-%H%M%S)
+        run: mv -v {{prefix}}/build {{prefix}}/build-$(date -u +%Y%m%d-%H%M%S)
 {% break -%}
 {% endif -%}
 {% endfor -%}
 {% for platform in platforms -%}
 {% if platform == "darwin-arm64" %}
   macos-arm64:
-    name: 'macOS Arm - {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+    name: 'macOS Arm - {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} build'
     timeout-minutes: 2880 # 2 days
 {% if MACOS_ARM_VERSION %}
-    runs-on: [self-hosted, macos, apple, {{ MACOS_ARM_VERSION }}]
+    runs-on: [self-hosted, macos, apple, {{MACOS_ARM_VERSION}}]
 {% else %}
     runs-on: [self-hosted, macos, apple]
 {% endif %}
@@ -463,12 +463,12 @@ jobs:
       - name: 'Install xpm'
         timeout-minutes: 1440
         run: |
-          npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm_version }}{% endraw %}
+          npm install --location=global xpm@{% raw %}${{github.event.inputs.xpm_version}}{% endraw %}
           xpm --version
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %} -C {{ prefix }}
+        run: xpm install --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %} -C {{prefix}}
 
 {% for platform in platforms -%}
 {% case platform -%}
@@ -476,7 +476,7 @@ jobs:
       - name: 'Build macOS arm64 binaries'
         timeout-minutes: 1440
         run: |
-          xpm install --config darwin-arm64 --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %}
+          xpm install --config darwin-arm64 --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %}
           xpm run build --config darwin-arm64
 
 {% endcase -%}
@@ -499,11 +499,11 @@ jobs:
           replacesArtifacts: true
           repo: 'pre-releases'
           tag: 'test'
-          token: {% raw %}${{ secrets.PUBLISH_TOKEN }}{% endraw %}
+          token: {% raw %}${{secrets.PUBLISH_TOKEN}}{% endraw %}
 
       - name: 'Rename working area'
         # For just in case absolute paths remain unprocessed.
-        run: mv -v {{ prefix }}/build {{ prefix }}/build-$(date -u +%Y%m%d-%H%M%S)
+        run: mv -v {{prefix}}/build {{prefix}}/build-$(date -u +%Y%m%d-%H%M%S)
 {% break -%}
 {% endif -%}
 {% endfor -%}

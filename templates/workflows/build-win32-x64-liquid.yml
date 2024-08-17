@@ -41,13 +41,13 @@ on:
       helper-git-ref:
         description: 'The helper branch, tag or SHA to checkout'
         required: false
-        default: '{{ branch }}'
+        default: '{{branch}}'
 
 jobs:
 {% for platform in platforms -%}
 {% if platform == "win32-x64" %}
-  {{ platform }}-build:
-    name: '{{ platform }} {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+  {{platform}}-build:
+    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} build'
     timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64, xbbliw]
     container:
@@ -81,27 +81,27 @@ jobs:
       - name: 'Install xpm'
         timeout-minutes: 1440
         run: |
-          npm install --location=global xpm@{% raw %}${{ github.event.inputs.xpm_version }}{% endraw %}
+          npm install --location=global xpm@{% raw %}${{github.event.inputs.xpm_version}}{% endraw %}
           xpm --version
 
       - name: 'Install project dependencies'
         timeout-minutes: 1440
-        run: xpm install --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %} -C {{ prefix }}
+        run: xpm install --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %} -C {{prefix}}
 
-      - name: 'Build {{ platform }} binaries'
+      - name: 'Build {{platform}} binaries'
         timeout-minutes: 1440
         run: |
-          xpm install --config {{ platform }} --loglevel {% raw %}${{ github.event.inputs.xpm_install_loglevel }}{% endraw %} {% raw %}${{ github.event.inputs.xpm_install_options }}{% endraw %} -C {{ prefix }}
-          xpm run build --config {{ platform }} -C {{ prefix }}
+          xpm install --config {{platform}} --loglevel {% raw %}${{github.event.inputs.xpm_install_loglevel}}{% endraw %} {% raw %}${{github.event.inputs.xpm_install_options}}{% endraw %} -C {{prefix}}
+          xpm run build --config {{platform}} -C {{prefix}}
 
-  {{ platform }}-upload:
-    name: '{{ platform }} {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} upload'
+  {{platform}}-upload:
+    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} upload'
     timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64, xbbliw]
     defaults:
       run:
         shell: bash
-    needs: [{{ platform }}-build]
+    needs: [{{platform}}-build]
 
     steps:
       - name: 'Show environment'
@@ -118,8 +118,8 @@ jobs:
       - name: Upload platform artefacts
         uses: actions/upload-artifact@v4
         with:
-          name: deploy-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/build/{{ platform }}/deploy/*
+          name: deploy-{{platform}}
+          path: {% raw %}${{github.workspace}}{% endraw %}/{{prefix}}/build/{{platform}}/deploy/*
           overwrite: true
 
       - name: 'Publish pre-release'
@@ -127,7 +127,7 @@ jobs:
         uses: ncipollo/release-action@v1.13.0 # v1.13 for 18.04
         with:
           allowUpdates: true
-          artifacts: '{{ prefix }}/build/{{ platform }}/deploy/*'
+          artifacts: '{{prefix}}/build/{{platform}}/deploy/*'
           bodyFile: '.github/workflows/body-github-pre-releases-test.md'
           commit: 'master'
           draft: false
@@ -140,16 +140,16 @@ jobs:
           replacesArtifacts: true
           repo: 'pre-releases'
           tag: 'test'
-          token: {% raw %}${{ secrets.PUBLISH_TOKEN }}{% endraw %}
+          token: {% raw %}${{secrets.PUBLISH_TOKEN}}{% endraw %}
 
       - name: 'Rename working area'
         # For just in case absolute paths remain unprocessed.
-        run: echo mv -v {{ prefix }}/build {{ prefix }}/build-$(date -u +%Y%m%d-%H%M%S)
+        run: echo mv -v {{prefix}}/build {{prefix}}/build-$(date -u +%Y%m%d-%H%M%S)
 
-  {{ platform }}-test:
-    name: '{{ platform }} {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
+  {{platform}}-test:
+    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
     runs-on: windows-2022
-    needs: [{{ platform }}-upload]
+    needs: [{{platform}}-upload]
     defaults:
       run:
         # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
@@ -171,22 +171,22 @@ jobs:
         with:
           fetch-depth: 3
 
-      - name: 'Checkout helper {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}'
+      - name: 'Checkout helper {% raw %}${{github.event.inputs.helper-git-ref}}{% endraw %}'
         uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
-          path: {{ prefix }}/xpacks/@xpack-dev-tools/xbb-helper
-          ref: {% raw %}${{ github.event.inputs.helper-git-ref }}{% endraw %}
+          path: {{prefix}}/xpacks/@xpack-dev-tools/xbb-helper
+          ref: {% raw %}${{github.event.inputs.helper-git-ref}}{% endraw %}
           fetch-depth: 3
 
-      - name: 'Run {% raw %}${{ github.event.inputs.version }}{% endraw %} native test'
-        run: bash {{ prefix }}/scripts/test.sh --version {% raw %}${{ github.event.inputs.version }}{% endraw %} --base-url pre-release
+      - name: 'Run {% raw %}${{github.event.inputs.version}}{% endraw %} native test'
+        run: bash {{prefix}}/scripts/test.sh --version {% raw %}${{github.event.inputs.version}}{% endraw %} --base-url pre-release
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
-          name: tests-report-{{ platform }}
-          path: {% raw %}${{ github.workspace }}{% endraw %}/{{ prefix }}/build/{{ platform }}/artefacts/tests-report-*.md
+          name: tests-report-{{platform}}
+          path: {% raw %}${{github.workspace}}{% endraw %}/{{prefix}}/build/{{platform}}/artefacts/tests-report-*.md
           overwrite: true
 {% endif -%}
 {% endfor -%}
