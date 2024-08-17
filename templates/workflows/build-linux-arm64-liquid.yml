@@ -5,7 +5,7 @@
 {% endif -%}
 {% assign platforms = platforms | split: "," -%}
 
-name: 'Build xPack {{ XBB_APPLICATION_NAME }} linux-arm64'
+name: 'Build xPack {{appName}} linux-arm64'
 
 on:
   workflow_dispatch:
@@ -47,7 +47,7 @@ jobs:
 {% for platform in platforms -%}
 {% if platform == "linux-arm64" %}
   {{ platform }}-build:
-    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+    name: '{{ platform }} {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm64, xbbla, xbblax]
     container:
@@ -95,7 +95,7 @@ jobs:
           xpm run build --config {{ platform }} -C {{ prefix }}
 
   {{ platform }}-upload:
-    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} upload'
+    name: '{{ platform }} {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} upload'
     timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, linux, arm64, xbbla, xbblax]
     container:
@@ -148,7 +148,7 @@ jobs:
         run: echo mv -v {{ prefix }}/build {{ prefix }}/build-$(date -u +%Y%m%d-%H%M%S)
 
   {{ platform }}-test:
-    name: '{{ platform }} {{ XBB_APPLICATION_LOWER_CASE_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
+    name: '{{ platform }} {{appLcName}} {% raw %}${{ github.event.inputs.version }}{% endraw %} test'
     runs-on: [self-hosted, linux, arm64, xbbla, xbblax]
     needs: [{{ platform }}-upload]
 
