@@ -1,16 +1,13 @@
 
-import ManualInstallQuickTest from './_common/_manual-install-quick-test.mdx'
+import customField from '@site/src/libs/customField';
 
-export const appName = '{{appName}}';
-export const appLcName = '{{appLcName}}';
-export const programName = '{{appLcName}}';
-export const branding = '{{appLcName}} (xPack {{appName}} x86_64) ';
+import ManualInstallQuickTest from './_common/_manual-install-quick-test.mdx'
 
 {/* ------------------------------------------------------------------------ */}
 
 <ManualInstallQuickTest
-  appName={appName}
-  appLcName={appLcName}
-  programName={programName}
-  branding={branding}
+  appName={customField('appName')}
+  appLcName={customField('appLcName')}
+  programName={customField('programName')}
+  branding={customField('branding')}
 />
