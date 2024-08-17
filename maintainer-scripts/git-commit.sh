@@ -54,8 +54,8 @@ __EOF__
 
 # -----------------------------------------------------------------------------
 
-tmp_file_blog="$(mktemp)"
-cat <<'__EOF__' >"${tmp_file_blog}"
+tmp_file_template_blog="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_template_blog}"
 cd "$1/.."
 
 if [ ! -d build-assets ]
@@ -168,6 +168,20 @@ __EOF__
 
 # -----------------------------------------------------------------------------
 
+tmp_file_website="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_website}"
+cd "$1/.."
+
+echo
+echo $1
+git add website
+git commit -m "website update"
+# git commit -m "website remove preliminary"
+
+__EOF__
+
+# -----------------------------------------------------------------------------
+
 tmp_file_commit_readmes="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_readmes}"
 cd "$1/.."
@@ -256,13 +270,15 @@ __EOF__
 set -x
 
 # UPDATE ME!
-commands_file="${tmp_file_template_github}"
+# commands_file="${tmp_file_template_github}"
+# commands_file="${tmp_file_template_blog}"
 # commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_application}"
 
-# commands_file="${tmp_file_blog}"
 # commands_file="${tmp_file_scripts}"
 # commands_file="${tmp_file_npmignore}"
+
+commands_file="${tmp_file_website}"
 
 # commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
