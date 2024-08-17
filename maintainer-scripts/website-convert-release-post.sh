@@ -185,6 +185,12 @@ fi
 # Change link to GitHub Releases to html to allow variables.
 sed -i.bak -e 's|\[GitHub Releases\]... page.download_url ...|<a href={frontMatter.download_url}>GitHub Releases</a>|' "$2/$to"
 
+# Change gcc links to html to allow variables.
+sed -i.bak -e 's|\[{{ page.gcc_version }}\](https://gcc.gnu.org/gcc-{{ page.gcc_version_major }}/)|<a href={\`https://gcc.gnu.org/gcc-${frontMatter.gcc_version_major}\`}>{frontMatter.gcc_version}</a>|' "$2/$to"
+
+# Change binutils links to html to allow variables.
+sed -i.bak -e 's|\[{{ page.binutils_version }}\]({{ page.binutils_release_url }})|<a href={frontMatter.binutils_release_url}>{frontMatter.binutils_version}</a>|' "$2/$to"
+
 # Change link to binary files to html to allow variables.
 if grep -e 'Binary files .* page.download_url' "$2/$to" >/dev/null
 then
