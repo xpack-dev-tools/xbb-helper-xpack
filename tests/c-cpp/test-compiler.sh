@@ -34,6 +34,7 @@ function test_compiler_c_cpp()
     local is_lto="n"
     local is_static="n"
     local is_static_lib="n"
+    local is_coverage="n"
     local use_crt="n"
     local use_libcxx="n"
     local use_libcxx_abi="n"
@@ -133,6 +134,11 @@ function test_compiler_c_cpp()
 
         --bootstrap )
           is_bootstrap="y"
+          shift
+          ;;
+
+        --coverage )
+          is_coverage="y"
           shift
           ;;
 
@@ -247,6 +253,15 @@ function test_compiler_c_cpp()
         LDXXFLAGS+=" -static-libstdc++"
       fi
       PREFIX="static-lib-${PREFIX}"
+    fi
+
+    if [ "${is_coverage}" == "y" ]
+    then
+      CFLAGS+=" -fprofile-instr-generate -fcoverage-mapping"
+      CXXFLAGS+=" -fprofile-instr-generate -fcoverage-mapping"
+      LDFLAGS+=" -fprofile-instr-generate -fcoverage-mapping"
+      LDXXFLAGS+=" -fprofile-instr-generate -fcoverage-mapping"
+      PREFIX="coverage-${PREFIX}"
     fi
 
     if [ "${BITS_FLAGS}" != "" ]
