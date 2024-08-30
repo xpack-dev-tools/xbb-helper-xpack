@@ -34,7 +34,7 @@ function test_compiler_c_cpp()
     local is_lto="n"
     local is_static="n"
     local is_static_lib="n"
-    local is_coverage="n"
+    local is_clang_coverage="n"
     local use_crt="n"
     local use_libcxx="n"
     local use_libcxx_abi="n"
@@ -137,8 +137,8 @@ function test_compiler_c_cpp()
           shift
           ;;
 
-        --coverage )
-          is_coverage="y"
+        --clang-coverage )
+          is_clang_coverage="y"
           shift
           ;;
 
@@ -255,7 +255,7 @@ function test_compiler_c_cpp()
       PREFIX="static-lib-${PREFIX}"
     fi
 
-    if [ "${is_coverage}" == "y" ]
+    if [ "${is_clang_coverage}" == "y" ]
     then
       CFLAGS+=" -fprofile-instr-generate -fcoverage-mapping"
       CXXFLAGS+=" -fprofile-instr-generate -fcoverage-mapping"
