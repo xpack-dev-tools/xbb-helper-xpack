@@ -2,9 +2,44 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-08-30
+
+* v3.0.11 released
+* 2ae1264 tests/c-cpp/test-compiler.sh: --clang-coverage
+
+## 2024-08-29
+
+* c0810fc test-compiler.sh: add --coverage
+* c081fcc post-processing.sh: more generic api-ms-win-*.dll
+
+## 2024-08-17
+
+* ce5b085 git-commit.sh update
+* f3e430e xpm-run-generate-workflows.sh update
+* f91ad04 templates/workflows cleanups prefix & branch
+* 93611df generate-workflows.sh cleanups prefix & branch
+* 6681863 website-convert-release-post.sh update
+* ff46b50 templates/docusaurus updates
+* f957232 templates/workflows updates
+* c3cb2ee website-*.sh updates
+* c50af27 git-commit.sh: updates
+* 2212332 generate-workflows.sh add quotes to filenames
+* af72be8 github-actions: update macro names
+* ab8049c templates/workflows: cleanup spaces
+
+## 2024-08-16
+
+* f91f865 templates/docusaurus update
+* 4417ed0 templates/docusaurus update
+* 2eb33f2 templates/docusaurus update
+* 8a573f5 templates/docusaurus update
+
 ## 2024-08-15
 
-* v3.0.10 released
+* 9cacbcd generate-website-blog-post.sh: add customFields
+* 60d0cc0 generate-website-blog-post.sh: update output to .mdx
+* ff3fdbe 3.0.10
+* 26720ee prepare v3.0.10
 * 8fba44c build-scripts/test-common.sh: fix syntax
 * f1de1be templates/docusaurus update
 * 36b5b25 3.0.9
