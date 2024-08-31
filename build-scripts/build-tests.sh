@@ -108,7 +108,7 @@ function tests_report_results()
         echo "Possibly ignore some tests:"
 
         IFS=$'\n\t'
-        for f in $(grep 'FAIL:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| .*[(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)
+        for f in $(grep 'FAIL:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| .*[(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|coverage-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)
         do
           echo
           echo "# ${f}."
@@ -168,7 +168,7 @@ function tests_list_succesful()
   echo
 
   IFS=$'\n\t'
-  local test_names="$(grep -i -E 'fail:|pass:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| .*[(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
+  local test_names="$(grep -i -E 'fail:|pass:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| .*[(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|coverage-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
   local successful_count=0
   for test_name in ${test_names}
   do
@@ -194,7 +194,7 @@ function tests_list_skipped()
     echo "### Skipped test cases"
     echo
 
-    local skipped_test_names="$(grep 'skip:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| .*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
+    local skipped_test_names="$(grep 'skip:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| .*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|coverage-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
     for test_name in ${skipped_test_names}
     do
       for test_case_line in $(grep 'skip:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | grep "${test_name}" | sed -e 's|^.*: ||'  2>&1 )
@@ -208,7 +208,7 @@ function tests_list_skipped()
 
 function tests_list_failed()
 {
-  local failed_test_names="$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| .*[(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
+  local failed_test_names="$(grep -i 'fail:' "${XBB_TEST_RESULTS_SUMMARY_FILE_PATH}" | sed -e 's|^.*: ||' -e 's| .*[(].*$||' -e 's|gc-||' -e 's|lto-||' -e 's|crt-||' -e 's|lld-||' -e 's|static-lib-||' -e 's|static-||' -e 's|libcxx-||' -e 's|coverage-||' -e 's|-32||' -e 's|-64||' 2>&1 | sort -u)"
   for test_name in ${failed_test_names}
   do
     echo "### Failed test ${test_name}"
