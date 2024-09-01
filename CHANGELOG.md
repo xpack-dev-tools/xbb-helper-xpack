@@ -2,9 +2,21 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-09-01
+
+* v3.0.12 released
+* 561933b binutils-cross.sh: build ld.gold only for arm.
+
+## 2024-08-31
+
+* 91c5906 make-test-skips: remove 'coverage-'
+* 26a371f test-xpm-liquid: remove permalink & comments
+* 3160a53 templates/publish-release fix substitution
+
 ## 2024-08-30
 
-* v3.0.11 released
+* 94b99d5 3.0.11
+* ec56117 prepare v3.0.11
 * 2ae1264 tests/c-cpp/test-compiler.sh: --clang-coverage
 
 ## 2024-08-29
