@@ -149,8 +149,17 @@ function binutils_cross_build()
 
           config_options+=("--enable-initfini-array") # Arm, AArch64
 
-          # ld.gold requested to compile the Android kernel.
-          config_options+=("--enable-gold")
+          if [ "${triplet}" == "arm-none-eabi" ] || [ "${triplet}" == "aarch64-none-elf" ]
+          then
+            # ld.gold is currently available only on Arm.
+            # It was requested to compile the Android kernel.
+            config_options+=("--enable-gold")
+          elif [ "${triplet}" == "riscv-none-elf" ]
+          then
+            # ld.gold is not available on RISC-V.
+            config_options+=("--disable-gold")
+          fi
+
           # ld added explicitly for consistency.
           config_options+=("--enable-ld")
 
@@ -247,7 +256,10 @@ function binutils_cross_test_libs()
   show_host_libs "${test_bin_path}/${triplet}-ar"
   show_host_libs "${test_bin_path}/${triplet}-as"
   show_host_libs "${test_bin_path}/${triplet}-ld"
-  show_host_libs "${test_bin_path}/${triplet}-ld.gold"
+  if [ "${triplet}" == "arm-none-eabi" ] || [ "${triplet}" == "aarch64-none-elf" ]
+  then
+    show_host_libs "${test_bin_path}/${triplet}-ld.gold"
+  fi
   show_host_libs "${test_bin_path}/${triplet}-nm"
   show_host_libs "${test_bin_path}/${triplet}-objcopy"
   show_host_libs "${test_bin_path}/${triplet}-objdump"
@@ -269,7 +281,10 @@ function binutils_cross_test()
     show_host_libs "${test_bin_path}/${triplet}-ar"
     show_host_libs "${test_bin_path}/${triplet}-as"
     show_host_libs "${test_bin_path}/${triplet}-ld"
-    show_host_libs "${test_bin_path}/${triplet}-ld.gold"
+    if [ "${triplet}" == "arm-none-eabi" ] || [ "${triplet}" == "aarch64-none-elf" ]
+    then
+      show_host_libs "${test_bin_path}/${triplet}-ld.gold"
+    fi
     show_host_libs "${test_bin_path}/${triplet}-nm"
     show_host_libs "${test_bin_path}/${triplet}-objcopy"
     show_host_libs "${test_bin_path}/${triplet}-objdump"
@@ -284,7 +299,10 @@ function binutils_cross_test()
     run_host_app_verbose "${test_bin_path}/${triplet}-ar" --version
     run_host_app_verbose "${test_bin_path}/${triplet}-as" --version
     run_host_app_verbose "${test_bin_path}/${triplet}-ld" --version
-    run_host_app_verbose "${test_bin_path}/${triplet}-ld.gold" --version
+    if [ "${triplet}" == "arm-none-eabi" ] || [ "${triplet}" == "aarch64-none-elf" ]
+    then
+      run_host_app_verbose "${test_bin_path}/${triplet}-ld.gold" --version
+    fi
     run_host_app_verbose "${test_bin_path}/${triplet}-nm" --version
     run_host_app_verbose "${test_bin_path}/${triplet}-objcopy" --version
     run_host_app_verbose "${test_bin_path}/${triplet}-objdump" --version
