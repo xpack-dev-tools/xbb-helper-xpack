@@ -39,7 +39,7 @@ function tests_parse_options()
   XBB_DO_TEST_VIA_XPM="n"
   XBB_OUTPUT_FILE_NAME="tests"
   XBB_USE_CACHED_ARCHIVE="n"
-  XBB_NPM_PACKAGE_VERSION="next"
+  XBB_NPM_PACKAGE_VERSION="test"
   XBB_TEST_SYSTEM_TOOLS="n"
   XBB_EXTERNAL_BIN_PATH=""
 
@@ -83,7 +83,7 @@ function tests_parse_options()
         ;;
 
       --package-version )
-        # tags like "next" and "latest" also accepted.
+        # tags like "test", "next" and "latest" also accepted.
         XBB_NPM_PACKAGE_VERSION="$2"
         shift 2
         ;;
