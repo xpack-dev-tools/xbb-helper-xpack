@@ -125,7 +125,7 @@ Use the new version, suffixed by `pre`, like `3.0.12-pre`.
 
 ### Publish
 
-- `npm publish --tag next` (use `npm publish --access public` when
+- `npm publish --tag test` (use `npm publish --access public` when
   publishing for the first time)
 
 The version is visible at:
