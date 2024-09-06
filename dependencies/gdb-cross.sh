@@ -46,11 +46,11 @@ function gdb_cross_build_dependencies()
     gpm_build "${XBB_GPM_VERSION}"
   fi
 
+  # https://ftp.gnu.org/gnu/ncurses/
+  ncurses_build "${XBB_NCURSES_VERSION}"
+
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -o "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
   then
-    # https://ftp.gnu.org/gnu/ncurses/
-    ncurses_build "${XBB_NCURSES_VERSION}"
-
     # https://ftp.gnu.org/gnu/readline/
     readline_build "${XBB_READLINE_VERSION}" # requires ncurses
 
@@ -374,12 +374,7 @@ function gdb_cross_build()
              config_options+=("--with-python=no")
           fi
 
-          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
-          then
-            config_options+=("--disable-tui")
-          else
-            config_options+=("--enable-tui")
-          fi
+          config_options+=("--enable-tui")
 
           # Note that all components are disabled, except GDB.
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${XBB_GDB_SRC_FOLDER_NAME}/configure" \
