@@ -284,7 +284,7 @@ For a debug build:
 xpm run build-development-debug --config darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
-The build takes {developmentDurations["work"]}.
+The build takes {developmentDurations["work"]} to complete.
 
 When functional, push the `xpack-development` branch to GitHub.
 
@@ -361,7 +361,8 @@ Copy the trees displayed at the end of the test builds and paste to
 
 - `website/docs/install/_miscellaneous.mdx`
 
-Replace **{customField('upstreamVersion')}** with the following expression:
+If present, replace the actual version
+(like **{customField('upstreamVersion')}**) with the following expression:
 
 ```txt
 ${customField('upstreamVersion')}
