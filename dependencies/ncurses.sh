@@ -184,19 +184,28 @@ function ncurses_build()
             # xbb folder, probbaly by using the dirname of pkg-config.
 
             config_options+=("--with-build-cc=${XBB_NATIVE_CC}")
-            config_options+=("--with-build-cflags=${CFLAGS}")
+            config_options+=("--with-build-cflags=${CFLAGS} -D_XOPEN_SOURCE_EXTENDED")
             config_options+=("--with-build-cppflags=${CPPFLAGS}")
             config_options+=("--with-build-ldflags=${LDFLAGS}")
 
+            config_options+=("--with-ticlib") # msys2
+
             config_options+=("--without-progs")
+            config_options+=("--without-termlib") # msys2
 
             # Only for the MinGW port, it provides a way to substitute
             # the low-level terminfo library with different terminal drivers.
             config_options+=("--enable-term-driver")
+            # config_options+=("--disable-term-driver") # msys2
+            
+            config_options+=("--enable-sigwinch") # msys2
 
-            config_options+=("--disable-termcap")
+            config_options+=("--disable-termcap") # msys2
             config_options+=("--disable-home-terminfo")
             config_options+=("--disable-db-install")
+
+            config_options+=("--disable-relink") # msys2
+            config_options+=("--disable-mixed-case") # msys2
 
           else
 
