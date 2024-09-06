@@ -200,15 +200,14 @@ rm -f "${tmp_script_file}"
 cd "${helper_folder_path}/templates/docusaurus/other"
 
 # Regenerate top README.md.
-if [ $(cat "${project_folder_path}/README.md" | wc -l | tr -d '[:blank:]') -lt 42 ]
+if [ $(cat "${project_folder_path}/README.md" | wc -l | tr -d '[:blank:]') -ge 42 ]
 then
-  echo
-  echo liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder_path}/README.md"
-  liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder_path}/README.md" --strict-variables --strict-filters
-else
-  echo
-  echo "Top README preserved."
+  mv "${project_folder_path}/README.md" "${root_folder_path}/README-long.md"
 fi
+
+echo
+echo liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder_path}/README.md"
+liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder_path}/README.md" --strict-variables --strict-filters
 
 echo
 echo "Done"
