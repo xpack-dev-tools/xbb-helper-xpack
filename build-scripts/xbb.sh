@@ -102,7 +102,26 @@ function xbb_reset_env()
     # To avoid this, define a separate work folder (excluded from backup,
     # usually something like "${HOME}/Work")
     # and group all targets below a versioned application folder.
-    XBB_TARGET_WORK_FOLDER_PATH="${WORK_FOLDER_PATH}/xpack-dev-tools-build/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}/${XBB_TARGET_FOLDER_NAME}"
+    if [ -d "${root_folder_path}/build/${XBB_TARGET_FOLDER_NAME}" ] && [ ! -L "${root_folder_path}/build/${XBB_TARGET_FOLDER_NAME}" ]
+    then
+      mkdir -pv "${WORK_FOLDER_PATH}/xpack-dev-tools-build/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}"
+      if [ ! -d "${WORK_FOLDER_PATH}/xpack-dev-tools-build/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}/${XBB_TARGET_FOLDER_NAME}" ]
+      then
+        mv "${root_folder_path}/build/${XBB_TARGET_FOLDER_NAME}" \
+           "${WORK_FOLDER_PATH}/xpack-dev-tools-build/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}/${XBB_TARGET_FOLDER_NAME}"
+      else
+        echo "Ooups!"
+        exit 1
+      fi
+      ln -s "${WORK_FOLDER_PATH}/xpack-dev-tools-build/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}/${XBB_TARGET_FOLDER_NAME}" \
+        "${root_folder_path}/build/${XBB_TARGET_FOLDER_NAME}"
+      XBB_TARGET_WORK_FOLDER_PATH="${root_folder_path}/build/${XBB_TARGET_FOLDER_NAME}"
+    elif [ -d "${root_folder_path}/build/${XBB_TARGET_FOLDER_NAME}" ] && [ -L "${root_folder_path}/build/${XBB_TARGET_FOLDER_NAME}" ]
+    then
+      XBB_TARGET_WORK_FOLDER_PATH="${root_folder_path}/build/${XBB_TARGET_FOLDER_NAME}"
+    else
+      XBB_TARGET_WORK_FOLDER_PATH="${WORK_FOLDER_PATH}/xpack-dev-tools-build/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}/${XBB_TARGET_FOLDER_NAME}"
+    fi
   elif [ ! -z "${XBB_REQUESTED_BUILD_RELATIVE_FOLDER:-}" ]
   then
     # If the user provides an explicit relative folder, use it.
