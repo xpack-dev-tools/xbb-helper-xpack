@@ -2,9 +2,28 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-09-06
+
+* v3.0.13 released
+* c2039c4 templates/docusaurus updates
+* f1e649f website-generate-commons.sh: move top README-long.md
+* f29831d xbb.sh: use symlink when inside WORK_FOLDER_PATH
+* c437623 gdb-cross.sh: enable tui on windows too
+* 747f992 ncurses.sh: update win32 config
+
+## 2024-09-05
+
+* 1e3e968 templates/docusaurus: move badges around
+
+* b9b6af5 test-xpm-liquid.yml update
+* a86b684 README update
+* ee0475f templates/docusaurus update
+* fc4f4f8 test-parse-options: version "test"
+
 ## 2024-09-01
 
-* v3.0.12 released
+* 0545fd4 3.0.12
+* 841fb62 prepare v3.0.12
 * 561933b binutils-cross.sh: build ld.gold only for arm.
 
 ## 2024-08-31
