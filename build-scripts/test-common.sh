@@ -204,7 +204,7 @@ function tests_update_system_common()
     run_verbose zypper --quiet --no-gpg-checks update --no-confirm
     run_verbose zypper --quiet --no-gpg-checks install --no-confirm \
       git-core curl tar gzip lsb-release binutils findutils util-linux \
-      gcc-c++ glibc glibc-devel-static glibc-devel libstdc++6 make
+      gcc-c++ glibc glibc-devel-static glibc-devel libstdc++6 make which
     if [ "$(uname -m)" == "x86_64" ]
     then
       run_verbose zypper --quiet --no-gpg-checks install --no-confirm gcc-32bit gcc-c++-32bit glibc-devel-32bit glibc-devel-static-32bit
