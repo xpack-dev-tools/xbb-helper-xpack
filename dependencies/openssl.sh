@@ -13,6 +13,7 @@
 # https://www.openssl.org/source/
 
 # https://www.openssl.org/source/openssl-1.1.1n.tar.gz
+# https://github.com/openssl/openssl/releases/download/openssl-3.3.2/openssl-3.3.2.tar.gz
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/openssl/-/blob/main/PKGBUILD
 # https://github.com/archlinuxarm/PKGBUILDs/blob/master/core/openssl/PKGBUILD
@@ -52,7 +53,13 @@ function openssl_build()
   local openssl_src_folder_name="openssl-${openssl_version}"
 
   local openssl_archive="${openssl_src_folder_name}.tar.gz"
-  local openssl_url="https://www.openssl.org/source/${openssl_archive}"
+  local openssl_url
+  if [ ${openssl_version_major} -eq 1 ]
+  then
+    openssl_url="https://www.openssl.org/source/${openssl_archive}"
+  else
+    openssl_url="https://github.com/openssl/openssl/releases/download/openssl-${openssl_version}/${openssl_archive}"
+  fi
 
   local openssl_folder_name="${openssl_src_folder_name}"
 
