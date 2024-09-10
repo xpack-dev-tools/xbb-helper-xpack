@@ -111,7 +111,7 @@ function qemu_build()
         #   LDFLAGS+=" -ldl -ludev -lpthread -lrt"
 
         if [ "${XBB_HOST_ARCH}" == "arm64" ] &&
-           [[ "${qemu_version}" =~ 8[.][12][.][012] ]]
+           [[ "${qemu_version}" =~ 8[.][12][.][0-9] ]]
         then
           # ../../../sources/qemu-8.1.0.git/util/cpuinfo-aarch64.c: In function 'cpuinfo_init':
           # ../../../sources/qemu-8.1.0.git/util/cpuinfo-aarch64.c:58:22: error: 'HWCAP_USCAT' undeclared (first use in this function); did you mean 'HWCAP_JSCVT'?
