@@ -237,6 +237,12 @@ fi
 s='/\^Cshutdown command invoked/{N;s|\^Cshutdown command invoked\n```|^Cshutdown command invoked`\n} </CodeBlock>|;}'
 sed -i.bak -e "$s" "$2/$to"
 
+# meson code sections
+sed -i.bak -e 's|`lib/python{{ page.python_version }}`|<code>lib/python{frontMatter.python_version}</code>|' "$2/$to"
+sed -i.bak -e 's|`lib/python{{ page.python_version }}/lib-dynload`|<code>lib/python{frontMatter.python_version}/lib-dynload</code>|' "$2/$to"
+sed -i.bak -e 's|`lib/python{{ page.python_version }}/mesonbuild`|<code>lib/python{frontMatter.python_version}/mesonbuild</code>|' "$2/$to"
+sed -i.bak -e 's|- .https://mesonbuild.com/Manual.html.(https://mesonbuild.com/Manual.html)|- https://mesonbuild.com/Manual.html|' "$2/$to"
+
 # Preserve Eclipse variable syntax.
 sed -i.bak -e 's|update the \`${openocd_path}\` variable|update the `$\\{openocd_path\\}` variable|' "$2/$to"
 
