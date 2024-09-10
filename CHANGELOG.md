@@ -2,9 +2,19 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-09-10
+
+* v3.0.14 released
+
+## 2024-09-09
+
+* eff9278 openssl.sh: add new github urls
+* 960ee50 test-common.sh: install which on suse
+
 ## 2024-09-06
 
-* v3.0.13 released
+* af3f986 3.0.13
+* fa2d9be prepare v3.0.13
 * c2039c4 templates/docusaurus updates
 * f1e649f website-generate-commons.sh: move top README-long.md
 * f29831d xbb.sh: use symlink when inside WORK_FOLDER_PATH
