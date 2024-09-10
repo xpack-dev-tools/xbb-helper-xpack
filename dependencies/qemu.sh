@@ -12,6 +12,8 @@
 # Stick to upstream as long as possible.
 # https://github.com/qemu/qemu/tags
 
+# https://download.qemu.org/qemu-8.2.6.tar.xz
+
 # The second choice is the xPack fork.
 # https://github.com/xpack-dev-tools/qemu
 
@@ -37,7 +39,11 @@ function qemu_build()
   local qemu_version="$1"
   local qemu_target="$2" # arm, riscv, tools
 
-  qemu_src_folder_name="${XBB_QEMU_SRC_FOLDER_NAME:-qemu-${qemu_version}.git}"
+  local qemu_src_folder_name="qemu-${qemu_version}"
+
+  local qemu_archive="qemu-${qemu_version}.tar.xz"
+  local qemu_url="https://download.qemu.org/${qemu_archive}"
+  local qemu_patch_file_name="qemu-${qemu_version}.git.patch"
 
   local qemu_folder_name="qemu-${qemu_version}"
 
@@ -52,22 +58,31 @@ function qemu_build()
 
     if [ ! -d "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}" ]
     then
-      run_verbose git_clone \
-        "${XBB_QEMU_GIT_URL}" \
-        "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}" \
-        --branch="${XBB_QEMU_GIT_BRANCH}" \
-        --commit="${XBB_QEMU_GIT_COMMIT}"
+      if [ ! -z "${XBB_QEMU_GIT_URL:-""}" ]
+      then
+        qemu_src_folder_name="${XBB_QEMU_SRC_FOLDER_NAME:-qemu-${qemu_version}.git}"
+        run_verbose git_clone \
+          "${XBB_QEMU_GIT_URL}" \
+          "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}" \
+          --branch="${XBB_QEMU_GIT_BRANCH}" \
+          --commit="${XBB_QEMU_GIT_COMMIT}"
+      else
+        download_and_extract "${qemu_url}" "${qemu_archive}" \
+            "${qemu_src_folder_name}" "${qemu_patch_file_name}"
+      fi
 
-      if false # Disabled, since the fork is needed anyway for the macOS patches.
+      if true
       then
         # Simple way to customise the greeting message, instead of
         # managing a patch, or a fork.
-        # On later versions, the file is `system/vl.c`.
+        # On later versions, the file is `system/vl.c`;
+        # previously it was in `softmmu/vl.c`.
         run_verbose sed -i.bak \
           -e 's|printf("QEMU emulator version "|printf("xPack QEMU emulator version "|' \
-          "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c"
+          "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/system/vl.c"
 
-        run_verbose diff "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c.bak" "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/softmmu/vl.c" || true
+        run_verbose diff "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/system/vl.c.bak" \
+          "${XBB_SOURCES_FOLDER_PATH}/${qemu_src_folder_name}/system/vl.c" || true
       fi
     fi
     # exit 1
@@ -149,9 +164,12 @@ function qemu_build()
 
           config_options+=("--bindir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin")
 
-          # This seems redundant, but without it the greeting
-          # string is suffixed by -dirty.
-          config_options+=("--with-pkgversion=${XBB_QEMU_GIT_COMMIT}")
+          if [ ! -z "${XBB_QEMU_GIT_COMMIT:-""}" ]
+          then
+            # This seems redundant, but without it the greeting
+            # string is suffixed by -dirty.
+            config_options+=("--with-pkgversion=${XBB_QEMU_GIT_COMMIT}")
+          fi
 
           if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
@@ -221,6 +239,9 @@ function qemu_build()
           fi
 
           config_options+=("--disable-bsd-user")
+
+          config_options+=("--disable-docs")
+
           config_options+=("--disable-guest-agent")
           config_options+=("--disable-gtk")
 
