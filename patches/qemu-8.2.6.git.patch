@@ -1,0 +1,97 @@
+From a9e027b1e44ab436131ec6b7de48cbbeac3f1d6e Mon Sep 17 00:00:00 2001
+From: Liviu Ionescu <ilg@livius.net>
+Date: Tue, 10 Sep 2024 23:17:28 +0300
+Subject: [PATCH] cocoa.m: check MAC_OS_X_VERSION_10_13
+
+---
+ ui/cocoa.m | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/ui/cocoa.m b/ui/cocoa.m
+index d39c9e2a3b..70a817066b 100644
+--- a/ui/cocoa.m
++++ b/ui/cocoa.m
+@@ -113,9 +113,14 @@ static void cocoa_switch(DisplayChangeListener *dcl,
+ 
+ static bool allow_events;
+ 
++// xPack
++#if defined(MAC_OS_X_VERSION_10_13) && \
++    MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_13
+ static NSInteger cbchangecount = -1;
+ static QemuClipboardInfo *cbinfo;
+ static QemuEvent cbevent;
++#endif
++// xPack
+ 
+ // Utility functions to run specified code block with iothread lock held
+ typedef void (^CodeBlock)(void);
+@@ -1815,6 +1820,9 @@ static void addRemovableDevicesMenuItems(void)
+     qapi_free_BlockInfoList(pointerToFree);
+ }
+ 
++// xPack
++#if defined(MAC_OS_X_VERSION_10_13) && \
++    MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_13
+ @interface QemuCocoaPasteboardTypeOwner : NSObject<NSPasteboardTypeOwner>
+ @end
+ 
+@@ -1915,6 +1923,8 @@ static void cocoa_clipboard_request(QemuClipboardInfo *info,
+         break;
+     }
+ }
++#endif
++// xPack
+ 
+ /*
+  * The startup process for the OSX/Cocoa UI is complicated, because
+@@ -1938,7 +1948,12 @@ static void cocoa_clipboard_request(QemuClipboardInfo *info,
+     status = qemu_default_main();
+     qemu_mutex_unlock_iothread();
+     COCOA_DEBUG("Second thread: qemu_default_main() returned, exiting\n");
++// xPack
++#if defined(MAC_OS_X_VERSION_10_13) && \
++    MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_13
+     [cbowner release];
++#endif
++// xPack
+     exit(status);
+ }
+ 
+@@ -2020,6 +2035,9 @@ static void cocoa_refresh(DisplayChangeListener *dcl)
+         });
+     }
+ 
++// xPack
++#if defined(MAC_OS_X_VERSION_10_13) && \
++    MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_13
+     if (cbchangecount != [[NSPasteboard generalPasteboard] changeCount]) {
+         qemu_clipboard_info_unref(cbinfo);
+         cbinfo = qemu_clipboard_info_new(&cbpeer, QEMU_CLIPBOARD_SELECTION_CLIPBOARD);
+@@ -2030,6 +2048,8 @@ static void cocoa_refresh(DisplayChangeListener *dcl)
+         cbchangecount = [[NSPasteboard generalPasteboard] changeCount];
+         qemu_event_set(&cbevent);
+     }
++#endif
++// xPack
+ 
+     [pool release];
+ }
+@@ -2091,9 +2111,14 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+     // register vga output callbacks
+     register_displaychangelistener(&dcl);
+ 
++// xPack
++#if defined(MAC_OS_X_VERSION_10_13) && \
++    MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_13
+     qemu_event_init(&cbevent, false);
+     cbowner = [[QemuCocoaPasteboardTypeOwner alloc] init];
+     qemu_clipboard_peer_register(&cbpeer);
++#endif
++// xPack
+ 
+     [pool release];
+ }
+-- 
+2.39.3 (Apple Git-146)
+
