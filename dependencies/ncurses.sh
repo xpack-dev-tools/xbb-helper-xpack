@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------
 # This file is part of the xPack distribution.
 #   (https://xpack.github.io)
-# Copyright (c) 2020 Liviu Ionescu.
+# Copyright (c) 2020 Liviu Ionescu. All rights reserved.
 #
 # Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
@@ -197,7 +197,7 @@ function ncurses_build()
             # the low-level terminfo library with different terminal drivers.
             config_options+=("--enable-term-driver")
             # config_options+=("--disable-term-driver") # msys2
-            
+
             config_options+=("--enable-sigwinch") # msys2
 
             config_options+=("--disable-termcap") # msys2

@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # This file is part of the xPack distribution.
 #   (https://xpack.github.io)
-# Copyright (c) 2020 Liviu Ionescu.
+# Copyright (c) 2020 Liviu Ionescu. All rights reserved.
 #
 # Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
@@ -192,7 +192,7 @@ function newlib_cross_build()
             # newlib_configure="--disable-newlib-fseek-optimization --disable-newlib-fvwrite-in-streamio --disable-newlib-supplied-syscalls --disable-newlib-unbuf-stream-opt --disable-newlib-wide-orient --enable-lite-exit --enable-newlib-global-atexit --enable-newlib-nano-formatted-io --enable-newlib-nano-malloc --enable-newlib-reent-check-verify --enable-newlib-reent-small --enable-newlib-retargetable-locking"
 
             # -----------------------------------------------------------------
-            
+
             # --enable-newlib-io-long-long and --enable-newlib-io-c99-formats
             # are currently ignored if --enable-newlib-nano-formatted-io.
             # --enable-newlib-register-fini is debatable, was removed.
