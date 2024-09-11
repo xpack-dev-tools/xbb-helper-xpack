@@ -2,9 +2,20 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-09-11
+
+* v3.0.15 released
+* 8cbdb0d templates/docusaurus updates
+* 3e88b1b qemu.sh: -DHWCAP_USCAT for arm64
+* 25119d5 update copyright notices
+
 ## 2024-09-10
 
-* v3.0.14 released
+* 84a0100 qemu.sh: update for upstream source location
+* f681584 add qemu-8.2.6.git.patch
+* 1bb87db maintainer-scripts updates
+* 028306f 3.0.14
+* f85b9fb prepare v3.0.14
 
 ## 2024-09-09
 
