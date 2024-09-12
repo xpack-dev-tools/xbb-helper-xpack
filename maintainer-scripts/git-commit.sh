@@ -132,11 +132,14 @@ tmp_file_scripts="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_scripts}"
 cd "$1/.."
 
+cd build-assets
+
 echo
 echo $1
 git add scripts
 # git commit -m "scripts cosmetics"
-git commit -m "re-generate scripts"
+# git commit -m "re-generate scripts"
+git commit -m "update scripts copyright notices"
 
 __EOF__
 
@@ -275,10 +278,10 @@ set -x
 # commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_application}"
 
-# commands_file="${tmp_file_scripts}"
+commands_file="${tmp_file_scripts}"
 # commands_file="${tmp_file_npmignore}"
 
-commands_file="${tmp_file_website}"
+# commands_file="${tmp_file_website}"
 
 # commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
