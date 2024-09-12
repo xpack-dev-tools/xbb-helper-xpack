@@ -47,6 +47,18 @@ else
   project_folder_path="${root_folder_path}"
   branch="xpack-develop"
 fi
+scripts_folder_path="${root_folder_path}/scripts"
+
+# -----------------------------------------------------------------------------
+
+source "${scripts_folder_path}/application.sh"
+
+# Helper functions
+source "${helper_folder_path}/github-actions/common.sh"
+source "${helper_folder_path}/build-scripts/xbb.sh"
+source "${helper_folder_path}/build-scripts/wrappers.sh"
+
+# -----------------------------------------------------------------------------
 
 # which liquidjs
 # liquidjs --help
@@ -74,7 +86,15 @@ fi
 
 export customFields
 
-export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"customFields\": ${customFields} }"
+release_version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
+upstreamVersion="$(echo ${release_version} | sed -e 's|-.*||')"
+
+if [ "${appLcName}" == "wine" ]
+then
+  upstreamVersion="$(echo ${upstreamVersion} | sed -e 's|[.]0[.]0$|.0|')"
+fi
+
+export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"upstreamVersion\": \"${upstreamVersion}\", \"customFields\": ${customFields} }"
 
 # tmp_context_file="$(mktemp) -t context"
 # echo "{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"
