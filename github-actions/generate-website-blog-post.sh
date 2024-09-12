@@ -99,6 +99,13 @@ fi
 
 upstreamVersion="$(echo ${release_version} | sed -e 's|-.*||')"
 
+appLcName="$(liquidjs --context "@${root_folder_path}/package.json" --template '{{xpack.properties.appLcName}}')"
+
+if [ "${appLcName}" == "wine" ]
+then
+  upstreamVersion="$(echo ${upstreamVersion} | sed -e 's|[.]0[.]0$]|.0|')"
+fi
+
 context="{ \"releaseVersion\": \"${release_version}\", \"releaseDate\": \"${release_date}\", \"upstreamVersion\": \"${upstreamVersion}\", \"customFields\": ${customFields} }"
 
 liquidjs --context "${context}" --template "@${root_folder_path}/templates/body-blog-release-post-part-1-liquid.mdx" >> "${post_file_path}"
