@@ -227,6 +227,7 @@ The next step is to install the
 {% assign platforms_array = platforms | split: "," %}
 
 {% assign names_array = "" | split: "" %}
+
 {% for platform in platforms_array %}
   {% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "Windows" %}{% endif %}
   {% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "macOS" %}{% endif %}
@@ -567,7 +568,7 @@ The Windows versions of **xPack {{appName}}**
 are packed as `.zip` files.
 Download the latest version named like:
 
-* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-win32-x64.zip</code>
+- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-win32-x64.zip</code>
 
 :::note
 
@@ -601,8 +602,16 @@ The macOS versions of **xPack {{appName}}**
 are packed as `.tar.gz` archives.
 Download the latest version named like:
 
-* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-x64.tar.gz</code>
-* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-arm64.tar.gz</code>
+{% assign isMacOSX64 = false %}
+{% assign isMacOsArm64 = false %}
+
+{% for platform in platforms_array %}
+{% if platform == "darwin-x64"%}{% assign isMacOSX64 = true %}{% endif %}
+{% if platform == "darwin-arm64" %}{% assign isMacOsArm64 = true %}{% endif %}
+{% endfor %}
+
+{% if isMacOSX64 %}- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-x64.tar.gz</code>{% endif %}
+{% if isMacOsArm64 %}- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-arm64.tar.gz</code>{% endif %}
 
 :::note
 
@@ -636,9 +645,19 @@ The GNU/Linux versions of **xPack {{appName}}**
 are packed as `.tar.gz` archives.
 Download the latest version named like:
 
-* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-x64.tar.gz</code>
-* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-arm64.tar.gz</code>
-* <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-arm.tar.gz</code>
+{% assign isLinuxX64 = false %}
+{% assign isLinuxArm64 = false %}
+{% assign isLinuxArm = false %}
+
+{% for platform in platforms_array %}
+{% if platform == "linux-x64" %}{% assign isLinuxX64 = true %}{% endif %}
+{% if platform == "linux-arm64" %}{% assign isLinuxArm64 = true %}{% endif %}
+{% if platform == "linux-arm" %}{% assign isLinuxArm = true %}{% endif %}
+{% endfor %}
+
+{% if isLinuxX64 %}- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-linux-x64.tar.gz</code>{% endif %}
+{% if isLinuxArm64 %}- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-linux-arm64.tar.gz</code>{% endif %}
+{% if isLinuxArm %}- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-linux-arm.tar.gz</code>{% endif %}
 
 :::note
 

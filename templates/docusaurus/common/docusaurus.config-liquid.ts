@@ -39,7 +39,11 @@ function getCustomFields() {
   const xpackSubversion = rest1.replace(/^.*[-]/, '');
 
   // Remove from the dash to the end.
+{% if appLcName == 'wine' %}
+  const upstreamVersion = rest1.replace(/[-].*$/, '').replace(/[.]0[.]0$/, '.0');
+{% else %}
   const upstreamVersion = rest1.replace(/[-].*$/, '');
+{% endif %}
 
   let rootPackageJson
   try {

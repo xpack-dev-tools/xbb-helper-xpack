@@ -16,6 +16,7 @@ To check if the {props.appName} installed by **xpm** starts properly, use someth
 {% assign platforms_array = platforms | split: "," %}
 
 {% assign names_array = "" | split: "" %}
+
 {% for platform in platforms_array %}
   {% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "Windows" %}{% endif %}
   {% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "macOS" %}{% endif %}
