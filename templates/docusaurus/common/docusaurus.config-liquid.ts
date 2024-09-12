@@ -33,16 +33,19 @@ function getCustomFields() {
   const npmSubversion = jsonVersion.replace(/^.*[.]/, '');
 
   // Remove from the last dot to the end.
-  const rest1 = jsonVersion.replace(/[.][0-9]*$/, '');
+  const xpackVersion = jsonVersion.replace(/[.][0-9]*$/, '');
+
+  // Remove the pre-release.
+  const xpackSemver = xpackVersion.replace(/[-][0-9]*$/, '');
 
   // Remove the first part, up to the dash.
-  const xpackSubversion = rest1.replace(/^.*[-]/, '');
+  const xpackSubversion = xpackVersion.replace(/^.*[-]/, '');
 
   // Remove from the dash to the end.
 {% if appLcName == 'wine' %}
-  const upstreamVersion = rest1.replace(/[-].*$/, '').replace(/[.]0[.]0$/, '.0');
+  const upstreamVersion = xpackVersion.replace(/[-].*$/, '').replace(/[.]0[.]0$/, '.0');
 {% else %}
-  const upstreamVersion = rest1.replace(/[-].*$/, '');
+  const upstreamVersion = xpackVersion.replace(/[-].*$/, '');
 {% endif %}
 
   let rootPackageJson
@@ -62,6 +65,8 @@ function getCustomFields() {
     appLcName: rootPackageJson.xpack.properties.appLcName,
     version: jsonVersion,
     upstreamVersion,
+    xpackVersion,
+    xpackSemver,
     xpackSubversion,
     npmSubversion,
     ...customFields,

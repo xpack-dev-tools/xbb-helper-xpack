@@ -375,7 +375,7 @@ The result looks like this:
     "dependencies": {},
     "devDependencies": {
       "@xpack-dev-tools/{{appLcName}}": {
-        "specifier": "${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}",
+        "specifier": "${customField('xpackVersion')}.${customField('npmSubversion')}",
         "local": "link",
         "platforms": "all"
       }
@@ -433,7 +433,7 @@ the project build configurations need a PATH adjustment:
 <TabItem value="windows" label="Windows" default>
 
 <CodeBlock language="sh"> {
-`export PATH=$HOME/AppData/Roaming/xPacks/\@pack-dev-tools/{{appLcName}}/${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}/.content/bin:$PATH
+`export PATH=$HOME/AppData/Roaming/xPacks/\@pack-dev-tools/{{appLcName}}/${customField('xpackVersion')}.${customField('npmSubversion')}/.content/bin:$PATH
 `} </CodeBlock>
 
 :::tip
@@ -450,7 +450,7 @@ corresponding shell.
 <TabItem value="macos" label="macOS">
 
 <CodeBlock language="sh"> {
-`export PATH=$HOME/Library/xPacks/\@pack-dev-tools/{{appLcName}}/${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}/.content/bin:$PATH
+`export PATH=$HOME/Library/xPacks/\@pack-dev-tools/{{appLcName}}/${customField('xpackVersion')}.${customField('npmSubversion')}/.content/bin:$PATH
 `} </CodeBlock>
 
 </TabItem>
@@ -460,7 +460,7 @@ corresponding shell.
 <TabItem value="linux" label="GNU/Linux">
 
 <CodeBlock language="sh"> {
-`export PATH=$HOME/.local/xPacks/@xpack-dev-tools/{{appLcName}}/${customField('upstreamVersion')}-${customField('xpackSubversion')}.${customField('npmSubversion')}/.content/bin:$PATH
+`export PATH=$HOME/.local/xPacks/@xpack-dev-tools/{{appLcName}}/${customField('xpackVersion')}.${customField('npmSubversion')}/.content/bin:$PATH
 `} </CodeBlock>
 
 </TabItem>
@@ -568,7 +568,7 @@ The Windows versions of **xPack {{appName}}**
 are packed as `.zip` files.
 Download the latest version named like:
 
-- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-win32-x64.zip</code>
+- <code>xpack-{{appLcName}}-{customField('xpackVersion')}-win32-x64.zip</code>
 
 :::note
 
@@ -583,7 +583,7 @@ unpack the archive and move it to a location of your choice.
 
 The recommended location is
 the <code>%USERPROFILE%\\AppData\\Roaming\\xPacks\\{{appLcName}}</code> folder, for
-example <code>C:\\Users\\ilg\\AppData\\Roaming\\xPacks\\{{appLcName}}\\xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}</code>.
+example <code>C:\\Users\\ilg\\AppData\\Roaming\\xPacks\\{{appLcName}}\\xpack-{{appLcName}}-{customField('xpackVersion')}</code>.
 
 :::note
 
@@ -610,8 +610,8 @@ Download the latest version named like:
 {% if platform == "darwin-arm64" %}{% assign isMacOsArm64 = true %}{% endif %}
 {% endfor %}
 
-{% if isMacOSX64 %}- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-x64.tar.gz</code>{% endif %}
-{% if isMacOsArm64 %}- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-darwin-arm64.tar.gz</code>{% endif %}
+{% if isMacOSX64 %}- <code>xpack-{{appLcName}}-{customField('xpackVersion')}-darwin-x64.tar.gz</code>{% endif %}
+{% if isMacOsArm64 %}- <code>xpack-{{appLcName}}-{customField('xpackVersion')}-darwin-arm64.tar.gz</code>{% endif %}
 
 :::note
 
@@ -625,14 +625,14 @@ unpack the archive and move it to a location of your choice.
 
 The recommended location is
 the <code>~/Library/xPacks/{{appLcName}}</code> folder, for
-example <code>/Users/ilg/Library/xPacks/{{appLcName}}/xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}</code>:
+example <code>/Users/ilg/Library/xPacks/{{appLcName}}/xpack-{{appLcName}}-{customField('xpackVersion')}</code>:
 
 <CodeBlock language="console"> {
 `mkdir -p ~/Library/xPacks/{{appLcName}}
 cd ~/Library/xPacks/{{appLcName}}
 
-tar xvf ~/Downloads/xpack-{{appLcName}}-${customField('upstreamVersion')}-${customField('xpackSubversion')}-darwin-x64.tar.gz
-chmod -R -w xpack-{{appLcName}}-${customField('upstreamVersion')}-${customField('xpackSubversion')}
+tar xvf ~/Downloads/xpack-{{appLcName}}-${customField('xpackVersion')}-darwin-x64.tar.gz
+chmod -R -w xpack-{{appLcName}}-${customField('xpackVersion')}
 `} </CodeBlock>
 
 </TabItem>
@@ -655,9 +655,9 @@ Download the latest version named like:
 {% if platform == "linux-arm" %}{% assign isLinuxArm = true %}{% endif %}
 {% endfor %}
 
-{% if isLinuxX64 %}- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-linux-x64.tar.gz</code>{% endif %}
-{% if isLinuxArm64 %}- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-linux-arm64.tar.gz</code>{% endif %}
-{% if isLinuxArm %}- <code>xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}-linux-arm.tar.gz</code>{% endif %}
+{% if isLinuxX64 %}- <code>xpack-{{appLcName}}-{customField('xpackVersion')}-linux-x64.tar.gz</code>{% endif %}
+{% if isLinuxArm64 %}- <code>xpack-{{appLcName}}-{customField('xpackVersion')}-linux-arm64.tar.gz</code>{% endif %}
+{% if isLinuxArm %}- <code>xpack-{{appLcName}}-{customField('xpackVersion')}-linux-arm.tar.gz</code>{% endif %}
 
 :::note
 
@@ -671,14 +671,14 @@ unpack the archive and move it to a location of your choice.
 
 The recommended location is
 the <code>~/.local/xPacks/{{appLcName}}</code> folder, for
-example <code>/home/ilg/.local/xPacks/{{appLcName}}/xpack-{{appLcName}}-{customField('upstreamVersion')}-{customField('xpackSubversion')}</code>:
+example <code>/home/ilg/.local/xPacks/{{appLcName}}/xpack-{{appLcName}}-{customField('xpackVersion')}</code>:
 
 <CodeBlock language="console"> {
 `mkdir -p ~/.local/xPacks/{{appLcName}}
 cd ~/.local/xPacks/{{appLcName}}
 
-tar xvf ~/Downloads/xpack-{{appLcName}}-${customField('upstreamVersion')}-${customField('xpackSubversion')}-linux-x64.tar.gz
-chmod -R -w xpack-{{appLcName}}-${customField('upstreamVersion')}-${customField('xpackSubversion')}
+tar xvf ~/Downloads/xpack-{{appLcName}}-${customField('xpackVersion')}-linux-x64.tar.gz
+chmod -R -w xpack-{{appLcName}}-${customField('xpackVersion')}
 `} </CodeBlock>
 
 </TabItem>
