@@ -264,6 +264,9 @@ sed -i.bak -e 's|{{ site.baseurl }}/assets/images|/img|g' "$2/$to"
 # Fix link to tests results.
 sed -i.bak -e 's|/dev-tools/gcc/|/docs/|g' "$2/$to"
 
+# Remove QEMU link.
+sed -i.bak -e 's|.GNU ARM Eclipse QEMU.({{ site.baseurl }}/dev-tools/qemu-arm/)|**GNU ARM Eclipse QEMU**|g' "$2/$to"
+
 # Remove the `site.baseurl` from links.
 sed -i.bak -e 's|{{ site.baseurl }}||g' "$2/$to"
 
