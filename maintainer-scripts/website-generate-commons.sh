@@ -56,7 +56,14 @@ cd "${root_folder_path}"
 # Use liquidjs to extract properties from package.json.
 export appName="$(liquidjs --context @package.json --template '{{xpack.properties.appName}}')"
 export appLcName="$(liquidjs --context @package.json --template '{{xpack.properties.appLcName}}')"
-export platforms="$(liquidjs --context @package.json --template '{{xpack.properties.platforms}}')"
+platforms="$(liquidjs --context @package.json --template '{{xpack.properties.platforms}}')"
+
+if [ "${platforms}" == "all" ]
+then
+  platforms="win32-x64,darwin-x64,darwin-arm64,linux-x64,linux-arm64,linux-arm"
+fi
+
+export platforms
 
 customFields="$(liquidjs --context @package.json --template '{{xpack.properties.customFields | json}}')"
 
@@ -179,8 +186,10 @@ find . -type d -name '_common' -print0 | sort -zn | \
   xargs -0 -I '{}' bash "${tmp_script_file}" --force '{}' "${project_folder_path}/website"
 
 echo
-echo "Common files, overriden..."
+echo "context=${context}"
 
+echo
+echo "Common files, overriden..."
 
 # Main pass to copy/generate common
 find . -type f -print0 | sort -zn | \

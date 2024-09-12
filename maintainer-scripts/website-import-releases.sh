@@ -65,6 +65,9 @@ export platforms="$(liquidjs --context @package.json --template '{{xpack.propert
 cd "${xpack_www_releases}/${appLcName}"
 # pwd
 
+# echo
+# echo "platforms=${platforms}"
+
 echo
 echo "Release posts..."
 
