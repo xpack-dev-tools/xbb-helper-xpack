@@ -224,8 +224,21 @@ The next step is to install the
 `xpm install @xpack-dev-tools/{{appLcName}}@latest --verbose
 `} </CodeBlock>
 
-<Tabs groupId="operating-systems">
+{% assign platforms_array = platforms | split: "," %}
 
+{% assign names_array = "" | split: "" %}
+{% for platform in platforms_array %}
+  {% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "Windows" %}{% endif %}
+  {% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "macOS" %}{% endif %}
+  {% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" %}{% assign names_array = names_array | concat: "GNU/Linux" %}{% endif %}
+{% endfor %}
+
+{% assign names_array = names_array | uniq %}
+
+<Tabs groupId="operating-systems">
+{% for name in names_array %}
+
+{% if name == "Windows" %}
 <TabItem value="windows" label="Windows" default>
 
 The main result is a set
@@ -256,7 +269,9 @@ adjust the syntax for the corresponding Windows specific shell.
 </details>
 
 </TabItem>
+{% endif %}
 
+{% if name == "macOS" %}
 <TabItem value="macos" label="macOS">
 
 The main result is a set
@@ -279,7 +294,9 @@ export PATH=<...project-path...>/xpacks/.bin:$PATH
 </details>
 
 </TabItem>
+{% endif %}
 
+{% if name == "GNU/Linux" %}
 <TabItem value="linux" label="GNU/Linux">
 
 The main result is a set
@@ -302,7 +319,9 @@ export PATH=<...project-path...>/xpacks/.bin:$PATH
 </details>
 
 </TabItem>
+{% endif %}
 
+{% endfor %}
 </Tabs>
 
 <details>
@@ -399,7 +418,6 @@ install the packages globally will fail with _already installed_.
 
 :::
 
-
 <details>
 <summary>PATH setup</summary>
 
@@ -408,7 +426,9 @@ the user global xPacks store,
 the project build configurations need a PATH adjustment:
 
 <Tabs groupId="operating-systems">
+{% for name in names_array %}
 
+{% if name == "Windows" %}
 <TabItem value="windows" label="Windows" default>
 
 <CodeBlock language="sh"> {
@@ -423,7 +443,9 @@ corresponding shell.
 :::
 
 </TabItem>
+{% endif %}
 
+{% if name == "macOS" %}
 <TabItem value="macos" label="macOS">
 
 <CodeBlock language="sh"> {
@@ -431,7 +453,9 @@ corresponding shell.
 `} </CodeBlock>
 
 </TabItem>
+{% endif %}
 
+{% if name == "GNU/Linux" %}
 <TabItem value="linux" label="GNU/Linux">
 
 <CodeBlock language="sh"> {
@@ -439,11 +463,12 @@ corresponding shell.
 `} </CodeBlock>
 
 </TabItem>
+{% endif %}
 
+{% endfor %}
 </Tabs>
 
 </details>
-
 
 ### Uninstall
 
@@ -480,28 +505,36 @@ To completely remove the package from the user global xPack store:
 For a thorough clean-up, please note that **xpm** uses only two folders:
 
 <Tabs groupId="operating-systems">
+{% for name in names_array %}
 
+{% if name == "Windows" %}
 <TabItem value="windows" label="Windows" default>
 
 - `%APPDATA%\Roaming\xPacks`
 - `%APPDATA%\Local\Caches\xPacks`
 
 </TabItem>
+{% endif %}
 
+{% if name == "macOS" %}
 <TabItem value="macos" label="macOS">
 
 - `${HOME}/Library/xPacks`
 - `${HOME}/Library/Caches/xPacks`
 
 </TabItem>
+{% endif %}
 
+{% if name == "GNU/Linux" %}
 <TabItem value="linux" label="GNU/Linux">
 
 - `${HOME}/.local/xPacks`
 - `${HOME}/.cache/xPacks`
 
 </TabItem>
+{% endif %}
 
+{% endfor %}
 </Tabs>
 
 They can be removed at any time and space reclaimed;
@@ -525,7 +558,9 @@ the <a href={`https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/`}
 ### Download & unpack {#manual-install-download-and-unpack}
 
 <Tabs groupId="operating-systems">
+{% for name in names_array %}
 
+{% if name == "Windows" %}
 <TabItem value="windows" label="Windows" default>
 
 The Windows versions of **xPack {{appName}}**
@@ -557,7 +592,9 @@ installing user specific packages.
 :::
 
 </TabItem>
+{% endif %}
 
+{% if name == "macOS" %}
 <TabItem value="macos" label="macOS">
 
 The macOS versions of **xPack {{appName}}**
@@ -590,7 +627,9 @@ chmod -R -w xpack-{{appLcName}}-${customField('upstreamVersion')}-${customField(
 `} </CodeBlock>
 
 </TabItem>
+{% endif %}
 
+{% if name == "GNU/Linux" %}
 <TabItem value="linux" label="GNU/Linux">
 
 The GNU/Linux versions of **xPack {{appName}}**
@@ -624,7 +663,9 @@ chmod -R -w xpack-{{appLcName}}-${customField('upstreamVersion')}-${customField(
 `} </CodeBlock>
 
 </TabItem>
+{% endif %}
 
+{% endfor %}
 </Tabs>
 
 :::info

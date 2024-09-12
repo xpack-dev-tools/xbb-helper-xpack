@@ -253,6 +253,11 @@ Check if both the current project and the helper are
 on the `xpack-development` branch and the latest
 commits are pushed to GitHub.
 
+{% assign platforms_array = platforms | split: "," %}
+
+{% for platform in platforms_array %}
+
+{% if platform == "darwin-x64" %}
 ### Build the x64 macOS binaries
 
 For x64 macOS, first run the build on the development machine
@@ -297,7 +302,9 @@ caffeinate ssh xbbmi
 ```
 
 <PlatformNativeBuild platform="darwin-x64"/>
+{% endif %}
 
+{% if platform == "darwin-arm64" %}
 ### Build the arm64 macOS binaries
 
 Run the native build on the production machine
@@ -309,7 +316,9 @@ caffeinate ssh xbbma
 ```
 
 <PlatformNativeBuild platform="darwin-arm64"/>
+{% endif %}
 
+{% if platform == "linux-x64" %}
 ### Build the x64 GNU/Linux binaries
 
 Run the docker build on the production machine (`xbbli`);
@@ -320,7 +329,9 @@ caffeinate ssh xbbli
 ```
 
 <PlatformDockerBuild platform="linux-x64"/>
+{% endif %}
 
+{% if platform == "win32-x64" %}
 ### Build the x64 Windows binaries
 
 Run the docker build on the production machine (`xbbli`);
@@ -331,7 +342,9 @@ caffeinate ssh xbbli
 ```
 
 <PlatformDockerBuild platform="win32-x64"/>
+{% endif %}
 
+{% if platform == "linux-arm64" %}
 ### Build the arm64 GNU/Linux binaries
 
 Run the docker build on the production machine (`xbbla`);
@@ -342,7 +355,9 @@ caffeinate ssh xbbla
 ```
 
 <PlatformDockerBuild platform="linux-arm64"/>
+{% endif %}
 
+{% if platform == "linux-arm" %}
 ### Build the arm GNU/Linux (32-bit) binaries
 
 Run the docker build on the production machine (`xbbla32`);
@@ -353,6 +368,9 @@ caffeinate ssh xbbla32
 ```
 
 <PlatformDockerBuild platform="linux-arm"/>
+{% endif %}
+
+{% endfor %}
 
 ### Update the trees in the Install Guide page
 
@@ -419,15 +437,28 @@ The automation is provided by GitHub Actions and three self-hosted runners.
 
 ### Start the self-hosted runners
 
-- on the development machine (`wksi`) open ssh sessions to the build
-machines (`xbbmi`, `xbbma`, `xbbli`, `xbbla` and `xbbla32`):
+{% assign dual_runner = false %}
+{% assign dual_runners_array = "" | split: ""  %}
+{% assign single_runner = false %}
+{% assign names_array = "" | split: "" %}
+{% for platform in platforms_array %}
+  {% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: "xbbmi" %}{% assign single_runner = true %}{% endif %}
+  {% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "xbbma" %}{% assign single_runner = true %}{% endif %}
+  {% if platform == "linux-x64" or platform == "win32-x64" %}{% assign names_array = names_array | concat: "xbbli" %}{% assign dual_runner = true %}{% assign dual_runners_array = dual_runners_array | concat: "xbbli" %}{% endif %}
+  {% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: "xbbla" %}{% assign dual_runner = true %}{% assign dual_runners_array = dual_runners_array | concat: "xbbla" %}{% endif %}
+  {% if platform == "linux-arm" %}{% assign names_array = names_array | concat: "xbbla32" %}{% assign single_runner = true %}{% endif %}
+{% endfor %}
+
+{% assign names_array = names_array | uniq %}
+{% assign dual_runners_array = dual_runners_array | uniq %}
+
+- on the development machine (`wksi`) open
+{% if names_array.size > 1 %}ssh sessions to the build machines (`{{ names_array | join: "`, `"}}`){% else %}a ssh session to the build machine `{{ names_array | join: "" }}`{% endif %}:
 
 ```sh
-caffeinate ssh xbbmi
-caffeinate ssh xbbma
-caffeinate ssh xbbli
-caffeinate ssh xbbla
-caffeinate ssh xbbla32
+{% for name in names_array -%}
+caffeinate ssh {{name}}
+{% endfor -%}
 ```
 
 Create a `screen` session, to provide a persistent standard output for
@@ -439,18 +470,22 @@ screen -S ga
 
 To quit it, use `# Ctrl-a Ctrl-d`.
 
-For `xbbli` & `xbbla`, which have more memory, start two runners:
+{% if dual_runner %}
+For {% if dual_runners_array.size > 1 %}`{{dual_runners_array | join: "` & `"}}`, which have{% else %}`{{dual_runners_array}}`, which has{% endif %} more memory, start two runners:
 
 ```sh
 ~/actions-runners/xpack-dev-tools/1/run.sh &
 ~/actions-runners/xpack-dev-tools/2/run.sh &
 ```
+{% endif %}
 
+{% if single_runner %}
 On all other machines start a single runner:
 
 ```sh
 ~/actions-runners/xpack-dev-tools/run.sh &
 ```
+{% endif %}
 
 To check the status of the runners locally:
 
@@ -493,8 +528,16 @@ xpm run check-space -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-asse
 
 This is equivalent to running a `df` command.
 
+{% assign isMacOS = false %}
+{% assign isLinux = false %}
+{% for platform in platforms_array %}
+{% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign isMacOS = true %}{% endif %}
+{% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" or platform == "win32-x64" %}{% assign isLinux = true %}{% endif %}
+{% endfor %}
+
 <Tabs groupId="operating-systems">
 
+{% if isMacOS %}
 <TabItem value="macos" label="macOS">
 
 ```
@@ -502,7 +545,9 @@ df -gH /
 ```
 
 </TabItem>
+{% endif %}
 
+{% if isLinux %}
 <TabItem value="linux" label="GNU/Linux">
 
 ```sh
@@ -510,6 +555,7 @@ df -BG -H /
 ```
 
 </TabItem>
+{% endif %}
 
 </Tabs>
 
@@ -545,20 +591,11 @@ xpm run generate-workflows -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/bui
 
 To trigger the GitHub Actions builds, use the xPack actions:
 
-- **trigger-workflow-build-darwin-x64**
-- **trigger-workflow-build-darwin-arm64**
-- **trigger-workflow-build-linux-x64**
-- **trigger-workflow-build-win32-x64**
-- **trigger-workflow-build-linux-arm64**
-- **trigger-workflow-build-linux-arm**
+{% for platform in platforms_array %}
+- **trigger-workflow-build-{{platform}}**{% endfor %}
 
 ```sh
-xpm run trigger-workflow-build-darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
-xpm run trigger-workflow-build-darwin-arm64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
-xpm run trigger-workflow-build-linux-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
-xpm run trigger-workflow-build-win32-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
-xpm run trigger-workflow-build-darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
-xpm run trigger-workflow-build-darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+{% for platform in platforms_array %}xpm run trigger-workflow-build-{{platform}} -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets{% endfor %}
 ```
 
 The scripts behind these actions require the `GITHUB_API_DISPATCH_TOKEN`
@@ -589,16 +626,25 @@ The resulting binaries are available for testing from
 
 The automation is provided by GitHub Actions.
 
+{% assign isMacOSX64 = false %}
+{% assign isLinuxX64 = false %}
+{% assign isLinuxArm = false %}
+{% for platform in platforms_array %}
+{% if platform == "darwin-x64"%}{% assign isMacOSX64 = true %}{% endif %}
+{% if platform == "linux-x64" %}{% assign isLinuxX64 = true %}{% endif %}
+{% if platform == "linux-arm64" or platform == "linux-arm" or platform == "win32-x64" %}{% assign isLinuxArm = true %}{% endif %}
+{% endfor %}
+
 To trigger the GitHub Actions tests, run the xPack actions:
 
 - **trigger-workflow-test-prime**
-- **trigger-workflow-test-docker-linux-x64**
-- **trigger-workflow-test-docker-linux-arm**
+{% if isLinuxX64 %}- **trigger-workflow-test-docker-linux-x64**{% endif %}
+{% if isLinuxArm %}- **trigger-workflow-test-docker-linux-arm**{% endif %}
 
 ```sh
 xpm run trigger-workflow-test-prime -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
-xpm run trigger-workflow-test-docker-linux-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
-xpm run trigger-workflow-test-docker-linux-arm -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+{% if isLinuxX64 %}xpm run trigger-workflow-test-docker-linux-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets{% endif %}
+{% if isLinuxArm %}xpm run trigger-workflow-test-docker-linux-arm -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets{% endif %}
 ```
 
 The scripts behind these accesible require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
@@ -614,6 +660,7 @@ The tests results are available from the
 After running the prime tests, download the test results and compare
 with previous runs.
 
+{% if isMacOSX64 %}
 #### More macOS tests
 
 Since GitHub Actions provides a limited range of versions for the macOS
@@ -630,6 +677,7 @@ in the environment.
 
 The test results are available from
 [Travis CI](https://app.travis-ci.com/github/xpack-dev-tools/{{appLcName}}-xpack/builds/).
+{% endif %}
 
 ### Manual tests
 
@@ -701,7 +749,6 @@ xpm run generate-website-blog-post -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack
 - edit the front matter properties
 - select the correct summary
 - commit with _**blog post release {customField('upstreamVersion')}-{customField('xpackSubversion')} published**_
-
 
 ### Update the web install page
 

@@ -68,12 +68,10 @@ For simple projects, the typical use case is with two configurations,
 For building the xPack binary tools, there is one configuration
 for each platform:
 
-- `darwin-x64`
-- `darwin-arm64`
-- `linux-x64`
-- `win32-x64`
-- `linux-arm64`
-- `linux-arm`
+{% assign platforms_array = platforms | split: "," %}
+
+{% for platform in platforms_array %}
+- `{{platform}}`{% endfor %}
 
 :::note
 
@@ -285,31 +283,45 @@ git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 ### Build the binaries
 
 <Tabs groupId="platforms">
+{% for platform in platforms_array %}
 
+{% if platform == "darwin-x64" %}
 <TabItem value="darwin-x64" label="macOS x64" default>
 <PlatformNativeSection platform="darwin-x64"/>
 </TabItem>
+{% endif %}
 
+{% if platform == "darwin-arm64" %}
 <TabItem value="darwin-arm64" label="macOS arm64" default>
 <PlatformNativeSection platform="darwin-arm64"/>
 </TabItem>
+{% endif %}
 
+{% if platform == "linux-x64" %}
 <TabItem value="linux-x64" label="GNU/Linux x64" default>
 <PlatformDockerSection platform="linux-x64"/>
 </TabItem>
+{% endif %}
 
+{% if platform == "linux-arm64" %}
 <TabItem value="linux-arm64" label="GNU/Linux arm64" default>
 <PlatformDockerSection platform="linux-arm64"/>
 </TabItem>
+{% endif %}
 
+{% if platform == "linux-arm" %}
 <TabItem value="linux-arm" label="GNU/Linux arm" default>
 <PlatformDockerSection platform="linux-arm"/>
 </TabItem>
+{% endif %}
 
+{% if platform == "win32-x64" %}
 <TabItem value="win32-x64" label="Windows" default>
 <PlatformDockerSection platform="win32-x64"/>
 </TabItem>
+{% endif %}
 
+{% endfor %}
 </Tabs>
 
 ### Compile with debug info
