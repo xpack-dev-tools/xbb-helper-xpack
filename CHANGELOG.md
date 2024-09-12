@@ -2,9 +2,24 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-09-12
+
+* v3.0.16 released
+* 6b5deab templates/docusaurus update
+* 30dcb1b templates/docusaurus update
+* f0f9349 templates/docusaurus add support for platforms
+* ea90b99 git-commit.sh: update scripts
+* b83dba7 website-*.sh: add platforms
+* 1360cbd test-common.sh: install file on suse
+* ed2b24b website-convert-release-post.sh update
+* ecc3979 templates/docusaurus update
+
 ## 2024-09-11
 
-* v3.0.15 released
+2024-09-11 * 058976f website-convert-release-post.sh update
+2024-09-11 * b7f5a34 templates/docusaurus update
+2024-09-11 * f74b029 3.0.15
+2024-09-11 * 7836486 prepare v3.0.15
 * 8cbdb0d templates/docusaurus updates
 * 3e88b1b qemu.sh: -DHWCAP_USCAT for arm64
 * 25119d5 update copyright notices
