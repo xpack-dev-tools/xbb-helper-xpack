@@ -175,12 +175,14 @@ jobs:
       - name: 'Run {% raw %}${{github.event.inputs.version}}{% endraw %} native test'
         run: bash build-assets/scripts/test.sh --image github-actions-ubuntu-latest --version {% raw %}${{github.event.inputs.version}}{% endraw %} --base-url pre-release
 
+{% if customFields.showTestsResults == 'true' -%}
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{platform}}
           path: {% raw %}${{github.workspace}}{% endraw %}/build-assets/build/{{platform}}/artefacts/tests-report-*.md
           overwrite: true
+{% endif -%}
 {% break -%}
 {% endif -%}
 {% endfor -%}
