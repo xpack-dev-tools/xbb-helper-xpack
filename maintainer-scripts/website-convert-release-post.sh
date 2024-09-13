@@ -252,6 +252,9 @@ sed -i.bak -e "s|/dev-tools/${appLcName}/tests/|/docs/tests/|" "$2/$to"
 # Fix qemu docs link
 sed -i.bak -e 's|- <https://www.qemu.org/docs/master/>|- https://www.qemu.org/docs/master/|' "$2/$to"
 
+# Fix wine docs link
+sed -i.bak -e 's|- .https://www.winehq.org/documentation/.(https://www.winehq.org/documentation/)|- https://www.winehq.org/documentation/|' "$2/$to"
+
 # Fix project web path
 sed -i.bak -e 's|https://xpack.github.io/dev-tools/\([a-z-]*\)/|https://xpack-dev-tools.github.io/\1-xpack|' "$2/$to"
 
