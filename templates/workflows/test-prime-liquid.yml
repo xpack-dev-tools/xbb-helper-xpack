@@ -300,6 +300,49 @@ jobs:
           name: tests-report-{{platform}}
           path: {% raw %}${{github.workspace}}{% endraw %}/build-assets/build/{{platform}}/artefacts/tests-report-*.md
           overwrite: true
+
+  # One more run with the oldest Windows available.
+  {{platform}}-test2:
+    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
+    runs-on: windows-2019
+    defaults:
+      run:
+        # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
+        shell: bash # for --
+
+    steps:
+      - name: 'Show environment'
+        run: |
+          uname -a
+          systeminfo # lsb_release -sd
+          echo "whoami: $(whoami)"
+          echo "pwd: $(pwd)"
+          ls -lLA
+          env | sort | grep -E '^[^ \t]+='
+
+      # https://github.com/actions/checkout
+      - name: 'Checkout project'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+
+      - name: 'Checkout helper {% raw %}${{github.event.inputs.helper-git-ref}}{% endraw %}'
+        uses: actions/checkout@v4
+        with:
+          repository: xpack-dev-tools/xbb-helper-xpack
+          path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
+          ref: {% raw %}${{github.event.inputs.helper-git-ref}}{% endraw %}
+          fetch-depth: 3
+
+      - name: 'Run {% raw %}${{github.event.inputs.version}}{% endraw %} native test'
+        run: bash build-assets/scripts/test.sh --version {% raw %}${{github.event.inputs.version}}{% endraw %} --base-url {% raw %}${{github.event.inputs.base_url}}{% endraw %}
+
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-{{platform}}
+          path: {% raw %}${{github.workspace}}{% endraw %}/build-assets/build/{{platform}}/artefacts/tests-report-*.md
+          overwrite: true
 {% endcase -%}
 {% endfor %}
   generate-tests-report:
