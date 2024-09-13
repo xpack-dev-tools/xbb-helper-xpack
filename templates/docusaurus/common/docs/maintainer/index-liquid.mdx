@@ -44,8 +44,21 @@ project and documents how to make new releases.
 
 ## Prerequisites
 
-The build scripts run on GNU/Linux and macOS. The Windows binaries are
-compiled on x64 GNU/Linux, using [mingw-w64](https://mingw-w64.org).
+{% assign platforms_array = platforms | split: "," -%}
+
+{% assign isMacOS = false -%}
+{% assign isLinux = false -%}
+{% assign isWindows = false -%}
+
+{% for platform in platforms_array -%}
+{% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign isMacOS = true %}{% endif -%}
+{% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" %}{% assign isLinux = true %}{% endif -%}
+{% if platform == "win32-x64" %}{% assign isWindows = true %}{% endif -%}
+{% endfor -%}
+
+{% if isLinux and isMacOS %}The build scripts run on GNU/Linux and macOS.{% else %}{% if isLinux %}The build scripts run on GNU/Linux.{% endif %}{% if isMacOS %}The build scripts run on macOS.{% endif %}{% endif %}
+{% if isWindows %}The Windows binaries are
+compiled on x64 GNU/Linux, using [mingw-w64](https://mingw-w64.org).{% endif %}
 
 For details on installing the prerequisites, please read the
 [XBB prerequisites page](https://xpack.github.io/xbb/prerequisites/).
@@ -219,19 +232,17 @@ will build again the previous release!
 
 ## Run the development builds
 
-{% assign platforms_array = platforms | split: "," %}
+{% assign names_array = "" | split: "" -%}
 
-{% assign names_array = "" | split: "" %}
+{% for platform in platforms_array -%}
+  {% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: "x64 macOS" %}{% endif -%}
+  {% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "arm64 macOS" %}{% endif -%}
+  {% if platform == "win32-x64" or platform == "linux-x64" %}{% assign names_array = names_array | concat: "x64 GNU/Linux" %}{% endif -%}
+  {% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: "arm64 GNU/Linux" %}{% endif -%}
+  {% if platform == "linux-arm" %}{% assign names_array = names_array | concat: "arm GNU/Linux" %}{% endif -%}
+{% endfor -%}
 
-{% for platform in platforms_array %}
-  {% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: "x64 macOS" %}{% endif %}
-  {% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "arm64 macOS" %}{% endif %}
-  {% if platform == "win32-x64" or platform == "linux-x64" %}{% assign names_array = names_array | concat: "x64 GNU/Linux" %}{% endif %}
-  {% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: "arm64 GNU/Linux" %}{% endif %}
-  {% if platform == "linux-arm" %}{% assign names_array = names_array | concat: "arm GNU/Linux" %}{% endif %}
-{% endfor %}
-
-{% assign names_array = names_array | uniq %}
+{% assign names_array = names_array | uniq -%}
 
 {% if names_array.size > 1 %}The builds currently run on {{names_array.size}} dedicated machines ({{ names_array | join: ", " }}){% else %}The build currently runs on the {{ names_array | join: "" }} machine{% endif %}.
 
@@ -266,11 +277,21 @@ Check if both the current project and the helper are
 on the `xpack-development` branch and the latest
 commits are pushed to GitHub.
 
-{% assign platforms_array = platforms | split: "," %}
+{% assign platforms_array = platforms | split: "," -%}
 
-{% for platform in platforms_array %}
+{% assign names_array = "" | split: "" -%}
 
-{% if platform == "darwin-x64" %}
+{% for platform in platforms_array %}{% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+{% for platform in platforms_array %}{% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+{% for platform in platforms_array %}{% if platform == "linux-x64" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+{% for platform in platforms_array %}{% if platform == "win32-x64" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+{% for platform in platforms_array %}{% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+{% for platform in platforms_array %}{% if platform == "linux-arm" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+
+
+{% for name in names_array -%}
+
+{% if name == "darwin-x64" %}
 ### Build the x64 macOS binaries
 
 For x64 macOS, first run the build on the development machine
@@ -315,9 +336,9 @@ caffeinate ssh xbbmi
 ```
 
 <PlatformNativeBuild platform="darwin-x64"/>
-{% endif %}
+{% endif -%}
 
-{% if platform == "darwin-arm64" %}
+{% if name == "darwin-arm64" %}
 ### Build the arm64 macOS binaries
 
 Run the native build on the production machine
@@ -329,9 +350,9 @@ caffeinate ssh xbbma
 ```
 
 <PlatformNativeBuild platform="darwin-arm64"/>
-{% endif %}
+{% endif -%}
 
-{% if platform == "linux-x64" %}
+{% if name == "linux-x64" %}
 ### Build the x64 GNU/Linux binaries
 
 Run the docker build on the production machine (`xbbli`);
@@ -342,9 +363,9 @@ caffeinate ssh xbbli
 ```
 
 <PlatformDockerBuild platform="linux-x64"/>
-{% endif %}
+{% endif -%}
 
-{% if platform == "win32-x64" %}
+{% if name == "win32-x64" -%}
 ### Build the x64 Windows binaries
 
 Run the docker build on the production machine (`xbbli`);
@@ -355,9 +376,9 @@ caffeinate ssh xbbli
 ```
 
 <PlatformDockerBuild platform="win32-x64"/>
-{% endif %}
+{% endif -%}
 
-{% if platform == "linux-arm64" %}
+{% if name == "linux-arm64" %}
 ### Build the arm64 GNU/Linux binaries
 
 Run the docker build on the production machine (`xbbla`);
@@ -368,9 +389,9 @@ caffeinate ssh xbbla
 ```
 
 <PlatformDockerBuild platform="linux-arm64"/>
-{% endif %}
+{% endif -%}
 
-{% if platform == "linux-arm" %}
+{% if name == "linux-arm" %}
 ### Build the arm GNU/Linux (32-bit) binaries
 
 Run the docker build on the production machine (`xbbla32`);
@@ -381,7 +402,7 @@ caffeinate ssh xbbla32
 ```
 
 <PlatformDockerBuild platform="linux-arm"/>
-{% endif %}
+{% endif -%}
 
 {% endfor %}
 
@@ -409,15 +430,15 @@ via HomeBrew, and make a link to `/usr/local/bin`.
 
 ### Update the list of links in top package.json
 
-{% assign names_array = "" | split: "" %}
+{% assign names_array = "" | split: "" -%}
 
-{% for platform in platforms_array %}
-  {% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "Windows" %}{% endif %}
-  {% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "macOS" %}{% endif %}
-  {% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" %}{% assign names_array = names_array | concat: "GNU/Linux" %}{% endif %}
-{% endfor %}
+{% for platform in platforms_array -%}
+  {% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "Windows" %}{% endif -%}
+  {% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "macOS" %}{% endif -%}
+  {% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" %}{% assign names_array = names_array | concat: "GNU/Linux" %}{% endif -%}
+{% endfor -%}
 
-{% assign names_array = names_array | uniq %}
+{% assign names_array = names_array | uniq -%}
 
 Copy/paste the full list of links displayed at the end of the build, in
 sequence, {% if names_array.size > 1 %}for each platform ({{ names_array | join: ", " }}),{% endif %}
@@ -461,22 +482,22 @@ The automation is provided by GitHub Actions and three self-hosted runners.
 
 ### Start the self-hosted runners
 
-{% assign dual_runner = false %}
-{% assign dual_runners_array = "" | split: ""  %}
-{% assign single_runner = false %}
+{% assign dual_runner = false -%}
+{% assign dual_runners_array = "" | split: ""  -%}
+{% assign single_runner = false -%}
 
-{% assign names_array = "" | split: "" %}
+{% assign names_array = "" | split: "" -%}
 
-{% for platform in platforms_array %}
-  {% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: "xbbmi" %}{% assign single_runner = true %}{% endif %}
-  {% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "xbbma" %}{% assign single_runner = true %}{% endif %}
-  {% if platform == "linux-x64" or platform == "win32-x64" %}{% assign names_array = names_array | concat: "xbbli" %}{% assign dual_runner = true %}{% assign dual_runners_array = dual_runners_array | concat: "xbbli" %}{% endif %}
-  {% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: "xbbla" %}{% assign dual_runner = true %}{% assign dual_runners_array = dual_runners_array | concat: "xbbla" %}{% endif %}
-  {% if platform == "linux-arm" %}{% assign names_array = names_array | concat: "xbbla32" %}{% assign single_runner = true %}{% endif %}
-{% endfor %}
+{% for platform in platforms_array -%}
+  {% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: "xbbmi" %}{% assign single_runner = true %}{% endif -%}
+  {% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "xbbma" %}{% assign single_runner = true %}{% endif -%}
+  {% if platform == "linux-x64" or platform == "win32-x64" %}{% assign names_array = names_array | concat: "xbbli" %}{% assign dual_runner = true %}{% assign dual_runners_array = dual_runners_array | concat: "xbbli" %}{% endif -%}
+  {% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: "xbbla" %}{% assign dual_runner = true %}{% assign dual_runners_array = dual_runners_array | concat: "xbbla" %}{% endif -%}
+  {% if platform == "linux-arm" %}{% assign names_array = names_array | concat: "xbbla32" %}{% assign single_runner = true %}{% endif -%}
+{% endfor -%}
 
-{% assign names_array = names_array | uniq %}
-{% assign dual_runners_array = dual_runners_array | uniq %}
+{% assign names_array = names_array | uniq -%}
+{% assign dual_runners_array = dual_runners_array | uniq -%}
 
 - on the development machine (`wksi`) open
 {% if names_array.size > 1 %}ssh sessions to the build machines (`{{ names_array | join: "`, `"}}`){% else %}a ssh session to the build machine `{{ names_array | join: "" }}`{% endif %}:
@@ -485,7 +506,7 @@ The automation is provided by GitHub Actions and three self-hosted runners.
 {% for name in names_array -%}
 caffeinate ssh {{name}}
 {% endfor -%}
-```
+{% comment %}{% endcomment %}```
 
 Create a `screen` session, to provide a persistent standard output for
 the runners:
@@ -496,22 +517,22 @@ screen -S ga
 
 To quit it, use `# Ctrl-a Ctrl-d`.
 
-{% if dual_runner %}
+{% if dual_runner -%}
 For {% if dual_runners_array.size > 1 %}`{{dual_runners_array | join: "` & `"}}`, which have{% else %}`{{dual_runners_array}}`, which has{% endif %} more memory, start two runners:
 
 ```sh
 ~/actions-runners/xpack-dev-tools/1/run.sh &
 ~/actions-runners/xpack-dev-tools/2/run.sh &
 ```
-{% endif %}
+{%- endif %}
 
-{% if single_runner %}
+{% if single_runner -%}
 On all other machines start a single runner:
 
 ```sh
 ~/actions-runners/xpack-dev-tools/run.sh &
 ```
-{% endif %}
+{%- endif %}
 
 To check the status of the runners locally:
 
@@ -554,17 +575,17 @@ xpm run check-space -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-asse
 
 This is equivalent to running a `df` command.
 
-{% assign isMacOS = false %}
-{% assign isLinux = false %}
+{% assign isMacOS = false -%}
+{% assign isLinux = false -%}
 
-{% for platform in platforms_array %}
-{% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign isMacOS = true %}{% endif %}
-{% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" or platform == "win32-x64" %}{% assign isLinux = true %}{% endif %}
-{% endfor %}
+{% for platform in platforms_array -%}
+{% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign isMacOS = true %}{% endif -%}
+{% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" or platform == "win32-x64" %}{% assign isLinux = true %}{% endif -%}
+{% endfor -%}
 
 <Tabs groupId="operating-systems">
 
-{% if isMacOS %}
+{% if isMacOS -%}
 <TabItem value="macos" label="macOS">
 
 ```
@@ -572,7 +593,7 @@ df -gH /
 ```
 
 </TabItem>
-{% endif %}
+{% endif -%}
 
 {% if isLinux %}
 <TabItem value="linux" label="GNU/Linux">
@@ -582,7 +603,7 @@ df -BG -H /
 ```
 
 </TabItem>
-{% endif %}
+{%- endif %}
 
 </Tabs>
 
@@ -618,12 +639,16 @@ xpm run generate-workflows -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/bui
 
 To trigger the GitHub Actions builds, use the xPack actions:
 
-{% for platform in platforms_array %}
-- **trigger-workflow-build-{{platform}}**{% endfor %}
+{% for platform in platforms_array -%}
+- **trigger-workflow-build-{{platform}}**
+{% endfor -%}
+{% comment %}{% endcomment %}
 
 ```sh
-{% for platform in platforms_array %}xpm run trigger-workflow-build-{{platform}} -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets{% endfor %}
-```
+{% for platform in platforms_array -%}
+xpm run trigger-workflow-build-{{platform}} -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+{% endfor -%}
+{% comment %}{% endcomment %}```
 
 The scripts behind these actions require the `GITHUB_API_DISPATCH_TOKEN`
 variable to be present
@@ -653,21 +678,23 @@ The resulting binaries are available for testing from
 
 The automation is provided by GitHub Actions.
 
-{% assign isMacOSX64 = false %}
-{% assign isLinuxX64 = false %}
-{% assign isLinuxArm = false %}
+{% assign isMacOSX64 = false -%}
+{% assign isLinuxX64 = false -%}
+{% assign isLinuxArm = false -%}
 
-{% for platform in platforms_array %}
-{% if platform == "darwin-x64"%}{% assign isMacOSX64 = true %}{% endif %}
-{% if platform == "linux-x64" %}{% assign isLinuxX64 = true %}{% endif %}
-{% if platform == "linux-arm64" or platform == "linux-arm" or platform == "win32-x64" %}{% assign isLinuxArm = true %}{% endif %}
-{% endfor %}
+{% for platform in platforms_array -%}
+{% if platform == "darwin-x64" %}{% assign isMacOSX64 = true %}{% endif -%}
+{% if platform == "linux-x64" %}{% assign isLinuxX64 = true %}{% endif -%}
+{% if platform == "linux-arm64" or platform == "linux-arm" %}{% assign isLinuxArm = true %}{% endif -%}
+{% endfor -%}
 
 To trigger the GitHub Actions tests, run the xPack actions:
 
-- **trigger-workflow-test-prime**
-{% if isLinuxX64 %}- **trigger-workflow-test-docker-linux-x64**{% endif %}
-{% if isLinuxArm %}- **trigger-workflow-test-docker-linux-arm**{% endif %}
+<ul>
+<li><b>trigger-workflow-test-prime</b></li>
+{% if isLinuxX64 %}<li><b>trigger-workflow-test-docker-linux-x64</b></li>{% endif %}
+{% if isLinuxArm %}<li><b>trigger-workflow-test-docker-linux-arm</b></li>{% endif %}
+</ul>
 
 ```sh
 xpm run trigger-workflow-test-prime -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
@@ -688,7 +715,7 @@ The tests results are available from the
 After running the prime tests, download the test results and compare
 with previous runs.
 
-{% if isMacOSX64 %}
+{% if isMacOSX64 -%}
 #### More macOS tests
 
 Since GitHub Actions provides a limited range of versions for the macOS
@@ -705,7 +732,7 @@ in the environment.
 
 The test results are available from
 [Travis CI](https://app.travis-ci.com/github/xpack-dev-tools/{{appLcName}}-xpack/builds/).
-{% endif %}
+{%- endif %}
 
 ### Manual tests
 
@@ -718,16 +745,24 @@ xpm run install -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 xpm run test-pre-release -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
 ```
 
-For even more tests, on each platform (MacOS, GNU/Linux, Windows),
+For even more tests, on each platform,
 download the archive from
 [pre-releases/test](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/)
 and check the binaries.
 
+{% assign isMacOS = false -%}
+
+{% for platform in platforms_array -%}
+{% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign isMacOS = true %}{% endif -%}
+{% endfor -%}
+
+{% if isMacOS -%}
 On macOS, remove the `com.apple.quarantine` flag:
 
 ```sh
 xattr -cr ${HOME}/Downloads/xpack-*
 ```
+{%- endif %}
 
 <MoreTests/>
 
@@ -856,7 +891,7 @@ This will install the package via `xpm install` on all supported platforms.
 The tests results are available from the
 [GitHub Actions](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/actions/) page.
 
-{% if customFields.showTestsResults == 'true' %}
+{% if customFields.showTestsResults == 'true' -%}
 ### Copy the test results
 
 For the toolchain projects, download the `test-report.zip` file, unzip it
@@ -866,7 +901,7 @@ Edit the `website/docs/tests/index.md` file to add the
 new page.
 
 Commit with _**website: add tests results**_.
-{% endif %}
+{%- endif %}
 
 ### Tag the npm package as `latest`
 
