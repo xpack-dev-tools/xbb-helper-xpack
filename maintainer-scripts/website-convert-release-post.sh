@@ -270,6 +270,15 @@ sed -i.bak -e 's|/dev-tools/gcc/|/docs/|g' "$2/$to"
 # Remove QEMU link.
 sed -i.bak -e 's|.GNU ARM Eclipse QEMU.({{ site.baseurl }}/dev-tools/qemu-arm/)|**GNU ARM Eclipse QEMU**|g' "$2/$to"
 
+# Fix WBT platform.
+sed -i.bak -e 's|There are separate binaries for ..Windows.. .Intel 32/64-bit.|There are binaries for **x64 Windows**|g' "$2/$to"
+
+# Remove WBT link.
+sed -i.bak -e 's|.Windows Build Tools..{{ site.baseurl }}/dev-tools/windows-build-tools/.|**Windows Build Tools**|g' "$2/$to"
+
+# Fix WBT link.
+sed -i.bak -e 's|please read the .dedicated page..{{ site.baseurl }}/dev-tools/windows-build-tools/.|please read the [Getting Started page](/docs/getting-started/)|g' "$2/$to"
+
 # Remove the `site.baseurl` from links.
 sed -i.bak -e 's|{{ site.baseurl }}||g' "$2/$to"
 
