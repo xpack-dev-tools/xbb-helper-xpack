@@ -58,12 +58,14 @@ jobs:
       - name: 'Run {% raw %}${{github.event.inputs.version}}{% endraw %} native test'
         run: bash build-assets/scripts/test.sh --image github-actions-ubuntu-latest --version {% raw %}${{github.event.inputs.version}}{% endraw %} --base-url {% raw %}${{github.event.inputs.base_url}}{% endraw %}
 
+{% if customFields.showTestsResults == 'true' -%}
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{platform}}
           path: {% raw %}${{github.workspace}}{% endraw %}/build-assets/build/{{platform}}/artefacts/tests-report-*.md
           overwrite: true
+{% endif -%}
 {% when "linux-arm64" %}
   {{platform}}-test:
     name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
@@ -104,12 +106,14 @@ jobs:
           entrypoint: /bin/bash
           args: /github/workspace/build-assets/scripts/test.sh --image ubuntu:22.04 --version {% raw %}${{github.event.inputs.version}}{% endraw %} --base-url {% raw %}${{github.event.inputs.base_url}}{% endraw %}
 
+{% if customFields.showTestsResults == 'true' -%}
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{platform}}
           path: {% raw %}${{github.workspace}}{% endraw %}/build-assets/build/{{platform}}/artefacts/tests-report-*.md
           overwrite: true
+{% endif -%}
 {% when "linux-arm" %}
   {{platform}}-test:
     name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
@@ -150,12 +154,14 @@ jobs:
           entrypoint: /bin/bash # /usr/bin/linux32
           args: /github/workspace/build-assets/scripts/test.sh --image debian --version {% raw %}${{github.event.inputs.version}}{% endraw %} --base-url {% raw %}${{github.event.inputs.base_url}}{% endraw %}
 
+{% if customFields.showTestsResults == 'true' -%}
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{platform}}
           path: {% raw %}${{github.workspace}}{% endraw %}/build-assets/build/{{platform}}/artefacts/tests-report-*.md
           overwrite: true
+{% endif -%}
 {% when "darwin-x64" %}
   {{platform}}-test:
     name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
@@ -201,12 +207,14 @@ jobs:
       - name: 'Run {% raw %}${{github.event.inputs.version}}{% endraw %} native test'
         run: bash build-assets/scripts/test.sh --version {% raw %}${{github.event.inputs.version}}{% endraw %} --base-url {% raw %}${{github.event.inputs.base_url}}{% endraw %}
 
+{% if customFields.showTestsResults == 'true' -%}
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{platform}}
           path: {% raw %}${{github.workspace}}{% endraw %}/build-assets/build/{{platform}}/artefacts/tests-report-*.md
           overwrite: true
+{% endif -%}
 {% when "darwin-arm64" %}
   {{platform}}-test:
     name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
@@ -252,12 +260,14 @@ jobs:
       - name: 'Run {% raw %}${{github.event.inputs.version}}{% endraw %} native test'
         run: bash build-assets/scripts/test.sh --version {% raw %}${{github.event.inputs.version}}{% endraw %} --base-url {% raw %}${{github.event.inputs.base_url}}{% endraw %}
 
+{% if customFields.showTestsResults == 'true' -%}
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{platform}}
           path: {% raw %}${{github.workspace}}{% endraw %}/build-assets/build/{{platform}}/artefacts/tests-report-*.md
           overwrite: true
+{% endif -%}
 {% when "win32-x64" %}
   {{platform}}-test:
     name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
@@ -294,16 +304,18 @@ jobs:
       - name: 'Run {% raw %}${{github.event.inputs.version}}{% endraw %} native test'
         run: bash build-assets/scripts/test.sh --version {% raw %}${{github.event.inputs.version}}{% endraw %} --base-url {% raw %}${{github.event.inputs.base_url}}{% endraw %}
 
+{% if customFields.showTestsResults == 'true' -%}
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-{{platform}}
           path: {% raw %}${{github.workspace}}{% endraw %}/build-assets/build/{{platform}}/artefacts/tests-report-*.md
           overwrite: true
+{%- endif %}
 
   # One more run with the oldest Windows available.
   {{platform}}-test2:
-    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
+    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test 2019'
     runs-on: windows-2019
     defaults:
       run:
@@ -336,15 +348,9 @@ jobs:
 
       - name: 'Run {% raw %}${{github.event.inputs.version}}{% endraw %} native test'
         run: bash build-assets/scripts/test.sh --version {% raw %}${{github.event.inputs.version}}{% endraw %} --base-url {% raw %}${{github.event.inputs.base_url}}{% endraw %}
-
-      - name: Upload platform tests report
-        uses: actions/upload-artifact@v4
-        with:
-          name: tests-report-{{platform}}
-          path: {% raw %}${{github.workspace}}{% endraw %}/build-assets/build/{{platform}}/artefacts/tests-report-*.md
-          overwrite: true
 {% endcase -%}
 {% endfor %}
+{% if customFields.showTestsResults == 'true' -%}
   generate-tests-report:
     name: 'Generate tests report for {{appName}}@{% raw %}${{github.event.inputs.version}}{% endraw %}'
     runs-on: ubuntu-22.04
@@ -377,5 +383,6 @@ jobs:
           name: tests-report
           path: {% raw %}${{github.workspace}}{% endraw %}/build-assets/artefacts/{% raw %}${{github.event.inputs.version}}{% endraw %}.md
           overwrite: true
+{% endif -%}
 
 # -----------------------------------------------------------------------------
