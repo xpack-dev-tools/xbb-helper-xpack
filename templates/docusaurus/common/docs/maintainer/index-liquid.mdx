@@ -267,11 +267,11 @@ will build again the previous release!
 {% assign names_array = "" | split: "" -%}
 
 {% for platform in platforms_array -%}
-  {% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: "x64 macOS" %}{% endif -%}
-  {% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "arm64 macOS" %}{% endif -%}
-  {% if platform == "win32-x64" or platform == "linux-x64" %}{% assign names_array = names_array | concat: "x64 GNU/Linux" %}{% endif -%}
-  {% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: "arm64 GNU/Linux" %}{% endif -%}
-  {% if platform == "linux-arm" %}{% assign names_array = names_array | concat: "arm GNU/Linux" %}{% endif -%}
+{% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: "x64 macOS" %}{% endif -%}
+{% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "arm64 macOS" %}{% endif -%}
+{% if platform == "win32-x64" or platform == "linux-x64" %}{% assign names_array = names_array | concat: "x64 GNU/Linux" %}{% endif -%}
+{% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: "arm64 GNU/Linux" %}{% endif -%}
+{% if platform == "linux-arm" %}{% assign names_array = names_array | concat: "arm GNU/Linux" %}{% endif -%}
 {% endfor -%}
 
 {% assign names_array = names_array | uniq -%}
@@ -465,9 +465,9 @@ via HomeBrew, and make a link to `/usr/local/bin`.
 {% assign names_array = "" | split: "" -%}
 
 {% for platform in platforms_array -%}
-  {% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "Windows" %}{% endif -%}
-  {% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "macOS" %}{% endif -%}
-  {% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" %}{% assign names_array = names_array | concat: "GNU/Linux" %}{% endif -%}
+{% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "Windows" %}{% endif -%}
+{% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "macOS" %}{% endif -%}
+{% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" %}{% assign names_array = names_array | concat: "GNU/Linux" %}{% endif -%}
 {% endfor -%}
 
 {% assign names_array = names_array | uniq -%}
@@ -521,11 +521,11 @@ The automation is provided by GitHub Actions and three self-hosted runners.
 {% assign names_array = "" | split: "" -%}
 
 {% for platform in platforms_array -%}
-  {% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: "xbbmi" %}{% assign single_runner = true %}{% endif -%}
-  {% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "xbbma" %}{% assign single_runner = true %}{% endif -%}
-  {% if platform == "linux-x64" or platform == "win32-x64" %}{% assign names_array = names_array | concat: "xbbli" %}{% assign dual_runner = true %}{% assign dual_runners_array = dual_runners_array | concat: "xbbli" %}{% endif -%}
-  {% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: "xbbla" %}{% assign dual_runner = true %}{% assign dual_runners_array = dual_runners_array | concat: "xbbla" %}{% endif -%}
-  {% if platform == "linux-arm" %}{% assign names_array = names_array | concat: "xbbla32" %}{% assign single_runner = true %}{% endif -%}
+{% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: "xbbmi" %}{% assign single_runner = true %}{% endif -%}
+{% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "xbbma" %}{% assign single_runner = true %}{% endif -%}
+{% if platform == "linux-x64" or platform == "win32-x64" %}{% assign names_array = names_array | concat: "xbbli" %}{% assign dual_runner = true %}{% assign dual_runners_array = dual_runners_array | concat: "xbbli" %}{% endif -%}
+{% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: "xbbla" %}{% assign dual_runner = true %}{% assign dual_runners_array = dual_runners_array | concat: "xbbla" %}{% endif -%}
+{% if platform == "linux-arm" %}{% assign names_array = names_array | concat: "xbbla32" %}{% assign single_runner = true %}{% endif -%}
 {% endfor -%}
 
 {% assign names_array = names_array | uniq -%}

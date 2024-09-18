@@ -1,5 +1,3 @@
-{/* DO NOT EDIT! */}
-{/* Automatically generated from xbb-helper/templates/docusaurus/common. */}
 
 import CodeBlock from '@theme/CodeBlock';
 import Tabs from '@theme/Tabs';
@@ -9,9 +7,12 @@ import customField from '@site/src/libs/customField';
 
 {/* ------------------------------------------------------------------------ */}
 
-### Quick test
+## Folder hierarchy
 
-To check if the {props.appName} installed by **xpm** starts properly, use something like:
+(`_miscellaneous.mdx`)
+
+After install, the package creates a folder hierarchy like the following
+(only the first two depth levels are shown):
 
 {% assign platforms_array = platforms | split: "," -%}
 
@@ -32,8 +33,12 @@ To check if the {props.appName} installed by **xpm** starts properly, use someth
 <TabItem value="windows" label="Windows" default>
 
 <CodeBlock language="console"> {
-`C:\\> %USERPROFILE%\\AppData\\Roaming\\xPacks\\@xpack-dev-tools\\${props.appLcName}\\${customField('xpackVersion')}.${customField('npmSubversion')}\\.content\\bin\\${props.programName}.exe --version
-${props.branding}${customField('upstreamVersion')}
+`C:\> tree /f %USERPROFILE%\\AppData\\Roaming\\xPacks\\@xpack-dev-tools\\{{appLcName}}\\${customField('version')}\\.content
+Folder PATH listing
+Volume serial number is B02D-925C
+├── README.md
+├── bin
+TODO
 `} </CodeBlock>
 
 </TabItem>
@@ -43,8 +48,11 @@ ${props.branding}${customField('upstreamVersion')}
 <TabItem value="macos" label="macOS">
 
 <CodeBlock language="console"> {
-`% ~/Library/xPacks/@xpack-dev-tools/${props.appLcName}/${customField('xpackVersion')}.${customField('npmSubversion')}/.content/bin/${props.programName} --version
-${props.branding}${customField('upstreamVersion')}
+`$ tree -L 2 ~/Library/xPacks/\@xpack-dev-tools/{{appLcName}}/${customField('version')}/.content/
+/Users/ilg/Library/xPacks/\@xpack-dev-tools/{{appLcName}}/${customField('version')}/.content/
+├── README.md
+├── bin
+TODO
 `} </CodeBlock>
 
 </TabItem>
@@ -54,8 +62,11 @@ ${props.branding}${customField('upstreamVersion')}
 <TabItem value="linux" label="GNU/Linux">
 
 <CodeBlock language="console"> {
-`$ ~/.local/xPacks/@xpack-dev-tools/${props.appLcName}/${customField('xpackVersion')}.${customField('npmSubversion')}/.content/bin/${props.programName} --version
-${props.branding}${customField('upstreamVersion')}
+`$ tree -L 2 ~/.local/xPacks/\@xpack-dev-tools/{{appLcName}}/${customField('version')}/.content/
+/home/ilg/.local/xPacks/\@xpack-dev-tools/{{appLcName}}/${customField('version')}/.content/
+├── README.md
+├── bin
+TODO
 `} </CodeBlock>
 
 </TabItem>

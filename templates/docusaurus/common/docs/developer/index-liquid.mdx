@@ -68,7 +68,7 @@ For simple projects, the typical use case is with two configurations,
 For building the xPack binary tools, there is one configuration
 for each platform:
 
-{% assign platforms_array = platforms | split: "," %}
+{% assign platforms_array = platforms | split: "," -%}
 
 {% for platform in platforms_array %}
 - `{{platform}}`{% endfor %}
@@ -282,44 +282,53 @@ git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 
 ### Build the binaries
 
-<Tabs groupId="platforms">
-{% for platform in platforms_array %}
+{% assign names_array = "" | split: "" -%}
 
-{% if platform == "darwin-x64" %}
+{% for platform in platforms_array %}{% if platform == "win32-x64" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+{% for platform in platforms_array %}{% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+{% for platform in platforms_array %}{% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+{% for platform in platforms_array %}{% if platform == "linux-x64" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+{% for platform in platforms_array %}{% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+{% for platform in platforms_array %}{% if platform == "linux-arm" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
+
+<Tabs groupId="platforms">
+{% for name in names_array -%}
+
+{% if name == "darwin-x64" %}
 <TabItem value="darwin-x64" label="macOS x64" default>
 <PlatformNativeSection platform="darwin-x64"/>
 </TabItem>
-{% endif %}
+{% endif -%}
 
-{% if platform == "darwin-arm64" %}
+{% if name == "darwin-arm64" %}
 <TabItem value="darwin-arm64" label="macOS arm64" default>
 <PlatformNativeSection platform="darwin-arm64"/>
 </TabItem>
-{% endif %}
+{% endif -%}
 
-{% if platform == "linux-x64" %}
+{% if name == "linux-x64" %}
 <TabItem value="linux-x64" label="GNU/Linux x64" default>
 <PlatformDockerSection platform="linux-x64"/>
 </TabItem>
-{% endif %}
+{% endif -%}
 
-{% if platform == "linux-arm64" %}
+{% if name == "linux-arm64" %}
 <TabItem value="linux-arm64" label="GNU/Linux arm64" default>
 <PlatformDockerSection platform="linux-arm64"/>
 </TabItem>
-{% endif %}
+{% endif -%}
 
-{% if platform == "linux-arm" %}
+{% if name == "linux-arm" %}
 <TabItem value="linux-arm" label="GNU/Linux arm" default>
 <PlatformDockerSection platform="linux-arm"/>
 </TabItem>
-{% endif %}
+{% endif -%}
 
-{% if platform == "win32-x64" %}
+{% if name == "win32-x64" %}
 <TabItem value="win32-x64" label="Windows" default>
 <PlatformDockerSection platform="win32-x64"/>
 </TabItem>
-{% endif %}
+{% endif -%}
 
 {% endfor %}
 </Tabs>

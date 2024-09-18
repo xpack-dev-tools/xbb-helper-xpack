@@ -10,11 +10,11 @@ date: 2020-09-28 17:49:00 +0300
 ---
 
 import Overview from './_overview.mdx';
+import OtherBenefits from './_other-benefits.mdx';
 import UpgradeNotice from './_upgrade-notice.mdx';
 import Compatibility from './_compatibility.mdx';
 import Documentation from './_documentation.mdx'
 import ReleaseSchedule from './_release-schedule.mdx'
-import More from './_more.mdx'
 
 {/* ------------------------------------------------------------------------ */}
 
@@ -23,15 +23,14 @@ import More from './_more.mdx'
 
 ## Overview
 
-
 {% assign platforms_array = platforms | split: "," -%}
 
 {% assign names_array = "" | split: "" -%}
 
 {% for platform in platforms_array -%}
-  {% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "Windows" %}{% endif -%}
-  {% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "macOS" %}{% endif -%}
-  {% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" %}{% assign names_array = names_array | concat: "GNU/Linux" %}{% endif -%}
+{% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "Windows" %}{% endif -%}
+{% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "macOS" %}{% endif -%}
+{% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" %}{% assign names_array = names_array | concat: "GNU/Linux" %}{% endif -%}
 {% endfor -%}
 
 {% assign names_array = names_array | uniq -%}
@@ -81,16 +80,16 @@ The main advantages of using the **xPack {{appName}}** are:
 {% assign names_array = "" | split: "" -%}
 
 {% for platform in platforms_array -%}
-  {% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "x64 Windows" %}{% endif -%}
-  {% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: "x64 macOS" %}{% endif -%}
-  {% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "arm64 macOS" %}{% endif -%}
-  {% if platform == "linux-x64" %}{% assign names_array = names_array | concat: "x64 GNU/Linux" %}{% endif -%}
-  {% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: "arm64 GNU/Linux" %}{% endif -%}
-  {% if platform == "linux-arm" %}{% assign names_array = names_array | concat: "arm GNU/Linux" %}{% endif -%}
+{% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "x64 Windows" %}{% endif -%}
+{% if platform == "darwin-x64" %}{% assign names_array = names_array | concat: "x64 macOS" %}{% endif -%}
+{% if platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "arm64 macOS" %}{% endif -%}
+{% if platform == "linux-x64" %}{% assign names_array = names_array | concat: "x64 GNU/Linux" %}{% endif -%}
+{% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: "arm64 GNU/Linux" %}{% endif -%}
+{% if platform == "linux-arm" %}{% assign names_array = names_array | concat: "arm GNU/Linux" %}{% endif -%}
 {% endfor -%}
 
 - a convenient, uniform and portable install/uninstall/upgrade
-  {% if names_array.size > 1 %}procedure; the same procedure is used for all major
+{% if names_array.size > 1 %}procedure; the same procedure is used for all major
   platforms (**{{ names_array | join: "**, **" }}**){% else %}procedure on **{{ names_array | join: "" }}**{% endif %}
 - multiple versions of the same package can be installed at the same time on
   the same system
@@ -99,6 +98,8 @@ The main advantages of using the **xPack {{appName}}** are:
   similar functionality and are GNU/Linux centric
 - projects can be tied to specific tools versions; this provides a good
   reproducibility, especially useful in **CI/CD** environments.
+
+<OtherBenefits/>
 
 <Compatibility/>
 
@@ -157,5 +158,3 @@ corresponding licenses are available in each archive in the
 ## Releases
 
 The list of releases is available in the [Releases](/docs/releases/) pages.
-
-<More/>
