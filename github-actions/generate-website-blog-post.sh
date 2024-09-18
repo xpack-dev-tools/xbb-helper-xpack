@@ -83,30 +83,34 @@ ls -lL "${destination_folder_path}"
 echo
 cat "${destination_folder_path}"/*.sha
 
-release_version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
+xpack_version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 release_date="$(date '+%Y-%m-%d %H:%M:%S %z')"
-post_file_path="${website_blog_path}/$(date -u '+%Y-%m-%d')-${XBB_APPLICATION_LOWER_CASE_NAME}-v$(echo ${release_version} | tr '.' '-')-released.mdx"
+post_file_path="${website_blog_path}/$(date -u '+%Y-%m-%d')-${XBB_APPLICATION_LOWER_CASE_NAME}-v$(echo ${xpack_version} | tr '.' '-')-released.mdx"
 echo
 
 rm -rf "${post_file_path}"
 touch "${post_file_path}"
 
-customFields="$(liquidjs --context "@${root_folder_path}/package.json" --template '{{xpack.properties.customFields | json}}')"
-if [ -z "${customFields}" ]
+custom_fields="$(liquidjs --context "@${root_folder_path}/package.json" --template '{{xpack.properties.customFields | json}}')"
+if [ -z "${custom_fields}" ]
 then
-  customFields='{}'
+  custom_fields='{}'
 fi
 
-upstreamVersion="$(echo ${release_version} | sed -e 's|-.*||')"
+has_two_numbers_version="$(liquidjs --context "${custom_fields}" --template '{{hasTwoNumbersVersion}}')"
 
-appLcName="$(liquidjs --context "@${root_folder_path}/package.json" --template '{{xpack.properties.appLcName}}')"
+# Remove pre-release.
+semver_version="$(echo ${xpack_version} | sed -e 's|-.*||')"
 
-if [ "${appLcName}" == "wine" ]
+if [ "${has_two_numbers_version}" == "true" ] && [[ "${semver_version}" =~ .*[.]0*$ ]]
 then
-  upstreamVersion="$(echo ${upstreamVersion} | sed -e 's|[.]0[.]0$]|.0|')"
+  # Remove the patch number, if zero.
+  upstream_version="$(echo ${semver_version} | sed -e 's|[.]0*$||')"
+else
+  upstream_version="${semver_version}"
 fi
 
-context="{ \"releaseVersion\": \"${release_version}\", \"releaseDate\": \"${release_date}\", \"upstreamVersion\": \"${upstreamVersion}\", \"customFields\": ${customFields} }"
+context="{ \"releaseVersion\": \"${xpack_version}\", \"releaseDate\": \"${release_date}\", \"upstreamVersion\": \"${upstream_version}\", \"customFields\": ${custom_fields} }"
 
 liquidjs --context "${context}" --template "@${root_folder_path}/templates/body-blog-release-post-part-1-liquid.mdx" >> "${post_file_path}"
 
