@@ -1,7 +1,7 @@
 ---
 title:  The project has a new web site
 
-date:   2024-MM-DD hh:mm:00 +0300
+date:   2024-09-18 13:21:00 +0300
 
 authors: ilg-ul
 
@@ -11,7 +11,7 @@ tags:
 ---
 
 After some experimentation with modern site generators,
-the **xPack {{appName}}** project has a new web site.
+the **xPack GNU texinfo** project has a new web site.
 
 <!--truncate-->
 
