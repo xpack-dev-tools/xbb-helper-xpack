@@ -52,23 +52,23 @@ fi
 
 xpack_www_releases="$(dirname $(dirname $(dirname "${project_folder_path}")))/xpack.github/www/web-jekyll-xpack.git/_posts/releases"
 
-if [ ! -d "${xpack_www_releases}/${appLcName}" ]
-then
-  echo "No ${xpack_www_releases}/${appLcName}, quiting..."
-  exit 0
-fi
-
 # which liquidjs
 # liquidjs --help
 
 cd "${root_folder_path}"
 
 # Use liquidjs to extract properties from package.json.
-export appName="$(liquidjs --context @package.json --template '{{xpack.properties.appName}}')"
-export appLcName="$(liquidjs --context @package.json --template '{{xpack.properties.appLcName}}')"
+export app_name="$(liquidjs --context @package.json --template '{{xpack.properties.appName}}')"
+export app_lc_name="$(liquidjs --context @package.json --template '{{xpack.properties.appLcName}}')"
 export platforms="$(liquidjs --context @package.json --template '{{xpack.properties.platforms}}')"
 
-cd "${xpack_www_releases}/${appLcName}"
+if [ ! -d "${xpack_www_releases}/${app_lc_name}" ]
+then
+  echo "No ${xpack_www_releases}/${app_lc_name}, quiting..."
+  exit 0
+fi
+
+cd "${xpack_www_releases}/${app_lc_name}"
 # pwd
 
 # echo

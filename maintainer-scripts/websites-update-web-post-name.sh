@@ -46,26 +46,33 @@ fi
 echo
 echo $1
 
-git checkout xpack-development
+set -x
 
-xpm run website-generate-commons -C build-assets
-xpm run website-import-releases -C build-assets
+pwd
+ls -l
 
-git add website
-git commit -m "website: re-generate commons"
-git push
+export app_name="$(liquidjs --context @build-assets/package.json --template '{{xpack.properties.appName}}')"
 
-git checkout website
-git merge xpack-development
-git push
+export context="{ \"appName\": \"${app_name}\" }"
 
-git checkout xpack-development
+cd website/blog
+
+if [ ! -f "2024-09-18-web-site.md" ]
+then
+  echo "2024-09-18-web-site.md not present, skipping..."
+  exit 0
+fi
+
+mv "2024-09-18-web-site.md" "2024-09-18-web-site-liquid.md"
+liquidjs --context "${context}" --template @"2024-09-18-web-site-liquid.md" --output "2024-09-18-web-site.md"
+
+rm "2024-09-18-web-site-liquid.md"
 
 __EOF__
 
 # -----------------------------------------------------------------------------
 
-set -x
+# set -x
 
 commands_file="${tmp_file_commit_website}"
 

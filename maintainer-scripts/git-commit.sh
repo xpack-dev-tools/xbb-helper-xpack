@@ -223,7 +223,6 @@ fi
 # git commit -m "package.json: update Work/xpacks"
 # git commit -m "package.json: bump deps & reorder git-log"
 # git commit -m "package.json: mkdir -pv cache"
-# git commit -m "package.json: bump deps"
 # git commit -m "package.json: clang 17.0.6-1.1"
 # git commit -m "package.json: xpm-version 0.18.0"
 # git commit -m "package.json: update xpack-dev-tools path"
@@ -239,7 +238,8 @@ fi
 # git commit -m "package.json: loglevel info"
 # git commit -m "package.json: add actions, bump deps"
 # git commit -m "package.json: update generate-workflows"
-git commit -m "package.json: git+https"
+# git commit -m "package.json: git+https"
+git commit -m "package.json: bump deps"
 
 __EOF__
 
@@ -264,7 +264,8 @@ then
 fi
 
 # git commit -m "build-assets/package.json: build-development & docker 5.2.2"
-git commit -m "build-assets/package.json: updates"
+# git commit -m "build-assets/package.json: updates"
+git commit -m "build-assets/package.json: bump deps"
 
 __EOF__
 
@@ -278,10 +279,10 @@ set -x
 # commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_application}"
 
-commands_file="${tmp_file_scripts}"
+# commands_file="${tmp_file_scripts}"
 # commands_file="${tmp_file_npmignore}"
 
-# commands_file="${tmp_file_website}"
+commands_file="${tmp_file_website}"
 
 # commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
