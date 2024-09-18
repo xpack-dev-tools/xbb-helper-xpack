@@ -52,6 +52,12 @@ fi
 
 xpack_www_releases="$(dirname $(dirname $(dirname "${project_folder_path}")))/xpack.github/www/web-jekyll-xpack.git/_posts/releases"
 
+if [ ! -d "${xpack_www_releases}/${appLcName}" ]
+then
+  echo "No ${xpack_www_releases}/${appLcName}, quiting..."
+  exit 0
+fi
+
 # which liquidjs
 # liquidjs --help
 

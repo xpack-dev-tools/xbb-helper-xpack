@@ -66,8 +66,8 @@ source "${helper_folder_path}/build-scripts/wrappers.sh"
 cd "${root_folder_path}"
 
 # Use liquidjs to extract properties from package.json.
-export appName="$(liquidjs --context @package.json --template '{{xpack.properties.appName}}')"
-export appLcName="$(liquidjs --context @package.json --template '{{xpack.properties.appLcName}}')"
+export app_name="$(liquidjs --context @package.json --template '{{xpack.properties.appName}}')"
+export app_lc_name="$(liquidjs --context @package.json --template '{{xpack.properties.appLcName}}')"
 platforms="$(liquidjs --context @package.json --template '{{xpack.properties.platforms}}')"
 
 if [ "${platforms}" == "all" ]
@@ -77,27 +77,34 @@ fi
 
 export platforms
 
-customFields="$(liquidjs --context @package.json --template '{{xpack.properties.customFields | json}}')"
+custom_fields="$(liquidjs --context @package.json --template '{{xpack.properties.customFields | json}}')"
 
-if [ -z "${customFields}" ]
+if [ -z "${custom_fields}" ]
 then
-  customFields='{}'
+  custom_fields='{}'
 fi
 
-export customFields
+export custom_fields
 
-release_version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
-upstreamVersion="$(echo ${release_version} | sed -e 's|-.*||')"
+has_two_numbers_version="$(liquidjs --context "${custom_fields}" --template '{{hasTwoNumbersVersion}}')"
 
-if [ "${appLcName}" == "wine" ]
+xpack_version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
+
+# Remove pre-release.
+semver_version="$(echo ${xpack_version} | sed -e 's|-.*||')"
+
+if [ "${has_two_numbers_version}" == "true" ] && [[ "${semver_version}" =~ .*[.]0*$ ]]
 then
-  upstreamVersion="$(echo ${upstreamVersion} | sed -e 's|[.]0[.]0$|.0|')"
+  # Remove the patch number, if zero.
+  upstream_version="$(echo ${semver_version} | sed -e 's|[.]0*$||')"
+else
+  upstream_version="${semver_version}"
 fi
 
-export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"upstreamVersion\": \"${upstreamVersion}\", \"customFields\": ${customFields} }"
+export context="{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"upstreamVersion\": \"${upstream_version}\", \"customFields\": ${custom_fields} }"
 
 # tmp_context_file="$(mktemp) -t context"
-# echo "{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"
+# echo "{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"
 
 tmp_script_file="$(mktemp) -t script"
 # Note: __EOF__ is quoted to prevent substitutions.
