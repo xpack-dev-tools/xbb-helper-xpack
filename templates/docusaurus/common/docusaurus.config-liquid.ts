@@ -303,9 +303,9 @@ const config: Config = {
           'aria-label': 'GitHub repository',
         },
         {
-          label: `v${customFields.upstreamVersion}-${customFields.xpackSubversion}`,
+          label: `v${customFields.xpackVersion}`,
           position: 'right',
-          href: `https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/tag/v${customFields.upstreamVersion}-${customFields.xpackSubversion}`,
+          href: `https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/tag/v${customFields.xpackVersion}`,
         },
         {
           href: 'https://github.com/xpack-dev-tools/',
