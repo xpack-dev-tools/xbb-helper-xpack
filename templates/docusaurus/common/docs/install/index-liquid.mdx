@@ -225,6 +225,14 @@ The next step is to install the
 `xpm install @xpack-dev-tools/{{appLcName}}@latest --verbose
 `} </CodeBlock>
 
+This command will install the latest available version.
+
+To install a specific version, mention it explicitly:
+
+<CodeBlock language="sh"> {
+`xpm install @xpack-dev-tools/{{appLcName}}@${customField('version')} --verbose
+`} </CodeBlock>
+
 {% assign platforms_array = platforms | split: "," -%}
 
 {% assign names_array = "" | split: "" -%}
