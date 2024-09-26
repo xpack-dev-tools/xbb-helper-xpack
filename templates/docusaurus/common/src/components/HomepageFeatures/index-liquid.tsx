@@ -22,17 +22,27 @@ type FeatureItem = {
   description: JSX.Element;
 };
 
+{% assign platforms_array = platforms | split: "," -%}
+
+{% assign names_array = "" | split: "" -%}
+
+{% for platform in platforms_array -%}
+{% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "Windows" %}{% endif -%}
+{% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "macOS" %}{% endif -%}
+{% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" %}{% assign names_array = names_array | concat: "GNU/Linux" %}{% endif -%}
+{% endfor -%}
+
+{% assign names_array = names_array | uniq -%}
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Multi-version, cross-platform',
+    title: 'Multi-version{% if names_array.size > 1 %}, cross-platform{% endif %}',
     Svg: require('@site/static/img/mosaic.svg').default,
     description: (
       <>
-        By design, <b>multiple versions</b> of the same tools
-        can be installed
-        at the same time on the same system. <b>Windows</b>, <b>macOS</b>, <b>GNU/Linux</b> are
-        supported. The tools include all
-        required libraries and can be installed in any folder.
+        By design, <b>multiple versions</b> of the same tools can be
+        installed at the same time on the same
+        system. {% if names_array.size > 1 %}The supported platforms are: <b>{{ names_array | join: "</b>, <b>" }}</b>.{% else %}The binaries run on  <b>{{ names_array | first }}</b>.{% endif %}
+        The tools include all required libraries and can be installed in any folder.
       </>
     ),
   },
