@@ -1,0 +1,14 @@
+
+{% if customFields.isSecondaryTool == 'true' -%}
+import IntroSecondary from './_common/_intro-secondary.mdx'
+{% else -%}
+import IntroPrimary from './_common/_intro-primary.mdx'
+{%- endif %}
+
+{/* ------------------------------------------------------------------------ */}
+
+{% if customFields.isSecondaryTool == 'true' -%}
+<IntroSecondary/>
+{% else -%}
+<IntroPrimary/>
+{%- endif %}

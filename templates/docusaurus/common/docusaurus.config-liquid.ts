@@ -383,7 +383,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Liviu Ionescu. Built with Docusaurus v${getCustomFields().docusaurusVersion} on ${new Date(getCustomFields().buildTime).toDateString()}.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Liviu Ionescu. Built with Docusaurus v${customFields.docusaurusVersion} on ${new Date(customFields.buildTime).toDateString()}.`,
     },
     prism: {
       theme: prismThemes.github,
