@@ -91,7 +91,18 @@ echo
 rm -rf "${post_file_path}"
 touch "${post_file_path}"
 
+app_name="$(liquidjs --context @${root_folder_path}/package.json --template '{{xpack.properties.appName}}')"
+app_lc_name="$(liquidjs --context @${root_folder_path}/package.json --template '{{xpack.properties.appLcName}}')"
+
+platforms="$(liquidjs --context @${root_folder_path}/package.json --template '{{xpack.properties.platforms}}')"
+
+if [ "${platforms}" == "all" ]
+then
+  platforms="win32-x64,darwin-x64,darwin-arm64,linux-x64,linux-arm64,linux-arm"
+fi
+
 custom_fields="$(liquidjs --context "@${root_folder_path}/package.json" --template '{{xpack.properties.customFields | json}}')"
+
 if [ -z "${custom_fields}" ]
 then
   custom_fields='{}'
@@ -110,7 +121,7 @@ else
   upstream_version="${semver_version}"
 fi
 
-context="{ \"releaseVersion\": \"${xpack_version}\", \"releaseDate\": \"${release_date}\", \"upstreamVersion\": \"${upstream_version}\", \"customFields\": ${custom_fields} }"
+context="{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\", \"releaseVersion\": \"${xpack_version}\", \"releaseDate\": \"${release_date}\", \"upstreamVersion\": \"${upstream_version}\", \"customFields\": ${custom_fields} }"
 
 liquidjs --context "${context}" --template "@${root_folder_path}/templates/body-blog-release-post-part-1-liquid.mdx" >> "${post_file_path}"
 
