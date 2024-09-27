@@ -120,6 +120,21 @@ then
   awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 fi
 
+# Insert xpm install version
+s="/^## Install$/ { print; print \"\"; print \"The easiest way to install this specific version, is by using **xpm**:\"; print \"\"; print \"<CodeBlock language=console> \{\"; print \"\`xpm install @xpack-dev-tools/${app_lc_name}@\${frontMatter.version}.\${frontMatter.npm_subversion} -verbose\"; print \"\`\} </CodeBlock>\"; next }1"
+awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+sed -i.bak -e 's|CodeBlock language=console|CodeBlock language="console"|' "$2/$to"
+
+# s="/^The full details of installing the **xPack/ { print \"Comprehensive instructions for installing **xPack ${app_name}**\"; print \"on different platforms can be found in the\"; next }1"
+# awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+
+s="s|The full details of installing the ..xPack .*.. on various platforms|Comprehensive instructions for installing **xPack ${app_name}** on different platforms|"
+sed -i.bak -e "${s}" "$2/$to"
+s="s|are presented in the separate .Install.* page|can be found in the [Install Guide](/docs/install/)|"
+sed -i.bak -e "${s}" "$2/$to"
+
+
+
 # Convert admonition.
 awk '/{% include note.html content="The main targets for the GNU.Linux Arm/ { print ":::note Raspberry Pi"; print ""; print "The main targets for the GNU/Linux Arm"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 awk '/armv6 is not supported)." %}/ { print "armv6 is not supported)."; print ""; print ":::";next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
