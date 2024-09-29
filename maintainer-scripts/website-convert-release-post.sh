@@ -133,8 +133,6 @@ sed -i.bak -e "${s}" "$2/$to"
 s="s|are presented in the separate .Install.* page|can be found in the [Install Guide](/docs/install/)|"
 sed -i.bak -e "${s}" "$2/$to"
 
-
-
 # Convert admonition.
 awk '/{% include note.html content="The main targets for the GNU.Linux Arm/ { print ":::note Raspberry Pi"; print ""; print "The main targets for the GNU/Linux Arm"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 awk '/armv6 is not supported)." %}/ { print "armv6 is not supported)."; print ""; print ":::";next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
@@ -276,11 +274,14 @@ sed -i.bak -e 's|- .https://cmake.org/documentation/.(https://cmake.org/document
 # Fix project web path
 sed -i.bak -e 's|https://xpack.github.io/dev-tools/\([a-z-]*\)/|https://xpack-dev-tools.github.io/\1-xpack|' "$2/$to"
 
+# Replace `gcc-arm-none-eabi-{{ page.arm_version }}-src.tar.bz2`
+sed -i.bak -e 's|`gcc-arm-none-eabi-..[ ]*page.arm_version[ ]*..-src.tar.bz2`|<code>gcc-arm-none-eabi-{frontMatter.arm_version}-src.tar.bz2</code>|g' "$2/$to"
+
 # Replace `page.` with `frontMatter.` when using variables.
-sed -i.bak -e 's|{{ page[.]\([a-z0-9_]*\) }}|{frontMatter.\1}|g' "$2/$to"
+sed -i.bak -e 's|{{[ ]*page[.]\([a-z0-9_]*\)[ ]*}}|{frontMatter.\1}|g' "$2/$to"
 
 # Fix local images url.
-sed -i.bak -e 's|{{ site.baseurl }}/assets/images|/img|g' "$2/$to"
+sed -i.bak -e 's|{{[ ]*site.baseurl[ ]*}}/assets/images|/img|g' "$2/$to"
 
 # Fix link to tests results.
 sed -i.bak -e 's|/dev-tools/gcc/|/docs/|g' "$2/$to"
@@ -296,6 +297,12 @@ sed -i.bak -e 's|.Windows Build Tools..{{ site.baseurl }}/dev-tools/windows-buil
 
 # Fix WBT link.
 sed -i.bak -e 's|please read the .dedicated page..{{ site.baseurl }}/dev-tools/windows-build-tools/.|please read the [Getting Started page](/docs/getting-started/)|g' "$2/$to"
+
+# Fix platform names.
+sed -i.bak -e "s|Intel 64-bit|x64|" "$2/$to"
+sed -i.bak -e "s|Intel 32/64-bit|x64 and x86|" "$2/$to"
+sed -i.bak -e "s|Apple Silicon 64-bit|arm64|" "$2/$to"
+sed -i.bak -e "s|Arm 32/64-bit|arm64 and arm|" "$2/$to"
 
 # Remove the `site.baseurl` from links.
 sed -i.bak -e 's|{{ site.baseurl }}||g' "$2/$to"
