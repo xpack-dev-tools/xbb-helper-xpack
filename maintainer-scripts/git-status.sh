@@ -37,7 +37,12 @@ script_folder_name="$(basename "${script_folder_path}")"
 tmp_file="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file}"
 cd "$1/.."
+echo
 pwd
+
+# git log --reverse --all | head -n 5
+# exit 0
+
 # b="$(git name-rev --name-only HEAD)"
 d="$(git status)"
 if [[ "${d}" == *nothing\ to\ commit,\ working\ tree\ clean ]]
