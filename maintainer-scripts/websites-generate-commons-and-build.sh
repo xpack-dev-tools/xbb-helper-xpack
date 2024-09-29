@@ -53,7 +53,7 @@ git checkout xpack-development
 xpm run website-generate-commons -C build-assets
 xpm run website-import-releases -C build-assets
 
-(cd website && npm install && npm run build)
+(cd website && rm package-lock.json && npm install && npm run build)
 
 __EOF__
 
@@ -67,7 +67,7 @@ repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
 cd "${repos_folder}"
 
-find . -type d -name '.git' -print0 | sort -zn | \
+find . -type d -name '.git' -depth 2 -print0 | sort -zn | \
   xargs -0 -I '{}' bash "${commands_file}" '{}'
 
 echo
