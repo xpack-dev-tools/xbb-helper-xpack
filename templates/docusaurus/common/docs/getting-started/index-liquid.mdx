@@ -36,7 +36,7 @@ import ReleaseSchedule from './_release-schedule.mdx'
 {% assign names_array = names_array | uniq -%}
 
 **xPack {{appName}}** is a standalone
-{% if names_array.size > 1 %}cross-platform ({{ names_array | join: ", " }}){% else %}{{ names_arra | first }}{% endif %}
+{% if names_array.size > 1 %}cross-platform ({{ names_array | join: ", " }}){% else %}{{ names_arra | first }}{% endif -%}
 binary distribution of {{appName}},
 intended for reproducible builds.
 
