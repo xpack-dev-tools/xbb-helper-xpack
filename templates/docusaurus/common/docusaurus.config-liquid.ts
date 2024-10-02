@@ -356,7 +356,7 @@ const config: Config = {
               href: 'https://discord.gg/kbzWaJerFG',
             },
             {
-              label: 'Twitter',
+              label: 'X/Twitter',
               href: 'https://twitter.com/xpack_project',
             },
           ],
