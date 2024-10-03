@@ -139,7 +139,7 @@ awk '/armv6 is not supported)." %}/ { print "armv6 is not supported)."; print ""
 
 # Convert admonition.
 awk '/{% include important.html content="It is mandatory for the applications to/ { print ":::caution"; print ""; print "It is mandatory for the applications to"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
-awk '/`-mcmodel=medany`, otherwise the link might fail." %}/ { print "`-mcmodel=medany`, otherwise the link might fail."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+awk '/`-mcmodel=medany`, otherwise the link .* fail." %}/ { print "`-mcmodel=medany`, otherwise the link will fail."; print ""; print ":::"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
 # Convert admonition.
 awk '/{% include note.html content="Starting with 2022 \(GCC 11.3\), the/ { print ":::note"; print ""; print "Starting with 2022 (GCC 11.3), the"; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
