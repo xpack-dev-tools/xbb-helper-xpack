@@ -320,7 +320,6 @@ commits are pushed to GitHub.
 {% for platform in platforms_array %}{% if platform == "linux-arm64" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
 {% for platform in platforms_array %}{% if platform == "linux-arm" %}{% assign names_array = names_array | concat: platform %}{% endif %}{% endfor -%}
 
-
 {% for name in names_array -%}
 
 {% if name == "darwin-x64" %}
