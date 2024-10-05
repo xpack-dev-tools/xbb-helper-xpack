@@ -256,19 +256,6 @@ rm -f "${tmp_script_file}"
 
 cd "${helper_folder_path}/templates/docusaurus/other"
 
-if [ ${is_organization_web} != "true" ]
-then
-  # Regenerate top README.md.
-  if [ $(cat "${project_folder_path}/README.md" | wc -l | tr -d '[:blank:]') -ge 42 ]
-  then
-    mv "${project_folder_path}/README.md" "${root_folder_path}/README-long.md"
-  fi
-fi
-
-echo
-echo liquidjs "@README-TOP-liquid.md" '->' "${project_folder_path}/README.md"
-liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder_path}/README.md" --strict-variables --strict-filters
-
 if [ ${is_organization_web} == "true" ]
 then
   echo
@@ -286,6 +273,15 @@ then
     rm -rf "docs/test"
     rm -rf "docs/user"
   )
+else
+  # Regenerate top README.md.
+  if [ $(cat "${project_folder_path}/README.md" | wc -l | tr -d '[:blank:]') -ge 42 ]
+  then
+    mv "${project_folder_path}/README.md" "${root_folder_path}/README-long.md"
+  fi
+  echo
+  echo liquidjs "@README-TOP-liquid.md" '->' "${project_folder_path}/README.md"
+  liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder_path}/README.md" --strict-variables --strict-filters
 fi
 
 echo
