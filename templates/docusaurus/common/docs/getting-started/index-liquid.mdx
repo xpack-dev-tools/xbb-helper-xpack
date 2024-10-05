@@ -23,25 +23,13 @@ import ReleaseSchedule from './_release-schedule.mdx'
 ![GitHub Repo stars](https://img.shields.io/github/stars/xpack-dev-tools/{{gitHubProjectName}})
 {%- endif %}
 
-## Overview
-
 {% assign platforms_array = platforms | split: "," -%}
+
+## Overview
 
 {% if customFields.isOrganizationWeb == "true" -%}
 
-**xPack {{appName}}** is a collection of standalone
-cross-platform binary tools,
-aimed at reproducible builds.
-
-The intended use case for the main tools was building and testing **C/C++
-projects**, with an emphasis on **embedded projects**.
-
-The supplementary tools were needed to build the main tools.
-Since these tools are exclusively
-built on macOS and GNU/Linux, to reduce maintenance efforts, for now
-there are no Windows binaries. However, the projects are versatile and can be
-used in any builds; if necessary, Windows binaries can be added in future
-releases.
+<Overview/>
 
 {% else -%}
 
