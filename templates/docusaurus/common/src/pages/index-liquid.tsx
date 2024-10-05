@@ -19,6 +19,9 @@ import Layout from '@theme/Layout';
 
 import styles from './index.module.css';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+{%- if customFields.isOrganizationWeb == "true" %}
+import HomepageTools from '@site/src/components/HomepageTools';
+{%- endif %}
 import InstallWithCopy from '@site/src/components/InstallWithCopy';
 
 function HomepageHeader() {
@@ -28,11 +31,11 @@ function HomepageHeader() {
       <div className="container">
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
-
+{% if customFields.isOrganizationWeb != "true" %}
         <div className={styles.installWithCopy}>
           <InstallWithCopy>xpm install @xpack-dev-tools/{{appLcName}}@latest --verbose</InstallWithCopy>
         </div>
-
+{% endif %}
       </div>
     </header>
   );
@@ -46,7 +49,9 @@ export default function Home(): JSX.Element {
       description="A binary xPack with the {{appName}} executables">
       <HomepageHeader />
       <main>
-        <HomepageFeatures />
+        <HomepageFeatures />{% if customFields.isOrganizationWeb == "true" %}
+        <hr/>
+        <HomepageTools />{% endif %}
       </main>
     </Layout>
   );

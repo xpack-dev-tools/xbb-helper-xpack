@@ -12,28 +12,28 @@ import {developmentDurations} from '../_development-durations.mdx'
 To check the available space:
 
 ```sh
-xpm run check-space -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run check-space -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 To free the space used by all previous builds of all `xpack-dev-tools` packages:
 
 ```sh
-xpm run clear-all-project-builds -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run clear-all-project-builds -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 To update the build scripts and build the development binaries:
 
 <CodeBlock language="sh"> {
-`rm -f ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets/package-lock.json && \\
-git -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git pull && \\
-xpm run install -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets && \\
+`rm -f ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets/package-lock.json && \\
+git -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git pull && \\
+xpm run install -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets && \\
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull && \\
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \\
-xpm run link-deps -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets && \\
+xpm run link-deps -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets && \\
 \\
-xpm run deep-clean --config ${props.platform}  -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets && \\
-xpm install --config ${props.platform} -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets && \\
-xpm run build-development --config ${props.platform} -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run deep-clean --config ${props.platform}  -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets && \\
+xpm install --config ${props.platform} -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets && \\
+xpm run build-development --config ${props.platform} -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 `} </CodeBlock>
 
 {developmentDurations[ props.platform ]}, the output of the build script is a compressed
@@ -46,11 +46,11 @@ the <code>buils-assets/build/{props.platform}/deploy</code> folder:
 To update the build scripts and build the release binaries:
 
 <CodeBlock language="sh"> {
-`rm -f ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/package-lock.json && \\
-git -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git pull && \\
-xpm run install -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets && \\
+`rm -f ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/package-lock.json && \\
+git -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git pull && \\
+xpm run install -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets && \\
 \\
-xpm run deep-clean --config ${props.platform}  -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets && \\
-xpm install --config ${props.platform} -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets && \\
-xpm run build --config ${props.platform} -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run deep-clean --config ${props.platform}  -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets && \\
+xpm install --config ${props.platform} -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets && \\
+xpm run build --config ${props.platform} -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 `} </CodeBlock>

@@ -51,7 +51,10 @@ scripts_folder_path="${root_folder_path}/scripts"
 
 # -----------------------------------------------------------------------------
 
-source "${scripts_folder_path}/application.sh"
+if [ -f "${scripts_folder_path}/application.sh" ]
+then
+  source "${scripts_folder_path}/application.sh"
+fi
 
 # Helper functions
 source "${helper_folder_path}/github-actions/common.sh"
@@ -70,6 +73,11 @@ export app_name="$(liquidjs --context @package.json --template '{{xpack.properti
 export app_lc_name="$(liquidjs --context @package.json --template '{{xpack.properties.appLcName}}')"
 platforms="$(liquidjs --context @package.json --template '{{xpack.properties.platforms}}')"
 
+if [ -z "${platforms}" ]
+then
+  platforms="all"
+fi
+
 if [ "${platforms}" == "all" ]
 then
   platforms="win32-x64,darwin-x64,darwin-arm64,linux-x64,linux-arm64,linux-arm"
@@ -87,8 +95,14 @@ fi
 export custom_fields
 
 has_two_numbers_version="$(liquidjs --context "${custom_fields}" --template '{{hasTwoNumbersVersion}}')"
+is_organization_web="$(liquidjs --context "${custom_fields}" --template '{{isOrganizationWeb}}')"
 
-xpack_version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
+if [ "${is_organization_web}" == "true" ]
+then
+  xpack_version="0.0.0-0"
+else
+  xpack_version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
+fi
 
 # Remove pre-release.
 semver_version="$(echo ${xpack_version} | sed -e 's|-.*||')"
@@ -101,7 +115,14 @@ else
   upstream_version="${semver_version}"
 fi
 
-export context="{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"upstreamVersion\": \"${upstream_version}\", \"customFields\": ${custom_fields} }"
+github_project_name="$(liquidjs --context @package.json --template '{{xpack.properties.customFields.gitHubProjectName}}')"
+
+if [ -z "${github_project_name}" ]
+then
+  github_project_name="${app_lc_name}-xpack"
+fi
+
+export context="{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"upstreamVersion\": \"${upstream_version}\", \"gitHubProjectName\": \"${github_project_name}\", \"customFields\": ${custom_fields} }"
 
 # tmp_context_file="$(mktemp) -t context"
 # echo "{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"
@@ -235,15 +256,37 @@ rm -f "${tmp_script_file}"
 
 cd "${helper_folder_path}/templates/docusaurus/other"
 
-# Regenerate top README.md.
-if [ $(cat "${project_folder_path}/README.md" | wc -l | tr -d '[:blank:]') -ge 42 ]
+if [ ${is_organization_web} != "true" ]
 then
-  mv "${project_folder_path}/README.md" "${root_folder_path}/README-long.md"
+  # Regenerate top README.md.
+  if [ $(cat "${project_folder_path}/README.md" | wc -l | tr -d '[:blank:]') -ge 42 ]
+  then
+    mv "${project_folder_path}/README.md" "${root_folder_path}/README-long.md"
+  fi
 fi
 
 echo
-echo liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder_path}/README.md"
+echo liquidjs "@README-TOP-liquid.md" '->' "${project_folder_path}/README.md"
 liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder_path}/README.md" --strict-variables --strict-filters
+
+if [ ${is_organization_web} == "true" ]
+then
+  echo
+  echo "Remove unused files..."
+
+  (
+    cd "${project_folder_path}/website"
+
+    rm -rf "docs/developer"
+    rm -rf "docs/faq"
+    rm -rf "docs/install"
+    rm -rf "docs/maintainer"
+    rm -rf "docs/releases"
+    rm -rf "docs/support"
+    rm -rf "docs/test"
+    rm -rf "docs/user"
+  )
+fi
 
 echo
 echo "Done"

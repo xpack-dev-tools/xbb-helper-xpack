@@ -34,9 +34,9 @@ import PlatformDockerBuild from './_common/_platform-docker-build.mdx'
 
 {/* ------------------------------------------------------------------------ */}
 
-[![license](https://img.shields.io/github/license/xpack-dev-tools/{{appLcName}}-xpack)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/blob/xpack/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/xpack-dev-tools/{{appLcName}}-xpack.svg)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/issues/)
-[![GitHub pulls](https://img.shields.io/github/issues-pr/xpack-dev-tools/{{appLcName}}-xpack.svg)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/pulls)
+[![license](https://img.shields.io/github/license/xpack-dev-tools/{{gitHubProjectName}})](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/blob/xpack/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/xpack-dev-tools/{{gitHubProjectName}}.svg)](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/issues/)
+[![GitHub pulls](https://img.shields.io/github/issues-pr/xpack-dev-tools/{{gitHubProjectName}}.svg)](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/pulls)
 
 This page is intended for those who maintain the
 **xPack {{appName}}**
@@ -67,32 +67,32 @@ For details on installing the prerequisites, please read the
 
 The project is hosted on GitHub:
 
-- https://github.com/xpack-dev-tools/{{appLcName}}-xpack.git
+- https://github.com/xpack-dev-tools/{{gitHubProjectName}}.git
 
 To clone the **stable** branch (`xpack`), run the following commands in a
 terminal (on Windows use the _Git Bash_ console):
 
 ```sh
-rm -rf ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git && \
-git clone https://github.com/xpack-dev-tools/{{appLcName}}-xpack.git \
-  ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git
+rm -rf ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git && \
+git clone https://github.com/xpack-dev-tools/{{gitHubProjectName}}.git \
+  ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git
 ```
 
 For **development** purposes, clone the `xpack-development` branch:
 
 ```sh
-rm -rf ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git && \
+rm -rf ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git && \
 mkdir -p ~/Work/xpack-dev-tools && \
 git clone \
   --branch xpack-development \
-  https://github.com/xpack-dev-tools/{{appLcName}}-xpack.git \
-  ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git
+  https://github.com/xpack-dev-tools/{{gitHubProjectName}}.git \
+  ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git
 ```
 
 Or, if the repo was already cloned:
 
 ```sh
-git -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git pull
+git -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git pull
 ```
 
 ## Get the writable helper sources
@@ -131,7 +131,7 @@ Before starting the build, perform some checks and tweaks.
 ### Download the build scripts
 
 The build scripts are available in the `build-assets/scripts` folder of the
-[`xpack-dev-tools/{{appLcName}}-xpack`](https://github.com/xpack-dev-tools/{{appLcName}}-xpack)
+[`xpack-dev-tools/{{gitHubProjectName}}`](https://github.com/xpack-dev-tools/{{gitHubProjectName}})
 Git repo.
 
 To download them on a new machine, clone the `xpack-development` branch,
@@ -139,7 +139,7 @@ as seen above.
 
 ### Check Git
 
-In the `xpack-dev-tools/{{appLcName}}-xpack` Git repo:
+In the `xpack-dev-tools/{{gitHubProjectName}}` Git repo:
 
 - switch to the `xpack-development` branch
 - pull new changes
@@ -207,7 +207,7 @@ If the project uses `customFields` in `build-assets/package.json`
 
 Check GitHub issues and pull requests:
 
-- https://github.com/xpack-dev-tools/{{appLcName}}-xpack/issues/
+- https://github.com/xpack-dev-tools/{{gitHubProjectName}}/issues/
 
 and fix them; assign them to a milestone (like <code>{customField('xpackVersion')}</code>).
 
@@ -333,25 +333,25 @@ export XBB_ENVIRONMENT_SKIP_CHECKS="y"
 ```
 
 ```sh
-rm -f ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets/package-lock.json
-git -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git pull
+rm -f ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets/package-lock.json
+git -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git pull
 
-xpm run install -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run install -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 
-xpm run link-deps -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run link-deps -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 
-xpm run deep-clean --config darwin-x64  -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets && \
-xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets && \
-xpm run build-development --config darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run deep-clean --config darwin-x64  -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets && \
+xpm install --config darwin-x64 -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets && \
+xpm run build-development --config darwin-x64 -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 For a debug build:
 
 ```sh
-xpm run build-development-debug --config darwin-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run build-development-debug --config darwin-x64 -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 The build takes {developmentDurations["work"]} to complete.
@@ -601,7 +601,7 @@ Check if the build machines have enough free space and eventually
 do some cleanups:
 
 ```sh
-xpm run check-space -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run check-space -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 This is equivalent to running a `df` command.
@@ -641,7 +641,7 @@ df -BG -H /
 To free the space used by all previous builds of all `xpack-dev-tools` packages:
 
 ```sh
-xpm run clear-all-project-builds -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run clear-all-project-builds -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 This is equivalent to running a wide `rm` to remove the `build` folders:
@@ -656,7 +656,7 @@ Run the **generate-workflows** xPack action to update the
 GitHub workflow files.
 
 ```sh
-xpm run generate-workflows -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run generate-workflows -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 ### Commit and push
@@ -686,7 +686,7 @@ To trigger the GitHub Actions builds, use the xPack actions:
 
 ```sh
 {% for name in names_array -%}
-xpm run trigger-workflow-build-{{name}} -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-workflow-build-{{name}} -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 {% endfor -%}
 {% comment %}{% endcomment %}```
 
@@ -694,7 +694,7 @@ The scripts behind these actions require the `GITHUB_API_DISPATCH_TOKEN`
 variable to be present
 in the environment, and the organization `PUBLISH_TOKEN` to be visible in the
 Settings → Action →
-[Secrets](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/settings/secrets/actions)
+[Secrets](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/settings/secrets/actions)
 page.
 
 These commands use the `xpack-development` branch of this repo.
@@ -704,7 +704,7 @@ These commands use the `xpack-development` branch of this repo.
 <GitHubActionsDurations/>
 
 The workflow results and logs are available from the
-[GitHub Actions](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/actions/) page.
+[GitHub Actions](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/actions/) page.
 
 Update the values in `website/docs/maintainer/_github-actions-durations.mdx`
 with those shown by GitHub Actions.
@@ -737,9 +737,9 @@ To trigger the GitHub Actions tests, run the xPack actions:
 </ul>
 
 ```sh
-xpm run trigger-workflow-test-prime -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
-{% if isLinuxX64 %}xpm run trigger-workflow-test-docker-linux-x64 -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets{% endif %}
-{% if isLinuxArm %}xpm run trigger-workflow-test-docker-linux-arm -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets{% endif %}
+xpm run trigger-workflow-test-prime -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
+{% if isLinuxX64 %}xpm run trigger-workflow-test-docker-linux-x64 -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets{% endif %}
+{% if isLinuxArm %}xpm run trigger-workflow-test-docker-linux-arm -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets{% endif %}
 ```
 
 The scripts behind these accesible require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
@@ -750,7 +750,7 @@ These actions use the `xpack-development` branch of this repo and the
 binaries.
 
 The tests results are available from the
-[GitHub Actions](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/actions/) page.
+[GitHub Actions](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/actions/) page.
 
 After running the prime tests, download the test results and compare
 with previous runs.
@@ -764,14 +764,14 @@ runner, the multi-version macOS tests run on Travis.
 To trigger the Travis test, run the **trigger-travis-macos** xPack action:
 
 ```sh
-xpm run trigger-travis-macos -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-travis-macos -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 This script requires the `TRAVIS_COM_TOKEN` variable to be present
 in the environment.
 
 The test results are available from
-[Travis CI](https://app.travis-ci.com/github/xpack-dev-tools/{{appLcName}}-xpack/builds/).
+[Travis CI](https://app.travis-ci.com/github/xpack-dev-tools/{{gitHubProjectName}}/builds/).
 {%- endif %}
 
 ### Manual tests
@@ -780,9 +780,9 @@ To download the pre-released archive for the specific platform
 and run the tests, use:
 
 ```sh
-git -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git pull
-xpm run install -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
-xpm run test-pre-release -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+git -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git pull
+xpm run install -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
+xpm run test-pre-release -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 For even more tests, on each platform,
@@ -818,14 +818,14 @@ xattr -cr ${HOME}/Downloads/xpack-*
 - run the **trigger-workflow-publish-release** xPack action:
 
 ```sh
-xpm run trigger-workflow-publish-release -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-workflow-publish-release -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 The workflow result and logs are available from the
-[GitHub Actions](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/actions/) page.
+[GitHub Actions](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/actions/) page.
 
 The result is a
-[draft pre-release](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/)
+[draft pre-release](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/releases/)
 tagged like **v{customField('xpackVersion')}** (mind the dash in the middle!) and
 named like **xPack {{appName}} v{customField('xpackVersion')}** (mind the dash),
 with all binaries attached.
@@ -846,7 +846,7 @@ watching this project.
 this will add a file in the `website/blog` folder:
 
 ```sh
-xpm run generate-website-blog-post -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run generate-website-blog-post -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 - edit the front matter properties
@@ -873,7 +873,7 @@ xpm run generate-website-blog-post -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack
 - run the **update-package-binaries** xPack action:
 
 ```sh
-xpm run update-package-binaries -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run update-package-binaries -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 - open the top `package.json` file
@@ -923,13 +923,13 @@ After a few moments the version will be visible at
 Run the **trigger-workflow-test-xpm** xPack action:
 
 ```sh
-xpm run trigger-workflow-test-xpm -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-workflow-test-xpm -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 This will install the package via `xpm install` on all supported platforms.
 
 The tests results are available from the
-[GitHub Actions](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/actions/) page.
+[GitHub Actions](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/actions/) page.
 
 {% if customFields.showTestsResults == 'true' -%}
 ### Copy the test results
@@ -975,7 +975,7 @@ npm --prefix website run build
 At this moment an automated GitHub Action will generate and publish the website.
 
 - the new release blog post is
-in https://xpack-dev-tools.github.io/{{appLcName}}-xpack/blog/
+in https://xpack-dev-tools.github.io/{{gitHubProjectName}}/blog/
 - remember the post URL, since it must be used to update the release page
 and the X/Twitter announcement
 
@@ -995,7 +995,7 @@ Avoid further updates to the `xpack` branch until the next release.
 
 ### Create the final GitHub release
 
-- go to the [GitHub Releases](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/) page
+- go to the [GitHub Releases](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/releases/) page
 - check the download counter, it should match the number of tests
 - add a link to the Web blog `[Continue reading »]()`; use an same blog URL
 - remove the _tests only_ notice
@@ -1004,7 +1004,7 @@ Avoid further updates to the `xpack` branch until the next release.
 
 ### Check SourceForge mirror
 
-- https://sourceforge.net/projects/{{appLcName}}-xpack/files/
+- https://sourceforge.net/projects/{{gitHubProjectName}}/files/
 
 ## Cleanups
 
@@ -1018,13 +1018,13 @@ Avoid further updates to the `xpack` branch until the next release.
 Run the **trigger-workflow-deep-clean** xPack action
 
 ```sh
-xpm run trigger-workflow-deep-clean -C ~/Work/xpack-dev-tools/{{appLcName}}-xpack.git/build-assets
+xpm run trigger-workflow-deep-clean -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 This will remove the build folders on all self-hosted runners.
 
 The results are available from the
-[GitHub Actions](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/actions/) page.
+[GitHub Actions](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/actions/) page.
 
 ## Share on Twitter
 
@@ -1039,12 +1039,12 @@ The results are available from the
 
 ## Analytics
 
-- GitHub [`xpack-dev-tools/{{appLcName}}-xpack`](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/) repo
+- GitHub [`xpack-dev-tools/{{gitHubProjectName}}`](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/) repo
   - latest xPack release
-[![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{appLcName}}-xpack/latest/total.svg)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/)
-  - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{appLcName}}-xpack/total.svg)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/){% if customFields.showDeprecatedGnuMcuAnalytics == 'true' %}
+[![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{gitHubProjectName}}/latest/total.svg)](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/releases/)
+  - all xPack releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/{{gitHubProjectName}}/total.svg)](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/releases/){% if customFields.showDeprecatedGnuMcuAnalytics == 'true' %}
   - previous GNU MCU Eclipse all releases [![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/{{appLcName}}/total.svg)](https://github.com/gnu-mcu-eclipse/{{appLcName}}/releases/){% endif %}
-  - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=xpack-dev-tools&repository={{appLcName}}-xpack) (grouped by release)
+  - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=xpack-dev-tools&repository={{gitHubProjectName}}) (grouped by release)
 - npmjs.com [`@xpack-dev-tools/{{appLcName}}`](https://www.npmjs.com/package/@xpack-dev-tools/{{appLcName}}/) xPack
   - latest release, per month
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/{{appLcName}}.svg)](https://www.npmjs.com/package/@xpack-dev-tools/{{appLcName}}/)

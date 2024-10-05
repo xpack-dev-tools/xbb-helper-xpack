@@ -18,12 +18,32 @@ import ReleaseSchedule from './_release-schedule.mdx'
 
 {/* ------------------------------------------------------------------------ */}
 
-[![license](https://img.shields.io/github/license/xpack-dev-tools/{{appLcName}}-xpack)](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/blob/xpack/LICENSE)
-![GitHub Repo stars](https://img.shields.io/github/stars/xpack-dev-tools/{{appLcName}}-xpack)
+{% if customFields.isOrganizationWeb != "true" -%}
+[![license](https://img.shields.io/github/license/xpack-dev-tools/{{gitHubProjectName}})](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/blob/xpack/LICENSE)
+![GitHub Repo stars](https://img.shields.io/github/stars/xpack-dev-tools/{{gitHubProjectName}})
+{%- endif %}
 
 ## Overview
 
 {% assign platforms_array = platforms | split: "," -%}
+
+{% if customFields.isOrganizationWeb == "true" -%}
+
+**xPack {{appName}}** is a collection of standalone
+cross-platform binary tools,
+aimed at reproducible builds.
+
+The intended use case for the main tools was building and testing **C/C++
+projects**, with an emphasis on **embedded projects**.
+
+The supplementary tools were needed to build the main tools.
+Since these tools are exclusively
+built on macOS and GNU/Linux, to reduce maintenance efforts, for now
+there are no Windows binaries. However, the projects are versatile and can be
+used in any builds; if necessary, Windows binaries can be added in future
+releases.
+
+{% else -%}
 
 {% assign names_array = "" | split: "" -%}
 
@@ -36,22 +56,24 @@ import ReleaseSchedule from './_release-schedule.mdx'
 {% assign names_array = names_array | uniq -%}
 
 **xPack {{appName}}** is a standalone
-{% if names_array.size > 1 %}cross-platform ({{ names_array | join: ", " }}){% else %}{{ names_arra | first }}{% endif -%}
-binary distribution of {{appName}},
-intended for reproducible builds.
+{% if names_array.size > 1 %}cross-platform ({{ names_array | join: ", " }}){% else %}{{ names_arra | first }}{% endif %} binary
+distribution of {{appName}},
+aimed at reproducible builds.
 
 <Overview/>
 
 The open source **xPack {{appName}}** project is hosted on GitHub as
-[`xpack-dev-tools/{{appLcName}}-xpack`](https://github.com/xpack-dev-tools/{{appLcName}}-xpack);
+[`xpack-dev-tools/{{gitHubProjectName}}`](https://github.com/xpack-dev-tools/{{gitHubProjectName}});
 it provides the platform specific binaries as
-[release assets](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases).
+[release assets](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/releases).
 
 In addition to the binary archives and the package metadata,
 this project also includes the
-[build scripts](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/tree/xpack/build-assets/scripts).
+[build scripts](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/tree/xpack/build-assets/scripts).
 
 <UpgradeNotice/>
+
+{%- endif %}
 
 ## Features
 
@@ -108,9 +130,17 @@ The main advantages of using the **xPack {{appName}}** are:
 The binaries can be installed automatically as **binary xPacks** or manually as
 **portable archives**.
 
+{% if customFields.isOrganizationWeb == "true" -%}
+The details of installing the various **xPack {{appName}}**
+on various platforms are presented in the
+**Install Guide** of each project web site.
+{% else -%}
 The details of installing the **xPack {{appName}}** on various platforms are
 presented in the
 [Install Guide](/docs/install/).
+{%- endif %}
+
+{% if customFields.isOrganizationWeb != "true" -%}
 
 ## Documentation
 
@@ -121,7 +151,7 @@ presented in the
 ## Support & feedback
 
 The quick advice for getting support and providing feedback is to use the
-[GitHub Discussions](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/discussions/).
+[GitHub Discussions](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/discussions/).
 
 For additional information, please refer to the
 [Help Centre](/docs/support/) page.
@@ -129,7 +159,7 @@ For additional information, please refer to the
 ## Change log
 
 The release and change log is available in the repository
-[`CHANGELOG.md`](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/blob/xpack/CHANGELOG.md) file.
+[`CHANGELOG.md`](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/blob/xpack/CHANGELOG.md) file.
 
 ## Maintainer & Developer information
 
@@ -141,8 +171,10 @@ For information on how to build the binaries, please see the
 
 However, the ultimate source for details are the build scripts themselves,
 all available from the
-[`{{appLcName}}-xpack.git/build-assets/scripts`](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/tree/xpack/build-assets/scripts/)
+[`{{gitHubProjectName}}.git/build-assets/scripts`](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/tree/xpack/build-assets/scripts/)
 folder. The scripts include common code from the [`@xpack-dev-tools/xbb-helper`](https://github.com/xpack-dev-tools/xbb-helper-xpack) package.
+
+{%- endif %}
 
 ## License
 
@@ -155,9 +187,13 @@ The binary distributions include several open-source components; the
 corresponding licenses are available in each archive in the
 `distro-info/licenses` folder.
 
+{% if customFields.isOrganizationWeb != "true" -%}
+
 ## Releases
 
 The list of releases is available in the [Releases](/docs/releases/) pages.
+
+{%- endif %}
 
 ## Enjoyed Using This Project? Let Us Know!
 
@@ -165,5 +201,5 @@ If you enjoyed using this project, please let us know! Here are some ways you ca
 
 - **Donate**: Your contributions (small or
 generous) help us keep the xPack projects thriving. [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/donate/?hosted_button_id=5MFRG9ZRBETQ8)
-- **Star** the project on [GitHub](https://github.com/xpack-dev-tools/{{appLcName}}-xpack/): It helps others discover our work.
+- **Star** {% if customFields.isOrganizationWeb == "true" %}each project on GitHub{% else %}the project on [GitHub](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/){% endif %}: It helps others discover our work.
 - **Follow** us on [X/Twitter](https://twitter.com/xpack_project/): Stay updated with our latest releases and news.

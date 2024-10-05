@@ -16,19 +16,27 @@ import Website from './_website.mdx'
 
 {/* ------------------------------------------------------------------------ */}
 
+{%- if customFields.isOrganizationWeb != "true" %}
+
 ## The project
 
 The **xPack {{appName}}** project is part of the
 [xPack Reproducible Build Framework](https://xpack.github.io)
 and is hosted on GitHub as
-[`xpack-dev-tools/{{appLcName}}-xpack`](https://github.com/xpack-dev-tools/{{appLcName}}-xpack),
+[`xpack-dev-tools/{{gitHubProjectName}}`](https://github.com/xpack-dev-tools/{{gitHubProjectName}}),
 part of the [xPack Binary Development Tools](https://github.com/xpack-dev-tools/).
 
+{%- endif %}
+
 <MoreIntro/>
+
+{%- if customFields.isOrganizationWeb != "true" %}
 
 ## Project history
 
 <History/>
+
+{%- endif %}
 
 ## The web site
 
@@ -42,6 +50,8 @@ a senior computer engineer, with expertise in **C++/C embedded systems**,
 **RTOSes**, **build tools**, operating systems, compilers
 and Internet technologies.
 
-He can be reached at [`<ilg@livius.net>`](mailto:ilg@livius.net) (this email
-address is given for courtesy, for all correspondence related to this
-project please use the project [support](/docs/support/) page).
+He can be reached at [`<ilg@livius.net>`](mailto:ilg@livius.net).
+Please note, this email address is provided as a courtesy.
+For all correspondence related to {% if customFields.isOrganizationWeb == "true" %}the
+**xPack {{appName}}** projects, kindly use the support pages of each individual project{% else%}the **xPack {{appName}}**
+project, kindly use the project [support](/docs/support/) page{% endif %}).

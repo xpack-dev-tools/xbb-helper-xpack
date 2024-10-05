@@ -68,11 +68,17 @@ fi
 cd "${root_folder_path}"
 
 # Use liquidjs to extract properties from package.json.
-export appName="$(liquidjs --context @package.json --template '{{xpack.properties.appName}}')"
-export appLcName="$(liquidjs --context @package.json --template '{{xpack.properties.appLcName}}')"
+export app_name="$(liquidjs --context @package.json --template '{{xpack.properties.appName}}')"
+export app_lc_name="$(liquidjs --context @package.json --template '{{xpack.properties.appLcName}}')"
 
 # "all" is equivalent with "linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64"
-export platforms="$(liquidjs --context @package.json --template '{{xpack.properties.platforms}}')"
+platforms="$(liquidjs --context @package.json --template '{{xpack.properties.platforms}}')"
+
+if [ -z "${platforms}" ]
+then
+  platforms="all"
+fi
+export platforms
 
 platforms_with_commas=",${platforms},"
 if [ "${platforms_with_commas}" == ",all," ]
@@ -80,7 +86,25 @@ then
   platforms_with_commas=",linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64,win32-x64,"
 fi
 
-export context="{ \"appName\": \"${appName}\", \"appLcName\": \"${appLcName}\", \"platforms\": \"${platforms}\" }"
+custom_fields="$(liquidjs --context @package.json --template '{{xpack.properties.customFields | json}}')"
+
+if [ -z "${custom_fields}" ]
+then
+  custom_fields='{}'
+fi
+
+export custom_fields
+
+github_project_name="$(liquidjs --context @package.json --template '{{xpack.properties.customFields.gitHubProjectName}}')"
+
+if [ -z "${github_project_name}" ]
+then
+  github_project_name="${app_lc_name}-xpack"
+fi
+
+is_organization_web="$(liquidjs --context @package.json --template '{{xpack.properties.customFields.isOrganizationWeb}}')"
+
+export context="{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\", \"gitHubProjectName\": \"${github_project_name}\", \"customFields\": ${custom_fields} }"
 
 # The template files include
 # "xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/copyright-liquid.yml"
@@ -91,53 +115,59 @@ mkdir -pv "${project_folder_path}/.github/workflows/"
 
 echo
 echo "Workflows..."
-cp -v "${helper_folder_path}/templates/body-github-pre-releases-test.md" "${project_folder_path}/.github/workflows/"
 
-if [[ "${platforms_with_commas}" =~ ,darwin-x64, ]]
+if [ "${is_organization_web}" != "true" ]
 then
-  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-darwin-x64-liquid.yml" --output "${project_folder_path}/.github/workflows/build-darwin-x64.yml"
+
+  cp -v "${helper_folder_path}/templates/body-github-pre-releases-test.md" "${project_folder_path}/.github/workflows/"
+
+  if [[ "${platforms_with_commas}" =~ ,darwin-x64, ]]
+  then
+    run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-darwin-x64-liquid.yml" --output "${project_folder_path}/.github/workflows/build-darwin-x64.yml"
+  fi
+
+  if [[ "${platforms_with_commas}" =~ ,darwin-arm64, ]]
+  then
+    run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-darwin-arm64-liquid.yml" --output "${project_folder_path}/.github/workflows/build-darwin-arm64.yml"
+  fi
+
+  if [[ "${platforms_with_commas}" =~ ,linux-x64, ]]
+  then
+    run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-linux-x64-liquid.yml" --output "${project_folder_path}/.github/workflows/build-linux-x64.yml"
+  fi
+
+  if [[ "${platforms_with_commas}" =~ ,win32-x64, ]]
+  then
+    run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-win32-x64-liquid.yml" --output "${project_folder_path}/.github/workflows/build-win32-x64.yml"
+  fi
+
+  if [[ "${platforms_with_commas}" =~ ,linux-arm, ]]
+  then
+    run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-linux-arm-liquid.yml" --output "${project_folder_path}/.github/workflows/build-linux-arm.yml"
+  fi
+
+  if [[ "${platforms_with_commas}" =~ ,linux-arm64, ]]
+  then
+    run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-linux-arm64-liquid.yml" --output "${project_folder_path}/.github/workflows/build-linux-arm64.yml"
+  fi
+
+  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/test-prime-liquid.yml" --output "${project_folder_path}/.github/workflows/test-prime.yml"
+
+  if [[ "${platforms_with_commas}" =~ ,linux-x64, ]]
+  then
+    run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/test-docker-linux-intel-liquid.yml" --output "${project_folder_path}/.github/workflows/test-docker-linux-intel.yml"
+  fi
+
+  if [[ "${platforms_with_commas}" =~ ,linux-arm64, ]] || [[ "${platforms_with_commas}" =~ ,linux-arm, ]]
+  then
+  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/test-docker-linux-arm-liquid.yml" --output "${project_folder_path}/.github/workflows/test-docker-linux-arm.yml"
+  fi
+
+  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/publish-release-liquid.yml" --output "${project_folder_path}/.github/workflows/publish-release.yml"
+  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/test-xpm-liquid.yml" --output "${project_folder_path}/.github/workflows/test-xpm.yml"
+  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/deep-clean-liquid.yml" --output "${project_folder_path}/.github/workflows/deep-clean.yml"
+
 fi
-
-if [[ "${platforms_with_commas}" =~ ,darwin-arm64, ]]
-then
-  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-darwin-arm64-liquid.yml" --output "${project_folder_path}/.github/workflows/build-darwin-arm64.yml"
-fi
-
-if [[ "${platforms_with_commas}" =~ ,linux-x64, ]]
-then
-  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-linux-x64-liquid.yml" --output "${project_folder_path}/.github/workflows/build-linux-x64.yml"
-fi
-
-if [[ "${platforms_with_commas}" =~ ,win32-x64, ]]
-then
-  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-win32-x64-liquid.yml" --output "${project_folder_path}/.github/workflows/build-win32-x64.yml"
-fi
-
-if [[ "${platforms_with_commas}" =~ ,linux-arm, ]]
-then
-  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-linux-arm-liquid.yml" --output "${project_folder_path}/.github/workflows/build-linux-arm.yml"
-fi
-
-if [[ "${platforms_with_commas}" =~ ,linux-arm64, ]]
-then
-  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/build-linux-arm64-liquid.yml" --output "${project_folder_path}/.github/workflows/build-linux-arm64.yml"
-fi
-
-run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/test-prime-liquid.yml" --output "${project_folder_path}/.github/workflows/test-prime.yml"
-
-if [[ "${platforms_with_commas}" =~ ,linux-x64, ]]
-then
-  run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/test-docker-linux-intel-liquid.yml" --output "${project_folder_path}/.github/workflows/test-docker-linux-intel.yml"
-fi
-
-if [[ "${platforms_with_commas}" =~ ,linux-arm64, ]] || [[ "${platforms_with_commas}" =~ ,linux-arm, ]]
-then
- run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/test-docker-linux-arm-liquid.yml" --output "${project_folder_path}/.github/workflows/test-docker-linux-arm.yml"
-fi
-
-run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/publish-release-liquid.yml" --output "${project_folder_path}/.github/workflows/publish-release.yml"
-run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/test-xpm-liquid.yml" --output "${project_folder_path}/.github/workflows/test-xpm.yml"
-run_verbose liquidjs --context "${context}" --template "@${helper_folder_path}/templates/workflows/deep-clean-liquid.yml" --output "${project_folder_path}/.github/workflows/deep-clean.yml"
 
 echo
 cp -v "${helper_folder_path}/templates/workflows/publish-github-pages.yml" "${project_folder_path}/.github/workflows/publish-github-pages.yml"
@@ -147,10 +177,13 @@ echo "dot files..."
 cp -v "${helper_folder_path}/templates/dot.gitignore" "${project_folder_path}/.gitignore"
 cp -v "${helper_folder_path}/templates/dot.npmignore" "${project_folder_path}/.npmignore"
 
-echo
-echo "Scripts..."
-cp -v "${helper_folder_path}/templates/build.sh" "${root_folder_path}/scripts/"
-cp -v "${helper_folder_path}/templates/test.sh" "${root_folder_path}/scripts/"
+if [ "${is_organization_web}" != "true" ]
+then
+  echo
+  echo "Scripts..."
+  cp -v "${helper_folder_path}/templates/build.sh" "${root_folder_path}/scripts/"
+  cp -v "${helper_folder_path}/templates/test.sh" "${root_folder_path}/scripts/"
+fi
 
 echo
 echo "Done"
