@@ -256,7 +256,7 @@ rm -f "${tmp_script_file}"
 
 cd "${helper_folder_path}/templates/docusaurus/other"
 
-if [ ${is_organization_web} == "true" ]
+if [ "${is_organization_web}" == "true" ]
 then
   echo
   echo "Remove unused files..."
