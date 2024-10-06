@@ -271,6 +271,10 @@ sed -i.bak -e 's|- .https://www.winehq.org/documentation/.(https://www.winehq.or
 # Fix cmake docs link
 sed -i.bak -e 's|- .https://cmake.org/documentation/.(https://cmake.org/documentation/)|- https://cmake.org/documentation/|' "$2/$to"
 
+# Fix links to web sites.
+sed -i.bak -e 's|\[xPack \(.*\)\][(]https://xpack.github.io/dev-tools/\([a-w].*\)/[)]|[xPack \1](https://xpack-dev-tools.github.io/\2-xpack/)|g' "$2/$to"
+sed -i.bak -e 's|\[xPack \(.*\)\][(]https://xpack.github.io/\([a-w].*\)/[)]|[xPack \1](https://xpack-dev-tools.github.io/\2-xpack/)|g' "$2/$to"
+
 # Fix project web path
 sed -i.bak -e 's|https://xpack.github.io/dev-tools/\([a-z-]*\)/|https://xpack-dev-tools.github.io/\1-xpack|' "$2/$to"
 
@@ -297,6 +301,7 @@ sed -i.bak -e 's|.Windows Build Tools..{{ site.baseurl }}/dev-tools/windows-buil
 
 # Fix WBT link.
 sed -i.bak -e 's|please read the .dedicated page..{{ site.baseurl }}/dev-tools/windows-build-tools/.|please read the [Getting Started page](/docs/getting-started/)|g' "$2/$to"
+
 
 # Fix platform names.
 sed -i.bak -e "s|Intel 64-bit|x64|" "$2/$to"
