@@ -44,9 +44,11 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <Layout
+    <Layout{% if customFields.isOrganizationWeb == "true" %}
       title={`Hello from ${siteConfig.title}`}
-      description="A binary xPack with the {{appName}} executables">
+      description="A collection of binary xPacks with development tools">{% else %}
+      title={`Hello from xPack Binary Development Tools`}
+      description="A binary xPack with the {{appName}} executables">{% endif %}
       <HomepageHeader />
       <main>
         <HomepageFeatures />{% if customFields.isOrganizationWeb == "true" %}
