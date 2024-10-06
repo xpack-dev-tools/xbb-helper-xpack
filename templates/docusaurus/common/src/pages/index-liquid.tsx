@@ -50,7 +50,7 @@ export default function Home(): JSX.Element {
       <HomepageHeader />
       <main>
         <HomepageFeatures />{% if customFields.isOrganizationWeb == "true" %}
-        <hr/>
+        <hr className="hero__hr"/>
         <HomepageTools />{% endif %}
       </main>
     </Layout>

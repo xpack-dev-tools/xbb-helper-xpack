@@ -13,4 +13,9 @@
 .featureSvg {
   height: 100px;
   width: 100px;
+  stroke: var(--docusaurus-svg-color);
+}
+
+svg.featureSvg path {
+  stroke: var(--docusaurus-svg-color);
 }

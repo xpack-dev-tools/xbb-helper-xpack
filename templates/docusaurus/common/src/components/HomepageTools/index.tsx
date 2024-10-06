@@ -169,14 +169,14 @@ function ToolsRight() {
           <Tool {...props} />
         ))}
       </div>
-      <hr />
+      <hr className="hero__hr2" />
       <div className="text--center padding-horiz--md padding-vert--md">
         <Heading as="h2">Work in Progress</Heading>
         {WorkInProgressTools.map((props, idx) => (
           <ToolWork {...props} />
         ))}
       </div>
-      <hr />
+      <hr className="hero__hr2" />
       <div className="text--center padding-horiz--md padding-vert--md">
         <Heading as="h2">Internal</Heading>
         <b><Link to={'https://github.com/xpack-dev-tools/xbb-helper-xpack'}>xbb-helper</Link></b> - <b>xPack Build Helper</b>
