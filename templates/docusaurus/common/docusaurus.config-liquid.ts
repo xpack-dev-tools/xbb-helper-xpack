@@ -136,6 +136,18 @@ const config: Config = {
         theme: {
           customCss: './src/css/custom.css',
         },
+        // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-sitemap
+        sitemap: {
+          lastmod: 'date',
+          changefreq: 'weekly',
+          priority: 0.5,
+          ignorePatterns: [
+            '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{gitHubProjectName}}/{% endif %}blog/archive/**',
+            '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{gitHubProjectName}}/{% endif %}blog/authors/**',
+            '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{gitHubProjectName}}/{% endif %}blog/tags/**'
+          ],
+          filename: 'sitemap.xml',
+        },
         // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-google-gtag
         // https://tagassistant.google.com
         gtag: {
