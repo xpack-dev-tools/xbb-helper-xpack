@@ -253,7 +253,7 @@ const config: Config = {
           // label: 'Home',
           className: 'header-home-link',
           position: 'left'
-        },
+        },{% if customFields.isOrganizationWeb != "true" %}
         {
           type: 'dropdown',
           label: 'Documentation',
@@ -263,7 +263,7 @@ const config: Config = {
             {
               label: 'Getting Started',
               to: '/docs/getting-started'
-            },{% if customFields.isOrganizationWeb != "true" %}
+            },
             {
               label: 'Install Guide',
               to: '/docs/install'
@@ -279,13 +279,23 @@ const config: Config = {
             {
               label: 'Releases',
               to: '/docs/releases'
-            },{% endif %}
+            },
             {
               label: 'About',
               to: '/docs/about'
             }
           ]
+        },{% else %}
+        {
+          label: 'Getting Started',
+          to: 'docs/getting-started',
+          position: 'left',
         },
+        {
+          label: 'About',
+          to: 'docs/about',
+          position: 'left',
+        },{% endif %}
         {
           type: 'dropdown',
           to: '/blog',
