@@ -48,6 +48,16 @@ import ReleaseSchedule from './_release-schedule.mdx'
 distribution of {{appName}},
 aimed at reproducible builds.
 
+<details>
+<summary>What are reproducible builds?</summary>
+
+To be **reproducible**, an operation must remain stable over time and
+across different environments. In other words, if builds are repeated
+after some time, possibly on a different machine or platform, the
+resulting behavior must be functionally equivalent.
+
+</details>
+
 <Overview/>
 
 The open source **xPack {{appName}}** project is hosted on GitHub as
@@ -76,16 +86,22 @@ There are two types of xPacks:
 - **binary xPacks** (that install executables/binary files, usually tools).
 
 The xPacks project **does NOT introduce a new package format**; instead,
-it uses **the same format as npm**. xPacks can be installed from the
-same repositories as npm packages, whether public or private. Additionally,
-binary xPacks include standard archives with the binaries, such as
-`.tar.gz` or `.zip` for Windows.
+it uses **the same format as npm**, which is a collection of files/folders
+and a `package.json` file with the package metadata. Additionally,
+installing binary xPacks also installs the archives with the platform specific
+binaries (such as `.tar.gz` for Unix or `.zip` for Windows).
 
+Also, xPacks can be installed from the
+same repositories as **npm** packages, whether public or private.
 
-xPacks are managed by **xpm** (the xPack Project Manager)
-which is built on top of **npm**, the
-popular JavaScript package manager. It extends npm with new
-language-neutral features.
+xPacks are managed by **[xpm](https://xpack.github.io/xpm/)**
+(the xPack Project Manager),
+a program that complements the **[npm](https://docs.npmjs.com/cli/)** CLI (the
+popular JavaScript package manager),
+with new language-neutral features.
+
+In short, xPacks are just a way to automate installing the source and
+especially the binary packages.
 
 </details>
 
@@ -130,7 +146,7 @@ The main advantages of using the **xPack {{appName}}** are:
   platforms (**{{ names_array | join: "**, **" }}**){% else %}procedure on **{{ names_array | join: "" }}**{% endif %}
 - multiple versions of the same package can be installed at the same time on
   the same system
-- no need to worry about dependent libraries, all are included
+- no need to worry about dependent libraries, they are all included
 - significantly lighter and easier to use than Docker images that provide
   similar functionality and are GNU/Linux centric
 - projects can be tied to specific tools versions; this provides a good
@@ -142,8 +158,9 @@ The main advantages of using the **xPack {{appName}}** are:
 
 ## Install
 
-The binaries can be installed automatically as **binary xPacks** or manually as
-**portable archives**.
+The executables and other related files can be installed automatically with
+**xpm** via the **binary xPacks** or manually by downloading the
+**platform specific archives**.
 
 {% if customFields.isOrganizationWeb == "true" -%}
 The details of installing the various **xPack {{appName}}**
