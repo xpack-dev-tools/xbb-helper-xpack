@@ -34,42 +34,56 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-tmp_file_commit_website="$(mktemp)"
-cat <<'__EOF__' >"${tmp_file_commit_website}"
-cd "$1/.."
-
-if [ ! -d website ]
-then
-  exit 0
-fi
-
-echo
-echo $1
-
-set -x
-
-git checkout xpack-development
-
-xpm run website-generate-commons -C build-assets
-xpm run website-import-releases -C build-assets
-
-(cd website && pwd && rm package-lock.json && rm -rf .docusaurus build && npm install && npm run build)
-
-__EOF__
-
-# -----------------------------------------------------------------------------
-
 # set -x
-
-commands_file="${tmp_file_commit_website}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
 cd "${repos_folder}"
 
-find . -type d -name '.git' -depth 2 -print0 | sort -zn | \
-  xargs -0 -I '{}' bash "${commands_file}" '{}'
+# find . -type d -name '.git' -depth 2 -print0 | sort -zn | \
+#   xargs -0 -I '{}' bash "${commands_file}" '{}'
 
-echo
+for f in "${repos_folder}"/*/.git
+do
+  (
+    cd "${f}/.."
+
+    if [ ! -d website ]
+    then
+      continue
+    fi
+
+    echo
+    pwd
+
+    set -x
+
+    if grep '"xpack":' package.json
+    then
+      git checkout xpack-development
+    else
+      # xpack-dev-tools.github.io is not an xpack and has no xpack-development.
+      git checkout master
+    fi
+
+    xpm run website-generate-commons -C build-assets
+    xpm run website-import-releases -C build-assets
+
+    (
+      cd website
+
+      echo
+      pwd
+
+      rm -f package-lock.json
+      rm -rf .docusaurus build
+
+      npm install
+      npm run build
+    )
+  )
+done
+
+echo "${script_name} done"
 
 # -----------------------------------------------------------------------------

@@ -34,45 +34,44 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-tmp_file_commit_website="$(mktemp)"
-cat <<'__EOF__' >"${tmp_file_commit_website}"
-cd "$1/.."
-
-if [ ! -d website ]
-then
-  exit 0
-fi
-
-echo
-echo $1
-
-git checkout xpack-development
-
-git add website
-git commit -m "website: updates"
-git push
-
-git checkout website
-git merge xpack-development
-git push
-
-git checkout xpack-development
-
-__EOF__
-
-# -----------------------------------------------------------------------------
-
 # set -x
-
-commands_file="${tmp_file_commit_website}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
 cd "${repos_folder}"
 
-find . -type d -name '.git' -print0 | sort -zn | \
-  xargs -0 -I '{}' bash "${commands_file}" '{}'
+# find . -type d -name '.git' -print0 | sort -zn | \
+#   xargs -0 -I '{}' bash "${commands_file}" '{}'
 
-echo
+for f in "${repos_folder}"/*/.git
+do
+  (
+    cd "${f}/.."
+
+    if [ ! -d website ]
+    then
+      continue
+    fi
+
+    echo
+    pwd
+
+    set -x
+
+    git checkout xpack-development
+
+    git add website
+    git commit -m "website: updates"
+    git push
+
+    git checkout website
+    git merge xpack-development
+    git push
+
+    git checkout xpack-development
+  )
+done
+
+echo "${script_name} done"
 
 # -----------------------------------------------------------------------------
