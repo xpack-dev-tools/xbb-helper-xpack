@@ -35,35 +35,35 @@ then
   build_script_path="$(pwd)/$0"
 fi
 
+script_name="$(basename "${build_script_path}")"
+
 script_folder_path="$(dirname "${build_script_path}")"
 script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-helper_folder_path="$(dirname ${script_folder_path})"
-root_folder_path="$(dirname $(dirname $(dirname "${helper_folder_path}")))"
-if [ "$(basename "${root_folder_path}")" == "build-assets" ]
-then
-  project_folder_path="$(dirname "${root_folder_path}")"
-  website_blog_path="${project_folder_path}/website/blog"
-else
-  project_folder_path="${root_folder_path}"
-  website_blog_path="${HOME}/Desktop"
-fi
-scripts_folder_path="${root_folder_path}/scripts"
+# set -x
+helper_folder_path="$(dirname "${script_folder_path}")"
+
+# (build-assets/xpacks/@xpack-dev-tools/xbb-helper/maintainer-scripts/*.sh).
+
+project_folder_path="$(dirname $(dirname $(dirname $(dirname $(dirname "${script_folder_path}")))))"
+
+# This is the folder where the build is started
+# (build-assets/xpacks/@xpack-dev-tools/xbb-helper/maintainer-scripts/*.sh).
+build_assets_folder_path="${project_folder_path}/build-assets"
+
+website_folder_path="${project_folder_path}/website"
+website_blog_folder_path="${website_folder_path}/blog"
 
 # -----------------------------------------------------------------------------
 
-source "${scripts_folder_path}/application.sh"
+source "${build_assets_folder_path}/scripts/application.sh"
 
 # Helper functions
 source "${helper_folder_path}/github-actions/common.sh"
 source "${helper_folder_path}/build-scripts/xbb.sh"
 source "${helper_folder_path}/build-scripts/wrappers.sh"
-
-# -----------------------------------------------------------------------------
-
-# Script to generate the Jekyll post markdown page.
 
 # -----------------------------------------------------------------------------
 
@@ -73,35 +73,35 @@ echo "Generating the ${XBB_APPLICATION_DESCRIPTION} blog release page..."
 # -----------------------------------------------------------------------------
 
 # set -x
-destination_folder_path="${HOME}/Downloads/xpack-binaries/${XBB_APPLICATION_LOWER_CASE_NAME}"
+xpack_binaries_folder_path="${HOME}/Downloads/xpack-binaries/${XBB_APPLICATION_LOWER_CASE_NAME}"
 
-download_binaries "${destination_folder_path}"
-
-echo
-ls -lL "${destination_folder_path}"
+download_binaries "${xpack_binaries_folder_path}"
 
 echo
-cat "${destination_folder_path}"/*.sha
+ls -lL "${xpack_binaries_folder_path}"
+
+echo
+cat "${xpack_binaries_folder_path}"/*.sha
 
 xpack_version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
 release_date="$(date '+%Y-%m-%d %H:%M:%S %z')"
-post_file_path="${website_blog_path}/$(date -u '+%Y-%m-%d')-${XBB_APPLICATION_LOWER_CASE_NAME}-v$(echo ${xpack_version} | tr '.' '-')-released.mdx"
+post_file_path="${website_blog_folder_path}/$(date -u '+%Y-%m-%d')-${XBB_APPLICATION_LOWER_CASE_NAME}-v$(echo ${xpack_version} | tr '.' '-')-released.mdx"
 echo
 
 rm -rf "${post_file_path}"
 touch "${post_file_path}"
 
-app_name="$(liquidjs --context @${root_folder_path}/package.json --template '{{xpack.properties.appName}}')"
-app_lc_name="$(liquidjs --context @${root_folder_path}/package.json --template '{{xpack.properties.appLcName}}')"
+app_name="$(liquidjs --context @${build_assets_folder_path}/package.json --template '{{xpack.properties.appName}}')"
+app_lc_name="$(liquidjs --context @${build_assets_folder_path}/package.json --template '{{xpack.properties.appLcName}}')"
 
-platforms="$(liquidjs --context @${root_folder_path}/package.json --template '{{xpack.properties.platforms}}')"
+platforms="$(liquidjs --context @${build_assets_folder_path}/package.json --template '{{xpack.properties.platforms}}')"
 
 if [ "${platforms}" == "all" ]
 then
   platforms="win32-x64,darwin-x64,darwin-arm64,linux-x64,linux-arm64,linux-arm"
 fi
 
-custom_fields="$(liquidjs --context "@${root_folder_path}/package.json" --template '{{xpack.properties.customFields | json}}')"
+custom_fields="$(liquidjs --context "@${build_assets_folder_path}/package.json" --template '{{xpack.properties.customFields | json}}')"
 
 if [ -z "${custom_fields}" ]
 then
@@ -123,17 +123,17 @@ fi
 
 context="{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\", \"releaseVersion\": \"${xpack_version}\", \"releaseDate\": \"${release_date}\", \"upstreamVersion\": \"${upstream_version}\", \"customFields\": ${custom_fields} }"
 
-liquidjs --context "${context}" --template "@${root_folder_path}/templates/body-blog-release-post-part-1-liquid.mdx" >> "${post_file_path}"
+liquidjs --context "${context}" --template "@${website_blog_folder_path}/templates/blog-post-release-part-1-liquid.mdx" >> "${post_file_path}"
 
 echo >> "${post_file_path}"
 echo '```txt'  >> "${post_file_path}"
-cat "${destination_folder_path}"/*.sha \
+cat "${xpack_binaries_folder_path}"/*.sha \
   | sed -e 's|$|\n|' \
   | sed -e 's|  |\n|' \
   >> "${post_file_path}"
 echo '```'  >> "${post_file_path}"
 
-liquidjs --context "${context}" --template "@${root_folder_path}/templates/body-blog-release-post-part-2-liquid.mdx" >> "${post_file_path}"
+liquidjs --context "${context}" --template "@${website_blog_folder_path}/templates/blog-post-release-part-2-liquid.mdx" >> "${post_file_path}"
 
 echo "Don't forget to manually solve the TODO action point!"
 
