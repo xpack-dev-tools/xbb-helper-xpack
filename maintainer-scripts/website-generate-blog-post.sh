@@ -138,7 +138,7 @@ liquidjs --context "${context}" --template "@${website_blog_folder_path}/templat
 echo "Don't forget to manually solve the TODO action point!"
 
 echo
-echo "Done"
+echo "${script_name} done"
 
 # Completed successfully.
 exit 0
