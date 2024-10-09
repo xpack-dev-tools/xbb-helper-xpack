@@ -83,12 +83,13 @@ find . -type f -print0 | \
 echo
 echo "Validating..."
 
-if grep -r -e '{{' "${project_folder_path}/website/blog"/* || grep -r -e '{%' "${project_folder_path}/website/blog"/*
+if grep -r -e '{{' "${project_folder_path}/website/blog"/* | grep -v '/website/blog/_' || \
+   grep -r -e '{%' "${project_folder_path}/website/blog"/* | grep -v '/website/blog/_'
 then
   exit 1
 fi
 
 echo
-echo "Done"
+echo "${script_name} done"
 
 # -----------------------------------------------------------------------------
