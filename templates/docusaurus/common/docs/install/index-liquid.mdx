@@ -41,30 +41,26 @@ platform specific archives.
 ## Automated install
 
 The easiest (and recommended) way to install {{appName}}
-is by using the **binary xPack**, available
+is via **xpm** and the package available
 as <a href={`https://www.npmjs.com/package/@xpack-dev-tools/{{appLcName}}`}><code>@xpack-dev-tools/{{appLcName}}</code></a> from
 the [`npmjs.com`](https://www.npmjs.com) registry.
 
 <details>
-<summary>xPacks 101</summary>
+<summary>xPacks refresher</summary>
 
-While the initial appearance may seem complex, utilizing xPacks
-(xpm package) is,
-in fact, straightforward. The design rationale is to automate frequent
-operations that occur during software development, in this case the
-installation of
-dependencies, and to ensure reproducibility.
+xPacks (short for xpm packages) are general-purpose,
+language-neutral software packages.
+They use **the same format as npm packages**,
+which is a collection of files/folders
+and a `package.json` file with the package metadata.
 
-xPacks are regular archives that are extracted into separate folders
-within the project. The binary xPacks contain
-executables, and links/forwarders to
-these executables are created in a `.bin` folder,
-eliminating the need to add multiple folders to the `PATH`.
+Binary xPacks also include references to regular archives with the platform
+specific binaries (such as `.tar.gz` for Unix or `.zip` for Windows).
+These archives are unpacked and links/forwarders to
+the executables are created in a `.bin` folder.
 
-Given that some binary xPacks, such as toolchains, can be quite large,
-the archives are extracted only once into a user global location to
-conserve space. In projects, instead of duplicating the content of these
-archives, symbolic links are created.
+For more details, please see the previous explanation in the
+[Getting Started](/docs/getting-started/#xpacks) page.
 
 </details>
 

@@ -46,9 +46,9 @@ export default function Home(): JSX.Element {
   return (
     <Layout{% if customFields.isOrganizationWeb == "true" %}
       title={`Hello from ${siteConfig.title}`}
-      description="A collection of binary xPacks with development tools">{% else %}
+      description="A collection of binary package with development tools">{% else %}
       title={`Hello from xPack Binary Development Tools`}
-      description="A binary xPack with the {{appName}} executables">{% endif %}
+      description="A binary package with the {{appName}} executables">{% endif %}
       <HomepageHeader />
       <main>
         <HomepageFeatures />{% if customFields.isOrganizationWeb == "true" %}
