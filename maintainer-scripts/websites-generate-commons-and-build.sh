@@ -61,13 +61,15 @@ do
     if grep '"xpack":' package.json
     then
       git checkout xpack-development
+
+      xpm run website-generate-commons -C build-assets
+      xpm run website-import-releases -C build-assets
     else
       # xpack-dev-tools.github.io is not an xpack and has no xpack-development.
       git checkout master
-    fi
 
-    xpm run website-generate-commons -C build-assets
-    xpm run website-import-releases -C build-assets
+      xpm run website-generate-commons -C build-assets
+    fi
 
     (
       cd website

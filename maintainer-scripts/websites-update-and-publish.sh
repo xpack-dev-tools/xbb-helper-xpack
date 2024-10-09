@@ -58,7 +58,13 @@ do
 
     set -x
 
-    git checkout xpack-development
+    if grep '"xpack":' package.json
+    then
+      git checkout xpack-development
+    else
+      # xpack-dev-tools.github.io is not an xpack and has no xpack-development.
+      git checkout master
+    fi
 
     git add website
     git commit -m "website: updates"
