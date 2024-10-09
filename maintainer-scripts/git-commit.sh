@@ -175,11 +175,18 @@ tmp_file_website="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_website}"
 cd "$1/.."
 
+if [ ! -d website ]
+then
+  exit 0
+fi
+
 echo
 echo $1
 git add website
+# git add build-assets
 git commit -m "website update"
 # git commit -m "website remove preliminary"
+# git commit -m "website move blog post templates"
 
 __EOF__
 
