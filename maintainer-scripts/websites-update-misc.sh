@@ -60,6 +60,60 @@ function move_template_blog()
   )
 }
 
+function rename_folders_hierarchies()
+{
+  (
+    if [ -f "$1/docs/install/_folder-hierarchies.mdx" ]
+    then
+      mv -v "$1/docs/install/_folder-hierarchies.mdx" "$1/docs/install/_folders-hierarchies.mdx"
+    fi
+  )
+}
+
+function split_folders_hierarchies()
+{
+  (
+    if [ -f "$1/docs/install/_folders-hierarchies.mdx" ] &&
+       [ ! -f "$1/docs/install/_folders-hierarchies-linux.mdx" ]
+    then
+      cp -v "$1/docs/install/_folders-hierarchies.mdx" "$1/docs/install/_folders-hierarchies-linux.mdx"
+    fi
+
+    if [ -f "$1/docs/install/_folders-hierarchies.mdx" ] &&
+       [ ! -f "$1/docs/install/_folders-hierarchies-macos.mdx" ]
+    then
+      cp -v "$1/docs/install/_folders-hierarchies.mdx" "$1/docs/install/_folders-hierarchies-macos.mdx"
+    fi
+
+    if [ -f "$1/docs/install/_folders-hierarchies.mdx" ] &&
+       [ ! -f "$1/docs/install/_folders-hierarchies-windows.mdx" ]
+    then
+      mv -v "$1/docs/install/_folders-hierarchies.mdx" "$1/docs/install/_folders-hierarchies-windows.mdx"
+    fi
+
+    set -x
+    if [ -f "$1/docs/install/_folders-hierarchies-linux.mdx" ]
+    then
+      sed -i.bak -e '/^## Folders hierarchy$/,/^\<TabItem value="linux" label="GNU\/Linux"\>$/d' "$1/docs/install/_folders-hierarchies-linux.mdx"
+      sed -i.bak -e '/^\<\/TabItem\>$/,$d' "$1/docs/install/_folders-hierarchies-linux.mdx"
+    fi
+
+    if [ -f "$1/docs/install/_folders-hierarchies-macos.mdx" ]
+    then
+      sed -i.bak -e '/^## Folders hierarchy$/,/^\<TabItem value="macos" label="macOS"\>$/d' "$1/docs/install/_folders-hierarchies-macos.mdx"
+      sed -i.bak -e '/^\<\/TabItem\>$/,$d' "$1/docs/install/_folders-hierarchies-macos.mdx"
+    fi
+
+    if [ -f "$1/docs/install/_folders-hierarchies-windows.mdx" ]
+    then
+      sed -i.bak -e '/^## Folders hierarchy$/,/^\<TabItem value="windows" label="Windows" default\>$/d' "$1/docs/install/_folders-hierarchies-windows.mdx"
+      sed -i.bak -e '/^\<\/TabItem\>$/,$d' "$1/docs/install/_folders-hierarchies-windows.mdx"
+    fi
+
+    rm -f "$1/docs/install/_folders-hierarchies"-*.mdx.bak
+  )
+}
+
 # =============================================================================
 
 # set -x
@@ -73,7 +127,9 @@ do
   echo
   echo ${f}
 
-  move_template_blog ${f}
+  # move_template_blog ${f}
+  # rename_folders_hierarchies ${f}
+  split_folders_hierarchies ${f}
 
 done
 
