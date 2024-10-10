@@ -67,7 +67,7 @@ do
     fi
 
     git add website
-    git commit -m "website: updates"
+    git commit -m "website: updates" || true
     git push
 
     git checkout website
