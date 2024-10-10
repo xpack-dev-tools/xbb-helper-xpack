@@ -36,7 +36,7 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 tmp_file_template_github="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_template_github}"
-cd "$1/.."
+cd "$1"
 
 if [ ! -d build-assets ]
 then
@@ -56,21 +56,21 @@ __EOF__
 
 tmp_file_template_blog="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_template_blog}"
-cd "$1/.."
+cd "$1"
 
-if [ ! -d build-assets ]
+if [ ! -d website/blog/_templates ]
 then
   exit 0
 fi
 
-cd build-assets
+# cd website/blog/_templates
 
 echo
 echo $1
-git add templates/body-blog-release-post-part-*-liquid.mdx
+git add website/blog/_templates/blog-post-release-part-*-liquid.mdx
 # git add templates
-# git add templates/body-blog-release-post-part-2-liquid.mdx
-git commit -m "templates/body-blog update"
+
+git commit -m "website/blog/_templates/blog-post-release*" || true
 
 __EOF__
 
@@ -78,7 +78,7 @@ __EOF__
 
 tmp_file_versioning="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_versioning}"
-cd "$1/.."
+cd "$1"
 
 echo
 echo $1
@@ -91,7 +91,7 @@ __EOF__
 
 tmp_file_application="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_application}"
-cd "$1/.."
+cd "$1"
 
 echo
 echo $1
@@ -104,7 +104,7 @@ __EOF__
 
 tmp_file_commit_all="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_all}"
-cd "$1/.."
+cd "$1"
 
 echo
 echo $1
@@ -117,7 +117,7 @@ __EOF__
 
 tmp_file_workflows="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_workflows}"
-cd "$1/.."
+cd "$1"
 
 echo
 echo $1
@@ -130,7 +130,7 @@ __EOF__
 
 tmp_file_scripts="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_scripts}"
-cd "$1/.."
+cd "$1"
 
 cd build-assets
 
@@ -147,7 +147,7 @@ __EOF__
 
 tmp_file_vscode="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_vscode}"
-cd "$1/.."
+cd "$1"
 
 echo
 echo $1
@@ -160,7 +160,7 @@ __EOF__
 
 tmp_file_npmignore="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_npmignore}"
-cd "$1/.."
+cd "$1"
 
 echo
 echo $1
@@ -173,7 +173,7 @@ __EOF__
 
 tmp_file_website="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_website}"
-cd "$1/.."
+cd "$1"
 
 if [ ! -d website ]
 then
@@ -194,7 +194,7 @@ __EOF__
 
 tmp_file_commit_readmes="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_readmes}"
-cd "$1/.."
+cd "$1"
 
 echo
 echo $1
@@ -214,7 +214,7 @@ __EOF__
 
 tmp_file_commit_package="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_package}"
-cd "$1/.."
+cd "$1"
 
 echo
 echo $1
@@ -252,7 +252,7 @@ __EOF__
 
 tmp_file_commit_build_assets_package="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_build_assets_package}"
-cd "$1/.."
+cd "$1"
 
 if [ ! -d build-assets ]
 then
@@ -282,14 +282,14 @@ set -x
 
 # UPDATE ME!
 # commands_file="${tmp_file_template_github}"
-# commands_file="${tmp_file_template_blog}"
+commands_file="${tmp_file_template_blog}"
 # commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_application}"
 
 # commands_file="${tmp_file_scripts}"
 # commands_file="${tmp_file_npmignore}"
 
-commands_file="${tmp_file_website}"
+# commands_file="${tmp_file_website}"
 
 # commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
@@ -302,9 +302,27 @@ cd "${repos_folder}"
 # find . -type d -name '.git' -print0 | sort -zn | \
 #   xargs -0 -I '{}' xpm run install -C '{}/..'
 
-find . -type d -name '.git' -print0 | sort -zn | \
-  xargs -0 -I '{}' bash "${commands_file}" '{}'
+# find . -type d -name '.git' -print0 | sort -zn | \
+#   xargs -0 -I '{}' bash "${commands_file}" '{}'
 
-echo
+for f in "${repos_folder}"/*/.git
+do
+  (
+    cd "$(dirname "${f}")"
+
+    if [ ! -d build-assets ]
+    then
+      continue
+    fi
+
+    echo
+    pwd
+
+    bash -x "${commands_file}" "$(dirname "${f}")"
+  )
+done
+
+echo "${script_name} done"
+
 
 # -----------------------------------------------------------------------------
