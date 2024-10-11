@@ -64,7 +64,7 @@ export platforms="$(liquidjs --context @package.json --template '{{xpack.propert
 
 if [ ! -d "${xpack_www_releases}/${app_lc_name}" ]
 then
-  echo "No ${xpack_www_releases}/${app_lc_name}, quiting..."
+  echo "No ${xpack_www_releases}/${app_lc_name}, nothing to do..."
   exit 0
 fi
 
@@ -81,13 +81,18 @@ find . -type f -print0 | \
    xargs -0 -I '{}' bash "${script_folder_path}/website-convert-release-post.sh" '{}' "${project_folder_path}/website/blog"
 
 echo
-echo "Validating..."
+echo "Validating liquidjs..."
 
-if grep -r -e '{{' "${project_folder_path}/website/blog"/* | grep -v '/website/blog/_' || \
-   grep -r -e '{%' "${project_folder_path}/website/blog"/* | grep -v '/website/blog/_'
+if grep -r -e '{{' "${project_folder_path}/website/blog"/*.md* | grep -v '/website/blog/_' || \
+   grep -r -e '{%' "${project_folder_path}/website/blog"/*.md* | grep -v '/website/blog/_'
 then
   exit 1
 fi
+
+echo
+echo "Showing descriptions..."
+
+egrep -h -e "(title:|description:)" "${project_folder_path}/website/blog"/*.md*
 
 echo
 echo "${script_name} done"

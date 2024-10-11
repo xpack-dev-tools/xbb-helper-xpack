@@ -60,21 +60,22 @@ do
 
     if grep '"xpack":' package.json
     then
-      git checkout xpack-development
+      branch="xpack-development"
     else
       # xpack-dev-tools.github.io is not an xpack and has no xpack-development.
-      git checkout master
+      gbranch="master"
     fi
 
+    git checkout "${branch}"
     git add website
     git commit -m "website: updates" || true
     git push
 
     git checkout website
-    git merge xpack-development
+    git merge "${branch}"
     git push
 
-    git checkout xpack-development
+    git checkout "${branch}"
   )
 done
 

@@ -83,6 +83,35 @@ if [ ! -z "${summary}" ] && [ "${summary:0:1}" == "\"" ]
 then
   summary="$(echo ${summary} | sed -e 's|^"||' -e 's|"$||')"
 fi
+# echo "<<s< $summary >>>"
+
+# Get the value of `app_name` to generate the first short paragraph.
+post_app_name="$(grep -e '^app_name: ' "$2/$to" | sed -e 's|^app_name:[[:space:]]*||' -e 's|["]||g' || true)"
+# echo "<<a< $post_app_name >>>"
+
+description="$(echo ${summary} | sed -e 's| of .*|.|')"
+description="$(echo ${description} | sed -e 's|;.*|.|')"
+description="$(echo ${description} | sed -e 's|,.*|.|')"
+
+description="$(echo ${description} | sed -e 's|\*\*||g' -e 's|DO NOT USE! ||' -e 's|DEPRECATED: ||' -e 's|  | |g')"
+if [ ! -z "${post_app_name}" ]
+then
+  s="s|[.]$| of ${post_app_name}.|"
+else
+  s="s|[.]$| of xPack ${app_name}.|"
+fi
+description="$(echo ${description} | sed -e "${s}")"
+
+# echo "<<d< $description >>>"
+
+# Get the value of the title to generate H1
+title=$(grep 'title: ' "$2/$to" | sed -e 's|^title:[ ]*||')
+# if [ ${#title} -gt 60 ]
+# then
+#   echo "<<t< $title >>> TOO LONG! (>60)"
+# else
+#   echo "<<t< $title >>>"
+# fi
 
 # Remove `date:`, will be generated right after the title.
 sed -i.bak -e '/^date:/d' "$2/$to"
@@ -119,6 +148,27 @@ then
   s="BEGIN {count=0;} /^---$/ { count+=1; print; if (count == 2) { print \"\"; print \"${summary}\"; print \"\"; print \"<!-- truncate -->\";} next }1"
   awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 fi
+
+# # Add the title as H1
+# if [ ! -z "${title}" ]
+# then
+#   s="BEGIN {count=0;} /^---$/ { count+=1; print; if (count == 2) { print \"\"; print \"# ${title}\";} next }1"
+#   awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+# fi
+
+# # Adjust title: to app_lc_name
+# s="s|title:[ ]*xPack [ a-zA-Z0-9-]* v|title: ${app_lc_name} v|"
+# sed -i.bak -e "${s}" "$2/$to"
+
+s="BEGIN {count=0;} /^---$/ { count+=1; print; if (count == 2) { print \"\"; print \"<head><title>{frontMatter.title}</title></head>\";} next }1"
+awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+
+# fix title: spaces
+sed -i.bak -e 's|title:[ ][ ]*|title: |' "$2/$to"
+
+# Add description & keywords after title
+s="/^title:/ { print; print \"description: ${description}\"; print \"keywords:\"; print \"  - xpack\"; print \"  - ${app_lc_name}\"; print \"  - release\"; next }1"
+awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
 # Insert xpm install version
 s="/^## Install$/ { print; print \"\"; print \"The easiest way to install this specific version, is by using **xpm**:\"; print \"\"; print \"<CodeBlock language=console> \{\"; print \"\`xpm install @xpack-dev-tools/${app_lc_name}@\${frontMatter.version}.\${frontMatter.npm_subversion} -verbose\"; print \"\`\} </CodeBlock>\"; next }1"
@@ -311,6 +361,8 @@ sed -i.bak -e "s|Arm 32/64-bit|arm64 and arm|" "$2/$to"
 
 # Remove the `site.baseurl` from links.
 sed -i.bak -e 's|{{ site.baseurl }}||g' "$2/$to"
+
+# ---
 
 # Squeeze multiple adjacent empty lines.
 cat -s "$2/$to" >"$2/$to.new" && rm -f "$2/$to" && mv -f "$2/$to.new" "$2/$to"
