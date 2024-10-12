@@ -63,7 +63,7 @@ do
       branch="xpack-development"
     else
       # xpack-dev-tools.github.io is not an xpack and has no xpack-development.
-      gbranch="master"
+      branch="master"
     fi
 
     git checkout "${branch}"
