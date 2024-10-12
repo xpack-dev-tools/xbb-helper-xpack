@@ -126,7 +126,7 @@ function Tool({ appName, appLcName }) {
     <>
       <div className="padding-vert--sm">
         <div>
-          <b><Link to={'https://xpack-dev-tools.github.io/' + appLcName + '-xpack'}>{appLcName}</Link></b> - <b>xPack {appName}</b>
+          <b><Link to={'https://xpack-dev-tools.github.io/' + appLcName + '-xpack/'}>{appLcName}</Link></b> - <b>xPack {appName}</b>
         </div>
         <div className="padding-top--xs">
           <Link to={'https://github.com/xpack-dev-tools/' + appLcName + '-xpack/releases/'}><img alt="GitHub Release" src={'https://img.shields.io/github/v/release/xpack-dev-tools/' + appLcName + '-xpack'} /></Link>
@@ -143,7 +143,7 @@ function ToolWork({ appName, appLcName }) {
   return (
     <>
       <div>
-        <b><Link to={'https://xpack-dev-tools.github.io/' + appLcName + '-xpack'}>{appLcName}</Link></b> - <b>xPack {appName}</b>
+        <b><Link to={'https://xpack-dev-tools.github.io/' + appLcName + '-xpack/'}>{appLcName}</Link></b> - <b>xPack {appName}</b>
       </div>
     </>
   )
