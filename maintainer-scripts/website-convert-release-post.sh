@@ -160,8 +160,29 @@ fi
 # s="s|title:[ ]*xPack [ a-zA-Z0-9-]* v|title: ${app_lc_name} v|"
 # sed -i.bak -e "${s}" "$2/$to"
 
-s="BEGIN {count=0;} /^---$/ { count+=1; print; if (count == 2) { print \"\"; print \"<head><title>{frontMatter.title}</title></head>\";} next }1"
-awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+tmp_awk_file="$(mktemp) -t awk"
+# Note: __EOF__ is quoted to prevent substitutions here.
+cat <<'__EOF__' > "${tmp_awk_file}"
+
+BEGIN {
+  count = 0
+}
+
+/^---$/ {
+  count += 1
+  print
+  if (count == 2) {
+    print ""
+    print "<head><title>{frontMatter.title}</title></head>"
+    print "<head><meta property=\"og:title\" content={frontMatter.title} /></head>"
+  }
+  next
+}
+1
+
+__EOF__
+
+awk -f "${tmp_awk_file}" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
 # fix title: spaces
 sed -i.bak -e 's|title:[ ][ ]*|title: |' "$2/$to"
@@ -368,5 +389,6 @@ sed -i.bak -e 's|{{ site.baseurl }}||g' "$2/$to"
 cat -s "$2/$to" >"$2/$to.new" && rm -f "$2/$to" && mv -f "$2/$to.new" "$2/$to"
 
 rm -f "$2/$to.bak"
+rm -f "${tmp_awk_file}"
 
 # -----------------------------------------------------------------------------
