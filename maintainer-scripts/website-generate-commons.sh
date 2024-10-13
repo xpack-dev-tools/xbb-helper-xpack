@@ -100,8 +100,10 @@ is_organization_web="$(liquidjs --context "${custom_fields}" --template '{{isOrg
 if [ "${is_organization_web}" == "true" ]
 then
   xpack_version="0.0.0-0"
+  base_url="/"
 else
   xpack_version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
+  base_url="/${app_lc_name}/"
 fi
 
 # Remove pre-release.
@@ -122,7 +124,7 @@ then
   github_project_name="${app_lc_name}-xpack"
 fi
 
-export context="{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"upstreamVersion\": \"${upstream_version}\", \"gitHubProjectName\": \"${github_project_name}\", \"customFields\": ${custom_fields} }"
+export context="{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\", \"branch\": \"${branch}\", \"upstreamVersion\": \"${upstream_version}\", \"gitHubProjectName\": \"${github_project_name}\", \"baseUrl\": \"${base_url}\", \"customFields\": ${custom_fields} }"
 
 # tmp_context_file="$(mktemp) -t context"
 # echo "{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\" }" > "${tmp_context_file}"
