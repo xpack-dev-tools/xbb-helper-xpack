@@ -238,6 +238,10 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     // image: 'img/docusaurus-social-card.jpg',
+    metadata: [{% if customFields.isOrganizationWeb == "true" %}
+      {name: 'keywords', content: 'xpack, binary, development, tools'}{% else %}
+      {name: 'keywords', content: 'xpack, binary, development, tools, {{appLcName}}'}{% endif %}
+    ],
     navbar: {
        // overriden by i18n/en/docusaurus-theme-classic.
       title: 'The xPack Binary Development Tools',
