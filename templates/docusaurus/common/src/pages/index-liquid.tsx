@@ -45,9 +45,9 @@ export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout {% if customFields.isOrganizationWeb == "true" %}
-      title={`Hello from ${siteConfig.organizationName}`}
+      title={`Welcome to ${siteConfig.organizationName}`}
       description="A collection of binary packages with development tools">{% else %}
-      title={`Hello from {{appLcName}}`}
+      title={`Welcome to {{appLcName}}`}
       description="A binary package with the {{appLcName}} executables">{% endif %}
       <HomepageHeader />
       <main>
