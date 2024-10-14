@@ -167,6 +167,17 @@ feasible.
 
 </details>
 
+Similarly to [flatpacks](https://flatpak.org) or [snap](https://snapcraft.io),
+but significantly simpler, xPacks include all dependent shared libraries
+within the distributed archives, making the binaries independent of
+any similar libraries installed on the system. This ensures they
+can run on any system without needing specific libraries to be
+installed.
+
+Also the builds are configured so that the binaries do not depend on
+being installed in specific folders, and can be installed in any
+location, including in user folders.
+
 ## Benefits
 
 The main advantages of using the **xPack {{appName}}** are:
@@ -188,6 +199,8 @@ The main advantages of using the **xPack {{appName}}** are:
 - multiple versions of the same package can be installed at the same time on
   the same system
 - no need to worry about dependent libraries, they are all included
+- not affected by system updates that
+  might change the versions of the dependent libraries
 - significantly lighter and easier to use than Docker images that provide
   similar functionality and are GNU/Linux centric
 - projects can be tied to specific tools versions; this provides a good
