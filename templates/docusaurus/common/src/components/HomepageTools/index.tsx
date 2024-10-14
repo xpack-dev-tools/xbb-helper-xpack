@@ -18,108 +18,7 @@ import styles from './styles.module.css';
 
 import Link from '@docusaurus/Link';
 
-/* When updated, don't forget to add sitemap to robots.txt! */
-const PrimaryTools = [
-  {
-    appName: 'GNU AArch64 Embedded GCC',
-    appLcName: 'aarch64-none-elf-gcc'
-  },
-  {
-    appName: 'GNU Arm Embedded GCC',
-    appLcName: 'arm-none-eabi-gcc'
-  },
-  {
-    appName: 'LLVM clang',
-    appLcName: 'clang'
-  },
-  {
-    appName: 'CMake',
-    appLcName: 'cmake'
-  },
-  {
-    appName: 'GCC',
-    appLcName: 'gcc'
-  },
-  {
-    appName: 'Meson Build',
-    appLcName: 'meson-build'
-  },
-  {
-    appName: 'MinGW-w64 GCC',
-    appLcName: 'mingw-w64-gcc'
-  },
-  {
-    appName: 'Ninja Build',
-    appLcName: 'ninja-build'
-  },
-  {
-    appName: 'OpenOCD',
-    appLcName: 'openocd'
-  },
-  {
-    appName: 'QEMU Arm',
-    appLcName: 'qemu-arm'
-  },
-  {
-    appName: 'QEMU RISC-V',
-    appLcName: 'qemu-riscv'
-  },
-  {
-    appName: 'GNU RISC-V Embedded GCC',
-    appLcName: 'riscv-none-elf-gcc'
-  },
-  {
-    appName: 'Windows Build Tools',
-    appLcName: 'windows-build-tools'
-  },
-]
-
-/* When updated, don't forget to add sitemap to robots.txt! */
-const SecondaryTools = [
-  {
-    appName: 'GNU bison',
-    appLcName: 'bison'
-  },
-  {
-    appName: 'flex',
-    appLcName: 'flex'
-  },
-  {
-    appName: 'GNU m4',
-    appLcName: 'm4'
-  },
-  {
-    appName: 'NixOS PatchELF',
-    appLcName: 'patchelf'
-  },
-  {
-    appName: 'pkg-config',
-    appLcName: 'pkg-config'
-  },
-  {
-    appName: 'GNU realpath',
-    appLcName: 'realpath'
-  },
-  {
-    appName: 'GNU sed',
-    appLcName: 'sed'
-  },
-  {
-    appName: 'WineHQ',
-    appLcName: 'wine'
-  },
-]
-
-const WorkInProgressTools = [
-  {
-    appName: 'GNU Bash',
-    appLcName: 'bash'
-  },
-  {
-    appName: 'GNU texinfo',
-    appLcName: 'texinfo'
-  },
-]
+import tools from '@site/src/libs/tools';
 
 function Tool({ appName, appLcName }) {
   return (
@@ -154,7 +53,7 @@ function ToolsLeft() {
     <div className={clsx('col col--6')}>
       <div className="text--center padding-horiz--md padding-vert--lg">
         <Heading as="h2">Main Tools</Heading>
-        {PrimaryTools.map((props, idx) => (
+        {tools().mainTools.map((props, idx) => (
           <Tool {...props} />
         ))}
       </div>
@@ -167,14 +66,14 @@ function ToolsRight() {
     <div className={clsx('col col--6')}>
       <div className="text--center padding-horiz--md padding-vert--lg">
         <Heading as="h2">Supplementary Tools</Heading>
-        {SecondaryTools.map((props, idx) => (
+        {tools().supplementaryTools.map((props, idx) => (
           <Tool {...props} />
         ))}
       </div>
       <hr className="hero__hr2" />
       <div className="text--center padding-horiz--md padding-vert--md">
         <Heading as="h2">Work in Progress</Heading>
-        {WorkInProgressTools.map((props, idx) => (
+        {tools().workInProgressTools.map((props, idx) => (
           <ToolWork {...props} />
         ))}
       </div>

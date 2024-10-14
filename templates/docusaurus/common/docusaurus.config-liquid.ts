@@ -15,6 +15,12 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import fs from 'node:fs';
 
+{% if customFields.isOrganizationWeb == "true" %}
+import addToolsToSidebar from './src/libs/addToolsToSidebar';
+{% endif %}
+
+// ----------------------------------------------------------------------------
+
 function getCustomFields() {
   const pwd = fileURLToPath(import.meta.url);
   // logger.info(pwd);
@@ -76,8 +82,16 @@ function getCustomFields() {
   }
 }
 
+// ----------------------------------------------------------------------------
+
 const customFields = getCustomFields();
 logger.info(customFields);
+
+{% if customFields.isOrganizationWeb == "true" %}
+addToolsToSidebar();
+{% endif %}
+
+// ----------------------------------------------------------------------------
 
 const config: Config = {
   title: 'xPack {{appName}}',
@@ -293,8 +307,9 @@ const config: Config = {
       }{% endif %}
     ],
     navbar: {
-       // overriden by i18n/en/docusaurus-theme-classic.
+      // Overriden by i18n/en/docusaurus-theme-classic.
       title: 'The xPack Binary Development Tools',
+
       logo: {
         alt: 'xPack Logo',
         src: 'img/components-256.png',
@@ -344,6 +359,12 @@ const config: Config = {
           label: 'Getting Started',
           to: 'docs/getting-started',
           position: 'left',
+        },
+        {
+          type: 'docSidebar',
+          label: 'Tools',
+          position: 'left',
+          sidebarId: 'toolsSidebar'
         },
         {
           label: 'About',
