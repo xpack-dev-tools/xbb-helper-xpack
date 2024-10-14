@@ -266,14 +266,14 @@ then
   (
     cd "${project_folder_path}/website"
 
-    rm -rf "docs/developer"
-    rm -rf "docs/faq"
-    rm -rf "docs/install"
-    rm -rf "docs/maintainer"
-    rm -rf "docs/releases"
-    rm -rf "docs/support"
-    rm -rf "docs/test"
-    rm -rf "docs/user"
+    rm -rfv "docs/developer"
+    rm -rfv "docs/faq"
+    rm -rfv "docs/install"
+    rm -rfv "docs/maintainer"
+    rm -rfv "docs/releases"
+    rm -rfv "docs/support"
+    rm -rfv "docs/test"
+    rm -rfv "docs/user"
   )
 else
   # Regenerate top README.md.
@@ -284,6 +284,17 @@ else
   echo
   echo liquidjs "@README-TOP-liquid.md" '->' "${project_folder_path}/README.md"
   liquidjs --context "${context}" --template "@README-TOP-liquid.md" --output "${project_folder_path}/README.md" --strict-variables --strict-filters
+
+  echo
+  echo "Remove unused files..."
+
+  (
+    cd "${project_folder_path}/website"
+
+    rm -rfv "src/components/HomepageTools"
+    rm -rfv "src/libs/addToolsToSidebar.ts"
+    rm -rfv "src/libs/tools.ts"
+  )
 fi
 
 echo
