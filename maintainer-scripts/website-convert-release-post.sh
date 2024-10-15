@@ -33,6 +33,9 @@ script_folder_path="$(dirname "${script_path}")"
 script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
+# Inits and validations.
+
+# echo $@
 
 # Explicit display of failures.
 # Return 255, required by `xargs` to stop when invoked via `find`.
@@ -48,10 +51,6 @@ function trap_handler()
   echo "FAIL ${from_file} line: ${line_number} exit: ${exit_code}"
   return 255
 }
-
-# -----------------------------------------------------------------------------
-
-# echo $@
 
 # The source file name.
 from=$(echo "$1" | sed -e 's|^\.\/||')
@@ -69,10 +68,15 @@ then
   exit 0
 fi
 
+tmp_awk_file="$(mktemp) -t awk"
+
 mkdir -p "$(dirname $2/$to)"
 
 # Copy from Jekyll to local web.
 cp -v "$from" "$2/$to"
+
+# -----------------------------------------------------------------------------
+# Get variables from frontmatter.
 
 # Get the value of `date:` to generate it in a higher position.
 date="$(grep -e '^date: ' "$2/$to" | sed -e 's|^date:[[:space:]]*||')"
@@ -83,7 +87,6 @@ if [ ! -z "${summary}" ] && [ "${summary:0:1}" == "\"" ]
 then
   summary="$(echo ${summary} | sed -e 's|^"||' -e 's|"$||')"
 fi
-# echo "<<s< $summary >>>"
 
 # Get the value of `app_name` to generate the first short paragraph.
 post_app_name="$(grep -e '^app_name: ' "$2/$to" | sed -e 's|^app_name:[[:space:]]*||' -e 's|["]||g' || true)"
@@ -97,21 +100,32 @@ description="$(echo ${description} | sed -e 's|\*\*||g' -e 's|DO NOT USE! ||' -e
 if [ ! -z "${post_app_name}" ]
 then
   s="s|[.]$| of ${post_app_name}.|"
+  description="$(echo ${description} | sed -e "${s}")"
+  # s="s|[.]$| of **${post_app_name}**.|"
+  # summary="$(echo ${summary} | sed -e "${s}")"
 else
   s="s|[.]$| of xPack ${app_name}.|"
+  description="$(echo ${description} | sed -e "${s}")"
 fi
-description="$(echo ${description} | sed -e "${s}")"
 
-# echo "<<d< $description >>>"
-
-# Get the value of the title to generate H1
+# Get the value of the title to generate seo_title
 title=$(grep 'title: ' "$2/$to" | sed -e 's|^title:[ ]*||')
-# if [ ${#title} -gt 60 ]
-# then
-#   echo "<<t< $title >>> TOO LONG! (>60)"
-# else
-#   echo "<<t< $title >>>"
-# fi
+
+seo_title="${title}"
+seo_title="$(echo "${seo_title}" | sed -e 's|The project has a new web site|New web site|')"
+seo_title="$(echo "${seo_title}" | sed -e 's|xPack .* v|Version |')"
+seo_title="$(echo "${seo_title}" | sed -e 's|GNU .* v|Version |')"
+
+if false
+then
+  echo "<<s< $summary >>>"
+  echo "<<d< $description >>>"
+  echo "<<t< $title >>>"
+  echo "<<o< $seo_title >>>"
+fi
+
+# -----------------------------------------------------------------------------
+# Process the frontmatter.
 
 # Remove `date:`, will be generated right after the title.
 sed -i.bak -e '/^date:/d' "$2/$to"
@@ -122,45 +136,58 @@ sed -i.bak -e '/^summary:/d' "$2/$to"
 # Remove `sidebar:`.
 sed -i.bak -e '/^sidebar:/d' "$2/$to"
 
-# Add mandatory front matter properties (authors, tags, date) after title.
-s="/^title:/ { print; print \"\"; print \"date: ${date}\"; print \"\"; print \"authors: ilg-ul\"; print \"\"; print \"# To be listed in the Releases page.\"; print \"tags:\"; print \"  - releases\"; print \"\"; print \"# ----- Custom properties -----------------------------------------------------\";next }1"
-awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+# Remove `app_name:`.
+sed -i.bak -e '/^app_name:/d' "$2/$to"
 
-# Fix the badge to releases.
-s="  - this release <a href={\`https://github.com/xpack-dev-tools/${app_lc_name}-xpack/releases/v\$\{frontMatter.version}/\`} ><Image img={\`https://img.shields.io/github/downloads/xpack-dev-tools/${app_lc_name}-xpack/v\$\{frontMatter.version}/total.svg\`} alt='Github Release' /></a>"
-sed -i.bak -e "s|  - this release ...Github All Releases.*|$s|" "$2/$to"
+# fix title: spaces
+sed -i.bak -e 's|title:[ ][ ]*|title: |' "$2/$to"
+
+
+# Add mandatory front matter properties (authors, tags, date) after title.
+
+# Note: __EOF__ is not quoted to allow substitutions here.
+cat <<__EOF__ > "${tmp_awk_file}"
+
+/^title:/ {
+  print
+
+  print "seo_title: ${seo_title}"
+  print "description: ${description}"
+  print "keywords:"
+  print "  - xpack"
+  print "  - ${app_lc_name}"
+  print "  - release"
+  print ""
+  print "date: ${date}"
+  print ""
+  print "authors: ilg-ul"
+  print ""
+  print "# To be listed in the Releases page."
+  print "tags:";
+  print "  - releases"
+  print ""
+  print "# ----- Custom properties -----------------------------------------------------"
+
+  next
+}
+
+1
+
+__EOF__
+
+awk -f "${tmp_awk_file}" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+
 
 # Add the yaml end tag after download_url and a custom tag for the delete.
-if grep '<Image ' "$2/$to" >/dev/null
-then
-  s="/download_url:/ { print; print \"\"; print \"---\"; print \"\"; print \"import Image from '@theme/IdealImage';\"; print \"--e-n-d-\"; next }1"
-else
-  s="/download_url:/ { print; print \"\"; print \"---\"; print \"--e-n-d-\"; next }1"
-fi
+# if grep '<Image ' "$2/$to" >/dev/null
+# then
+  s="/download_url:/ { print; print \"\"; print \"---\"; print \"\"; print \"--e-n-d-f-\"; next }1"
+# else
+#   s="/download_url:/ { print; print \"\"; print \"---\"; print \"--e-n-d-f-\"; next }1"
+# fi
 awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
-# Remove extra frontmatter properties.
-sed -i.bak -e '/^--e-n-d-$/,/^---$/d' "$2/$to"
-
-# Add summary to post body.
-if [ ! -z "${summary}" ]
-then
-  s="BEGIN {count=0;} /^---$/ { count+=1; print; if (count == 2) { print \"\"; print \"${summary}\"; print \"\"; print \"<!-- truncate -->\";} next }1"
-  awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
-fi
-
-# # Add the title as H1
-# if [ ! -z "${title}" ]
-# then
-#   s="BEGIN {count=0;} /^---$/ { count+=1; print; if (count == 2) { print \"\"; print \"# ${title}\";} next }1"
-#   awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
-# fi
-
-# # Adjust title: to app_lc_name
-# s="s|title:[ ]*xPack [ a-zA-Z0-9-]* v|title: ${app_lc_name} v|"
-# sed -i.bak -e "${s}" "$2/$to"
-
-tmp_awk_file="$(mktemp) -t awk"
+# Add imports, summary paragraph, truncate and page title
 # Note: __EOF__ is quoted to prevent substitutions here.
 cat <<'__EOF__' > "${tmp_awk_file}"
 
@@ -170,26 +197,51 @@ BEGIN {
 
 /^---$/ {
   count += 1
+
   print
   if (count == 2) {
     print ""
-    print "<head><title>{frontMatter.title}</title></head>"
-    print "<head><meta property=\"og:title\" content={frontMatter.title} /></head>"
+    print "import {PageMetadata} from '@docusaurus/theme-common';"
+    print "import Image from '@theme/IdealImage';";
+    print "import CodeBlock from '@theme/CodeBlock';"
+__EOF__
+
+if [ ! -z "${summary}" ]
+then
+# Add summary to post body.
+
+# Note: __EOF__ is not quoted to allow substitutions here.
+cat <<__EOF__ >> "${tmp_awk_file}"
+    print ""
+    print "${summary}"
+__EOF__
+fi
+
+cat <<'__EOF__' >> "${tmp_awk_file}"
+    print ""
+    print "<!-- truncate -->"
+    print ""
+    print "<PageMetadata title={frontMatter.seo_title} />"
   }
   next
 }
+
 1
 
 __EOF__
 
 awk -f "${tmp_awk_file}" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
-# fix title: spaces
-sed -i.bak -e 's|title:[ ][ ]*|title: |' "$2/$to"
+# Remove extra frontmatter properties.
+sed -i.bak -e '/^--e-n-d-f-$/,/^---$/d' "$2/$to"
 
-# Add description & keywords after title
-s="/^title:/ { print; print \"description: ${description}\"; print \"keywords:\"; print \"  - xpack\"; print \"  - ${app_lc_name}\"; print \"  - release\"; next }1"
-awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+# -----------------------------------------------------------------------------
+# Process the post body.
+
+# Fix the badge to releases.
+s="  - this release <a href={\`https://github.com/xpack-dev-tools/${app_lc_name}-xpack/releases/v\$\{frontMatter.version}/\`} ><Image img={\`https://img.shields.io/github/downloads/xpack-dev-tools/${app_lc_name}-xpack/v\$\{frontMatter.version}/total.svg\`} alt='Github Release' /></a>"
+sed -i.bak -e "s|  - this release ...Github All Releases.*|$s|" "$2/$to"
+
 
 # Insert xpm install version
 s="/^## Install$/ { print; print \"\"; print \"The easiest way to install this specific version, is by using **xpm**:\"; print \"\"; print \"<CodeBlock language=console> \{\"; print \"\`xpm install @xpack-dev-tools/${app_lc_name}@\${frontMatter.version}.\${frontMatter.npm_subversion} -verbose\"; print \"\`\} </CodeBlock>\"; next }1"
@@ -253,17 +305,17 @@ awk '/{% include warning.html content="This version is affected by the Windows U
 # Remove from Easy install to Compliance.
 if grep '### Easy install' "$2/$to" >/dev/null && grep '## Compliance' "$2/$to" >/dev/null
 then
-  awk '/## Compliance/ {print "--e-n-d-"; print; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+  awk '/## Compliance/ {print "--e-n-d-c-"; print; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
-  sed -i.bak -e '/^### Easy install$/,/^--e-n-d-$/d' "$2/$to"
+  sed -i.bak -e '/^### Easy install$/,/^--e-n-d-c-$/d' "$2/$to"
 fi
 
 # Remove from ## Shared libraries to ## Documentation.
 if grep '## Shared libraries' "$2/$to" >/dev/null && grep '## Documentation' "$2/$to" >/dev/null
 then
-  awk '/## Documentation/ { print "--e-n-d-"; print; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+  awk '/## Documentation/ { print "--e-n-d-s-"; print; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
-  sed -i.bak -e '/^## Shared libraries$/,/^--e-n-d-$/d' "$2/$to"
+  sed -i.bak -e '/^## Shared libraries$/,/^--e-n-d-s-$/d' "$2/$to"
 fi
 
 # Change link to GitHub Releases to html to allow variables.
@@ -278,7 +330,7 @@ sed -i.bak -e 's|\[{{ page.binutils_version }}\]({{ page.binutils_release_url }}
 # Change link to binary files to html to allow variables.
 if grep -e 'Binary files .* page.download_url' "$2/$to" >/dev/null
 then
-  awk '/Binary files .* page.download_url/ { print "<!-- truncate -->"; print ""; print; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
+  # awk '/Binary files .* page.download_url/ { print "<!-- truncate -->"; print ""; print; next }1' "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
 
   sed -i.bak -e 's|^.Binary files ..... page.download_url ...|<p><a href={frontMatter.download_url}>Binary files »</a></p>|' "$2/$to"
 fi
@@ -310,13 +362,6 @@ sed -i.bak -e "$s" "$2/$to"
 
 s='/```sh/{N;s|```sh\n~/Library/xPacks/@xpack-dev-tools/openocd/{{ page.version }}.{{ page.npm_subversion }}/.content/bin/openocd -f board/stm32f4discovery.cfg|<CodeBlock language="console"> {\n`% ~/Library/xPacks/@xpack-dev-tools/openocd/${frontMatter.version}.${frontMatter.npm_subversion}/.content/bin/openocd -f board/stm32f4discovery.cfg|;}'
 sed -i.bak -e "$s" "$2/$to"
-
-# Add 'import CodeBlock ...'.
-if grep '<CodeBlock' "$2/$to" >/dev/null
-then
-  s="/import Image from / { print; print \"import CodeBlock from '@theme/CodeBlock';\"; next }1"
-  awk "$s" "$2/$to" >"$2/$to.new" && mv -f "$2/$to.new" "$2/$to"
-fi
 
 s='/\^Cshutdown command invoked/{N;s|\^Cshutdown command invoked\n```|^Cshutdown command invoked`\n} </CodeBlock>|;}'
 sed -i.bak -e "$s" "$2/$to"
@@ -373,7 +418,6 @@ sed -i.bak -e 's|.Windows Build Tools..{{ site.baseurl }}/dev-tools/windows-buil
 # Fix WBT link.
 sed -i.bak -e 's|please read the .dedicated page..{{ site.baseurl }}/dev-tools/windows-build-tools/.|please read the [Getting Started page](/docs/getting-started/)|g' "$2/$to"
 
-
 # Fix platform names.
 sed -i.bak -e "s|Intel 64-bit|x64|" "$2/$to"
 sed -i.bak -e "s|Intel 32/64-bit|x64 and x86|" "$2/$to"
@@ -383,7 +427,7 @@ sed -i.bak -e "s|Arm 32/64-bit|arm64 and arm|" "$2/$to"
 # Remove the `site.baseurl` from links.
 sed -i.bak -e 's|{{ site.baseurl }}||g' "$2/$to"
 
-# ---
+# -----------------------------------------------------------------------------
 
 # Squeeze multiple adjacent empty lines.
 cat -s "$2/$to" >"$2/$to.new" && rm -f "$2/$to" && mv -f "$2/$to.new" "$2/$to"
