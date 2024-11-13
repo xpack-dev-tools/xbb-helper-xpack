@@ -15,10 +15,6 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import fs from 'node:fs';
 
-{% if customFields.isOrganizationWeb == "true" %}
-import addToolsToSidebar from './src/libs/addToolsToSidebar';
-{% endif %}
-
 // ----------------------------------------------------------------------------
 
 function getCustomFields() {
@@ -87,10 +83,6 @@ function getCustomFields() {
 const customFields = getCustomFields();
 logger.info(customFields);
 
-{% if customFields.isOrganizationWeb == "true" %}
-addToolsToSidebar();
-{% endif %}
-
 // ----------------------------------------------------------------------------
 
 const config: Config = {
@@ -143,7 +135,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/xpack-dev-tools/{{gitHubProjectName}}/edit/xpack/website/',
           showLastUpdateTime: true,
           blogSidebarCount: 8,
           authorsMapPath: '../authors.yml',
@@ -299,11 +291,11 @@ const config: Config = {
     metadata: [{% if customFields.isOrganizationWeb == "true" %}
       {
         name: 'keywords',
-        content: 'xpack, binary, development, tools'
+        content: 'xpack, binary, development, tools, reproducibility'
       }{% else %}
       {
         name: 'keywords',
-        content: 'xpack, binary, development, tools, {{appLcName}}'
+        content: 'xpack, binary, development, tools, reproducibility, {{appLcName}}'
       }{% endif %}
     ],
     navbar: {

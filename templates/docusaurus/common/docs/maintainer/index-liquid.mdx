@@ -48,9 +48,9 @@ import PlatformDockerBuild from './_common/_platform-docker-build.mdx'
 [![GitHub issues](https://img.shields.io/github/issues/xpack-dev-tools/{{gitHubProjectName}}.svg)](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/issues/)
 [![GitHub pulls](https://img.shields.io/github/issues-pr/xpack-dev-tools/{{gitHubProjectName}}.svg)](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/pulls)
 
-This page is intended for those who maintain the
+This page is designed for maintainers of the
 **xPack {{appName}}**
-project and documents how to make new releases.
+project and provides documentation on how to create new releases.
 
 ## Prerequisites
 
@@ -153,6 +153,7 @@ In the `xpack-dev-tools/{{gitHubProjectName}}` Git repo:
 
 - switch to the `xpack-development` branch
 - pull new changes
+- if necessary, merge the `xpack` branch
 - if necessary, merge the `website` branch
 
 :::caution
@@ -191,7 +192,7 @@ or run the following in a terminal:
 ```
 
 Navigate to the **Maintainer Info** page,
-the **Update the version specific code** section.
+the **Increase the version and update VERSION** section.
 
 ### Increase the version and update VERSION
 
@@ -217,7 +218,8 @@ If the project uses `customFields` in `build-assets/package.json`
 
 Check GitHub issues and pull requests:
 
-- https://github.com/xpack-dev-tools/{{gitHubProjectName}}/issues/
+- https://github.com/xpack-dev-tools/{{gitHubProjectName}}/issues
+- https://github.com/xpack-dev-tools/{{gitHubProjectName}}/pulls
 
 and fix them; assign them to a milestone (like <code>{customField('xpackVersion')}</code>).
 
@@ -994,6 +996,9 @@ version in `package.json` is not changed.
 
 ### Update the `xpack` branch
 
+In this Git repo:
+
+- select the `xpack` branch
 - merge `xpack-development` into `xpack`
 - push the `xpack` branch to GitHub
 

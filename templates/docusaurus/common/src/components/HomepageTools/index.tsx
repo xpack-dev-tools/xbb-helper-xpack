@@ -18,7 +18,7 @@ import styles from './styles.module.css';
 
 import Link from '@docusaurus/Link';
 
-import tools from '@site/src/libs/tools';
+import tools from '@site/tools';
 
 function Tool({ appName, appLcName }) {
   return (
@@ -53,7 +53,7 @@ function ToolsLeft() {
     <div className={clsx('col col--6')}>
       <div className="text--center padding-horiz--md padding-vert--lg">
         <Heading as="h2">Main Tools</Heading>
-        {tools().mainTools.map((props, idx) => (
+        {tools.mainTools.map((props, idx) => (
           <Tool {...props} />
         ))}
       </div>
@@ -66,14 +66,14 @@ function ToolsRight() {
     <div className={clsx('col col--6')}>
       <div className="text--center padding-horiz--md padding-vert--lg">
         <Heading as="h2">Supplementary Tools</Heading>
-        {tools().supplementaryTools.map((props, idx) => (
+        {tools.supplementaryTools.map((props, idx) => (
           <Tool {...props} />
         ))}
       </div>
       <hr className="hero__hr2" />
       <div className="text--center padding-horiz--md padding-vert--md">
         <Heading as="h2">Work in Progress</Heading>
-        {tools().workInProgressTools.map((props, idx) => (
+        {tools.workInProgressTools.map((props, idx) => (
           <ToolWork {...props} />
         ))}
       </div>
