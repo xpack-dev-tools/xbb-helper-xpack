@@ -2,9 +2,199 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-11-14
+
+* v3.0.17 released
+
+## 2024-11-13
+
+* edaaa83 add gcc-14.2-darwin-r2.git.patch
+* 697593e website-convert-release-post.sh update
+* 94eafc3 templates/docusaurus updates
+
+## 2024-10-15
+
+* f700c2c website-convert-release-post.sh rework
+* e2466c8 templates/docusaurus: add HeadTitle component
+* b5b8bb8 templates/docusaurus: fix maintainer title
+* 86ec22a templates/docusaurus: shorten seo title
+* 8e2bb37 templates/docusaurus: getting started updates
+
+## 2024-10-14
+
+* b580c19 website-generate-commons.sh: remove unused files
+* baf33b7 templates/docusaurus: add support for the Tools page
+* 918ae4e templates/docusaurus: add <head><meta>
+* 8147688 website-convert-release-post.sh: add <head><meta>
+
+## 2024-10-13
+
+* 7efac48 docusaurus/templates: update favicons
+* cff35e9 docusaurus.config-liquid.ts: add meta keywords
+* 8374877 templates/docusaurus: fix missing trailing slash
+* 33b5d51 website-update*.sh fix variable name
+* 809e0ce templates/docusaurus: fix trailing slash
+
+## 2024-10-12
+
+* 1cf5384 template/docusaurus: add Stars badge
+
+## 2024-10-11
+
+* 0a35f65 maintainer-scripts seo updates
+* 6d7e069 git-commit.sh updates
+
+## 2024-10-10
+
+* d908285 website-update-and-publish.sh update
+* fc73336 package.json update actions
+* 96cb966 websites-update-misc.sh update
+* 931ed8f templates/docusaurus update for seo
+* f337ef7 maintainer-scripts update
+* a67aa90 templates/docusaurus Home page update
+* 4d5b99f templates/docusaurus rework xpack definitions
+* 7962a5b websites-*.sh: rework with for instead of find
+* 4b96bd4 website-import-releases: fix validation
+* eaa81df maintainer-scripts: ${script_name} done
+
+## 2024-10-09
+
+* 9fa8be4 templates/docusaurus: better explain xPacks
+* 0859613 templates/docusaurus fix xpackSemver
+* 93fc84a templates/docusaurus add quick test node
+* 6abdbde rework website-generate-blog-post.sh
+* 888dfee websites-generate-commons*.sh update
+* f27a3da add websites-update-misc.sh
+* 270ef9a git-commit.sh update
+* 76d07b8 templates/docusaurus: prefer liquid variables
+* 8863aad docs/install: regular archives
+* 15863a9 getting-started: add link to MacStadium
+* 7641ef2 docusaurus.config-liquid.ts update menus for org web
+* b6bf0f8 getting-started: update
+
+## 2024-10-08
+
+* 4b7a9c9 getting-started: update
+* f194115 install: update
+* d4a0d28 getting-started: define reproducibility
+* c98de9f HomepageFeatures update
+
+## 2024-10-07
+
+* 6f108fe templates/docusaurus: getting started add xPacks
+* 5280bb0 templates/docusaurus: home add more details
+* c2ae6b1 templates/docusaurus: add faq/_common
+* 5c5d839 HomePageTools: add robots.txt warning
+* 6a4e47b docusaurus.config-liquid.ts: preset.sitemap ignorePatterns
+* bd1ca2b docusaurus.config-liquid.ts: /baseUrl/
+* ad93e72 templates/docusaurus authors.yml update socials
+* 39abc9b templates/docusaurus updates
+* 06bc54d website-convert-release-post.sh: fix web addresses
+
+## 2024-10-06
+
+* be9293a templates/docusaurus: update site title
+* 8182d7a templates/docusaurus: enable home icon
+* 113e0f6 website*-generate-commons* update
+* b4c82eb templates/docusaurus css tweaks
+* 482c6e9 templates/docusaurus css tweaks
+* 5e0819a svg opacity 0.15
+* f9def06 templates/docusaurus update
+* 8a991e3 website-generate-commons: fix top README generation
+* f7ee1b2 templates/docusaurus: add support for organization web
+* 186d529 templates/workflows: remove dash from -%}
+
+## 2024-10-04
+
+* 6f16ce8 templates/docusaurus cleanups
+* d16ca39 templates/docusaurus update about components
+* 81e9cf3 website-convert-release-post.sh: fix risc-v admonition
+
+## 2024-10-02
+
+* 51d3a1c templates/docusaurus about commons update
+* 2e36a8e template/docusaurus: update X/Twitter
+* a5c67f1 getting-started updates
+
+## 2024-09-29
+
+* c529876 templates/docusaurus updates
+* 32631dc website-generate-commons-and-build.sh update
+* 4c2f3ef git-status.sh update
+* 174be7c website-convert-release-post.sh update
+
+## 2024-09-27
+
+* 23afc8a website-convert-release-post.sh: add install version
+* 247969a generate-website-blog-post.sh: add appName & co to context
+
+## 2024-09-26
+
+* af3a735 templates/docusaurus: add About
+* 6d44ca6 HomepageFeatures: selective platforms
+* 6b650b8 getting-started update
+
+## 2024-09-25
+
+* cd8be2d common/docs/install: add install specific version
+* 0becd28 maintainer: white space
+
+## 2024-09-24
+
+* 8233790 docusaurus.config-liquid.ts cleanups
+
+## 2024-09-23
+
+* cc04a3b docusaurus.config-liquid.ts: fix release version
+* f55c9f9 templates/docusaurus: fix date: properties
+
+## 2024-09-21
+
+* e798fdc templates/docusaurus: re-work the copyright message
+
+## 2024-09-20
+
+* 4dee90d templates/docusaurus: re-work the Donate section
+* 5253887 templates/docusaurus: re-work the Donate section
+* e4c2474 templates/docusaurus: small Donate button
+* 90b9fdf templates/docusaurus: add Donate button
+* 610fd50 templates/docusaurus update footer
+* cd502b1 templates/docusaurus add docusaurusVersion to footer
+* 4a2922f add build date to footer
+
+## 2024-09-18
+
+* 00bfd3c templates/docusaurus updates
+* bad3a4f maintainer-scripts updates
+* 22a17ac add websites-consistency-checks.md
+* 83ac931 website-*.sh update liquid context
+* 175e929 generate-website-blog-post.sh update liquid context
+* d45c8d3 templates/docusaurus major updates
+
+## 2024-09-14
+
+* 7db8d15 templates/docusaurus update regexps
+* ab49b82 templates/docusaurus updates
+* cfdb5a6 website-convert-release-post.sh update cmake
+* f7561bf templates/workflows updates
+
+## 2024-09-13
+
+* efc688b templates/docusaurus updates
+* 1a2c594 website-convert-release-post.sh update WBT
+* 6bc217d templates/workflows add windows-2019
+* 315909d templates/workflows updates
+* bfc3aad templates/docusaurus updates
+* c764fa7 website-convert-release-post.sh update
+
 ## 2024-09-12
 
-* v3.0.16 released
+* c9191ba templates/docusaurus updates
+* 6f67920 templates/docusaurus updates
+* 9789a29 generate-website-blog-post.sh: add upstreamVersion
+* 5d90c99 website-generate-commons.sh: add upstreamVersion
+* 8626e83 3.0.16
+* 5f36e44 prepare v3.0.16
 * 6b5deab templates/docusaurus update
 * 30dcb1b templates/docusaurus update
 * f0f9349 templates/docusaurus add support for platforms
@@ -16,10 +206,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-09-11
 
-2024-09-11 * 058976f website-convert-release-post.sh update
-2024-09-11 * b7f5a34 templates/docusaurus update
-2024-09-11 * f74b029 3.0.15
-2024-09-11 * 7836486 prepare v3.0.15
+* 058976f website-convert-release-post.sh update
+* b7f5a34 templates/docusaurus update
+* f74b029 3.0.15
+* 7836486 prepare v3.0.15
 * 8cbdb0d templates/docusaurus updates
 * 3e88b1b qemu.sh: -DHWCAP_USCAT for arm64
 * 25119d5 update copyright notices
@@ -227,10 +417,10 @@ Entries in this file are in reverse chronological order.
 ## 2024-08-06
 
 * 329cfe0 website-generate-commons.sh: add showDeprecatedGnuMcuAnalytics
-2024-08-06 * 59c999f rename templates/docusaurus _github-actions-durations.mdx
-2024-08-06 * 3b83822 templates/docusaurus updates
-2024-08-06 * e8bdd1f 3.0.3
-2024-08-06 * 843510a prepare v3.0.3
+* 59c999f rename templates/docusaurus _github-actions-durations.mdx
+* 3b83822 templates/docusaurus updates
+* e8bdd1f 3.0.3
+* 843510a prepare v3.0.3
 * 0397e13 templates/docusaurus updates
 * 3da2cdd git-push.sh update
 
@@ -813,17 +1003,17 @@ Entries in this file are in reverse chronological order.
 ## 2024-05-19
 
 * 853df96 remove gcc-11.5 & 12.4 cross.git.patch
-2024-05-19 * 34edc2b gcc-11.5*.patch update
-2024-05-19 * b250700 gcc-mingw.sh: cosmetics
-2024-05-19 * 320c19e Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
-2024-05-19 * bd2b215 gcc-cross.sh: cosmetics
-2024-05-19 * d670a21 gcc-12.4.*.patch: add conditional abort()
-2024-05-19 * 1fb8b53 download.sh: verbosity
-2024-05-19 * 041718e rework gcc-11.5* patches
-2024-05-19 * b4570cd fix gcc-12.4* patches
-2024-05-19 * a9d7348 rework gcc/system.h patch for 12.4
-2024-05-19 * 51e6352 build-common.sh: more verbosity
-2024-05-19 * 2742b5e post-processing.sh: filter OBJDUMP *.dll better
+* 34edc2b gcc-11.5*.patch update
+* b250700 gcc-mingw.sh: cosmetics
+* 320c19e Merge branch 'xpack-develop' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-develop
+* bd2b215 gcc-cross.sh: cosmetics
+* d670a21 gcc-12.4.*.patch: add conditional abort()
+* 1fb8b53 download.sh: verbosity
+* 041718e rework gcc-11.5* patches
+* b4570cd fix gcc-12.4* patches
+* a9d7348 rework gcc/system.h patch for 12.4
+* 51e6352 build-common.sh: more verbosity
+* 2742b5e post-processing.sh: filter OBJDUMP *.dll better
 
 ## 2024-05-18
 
@@ -1902,8 +2092,8 @@ Entries in this file are in reverse chronological order.
 ## 2023-01-11
 
 * d4165c6 xbb.sh: filter non-existent folders for -rpath mac
-2023-01-11 * 33ae9d0 xbb.sh: filter non-existing folders in -rpath
-2023-01-11 * e3adbcd xbb.sh: split rpath into multiple options
+* 33ae9d0 xbb.sh: filter non-existing folders in -rpath
+* e3adbcd xbb.sh: split rpath into multiple options
 
 ## 2023-01-10
 
@@ -1964,15 +2154,15 @@ Entries in this file are in reverse chronological order.
 * 8971ac4 xbb.sh: FUNCNAME[0]
 * cbb0fa5 define & use global REALPATH
 * 7941892 build-tests.sh: verbose winecfg; sleep
-2023-01-06 * 340058b vde.sh: rename vde_patch_file_name
-2023-01-06 * c6d2ebf XBB_CXXFLAGS+=" -Wno-psabi" on linux-arm
-2023-01-06 * d2cdc21 cmake -LH only when IS_DEVELOP
-2023-01-05 * 75e065d hidapi.sh: -LH for cmake
-2023-01-05 * 7e4e127 libftdi.sh: use ninja for build
-2023-01-05 * c990266 libssh.sh: use ninja for build
-2023-01-05 * fa59c8a zstd.sh: verbose cmake
-2023-01-05 * f392ddd post-processing.sh: keep some >>> in log
-2023-01-05 * c8ef3a8 post-processing.sh: skip linking itself
+* 340058b vde.sh: rename vde_patch_file_name
+* c6d2ebf XBB_CXXFLAGS+=" -Wno-psabi" on linux-arm
+* d2cdc21 cmake -LH only when IS_DEVELOP
+* 75e065d hidapi.sh: -LH for cmake
+* 7e4e127 libftdi.sh: use ninja for build
+* c990266 libssh.sh: use ninja for build
+* fa59c8a zstd.sh: verbose cmake
+* f392ddd post-processing.sh: keep some >>> in log
+* c8ef3a8 post-processing.sh: skip linking itself
 
 ## 2023-01-03
 
