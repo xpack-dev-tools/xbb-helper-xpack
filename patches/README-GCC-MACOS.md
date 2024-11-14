@@ -13,9 +13,9 @@ In reverse chronological order.
 
 ### gcc-14.2-darwin-r2
 
-In Oct 7, Iain tagged r2:
+In Oct 7, Iain tagged r2, but it still fails on macOS 14 and 15:
 
-- https://github.com/iains/gcc-14-branch/issues/11#issuecomment-2415889920
+- https://github.com/iains/gcc-14-branch/issues/11#issuecomment-2475578101
 
 ```sh
 rm -rf ~/tmp/gcc-14-branch.git
