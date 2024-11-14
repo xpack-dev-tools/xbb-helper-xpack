@@ -653,7 +653,7 @@ df -BG -H /
 To free the space used by all previous builds of all `xpack-dev-tools` packages:
 
 ```sh
-xpm run clear-all-project-builds -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
+xpm run clear-all-projects-builds -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
 ```
 
 This is equivalent to running a wide `rm` to remove the `build` folders:
@@ -702,7 +702,7 @@ xpm run trigger-workflow-build-{{name}} -C ~/Work/xpack-dev-tools/{{gitHubProjec
 {% endfor -%}
 {% comment %}{% endcomment %}```
 
-The scripts behind these actions require the `GITHUB_API_DISPATCH_TOKEN`
+The scripts behind these actions require the `XPACK_DEV_TOOLS_FG_DISPATCH_TOKEN`
 variable to be present
 in the environment, and the organization `PUBLISH_TOKEN` to be visible in the
 Settings → Action →
@@ -754,7 +754,7 @@ xpm run trigger-workflow-test-prime -C ~/Work/xpack-dev-tools/{{gitHubProjectNam
 {% if isLinuxArm %}xpm run trigger-workflow-test-docker-linux-arm -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets{% endif %}
 ```
 
-The scripts behind these accesible require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
+The scripts behind these accesible require the `XPACK_DEV_TOOLS_FG_DISPATCH_TOKEN` variable to be present
 in the environment.
 
 These actions use the `xpack-development` branch of this repo and the
