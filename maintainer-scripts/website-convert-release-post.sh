@@ -124,6 +124,8 @@ then
   echo "<<o< $seo_title >>>"
 fi
 
+has_macos_clt_16_issue="$(grep -e 'MacOsClt16Issue' "${to_path}" || true)"
+
 # -----------------------------------------------------------------------------
 # Process the frontmatter.
 
@@ -204,6 +206,20 @@ BEGIN {
     print "import {PageMetadata} from '@docusaurus/theme-common';"
     print "import Image from '@theme/IdealImage';";
     print "import CodeBlock from '@theme/CodeBlock';"
+__EOF__
+
+if [ ! -z "${has_macos_clt_16_issue}" ]
+then
+# Note: __EOF__ is quoted to prevent substitutions here.
+cat <<'__EOF__' >> "${tmp_awk_file}"
+    print "import MacOsClt16Issue from './_macos-clt-16-issue.mdx';"
+__EOF__
+fi
+
+# Note: __EOF__ is quoted to prevent substitutions here.
+cat <<'__EOF__' >> "${tmp_awk_file}"
+    print ""
+    print "{/* ------------------------------------------------------------------------ */}"
 __EOF__
 
 if [ ! -z "${summary}" ]
