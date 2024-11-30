@@ -2,7 +2,7 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/xbb-helper.svg?color=blue)](https://www.npmjs.com/package/@xpack-dev-tools/xbb-helper/)
 [![license](https://img.shields.io/github/license/xpack-dev-tools/xbb-helper-xpack)](https://github.com/xpack-dev-tools/xbb-helper-xpack/blob/xpack/LICENSE)
 
-# A source xPack with helper files for the XBB builds
+# A source package with helper files for the XBB builds
 
 This project provides common scripts and other files useful during
 **xPack Build Box (XBB)** builds.
@@ -32,7 +32,7 @@ For maintainer info, please see:
 
 ## Install
 
-As a source xPack, the easiest way to add it to a project is via
+As a source xpm package, the easiest way to add it to a project is via
 **xpm**, but it can also be used as any Git project, for example as a submodule.
 
 ### Prerequisites

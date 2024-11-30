@@ -40,7 +40,7 @@ git clone \
   ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 ```
 
-Link it to the central xPacks store:
+Link it to the user global xPacks store:
 
 ```sh
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git

@@ -1,7 +1,7 @@
 {
   "name": "@xpack-dev-tools/xbb-helper",
   "version": "3.0.17",
-  "description": "A source xPack with scripts and other files to support XBB builds",
+  "description": "A source package with scripts and other files to support XBB builds",
   "main": "",
   "scripts": {
     "postversion": "git push origin --all && git push origin --tags"
