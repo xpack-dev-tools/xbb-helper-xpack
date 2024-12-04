@@ -296,7 +296,7 @@ Before the real build, run {% if names_array.size > 1 %}test/development builds 
 
 ### Visual Studio Code extension
 
-All actions are defined as **xPack actions** and can be conveniently
+All actions are defined as **xpm/xPack actions** and can be conveniently
 triggered via the VS Code graphical interface, using the
 [xPack C/C++ Managed Build Tools extension](https://marketplace.visualstudio.com/items?itemName=ilg-vscode.xpack).
 
@@ -503,7 +503,7 @@ In some cases it is necessary to run a debug session with the binaries.
 
 For these cases, the build script accepts the `--debug` options.
 
-There are also xPack actions that use this option (`build-development-debug`
+There are also xpm actions that use this option (`build-development-debug`
 and `docker-build-development-debug`).
 
 ### Files cache
@@ -680,7 +680,7 @@ xpm run generate-workflows -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/b
 
 ### Manually trigger the build GitHub Actions
 
-To trigger the GitHub Actions builds, use the xPack actions:
+To trigger the GitHub Actions builds, use the xpm actions:
 
 {% assign names_array = "" | split: "" -%}
 
@@ -740,7 +740,7 @@ The automation is provided by GitHub Actions.
 {% if platform == "linux-arm64" or platform == "linux-arm" %}{% assign isLinuxArm = true %}{% endif -%}
 {% endfor -%}
 
-To trigger the GitHub Actions tests, run the xPack actions:
+To trigger the GitHub Actions tests, run the xpm actions:
 
 <ul>
 <li><b>trigger-workflow-test-prime</b></li>

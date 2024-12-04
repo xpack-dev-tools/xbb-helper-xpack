@@ -141,9 +141,9 @@ xpm run build --config darwin-x64
 </details>
 
 <details>
-<summary>xPack actions</summary>
+<summary>xpm/xPack actions</summary>
 
-The xPack actions are extensions of npm scripts, i.e. named sequences
+The xpm actions are extensions of npm scripts, i.e. named sequences
 of commands that are invoked via `xpm run <name>` to perform specific
 operations.
 together in a sub-shell .
@@ -174,10 +174,10 @@ commands.
 <details>
 <summary>Visual Studio Code integration</summary>
 
-xPack actions and build configurations are supported in Visual Studio via the
+xpm/xPack actions and build configurations are supported in Visual Studio via the
 [xPack C/C++ Managed Build Tools](https://marketplace.visualstudio.com/items?itemName=ilg-vscode.xpack) extension.
 
-With this extension installed, xPack actions can be very conveniently
+With this extension installed, xpm/xPack actions can be very conveniently
 invoked via a single mouse click, for example:
 
 ![xPack actions](https://github.com/xpack/vscode-xpack-extension-ts/raw/master/assets/docs-images/xpack-actions.png)
@@ -348,7 +348,7 @@ In some cases it is necessary to run a debug session with the binaries.
 
 For these cases, the build script accepts the `--debug` options.
 
-There are also xPack actions that use this option (`build-development-debug`
+There are also xpm actions that use this option (`build-development-debug`
 and `docker-build-development-debug`).
 
 ### Use a local cache
