@@ -282,7 +282,7 @@ set -x
 
 # UPDATE ME!
 # commands_file="${tmp_file_template_github}"
-commands_file="${tmp_file_template_blog}"
+# commands_file="${tmp_file_template_blog}"
 # commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_application}"
 
@@ -293,7 +293,7 @@ commands_file="${tmp_file_template_blog}"
 
 # commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
-# commands_file="${tmp_file_commit_build_assets_package}"
+commands_file="${tmp_file_commit_build_assets_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
