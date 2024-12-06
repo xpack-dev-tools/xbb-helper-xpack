@@ -46,8 +46,14 @@ script_folder_name="$(basename "${script_folder_path}")"
 helper_folder_path="$(dirname "${script_folder_path}")"
 
 # (build-assets/xpacks/@xpack-dev-tools/xbb-helper/maintainer-scripts/*.sh).
-
-project_folder_path="$(dirname $(dirname $(dirname $(dirname $(dirname "${script_folder_path}")))))"
+root_folder_path="$(dirname $(dirname $(dirname "${helper_folder_path}")))"
+if [ "$(basename "${root_folder_path}")" == "build-assets" ]
+then
+  project_folder_path="$(dirname "${root_folder_path}")"
+else
+  project_folder_path="${root_folder_path}"
+fi
+scripts_folder_path="${root_folder_path}/scripts"
 
 # This is the folder where the build is started
 # (build-assets/xpacks/@xpack-dev-tools/xbb-helper/maintainer-scripts/*.sh).
@@ -123,7 +129,7 @@ fi
 
 context="{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\", \"releaseVersion\": \"${xpack_version}\", \"releaseDate\": \"${release_date}\", \"upstreamVersion\": \"${upstream_version}\", \"customFields\": ${custom_fields} }"
 
-liquidjs --context "${context}" --template "@${website_blog_folder_path}/templates/blog-post-release-part-1-liquid.mdx" >> "${post_file_path}"
+liquidjs --context "${context}" --template "@${website_blog_folder_path}/_templates/blog-post-release-part-1-liquid.mdx" >> "${post_file_path}"
 
 echo >> "${post_file_path}"
 echo '```txt'  >> "${post_file_path}"
@@ -133,7 +139,7 @@ cat "${xpack_binaries_folder_path}"/*.sha \
   >> "${post_file_path}"
 echo '```'  >> "${post_file_path}"
 
-liquidjs --context "${context}" --template "@${website_blog_folder_path}/templates/blog-post-release-part-2-liquid.mdx" >> "${post_file_path}"
+liquidjs --context "${context}" --template "@${website_blog_folder_path}/_templates/blog-post-release-part-2-liquid.mdx" >> "${post_file_path}"
 
 echo "Don't forget to manually solve the TODO action point!"
 
