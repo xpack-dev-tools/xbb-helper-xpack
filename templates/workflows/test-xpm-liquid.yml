@@ -168,7 +168,7 @@ jobs:
 {% when "darwin-x64" %}
   {{platform}}-test:
     name: '{{platform}} {{appName}}@{% raw %}${{github.event.inputs.version}}{% endraw %} test'
-    runs-on: macos-12
+    runs-on: macos-13
 
     steps:
       - name: 'Show environment'
