@@ -10,7 +10,8 @@ The build scripts run on GNU/Linux and macOS. The Windows binaries are
 generated on x64 GNU/Linux, using [mingw-w64](https://mingw-w64.org).
 
 For details on installing the prerequisites, please read the
-[XBB prerequisites page](https://xpack.github.io/xbb/prerequisites/).
+[Build Prerequisites](https://xpack-dev-tools.github.io/docs/developer/install/prerequisites/)
+page.
 
 ## Get project sources
 
