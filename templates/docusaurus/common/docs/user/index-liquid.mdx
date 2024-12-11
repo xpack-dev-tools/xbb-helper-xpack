@@ -8,14 +8,26 @@ description: User information, including the versioning scheme, usage of shared 
 keywords:
   - xpack
   - {{appLcName}}
-  - user
+  - user{% if customFields.hasCustomUser != "true" %}
   - versioning
   - shared
-  - rpath
+  - rpath{% endif %}
 
 date: 2024-07-21 18:56:00 +0300
 
 ---
+
+{% if customFields.hasCustomUser == "true" %}
+
+import CustomUser from './_custom-user.mdx'
+
+{/* ------------------------------------------------------------------------ */}
+
+# User's Guides
+
+<CustomUser />
+
+{% else %}
 
 import customField from '@site/src/libs/customField';
 
@@ -38,3 +50,5 @@ to use the **xPack {{appName}}** binaries in their workflows.
 <More/>
 
 <UseInTesting/>
+
+{% endif %}

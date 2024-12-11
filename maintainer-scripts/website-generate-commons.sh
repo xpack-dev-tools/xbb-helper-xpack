@@ -266,14 +266,27 @@ then
   (
     cd "${project_folder_path}/website"
 
-    rm -rfv "docs/developer"
+    # rm -rfv "docs/developer/"
+    rm -rfv "docs/developer/_common"
+    (cd "docs/developer"; for f in _*.mdx; do if [ "${f}" != "_custom-developer.mdx" ]; then rm -rf "${f}"; fi; done)
+
     rm -rfv "docs/faq"
-    rm -rfv "docs/install"
-    rm -rfv "docs/maintainer"
+    # rm -rfv "docs/install"
+    rm -rfv "docs/install/_common"
+    (cd "docs/install"; for f in _*.mdx; do if [ "${f}" != "_custom-install.mdx" ]; then rm -rf "${f}"; fi; done)
+
+    # rm -rfv "docs/maintainer"
+    rm -rfv "docs/maintainer/_common"
+    (cd "docs/maintainer"; for f in _*.mdx; do if [ "${f}" != "_custom-maintainer.mdx" ]; then rm -rf "${f}"; fi; done)
+
     rm -rfv "docs/releases"
     rm -rfv "docs/support"
     rm -rfv "docs/test"
-    rm -rfv "docs/user"
+
+    # rm -rfv "docs/user"
+    rm -rfv "docs/user/_common"
+    (cd "docs/user"; for f in _*.mdx; do if [ "${f}" != "_custom-user.mdx" ]; then rm -rf "${f}"; fi; done)
+
   )
 else
   # Regenerate top README.md.

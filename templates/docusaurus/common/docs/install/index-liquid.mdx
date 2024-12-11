@@ -10,15 +10,27 @@ keywords:
   - {{appLcName}}
   - prerequisites
   - automated
-  - install
+  - install{% if customFields.hasCustomInstall != "true" %}
   - uninstall
-  - files
+  - files{% endif %}
 
 hide_table_of_contents: false
 
 date: 2020-08-21 11:09:00 +0300
 
 ---
+
+{% if customFields.hasCustomInstall == "true" %}
+
+import CustomInstall from './_custom-install.mdx'
+
+{/* ------------------------------------------------------------------------ */}
+
+# Install Guides
+
+<CustomInstall />
+
+{% else %}
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -772,3 +784,5 @@ After install, the package creates a hierarchy of folders like the following
 <Miscellaneous/>
 
 <Testing/>
+
+{% endif %}
