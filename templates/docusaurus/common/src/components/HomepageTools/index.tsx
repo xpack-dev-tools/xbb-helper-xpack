@@ -80,8 +80,8 @@ function ToolsRight() {
       <hr className="hero__hr2" />
       <div className="text--center padding-horiz--md padding-vert--md">
         <Heading as="h2">Other</Heading>
-        <b><Link to={'https://github.com/xpack-dev-tools/xbb-helper-xpack'}>xbb-helper</Link></b> - <b>xPack Build Helper</b>
-        <b><Link to={'https://github.com/xpack-dev-tools/xpack-build-box'}>xpack-build-box</Link></b> - <b>xPack Build Box (XBB)</b>
+        <div><b><Link to={'https://github.com/xpack-dev-tools/xbb-helper-xpack'}>xbb-helper</Link></b> - <b>xPack Build Helper</b></div>
+        <div><b><Link to={'https://github.com/xpack-dev-tools/xpack-build-box'}>xpack-build-box</Link></b> - <b>xPack Build Box (XBB)</b></div>
       </div>
     </div>
   );
