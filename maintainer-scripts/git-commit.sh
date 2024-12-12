@@ -54,6 +54,21 @@ __EOF__
 
 # -----------------------------------------------------------------------------
 
+tmp_file_blog="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_blog}"
+cd "$1"
+
+echo
+echo $1
+git add website/blog/*.md*
+# git add templates
+
+git commit -m "website/blog updates" || true
+
+__EOF__
+
+# -----------------------------------------------------------------------------
+
 tmp_file_template_blog="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_template_blog}"
 cd "$1"
@@ -272,7 +287,7 @@ fi
 
 # git commit -m "build-assets/package.json: build-development & docker 5.2.2"
 # git commit -m "build-assets/package.json: updates"
-git commit -m "build-assets/package.json: bump deps"
+git commit -m "build-assets/package.json: bump deps" || true
 
 __EOF__
 
@@ -283,6 +298,7 @@ set -x
 # UPDATE ME!
 # commands_file="${tmp_file_template_github}"
 # commands_file="${tmp_file_template_blog}"
+commands_file="${tmp_file_blog}"
 # commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_application}"
 
@@ -293,7 +309,7 @@ set -x
 
 # commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
-commands_file="${tmp_file_commit_build_assets_package}"
+# commands_file="${tmp_file_commit_build_assets_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
