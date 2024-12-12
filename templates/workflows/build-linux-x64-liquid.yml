@@ -146,7 +146,7 @@ jobs:
 
   {{platform}}-test:
     name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: [{{platform}}-upload]
 
     steps:
