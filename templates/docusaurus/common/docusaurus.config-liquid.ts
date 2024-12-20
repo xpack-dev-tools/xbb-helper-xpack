@@ -321,7 +321,7 @@ const config: Config = {
         },{% if customFields.isOrganizationWeb != "true" %}
         {
           type: 'dropdown',
-          label: 'Documentation',
+          label: 'Getting Started',
           to: 'docs/getting-started',
           position: 'left',
           items: [
