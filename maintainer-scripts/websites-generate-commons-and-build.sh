@@ -48,6 +48,13 @@ do
   (
     cd "${f}/.."
 
+    name="$(basename "$(pwd)")"
+    # if [ "${name}" != "xpack-build-box.git" ]
+    # then
+    #   echo  "${name} skipped"
+    #   continue
+    # fi
+
     if [ ! -d website ]
     then
       continue
@@ -56,7 +63,7 @@ do
     echo
     pwd
 
-    set -x
+    # set -x
 
     if grep '"xpack":' package.json
     then
@@ -65,10 +72,17 @@ do
       xpm run website-generate-commons -C build-assets
       xpm run website-import-releases -C build-assets
     else
-      # xpack-dev-tools.github.io is not an xpack and has no xpack-development.
-      git checkout master
-
-      xpm run website-generate-commons -C build-assets
+      if [ "${name}" == "xpack-dev-tools.github.io.git" ]
+      then
+        # xpack-dev-tools.github.io is not an xpack and has no xpack-development.
+        git checkout master
+        xpm run website-generate-commons -C build-assets
+      elif [ "${name}" == "xpack-build-box.git" ]
+      then
+        # xpack-build-box uses the new templates.
+        git checkout development
+        (cd website; npm run npm-link-helper; npm run generate-website-commons)
+      fi
     fi
 
     (

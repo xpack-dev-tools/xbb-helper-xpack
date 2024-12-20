@@ -48,6 +48,13 @@ do
   (
     cd "${f}/.."
 
+    name="$(basename "$(pwd)")"
+    # if [ "${name}" != "xpack-build-box.git" ]
+    # then
+    #   echo  "${name} skipped"
+    #   continue
+    # fi
+
     if [ ! -d website ]
     then
       continue
@@ -56,14 +63,19 @@ do
     echo
     pwd
 
-    set -x
+    # set -x
 
     if grep '"xpack":' package.json
     then
       branch="xpack-development"
     else
-      # xpack-dev-tools.github.io is not an xpack and has no xpack-development.
-      branch="master"
+      if [ "${name}" == "xpack-dev-tools.github.io.git" ]
+      then
+        # xpack-dev-tools.github.io is not an xpack and has no xpack-development.
+        branch="master"
+      else
+        branch="development"
+      fi
     fi
 
     git checkout "${branch}"
