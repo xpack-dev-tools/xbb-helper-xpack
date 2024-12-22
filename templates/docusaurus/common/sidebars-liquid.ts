@@ -7,6 +7,10 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 import toolsSidebar from './sidebars-tools.js';
 {% endif %}
 
+{% if customFields.hasCustomUserSidebar == "true" %}
+import {userSidebarCategory} from "./sidebar-user";
+{% endif %}
+
 /**
  * Creating a sidebar enables you to:
  - create an ordered group of docs
@@ -63,12 +67,13 @@ const sidebars: SidebarsConfig = {
       type: 'doc',
       id: 'install/index',
       label: 'Install Guide'
-    },
+    },{% if customFields.hasCustomUserSidebar == "true" %}
+    userSidebarCategory,{% else %}
     {
       type: 'doc',
       id: 'user/index',
       label: 'User\'s Guide'
-    },{% if customFields.isOrganizationWeb != "true" %}
+    },{% endif %}{% if customFields.isOrganizationWeb != "true" %}
     {
       type: 'doc',
       id: 'developer/index',
