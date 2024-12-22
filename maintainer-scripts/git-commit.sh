@@ -69,6 +69,21 @@ __EOF__
 
 # -----------------------------------------------------------------------------
 
+tmp_file_website_xpack="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_website_xpack}"
+cd "$1"
+
+echo
+echo $1
+git add website/_xpack.github.io
+
+git commit -m "website: add _xpack.github.io" || true
+
+__EOF__
+
+
+# -----------------------------------------------------------------------------
+
 tmp_file_template_blog="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_template_blog}"
 cd "$1"
@@ -298,7 +313,7 @@ set -x
 # UPDATE ME!
 # commands_file="${tmp_file_template_github}"
 # commands_file="${tmp_file_template_blog}"
-commands_file="${tmp_file_blog}"
+# commands_file="${tmp_file_blog}"
 # commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_application}"
 
@@ -306,6 +321,7 @@ commands_file="${tmp_file_blog}"
 # commands_file="${tmp_file_npmignore}"
 
 # commands_file="${tmp_file_website}"
+commands_file="${tmp_file_website_xpack}"
 
 # commands_file="${tmp_file_commit_readmes}"
 # commands_file="${tmp_file_commit_package}"
