@@ -50,8 +50,6 @@ else
   project_folder_path="${root_folder_path}"
 fi
 
-xpack_www_releases="$(dirname $(dirname $(dirname "${project_folder_path}")))/xpack.github/www/web-jekyll-xpack.git/_posts/releases"
-
 # which liquidjs
 # liquidjs --help
 
@@ -62,14 +60,25 @@ export app_name="$(liquidjs --context @package.json --template '{{xpack.properti
 export app_lc_name="$(liquidjs --context @package.json --template '{{xpack.properties.appLcName}}')"
 export platforms="$(liquidjs --context @package.json --template '{{xpack.properties.platforms}}')"
 
-if [ ! -d "${xpack_www_releases}/${app_lc_name}" ]
+# xpack_www_releases="$(dirname $(dirname $(dirname "${project_folder_path}")))/xpack.github/www/web-archive-jekyll.git/_posts/releases/${app_lc_name}"
+
+# if [ ! -d "${xpack_www_releases}" ]
+# then
+#   echo "No ${xpack_www_releases}, nothing to do..."
+#   exit 0
+# fi
+
+# cd "${xpack_www_releases}"
+
+xpack_www_releases="${project_folder_path}/website/_xpack.github.io/_posts/releases/${app_lc_name}"
+if [ ! -d "${xpack_www_releases}" ]
 then
-  echo "No ${xpack_www_releases}/${app_lc_name}, nothing to do..."
+  echo "No ${xpack_www_releases}, nothing to do..."
   exit 0
 fi
+cd "${xpack_www_releases}"
 
-cd "${xpack_www_releases}/${app_lc_name}"
-# pwd
+pwd
 
 # echo
 # echo "platforms=${platforms}"
