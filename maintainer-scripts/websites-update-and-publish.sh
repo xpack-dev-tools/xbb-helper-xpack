@@ -55,8 +55,15 @@ do
     #   continue
     # fi
 
-    if [ ! -d website ]
+    if [ ! -d "website" ]
     then
+      echo "${name} has no website..."
+      continue
+    fi
+
+    if ! grep websiteConfig website/package.json
+    then
+      echo "${name} has no websiteConfig..."
       continue
     fi
 

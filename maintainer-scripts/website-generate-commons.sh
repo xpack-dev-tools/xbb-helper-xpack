@@ -103,7 +103,7 @@ then
   base_url="/"
 else
   xpack_version=${XBB_RELEASE_VERSION:-"$(xbb_get_current_version)"}
-  base_url="/${app_lc_name}/"
+  base_url="/${app_lc_name}-xpack/"
 fi
 
 # Remove pre-release.
