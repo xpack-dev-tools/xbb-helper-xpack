@@ -1,0 +1,28 @@
+From f1b81afc515f752de820f151831feac622b1f44f Mon Sep 17 00:00:00 2001
+From: Liviu Ionescu <ilg@livius.net>
+Date: Thu, 7 Sep 2023 23:07:00 +0300
+Subject: [PATCH] system.h: do not define abort() on mingw
+
+---
+ gcc/system.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/gcc/system.h b/gcc/system.h
+index 1028dcb1eb3..d1c3e8dd0f4 100644
+--- a/gcc/system.h
++++ b/gcc/system.h
+@@ -807,7 +807,11 @@ private:
+    should normally call 'internal_error' with a specific message.  */
+ extern void fancy_abort (const char *, int, const char *)
+ 					 ATTRIBUTE_NORETURN ATTRIBUTE_COLD;
++
++#if ! defined(__MINGW32__)
++/* It fails with mingw-w64 10 or later. */
+ #define abort() fancy_abort (__FILE__, __LINE__, __FUNCTION__)
++#endif
+ 
+ /* Use gcc_assert(EXPR) to test invariants.  */
+ #if ENABLE_ASSERT_CHECKING
+-- 
+2.39.3 (Apple Git-146)
+
