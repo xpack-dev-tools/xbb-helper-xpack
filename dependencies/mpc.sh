@@ -104,7 +104,7 @@ function mpc_build()
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          config_options+=("--disable-maintainer-mode")
+          config_options+=("--disable-maintainer-mode") # Arm, Aarch64
 
           config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")
           config_options+=("--with-mpfr=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}${name_suffix}")

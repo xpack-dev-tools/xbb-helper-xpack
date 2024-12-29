@@ -104,8 +104,8 @@ function expat_build()
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          config_options+=("--without-docbook")
-          config_options+=("--without-xmlwf")
+          config_options+=("--without-docbook") # Arm, Aarch64
+          config_options+=("--without-xmlwf") # Arm, Aarch64
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${expat_src_folder_name}/configure" \
             "${config_options[@]}"

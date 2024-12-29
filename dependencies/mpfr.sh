@@ -106,7 +106,7 @@ function mpfr_build()
           config_options+=("--enable-shared") # Arch
           config_options+=("--enable-thread-safe") # Arch
 
-          config_options+=("--disable-maintainer-mode")
+          config_options+=("--disable-maintainer-mode") # Arm, Aarch64
           config_options+=("--disable-warnings")
 
           config_options+=("--disable-debug") # HB
