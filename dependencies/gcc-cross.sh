@@ -776,9 +776,8 @@ function gcc_cross_build_final()
 
           config_options+=("--enable-checking=release") # Arm, AArch64
 
-          # config_options+=("--enable-languages=c,c++,fortran")
-          # Arm has no fortran
-          config_options+=("--enable-languages=c,c++") # Arm, AArch64
+          config_options+=("--enable-languages=c,c++,fortran") # Arm, AArch64
+          # config_options+=("--enable-languages=c,c++") # Arm, AArch64
 
           if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
