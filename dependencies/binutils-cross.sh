@@ -177,6 +177,7 @@ function binutils_cross_build()
           config_options+=("--without-x") # Arm, AArch64
           config_options+=("--without-tcl") # Arm, AArch64
           config_options+=("--without-tk") # Arm, AArch64
+          config_options+=("--without-debuginfod") # AArch64
 
           config_options+=("--with-pkgversion=${XBB_BRANDING}")
 

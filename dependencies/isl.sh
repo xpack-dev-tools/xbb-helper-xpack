@@ -114,6 +114,8 @@ function isl_build()
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
+          config_options+=("--disable-maintainer-mode") # Arm, Aarch64
+
           if is_development
           then
             config_options+=("--disable-silent-rules") # HB

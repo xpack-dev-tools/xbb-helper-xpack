@@ -134,8 +134,8 @@ function gmp_build()
           config_options+=("--enable-cxx")
           config_options+=("--enable-fat") # Arch
 
-          # From Arm.
-          config_options+=("--enable-fft")
+          config_options+=("--enable-fft") # Arm. No longer used in 14.2.rel1
+          config_options+=("--disable-maintainer-mode") # Aarch64
 
           if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
