@@ -471,13 +471,15 @@ caffeinate ssh xbbla32
 Copy the trees displayed at the end of the test builds and paste to
 **Folder hierarchy** section in the web file:
 
-- `website/docs/install/_miscellaneous.mdx`
+- `website/docs/install/_folders-hierarchies-linux.mdx`
+- `website/docs/install/_folders-hierarchies-macos.mdx`
+- `website/docs/install/_folders-hierarchies-windows.mdx`
 
 If present, replace the actual version
-(like **{customField('xpackVersion')}**) with the following expression:
+(like **{customField('upstreamVersion')}**) with the following expression:
 
 ```txt
-${customField('xpackVersion')}
+${customField('upstreamVersion')}
 ```
 
 :::tip
@@ -487,6 +489,8 @@ macOS does not have a `tree` command; either compile it from
 via HomeBrew, and make a link to `/usr/local/bin`.
 
 :::
+
+- commit with _**website: update folder hierarchies**_.
 
 ### Update the list of links in top package.json
 
@@ -505,14 +509,14 @@ sequence, {% if names_array.size > 1 %}for each platform ({{ names_array | join:
 and check the
 differences compared to the repository.
 
-Commit if necessary.
+Commit if necessary with _**package.json: update executables links**_
 
 ### Update the durations of the development builds
 
 In `website/docs/maintainer/_development-durations.mdx`, update
 the durations of the builds.
 
-Commit if necessary.
+Commit if necessary with _**website: update development durations**_
 
 ### How to build a debug version
 
