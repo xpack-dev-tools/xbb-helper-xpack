@@ -1014,6 +1014,7 @@ function is_win_sys_dll()
     user32.dll \
     userenv.dll \
     vcruntime140.dll \
+    vcruntime140_1.dll \
     version.dll \
     winmm.dll \
     winmm.dll \
