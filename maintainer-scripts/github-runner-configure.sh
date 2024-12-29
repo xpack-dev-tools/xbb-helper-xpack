@@ -73,7 +73,7 @@ echo
 echo "Getting latest runner release..."
 curl -L -s -S \
   -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer ${GITHUB_API_RUNNERS_TOKEN}" \
+  -H "Authorization: Bearer ${GITHUB_API_XPACK_DEV_TOOLS_RUNNERS_TOKEN}" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/actions/runner/releases/latest \
   --output "${tmp_script_file}"
@@ -108,8 +108,6 @@ fi
 
 function get_token()
 {
-  echo
-  echo "Getting organization runner token..."
   curl -L -s -S \
     -X POST \
     -H "Accept: application/vnd.github+json" \
