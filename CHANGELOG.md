@@ -2,9 +2,106 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-12-30
+
+* v3.1.0 released
+* 067a9d1 github-runner-configure.sh update
+* fa34be9 github-runner-configure.sh update
+* e012d99 github-runner-configure.sh update hosts
+* b8b3e43 github-runner-configure.sh update token logic
+* b3f42d8 add github-runner-configure.sh
+
+## 2024-12-29
+
+* 06c1932 templates/docusaurus maintainer updates
+* 2419241 templates/docusaurus maintainer updates
+* dc2d4bf gdb-cross.sh: re-enable options
+* d935432 gdb-cross.sh: --enable-languages=c,c++,fortran
+* c867f71 binutils-cross, gmp, isl: --without-debuginfod
+* 9db9a94 dependencies cosmetics
+* b6601c6 post-processing.sh: add vcruntime140_1.dll
+* 09fb110 templates/docusaurus update
+* d3a8205 templates/docusaurus update
+* febb1c5 ad gcc-14.2.1-cross.git.patch
+* c09168f add pyconfig-win-3.12.8.h
+
+## 2024-12-28
+
+* 81f3bea add gdb-15.2-cross.git.patch
+* e8a4161 templates/docusaurus updates
+
+## 2024-12-24
+
+* e7b3f8c template/docusaurus add commented out algolia
+* c4bdafe template: add robots-liquid.txt
+* c18259c templates/getting-started update
+* 7c9cef5 maintainer-scripts: website* updates
+
+## 2024-12-22
+
+* fd64cd4 templates/docusaurus: package.json: bump deps 3.6.3
+* 827fce4 templates/docusaurus: use sidebar-user
+* 4491373 templates/docusaurus: use separate redirects
+* 1abb49f templates/docusaurus: use console.log for node side
+* 02590aa templates/workflow: cosmetise publish-github-pages.yml
+* 394fa06 git-commit.sh: add _xpack.github.io
+* 9456baf website-import-releases.sh: use local copy
+
+## 2024-12-20
+
+* cf568ce templates/docusaurus: getting-started credit shields.io
+* 8577616 templates/docusaurus: fix HomepageTools colours
+* 2d33642 templates/docusaurus: docusaurus.*.ts Getting Started
+* 5612cd6 templates/docusaurus: getting-started update
+* 6ec460b maintainer-scripts/website-*.sh updates
+* 22120ba templates/docusaurus: getting-started & install updates
+* 81f4ad2 templates/docusaurus: onBrokenAnchors, onDuplicateRoutes
+
+## 2024-12-12
+
+* 3321a62 templates/docusaurus updates
+* fa51399 git-commit.sh updates
+* deb4a0e templates/docusaurus updates
+* d9d43e3 templates/workflows: ubuntu-24.04
+
+## 2024-12-11
+
+* d5325f9 README update
+* 538a0df templates/docusaurus updates
+
+## 2024-12-07
+
+* d699136 templates/docusaurus update xpm packages
+
+## 2024-12-06
+
+* d4af63f templates/docusaurus: add sunrise-og-image
+* b65c835 maintainer-scripts update
+* 6422fd0 templates/workflows: macos-13
+* 42987a4 templates/workflows: macos-13
+
+## 2024-12-04
+
+* 93eef42 git-commit.sh update
+* 7f2c5d4 templates/docusaurus: xpm actions
+* 4520ca9 templates/docusaurus: fix more typos
+* ee392c7 templates/docusaurus: fix typo
+
+## 2024-11-30
+
+* 7dbc283 README updates
+* 6f441e5 templates/docusaurus: prefer xpm packages
+
+## 2024-11-15
+
+* d8551ee website-convert-release-post.sh: add MacOsClt16Issue
+
 ## 2024-11-14
 
-* v3.0.17 released
+* 4ff51e0 templates/docusaurus fix clear-all-project-builds
+* 72d2b0a README-GCC-MACOS update
+* 019abb1 3.0.17
+* d966be9 prepare v3.0.17
 
 ## 2024-11-13
 
