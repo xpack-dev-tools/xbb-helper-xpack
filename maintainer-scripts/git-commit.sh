@@ -276,7 +276,7 @@ fi
 # git commit -m "package.json: add actions, bump deps"
 # git commit -m "package.json: update generate-workflows"
 # git commit -m "package.json: git+https"
-git commit -m "package.json: bump deps"
+git commit -m "package.json: bump deps" || true
 
 __EOF__
 
@@ -300,8 +300,8 @@ then
   git add package-lock.json
 fi
 
-# git commit -m "build-assets/package.json: build-development & docker 5.2.2"
-# git commit -m "build-assets/package.json: updates"
+# git commit -m "build-assets/package.json: build-development & docker 5.2.2" || true
+# git commit -m "build-assets/package.json: updates" || true
 git commit -m "build-assets/package.json: bump deps" || true
 
 __EOF__
@@ -321,10 +321,10 @@ set -x
 # commands_file="${tmp_file_npmignore}"
 
 # commands_file="${tmp_file_website}"
-commands_file="${tmp_file_website_xpack}"
+# commands_file="${tmp_file_website_xpack}"
 
 # commands_file="${tmp_file_commit_readmes}"
-# commands_file="${tmp_file_commit_package}"
+commands_file="${tmp_file_commit_package}"
 # commands_file="${tmp_file_commit_build_assets_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
