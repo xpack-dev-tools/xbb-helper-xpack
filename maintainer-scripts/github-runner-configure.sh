@@ -39,7 +39,7 @@ organization="xpack-dev-tools"
 cache_folder_path="${HOME}/cache"
 mkdir -pv "${cache_folder_path}"
 
-tmp_script_file="$(mktemp -t script)"
+tmp_file="$(mktemp -t gh-file-XXXXX)"
 
 if [ "$(uname -s)" == "Darwin" ]
 then
@@ -76,14 +76,14 @@ curl -L -s -S \
   -H "Authorization: Bearer ${GITHUB_API_XPACK_DEV_TOOLS_RUNNERS_TOKEN}" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/actions/runner/releases/latest \
-  --output "${tmp_script_file}"
+  --output "${tmp_file}"
 
-# cat "${tmp_script_file}"
+# cat "${tmp_file}"
 
 # Like v2.321.0
-release_name="$(json -f "${tmp_script_file}" name)"
+release_name="$(json -f "${tmp_file}" name)"
 # Long text. The SHA sums are marked with BEGIN ... END comments.
-release_body="$(json -f "${tmp_script_file}" body)"
+release_body="$(json -f "${tmp_file}" body)"
 
 # Without v, like 2.321.0
 version="$(echo "${release_name}" | sed -e 's|v||')"
@@ -123,9 +123,9 @@ function get_token()
     -H "Authorization: Bearer ${GITHUB_API_XPACK_DEV_TOOLS_RUNNERS_TOKEN}" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     "https://api.github.com/orgs/${organization}/actions/runners/registration-token" \
-    --output "${tmp_script_file}"
+    --output "${tmp_file}"
 
-  json -f "${tmp_script_file}" "token"
+  json -f "${tmp_file}" "token"
 }
 
 if [ "${hostname}" == "wksi.local" ]
@@ -271,7 +271,7 @@ echo "https://github.com/organizations/${organization}/settings/actions/runners"
 
 # -----------------------------------------------------------------------------
 
-rm -rf "${tmp_script_file}"
+rm -rf "${tmp_file}"
 
 echo
 echo "${script_name} done"
