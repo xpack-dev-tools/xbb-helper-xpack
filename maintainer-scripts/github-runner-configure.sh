@@ -80,15 +80,22 @@ curl -L -s -S \
 
 # cat "${tmp_script_file}"
 
-# v2.321.0
+# Like v2.321.0
 release_name="$(json -f "${tmp_script_file}" name)"
 # Long text. The SHA sums are marked with BEGIN ... END comments.
 release_body="$(json -f "${tmp_script_file}" body)"
 
-# 2.321.0
+# Without v, like 2.321.0
 version="$(echo "${release_name}" | sed -e 's|v||')"
 
 sha="$(echo "${release_body}" | grep "BEGIN SHA" | grep "actions-runner-${platform}-${arch}-${version}" | sed -e 's|<!-- END SHA.*||' -e 's|.* -->||' )"
+
+if [ "${hostname}" == "xbbmi.local" ]
+then
+  # Lock xbbmi to this old version until an update to macOS 11.
+  version="2.320.0"
+  sha="11e610adc1c3721a806d2a439d03d143cceeda7a63e794bfe75b45da55e308df"
+fi
 
 if [ ! -f "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz" ]
 then
@@ -127,18 +134,132 @@ then
 
   mkdir -p "${HOME}/actions-runners/${organization}"
   cd "${HOME}/actions-runners/${organization}"
-  echo
-  echo "Unpacking archive..."
-  tar xzf "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz"
+  (
+    echo
+    echo "Unpacking archive..."
+    tar xzf "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz"
 
-  token="$(get_token)"
+    token="$(get_token)"
 
-  echo
-  echo "Configuring..."
-  ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'wksi' --labels 'wksi' --unattended --replace
+    echo
+    echo "Configuring..."
+    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'wksi' --labels 'intel,14.6,wksi' --unattended --replace
 
-  echo "To remove the runner, use:"
-  echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
+    echo "To remove the runner, use:"
+    echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
+  )
+elif [ "${hostname}" == "xbbmi.local" ]
+then
+  sudo rm -rf "${HOME}/actions-runners/${organization}"
+
+  mkdir -p "${HOME}/actions-runners/${organization}"
+  cd "${HOME}/actions-runners/${organization}"
+  (
+    echo
+    echo "Unpacking archive..."
+    tar xzf "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz"
+
+    token="$(get_token)"
+
+    echo
+    echo "Configuring..."
+    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'xbbmi' --labels 'intel,10.14,xbbmi' --unattended --replace --disableupdate
+
+    echo "To remove the runner, use:"
+    echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
+  )
+elif [ "${hostname}" == "xbbli" ]
+then
+  sudo rm -rf "${HOME}/actions-runners/${organization}"
+
+  mkdir -p "${HOME}/actions-runners/${organization}/1"
+  (
+    cd "${HOME}/actions-runners/${organization}/1"
+    echo
+    echo "Unpacking archive..."
+    tar xzf "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz"
+
+    token="$(get_token)"
+
+    echo
+    echo "Configuring 1..."
+    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'xbbli-1' --labels 'xbbli,xbblix,intel' --unattended --replace
+
+    echo "To remove the runner 1, use:"
+    echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
+  )
+  mkdir -p "${HOME}/actions-runners/${organization}/2"
+  (
+    cd "${HOME}/actions-runners/${organization}/2"
+    echo
+    echo "Unpacking archive..."
+    tar xzf "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz"
+
+    token="$(get_token)"
+
+    echo
+    echo "Configuring 2..."
+    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'xbbli-2' --labels 'xbbli,xbbliw,intel' --unattended --replace
+
+    echo "To remove the runner 2, use:"
+    echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
+  )
+elif [ "${hostname}" == "xbbla" ]
+then
+  sudo rm -rf "${HOME}/actions-runners/${organization}"
+
+  mkdir -p "${HOME}/actions-runners/${organization}/1"
+  (
+    cd "${HOME}/actions-runners/${organization}/1"
+    echo
+    echo "Unpacking archive..."
+    tar xzf "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz"
+
+    token="$(get_token)"
+
+    echo
+    echo "Configuring 1..."
+    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'xbbla-1' --labels 'xbbla,xbblax' --unattended --replace
+
+    echo "To remove the runner 1, use:"
+    echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
+  )
+  mkdir -p "${HOME}/actions-runners/${organization}/2"
+  (
+    cd "${HOME}/actions-runners/${organization}/2"
+    echo
+    echo "Unpacking archive..."
+    tar xzf "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz"
+
+    token="$(get_token)"
+
+    echo
+    echo "Configuring 2..."
+    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'xbbla-2' --labels 'xbbla,xbblay' --unattended --replace
+
+    echo "To remove the runner 2, use:"
+    echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
+  )
+elif [ "${hostname}" == "xbbla32" ]
+then
+  sudo rm -rf "${HOME}/actions-runners/${organization}"
+
+  mkdir -p "${HOME}/actions-runners/${organization}"
+  (
+    cd "${HOME}/actions-runners/${organization}"
+    echo
+    echo "Unpacking archive..."
+    tar xzf "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz"
+
+    token="$(get_token)"
+
+    echo
+    echo "Configuring..."
+    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'xbbla32' --labels 'xbbla32' --unattended --replace
+
+    echo "To remove the runner, use:"
+    echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
+  )
 else
   echo "Unrecognized host ${hostname}..."
   exit 1
