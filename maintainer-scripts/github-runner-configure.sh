@@ -90,6 +90,8 @@ version="$(echo "${release_name}" | sed -e 's|v||')"
 
 sha="$(echo "${release_body}" | grep "BEGIN SHA" | grep "actions-runner-${platform}-${arch}-${version}" | sed -e 's|<!-- END SHA.*||' -e 's|.* -->||' )"
 
+hostname="$(hostname)"
+
 if [ "${hostname}" == "xbbmi.local" ]
 then
   # Lock xbbmi to this old version until an update to macOS 11.
@@ -125,8 +127,6 @@ function get_token()
 
   json -f "${tmp_script_file}" "token"
 }
-
-hostname="$(hostname)"
 
 if [ "${hostname}" == "wksi.local" ]
 then
