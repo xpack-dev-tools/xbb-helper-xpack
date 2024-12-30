@@ -117,7 +117,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: deploy-linux-x64
-          path: ${{github.workspace}}/build/linux-x64/deploy/*
+          path: {% raw %}${{github.workspace}}{% endraw %}/build/linux-x64/deploy/*
           overwrite: true
 
       - name: 'Publish pre-release'
