@@ -685,7 +685,7 @@ rm -rf ~/Work/xpack-dev-tools/*/build-assets/build
 
 ### Generate the GitHub workflows
 
-Run the **generate-workflows** xPack action to update the
+Run the **generate-workflows** xpm/xPack action to update the
 GitHub workflow files.
 
 ```sh
@@ -803,7 +803,7 @@ with previous runs.
 Since GitHub Actions provides a limited range of versions for the macOS
 runner, the multi-version macOS tests run on Travis.
 
-To trigger the Travis test, run the **trigger-travis-macos** xPack action:
+To trigger the Travis test, run the **trigger-travis-macos** xpm/xPack action:
 
 ```sh
 xpm run trigger-travis-macos -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
@@ -857,7 +857,7 @@ xattr -cr ${HOME}/Downloads/xpack-*
 - commit with the message _**CHANGELOG update**_
 - check and possibly update the `build-assets/templates/body-github-release-liquid.mdx`
 - push the `xpack-development` branch to GitHub
-- run the **trigger-workflow-publish-release** xPack action:
+- run the **trigger-workflow-publish-release** xpm/xPack action:
 
 ```sh
 xpm run trigger-workflow-publish-release -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
@@ -884,7 +884,7 @@ watching this project.
 ### Prepare a new blog post
 
 - check and possibly update the `website/blog/_templates/blog-post-release-part-[12]-liquid.md`
-- run the **generate-website-blog-post** xPack action;
+- run the **generate-website-blog-post** xpm/xPack action;
 this will add a file in the `website/blog` folder:
 
 ```sh
@@ -893,7 +893,7 @@ xpm run generate-website-blog-post -C ~/Work/xpack-dev-tools/{{gitHubProjectName
 
 - edit the front matter properties
 - select the correct summary
-- commit with the message _**blog post release {customField('xpackVersion')} published**_
+- commit with the message _**website: blog post release {customField('xpackVersion')} published**_
 
 ### Update the web install page
 
@@ -912,7 +912,7 @@ xpm run generate-website-blog-post -C ~/Work/xpack-dev-tools/{{gitHubProjectName
 
 - select the `xpack-development` branch
 - be sure that the binaries were attached to the pre-release
-- run the **update-package-binaries** xPack action:
+- run the **update-package-binaries** xpm/xPack action:
 
 ```sh
 xpm run update-package-binaries -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
@@ -962,7 +962,7 @@ After a few moments the version will be visible at
 
 ### Test if the binaries can be installed with xpm
 
-Run the **trigger-workflow-test-xpm** xPack action:
+Run the **trigger-workflow-test-xpm** xpm/xPack action:
 
 ```sh
 xpm run trigger-workflow-test-xpm -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
@@ -1044,7 +1044,8 @@ Avoid further updates to the `xpack` branch until the next release.
 - check the download counter, it should match the number of tests
 - add a link to the Web blog `[Continue reading »]()`; use an same blog URL
 - remove the _tests only_ notice
-- **disable** the **pre-release** button
+- **disable** the **Set as a pre-release** button
+- **enable** the **Set as the latest release** button
 - click the **Update Release** button
 
 ### Check SourceForge mirror
@@ -1060,7 +1061,7 @@ Avoid further updates to the `xpack` branch until the next release.
 
 ### Clean the work area
 
-Run the **trigger-workflow-deep-clean** xPack action
+Run the **trigger-workflow-deep-clean** xpm/xPack action
 
 ```sh
 xpm run trigger-workflow-deep-clean -C ~/Work/xpack-dev-tools/{{gitHubProjectName}}.git/build-assets
@@ -1070,6 +1071,15 @@ This will remove the build folders on all self-hosted runners.
 
 The results are available from the
 [GitHub Actions](https://github.com/xpack-dev-tools/{{gitHubProjectName}}/actions/) page.
+
+### Close possible open issues
+
+Check GitHub issues and pull requests:
+
+- https://github.com/xpack-dev-tools/{{gitHubProjectName}}/issues
+- https://github.com/xpack-dev-tools/{{gitHubProjectName}}/pulls
+
+Close those that were addressed.
 
 ## Share on Twitter
 
