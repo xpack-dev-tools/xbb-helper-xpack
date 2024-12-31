@@ -61,7 +61,7 @@ do
       continue
     fi
 
-    if ! grep websiteConfig website/package.json
+    if ! grep websiteConfig website/package.json >/dev/null
     then
       echo "${name} has no websiteConfig..."
       continue
@@ -72,7 +72,7 @@ do
 
     # set -x
 
-    if grep '"xpack":' package.json
+    if grep '"xpack":' package.json >/dev/null
     then
       git checkout xpack-development
 
@@ -91,7 +91,7 @@ do
         (
           cd website
 
-          npm run npm-link-helper
+          npm run npm-link-helpers
           npm run generate-website-commons
         )
       fi

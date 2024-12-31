@@ -61,7 +61,7 @@ do
       continue
     fi
 
-    if ! grep websiteConfig website/package.json
+    if ! grep websiteConfig website/package.json >/dev/null
     then
       echo "${name} has no websiteConfig..."
       continue
@@ -72,7 +72,7 @@ do
 
     # set -x
 
-    if grep '"xpack":' package.json
+    if grep '"xpack":' package.json >/dev/null
     then
       branch="xpack-development"
     else
