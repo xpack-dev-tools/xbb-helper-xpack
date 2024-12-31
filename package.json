@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/xpack-dev-tools/xbb-helper-xpack/",
   "bugs": {
-    "url": "https://github.com/xpack-dev-tools/xbb-helper-xpack/issues/"
+    "url": "https://github.com/xpack-dev-tools/xbb-helper-xpack/issues"
   },
   "keywords": [
     "xpack"
@@ -22,7 +22,7 @@
   "author": {
     "name": "Liviu Ionescu",
     "email": "ilg@livius.net",
-    "url": "https://github.com/ilg-ul/"
+    "url": "https://github.com/ilg-ul"
   },
   "license": "MIT",
   "config": {},
