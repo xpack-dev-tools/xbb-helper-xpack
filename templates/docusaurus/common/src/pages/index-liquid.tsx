@@ -24,6 +24,7 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import HomepageTools from '@site/src/components/HomepageTools';
 {% endif %}
 import InstallWithCopy from '@site/src/components/InstallWithCopy';
+import customField from '@site/src/libs/customField';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -35,7 +36,7 @@ function HomepageHeader() {
         <p className="hero__subtitle">{siteConfig.tagline}</p>
 {% if customFields.isOrganizationWeb != "true" %}
         <div className={styles.installWithCopy}>
-          <InstallWithCopy>xpm install @xpack-dev-tools/{{appLcName}}@latest --verbose</InstallWithCopy>
+          <InstallWithCopy>xpm install @xpack-dev-tools/{{appLcName}}@{customField('version')} --verbose</InstallWithCopy>
         </div>
 {% endif %}
       </div>
