@@ -4,7 +4,9 @@
   "description": "A source package with scripts and other files to support XBB builds",
   "main": "",
   "scripts": {
-    "postversion": "git push origin --all && git push origin --tags"
+    "postversion": "git push origin --all && git push origin --tags",
+    "websites-generate-commons-and-build": "bash maintainer-scripts/websites-generate-commons-and-build.sh",
+    "websites-update-and-publish": "bash maintainer-scripts/websites-update-and-publish.sh"
   },
   "repository": {
     "type": "git",
@@ -25,7 +27,10 @@
   "license": "MIT",
   "config": {},
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "json": "^11.0.0",
+    "typescript": "~5.2.2"
+  },
   "xpack": {
     "minimumXpmRequired": "0.16.3",
     "dependencies": {},
