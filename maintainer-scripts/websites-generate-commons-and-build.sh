@@ -88,12 +88,9 @@ do
       then
         # xpack-build-box uses the new templates.
         git checkout development
-        (
-          cd website
-
-          npm run npm-link-helpers
-          npm run generate-website-commons
-        )
+        
+        npm run npm-link-helpers -C website
+        npm run generate-website-commons -C website
       fi
     fi
 
