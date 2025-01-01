@@ -1003,6 +1003,7 @@ function is_win_sys_dll()
     msvcr80.dll \
     msvcr90.dll \
     msvcrt.dll \
+    ntdll.dll \
     ole32.dll \
     oleaut32.dll \
     psapi.dll \
