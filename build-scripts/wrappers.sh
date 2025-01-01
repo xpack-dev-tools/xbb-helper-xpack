@@ -34,6 +34,20 @@ function run_verbose()
   "${app_path}" "$@" 2>&1
 }
 
+function run_verbose_nocr()
+{
+  # Does not include the .exe extension.
+  local app_path="$1"
+  shift
+
+  echo
+  echo "[${app_path} $@]"
+  local output="$("${app_path}" "$@" 2>&1)"
+  local exit_code=$?
+  echo "${output}" | tr -d '\r'
+  return ${exit_code}
+}
+
 function run_verbose_develop()
 {
   # Does not include the .exe extension.
@@ -101,10 +115,12 @@ function run_target_app_verbose()
   then
     if is_elf "$(${REALPATH} ${app_path})"
     then
-      run_verbose "${app_path}" "$@" | tr -d '\r'
+      # run_verbose "${app_path}" "$@" | tr -d '\r'
+      run_verbose_nocr "${app_path}" "$@"
     elif is_executable_script "$(${REALPATH} ${app_path})"
     then
-      run_verbose "${app_path}" "$@" | tr -d '\r'
+      # run_verbose "${app_path}" "$@" | tr -d '\r'
+      run_verbose_nocr "${app_path}" "$@"
     elif is_pe64 "$(${REALPATH} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
@@ -113,7 +129,8 @@ function run_target_app_verbose()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          run_verbose wine64 "${app_path}" "$@" | tr -d '\r'
+          # run_verbose wine64 "${app_path}" "$@" | tr -d '\r'
+          run_verbose_nocr wine64 "${app_path}" "$@"
         )
       else
         echo
@@ -127,7 +144,8 @@ function run_target_app_verbose()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          run_verbose wine64 "${app_path}.exe" "$@" | tr -d '\r'
+          # run_verbose wine64 "${app_path}.exe" "$@" | tr -d '\r'
+          run_verbose_nocr wine64 "${app_path}.exe" "$@"
         )
       else
         echo
@@ -141,7 +159,8 @@ function run_target_app_verbose()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          run_verbose wine "${app_path}" "$@" | tr -d '\r'
+          # run_verbose wine "${app_path}" "$@" | tr -d '\r'
+          run_verbose_nocr wine "${app_path}" "$@"
         )
       else
         echo
@@ -155,7 +174,8 @@ function run_target_app_verbose()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          run_verbose wine "${app_path}.exe" "$@" | tr -d '\r'
+          # run_verbose wine "${app_path}.exe" "$@" | tr -d '\r'
+          run_verbose_nocr wine "${app_path}.exe" "$@"
         )
       else
         echo
@@ -194,14 +214,19 @@ function run_target_app()
   local app_path="$1"
   shift
 
+  local output
   if [ "${XBB_BUILD_PLATFORM}" == "linux" ]
   then
     if is_elf "$(${REALPATH} ${app_path})"
     then
-      "${app_path}" "$@" | tr -d '\r'
+      # "${app_path}" "$@" | tr -d '\r'
+      output="$("${app_path}" "$@")"
+      echo "${output}" | tr -d '\r'
     elif is_executable_script "$(${REALPATH} ${app_path})"
     then
-      "${app_path}" "$@" | tr -d '\r'
+      # "${app_path}" "$@" | tr -d '\r'
+      output="$("${app_path}" "$@")"
+      echo "${output}" | tr -d '\r'
     elif is_pe64 "$(${REALPATH} ${app_path})"
     then
       local wine_path=$(which wine64 2>/dev/null)
@@ -210,7 +235,9 @@ function run_target_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine64 "${app_path}" "$@" | tr -d '\r'
+          # wine64 "${app_path}" "$@" | tr -d '\r'
+          output="$(wine64 "${app_path}" "$@")"
+          echo "${output}" | tr -d '\r'
         )
       else
         echo
@@ -224,7 +251,9 @@ function run_target_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine64 "${app_path}.exe" "$@" | tr -d '\r'
+          # wine64 "${app_path}.exe" "$@" | tr -d '\r'
+          output="$(wine64 "${app_path}.exe" "$@")"
+          echo "${output}" | tr -d '\r'
         )
       else
         echo
@@ -238,7 +267,9 @@ function run_target_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine "${app_path}" "$@" | tr -d '\r'
+          # wine "${app_path}" "$@" | tr -d '\r'
+          output="$(wine "${app_path}" "$@")"
+          echo "${output}" | tr -d '\r'
         )
       else
         echo
@@ -252,7 +283,9 @@ function run_target_app()
         (
           unset DISPLAY
           export WINEDEBUG=-all
-          wine "${app_path}.exe" "$@" | tr -d '\r'
+          # wine "${app_path}.exe" "$@" | tr -d '\r'
+          output="$(wine "${app_path}.exe" "$@")"
+          echo "${output}" | tr -d '\r'
         )
       else
         echo
@@ -330,27 +363,33 @@ function expect_host_output()
     if [ "${app_path:0:1}" == "/" ]
     then
       show_host_libs "${app_path}"
-      output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
+      # output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
+      output="$(run_target_app "${app_path}" "$@")"
     elif [ "${app_path:0:2}" == "./" ]
     then
       show_host_libs "${app_path}"
-      output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
+      # output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
+      output="$(run_target_app "${app_path}" "$@")"
     elif [ -f "${app_path}.exe" ]
     then
       show_host_libs "${app_path}"
-      output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
+      # output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
+      output="$(run_target_app "${app_path}" "$@")"
     else
       if [ -x "${app_path}" ]
       then
         show_host_libs "${app_path}"
-        output="$(run_target_app "./${app_path}" "$@" | tr -d '\r')"
+        # output="$(run_target_app "./${app_path}" "$@" | tr -d '\r')"
+        output="$(run_target_app "./${app_path}" "$@")"
       else
         # bash case
-        output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
+        # output="$(run_target_app "${app_path}" "$@" | tr -d '\r')"
+        output="$(run_target_app "${app_path}" "$@")"
       fi
     fi
+    local output_tr="$(echo "${output}" | tr -d '\r')"
 
-    if [ "x${output}x" == "x${expected}x" ]
+    if [ "x${output_tr}x" == "x${expected}x" ]
     then
       echo
       echo "Test \"${app_path} $@\" passed, got \"${expected}\" :-)"
@@ -388,12 +427,14 @@ function expect_target_output()
       then
         echo
         echo "[${app_path} $@]"
-        output="$("${app_path}" "$@" | tr -d '\r')"
+        # output="$("${app_path}" "$@" | tr -d '\r')"
+        output="$("${app_path}" "$@")"
       elif is_executable_script "${app_path}"
       then
         echo
         echo "[${app_path} $@]"
-        output="$("${app_path}" "$@" | tr -d '\r')"
+        # output="$("${app_path}" "$@" | tr -d '\r')"
+        output="$("${app_path}" "$@")"
       elif is_pe64 "${app_path}"
       then
         local wine_path=$(which wine64 2>/dev/null)
@@ -402,7 +443,8 @@ function expect_target_output()
           echo
           echo "[wine64 ${app_path} $@]"
           # Remove the trailing CR present on Windows.
-          output="$(wine64 "${app_path}" "$@" | tr -d '\r')"
+          # output="$(wine64 "${app_path}" "$@" | tr -d '\r')"
+          output="$(wine64 "${app_path}" "$@")"
         else
           echo
           echo "wine64 ${app_name} $@ - not available in ${FUNCNAME[0]}()"
@@ -416,7 +458,8 @@ function expect_target_output()
           echo
           echo "[wine ${app_path} $@]"
           # Remove the trailing CR present on Windows.
-          output="$(wine "${app_path}" "$@" | tr -d '\r')"
+          # output="$(wine "${app_path}" "$@" | tr -d '\r')"
+          output="$(wine "${app_path}" "$@")"
         else
           echo
           echo "wine ${app_name} $@ - not available in ${FUNCNAME[0]}()"
@@ -440,7 +483,9 @@ function expect_target_output()
 
     echo ${output}
 
-    if [ "x${output}x" == "x${expected}x" ]
+    local output_tr="$(echo "${output}" | tr -d '\r')"
+
+    if [ "x${output_tr}x" == "x${expected}x" ]
     then
       echo
       echo "Test \"${app_name} $@\" passed, got output \"${expected}\" :-)"
@@ -486,6 +531,7 @@ function expect_target_exit()
 
     local succeed=""
     local exit_code=0
+    local output=""
 
     set +o errexit # Do not exit if command fails
 
@@ -512,8 +558,10 @@ function expect_target_exit()
         then
           echo
           echo "[wine64 ${app_path} $@]"
-          wine64 "${app_path}" "$@" | tr -d '\r'
+          # wine64 "${app_path}" "$@" | tr -d '\r'
+          output="$(wine64 "${app_path}" "$@")"
           exit_code=$?
+          echo "${output}" | tr -d '\r'
         else
           echo
           echo "wine64 ${app_name} $@ - not available in ${FUNCNAME[0]}()"
@@ -526,8 +574,10 @@ function expect_target_exit()
         then
           echo
           echo "[wine ${app_path} $@]"
-          wine "${app_path}" "$@" | tr -d '\r'
+          # wine "${app_path}" "$@" | tr -d '\r'
+          output="$(wine "${app_path}" "$@")"
           exit_code=$?
+          echo "${output}" | tr -d '\r'
         else
           echo
           echo "wine ${app_name} $@ - not available in ${FUNCNAME[0]}()"
@@ -581,7 +631,8 @@ function _run_mingw()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        run_verbose wine64 "${app_name}" "$@" | tr -d '\r'
+        # run_verbose wine64 "${app_name}" "$@" | tr -d '\r'
+        run_verbose_nocr wine64 "${app_name}" "$@"
       else
         echo
         echo "wine64" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
@@ -593,7 +644,8 @@ function _run_mingw()
       local wine_path=$(which wine 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        run_verbose wine "${app_name}" "$@" | tr -d '\r'
+        # run_verbose wine "${app_name}" "$@" | tr -d '\r'
+        run_verbose_nocr wine "${app_name}" "$@"
       else
         echo
         echo "wine" "${app_name}" "$@" "- not available in ${FUNCNAME[0]}()"
