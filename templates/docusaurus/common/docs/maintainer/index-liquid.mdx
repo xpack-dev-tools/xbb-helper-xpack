@@ -242,13 +242,6 @@ and fix them; assign them to a milestone (like <code>{customField('xpackVersion'
 
 ### Update `CHANGELOG.md`
 
-- open the `CHANGELOG.md` file
-- check if all previous fixed issues are in
-- check the latest commits `xpm run git-log`; if necessary, copy/paste lines,
-  group by dates and edit them using the below regular expressions
-- add a new entry like _**\* v{customField('xpackVersion')} prepared**_
-- commit with the message _**prepare v{customField('xpackVersion')}**_
-
 To turn the dates into headings, change from:
 
 ```txt
@@ -278,6 +271,14 @@ to:
 ```txt
 *
 ```
+
+- open the `CHANGELOG.md` file
+- check if all previous fixed issues are in
+- check the latest commits `xpm run git-log`; if necessary, copy/paste lines,
+  group by dates and edit them using the below regular expressions
+- add a new entry like _**\* v{customField('xpackVersion')} prepared**_
+- commit with the message _**prepare v{customField('xpackVersion')}**_
+
 
 ### Push the changes to the `xpack-development` branch
 

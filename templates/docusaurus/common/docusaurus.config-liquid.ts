@@ -355,7 +355,7 @@ const config: Config = {
           'aria-label': 'GitHub repository',
         },{% if customFields.isOrganizationWeb != "true" %}
         {
-          label: `v${customFields.xpackVersion}`,
+          label: `${customFields.xpackVersion}`,
           position: 'right',
           href: `https://github.com/xpack-dev-tools/{{gitHubProjectName}}/releases/tag/v${customFields.xpackVersion}`,
         },{% endif %}
