@@ -48,6 +48,9 @@ do
   (
     cd "${f}/.."
 
+    echo
+    pwd
+
     name="$(basename "$(pwd)")"
     # if [ "${name}" != "xpack-build-box.git" ]
     # then
@@ -67,9 +70,6 @@ do
       continue
     fi
 
-    echo
-    pwd
-
     # set -x
 
     if grep '"xpack":' package.json >/dev/null
@@ -88,9 +88,12 @@ do
       then
         # xpack-build-box uses the new templates.
         git checkout development
-        
-        npm run npm-link-helpers -C website
-        npm run generate-website-commons -C website
+        (
+          cd website
+
+          npm run npm-link-helpers
+          npm run generate-website-commons
+        )
       fi
     fi
 
@@ -109,6 +112,7 @@ do
   )
 done
 
+echo
 echo "${script_name} done"
 
 # -----------------------------------------------------------------------------

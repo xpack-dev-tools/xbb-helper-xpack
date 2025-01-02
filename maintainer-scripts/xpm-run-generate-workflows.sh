@@ -48,15 +48,32 @@ cd build-assets
 xpm run generate-workflows
 __EOF__
 
-# -----------------------------------------------------------------------------
+# =============================================================================
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
 cd "${repos_folder}"
 
-find . -type d -name '.git' -print0 | sort -zn | \
-  xargs -0 -I '{}' bash "${tmp_script_file}" '{}'
+for f in "${repos_folder}"/*/.git
+do
+  (
+    cd "$(dirname "${f}")"
+
+    echo
+    pwd
+
+    if [ ! -d build-assets ]
+    then
+      continue
+    fi
+
+    cd build-assets
+
+    xpm run generate-workflows
+  )
+done
 
 echo
+echo "${script_name} done"
 
 # -----------------------------------------------------------------------------

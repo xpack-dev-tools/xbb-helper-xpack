@@ -34,29 +34,27 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-tmp_script_file="$(mktemp)"
-cat <<'__EOF__' >"${tmp_script_file}"
-cd "$1/.."
-set -x
-echo
-echo $1
-git push
-git switch xpack
-git merge xpack-development
-git push
-git switch xpack-development
-
-__EOF__
-
-# -----------------------------------------------------------------------------
-
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
 cd "${repos_folder}"
 
-find . -type d -name '.git' -print0 | sort -zn | \
-  xargs -0 -I '{}' bash "${tmp_script_file}" '{}'
+for f in "${repos_folder}"/*/.git
+do
+  (
+    cd "$(dirname "${f}")"
+
+    echo
+    pwd
+
+    git push
+    git switch xpack
+    git merge xpack-development
+    git push
+    git switch xpack-development
+  )
+done
 
 echo
+echo "${script_name} done"
 
 # -----------------------------------------------------------------------------

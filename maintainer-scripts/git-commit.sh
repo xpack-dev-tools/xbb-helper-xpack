@@ -276,7 +276,8 @@ fi
 # git commit -m "package.json: add actions, bump deps"
 # git commit -m "package.json: update generate-workflows"
 # git commit -m "package.json: git+https"
-git commit -m "package.json: bump deps" || true
+git commit -m "package.json: cosmetics" || true
+# git commit -m "package.json: bump deps" || true
 
 __EOF__
 
@@ -308,7 +309,7 @@ __EOF__
 
 # -----------------------------------------------------------------------------
 
-set -x
+# set -x
 
 # UPDATE ME!
 # commands_file="${tmp_file_template_github}"
@@ -324,18 +325,13 @@ set -x
 # commands_file="${tmp_file_website_xpack}"
 
 # commands_file="${tmp_file_commit_readmes}"
+
 commands_file="${tmp_file_commit_package}"
 # commands_file="${tmp_file_commit_build_assets_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
 cd "${repos_folder}"
-
-# find . -type d -name '.git' -print0 | sort -zn | \
-#   xargs -0 -I '{}' xpm run install -C '{}/..'
-
-# find . -type d -name '.git' -print0 | sort -zn | \
-#   xargs -0 -I '{}' bash "${commands_file}" '{}'
 
 for f in "${repos_folder}"/*/.git
 do
@@ -354,6 +350,7 @@ do
   )
 done
 
+echo
 echo "${script_name} done"
 
 

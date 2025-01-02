@@ -38,9 +38,19 @@ repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
 cd "${repos_folder}"
 
-find . -type d -name '.git' -print0 | sort -zn | \
-  xargs -0 -I '{}' npm install -C '{}/..'
+for f in "${repos_folder}"/*/.git
+do
+  (
+    cd "$(dirname "${f}")"
+
+    echo
+    pwd
+
+    npm install
+  )
+done
 
 echo
+echo "${script_name} done"
 
 # -----------------------------------------------------------------------------

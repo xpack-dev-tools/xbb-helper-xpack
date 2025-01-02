@@ -48,6 +48,9 @@ do
   (
     cd "${f}/.."
 
+    echo
+    pwd
+
     name="$(basename "$(pwd)")"
     # if [ "${name}" != "xpack-build-box.git" ]
     # then
@@ -66,9 +69,6 @@ do
       echo "${name} has no websiteConfig..."
       continue
     fi
-
-    echo
-    pwd
 
     # set -x
 

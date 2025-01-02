@@ -34,35 +34,42 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-tmp_file="$(mktemp)"
-cat <<'__EOF__' >"${tmp_file}"
-cd "$1/.."
-echo
-pwd
+repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
-# git log --reverse --all | head -n 5
-# exit 0
+cd "${repos_folder}"
 
-# b="$(git name-rev --name-only HEAD)"
-d="$(git status)"
-if [[ "${d}" == *nothing\ to\ commit,\ working\ tree\ clean ]]
-then
-  p="$(git log @{push}..)"
-  if [ "${p}" != "" ]
-  then
+for f in "${repos_folder}"/*/.git
+do
+  (
+    cd "$(dirname "${f}")"
+
     echo
     pwd
-    echo "${p}"
-    git status -v
-  fi
-else
-  echo
-  pwd
-  git status -v
-fi
 
-__EOF__
+    # git log --reverse --all | head -n 5
+    # exit 0
 
-cd "$(dirname $(dirname "${script_folder_path}"))"
+    # b="$(git name-rev --name-only HEAD)"
+    d="$(git status)"
+    if [[ "${d}" == *nothing\ to\ commit,\ working\ tree\ clean ]]
+    then
+      p="$(git log @{push}..)"
+      if [ "${p}" != "" ]
+      then
+        echo
+        pwd
+        echo "${p}"
+        git status -v
+      fi
+    else
+      echo
+      pwd
+      git status -v
+    fi
+  )
+done
 
-find . -type d -name '.git' -exec bash  "${tmp_file}" {} \;
+echo
+echo "${script_name} done"
+
+# -----------------------------------------------------------------------------
