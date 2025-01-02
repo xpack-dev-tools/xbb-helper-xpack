@@ -98,12 +98,12 @@ const config: Config = {
   url: 'https://xpack-dev-tools.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{gitHubProjectName}}/{% endif %}',
+  baseUrl: '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{appLcName}}-xpack/{% endif %}',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'xpack-dev-tools', // Usually your GitHub org/user name.
-  projectName: '{{gitHubProjectName}}', // Usually your repo name.
+  projectName: '{{appLcName}}-xpack', // Usually your repo name.
 
   onBrokenAnchors: 'throw',
   onBrokenLinks: 'throw',
@@ -132,7 +132,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/xpack-dev-tools/{{gitHubProjectName}}/edit/xpack/website/',
+            'https://github.com/xpack-dev-tools/{{appLcName}}-xpack/edit/xpack/website/',
           // showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
@@ -141,7 +141,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/xpack-dev-tools/{{gitHubProjectName}}/edit/xpack/website/',
+            'https://github.com/xpack-dev-tools/{{appLcName}}-xpack/edit/xpack/website/',
           showLastUpdateTime: true,
           blogSidebarCount: 8,
           authorsMapPath: '../authors.yml',
@@ -155,9 +155,9 @@ const config: Config = {
           changefreq: 'weekly',
           priority: 0.5,
           ignorePatterns: [
-            '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{gitHubProjectName}}/{% endif %}blog/archive/**',
-            '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{gitHubProjectName}}/{% endif %}blog/authors/**',
-            '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{gitHubProjectName}}/{% endif %}blog/tags/**'
+            '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{appLcName}}-xpack/{% endif %}blog/archive/**',
+            '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{appLcName}}-xpack/{% endif %}blog/authors/**',
+            '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{appLcName}}-xpack/{% endif %}blog/tags/**'
           ],
           filename: 'sitemap.xml',
         },
@@ -349,26 +349,36 @@ const config: Config = {
           ]
         },
         {
-          href: 'https://github.com/xpack-dev-tools/{{gitHubProjectName}}/',
+          href: 'https://github.com/xpack-dev-tools/{{appLcName}}-xpack/',
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',
+        },
+        {
+          type: 'dropdown',
+          href: 'https://github.com/xpack-dev-tools/{{appLcName}}-xpack/',
+          position: 'right',
+          label: 'GitHub',
+          items: [
+            {
+              label: `{{appLcName}}-xpack`,
+              href: `https://github.com/xpack-dev-tools/{{appLcName}}-xpack/`,
+            },
+            {
+              label: 'xpack-dev-tools org',
+              href: 'https://github.com/xpack-dev-tools/',
+            },
+            {
+              label: 'xpack org',
+              href: 'https://github.com/xpack/',
+            },
+          ]
         },{% if customFields.isOrganizationWeb != "true" %}
         {
           label: `${customFields.xpackVersion}`,
           position: 'right',
-          href: `https://github.com/xpack-dev-tools/{{gitHubProjectName}}/releases/tag/v${customFields.xpackVersion}`,
+          href: `https://github.com/xpack-dev-tools/{{appLcName}}-xpack/releases/tag/v${customFields.xpackVersion}`,
         },{% endif %}
-        {
-          href: 'https://github.com/xpack-dev-tools/',
-          label: 'xpack-dev-tools',
-          position: 'right',
-        },
-        {
-          href: 'https://github.com/xpack/',
-          label: 'xpack',
-          position: 'right',
-        },
       ],
     },
     footer: {
@@ -408,7 +418,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub Discussions',
-              href: 'https://github.com/xpack-dev-tools/{{gitHubProjectName}}/discussions',
+              href: 'https://github.com/xpack-dev-tools/{{appLcName}}-xpack/discussions',
             },
             {
               label: 'Stack Overflow',
@@ -432,15 +442,15 @@ const config: Config = {
               href: 'https://www.paypal.com/donate/?hosted_button_id=5MFRG9ZRBETQ8',
             },
             {
-              label: 'GitHub {{gitHubProjectName}}',
-              href: 'https://github.com/xpack-dev-tools/{{gitHubProjectName}}/',
+              label: 'GitHub {{appLcName}}-xpack',
+              href: 'https://github.com/xpack-dev-tools/{{appLcName}}-xpack/',
             },
             {
-              label: 'GitHub xpack-dev-tools',
+              label: 'GitHub xpack-dev-tools org',
               href: 'https://github.com/xpack-dev-tools/',
             },
             {
-              label: 'GitHub xpack',
+              label: 'GitHub xpack org',
               href: 'https://github.com/xpack/',
             },
           ],
