@@ -2,6 +2,38 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-01-02
+
+* v3.1.1 released
+* 1296b81 templates/docusaurus updates
+* 21cd741 post-processing.sh: add ntdll.dll
+
+## 2025-01-01
+
+* 8ee9c43 wrappers.sh: try to improve error detection (tr -d '\r' issue)
+* 282b596 templates/workflows disable debian-arm
+* b217e3e templates/workflows update
+* b557575 templates/docusaurus maintainer update
+* 38e96c2 websites-generate-commons update
+
+## 2024-12-31
+
+* b7d5e1b package.json cosmetics
+* 9c7921c templates/docusaurus updates
+* 482867a templates/docusaurus: maintainer commit message cosmetics
+* 4e75a9a package*.json add websites* scripts
+* 461a669 templates/docusaurus: HomepageHeader explicit version
+* 49c48f2 maintainer/websites* updates
+
+## 2024-12-30
+
+* 8799410 maintainer: git-commit.sh update
+* bf1ac2a template/docusaurus: install update
+* fc27da6 templates/workflows update build-linux-x64
+* 9e3a6f4 templates/workflows update macos-13
+* 111ee8e 3.1.0
+* 0038dff prepare v3.1.0
+
 ## 2024-12-30
 
 * v3.1.0 released
