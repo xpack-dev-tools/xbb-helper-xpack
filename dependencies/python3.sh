@@ -284,6 +284,8 @@ function python3_test()
 
     run_host_app_verbose "${test_bin_folder_path}/python3" -c 'import sys; print(sys.path)'
     run_host_app_verbose "${test_bin_folder_path}/python3" -c 'import sys; print(sys.prefix)'
+
+    run_host_app_verbose "${test_bin_folder_path}/python3" -m pip --version
   )
 }
 
@@ -393,6 +395,29 @@ function python3_copy_syslibs()
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
 
+  local preserve_py=""
+  local keep_all_pyc=""
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --preserve-py)
+        preserve_py="y"
+        shift
+        ;;
+
+      --keep-all-pyc)
+        keep_all_pyc="y"
+        shift
+        ;;
+
+      * )
+        echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+        exit 1
+        ;;
+    esac
+  done
+
   local python_with_version="python${XBB_PYTHON3_VERSION_MAJOR}.${XBB_PYTHON3_VERSION_MINOR}"
   if [ ! -d "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" ]
   then
@@ -424,14 +449,20 @@ function python3_copy_syslibs()
             || true
         fi
 
-        # For just in case.
-        find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
-          \( -name '*.opt-1.pyc' -o -name '*.opt-2.pyc' \) \
-          -exec rm -v '{}' ';'
+        if [ "${keep_all_pyc}" != "y" ]
+        then
+          # For just in case.
+          find "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/" \
+            \( -name '*.opt-1.pyc' -o -name '*.opt-2.pyc' \) \
+            -exec rm -v '{}' ';'
+        fi
       )
 
-      echo "Replacing .py files with .pyc files..."
-      python3_move_pyc "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}"
+      if [ "${preserve_py}" != "y" ]
+      then
+        echo "Replacing .py files with .pyc files..."
+        python3_move_pyc "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}"
+      fi
 
       mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/lib/${python_with_version}/lib-dynload/"
 
