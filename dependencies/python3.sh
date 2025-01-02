@@ -210,6 +210,8 @@ function python3_build()
           # config_options+=("--enable-loadable-sqlite-extensions") # HB, Arch
           config_options+=("--disable-loadable-sqlite-extensions")
 
+          config_options+=("--disable-test-modules")
+
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${python3_src_folder_name}/configure" \
             "${config_options[@]}"
 
