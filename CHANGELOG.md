@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-01-03
 
-* v3.1.2 released
+* v3.1.3 released
+* 321b357 python3.sh: add python3_copy_win_py()
+* 1549621 3.1.2
+* 43fbc36 prepare v3.1.2
 * 7f3bdcb templates/docusaurus maintainer reorder
 * 5cc16a6 openssl.sh: --openssldir to system folder
 
