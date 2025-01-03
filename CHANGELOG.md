@@ -2,9 +2,22 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-01-03
+
+* v3.1.2 released
+* 7f3bdcb templates/docusaurus maintainer reorder
+* 5cc16a6 openssl.sh: --openssldir to system folder
+
 ## 2025-01-02
 
-* v3.1.1 released
+* a561aa3 python3.sh: add --preserve-py
+* 1a17eec python3.sh: --disable-test-modules
+* 5962e51 maintainer-scripts replace deep finds with loops
+* fd88d90 templates/workflows: bump suse 15.6, 15.5
+* 98bd970 templates/docusaurus: docusaurus.config* update
+* 7c4d7e5 templates/docusaurus: maintainer updates
+* 6a37b56 3.1.1
+* be6a9fa prepare v3.1.1
 * 1296b81 templates/docusaurus updates
 * 21cd741 post-processing.sh: add ntdll.dll
 
