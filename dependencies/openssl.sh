@@ -135,7 +135,21 @@ function openssl_build()
             config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
             config_options+=("--libdir=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib")
 
-            config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
+            # Wrong, this folder is no longer present when installed.
+            # config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
+
+            # Defaults:
+            # Unix:           /usr/local/ssl
+            # Windows:        C:\Program Files\OpenSSL
+
+            # Must be present explicitly, otherwise it defaults to ${PREFIX}/ssl.
+            if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+            then
+              config_options+=("--openssldir=C:\\Program Files\\OpenSSL")
+            else
+              config_options+=("--openssldir=/etc/ssl")
+            fi
+
             config_options+=("shared") # Arch
             config_options+=("enable-ktls") # Arch
 
@@ -265,7 +279,14 @@ function openssl_build()
                 config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
                 # DO NOT USE --libdir
 
-                config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
+                # config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
+                if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+                then
+                  config_options+=("--openssldir=C:\\Program Files\\OpenSSL")
+                else
+                  config_options+=("--openssldir=/etc/ssl")
+                fi
+
                 config_options+=("shared")
                 config_options+=("enable-md2")
                 config_options+=("enable-rc5")
@@ -294,7 +315,14 @@ function openssl_build()
               config_options+=("--prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
               # DO NOT USE --libdir
 
-              config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
+              # config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
+              if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+              then
+                config_options+=("--openssldir=C:\\Program Files\\OpenSSL")
+              else
+                config_options+=("--openssldir=/etc/ssl")
+              fi
+
               config_options+=("shared")
               config_options+=("enable-md2")
               config_options+=("enable-rc5")
@@ -361,7 +389,13 @@ function openssl_build()
               # Not needed, the CC/CXX macros already define the target.
               # config_options+=("--cross-compile-prefix=${XBB_TARGET_TRIPLET}")
 
-              config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
+              # config_options+=("--openssldir=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/openssl")
+              if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+              then
+                config_options+=("--openssldir=C:\\Program Files\\OpenSSL")
+              else
+                config_options+=("--openssldir=/etc/ssl")
+              fi
 
               config_options+=("shared")
               config_options+=("zlib-dynamic")
@@ -402,18 +436,19 @@ function openssl_build()
 
         run_verbose make install_sw
 
-        # Copy openssl to APP_INSTALL
-        if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" ]
-        then
-          mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-          cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/openssl" \
-            "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-          cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/c_rehash" \
-            "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
-        fi
-
         if false
         then
+
+          # Copy openssl to APP_INSTALL
+          if [ "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}" != "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}" ]
+          then
+            mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+            cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/openssl" \
+              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+            cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/c_rehash" \
+              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
+          fi
+
           mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/openssl"
 
           if [ -f "${XBB_FOLDER_PATH}/openssl/cert.pem" ]
