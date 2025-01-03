@@ -365,6 +365,21 @@ function python3_download_win()
 
 # -----------------------------------------------------------------------------
 
+function python3_copy_win_py()
+{
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
+  if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+  then
+    echo
+    echo "Copying .py files from the Python distribution..."
+    mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/Lib"
+    cp -r -v "${XBB_SOURCES_FOLDER_PATH}/${XBB_PYTHON3_SRC_FOLDER_NAME}/Lib"\
+      "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
+  fi
+}
+
 # Used by gdb-py3 on Windows. The default paths on Windows are different
 # from POSIX.
 function python3_copy_win_syslibs()
