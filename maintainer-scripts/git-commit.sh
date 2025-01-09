@@ -276,8 +276,8 @@ fi
 # git commit -m "package.json: add actions, bump deps"
 # git commit -m "package.json: update generate-workflows"
 # git commit -m "package.json: git+https"
-git commit -m "package.json: cosmetics" || true
-# git commit -m "package.json: bump deps" || true
+# git commit -m "package.json: cosmetics" || true
+git commit -m "package.json: bump deps" || true
 
 __EOF__
 
@@ -326,8 +326,8 @@ __EOF__
 
 # commands_file="${tmp_file_commit_readmes}"
 
-commands_file="${tmp_file_commit_package}"
-# commands_file="${tmp_file_commit_build_assets_package}"
+# commands_file="${tmp_file_commit_package}"
+commands_file="${tmp_file_commit_build_assets_package}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
