@@ -270,7 +270,7 @@ const config: Config = {
         },{% if customFields.isOrganizationWeb != "true" %}
         {
           type: 'dropdown',
-          label: 'Getting Started',
+          label: 'Documentation',
           to: 'docs/getting-started',
           position: 'left',
           items: [
@@ -313,7 +313,7 @@ const config: Config = {
           ]
         },{% else %}
         {
-          label: 'Getting Started',
+          label: 'Documentation',
           to: 'docs/getting-started',
           position: 'left',
         },
