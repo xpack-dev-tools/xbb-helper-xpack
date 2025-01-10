@@ -99,7 +99,8 @@ const config: Config = {
   url: 'https://xpack-dev-tools.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{appLcName}}-xpack/{% endif %}',
+  baseUrl: process.env.DOCUSAURUS_BASEURL ??
+    '{% if customFields.docusaurusBaseUrl %}{{customFields.docusaurusBaseUrl}}{% else %}/{{appLcName}}-xpack/{% endif %}',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -253,8 +254,7 @@ const config: Config = {
       }{% endif %}
     ],
     navbar: {
-      // Overriden by i18n/en/docusaurus-theme-classic.
-      title: 'The xPack Binary Development Tools',
+      title: 'The xPack Binary Tools',
 
       logo: {
         alt: 'xPack Logo',
@@ -264,8 +264,8 @@ const config: Config = {
       },
       items: [
         {
-          to: '/',{% if customFields.isOrganizationWeb != "true" %}
-          label: '{{appLcName}}',{% endif %}
+          to: '/',
+          label: {% if customFields.isOrganizationWeb == "true" %}'xpack-dev-tools'{% else %}'{{appLcName}}'{% endif %},
           className: 'header-home-link',
           position: 'left'
         },{% if customFields.isOrganizationWeb != "true" %}
