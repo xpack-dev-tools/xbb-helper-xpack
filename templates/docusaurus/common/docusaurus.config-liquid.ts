@@ -89,7 +89,8 @@ console.log('customFields: ' + util.inspect(customFields));
 // ----------------------------------------------------------------------------
 
 const config: Config = {
-  title: 'xPack {{appName}}',
+  title: 'xPack {{appName}}' +
+    ((process.env.DOCUSAURUS_IS_PREVIEW === 'true') ? ' (preview)' : ''),
   tagline: '{% if customFields.docusaurusTagline %}{{customFields.docusaurusTagline}}{% else %}A binary distribution of {{appName}}{% endif %}',
   // Explicitly set in headTags.
   // favicon: '/img/favicon.ico',
