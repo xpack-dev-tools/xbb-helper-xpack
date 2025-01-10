@@ -264,8 +264,8 @@ const config: Config = {
       },
       items: [
         {
-          to: '/',
-          // label: 'Home',
+          to: '/',{% if customFields.isOrganizationWeb != "true" %}
+          label: '{{appLcName}}',{% endif %}
           className: 'header-home-link',
           position: 'left'
         },{% if customFields.isOrganizationWeb != "true" %}
