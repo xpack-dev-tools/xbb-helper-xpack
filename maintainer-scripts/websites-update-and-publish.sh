@@ -79,7 +79,7 @@ do
       if [ "${name}" == "xpack-dev-tools.github.io.git" ]
       then
         # xpack-dev-tools.github.io is not an xpack and has no xpack-development.
-        branch="master"
+        branch="webpreview"
       else
         branch="development"
       fi

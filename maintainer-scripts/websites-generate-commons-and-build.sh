@@ -82,7 +82,7 @@ do
       if [ "${name}" == "xpack-dev-tools.github.io.git" ]
       then
         # xpack-dev-tools.github.io is not an xpack and has no xpack-development.
-        git checkout master
+        git checkout webpreview
         xpm run website-generate-commons -C build-assets
       elif [ "${name}" == "xpack-build-box.git" ]
       then
