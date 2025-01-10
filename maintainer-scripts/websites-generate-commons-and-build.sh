@@ -106,6 +106,9 @@ do
       rm -f package-lock.json
       rm -rf .docusaurus build
 
+      # Temporary removals.
+      # rm -rf i18n
+
       npm install
       npm run build
     )
