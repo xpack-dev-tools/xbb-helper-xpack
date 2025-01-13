@@ -48,7 +48,7 @@ cd build-assets
 echo
 echo $1
 git add templates/body-github*.md*
-git commit -m "templates/body-github: update"
+git commit -m "templates/body-github: update" || true
 
 __EOF__
 
@@ -63,7 +63,7 @@ echo $1
 git add website/blog/*.md*
 # git add templates
 
-git commit -m "website/blog updates" || true
+git commit -m "website/blog updates" || true || true
 
 __EOF__
 
@@ -77,7 +77,7 @@ echo
 echo $1
 git add website/_xpack.github.io
 
-git commit -m "website: add _xpack.github.io" || true
+git commit -m "website: add _xpack.github.io" || true || true
 
 __EOF__
 
@@ -100,7 +100,7 @@ echo $1
 git add website/blog/_templates/blog-post-release-part-*-liquid.mdx
 # git add templates
 
-git commit -m "website/blog/_templates/blog-post-release*" || true
+git commit -m "website/blog/_templates/blog-post-release*" || true || true
 
 __EOF__
 
@@ -113,7 +113,7 @@ cd "$1"
 echo
 echo $1
 git add scripts/versioning.sh
-git commit -m "versioning.sh: update for https"
+git commit -m "versioning.sh: update for https" || true
 
 __EOF__
 
@@ -126,7 +126,7 @@ cd "$1"
 echo
 echo $1
 git add scripts/application.sh
-git commit -m "application.sh: update"
+git commit -m "application.sh: update" || true
 
 __EOF__
 
@@ -139,7 +139,7 @@ cd "$1"
 echo
 echo $1
 git add -A
-git commit -m "Update min CMake 3.19"
+git commit -m "Update min CMake 3.19" || true
 
 __EOF__
 
@@ -152,7 +152,7 @@ cd "$1"
 echo
 echo $1
 git add .github/workflows
-git commit -m "re-generate workflows"
+git commit -m "re-generate workflows" || true || true
 
 __EOF__
 
@@ -167,9 +167,9 @@ cd build-assets
 echo
 echo $1
 git add scripts
-# git commit -m "scripts cosmetics"
-# git commit -m "re-generate scripts"
-git commit -m "update scripts copyright notices"
+# git commit -m "scripts cosmetics" || true
+# git commit -m "re-generate scripts" || true
+git commit -m "update scripts copyright notices" || true
 
 __EOF__
 
@@ -182,7 +182,7 @@ cd "$1"
 echo
 echo $1
 git add .vscode/settings.json
-git commit -m ".vscode/settings.json ignoreWords"
+git commit -m ".vscode/settings.json ignoreWords" || true
 
 __EOF__
 
@@ -195,7 +195,7 @@ cd "$1"
 echo
 echo $1
 git add .npmignore
-git commit -m ".npmignore update"
+git commit -m ".npmignore update" || true
 
 __EOF__
 
@@ -214,9 +214,9 @@ echo
 echo $1
 git add website
 # git add build-assets
-git commit -m "website update"
-# git commit -m "website remove preliminary"
-# git commit -m "website move blog post templates"
+git commit -m "website update" || true
+# git commit -m "website remove preliminary" || true
+# git commit -m "website move blog post templates" || true
 
 __EOF__
 
@@ -233,10 +233,10 @@ echo $1
 # git add README*.md scripts/README*.md
 git add README*.md build-assets/README*.md
 
-git commit -m "READMEs update"
-# git commit -m "READMEs update prerequisites"
-# git commit -m "READMEs update xpack-dev-tools path"
-# git commit -m "README-MAINTAINER rename xbbla"
+git commit -m "READMEs update" || true
+# git commit -m "READMEs update prerequisites" || true
+# git commit -m "READMEs update xpack-dev-tools path" || true
+# git commit -m "README-MAINTAINER rename xbbla" || true
 
 __EOF__
 
@@ -256,28 +256,28 @@ then
   git add package-lock.json
 fi
 
-# git commit -m "package.json: add scripts"
-# git commit -m "package.json: update Work/xpacks"
-# git commit -m "package.json: bump deps & reorder git-log"
-# git commit -m "package.json: mkdir -pv cache"
-# git commit -m "package.json: clang 17.0.6-1.1"
-# git commit -m "package.json: xpm-version 0.18.0"
-# git commit -m "package.json: update xpack-dev-tools path"
-# git commit -m "package.json: move scripts to actions"
-# git commit -m "package.json: minXpm 0.16.3 & @xpack-dev-tools/xbb-helper"
-# git commit -m "package.json: liquidjs --context --template"
-# git commit -m "package.json: reorder build actions"
-# git commit -m "package.json: add build-development-debug"
-# git commit -m "package.json: rename xbbla"
-# git commit -m "package.json: rm xpack-dev-tools-build/*"
-# git commit -m "package.json: add linux32"
-# git commit -m "package.json: rework generate workflows"
-# git commit -m "package.json: loglevel info"
-# git commit -m "package.json: add actions, bump deps"
-# git commit -m "package.json: update generate-workflows"
-# git commit -m "package.json: git+https"
-# git commit -m "package.json: cosmetics" || true
-git commit -m "package.json: bump deps" || true
+# git commit -m "package.json: add scripts" || true
+# git commit -m "package.json: update Work/xpacks" || true
+# git commit -m "package.json: bump deps & reorder git-log" || true
+# git commit -m "package.json: mkdir -pv cache" || true
+# git commit -m "package.json: clang 17.0.6-1.1" || true
+# git commit -m "package.json: xpm-version 0.18.0" || true
+# git commit -m "package.json: update xpack-dev-tools path" || true
+# git commit -m "package.json: move scripts to actions" || true
+# git commit -m "package.json: minXpm 0.16.3 & @xpack-dev-tools/xbb-helper" || true
+# git commit -m "package.json: liquidjs --context --template" || true
+# git commit -m "package.json: reorder build actions" || true
+# git commit -m "package.json: add build-development-debug" || true
+# git commit -m "package.json: rename xbbla" || true
+# git commit -m "package.json: rm xpack-dev-tools-build/*" || true
+# git commit -m "package.json: add linux32" || true
+# git commit -m "package.json: rework generate workflows" || true
+# git commit -m "package.json: loglevel info" || true
+# git commit -m "package.json: add actions, bump deps" || true
+# git commit -m "package.json: update generate-workflows" || true
+# git commit -m "package.json: git+https" || true
+# git commit -m "package.json: cosmetics" || true || true
+git commit -m "package.json: bump deps" || true || true
 
 __EOF__
 
@@ -301,9 +301,9 @@ then
   git add package-lock.json
 fi
 
-# git commit -m "build-assets/package.json: build-development & docker 5.2.2" || true
-# git commit -m "build-assets/package.json: updates" || true
-git commit -m "build-assets/package.json: bump deps" || true
+# git commit -m "build-assets/package.json: build-development & docker 5.2.2" || true || true
+# git commit -m "build-assets/package.json: updates" || true || true
+git commit -m "build-assets/package.json: bump deps" || true || true
 
 __EOF__
 
@@ -317,7 +317,7 @@ echo
 echo $1
 git add -A
 
-git commit -m "copyright updates"
+git commit -m "copyright updates" || true
 
 __EOF__
 
@@ -329,7 +329,7 @@ __EOF__
 # commands_file="${tmp_file_template_github}"
 # commands_file="${tmp_file_template_blog}"
 # commands_file="${tmp_file_blog}"
-# commands_file="${tmp_file_workflows}"
+commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_application}"
 
 # commands_file="${tmp_file_scripts}"
@@ -342,7 +342,7 @@ __EOF__
 
 # commands_file="${tmp_file_commit_package}"
 # commands_file="${tmp_file_commit_build_assets_package}"
-commands_file="${tmp_file_commit_copyrights}"
+# commands_file="${tmp_file_commit_copyrights}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
@@ -353,10 +353,10 @@ do
   (
     cd "$(dirname "${f}")"
 
-    # if [ ! -d build-assets ]
-    # then
-    #   continue
-    # fi
+    if [ ! -d build-assets ]
+    then
+      continue
+    fi
 
     echo
     pwd
