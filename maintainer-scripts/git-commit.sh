@@ -315,7 +315,7 @@ cd "$1"
 
 echo
 echo $1
-git add *
+git add -A
 
 git commit -m "copyright updates"
 
