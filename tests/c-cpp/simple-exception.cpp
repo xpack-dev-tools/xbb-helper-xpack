@@ -1,11 +1,13 @@
-/* ----------------------------------------------------------------------------
- * This file is part of the xPack distribution.
- *   (https://xpack.github.io)
- * Copyright (c) 2020 Liviu Ionescu.
+/*
+ * This file is part of the xPack project (http://xpack.github.io).
+ * Copyright (c) 2020 Liviu Ionescu. All rights reserved.
  *
- * Permission to use, copy, modify, and/or distribute this software 
+ * Permission to use, copy, modify, and/or distribute this software
  * for any purpose is hereby granted, under the terms of the MIT license.
- * -------------------------------------------------------------------------- */
+ *
+ * If a copy of the license was not distributed with this file, it can
+ * be obtained from https://opensource.org/licenses/mit/.
+ */
 
 #include <iostream>
 #include <exception>
@@ -15,7 +17,7 @@ struct MyException : public std::exception {
       return "MyException";
    }
 };
- 
+
 void
 func(void)
 {
@@ -32,7 +34,7 @@ main(int argc, char* argv[])
     std::cout << e.what() << std::endl;
   } catch(std::exception& e) {
     std::cout << "Other" << std::endl;
-  }  
+  }
 
   return 0;
 }

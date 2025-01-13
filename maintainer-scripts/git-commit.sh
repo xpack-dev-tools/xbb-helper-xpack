@@ -309,6 +309,20 @@ __EOF__
 
 # -----------------------------------------------------------------------------
 
+tmp_file_commit_copyrights="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_commit_copyrights}"
+cd "$1"
+
+echo
+echo $1
+git add *
+
+git commit -m "copyright updates"
+
+__EOF__
+
+# -----------------------------------------------------------------------------
+
 # set -x
 
 # UPDATE ME!
@@ -327,7 +341,8 @@ __EOF__
 # commands_file="${tmp_file_commit_readmes}"
 
 # commands_file="${tmp_file_commit_package}"
-commands_file="${tmp_file_commit_build_assets_package}"
+# commands_file="${tmp_file_commit_build_assets_package}"
+commands_file="${tmp_file_commit_copyrights}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
@@ -338,10 +353,10 @@ do
   (
     cd "$(dirname "${f}")"
 
-    if [ ! -d build-assets ]
-    then
-      continue
-    fi
+    # if [ ! -d build-assets ]
+    # then
+    #   continue
+    # fi
 
     echo
     pwd
