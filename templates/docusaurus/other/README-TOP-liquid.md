@@ -5,8 +5,19 @@
 
 # The xPack {{appName}}
 
-A standalone cross-platform (Windows, macOS, GNU/Linux)
-binary distribution of {{appName}},
+{% assign platforms_array = platforms | split: "," -%}
+
+{% assign names_array = "" | split: "" -%}
+
+{% for platform in platforms_array -%}
+{% if platform == "win32-x64" %}{% assign names_array = names_array | concat: "Windows" %}{% endif -%}
+{% if platform == "darwin-x64" or platform == "darwin-arm64" %}{% assign names_array = names_array | concat: "macOS" %}{% endif -%}
+{% if platform == "linux-x64" or platform == "linux-arm64" or platform == "linux-arm" %}{% assign names_array = names_array | concat: "GNU/Linux" %}{% endif -%}
+{% endfor -%}
+
+{% assign names_array = names_array | uniq -%}
+
+A standalone{% if names_array.size > 1 %}, cross-platform ({{ names_array | join: ", " }}){% else %} {{ names_array | first }}{% endif %} binary distribution of {{appName}},
 intended for reproducible builds.
 
 ## Project documentation
