@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "generate-website-commons": "bash node_modules/@xpack/docusaurus-template-liquid/maintenance-scripts/generate-commons.sh --xpack-dev-tools",
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
@@ -17,6 +18,7 @@
     "typecheck": "tsc",
     "npm-outdated": "npm outdated",
     "npm-install": "npm install",
+    "npm-link-helpers": "npm link @xpack/docusaurus-template-liquid @xpack/npm-packages-helper",
     "npm-ci": "npm ci",
     "deep-clean": "del-cli .docusaurus build node_modules package-lock.json"
   },
@@ -53,8 +55,8 @@
       "last 5 safari version"
     ]
   },
+  "websiteConfig": {},
   "engines": {
     "node": ">=18.0"
-  },
-  "websiteConfig": {}
+  }
 }
