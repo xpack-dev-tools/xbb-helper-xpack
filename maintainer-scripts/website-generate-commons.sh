@@ -168,7 +168,7 @@ then
   then
     chmod -R +w "$2/$to"
     rm -rf "$2/$to"
-    echo "rm $2/$to"
+    echo "rm $to"
   fi
   exit 0
 fi
@@ -177,7 +177,7 @@ if [ "${do_force}" != "y" ]
 then
   if [ -f "$2/$to" ]
   then
-    echo "$2/$to already present"
+    echo "$to already present"
     exit 0
   fi
 
@@ -201,7 +201,7 @@ elif [[ "$(basename "$from")" =~ .*-liquid.* ]]
 then
   mkdir -p "$(dirname $2/$to)"
 
-  echo liquidjs "@$from" '->' "$2/$to"
+  echo "liquidjs -> $to"
   # --strict-variables
   liquidjs --context "${context}" --template "@$from" --output "$2/$to"  --strict-filters
 
@@ -212,7 +212,8 @@ then
 else
   mkdir -p "$(dirname $2/$to)"
 
-  cp -v "$from" "$2/$to"
+  echo "cp -> $to"
+  cp "$from" "$2/$to"
 
   if [ "${do_force}" == "y" ]
   then
