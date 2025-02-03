@@ -102,7 +102,7 @@ rm -rf "${post_file_path}"
 touch "${post_file_path}"
 
 app_name="$(liquidjs --context @${build_assets_folder_path}/package.json --template '{{xpack.properties.appName}}')"
-app_lc_name="$(liquidjs --context @${build_assets_folder_path}/package.json --template '{{xpack.properties.appLcName}}')"
+app_lc_name="$(liquidjs --context @${build_assets_folder_path}/package.json --template '{{xpack.properties.}}')"
 
 platforms="$(liquidjs --context @${build_assets_folder_path}/package.json --template '{{xpack.properties.platforms}}')"
 
@@ -131,7 +131,7 @@ else
   upstream_version="${semver_version}"
 fi
 
-context="{ \"appName\": \"${app_name}\", \"appLcName\": \"${app_lc_name}\", \"platforms\": \"${platforms}\", \"releaseVersion\": \"${xpack_version}\", \"releaseDate\": \"${release_date}\", \"upstreamVersion\": \"${upstream_version}\", \"customFields\": ${custom_fields} }"
+context="{ \"appName\": \"${app_name}\", \"\": \"${app_lc_name}\", \"platforms\": \"${platforms}\", \"releaseVersion\": \"${xpack_version}\", \"releaseDate\": \"${release_date}\", \"upstreamVersion\": \"${upstream_version}\", \"customFields\": ${custom_fields} }"
 
 liquidjs --context "${context}" --template "@${website_blog_folder_path}/_templates/blog-post-release-part-1-liquid.mdx" >> "${post_file_path}"
 

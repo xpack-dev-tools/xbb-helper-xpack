@@ -5,7 +5,7 @@
 {% endif %}
 {% assign platforms = platforms | split: "," %}
 
-name: 'Publish the xPack {{appName}} release'
+name: 'Publish the xPack {{packageConfig.longName}} release'
 
 on:
   workflow_dispatch:
@@ -63,7 +63,7 @@ jobs:
           bodyFile: '.github/workflows/body-github-release.md'
           commit: 'xpack-development'
           draft: true
-          name: 'xPack {{appName}} v{% raw %}${{github.event.inputs.version}}{% endraw %}'
+          name: 'xPack {{packageConfig.longName}} v{% raw %}${{github.event.inputs.version}}{% endraw %}'
           omitBodyDuringUpdate: true
           omitDraftDuringUpdate: true
           omitNameDuringUpdate: true
@@ -71,7 +71,7 @@ jobs:
           owner: 'xpack-dev-tools'
           prerelease: true
           replacesArtifacts: false
-          repo: '{{appLcName}}-xpack'
+          repo: '{{packageConfig.shortName}}-xpack'
           tag: 'v{% raw %}${{github.event.inputs.version}}{% endraw %}'
           token: {% raw %}${{secrets.PUBLISH_TOKEN}}{% endraw %}
 
@@ -83,7 +83,7 @@ jobs:
         uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
-          artifacts: '~/Downloads/xpack-binaries/{{appLcName}}/*'
+          artifacts: '~/Downloads/xpack-binaries/{{packageConfig.shortName}}/*'
           commit: 'xpack-development'
           draft: true
           omitBodyDuringUpdate: true
@@ -93,6 +93,6 @@ jobs:
           owner: 'xpack-dev-tools'
           prerelease: true
           replacesArtifacts: false
-          repo: '{{appLcName}}-xpack'
+          repo: '{{packageConfig.shortName}}-xpack'
           tag: 'v{% raw %}${{github.event.inputs.version}}{% endraw %}'
           token: {% raw %}${{secrets.PUBLISH_TOKEN}}{% endraw %}

@@ -6,7 +6,7 @@
 {% endif %}
 {% assign platforms = platforms | split: "," %}
 
-name: 'Test xPack {{appName}} on supported platforms'
+name: 'Test xPack {{packageConfig.longName}} on supported platforms'
 
 on:
   workflow_dispatch:
@@ -29,7 +29,7 @@ jobs:
 {% case platform %}
 {% when "linux-x64" %}
   {{platform}}-test:
-    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
+    name: '{{platform}} {{packageConfig.shortName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
     runs-on: ubuntu-24.04
 
     steps:
@@ -68,7 +68,7 @@ jobs:
 {% endif %}
 {% when "linux-arm64" %}
   {{platform}}-test:
-    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
+    name: '{{platform}} {{packageConfig.shortName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
     runs-on: [self-hosted, linux, arm64, xbbla]
 
     steps:
@@ -116,7 +116,7 @@ jobs:
 {% endif %}
 {% when "linux-arm" %}
   {{platform}}-test:
-    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
+    name: '{{platform}} {{packageConfig.shortName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
     runs-on: [self-hosted, linux, arm, xbbla32]
 
     steps:
@@ -164,7 +164,7 @@ jobs:
 {% endif %}
 {% when "darwin-x64" %}
   {{platform}}-test:
-    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
+    name: '{{platform}} {{packageConfig.shortName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
     # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md
     runs-on: macos-13
 
@@ -217,7 +217,7 @@ jobs:
 {% endif %}
 {% when "darwin-arm64" %}
   {{platform}}-test:
-    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
+    name: '{{platform}} {{packageConfig.shortName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
     # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md
     runs-on: macos-14
 
@@ -270,7 +270,7 @@ jobs:
 {% endif %}
 {% when "win32-x64" %}
   {{platform}}-test:
-    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
+    name: '{{platform}} {{packageConfig.shortName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test'
     runs-on: windows-2022
     defaults:
       run:
@@ -315,7 +315,7 @@ jobs:
 
   # One more run with the oldest Windows available.
   {{platform}}-test2:
-    name: '{{platform}} {{appLcName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test 2019'
+    name: '{{platform}} {{packageConfig.shortName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test 2019'
     runs-on: windows-2019
     defaults:
       run:
@@ -352,7 +352,7 @@ jobs:
 {% endfor %}
 {% if customFields.showTestsResults == 'true' %}
   generate-tests-report:
-    name: 'Generate tests report for {{appName}}@{% raw %}${{github.event.inputs.version}}{% endraw %}'
+    name: 'Generate tests report for {{packageConfig.longName}}@{% raw %}${{github.event.inputs.version}}{% endraw %}'
     runs-on: ubuntu-24.04
     needs: [{{platforms | join: "-test, " | append: "-test"}}]
 
@@ -368,7 +368,7 @@ jobs:
           ls -lR {% raw %}${{github.workspace}}{% endraw %}/build-assets/artefacts
           touch {% raw %}${{github.workspace}}{% endraw %}/build-assets/artefacts/tests-report.md
           echo "---" >>{% raw %}${{github.workspace}}{% endraw %}/build-assets/artefacts/tests-report.md
-          echo "title: {{appName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test results" >>{% raw %}${{github.workspace}}{% endraw %}/build-assets/artefacts/tests-report.md
+          echo "title: {{packageConfig.longName}} {% raw %}${{github.event.inputs.version}}{% endraw %} test results" >>{% raw %}${{github.workspace}}{% endraw %}/build-assets/artefacts/tests-report.md
           echo >>{% raw %}${{github.workspace}}{% endraw %}/build-assets/artefacts/tests-report.md
           echo "date: $(date "+%Y-%m-%d %H:%M:%S %z")" >>{% raw %}${{github.workspace}}{% endraw %}/build-assets/artefacts/tests-report.md
           echo >>{% raw %}${{github.workspace}}{% endraw %}/build-assets/artefacts/tests-report.md

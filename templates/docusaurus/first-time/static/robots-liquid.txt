@@ -1,7 +1,0 @@
-Sitemap: https://xpack-dev-tools.github.io{{baseUrl}}sitemap.xml
-
-User-agent: *
-Disallow: {{baseUrl}}blog/archive/
-Disallow: {{baseUrl}}blog/authors/
-Disallow: {{baseUrl}}blog/page/
-Disallow: {{baseUrl}}blog/tags/
