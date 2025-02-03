@@ -1,10 +1,47 @@
-# Change & release log
+ # Change & release log
 
 Entries in this file are in reverse chronological order.
 
+## 2025-02-03
+
+* v3.1.4 released
+* e425fea remove docusaurus template files
+
+## 2025-01-16
+
+* f005f8c README cosmetics
+* a6e8dfa package.json: move xpm actions to npm scripts
+* 057f587 templates/docusaurus updates
+* f6b8b5c maintainer-scripts: website-generate* shorten paths
+
+## 2025-01-13
+
+* 1df4f94 templates/docusaurus: update cross-platform lists
+* 24f8c6e git-commit.sh: add || true to commits
+* 959fc75 copyright updates
+* c3cded5 copyright updates
+
+## 2025-01-10
+
+* 5b05cb5 websites-generate-commons* update
+* a85fc97 templates/docusaurus: show navbar name always
+* bea22d9 templates/docusaurus: remove i18n
+* 4bc2f0f templates/docusaurus: add name to navbar
+* a2bdc74 maintainer-scripts: update for webpreview
+* 82c48cb templates/docusaurus: config*.ts add preview
+
+## 2025-01-09
+
+* 218fda8 templates/docusaurus: docusaurus.config*.ts update Documentation menu
+* a19c467 templates/docusaurus: add Getting Started link
+* 590d132 git-commit.sh update
+* 9ffae77 templates/docusaurus: user update
+* 658beb7 templates/docusaurus: add algolia
+
 ## 2025-01-03
 
-* v3.1.3 released
+* e66db9f 3.1.3
+* 3235d72 prepare v3.1.3
 * 321b357 python3.sh: add python3_copy_win_py()
 * 1549621 3.1.2
 * 43fbc36 prepare v3.1.2
