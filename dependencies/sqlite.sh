@@ -34,6 +34,7 @@
 # "3390200"
 # "3400100"
 # "3450200" "2024"
+# "3480000" "2025"
 
 # -----------------------------------------------------------------------------
 
@@ -101,6 +102,28 @@ function sqlite_build()
       xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/include/readline"
+
+      # Default value of MAX_VARIABLE_NUMBER is 999 which is too low for many
+      # applications. Set to 250000 (Same value used in Debian and Ubuntu). HB
+      CPPFLAGS+=" -DSQLITE_ENABLE_API_ARMOR=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_COLUMN_METADATA=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_DBSTAT_VTAB=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_FTS3=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_FTS3_TOKENIZER=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_FTS3_PARENTHESIS=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_FTS5=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_JSON1=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_MATH_FUNCTIONS=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_MEMORY_MANAGEMENT=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_RTREE=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_STAT4=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_STMTVTAB=1"
+      CPPFLAGS+=" -DSQLITE_ENABLE_UNLOCK_NOTIFY=1"
+      CPPFLAGS+=" -DSQLITE_MAX_VARIABLE_NUMBER=250000"
+      CPPFLAGS+=" -DSQLITE_MAX_EXPR_DEPTH=10000"
+      CPPFLAGS+=" -DSQLITE_SECURE_DELETE=1"
+      CPPFLAGS+=" -DSQLITE_USE_URI=1"
+
       CFLAGS="${XBB_CFLAGS_NO_W}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
@@ -137,7 +160,11 @@ function sqlite_build()
 
           config_options+=("--build=${XBB_BUILD_TRIPLET}")
           config_options+=("--host=${XBB_HOST_TRIPLET}")
-          config_options+=("--target=${XBB_TARGET_TRIPLET}")
+          if [[ "${sqlite_version}" < "3480000" ]]
+          then
+            # No longer supported starting with "3480000".
+            config_options+=("--target=${XBB_TARGET_TRIPLET}")
+          fi
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-dependency-tracking") # HB
@@ -149,9 +176,13 @@ function sqlite_build()
           config_options+=("--disable-editline") # HB
           # config_options+=("--disable-static") # Arch
 
-          config_options+=("--enable-tcl=no")
-
-          config_options+=("--enable-dynamic-extensions") # HB
+          if [[ "${sqlite_version}" < "3480000" ]]
+          then
+            config_options+=("--enable-tcl=no")
+            config_options+=("--enable-dynamic-extensions") # HB
+          else
+            config_options+=("--disable-tcl")
+          fi
           # config_options+=("--enable-readline") # HB
           config_options+=("--enable-session") # HB
 
