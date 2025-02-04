@@ -114,7 +114,7 @@ function xbb_reset_env()
         mv "${root_folder_path}/build/${XBB_TARGET_FOLDER_NAME}" \
            "${WORK_FOLDER_PATH}/xpack-dev-tools-build/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}/${XBB_TARGET_FOLDER_NAME}"
       else
-        echo "Ooups!"
+        echo "Cannot do the trick with the non-backable Work folder!"
         exit 1
       fi
       ln -s "${WORK_FOLDER_PATH}/xpack-dev-tools-build/${XBB_APPLICATION_LOWER_CASE_NAME}-${XBB_RELEASE_VERSION}/${XBB_TARGET_FOLDER_NAME}" \
