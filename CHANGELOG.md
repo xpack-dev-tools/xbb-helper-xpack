@@ -2,9 +2,19 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-02-04
+
+* v3.1.5 released
+* 7823fbb sqlite.sh: update list of version
+* f443687 sqlite.sh: update for 348000 2025
+* d6c055c README-DEVELOPER.md update exports
+* 460c031 github-runner-configure: use wksi instead of xbbmi
+* dcf69dc xbb.sh: improve non-backable message
+
 ## 2025-02-03
 
-* v3.1.4 released
+* c93d929 3.1.4
+* 268a69c prepare v3.1.4
 * e425fea remove docusaurus template files
 
 ## 2025-01-16
