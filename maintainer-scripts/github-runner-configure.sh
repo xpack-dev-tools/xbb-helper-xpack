@@ -143,7 +143,9 @@ then
 
     echo
     echo "Configuring..."
-    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'wksi' --labels 'intel,14.6,wksi' --unattended --replace
+    # ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'wksi' --labels 'intel,14.6,wksi' --unattended --replace
+    # Replace xbbmi until an update to macOS 11.
+    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'xbbmi' --labels 'intel,10.14,xbbmi' --unattended --replace
 
     echo "To remove the runner, use:"
     echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
