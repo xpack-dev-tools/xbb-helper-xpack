@@ -157,7 +157,8 @@ function binutils_cross_build()
           then
             # ld.gold is currently available only on Arm.
             # It was requested to compile the Android kernel.
-            config_options+=("--enable-gold")
+            # ld.gold deprecated since binutils 2.44
+            # config_options+=("--enable-gold")
           elif [ "${triplet}" == "riscv-none-elf" ]
           then
             # ld.gold is not available on RISC-V.

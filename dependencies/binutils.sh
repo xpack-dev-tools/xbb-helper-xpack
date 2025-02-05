@@ -139,7 +139,8 @@ function binutils_prepare_common_options()
   config_options+=("--enable-cet") # Arch
   config_options+=("--enable-default-execstack=no") # Arch
   config_options+=("--enable-deterministic-archives") # Arch, HB
-  config_options+=("--enable-gold") # Arch, HB
+  # ld.gold deprecated since binutils 2.44
+  # config_options+=("--enable-gold") # Arch, HB
   config_options+=("--enable-install-libiberty") # Arch
   config_options+=("--enable-interwork") # HB
   # config_options+=("--enable-jansson") # Arch
@@ -562,6 +563,8 @@ function binutils_test()
 
 # -----------------------------------------------------------------------------
 
+# DEPRECATED!
+# ld.gold was deprecated in binutils 2.44!
 function binutils_build_ld_gold()
 {
   echo_develop
