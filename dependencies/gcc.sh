@@ -354,7 +354,7 @@ function gcc_build()
           config_options+=("--enable-pie-tools")
 
           # ld.gold deprecated since binutils 2.44
-          # config_options+=("--enable-gold")
+          config_options+=("--enable-gold")
 
           # config_options+=("--enable-version-specific-runtime-libs")
 

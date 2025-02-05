@@ -140,7 +140,7 @@ function binutils_prepare_common_options()
   config_options+=("--enable-default-execstack=no") # Arch
   config_options+=("--enable-deterministic-archives") # Arch, HB
   # ld.gold deprecated since binutils 2.44
-  # config_options+=("--enable-gold") # Arch, HB
+  config_options+=("--enable-gold") # Arch, HB
   config_options+=("--enable-install-libiberty") # Arch
   config_options+=("--enable-interwork") # HB
   # config_options+=("--enable-jansson") # Arch
@@ -572,7 +572,12 @@ function binutils_build_ld_gold()
 
   local binutils_version="$1"
 
+  # https://sourceware.org/pub/binutils/releases/
   local binutils_src_folder_name="binutils-${binutils_version}"
+  if [ "${binutils_version}" == "2.44" ]
+  then
+    binutils_src_folder_name="binutils-with-gold-${binutils_version}"
+  fi
 
   local binutils_archive="${binutils_src_folder_name}.tar.xz"
   local binutils_url="https://ftp.gnu.org/gnu/binutils/${binutils_archive}"
