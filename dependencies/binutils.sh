@@ -574,7 +574,7 @@ function binutils_build_ld_gold()
 
   # https://sourceware.org/pub/binutils/releases/
   local binutils_src_folder_name="binutils-${binutils_version}"
-  if [ "${binutils_version}" == "2.44" ]
+  if [ "${XBB_BINUTILS_WITH_GOLD:-""}" == "y" ]
   then
     binutils_src_folder_name="binutils-with-gold-${binutils_version}"
   fi
