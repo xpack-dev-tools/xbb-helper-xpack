@@ -2,9 +2,20 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-02-06
+
+* v3.1.6 released
+
+## 2025-02-05
+
+* 34c769f binutils.sh: use XBB_BINUTILS_WITH_GOLD
+* 898e7f6 re-enable gold for 2.44
+* 071e775 gcc & binutils: disable deprecated ld.gold
+
 ## 2025-02-04
 
-* v3.1.5 released
+* d78dc73 3.1.5
+* da6cf75 prepare v3.1.5
 * 7823fbb sqlite.sh: update list of version
 * f443687 sqlite.sh: update for 348000 2025
 * d6c055c README-DEVELOPER.md update exports
