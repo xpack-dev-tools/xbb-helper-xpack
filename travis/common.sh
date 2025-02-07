@@ -124,6 +124,26 @@ cat <<__EOF__ > "${data_file_path}"
           ]
         },
         {
+          "name": "x64 macOS 10.14",
+          "os": "osx",
+          "arch": "amd64",
+          "osx_image": "xcode11.3",
+          "language": "minimal",
+          "script": [
+            "uname -a",
+            "sw_vers",
+            "xcode-select --print-path",
+            "xcodebuild -version",
+            "pkgutil --pkg-info=com.apple.pkg.CLTools_Executables || true",
+            "pwd",
+            "ls -lLA",
+            "env | sort | grep -E '^[^ \t]+='",
+            "git clone -b xpack-development https://github.com/xpack-dev-tools/xbb-helper-xpack build-assets/xpacks/@xpack-dev-tools/xbb-helper",
+            "(cd build-assets/xpacks/@xpack-dev-tools/xbb-helper; git checkout ${helper_git_ref})",
+            "DEBUG=${DEBUG} bash build-assets/scripts/test.sh --base-url ${base_url}"
+          ]
+        },
+        {
           "name": "x64 macOS 10.13",
           "os": "osx",
           "arch": "amd64",
