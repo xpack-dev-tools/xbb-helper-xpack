@@ -25,7 +25,7 @@ To run all possible builds on the given platform from scratch:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean
+caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean
 ```
 
 To only see the build command without running it, use `--dry-run`.
@@ -34,7 +34,7 @@ On Linux, to build the Windows binaries:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows
+caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows
 ```
 
 The full builds may take more than 1 day to complete:
@@ -58,7 +58,23 @@ To exclude some projects, use multiple `--exclude xyz`, for example:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean --exclude clang
+caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
+--exclude clang \
+\
+--deep-clean
+```
+
+```sh
+git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
+--exclude clang \
+--exclude gcc \
+--exclude mingw-w64-gcc \
+--exclude aarch64-none-elf-gcc \
+--exclude arm-none-eabi-gcc \
+--exclude riscv-none-elf-gcc \
+\
+--deep-clean
 ```
 
 To exclude all:
@@ -107,6 +123,17 @@ rm -rf ~/Work/xpack-dev-tools/*/build
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang \
+\
+--deep-clean
+
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
+--exclude clang \
+--exclude gcc \
+--exclude mingw-w64-gcc \
+--exclude aarch64-none-elf-gcc \
+--exclude arm-none-eabi-gcc \
+--exclude riscv-none-elf-gcc \
+\
 --deep-clean
 
 xpm run deep-clean --config linux-arm64 -C ~/Work/xpack-dev-tools/arm-none-eabi-gcc-xpack.git
@@ -134,6 +161,7 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 --exclude aarch64-none-elf-gcc \
 --exclude arm-none-eabi-gcc \
 --exclude riscv-none-elf-gcc \
+\
 --deep-clean
 
 ```

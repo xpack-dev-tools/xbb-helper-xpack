@@ -32,15 +32,18 @@ IFS=$'\n\t'
 # -----------------------------------------------------------------------------
 # Identify the script location, to reach, for example, the helper scripts.
 
-build_script_path="$0"
-if [[ "${build_script_path}" != /* ]]
+script_path="$0"
+if [[ "${script_path}" != /* ]]
 then
   # Make relative path absolute.
-  build_script_path="$(pwd)/$0"
+  script_path="$(pwd)/$0"
 fi
 
-script_folder_path="$(dirname "${build_script_path}")"
-script_folder_name="$(basename "${script_folder_path}")"
+export script_path
+export script_name="$(basename "${script_path}")"
+
+export script_folder_path="$(dirname "${script_path}")"
+export script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
@@ -52,6 +55,11 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # -----------------------------------------------------------------------------
 
+argv="$@"
+
+stamps_folder_name="$(echo "${script_name}" | sed -e 's|\.sh$||')"
+stamps_folder_path="$(dirname $(dirname "${script_folder_path}"))/stamps/${stamps_folder_name}"
+
 WORK="${HOME}/Work/xpack-dev-tools"
 
 do_windows=""
@@ -59,6 +67,7 @@ do_clone=""
 do_dry_run=""
 do_repos_status=""
 do_deep_clean=""
+do_purge=""
 
 do_patch_debian=""
 
@@ -80,6 +89,11 @@ do
         exit 1
       fi
       do_clone="y"
+      shift
+      ;;
+
+    --purge )
+      do_purge="y"
       shift
       ;;
 
@@ -247,6 +261,16 @@ IFS="|"
 for name in ${names[@]}
 do
 
+  if [ -f "${stamps_folder_path}/${name}" ]
+  then
+      echo "${name} already built..."
+      continue
+  fi
+
+  echo
+  echo "----------------------------------------------------------------------------"
+  echo "${name}"
+
   # if [ "${excluded["${name}"]}" == "y" ] # not functional
   # if [[ -v excluded[${name}] ]] # bash 4.x only
   if [ ${#excluded[@]} -gt 0 ] && [[ "${IFS}${excluded[*]}${IFS}" =~ "${IFS}${name}${IFS}" ]]
@@ -283,40 +307,47 @@ do
 
     if [ "${do_deep_clean}" == "y" ]
     then
-      xpm run deep-clean -C ${WORK}/${name}-xpack.git
+      run_verbose xpm run deep-clean -C ${WORK}/${name}-xpack.git/build-assets
     fi
 
-    xpm run install -C ${WORK}/${name}-xpack.git
-    xpm run link-deps -C ${WORK}/${name}-xpack.git
+    run_verbose xpm run install -C ${WORK}/${name}-xpack.git/build-assets
+    run_verbose xpm run link-deps -C ${WORK}/${name}-xpack.git/build-assets
 
     if [ "$(uname)" == "Darwin" ]
     then
-      xpm run deep-clean --config ${config}  -C ${WORK}/${name}-xpack.git
-      xpm install --config ${config} -C ${WORK}/${name}-xpack.git
+      run_verbose xpm run deep-clean --config ${config}  -C ${WORK}/${name}-xpack.git/build-assets
+      run_verbose xpm install --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
 
       if [ "${do_dry_run}" == "y" ]
       then
         echo "Skipping real action for ${name}..."
       else
-        xpm run build-development --config ${config} -C ${WORK}/${name}-xpack.git
+        run_verbose xpm run build-development --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
       fi
     elif [ "$(uname)" == "Linux" ]
     then
-      xpm run deep-clean --config ${config} -C ${WORK}/${name}-xpack.git
-      xpm run docker-prepare --config ${config} -C ${WORK}/${name}-xpack.git
-      xpm run docker-link-deps --config ${config} -C ${WORK}/${name}-xpack.git
+      run_verbose xpm run deep-clean --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
+      run_verbose xpm run docker-prepare --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
+      run_verbose xpm run docker-link-deps --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
 
       if [ "${do_dry_run}" == "y" ]
       then
         echo "would run [xpm run docker-build-development --config ${config} -C ${WORK}/${name}-xpack.git]"
       else
-        xpm run docker-build-development --config ${config} -C ${WORK}/${name}-xpack.git
+        run_verbose xpm run docker-build-development --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
       fi
-      xpm run docker-remove --config ${config} -C ${WORK}/${name}-xpack.git
+      run_verbose xpm run docker-remove --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
     fi
 
-    # Cannot do this if we want the final statistics.
-    # xpm run deep-clean --config ${config} -C ${WORK}/${name}-xpack.git
+    if [ "${do_purge}" == "y" ]
+    then
+      # Cannot do this if we want the final statistics.
+      run_verbose xpm run deep-clean -C ${WORK}/${name}-xpack.git/build-assets
+    fi
+
+    run_verbose run_verbose mkdir -pv "${stamps_folder_path}"
+    run_verbose run_verbose touch "${stamps_folder_path}/${name}"
+
   fi
 
 done
@@ -327,17 +358,20 @@ then
   work_build_folder="${WORK_FOLDER_PATH}/xpack-dev-tools-build"
 fi
 
-echo
-echo "# Durations summary:"
+if [ "${do_purge}" != "y" ]
+then
+  echo
+  echo "# Durations summary:"
 
-run_verbose find ${work_build_folder} -name 'duration-*-*.txt' -exec echo '[cat {}]' ';' -exec cat '{}' ';' -exec echo ';'
+  run_verbose find ${work_build_folder} -name 'duration-*-*.txt' -exec echo '[cat {}]' ';' -exec cat '{}' ';' -exec echo ';'
 
-echo
-echo "# Copied files summary:"
+  echo
+  echo "# Copied files summary:"
 
-run_verbose find ${work_build_folder} -name 'copied-files-*-*.txt' -exec echo '[sort {}]' ';' -exec echo ';' -exec sort '{}' ';' -exec echo ';'
+  run_verbose find ${work_build_folder} -name 'copied-files-*-*.txt' -exec echo '[sort {}]' ';' -exec echo ';' -exec sort '{}' ';' -exec echo ';'
+fi
 
-echo "Done"
+echo "'${script_name} ${argv}' done"
 exit 0
 
 # -----------------------------------------------------------------------------
