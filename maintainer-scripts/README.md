@@ -73,7 +73,9 @@ To run all possible builds on the given platform from scratch:
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 
-caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean
+caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
+--deep-clean \
+--restart
 ```
 
 To only see the build command without running it, use `--dry-run`.
@@ -83,7 +85,9 @@ On Linux, to build the Windows binaries:
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 
-caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows
+caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
+--windows \
+--restart
 ```
 
 The full builds may take more than 1 day to complete:
@@ -111,7 +115,8 @@ git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang \
 \
---deep-clean
+--deep-clean \
+--restart
 ```
 
 ```sh
