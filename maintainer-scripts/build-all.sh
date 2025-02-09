@@ -81,6 +81,7 @@ do
   case "$1" in
     --windows )
       do_windows="y"
+      stamps_folder_path+="-windows"
       shift
       ;;
 
