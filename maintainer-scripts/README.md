@@ -20,6 +20,13 @@ https://github.com/xpack/npm-packages-helper.git \
 npm link -C ~/Work/xpack/npm-packages-helper.git
 ```
 
+To update already cloned projects:
+
+```sh
+git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
+git -C ~/Work/xpack/npm-packages-helper.git pull
+```
+
 Check if the build machines have enough free space and eventually
 do some cleanups.
 
@@ -39,7 +46,6 @@ To get all projects:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-git -C ~/Work/xpack/npm-packages-helper.git pull
 
 time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --clone
 ```
@@ -47,6 +53,8 @@ time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-a
 To update top commons:
 
 ```sh
+git -C ~/Work/xpack/npm-packages-helper.git pull
+
 time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --update-top
 ```
 
