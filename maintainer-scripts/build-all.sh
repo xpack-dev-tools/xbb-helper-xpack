@@ -223,7 +223,12 @@ else
 fi
 
 # The heavy ones.
-names+=( gcc )
+if [ "$(uname)" != "Darwin" ]
+then
+  # No more gcc on macOS!
+  names+=( gcc )
+fi
+
 names+=( mingw-w64-gcc )
 
 names+=( aarch64-none-elf-gcc )
