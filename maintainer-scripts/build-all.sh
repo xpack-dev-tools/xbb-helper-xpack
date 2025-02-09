@@ -69,6 +69,7 @@ do_repos_status=""
 do_deep_clean=""
 do_purge=""
 do_update_top=""
+do_restart=""
 
 do_patch_debian=""
 
@@ -95,6 +96,11 @@ do
 
     --purge )
       do_purge="y"
+      shift
+      ;;
+
+    --restart )
+      do_restart="y"
       shift
       ;;
 
@@ -276,6 +282,11 @@ fi
 
 # git -C ${WORK}/xbb-helper-xpack.git pull
 # xpm link -C ${WORK}/xbb-helper-xpack.git
+
+if [ "${do_restart}" == "y" ]
+then
+  rm -rf "${stamps_folder_path}"
+fi
 
 IFS="|"
 for name in ${names[@]}
