@@ -129,7 +129,7 @@ do
       ;;
 
     * )
-      echo "Unsupported argument $1 in ${FUNCNAME[0]}()"
+      echo "Unsupported argument $1 in $(basename "$0")"
       exit 1
       ;;
   esac
