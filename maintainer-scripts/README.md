@@ -9,22 +9,52 @@ git clone \
   --branch xpack-development \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
   ~/Work/xpack-dev-tools/xbb-helper-xpack.git
+xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
+
+rm -rf ~/Work/xpack/npm-packages-helper.git && \
+mkdir -p ~/Work/xpack && \
+git clone \
+https://github.com/xpack/npm-packages-helper.git \
+~/Work/xpack/npm-packages-helper.git
+
+npm link -C ~/Work/xpack/npm-packages-helper.git
 ```
 
 Check if the build machines have enough free space and eventually
-do some cleanups (`df -BG -H /` on Linux, `df -gH /` on macOS).
+do some cleanups.
+
+On Linux:
+
+```sh
+df -BG -H /
+```
+
+On macOS:
+
+```sh
+df -gH /
+```
 
 To get all projects:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
+git -C ~/Work/xpack/npm-packages-helper.git pull
+
 time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --clone
+```
+
+To update top commons:
+
+```sh
+time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --update-top
 ```
 
 To run all possible builds on the given platform from scratch:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
+
 caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean
 ```
 
@@ -34,6 +64,7 @@ On Linux, to build the Windows binaries:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
+
 caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows
 ```
 
@@ -58,6 +89,7 @@ To exclude some projects, use multiple `--exclude xyz`, for example:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
+
 caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang \
 \
@@ -66,6 +98,7 @@ caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer
 
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
+
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang \
 --exclude gcc \
@@ -118,7 +151,9 @@ removed
 ```sh
 df -BG -H /
 
-rm -rf ~/Work/xpack-dev-tools/*/build
+rm -rf ~/Work/xpack-dev-tools/*/build-assets/build
+sudo rm -rf ~/actions-runners/xpack-dev-tools/*/_work
+sudo rm -rf ~/actions-runners/xpack-dev-tools/_work
 
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
@@ -168,9 +203,13 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 
 ## wksi
 
+```ah
+df -g /
+```
+
 On `wksi`, when building  `qemu-arm` & `qemu-riscv`, meson fails with:
 
-```
+```ah
 meson.build:2277:26: ERROR: <PythonExternalProgram '/Library/Frameworks/Python.framework/Versions/3.11/bin/python3' -> ['/Library/Frameworks/Python.framework/Versions/3.11/bin/python3']> is not a valid python or it is missing distutils
 ```
 
