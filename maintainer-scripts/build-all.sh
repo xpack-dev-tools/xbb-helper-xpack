@@ -68,6 +68,7 @@ do_dry_run=""
 do_repos_status=""
 do_deep_clean=""
 do_purge=""
+do_update_top=""
 
 do_patch_debian=""
 
@@ -109,6 +110,11 @@ do
 
     --deep-clean )
       do_deep_clean="y"
+      shift
+      ;;
+
+    --update-top )
+      do_update_top="y"
       shift
       ;;
 
@@ -252,6 +258,16 @@ then
   echo "Done"
 
   exit 0
+elif [ "${do_update_top}" == "y" ]
+then
+  for name in ${names[@]}
+  do
+    (
+      cd ${WORK}/${name}-xpack.git
+      run_verbose npm run npm-link-helpers
+      run_verbose npm run generate-top-commons
+    )
+  done
 fi
 
 # git -C ${WORK}/xbb-helper-xpack.git pull
