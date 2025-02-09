@@ -1,6 +1,6 @@
 # build-all checklist
 
-| Name | xbbmi | xbbma | wks | xbbli x | xbbli w | xbbla | xbbla32 |
+| Name | xbbmi | xbbma | wks | xbbli x | xbbli w | ampere x | ampere w |
 | --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | cmake | | | | | | | |
 | meson-build | | | | | | | |
@@ -24,4 +24,4 @@
 | aarch64-none-elf-gcc | | | | | | | |
 | riscv-none-elf-gcc | | | | | | | |
 | clang | | | | | | | |
-| Name | xbbmi | xbbma | wks | xbbli x | xbbli w | xbbla | xbbla32 |
+| Name | xbbmi | xbbma | wks | xbbli x | xbbli w | ampere x | ampere w |
