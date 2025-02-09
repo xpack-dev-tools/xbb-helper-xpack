@@ -268,6 +268,10 @@ then
       run_verbose npm run generate-top-commons
     )
   done
+
+  echo "Done"
+
+  exit 0
 fi
 
 # git -C ${WORK}/xbb-helper-xpack.git pull
