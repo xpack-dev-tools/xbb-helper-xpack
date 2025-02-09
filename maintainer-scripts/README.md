@@ -11,13 +11,22 @@ git clone \
   ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 
+
 rm -rf ~/Work/xpack/npm-packages-helper.git && \
 mkdir -p ~/Work/xpack && \
 git clone \
 https://github.com/xpack/npm-packages-helper.git \
 ~/Work/xpack/npm-packages-helper.git
 
-npm link -C ~/Work/xpack/npm-packages-helper.git
+(cd ~/Work/xpack/npm-packages-helper.git; npm link --verbose)
+
+rm -rf ~/Work/xpack/docusaurus-template-liquid.git && \
+mkdir -p ~/Work/xpack && \
+git clone \
+https://github.com/xpack/docusaurus-template-liquid.git \
+~/Work/xpack/docusaurus-template-liquid.git
+
+(cd ~/Work/xpack/docusaurus-template-liquid.git; npm link --verbose)
 ```
 
 To update already cloned projects:
@@ -53,6 +62,7 @@ time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-a
 To update top commons:
 
 ```sh
+git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 git -C ~/Work/xpack/npm-packages-helper.git pull
 
 time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --update-top
