@@ -71,25 +71,28 @@ function isl_build()
 
     if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
-      # Undefined symbols for architecture arm64:
-      #   "std::__1::bad_function_call::~bad_function_call()", referenced from:
-      #       std::__1::__throw_bad_function_call[abi:ne190107]() in isl_test_cpp-checked.o
-      #   "typeinfo for std::__1::bad_function_call", referenced from:
-      #       std::__1::__throw_bad_function_call[abi:ne190107]() in isl_test_cpp-checked.o
-      #   "vtable for std::__1::bad_function_call", referenced from:
-      #       std::__1::__throw_bad_function_call[abi:ne190107]() in isl_test_cpp-checked.o
-      #   NOTE: a missing vtable usually means the first non-inline virtual member function has no definition.
+      if [ -f "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}/isl_test_cpp.cc" ]
+      then
+        # Undefined symbols for architecture arm64:
+        #   "std::__1::bad_function_call::~bad_function_call()", referenced from:
+        #       std::__1::__throw_bad_function_call[abi:ne190107]() in isl_test_cpp-checked.o
+        #   "typeinfo for std::__1::bad_function_call", referenced from:
+        #       std::__1::__throw_bad_function_call[abi:ne190107]() in isl_test_cpp-checked.o
+        #   "vtable for std::__1::bad_function_call", referenced from:
+        #       std::__1::__throw_bad_function_call[abi:ne190107]() in isl_test_cpp-checked.o
+        #   NOTE: a missing vtable usually means the first non-inline virtual member function has no definition.
 
-      run_verbose sed -i.bak \
-        -e 's|	test_foreach(ctx);|	// test_foreach(ctx);|' \
-        -e 's|	test_foreach_scc(ctx);|	// test_foreach_scc(ctx);|' \
-        -e 's|	test_every(ctx);|	// test_every(ctx);|' \
-        -e 's|	test_schedule_tree(ctx);|	// test_schedule_tree(ctx);|' \
-        -e 's|	test_ast_build(ctx);|	// test_ast_build(ctx);|' \
-        "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}/isl_test_cpp.cc"
+        run_verbose sed -i.bak \
+          -e 's|	test_foreach(ctx);|	// test_foreach(ctx);|' \
+          -e 's|	test_foreach_scc(ctx);|	// test_foreach_scc(ctx);|' \
+          -e 's|	test_every(ctx);|	// test_every(ctx);|' \
+          -e 's|	test_schedule_tree(ctx);|	// test_schedule_tree(ctx);|' \
+          -e 's|	test_ast_build(ctx);|	// test_ast_build(ctx);|' \
+          "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}/isl_test_cpp.cc"
 
-      run_verbose diff "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}/isl_test_cpp.cc.bak" \
-        "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}/isl_test_cpp.cc" || true
+        run_verbose diff "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}/isl_test_cpp.cc.bak" \
+          "${XBB_SOURCES_FOLDER_PATH}/${isl_src_folder_name}/isl_test_cpp.cc" || true
+      fi
     fi
 
     (
