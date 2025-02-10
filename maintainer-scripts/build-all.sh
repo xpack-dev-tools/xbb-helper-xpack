@@ -352,7 +352,10 @@ do
 
     if [ "$(uname)" == "Darwin" ]
     then
-      run_verbose xpm run deep-clean --config ${config}  -C ${WORK}/${name}-xpack.git/build-assets
+      if [ "${do_deep_clean}" == "y" ]
+      then
+        run_verbose xpm run deep-clean --config ${config}  -C ${WORK}/${name}-xpack.git/build-assets
+      fi
       run_verbose xpm install --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
 
       if [ "${do_dry_run}" == "y" ]
@@ -363,7 +366,10 @@ do
       fi
     elif [ "$(uname)" == "Linux" ]
     then
-      run_verbose xpm run deep-clean --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
+      if [ "${do_deep_clean}" == "y" ]
+      then
+        run_verbose xpm run deep-clean --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
+      fi
       run_verbose xpm run docker-prepare --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
       run_verbose xpm run docker-link-deps --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
 
