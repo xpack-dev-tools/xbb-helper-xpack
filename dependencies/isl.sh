@@ -166,6 +166,8 @@ function isl_build()
         then
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
+            # https://groups.google.com/g/isl-development/c/bBy4-ZKQQJ0
+
             # /Users/ilg/Work/xpack-dev-tools/gcc-xpack.git/build-assets/build/darwin-arm64/sources/isl-0.26/test-driver: line 112: 85403 Abort trap: 6           "$@" >> "$log_file" 2>&1
             # FAIL: isl_test2
             # PASS: isl_test_cpp
