@@ -205,13 +205,7 @@ function gcc_build()
         if is_development
         then
           LDFLAGS_FOR_TARGET+=" -Wl,-v"
-          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
-          then
-            LDFLAGS_FOR_TARGET+=" -Wl,-t"
-          elif [ "${XBB_HOST_PLATFORM}" == "linux" ]
-          then
-            LDFLAGS_FOR_TARGET+=" -Wl,-t,-t"
-          fi
+          LDFLAGS_FOR_TARGET+=" -Wl,-t"
         fi
 
         # The static libiconv is used to avoid a reference in libstdc++.dylib
@@ -237,12 +231,22 @@ function gcc_build()
         # The target may refer to the development libraries.
         # It does not need the bootstrap toolchain rpaths.
         if is_development
-        then
+        the
           LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET"
         else
           LDFLAGS_FOR_TARGET=""
         fi
         LDFLAGS_FOR_TARGET+=" ${XBB_LDFLAGS_APP}"
+
+        if [ "${XBB_HOST_ARCH}" == "x64" ]
+        then
+          # The static libiconv is used to avoid a reference in libstdc++.
+          LDFLAGS_FOR_TARGET+=" -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static64/lib"
+        elif [ "${XBB_HOST_ARCH}" == "arm64" ]
+        then
+          LDFLAGS_FOR_TARGET+=" -L${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/static/lib"
+        fi
+
         LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_library_paths "${XBB_LIBRARY_PATH}")"
         LDFLAGS_FOR_TARGET+=" $(xbb_expand_linker_rpaths "${XBB_LIBRARY_PATH}")"
 
