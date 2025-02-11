@@ -231,7 +231,7 @@ function gcc_build()
         # The target may refer to the development libraries.
         # It does not need the bootstrap toolchain rpaths.
         if is_development
-        the
+        then
           LDFLAGS_FOR_TARGET="-DXBB_MARKER_TARGET"
         else
           LDFLAGS_FOR_TARGET=""
