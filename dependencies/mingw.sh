@@ -695,6 +695,12 @@ function mingw_build_crt()
           then
             config_options+=("--enable-lib32") # Arch, HB
             config_options+=("--disable-lib64") # Arch, HB
+          elif [ "${triplet}" == "arm64-w64-mingw32" ] ||
+               [ "${triplet}" == "aarch64-w64-mingw32" ]
+          then
+            config_options+=("--disable-lib32")
+            config_options+=("--disable-lib64")
+            config_options+=("--enable-libarm64")
           else
             echo "Unsupported triplet ${triplet} in ${FUNCNAME[0]}()"
             exit 1

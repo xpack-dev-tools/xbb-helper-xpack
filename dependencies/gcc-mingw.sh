@@ -626,6 +626,10 @@ function gcc_mingw_test()
   elif [ "${triplet}" == "i686-w64-mingw32" ]
   then
     bits_option="--32"
+  elif [ "${triplet}" == "arm64-w64-mingw32" ] ||
+       [ "${triplet}" == "aarch64-w64-mingw32" ]
+  then
+    bits_option="--64"
   else
     echo "Unsupported triplet ${triplet}"
     exit 1
