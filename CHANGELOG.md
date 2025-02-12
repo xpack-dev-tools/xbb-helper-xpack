@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-02-12
 
-* v3.1.7 released
+* v3.1.8 released
+* 58617bd gcc.sh: ignore some STATIC_*CNRT_TEST_32
+* e670380 3.1.7
+* 1ebad7a prepare v3.1.7
 * 927b076 github-runner-configure: add ampere
 * 2cf741f mingw.sh: use $1
 
