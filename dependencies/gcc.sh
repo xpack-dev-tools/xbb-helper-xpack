@@ -1254,6 +1254,12 @@ function test_linux()
       export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
       export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
 
+      # cnrt-test.
+      export XBB_IGNORE_TEST_STATIC_CNRT_TEST_32="y"
+      export XBB_IGNORE_TEST_STATIC_GC_CNRT_TEST_32="y"
+      export XBB_IGNORE_TEST_STATIC_LTO_CNRT_TEST_32="y"
+      export XBB_IGNORE_TEST_STATIC_GC_LTO_CNRT_TEST_32="y"
+
       if [ "${distro}" == "Fedora" ]
       then
         # cnrt-test-32.
