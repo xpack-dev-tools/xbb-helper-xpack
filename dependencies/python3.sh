@@ -216,7 +216,11 @@ function python3_build()
 
           config_options+=("--disable-test-modules")
 
-          run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${python3_src_folder_name}/configure" \
+          # Prevent references to -lnsl.
+          export py_cv_module_nis=disabled
+          export ac_cv_search_yp_match=no
+
+          run_verbose bash ${DEBUG}  "${XBB_SOURCES_FOLDER_PATH}/${python3_src_folder_name}/configure" \
             "${config_options[@]}"
 
           cp "config.log" "${XBB_LOGS_FOLDER_PATH}/${python3_folder_name}/config-log-$(ndate).txt"
