@@ -18,7 +18,7 @@
 # https://www.python.org/ftp/python/
 # https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tar.xz
 
-## https://gitlab.archlinux.org/archlinux/packaging/packages/python/-/blob/main/PKGBUILD
+# https://gitlab.archlinux.org/archlinux/packaging/packages/python/-/blob/main/PKGBUILD?ref_type=heads
 # https://archlinuxarm.org/packages/aarch64/python/files/PKGBUILD
 # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python
 # https://git.archlinux.org/svntogit/packages.git/tree/trunk/PKGBUILD?h=packages/python-pip
@@ -219,6 +219,10 @@ function python3_build()
           # Prevent references to -lnsl.
           export py_cv_module_nis=disabled
           export ac_cv_search_yp_match=no
+
+          export py_cv_module_readline=disabled
+          export py_cv_module_ossaudiodev=disabled
+          export py_cv_module_audioop=disabled
 
           run_verbose bash ${DEBUG}  "${XBB_SOURCES_FOLDER_PATH}/${python3_src_folder_name}/configure" \
             "${config_options[@]}"
