@@ -2,9 +2,53 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-02-12
+
+* v3.1.7 released
+* 927b076 github-runner-configure: add ampere
+* 2cf741f mingw.sh: use $1
+
+## 2025-02-11
+
+* 23d1707 mingw arm64 & aarch64
+* 32c8f41 gcc.sh: fix syntax
+* 2b1f891 gcc.sh: fix static libiconv in libstdc++
+
+## 2025-02-10
+
+* 07eccb5 isl.sh: conditional sed
+* aee1118 isl.sh: add link to report
+* 97f49d7 isl.sh: fix syntax
+* 40284db isl.sh: disable checks on darwin
+* e9358bc isl.sh: sed disable some tests
+* 11dbd3b build-all: control deep-clean
+* 501bcb7 build-all: skip gcc on macos
+
+## 2025-02-09
+
+* ef1df81 maintainer-scripts README update
+* fe6f419 build-all.sh: stamps/build-all-windows
+* b9b6cbe maintainer-scripts README update
+* 7d3eb66 build-all.sh: ad --restart
+* bb531e9 build-all.sh: exit after --update-top
+* 9bb528e maintainer-scripts README update
+* 89a8781 build-all.sh: fix FUNCNAME
+* e2c4472 maintainer-scripts README update
+* 50f30e3 build-all.sh: add --update-top
+* 3d33cbf CHECKLIST update to ampere
+
+## 2025-02-08
+
+* 50475f1 mainainer-scripts: build-all updates
+
+## 2025-02-07
+
+* e387caa travis/common.sh: add again 10.14
+
 ## 2025-02-06
 
-* v3.1.6 released
+2025-02-06 * a36e5eb 3.1.6
+2025-02-06 * eba60ad prepare v3.1.6
 
 ## 2025-02-05
 
