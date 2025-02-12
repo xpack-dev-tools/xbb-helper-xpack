@@ -107,8 +107,7 @@ To exclude some projects, use multiple `--exclude xyz`, for example:
 time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang \
 \
---deep-clean \
---restart
+--deep-clean
 ```
 
 ```sh
@@ -167,7 +166,6 @@ rm -rf ~/Work/xpack-dev-tools/*/build-assets/build
 sudo rm -rf ~/actions-runners/xpack-dev-tools/*/_work
 sudo rm -rf ~/actions-runners/xpack-dev-tools/_work
 
-git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang \
 \
