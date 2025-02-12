@@ -242,6 +242,43 @@ then
     echo "To remove the runner 2, use:"
     echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
   )
+elif [ "${hostname}" == "ampere" ]
+then
+  sudo rm -rf "${HOME}/actions-runners/${organization}"
+
+  mkdir -p "${HOME}/actions-runners/${organization}/1"
+  (
+    cd "${HOME}/actions-runners/${organization}/1"
+    echo
+    echo "Unpacking archive..."
+    tar xzf "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz"
+
+    token="$(get_token)"
+
+    echo
+    echo "Configuring 1..."
+    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'xbbla-1' --labels 'xbbla,xbblax' --unattended --replace
+
+    echo "To remove the runner 1, use:"
+    echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
+  )
+  mkdir -p "${HOME}/actions-runners/${organization}/2"
+  (
+    cd "${HOME}/actions-runners/${organization}/2"
+    echo
+    echo "Unpacking archive..."
+    tar xzf "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz"
+
+    token="$(get_token)"
+
+    echo
+    echo "Configuring 2..."
+    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'xbbla-2' --labels 'xbbla,xbblaw' --unattended --replace
+
+    echo "To remove the runner 2, use:"
+    echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
+  )
+  mkdir -p "${HOME}/actions-runners/${organization}/3"
 elif [ "${hostname}" == "xbbla32" ]
 then
   sudo rm -rf "${HOME}/actions-runners/${organization}"
