@@ -184,7 +184,7 @@ function ncurses_build()
             # /opt/xbb/bin/libtool: line 10548: gcc-8bs: command not found
 
             # Without --with-pkg-config-libdir= it'll try to write the .pc files in the
-            # xbb folder, probbaly by using the dirname of pkg-config.
+            # xbb folder, probably by using the dirname of pkg-config.
 
             config_options+=("--with-build-cc=${XBB_NATIVE_CC}")
             config_options+=("--with-build-cflags=${CFLAGS} -D_XOPEN_SOURCE_EXTENDED")
