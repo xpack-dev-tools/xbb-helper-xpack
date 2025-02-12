@@ -63,6 +63,12 @@ function ncurses_build()
   while [ $# -gt 0 ]
   do
     case "$1" in
+      --enable-widec )
+        disable_widec="n"
+        suffix="-wide"
+        shift
+        ;;
+
       --disable-widec )
         disable_widec="y"
         suffix=""
@@ -309,7 +315,7 @@ function ncurses_build()
         # Build.
         run_verbose make -j ${XBB_JOBS}
 
-        # The test-programs are interactive
+        # The test-programs are interactive.
 
         # Has no install-strip
         run_verbose make install
