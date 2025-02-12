@@ -34,6 +34,7 @@ To update already cloned projects:
 ```sh
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 git -C ~/Work/xpack/npm-packages-helper.git pull
+git -C ~/Work/xpack/docusaurus-template-liquid.git pull
 ```
 
 Check if the build machines have enough free space and eventually
@@ -54,28 +55,25 @@ df -gH /
 To get all projects:
 
 ```sh
-git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-
 time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --clone
 ```
 
 To update top commons:
 
 ```sh
-git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-git -C ~/Work/xpack/npm-packages-helper.git pull
-
 time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --update-top
+```
+
+To restart all builds:
+
+```sh
+time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --restart
 ```
 
 To run all possible builds on the given platform from scratch:
 
 ```sh
-git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-
-caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
---deep-clean \
---restart
+time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean
 ```
 
 To only see the build command without running it, use `--dry-run`.
@@ -83,11 +81,7 @@ To only see the build command without running it, use `--dry-run`.
 On Linux, to build the Windows binaries:
 
 ```sh
-git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-
-caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
---windows \
---restart
+time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows
 ```
 
 The full builds may take more than 1 day to complete:
@@ -110,9 +104,7 @@ bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh
 To exclude some projects, use multiple `--exclude xyz`, for example:
 
 ```sh
-git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-
-caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
+time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang \
 \
 --deep-clean \
@@ -120,8 +112,6 @@ caffeinate time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer
 ```
 
 ```sh
-git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
-
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang \
 --exclude gcc \
@@ -136,7 +126,6 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 To exclude all:
 
 ```sh
-git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude ninja-build \
 --exclude cmake \

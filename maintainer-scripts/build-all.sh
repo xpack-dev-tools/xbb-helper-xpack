@@ -292,6 +292,10 @@ fi
 if [ "${do_restart}" == "y" ]
 then
   rm -rf "${stamps_folder_path}"
+
+  echo "Done"
+
+  exit 0
 fi
 
 IFS="|"
