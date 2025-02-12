@@ -76,8 +76,10 @@
 
 function mingw_download()
 {
+  local mingw_version="$1"
+
   # The original SourceForge location.
-  export XBB_MINGW_SRC_FOLDER_NAME="mingw-w64-v${XBB_MINGW_VERSION}"
+  export XBB_MINGW_SRC_FOLDER_NAME="mingw-w64-v${mingw_version}"
 
   local mingw_folder_archive="${XBB_MINGW_SRC_FOLDER_NAME}.tar.bz2"
   # The original SourceForge location.
@@ -98,8 +100,10 @@ function mingw_download()
 
     if [ ! -d "${XBB_MINGW_SRC_FOLDER_NAME}" ]
     then
+      local mingw_gcc_patch_file_name="${XBB_MINGW_GCC_PATCH_FILE_NAME:-""}"
+
       download_and_extract "${mingw_url}" "${mingw_folder_archive}" \
-        "${XBB_MINGW_SRC_FOLDER_NAME}"
+        "${XBB_MINGW_SRC_FOLDER_NAME}" "${mingw_gcc_patch_file_name}"
 
       # On MacOS there is no <malloc.h>
       # mingw-w64-v9.0.0/mingw-w64-libraries/libmangle/src/m_token.c:26:10: fatal error: malloc.h: No such file or directory
