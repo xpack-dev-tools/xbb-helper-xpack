@@ -220,7 +220,7 @@ function python3_build()
           export py_cv_module_nis=disabled
           export ac_cv_search_yp_match=no
 
-          export py_cv_module_readline=disabled
+          # export py_cv_module_readline=disabled
           export py_cv_module_ossaudiodev=disabled
           export py_cv_module_audioop=disabled
 
