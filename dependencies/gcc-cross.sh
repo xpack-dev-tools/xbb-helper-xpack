@@ -24,6 +24,8 @@ function gcc_cross_build_common()
 
   libiconv_build "${XBB_LIBICONV_VERSION}"
 
+  # readline searches for ncurses.pc
+  # python checks for ncursesw
   ncurses_build "${XBB_NCURSES_VERSION}" --enable-lib-suffixes --enable-widec
 
   # new makeinfo needed by binutils 2.41 and up
