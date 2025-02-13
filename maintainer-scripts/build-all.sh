@@ -354,6 +354,8 @@ do
     run_verbose xpm run install -C ${WORK}/${name}-xpack.git/build-assets
     run_verbose xpm run link-deps -C ${WORK}/${name}-xpack.git/build-assets
 
+    export XBB_ENVIRONMENT_SKIP_CHECKS="y"
+
     if [ "$(uname)" == "Darwin" ]
     then
       if [ "${do_deep_clean}" == "y" ]
