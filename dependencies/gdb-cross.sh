@@ -52,11 +52,9 @@ function gdb_cross_build_dependencies()
 
   # https://ftp.gnu.org/gnu/ncurses/
   # The wide is required by python.
-  ncurses_build "${XBB_NCURSES_VERSION}" --enable-lib-suffixes --enable-widec
-
   # The non-wide is required by readline, otherwise the
   # /lib/x86_64-linux-gnu/libncurses.so.6 is refered.
-  ncurses_build "${XBB_NCURSES_VERSION}" --enable-lib-suffixes --disable-widec
+  ncurses_build "${XBB_NCURSES_VERSION}" --hack-links
 
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -o "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
   then

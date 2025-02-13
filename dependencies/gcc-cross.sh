@@ -26,7 +26,7 @@ function gcc_cross_build_common()
 
   # readline searches for ncurses.pc
   # python checks for ncursesw
-  ncurses_build "${XBB_NCURSES_VERSION}" --enable-lib-suffixes --enable-widec
+  ncurses_build "${XBB_NCURSES_VERSION}" --hack-links
 
   # new makeinfo needed by binutils 2.41 and up
   # checking for suffix of object files...   MAKEINFO doc/bfd.info
