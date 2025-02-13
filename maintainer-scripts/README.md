@@ -1,5 +1,7 @@
 # Maintainer info
 
+## Clone project
+
 To get the project:
 
 ```sh
@@ -10,8 +12,11 @@ git clone \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
   ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
+```
 
+To get the helpers:
 
+```sh
 rm -rf ~/Work/xpack/npm-packages-helper.git && \
 mkdir -p ~/Work/xpack && \
 git clone \
@@ -19,7 +24,9 @@ https://github.com/xpack/npm-packages-helper.git \
 ~/Work/xpack/npm-packages-helper.git
 
 (cd ~/Work/xpack/npm-packages-helper.git; npm link --verbose)
+```
 
+```sh
 rm -rf ~/Work/xpack/docusaurus-template-liquid.git && \
 mkdir -p ~/Work/xpack && \
 git clone \
@@ -37,6 +44,8 @@ git -C ~/Work/xpack/npm-packages-helper.git pull
 git -C ~/Work/xpack/docusaurus-template-liquid.git pull
 ```
 
+## Check space
+
 Check if the build machines have enough free space and eventually
 do some cleanups.
 
@@ -51,6 +60,8 @@ On macOS:
 ```sh
 df -gH /
 ```
+
+## Clone all
 
 To get all projects:
 
@@ -69,6 +80,8 @@ To restart all builds:
 ```sh
 time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --restart
 ```
+
+## Build all
 
 To run all possible builds on the given platform from scratch:
 
@@ -154,7 +167,7 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 
 ```
 
-## ampere
+### ampere
 
 On Ampere the space is tight and the largest build must be
 removed
@@ -211,7 +224,7 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 
 ```
 
-## wksi
+### wksi
 
 ```ah
 df -g /
@@ -234,7 +247,7 @@ Requirement already satisfied: setuptools in /Library/Frameworks/Python.framewor
 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
 ```
 
-### Repair links
+## Repair links
 
 In case the links were damaged, redo all:
 
