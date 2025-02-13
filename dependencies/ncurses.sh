@@ -59,7 +59,7 @@ function ncurses_build()
   local with_termlib="n"
   local hack_links="n"
   local suffix="-wide"
-  local enable_overwrite="y"
+  local enable_overwrite="n"
 
   while [ $# -gt 0 ]
   do
