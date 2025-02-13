@@ -275,8 +275,10 @@ function ncurses_build()
           config_options+=("--enable-ext-colors")
           config_options+=("--enable-interop")
 
-          # config_options+=("--disable-overwrite")
-          config_options+=("--enable-overwrite")
+          # put headers in subdir, omit link to -lcurses
+          config_options+=("--disable-overwrite")
+
+          # config_options+=("--enable-overwrite")
 
           # /bin/bash ./run_tic.sh
           # Building terminfo database, please wait...
