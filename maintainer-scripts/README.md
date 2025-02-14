@@ -95,8 +95,8 @@ To only see the build command without running it, use `--dry-run`.
 On Linux, to build the Windows binaries:
 
 ```sh
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows
-time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows --deep-clean
+time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows --deep-clean
 ```
 
 DO NOT RUN IT IN PARALLEL!
