@@ -332,10 +332,11 @@ do
         ${WORK}/${name}-xpack.git
     fi
 
-    if [ "${do_patch_debian}" == "y" ]
-    then
-      (
-        cd "${WORK}/${name}-xpack.git"
+    (
+      cd "${WORK}/${name}-xpack.git"
+
+      if [ "${do_patch_debian}" == "y" ]
+      then
         run_verbose sed -i.bak \
           -e 's|"dockerImage": "ilegeul/ubuntu:amd64-18.04-xbb-v5.[0-9].[0-9]"|"dockerImage": "ilegeul/debian:amd64-10-xbb-v5.1.1"|' \
           -e 's|"dockerImage": "ilegeul/ubuntu:arm64v8-18.04-xbb-v5.[0-9].[0-9]"|"dockerImage": "ilegeul/debian:arm64v8-10-xbb-v5.1.1"|' \
@@ -343,56 +344,57 @@ do
           package.json
 
         run_verbose diff package.json.bak package.json || true
-      )
-    fi
+      fi
 
-    if [ "${do_deep_clean}" == "y" ]
-    then
-      run_verbose xpm run deep-clean -C ${WORK}/${name}-xpack.git/build-assets
-    fi
-
-    run_verbose xpm run install -C ${WORK}/${name}-xpack.git/build-assets
-    run_verbose xpm run link-deps -C ${WORK}/${name}-xpack.git/build-assets
-
-    export XBB_ENVIRONMENT_SKIP_CHECKS="y"
-
-    if [ "$(uname)" == "Darwin" ]
-    then
       if [ "${do_deep_clean}" == "y" ]
       then
-        run_verbose xpm run deep-clean --config ${config}  -C ${WORK}/${name}-xpack.git/build-assets
+        run_verbose xpm run deep-clean -C build-assets
       fi
-      run_verbose xpm install --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
 
-      if [ "${do_dry_run}" == "y" ]
-      then
-        echo "Skipping real action for ${name}..."
-      else
-        run_verbose xpm run build-development --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
-      fi
-    elif [ "$(uname)" == "Linux" ]
-    then
-      if [ "${do_deep_clean}" == "y" ]
-      then
-        run_verbose xpm run deep-clean --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
-      fi
-      run_verbose xpm run docker-prepare --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
-      run_verbose xpm run docker-link-deps --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
+      run_verbose npm install
+      run_verbose xpm run install -C build-assets
+      run_verbose xpm run link-deps -C build-assets
 
-      if [ "${do_dry_run}" == "y" ]
-      then
-        echo "would run [xpm run docker-build-development --config ${config} -C ${WORK}/${name}-xpack.git]"
-      else
-        run_verbose xpm run docker-build-development --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
-      fi
-      run_verbose xpm run docker-remove --config ${config} -C ${WORK}/${name}-xpack.git/build-assets
-    fi
+      export XBB_ENVIRONMENT_SKIP_CHECKS="y"
 
-    if [ "${do_purge}" == "y" ]
-    then
-      # Cannot do this if we want the final statistics.
-      run_verbose xpm run deep-clean -C ${WORK}/${name}-xpack.git/build-assets
-    fi
+      if [ "$(uname)" == "Darwin" ]
+      then
+        if [ "${do_deep_clean}" == "y" ]
+        then
+          run_verbose xpm run deep-clean --config ${config}  -C build-assets
+        fi
+        run_verbose xpm install --config ${config} -C build-assets
+
+        if [ "${do_dry_run}" == "y" ]
+        then
+          echo "Skipping real action for ${name}..."
+        else
+          run_verbose xpm run build-development --config ${config} -C build-assets
+        fi
+      elif [ "$(uname)" == "Linux" ]
+      then
+        if [ "${do_deep_clean}" == "y" ]
+        then
+          run_verbose xpm run deep-clean --config ${config} -C build-assets
+        fi
+        run_verbose xpm run docker-prepare --config ${config} -C build-assets
+        run_verbose xpm run docker-link-deps --config ${config} -C build-assets
+
+        if [ "${do_dry_run}" == "y" ]
+        then
+          echo "would run [xpm run docker-build-development --config ${config} -C ${WORK}/${name}-xpack.git/build-assets]"
+        else
+          run_verbose xpm run docker-build-development --config ${config} -C build-assets
+        fi
+        run_verbose xpm run docker-remove --config ${config} -C build-assets
+      fi
+
+      if [ "${do_purge}" == "y" ]
+      then
+        # Cannot do this if we want the final statistics.
+        run_verbose xpm run deep-clean -C build-assets
+      fi
+    )
 
     run_verbose run_verbose mkdir -pv "${stamps_folder_path}"
     run_verbose run_verbose touch "${stamps_folder_path}/${name}"
