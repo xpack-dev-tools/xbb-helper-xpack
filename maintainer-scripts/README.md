@@ -106,10 +106,10 @@ The full builds may take more than 1 day to complete:
 - `wksi`: ?
 - `xbbmi`: ? [was 7h03 (nuc)]
 - `xbbma`: 2h25 + 43m clang [was 3h37]
-- `xbbli` linux: 244m (4h04) + 67m (1h07) [was 340m (5h40) + 60m clang],
+- `xbbli` linux: 244m (4h04) + 67m (1h07)
 - `xbbli` windows: ? [was 395m (6h35)]
 - `berry5`: ? [was 1086m (18h06)]
-- `ampere`: 507m (9h27) + ? [was 140m (2h20) clang]
+- `ampere`: 507m (9h27) + 157m (2h37)
 - `xbbla`:  ? [was 24h10 + 11h06 clang]
 - `xbbla32`: ? [was 21h22 + 9h07 clang]
 
