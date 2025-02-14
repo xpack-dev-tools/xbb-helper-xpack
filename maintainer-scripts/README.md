@@ -86,6 +86,7 @@ time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-a
 To run all possible builds on the given platform from scratch:
 
 ```sh
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean
 time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean
 ```
 
@@ -94,19 +95,23 @@ To only see the build command without running it, use `--dry-run`.
 On Linux, to build the Windows binaries:
 
 ```sh
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows
 time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows
 ```
+
+DO NOT RUN IT IN PARALLEL!
 
 The full builds may take more than 1 day to complete:
 
 - `wksi`: ?
-- `xbbmi`: 7h03 (nuc)
-- `xbbma`: 3h37
-- `xbbli`: 340m (5h40) + 60m clang on Linux, 395m (6h35) Windows
-- `berry5`: 1086m (18h06)
-- `ampere`: 577m (9h37) + 140m (2h20) clang
-- `xbbla`: 24h10 + 11h06 clang
-- `xbbla32`: 21h22 + 9h07 clang
+- `xbbmi`: ? [was 7h03 (nuc)]
+- `xbbma`: 2h25 + 43m clang [was 3h37]
+- `xbbli` linux: 244m (4h04) + 67m (1h07) [was 340m (5h40) + 60m clang],
+- `xbbli` windows: ? [was 395m (6h35)]
+- `berry5`: ? [was 1086m (18h06)]
+- `ampere`: 507m (9h27) + ? [was 140m (2h20) clang]
+- `xbbla`:  ? [was 24h10 + 11h06 clang]
+- `xbbla32`: ? [was 21h22 + 9h07 clang]
 
 To show the repos status:
 
@@ -179,10 +184,7 @@ rm -rf ~/Work/xpack-dev-tools/*/build-assets/build
 sudo rm -rf ~/actions-runners/xpack-dev-tools/*/_work
 sudo rm -rf ~/actions-runners/xpack-dev-tools/_work
 
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
---exclude clang \
-\
---deep-clean
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean --exclude clang
 
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
 --exclude clang \
