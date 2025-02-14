@@ -36,6 +36,7 @@ function termcap_build()
   local termcap_url="https://ftp.gnu.org/gnu/termcap/${termcap_archive}"
 
   local termcap_folder_name="${termcap_src_folder_name}"
+  local termcap_patch_file_name="termcap-${termcap_version}.patch"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${termcap_folder_name}"
 
@@ -49,7 +50,7 @@ function termcap_build()
     if [ ! -d "${termcap_src_folder_name}" ]
     then
       download_and_extract "${termcap_url}" "${termcap_archive}" \
-        "${termcap_src_folder_name}"
+        "${termcap_src_folder_name}" "${termcap_patch_file_name}"
 
       run_verbose sed -i -e 's|char PC;|static char PC;|' \
         "${termcap_src_folder_name}/termcap.c"
@@ -66,6 +67,8 @@ function termcap_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+
+      CPPFLAGS+=" -DSTDC_HEADERS"
 
       xbb_adjust_ldflags_rpath
 

@@ -1,0 +1,22 @@
+--- tparam-orig.c	2025-02-14 16:36:22.993367790 +0200
++++ tparam.c	2025-02-14 16:37:01.078158235 +0200
+@@ -40,6 +40,10 @@
+ 
+ #endif /* not emacs */
+ 
++#ifdef HAVE_UNISTD_H
++#include <unistd.h>
++#endif
++
+ #ifndef NULL
+ #define NULL (char *) 0
+ #endif
+@@ -165,7 +169,7 @@
+ 	      outlen *= 2;
+ 	      new = (char *) xrealloc (outstring, outlen);
+ 	    }
+-	  
++
+ 	  op = new + offset;
+ 	  outend = new + outlen;
+ 	  outstring = new;
