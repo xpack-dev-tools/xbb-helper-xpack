@@ -254,6 +254,30 @@ fi
 if [ "${do_clone}" == "y" ]
 then
 
+  rm -rf ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
+  mkdir -p ~/Work/xpack-dev-tools && \
+  run_verbose git clone \
+    --branch xpack-development \
+    https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
+    ~/Work/xpack-dev-tools/xbb-helper-xpack.git
+  run_verbose xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
+
+  rm -rf ~/Work/xpack/npm-packages-helper.git && \
+  mkdir -p ~/Work/xpack && \
+  run_verbose git clone \
+  https://github.com/xpack/npm-packages-helper.git \
+  ~/Work/xpack/npm-packages-helper.git
+
+  (cd ~/Work/xpack/npm-packages-helper.git; run_verbose npm link --verbose)
+
+  rm -rf ~/Work/xpack/docusaurus-template-liquid.git && \
+  mkdir -p ~/Work/xpack && \
+  run_verbose git clone \
+  https://github.com/xpack/docusaurus-template-liquid.git \
+  ~/Work/xpack/docusaurus-template-liquid.git
+
+  (cd ~/Work/xpack/docusaurus-template-liquid.git; run_verbose npm link --verbose)
+
   # Preload clean repos.
   for name in ${names[@]}
   do
@@ -298,6 +322,10 @@ then
   exit 0
 fi
 
+run_verbose git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
+run_verbose git -C ~/Work/xpack/npm-packages-helper.git pull
+run_verbose git -C ~/Work/xpack/docusaurus-template-liquid.git pull
+
 IFS="|"
 for name in ${names[@]}
 do
@@ -333,7 +361,7 @@ do
     fi
 
     (
-      cd "${WORK}/${name}-xpack.git"
+      run_verbose cd "${WORK}/${name}-xpack.git"
 
       if [ "${do_patch_debian}" == "y" ]
       then
