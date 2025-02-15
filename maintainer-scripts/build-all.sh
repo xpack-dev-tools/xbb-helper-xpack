@@ -70,7 +70,7 @@ do_deep_clean=""
 do_purge=""
 do_update_top=""
 do_restart=""
-do_check_space="
+do_check_space=""
 
 do_patch_debian=""
 
