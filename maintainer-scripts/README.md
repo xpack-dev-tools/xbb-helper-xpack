@@ -52,13 +52,7 @@ do some cleanups.
 On Linux:
 
 ```sh
-df -BG -H /
-```
-
-On macOS:
-
-```sh
-df -gH /
+bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --check-space
 ```
 
 ## Clone all
@@ -78,7 +72,8 @@ time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-a
 To restart all builds:
 
 ```sh
-time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --restart
+bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --restart
+bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows --restart
 ```
 
 ## Build all
@@ -99,19 +94,17 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --windows --deep-clean
 ```
 
-DO NOT RUN IT IN PARALLEL!
+DO NOT RUN IT IN PARALLEL! `deep-clean` removes the entire build folder.
 
-The full builds may take more than 1 day to complete:
+The full builds may take about half a day to complete:
 
-- `wksi`: ?
+- `wksi`: 9h28
 - `xbbmi`: ? [was 7h03 (nuc)]
-- `xbbma`: 2h25 + 43m clang [was 3h37]
-- `xbbli` linux: 244m (4h04) + 67m (1h07)
+- `xbbma`: 3h59 (40m clang)
+- `xbbli` linux: 308m (5h08)
 - `xbbli` windows: ? [was 395m (6h35)]
+- `ampere`: 670m (11h10)
 - `berry5`: ? [was 1086m (18h06)]
-- `ampere`: 507m (9h27) + 157m (2h37)
-- `xbbla`:  ? [was 24h10 + 11h06 clang]
-- `xbbla32`: ? [was 21h22 + 9h07 clang]
 
 To show the repos status:
 

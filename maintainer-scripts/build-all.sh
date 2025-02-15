@@ -70,6 +70,7 @@ do_deep_clean=""
 do_purge=""
 do_update_top=""
 do_restart=""
+do_check_space="
 
 do_patch_debian=""
 
@@ -135,6 +136,11 @@ do
       shift
       ;;
 
+    --check-space )
+      do_check_space="y"
+      shift
+      ;;
+
     * )
       echo "Unsupported argument $1 in $(basename "$0")"
       exit 1
@@ -193,6 +199,8 @@ else
   exit 1
 fi
 
+# -----------------------------------------------------------------------------
+
 names=()
 
 # All-platform packages.
@@ -238,6 +246,8 @@ names+=( riscv-none-elf-gcc )
 # At the end, as the longest.
 names+=( clang )
 
+# -----------------------------------------------------------------------------
+
 if [ "${do_repos_status}" == "y" ]
 then
   names+=( xbb-helper )
@@ -246,12 +256,10 @@ then
     run_verbose git -C ${WORK}/${name}-xpack.git status
   done
 
-  echo "Done"
+  echo "'${script_name} ${argv}' done"
 
   exit 0
-fi
-
-if [ "${do_clone}" == "y" ]
+elif [ "${do_clone}" == "y" ]
 then
 
   rm -rf ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
@@ -291,7 +299,7 @@ then
 
   done
 
-  echo "Done"
+  echo "'${script_name} ${argv}' done"
 
   exit 0
 elif [ "${do_update_top}" == "y" ]
@@ -305,22 +313,32 @@ then
     )
   done
 
-  echo "Done"
+  echo "'${script_name} ${argv}' done"
 
   exit 0
-fi
+elif [ "${do_check_space}" == "y" ]
+then
+  if [ "$(uname)" == "Darwin" ]
+  then
+    run_verbose df -gH /
+  elif [ "$(uname)" == "Linux" ]
+  then
+    run_verbose df -BG -H /
+  fi
 
-# git -C ${WORK}/xbb-helper-xpack.git pull
-# xpm link -C ${WORK}/xbb-helper-xpack.git
+  echo "'${script_name} ${argv}' done"
 
-if [ "${do_restart}" == "y" ]
+  exit 0
+elif [ "${do_restart}" == "y" ]
 then
   rm -rf "${stamps_folder_path}"
 
-  echo "Done"
+  echo "'${script_name} ${argv}' done"
 
   exit 0
 fi
+
+# -----------------------------------------------------------------------------
 
 run_verbose git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull
 run_verbose git -C ~/Work/xpack/npm-packages-helper.git pull
@@ -430,6 +448,8 @@ do
   fi
 
 done
+
+# -----------------------------------------------------------------------------
 
 work_build_folder="${WORK}"
 if [ ! -z "${WORK_FOLDER_PATH:-""}" ]
