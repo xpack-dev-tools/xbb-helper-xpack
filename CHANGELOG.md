@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-02-17
 
-* v3.1.11 released
+* 192a0bf 3.1.12
+* 113fabe cnrt-test.c: fix condition
+* 192a0bf 3.1.11
+* c6c95ae prepare v3.1.11
 * 98dd9bf test-common.sh: multilib only on x64
 
 ## 2025-02-16
