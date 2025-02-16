@@ -2,9 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-02-17
+
+* v3.1.11 released
+* 98dd9bf test-common.sh: multilib only on x64
+
 ## 2025-02-16
 
-* v3.1.10 released
+* 9b31200 3.1.10
+* 8f1bfb1 prepare v3.1.10
 * 5f08821 cnrt-test.c: fix syntax
 * 5fd6edf 3.1.9
 * 98f2050 prepare v3.1.9
