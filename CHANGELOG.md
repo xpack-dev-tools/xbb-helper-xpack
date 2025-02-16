@@ -2,9 +2,55 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-02-16
+
+* v3.1.9 released
+* ec9b608 maintainer-scripts/README update
+* 7ce06f8 cnrt-test.c: skip lgammaf on Linux
+
+## 2025-02-15
+
+* 9033d3f build-all.sh: fix syntax
+* d1a8607 build-all.sh: add --check-space
+
+## 2025-02-14
+
+* 7ab18a7 build-all.sh: update
+* d29cc8e Merge branch 'xpack-development' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-development
+* 599afb9 maintainer-scripts/README update
+* 76f782c maintainer-scripts/README update
+* 9c6b565 Merge branch 'xpack-development' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-development
+* e66bde0 termcap.sh: add patch
+* a4d5f2c README update
+* e180634 build-all.sh: update -C paths
+* c7330be Merge branch 'xpack-development' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-development
+* 42ba1e3 gdb-cross.sh: comment out --with-libexpat-type=static
+* df125f2 maintainer-scripts/README update
+
+## 2025-02-13
+
+* 243ddaf mingw.sh: fix patch file name
+* 4978fc8 build-all.sh: SKIP_CHECKS="y"
+* b4a6d2a ncurses.sh: default --disable-overwrite
+* 3883ba4 gcc-cross & gdb-cross: ncurses with --hack-links
+* e4f661a ncurses.sh: re-enable hack-links
+* 016db1e python3.sh: re-enable readline module
+* 0f92f6c ncurses.sh: revert --disable-overwrite for multi instances
+* 5ba13e9 gdb-cross: both wide and non-wide ncurses
+* afd5cbc gcc-cross.sh: ncurses with suffixes and wide
+
 ## 2025-02-12
 
-* v3.1.8 released
+* 6260ee1 maintainer-scripts README update
+* c71212c maintainer-scripts.sh: --restart
+* fbeb337 python3.sh cosmetics
+* 4eec8fe ncurses.sh: add --enable-widec
+* c810807 Merge branch 'xpack-development' of https://github.com/xpack-dev-tools/xbb-helper-xpack into xpack-development
+* c870403 python3.sh: prevent references to -lnsl
+* c03439e ncurses.sh: make -wide explicit
+* 43a2997 ncurses.sh: fix typo
+* d6b9c5c 3.1.8
+* 813dfdf prepare v3.1.8
 * 58617bd gcc.sh: ignore some STATIC_*CNRT_TEST_32
 * e670380 3.1.7
 * 1ebad7a prepare v3.1.7
