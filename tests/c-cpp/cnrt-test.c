@@ -1544,10 +1544,10 @@ int main(int argc, char* argv[]) {
     printf("Skip lgammal\n");
 #else
     TEST_LGAMMA(lgamma, HUGE_VAL);
-#if !defined(__linux__)
-    # The lgammaf(-1.0) function sets signgam to -1 instead of 1 on Arch.
-    # cnrt-test.c:1547: signgam failed, expected 1, got -1
-    # It is too complicated to detect Arch inside C, so ignore on all Linuxes.
+#if defined(__linux__)
+    // The lgammaf(-1.0) function sets signgam to -1 instead of 1 on Arch.
+    // cnrt-test.c:1547: signgam failed, expected 1, got -1
+    // It is too complicated to detect Arch inside C, so ignore on all Linuxes.
     TEST_LGAMMA(lgammaf, HUGE_VALF);
 #endif
 #endif
