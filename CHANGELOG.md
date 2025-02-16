@@ -4,7 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-02-16
 
-* v3.1.9 released
+* v3.1.10 released
+* 5f08821 cnrt-test.c: fix syntax
+* 5fd6edf 3.1.9
+* 98f2050 prepare v3.1.9
 * ec9b608 maintainer-scripts/README update
 * 7ce06f8 cnrt-test.c: skip lgammaf on Linux
 
