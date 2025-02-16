@@ -177,8 +177,11 @@ function tests_update_system_common()
   if [[ ${image_name} == github-actions-ubuntu* ]]
   then
     run_verbose sudo apt-get update
-    # To make 32-bit tests possible.
-    run_verbose sudo apt-get -qq install --yes g++ g++-multilib
+    if [ "$(uname -m)" == "x86_64" ]
+    then
+      # To make 32-bit tests possible.
+      run_verbose sudo apt-get -qq install --yes g++ g++-multilib
+    fi
   elif [[ ${image_name} == *raspbian* ]]
   then
     run_verbose apt-get -qq update
