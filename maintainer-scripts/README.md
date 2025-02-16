@@ -96,15 +96,15 @@ time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer
 
 DO NOT RUN IT IN PARALLEL! `deep-clean` removes the entire build folder.
 
-The full builds may take about half a day to complete:
+The full builds may take about half a day to complete (even more on a Raspberry Pi 5):
 
-- `wksi`: 9h28
+- `wksi`: 568m (9h28)
 - `xbbmi`: ? [was 7h03 (nuc)]
-- `xbbma`: 3h59 (40m clang)
+- `xbbma`: 239n (3h59)
 - `xbbli` linux: 308m (5h08)
-- `xbbli` windows: ? [was 395m (6h35)]
+- `xbbli` windows: 222m (3h42)
 - `ampere`: 670m (11h10)
-- `berry5`: ? [was 1086m (18h06)]
+- `berry5`: 17h20
 
 To show the repos status:
 
@@ -167,8 +167,8 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/bu
 
 ### ampere
 
-On Ampere the space is tight and the largest build must be
-removed
+On Ampere the space is tight and the previous builds must be
+removed.
 
 ```sh
 df -BG -H /
@@ -177,46 +177,7 @@ rm -rf ~/Work/xpack-dev-tools/*/build-assets/build
 sudo rm -rf ~/actions-runners/xpack-dev-tools/*/_work
 sudo rm -rf ~/actions-runners/xpack-dev-tools/_work
 
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean --exclude clang
-
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
---exclude clang \
---exclude gcc \
---exclude mingw-w64-gcc \
---exclude aarch64-none-elf-gcc \
---exclude arm-none-eabi-gcc \
---exclude riscv-none-elf-gcc \
-\
---deep-clean
-
-xpm run deep-clean --config linux-arm64 -C ~/Work/xpack-dev-tools/arm-none-eabi-gcc-xpack.git
-xpm run deep-clean --config linux-arm64 -C ~/Work/xpack-dev-tools/riscv-none-elf-gcc-xpack.git
-
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh \
---exclude ninja-build \
---exclude cmake \
---exclude meson-build \
---exclude openocd \
---exclude qemu-arm \
---exclude qemu-riscv \
---exclude windows-build-tools \
---exclude patchelf \
---exclude pkg-config \
---exclude realpath \
---exclude m4 \
---exclude sed \
---exclude bison \
---exclude flex \
---exclude texinfo \
---exclude wine \
---exclude gcc \
---exclude mingw-w64-gcc \
---exclude aarch64-none-elf-gcc \
---exclude arm-none-eabi-gcc \
---exclude riscv-none-elf-gcc \
-\
---deep-clean
-
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintainer-scripts/build-all.sh --deep-clean
 ```
 
 ### wksi
