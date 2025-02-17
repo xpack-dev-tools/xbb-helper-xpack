@@ -1028,9 +1028,9 @@ function xbb_set_compiler_flags()
     XBB_LDFLAGS+=" -O2"
   fi
 
-  XBB_LDFLAGS+=" -v"
   if is_development
   then
+    XBB_LDFLAGS+=" -v"
     XBB_LDFLAGS+=" -Wl,-v"
     if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
     then
