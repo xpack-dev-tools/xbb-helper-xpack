@@ -49,7 +49,7 @@ script_folder_name="$(basename "${script_folder_path}")"
 # set -x
 helper_folder_path="$(dirname "${script_folder_path}")"
 
-# (build-assets/xpacks/@xpack-dev-tools/xbb-helper/maintainer-scripts/*.sh).
+# (build-assets/xpacks/@xpack-dev-tools/xbb-helper/maintainance-scripts/*.sh).
 root_folder_path="$(dirname $(dirname $(dirname "${helper_folder_path}")))"
 if [ "$(basename "${root_folder_path}")" == "build-assets" ]
 then
@@ -60,7 +60,7 @@ fi
 scripts_folder_path="${root_folder_path}/scripts"
 
 # This is the folder where the build is started
-# (build-assets/xpacks/@xpack-dev-tools/xbb-helper/maintainer-scripts/*.sh).
+# (build-assets/xpacks/@xpack-dev-tools/xbb-helper/maintainance-scripts/*.sh).
 build_assets_folder_path="${project_folder_path}/build-assets"
 
 website_folder_path="${project_folder_path}/website"

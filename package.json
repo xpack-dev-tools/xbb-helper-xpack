@@ -9,8 +9,8 @@
     "npm-version-patch": "npm version patch",
     "npm-version-minor": "npm version minor",
     "git-log": "git log --pretty='%cd * %h %s' --date=short",
-    "websites-generate-commons-and-build": "bash maintainer-scripts/websites-generate-commons-and-build.sh",
-    "websites-update-and-publish": "bash maintainer-scripts/websites-update-and-publish.sh",
+    "websites-generate-commons-and-build": "bash maintenance-scripts/websites-generate-commons-and-build.sh",
+    "websites-update-and-publish": "bash maintenance-scripts/websites-update-and-publish.sh",
     "postversion": "git push origin --all && git push origin --tags"
   },
   "repository": {
