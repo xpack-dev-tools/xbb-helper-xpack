@@ -4,7 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-02-17
 
-* 192a0bf 3.1.12
+* v3.1.13 released
+* cd6effd xbb.sh: reduce linker verbosity
+* 6b85ee1 rename maintenance-scripts
+* a716254 add maintainer-scripts/download-sourceforge*
+* 02f34db 3.1.12
+* 05d8b59 prepare v3.1.12
 * 113fabe cnrt-test.c: fix condition
 * 192a0bf 3.1.11
 * c6c95ae prepare v3.1.11
