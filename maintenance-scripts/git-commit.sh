@@ -63,7 +63,7 @@ echo $1
 git add website/blog/*.md*
 # git add templates
 
-git commit -m "website/blog updates" || true || true
+git commit -m "website/blog updates" || true
 
 __EOF__
 
@@ -77,7 +77,7 @@ echo
 echo $1
 git add website/_xpack.github.io
 
-git commit -m "website: add _xpack.github.io" || true || true
+git commit -m "website: add _xpack.github.io" || true
 
 __EOF__
 
@@ -100,7 +100,7 @@ echo $1
 git add website/blog/_templates/blog-post-release-part-*-liquid.mdx
 # git add templates
 
-git commit -m "website/blog/_templates/blog-post-release*" || true || true
+git commit -m "website/blog/_templates/blog-post-release*" || true
 
 __EOF__
 
@@ -152,7 +152,7 @@ cd "$1"
 echo
 echo $1
 git add .github/workflows
-git commit -m "re-generate workflows" || true || true
+git commit -m "re-generate workflows" || true
 
 __EOF__
 
@@ -276,8 +276,8 @@ fi
 # git commit -m "package.json: add actions, bump deps" || true
 # git commit -m "package.json: update generate-workflows" || true
 # git commit -m "package.json: git+https" || true
-# git commit -m "package.json: cosmetics" || true || true
-git commit -m "package.json: bump deps" || true || true
+# git commit -m "package.json: cosmetics" || true
+git commit -m "package.json: bump deps" || true
 
 __EOF__
 
@@ -301,9 +301,13 @@ then
   git add package-lock.json
 fi
 
-# git commit -m "build-assets/package.json: build-development & docker 5.2.2" || true || true
-# git commit -m "build-assets/package.json: updates" || true || true
-git commit -m "build-assets/package.json: bump deps" || true || true
+# git add ../package.json
+
+# git commit -m "build-assets/package.json: build-development & docker 5.2.2" || true
+# git commit -m "build-assets/package.json: updates" || true
+git commit -m "build-assets/package.json: bump deps" || true
+# git commit -m "package.json: bump minimumXpmRequired 0.20.5" || true
+
 
 __EOF__
 
@@ -329,7 +333,7 @@ __EOF__
 # commands_file="${tmp_file_template_github}"
 # commands_file="${tmp_file_template_blog}"
 # commands_file="${tmp_file_blog}"
-commands_file="${tmp_file_workflows}"
+# commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_application}"
 
 # commands_file="${tmp_file_scripts}"
@@ -341,7 +345,7 @@ commands_file="${tmp_file_workflows}"
 # commands_file="${tmp_file_commit_readmes}"
 
 # commands_file="${tmp_file_commit_package}"
-# commands_file="${tmp_file_commit_build_assets_package}"
+commands_file="${tmp_file_commit_build_assets_package}"
 # commands_file="${tmp_file_commit_copyrights}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
