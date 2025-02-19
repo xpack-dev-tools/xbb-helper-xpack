@@ -76,6 +76,16 @@ bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.s
 bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --windows --restart
 ```
 
+### screen
+
+To provide a persistent standard output for the build, create a screen session:
+
+```sh
+screen -S ba
+```
+
+To quit it, use `# Ctrl-a Ctrl-d`.
+
 ## Build all
 
 To run all possible builds on the given platform from scratch:
