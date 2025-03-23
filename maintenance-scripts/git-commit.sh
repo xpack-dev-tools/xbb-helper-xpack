@@ -139,7 +139,8 @@ cd "$1"
 echo
 echo $1
 git add -A
-git commit -m "Update min CMake 3.19" || true
+#  commit -m "Update min CMake 3.19" || true
+git commit -m "update /licenses/MIT" || true
 
 __EOF__
 
@@ -214,7 +215,9 @@ echo
 echo $1
 git add website
 # git add build-assets
-git commit -m "website update" || true
+# git commit -m "website update" || true
+# git commit -m "website generate-website-commons update" || true
+git commit -m "website package.json shareOnTwitter update" || true
 # git commit -m "website remove preliminary" || true
 # git commit -m "website move blog post templates" || true
 
@@ -278,6 +281,7 @@ fi
 # git commit -m "package.json: git+https" || true
 # git commit -m "package.json: cosmetics" || true
 git commit -m "package.json: bump deps" || true
+# git commit -m "package.json: bump deps" || true
 
 __EOF__
 
@@ -330,6 +334,7 @@ __EOF__
 # set -x
 
 # UPDATE ME!
+commands_file="${tmp_file_commit_all}"
 # commands_file="${tmp_file_template_github}"
 # commands_file="${tmp_file_template_blog}"
 # commands_file="${tmp_file_blog}"
@@ -345,7 +350,7 @@ __EOF__
 # commands_file="${tmp_file_commit_readmes}"
 
 # commands_file="${tmp_file_commit_package}"
-commands_file="${tmp_file_commit_build_assets_package}"
+# commands_file="${tmp_file_commit_build_assets_package}"
 # commands_file="${tmp_file_commit_copyrights}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
