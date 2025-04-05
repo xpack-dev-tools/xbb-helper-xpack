@@ -64,6 +64,7 @@ function download_sourceforge_one()
             "${archive_url}"
     fi
 
+    # Give it some time to rest.
     sleep 5
   else
     echo
