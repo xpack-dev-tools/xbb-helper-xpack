@@ -64,6 +64,34 @@ function download_sourceforge_one()
   fi
 }
 
+function download_sourceforge_2019()
+{
+  local name="$1"
+  local version="$2"
+  local threshold=$3
+
+  download_sourceforge_one "${name}" "${version}" "win32-x64" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "win32-x32" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "linux-x64" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "linux-x32" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "darwin-x64" ${threshold}
+}
+
+function download_sourceforge_2020()
+{
+  local name="$1"
+  local version="$2"
+  local threshold=$3
+
+  download_sourceforge_one "${name}" "${version}" "win32-x64" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "win32-ia32" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "linux-x64" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "linux-ia32" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "linux-arm64" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "linux-arm" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "darwin-x64" ${threshold}
+}
+
 function download_sourceforge_2023()
 {
   local name="$1"
