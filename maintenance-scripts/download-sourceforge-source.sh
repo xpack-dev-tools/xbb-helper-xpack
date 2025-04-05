@@ -54,14 +54,16 @@ function download_sourceforge_one()
     # 2/3 (>1/3)
     if [ ${RANDOM} -ge 10922 ]
     then
-    archive_name+=".sha"
-    archive_url="https://sourceforge.net/projects/${name}-xpack/files/v${version}/${archive_name}/download"
+      archive_name+=".sha"
+      archive_url="https://sourceforge.net/projects/${name}-xpack/files/v${version}/${archive_name}/download"
 
-    echo "Downloading ${archive_name}..."
+      echo "Downloading ${archive_name}..."
 
-    curl --location --insecure --fail --location --silent \
-          --output "${HOME}/tmp/sourceforge/${archive_name}" \
-          "${archive_url}"
+      curl --location --insecure --fail --location --silent \
+            --output "${HOME}/tmp/sourceforge/${archive_name}" \
+            "${archive_url}"
+    fi
+
   else
     echo
     echo "Skipping ${archive_name}..."
