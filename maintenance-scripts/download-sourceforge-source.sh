@@ -101,5 +101,9 @@ function download_sourceforge()
 
 # -----------------------------------------------------------------------------
 
+# Node code to compute the cron minute & hour as a hash of the name.
+
 # name='xxx'
 # sum=0; for(i = 0; i < name.length; ++i) { sum+=name.charCodeAt(i) }; console.log(sum%60, sum%24)
+
+# -----------------------------------------------------------------------------
