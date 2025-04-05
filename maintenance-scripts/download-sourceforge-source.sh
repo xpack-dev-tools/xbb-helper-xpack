@@ -41,6 +41,7 @@ function download_sourceforge_one()
 
   mkdir -pv "${HOME}/tmp/sourceforge"
 
+  # 0-32767
   if [ ${RANDOM} -ge ${threshold} ]
   then
     echo
@@ -50,6 +51,9 @@ function download_sourceforge_one()
           --output "${HOME}/tmp/sourceforge/${archive_name}" \
           "${archive_url}"
 
+    # 2/3 (>1/3)
+    if [ ${RANDOM} -ge 10922 ]
+    then
     archive_name+=".sha"
     archive_url="https://sourceforge.net/projects/${name}-xpack/files/v${version}/${archive_name}/download"
 
@@ -148,3 +152,6 @@ function download_sourceforge_2025()
 }
 
 # -----------------------------------------------------------------------------
+
+# name='xxx'
+# sum=0; for(i = 0; i < name.length; ++i) { sum+=name.charCodeAt(i) }; sum%24
