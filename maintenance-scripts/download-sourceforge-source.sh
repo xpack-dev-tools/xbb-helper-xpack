@@ -155,6 +155,17 @@ function download_sourceforge_2025()
   download_sourceforge_one "${name}" "${version}" "darwin-arm64" ${threshold}
 }
 
+function download_sourceforge_2025_no_darwin()
+{
+  local name="$1"
+  local version="$2"
+  local threshold=$3
+
+  download_sourceforge_one "${name}" "${version}" "win32-x64" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "linux-x64" ${threshold}
+  download_sourceforge_one "${name}" "${version}" "linux-arm64" ${threshold}
+}
+
 # -----------------------------------------------------------------------------
 
 # name='xxx'
