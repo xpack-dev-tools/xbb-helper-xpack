@@ -72,99 +72,32 @@ function download_sourceforge_one()
   fi
 }
 
-function download_sourceforge_2019()
+function download_sourceforge()
 {
   local name="$1"
   local version="$2"
   local threshold=$3
+  local platforms="$4"
 
-  download_sourceforge_one "${name}" "${version}" "win32-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "win32-x32" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-x32" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "darwin-x64" ${threshold}
+  IVS=','
+  for platform in ${platforms}
+  do
+    download_sourceforge_one "${name}" "${version}" "${platform}" ${threshold}
+  done
 }
 
-function download_sourceforge_2020()
-{
-  local name="$1"
-  local version="$2"
-  local threshold=$3
+# -----------------------------------------------------------------------------
 
-  download_sourceforge_one "${name}" "${version}" "win32-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "win32-ia32" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-ia32" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-arm64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-arm" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "darwin-x64" ${threshold}
-}
-
-function download_sourceforge_2022()
-{
-  local name="$1"
-  local version="$2"
-  local threshold=$3
-
-  download_sourceforge_one "${name}" "${version}" "win32-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-arm64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-arm" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "darwin-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "darwin-arm64" ${threshold}
-}
-
-function download_sourceforge_2023()
-{
-  local name="$1"
-  local version="$2"
-  local threshold=$3
-
-  download_sourceforge_one "${name}" "${version}" "win32-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-arm64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-arm" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "darwin-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "darwin-arm64" ${threshold}
-}
-
-function download_sourceforge_2024()
-{
-  local name="$1"
-  local version="$2"
-  local threshold=$3
-
-  download_sourceforge_one "${name}" "${version}" "win32-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-arm64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-arm" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "darwin-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "darwin-arm64" ${threshold}
-}
-
-function download_sourceforge_2025()
-{
-  local name="$1"
-  local version="$2"
-  local threshold=$3
-
-  download_sourceforge_one "${name}" "${version}" "win32-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-arm64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "darwin-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "darwin-arm64" ${threshold}
-}
-
-function download_sourceforge_2025_no_darwin()
-{
-  local name="$1"
-  local version="$2"
-  local threshold=$3
-
-  download_sourceforge_one "${name}" "${version}" "win32-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-x64" ${threshold}
-  download_sourceforge_one "${name}" "${version}" "linux-arm64" ${threshold}
-}
+# 2019
+# platforms="win32-x64,win32-x32,linux-x64,linux-x32,darwin-x64"
+# 2020, 2021
+# platforms="win32-x64,win32-ia32,linux-x64,linux-ia32,linux-arm64,linux-arm,darwin-x64"
+# 2022, 2023, 2024
+# platforms="win32-x64,linux-x64,linux-arm64,linux-arm,darwin-x64,darwin-arm64"
+# 2025
+# platforms="win32-x64,linux-x64,linux-arm64,darwin-x64,darwin-arm64"
+# 2025-no-darwin
+# platforms="win32-x64,linux-x64,linux-arm64"
 
 # -----------------------------------------------------------------------------
 
