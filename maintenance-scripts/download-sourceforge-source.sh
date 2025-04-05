@@ -64,6 +64,7 @@ function download_sourceforge_one()
             "${archive_url}"
     fi
 
+    sleep 5
   else
     echo
     echo "Skipping ${archive_name}..."
@@ -156,4 +157,4 @@ function download_sourceforge_2025()
 # -----------------------------------------------------------------------------
 
 # name='xxx'
-# sum=0; for(i = 0; i < name.length; ++i) { sum+=name.charCodeAt(i) }; sum%24
+# sum=0; for(i = 0; i < name.length; ++i) { sum+=name.charCodeAt(i) }; console.log(sum%60, sum%24)
