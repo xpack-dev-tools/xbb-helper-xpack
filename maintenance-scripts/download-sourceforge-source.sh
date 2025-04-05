@@ -30,7 +30,7 @@ function download_sourceforge_one()
   local threshold=$4
 
   local archive_name
-  if [ "${platform}" == "win32-x64" ] || [ "${platform}" == "win32-ia32" ]
+  if [ "${platform}" == "win32-x64" ] || [ "${platform}" == "win32-x32" ] || [ "${platform}" == "win32-ia32" ]
   then
     archive_name="xpack-${name}-${version}-${platform}.zip"
   else
