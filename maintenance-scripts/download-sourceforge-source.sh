@@ -79,7 +79,7 @@ function download_sourceforge()
   local threshold=$3
   local platforms="$4"
 
-  IVS=','
+  IFS=','
   for platform in ${platforms}
   do
     download_sourceforge_one "${name}" "${version}" "${platform}" ${threshold}
