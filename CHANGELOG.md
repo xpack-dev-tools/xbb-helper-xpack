@@ -2,8 +2,47 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-01
+
+* v3.1.14 released
+* bc912de test-common.sh: --skip-unavailable
+* 3c5d3e1 m4.sh: comment out unused --disable-debug
+
+## 2025-04-05
+
+* 9cba349 download-sourceforge update
+* 2f9bff1 download-sourceforge update
+* 9cf43f7 download-sourceforge update
+* 7909a1a download-sourceforge update
+* dff3834 download-sourceforge update
+* 82c4a1e download-sourceforge update
+* fdb3a79 download-sourceforge update
+* 8d4e77d download-sourceforge update
+* ab7d654 download-sourceforge update
+* 1e8d981 download-sourceforge update
+* 020e19d download-sourceforge update
+* 460a389 download-sourceforge update
+* 546b760 download-sourceforge update
+
+## 2025-03-23
+
+* 1824f59 update /licenses/MIT
+* 119fe45 maintenance-scripts/README update xbbmi duration
+
+## 2025-02-19
+
+* 1d61149 maintenance-scripts/README update
+* a0b67d7 maintenance-scripts/README update duration
+
+## 2025-02-18
+
+* 311c307 git-commit.sh: fix true || true
+* e865587 package.json: bump minimumXpmRequired 0.20.5
+
 ## 2025-02-17
 
+* 0416b35 3.1.13
+* ae3532c prepare v3.1.13
 * v3.1.13 released
 * cd6effd xbb.sh: reduce linker verbosity
 * 6b85ee1 rename maintenance-scripts
@@ -113,8 +152,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-02-06
 
-2025-02-06 * a36e5eb 3.1.6
-2025-02-06 * eba60ad prepare v3.1.6
+## 2025-02-06
+
+* a36e5eb 3.1.6
+* eba60ad prepare v3.1.6
 
 ## 2025-02-05
 
