@@ -199,12 +199,13 @@ function tests_update_system_common()
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
     run_verbose yum update --assumeyes --quiet
-    run_verbose yum install --assumeyes --quiet \
+    run_verbose yum install --assumeyes --quiet --skip-unavailable \
       git curl tar gzip redhat-lsb-core binutils which \
       gcc-c++ glibc glibc-common glibc-static libstdc++ libstdc++-static libatomic libgfortran glibc-devel libstdc++-devel make
     if [ "$(uname -m)" == "x86_64" ]
     then
-      run_verbose yum install --assumeyes --quiet libgcc*i686 libstdc++*i686 glibc*i686 libatomic*i686 libgfortran*i686
+      run_verbose yum install --assumeyes --quiet --skip-unavailable \
+      libgcc*i686 libstdc++*i686 glibc*i686 libatomic*i686 libgfortran*i686
     fi
   elif [[ ${image_name} == *suse* ]]
   then
