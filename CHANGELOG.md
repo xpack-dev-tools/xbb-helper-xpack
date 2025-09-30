@@ -4,7 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-01
 
-* v3.1.14 released
+* v3.1.15 released
+* f6f5895 test-common.sh: lsb-release
+* 4f622ce Revert "test-common.sh: --skip-unavailable"
+* 60391f4 3.1.14
+* 1ca475e prepare v3.1.14
 * bc912de test-common.sh: --skip-unavailable
 * 3c5d3e1 m4.sh: comment out unused --disable-debug
 
