@@ -35,7 +35,7 @@ function sed_build()
   local sed_src_folder_name="sed-${sed_version}"
 
   local sed_archive="${sed_src_folder_name}.tar.xz"
-  local sed_url="https://ftp.gnu.org/gnu/sed/${sed_archive}"
+  local sed_url="https://ftpmirror.gnu.org/gnu/sed/${sed_archive}"
 
   local sed_folder_name="${sed_src_folder_name}"
 

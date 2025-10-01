@@ -39,7 +39,7 @@ function texinfo_build()
   local texinfo_src_folder_name="texinfo-${texinfo_version}"
 
   local texinfo_archive="${texinfo_src_folder_name}.tar.gz"
-  local texinfo_url="https://ftp.gnu.org/gnu/texinfo/${texinfo_archive}"
+  local texinfo_url="https://ftpmirror.gnu.org/gnu/texinfo/${texinfo_archive}"
 
   local texinfo_folder_name="${texinfo_src_folder_name}"
 

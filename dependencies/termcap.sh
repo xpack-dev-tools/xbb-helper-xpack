@@ -33,7 +33,7 @@ function termcap_build()
   local termcap_src_folder_name="termcap-${termcap_version}"
 
   local termcap_archive="${termcap_src_folder_name}.tar.gz"
-  local termcap_url="https://ftp.gnu.org/gnu/termcap/${termcap_archive}"
+  local termcap_url="https://ftpmirror.gnu.org/gnu/termcap/${termcap_archive}"
 
   local termcap_folder_name="${termcap_src_folder_name}"
   local termcap_patch_file_name="termcap-${termcap_version}.patch"

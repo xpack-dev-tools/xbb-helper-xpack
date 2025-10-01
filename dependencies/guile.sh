@@ -37,7 +37,7 @@ function guile_build()
   local guile_src_folder_name="guile-${guile_version}"
 
   local guile_archive="${guile_src_folder_name}.tar.xz"
-  local guile_url="https://ftp.gnu.org/gnu/guile/${guile_archive}"
+  local guile_url="https://ftpmirror.gnu.org/gnu/guile/${guile_archive}"
 
   local guile_folder_name="${guile_src_folder_name}"
 

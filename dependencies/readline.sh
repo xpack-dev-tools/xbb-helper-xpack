@@ -46,7 +46,7 @@ function readline_build()
   local readline_src_folder_name="readline-${readline_version}"
 
   local readline_archive="${readline_src_folder_name}.tar.gz"
-  local readline_url="https://ftp.gnu.org/gnu/readline/${readline_archive}"
+  local readline_url="https://ftpmirror.gnu.org/gnu/readline/${readline_archive}"
 
   # The folder name  for build, licenses, etc.
   local readline_folder_name="${readline_src_folder_name}"

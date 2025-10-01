@@ -41,7 +41,7 @@ function bison_build()
   local bison_src_folder_name="bison-${bison_version}"
 
   local bison_archive="${bison_src_folder_name}.tar.xz"
-  local bison_url="https://ftp.gnu.org/gnu/bison/${bison_archive}"
+  local bison_url="https://ftpmirror.gnu.org/gnu/bison/${bison_archive}"
 
   local bison_folder_name="${bison_src_folder_name}"
 

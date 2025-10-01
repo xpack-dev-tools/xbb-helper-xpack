@@ -170,7 +170,7 @@ function gcc_mingw_build_first()
   local mingw_gcc_src_folder_name="gcc-${mingw_gcc_version}"
 
   local mingw_gcc_archive="${mingw_gcc_src_folder_name}.tar.xz"
-  local mingw_gcc_url="https://ftp.gnu.org/gnu/gcc/gcc-${mingw_gcc_version}/${mingw_gcc_archive}"
+  local mingw_gcc_url="https://ftpmirror.gnu.org/gnu/gcc/gcc-${mingw_gcc_version}/${mingw_gcc_archive}"
 
   export mingw_gcc_folder_name="${name_prefix}gcc-${mingw_gcc_version}"
 

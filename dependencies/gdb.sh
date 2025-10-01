@@ -46,7 +46,7 @@ function gdb_build()
   local gdb_src_folder_name="gdb-${gdb_version}"
 
   local gdb_archive="${gdb_src_folder_name}.tar.xz"
-  local gdb_url="https://ftp.gnu.org/gnu/gdb/${gdb_archive}"
+  local gdb_url="https://ftpmirror.gnu.org/gnu/gdb/${gdb_archive}"
 
   local gdb_folder_name="${gdb_src_folder_name}"
 

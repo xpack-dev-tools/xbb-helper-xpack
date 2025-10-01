@@ -36,7 +36,7 @@ function autoconf_build()
   local autoconf_src_folder_name="autoconf-${autoconf_version}"
 
   local autoconf_archive="${autoconf_src_folder_name}.tar.xz"
-  local autoconf_url="https://ftp.gnu.org/gnu/autoconf/${autoconf_archive}"
+  local autoconf_url="https://ftpmirror.gnu.org/gnu/autoconf/${autoconf_archive}"
 
   local autoconf_folder_name="${autoconf_src_folder_name}"
 

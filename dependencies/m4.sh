@@ -37,7 +37,7 @@ function m4_build()
   local m4_src_folder_name="m4-${m4_version}"
 
   local m4_archive="${m4_src_folder_name}.tar.gz"
-  local m4_url="https://ftp.gnu.org/gnu/m4/${m4_archive}"
+  local m4_url="https://ftpmirror.gnu.org/gnu/m4/${m4_archive}"
 
   local m4_folder_name="${m4_src_folder_name}"
 

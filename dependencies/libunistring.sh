@@ -36,7 +36,7 @@ function libunistring_build()
   local libunistring_src_folder_name="libunistring-${libunistring_version}"
 
   local libunistring_archive="${libunistring_src_folder_name}.tar.xz"
-  local libunistring_url="https://ftp.gnu.org/gnu/libunistring/${libunistring_archive}"
+  local libunistring_url="https://ftpmirror.gnu.org/gnu/libunistring/${libunistring_archive}"
 
   local libunistring_folder_name="${libunistring_src_folder_name}"
 

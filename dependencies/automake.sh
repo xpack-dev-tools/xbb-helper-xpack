@@ -41,7 +41,7 @@ function automake_build()
   local automake_src_folder_name="automake-${automake_version}"
 
   local automake_archive="${automake_src_folder_name}.tar.xz"
-  local automake_url="https://ftp.gnu.org/gnu/automake/${automake_archive}"
+  local automake_url="https://ftpmirror.gnu.org/gnu/automake/${automake_archive}"
 
   local automake_folder_name="${automake_src_folder_name}"
 

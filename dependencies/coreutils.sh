@@ -39,7 +39,7 @@ function coreutils_build()
   local coreutils_src_folder_name="coreutils-${coreutils_version}"
 
   local coreutils_archive="${coreutils_src_folder_name}.tar.xz"
-  local coreutils_url="https://ftp.gnu.org/gnu/coreutils/${coreutils_archive}"
+  local coreutils_url="https://ftpmirror.gnu.org/gnu/coreutils/${coreutils_archive}"
 
   local coreutils_folder_name="${coreutils_src_folder_name}"
 

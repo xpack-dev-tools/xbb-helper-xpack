@@ -34,7 +34,7 @@ function findutils_build()
   local findutils_src_folder_name="findutils-${findutils_version}"
 
   local findutils_archive="${findutils_src_folder_name}.tar.xz"
-  local findutils_url="https://ftp.gnu.org/gnu/findutils/${findutils_archive}"
+  local findutils_url="https://ftpmirror.gnu.org/gnu/findutils/${findutils_archive}"
 
   local findutils_folder_name="${findutils_src_folder_name}"
 

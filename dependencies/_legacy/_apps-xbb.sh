@@ -388,7 +388,7 @@ function tar_build()
   local tar_src_folder_name="tar-${tar_version}"
 
   local tar_archive="${tar_src_folder_name}.tar.xz"
-  local tar_url="https://ftp.gnu.org/gnu/tar/${tar_archive}"
+  local tar_url="https://ftpmirror.gnu.org/gnu/tar/${tar_archive}"
 
   local tar_folder_name="${tar_src_folder_name}"
 
@@ -610,7 +610,7 @@ function gawk_build()
   local gawk_src_folder_name="gawk-${gawk_version}"
 
   local gawk_archive="${gawk_src_folder_name}.tar.xz"
-  local gawk_url="https://ftp.gnu.org/gnu/gawk/${gawk_archive}"
+  local gawk_url="https://ftpmirror.gnu.org/gnu/gawk/${gawk_archive}"
 
   local gawk_folder_name="${gawk_src_folder_name}"
 
@@ -803,7 +803,7 @@ function patch_build()
   local patch_src_folder_name="patch-${patch_version}"
 
   local patch_archive="${patch_src_folder_name}.tar.xz"
-  local patch_url="https://ftp.gnu.org/gnu/patch/${patch_archive}"
+  local patch_url="https://ftpmirror.gnu.org/gnu/patch/${patch_archive}"
 
   local patch_folder_name="${patch_src_folder_name}"
 
@@ -962,7 +962,7 @@ function diffutils_build()
   local diffutils_src_folder_name="diffutils-${diffutils_version}"
 
   local diffutils_archive="${diffutils_src_folder_name}.tar.xz"
-  local diffutils_url="https://ftp.gnu.org/gnu/diffutils/${diffutils_archive}"
+  local diffutils_url="https://ftpmirror.gnu.org/gnu/diffutils/${diffutils_archive}"
 
   local diffutils_folder_name="${diffutils_src_folder_name}"
 
@@ -1146,7 +1146,7 @@ function make_build()
 
   # bz2 available up to 4.2.1, gz available on all.
   local make_archive="${make_src_folder_name}.tar.gz"
-  local make_url="https://ftp.gnu.org/gnu/make/${make_archive}"
+  local make_url="https://ftpmirror.gnu.org/gnu/make/${make_archive}"
 
   local make_folder_name="${make_src_folder_name}"
 
@@ -1327,7 +1327,7 @@ function bash_build()
   local bash_src_folder_name="bash-${bash_version}"
 
   local bash_archive="${bash_src_folder_name}.tar.gz"
-  local bash_url="https://ftp.gnu.org/gnu/bash/${bash_archive}"
+  local bash_url="https://ftpmirror.gnu.org/gnu/bash/${bash_archive}"
 
   local bash_folder_name="${bash_src_folder_name}"
 
@@ -1499,7 +1499,7 @@ function wget_build()
   local wget_src_folder_name="wget-${wget_version}"
 
   local wget_archive="${wget_src_folder_name}.tar.gz"
-  local wget_url="https://ftp.gnu.org/gnu/wget/${wget_archive}"
+  local wget_url="https://ftpmirror.gnu.org/gnu/wget/${wget_archive}"
 
   local wget_folder_name="${wget_src_folder_name}"
 

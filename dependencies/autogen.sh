@@ -34,7 +34,7 @@ function autogen_build()
   local autogen_src_folder_name="autogen-${autogen_version}"
 
   local autogen_archive="${autogen_src_folder_name}.tar.xz"
-  local autogen_url="https://ftp.gnu.org/gnu/autogen/rel${autogen_version}/${autogen_archive}"
+  local autogen_url="https://ftpmirror.gnu.org/gnu/autogen/rel${autogen_version}/${autogen_archive}"
 
   local autogen_folder_name="${autogen_src_folder_name}"
 

@@ -122,7 +122,7 @@ function ncurses_build()
 
   local ncurses_archive="${ncurses_src_folder_name}.tar.gz"
   # local ncurses_url="https://invisible-mirror.net/archives/ncurses/${ncurses_archive}"
-  local ncurses_url="https://ftp.gnu.org/gnu/ncurses/${ncurses_archive}"
+  local ncurses_url="https://ftpmirror.gnu.org/gnu/ncurses/${ncurses_archive}"
 
   # The folder name  for build, licenses, etc.
   local ncurses_folder_name="ncurses${suffix}-${ncurses_version}"

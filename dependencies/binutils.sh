@@ -258,7 +258,7 @@ function binutils_build()
   local binutils_folder_name="${name_prefix}binutils-${binutils_version}"
 
   local binutils_archive="${binutils_src_folder_name}.tar.xz"
-  local binutils_url="https://ftp.gnu.org/gnu/binutils/${binutils_archive}"
+  local binutils_url="https://ftpmirror.gnu.org/gnu/binutils/${binutils_archive}"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${binutils_folder_name}"
 
@@ -580,7 +580,7 @@ function binutils_build_ld_gold()
   fi
 
   local binutils_archive="${binutils_src_folder_name}.tar.xz"
-  local binutils_url="https://ftp.gnu.org/gnu/binutils/${binutils_archive}"
+  local binutils_url="https://ftpmirror.gnu.org/gnu/binutils/${binutils_archive}"
 
   local binutils_folder_name="binutils-ld.gold-${binutils_version}"
 
