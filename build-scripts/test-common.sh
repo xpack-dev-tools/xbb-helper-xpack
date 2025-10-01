@@ -200,7 +200,7 @@ function tests_update_system_common()
   then
     run_verbose yum update --assumeyes --quiet
     run_verbose yum install --assumeyes --quiet --skip-unavailable \
-      git curl tar gzip lsb_release binutils which \
+      git curl tar gzip lsb_release file binutils which \
       gcc-c++ glibc glibc-common glibc-static libstdc++ libstdc++-static libatomic libgfortran glibc-devel libstdc++-devel make
     if [ "$(uname -m)" == "x86_64" ]
     then
