@@ -4,6 +4,10 @@ Entries in this file are in reverse chronological order.
 
 2025-10-02
 
+* v3.2.4 released
+* d7dc59f test-common fedora:latest
+* d9dd8d7 3.2.3
+* 620159c prepare v3.2.3
 * v3.2.3 released
 * f0c4c3a test-common fedora:latest
 
