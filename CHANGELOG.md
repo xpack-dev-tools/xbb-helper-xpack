@@ -4,6 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-01
 
+* v3.2.2 released
+* 6bb3f27 package.json engine >=20.0
+* 09732ae dependencies: https://ftpmirror.gnu.org/gnu
+* a9724a2 3.2.1
+* 6a5881f prepare v3.2.1
 * v3.2.1 released
 * 091a258 Revert "test-common.sh: lsb-release"
 * d68e3d6 3.2.0
