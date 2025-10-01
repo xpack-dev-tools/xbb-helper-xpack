@@ -2,8 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+2025-10-02
+
+* v3.2.3 released
+* f0c4c3a test-common fedora:latest
+
 ## 2025-10-01
 
+* 38e5eb8 3.2.2
+* 226b3ba prepare v3.2.2
 * v3.2.2 released
 * 6bb3f27 package.json engine >=20.0
 * 09732ae dependencies: https://ftpmirror.gnu.org/gnu
