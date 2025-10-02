@@ -14,8 +14,8 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/termutils/
-# https://ftp.gnu.org/gnu/termcap/
-# https://ftp.gnu.org/gnu/termcap/termcap-1.3.1.tar.gz
+# https://ftpmirror.gnu.org/gnu/termcap/
+# https://ftpmirror.gnu.org/gnu/termcap/termcap-1.3.1.tar.gz
 
 # https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-termcap/PKGBUILD
 

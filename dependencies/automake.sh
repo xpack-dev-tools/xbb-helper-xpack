@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/automake/
-# https://ftp.gnu.org/gnu/automake/
+# https://ftpmirror.gnu.org/gnu/automake/
 
 # https://github.com/archlinux/svntogit-packages/tree/packages/automake/trunk
 # https://archlinuxarm.org/packages/any/automake/files/PKGBUILD

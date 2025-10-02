@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------------
 
 # https://gcc.gnu.org
-# Releases https://ftp.gnu.org/gnu/gcc/
+# Releases https://ftpmirror.gnu.org/gnu/gcc/
 
 # https://gcc.gnu.org/wiki/InstallingGCC
 # https://gcc.gnu.org/install

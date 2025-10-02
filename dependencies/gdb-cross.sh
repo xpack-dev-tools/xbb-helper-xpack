@@ -36,7 +36,7 @@ function gdb_cross_build_dependencies()
   # ld: symbol(s) not found for architecture x86_64
   # clang-16: error: linker command failed with exit code 1 (use -v to see invocation)
 
-  # https://ftp.gnu.org/gnu/libunistring/
+  # https://ftpmirror.gnu.org/gnu/libunistring/
   libunistring_build "${XBB_LIBUNISTRING_VERSION}"
 
   # https://ftp.gnu.org/pub/gnu/gettext/
@@ -50,7 +50,7 @@ function gdb_cross_build_dependencies()
     gpm_build "${XBB_GPM_VERSION}"
   fi
 
-  # https://ftp.gnu.org/gnu/ncurses/
+  # https://ftpmirror.gnu.org/gnu/ncurses/
   # The wide is required by python.
   # The non-wide is required by readline, otherwise the
   # /lib/x86_64-linux-gnu/libncurses.so.6 is refered.
@@ -58,7 +58,7 @@ function gdb_cross_build_dependencies()
 
   if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "linux" -o "${XBB_REQUESTED_HOST_PLATFORM}" == "darwin" ]
   then
-    # https://ftp.gnu.org/gnu/readline/
+    # https://ftpmirror.gnu.org/gnu/readline/
     readline_build "${XBB_READLINE_VERSION}" # requires ncurses
 
     # https://sourceware.org/pub/bzip2/

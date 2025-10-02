@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/autoconf/
-# https://ftp.gnu.org/gnu/autoconf/
+# https://ftpmirror.gnu.org/gnu/autoconf/
 
 # https://archlinuxarm.org/packages/any/autoconf2.13/files/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=autoconf-git

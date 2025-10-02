@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.lysator.liu.se/~nisse/nettle/
-# https://ftp.gnu.org/gnu/nettle/
+# https://ftpmirror.gnu.org/gnu/nettle/
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/nettle/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/nettle/files/PKGBUILD

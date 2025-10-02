@@ -16,8 +16,8 @@
 function libtasn1_build()
 {
   # https://www.gnu.org/software/libtasn1/
-  # https://ftp.gnu.org/gnu/libtasn1/
-  # https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz
+  # https://ftpmirror.gnu.org/gnu/libtasn1/
+  # https://ftpmirror.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz
 
   # https://gitlab.archlinux.org/archlinux/packaging/packages/libtasn1/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/libtasn1/files/PKGBUILD

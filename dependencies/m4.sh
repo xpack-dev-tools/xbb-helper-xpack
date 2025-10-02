@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/m4/
-# https://ftp.gnu.org/gnu/m4/
+# https://ftpmirror.gnu.org/gnu/m4/
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/m4/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/m4/files/PKGBUILD

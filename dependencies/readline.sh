@@ -14,8 +14,8 @@
 # -----------------------------------------------------------------------------
 
 # https://tiswww.case.edu/php/chet/readline/rltop.html
-# https://ftp.gnu.org/gnu/readline/
-# https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz
+# https://ftpmirror.gnu.org/gnu/readline/
+# https://ftpmirror.gnu.org/gnu/readline/readline-8.0.tar.gz
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/readline/-/blob/main/PKGBUILD
 

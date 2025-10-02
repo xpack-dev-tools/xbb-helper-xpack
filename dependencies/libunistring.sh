@@ -12,8 +12,8 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/libunistring/
-# https://ftp.gnu.org/gnu/libunistring/
-# https://ftp.gnu.org/gnu/libunistring/libunistring-0.9.10.tar.xz
+# https://ftpmirror.gnu.org/gnu/libunistring/
+# https://ftpmirror.gnu.org/gnu/libunistring/libunistring-0.9.10.tar.xz
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/libunistring/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/libunistring/files/PKGBUILD

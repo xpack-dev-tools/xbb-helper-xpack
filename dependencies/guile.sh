@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/guile/
-# https://ftp.gnu.org/gnu/guile/
+# https://ftpmirror.gnu.org/gnu/guile/
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/guile/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/guile/files/PKGBUILD

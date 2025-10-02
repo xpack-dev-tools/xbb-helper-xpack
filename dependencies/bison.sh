@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/bison/
-# https://ftp.gnu.org/gnu/bison/
+# https://ftpmirror.gnu.org/gnu/bison/
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/bison/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/bison/files/PKGBUILD

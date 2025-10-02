@@ -12,7 +12,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/sed/
-# https://ftp.gnu.org/gnu/sed/
+# https://ftpmirror.gnu.org/gnu/sed/
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/sed/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/sed/files/PKGBUILD

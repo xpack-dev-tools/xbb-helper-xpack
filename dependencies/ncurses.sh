@@ -13,8 +13,8 @@
 
 # -----------------------------------------------------------------------------
 
-# https://ftp.gnu.org/gnu/ncurses/
-# https://ftp.gnu.org/gnu/ncurses/ncurses-6.3.tar.gz
+# https://ftpmirror.gnu.org/gnu/ncurses/
+# https://ftpmirror.gnu.org/gnu/ncurses/ncurses-6.3.tar.gz
 
 # https://invisible-island.net/ncurses/
 # https://invisible-mirror.net/archives/ncurses/

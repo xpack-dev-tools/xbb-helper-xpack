@@ -29,11 +29,11 @@ function autotools_build()
   # https://ftp.gnu.org/pub/gnu/libiconv/
   # libiconv_build "1.17" # "1.16"
 
-  # https://ftp.gnu.org/gnu/autoconf/
+  # https://ftpmirror.gnu.org/gnu/autoconf/
   # depends on m4.
   autoconf_build "2.72" # "2.71"
 
-  # https://ftp.gnu.org/gnu/automake/
+  # https://ftpmirror.gnu.org/gnu/automake/
   # depends on autoconf.
   automake_build "1.16.5"
 

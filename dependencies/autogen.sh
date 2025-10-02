@@ -14,8 +14,8 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/autogen/
-# https://ftp.gnu.org/gnu/autogen/
-# https://ftp.gnu.org/gnu/autogen/rel5.18.16/autogen-5.18.16.tar.xz
+# https://ftpmirror.gnu.org/gnu/autogen/
+# https://ftpmirror.gnu.org/gnu/autogen/rel5.18.16/autogen-5.18.16.tar.xz
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/autogen/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/autogen/files/PKGBUILD

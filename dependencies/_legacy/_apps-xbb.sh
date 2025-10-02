@@ -367,7 +367,7 @@ function curl_test()
 function tar_build()
 {
   # https://www.gnu.org/software/tar/
-  # https://ftp.gnu.org/gnu/tar/
+  # https://ftpmirror.gnu.org/gnu/tar/
 
   # https://gitlab.archlinux.org/archlinux/packaging/packages/tar/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/tar/files/PKGBUILD
@@ -588,7 +588,7 @@ function tar_test()
 function gawk_build()
 {
   # https://www.gnu.org/software/gawk/
-  # https://ftp.gnu.org/gnu/gawk/
+  # https://ftpmirror.gnu.org/gnu/gawk/
 
   # https://gitlab.archlinux.org/archlinux/packaging/packages/gawk/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/gawk/files/PKGBUILD
@@ -784,7 +784,7 @@ function gawk_test()
 function patch_build()
 {
   # https://www.gnu.org/software/patch/
-  # https://ftp.gnu.org/gnu/patch/
+  # https://ftpmirror.gnu.org/gnu/patch/
 
   # https://gitlab.archlinux.org/archlinux/packaging/packages/patch/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/patch/files/PKGBUILD
@@ -942,7 +942,7 @@ function patch_test()
 function diffutils_build()
 {
   # https://www.gnu.org/software/diffutils/
-  # https://ftp.gnu.org/gnu/diffutils/
+  # https://ftpmirror.gnu.org/gnu/diffutils/
 
   # https://gitlab.archlinux.org/archlinux/packaging/packages/diffutils/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/diffutils/files/PKGBUILD
@@ -1126,7 +1126,7 @@ function diffutils_test()
 function make_build()
 {
   # https://www.gnu.org/software/make/
-  # https://ftp.gnu.org/gnu/make/
+  # https://ftpmirror.gnu.org/gnu/make/
 
   # https://gitlab.archlinux.org/archlinux/packaging/packages/make/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/make/files/PKGBUILD
@@ -1306,8 +1306,8 @@ function make_test()
 function bash_build()
 {
   # https://www.gnu.org/software/bash/
-  # https://ftp.gnu.org/gnu/bash/
-  # https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz
+  # https://ftpmirror.gnu.org/gnu/bash/
+  # https://ftpmirror.gnu.org/gnu/bash/bash-5.0.tar.gz
 
   # https://gitlab.archlinux.org/archlinux/packaging/packages/bash/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/bash/files/PKGBUILD
@@ -1472,7 +1472,7 @@ function bash_test()
 function wget_build()
 {
   # https://www.gnu.org/software/wget/
-  # https://ftp.gnu.org/gnu/wget/
+  # https://ftpmirror.gnu.org/gnu/wget/
 
   # https://gitlab.archlinux.org/archlinux/packaging/packages/wget/-/blob/main/PKGBUILD
   # https://archlinuxarm.org/packages/aarch64/wget/files/PKGBUILD

@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/binutils/
-# https://ftp.gnu.org/gnu/binutils/
+# https://ftpmirror.gnu.org/gnu/binutils/
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/binutils/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/binutils/files/PKGBUILD

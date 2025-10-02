@@ -14,8 +14,8 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/findutils/
-# https://ftp.gnu.org/gnu/findutils/
-# https://ftp.gnu.org/gnu/findutils/findutils-4.8.0.tar.xz
+# https://ftpmirror.gnu.org/gnu/findutils/
+# https://ftpmirror.gnu.org/gnu/findutils/findutils-4.8.0.tar.xz
 
 # 2021-01-09, "4.8.0"
 # 2022-02-01, "4.9.0"

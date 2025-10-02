@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/coreutils/
-# https://ftp.gnu.org/gnu/coreutils/
+# https://ftpmirror.gnu.org/gnu/coreutils/
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/coreutils/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/coreutils/files/PKGBUILD

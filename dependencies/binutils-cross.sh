@@ -13,7 +13,7 @@
 
 # -----------------------------------------------------------------------------
 
-# https://ftp.gnu.org/gnu/binutils/
+# https://ftpmirror.gnu.org/gnu/binutils/
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=binutils-git
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=gdb-git
 
