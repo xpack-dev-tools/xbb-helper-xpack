@@ -168,7 +168,8 @@ jobs:
 {% when "darwin-x64" %}
   {{platform}}-test:
     name: '{{platform}} {{packageConfig.longName}}@{% raw %}${{github.event.inputs.version}}{% endraw %} test'
-    runs-on: macos-13
+    # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md
+    runs-on: macos-15-intel
 
     steps:
       - name: 'Show environment'
