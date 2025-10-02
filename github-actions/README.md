@@ -47,7 +47,7 @@ The request should return `HTTP/1.1 204 No Content`.
 
 The repository should have an action with `on: repository_dispatch`.
 
-## Travis-CI
+## Travis-CI (deprecated)
 
 ### Enable Travis
 
