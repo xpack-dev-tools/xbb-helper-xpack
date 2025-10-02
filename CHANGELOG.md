@@ -5,6 +5,10 @@ Entries in this file are in reverse chronological order.
 ## 2025-10-02
 
 * v3.2.5 released
+* dd4fbe9 dependencies ftpmirror
+* 666a5e8 3.2.5
+* 1c30cee prepare v3.2.5
+* v3.2.5 released
 * 67ec78b workflows use macos-15-intel
 * 2019d5e deprecate travis
 * 9fabdd9 dependencies ftpmirror
