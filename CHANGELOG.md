@@ -2,8 +2,14 @@
 
 Entries in this file are in reverse chronological order.
 
-2025-10-02
+## 2025-10-02
 
+* v3.2.5 released
+* 67ec78b workflows use macos-15-intel
+* 2019d5e deprecate travis
+* 9fabdd9 dependencies ftpmirror
+* 152292d 3.2.4
+* 4651204 prepare v3.2.4
 * v3.2.4 released
 * d7dc59f test-common fedora:latest
 * d9dd8d7 3.2.3
