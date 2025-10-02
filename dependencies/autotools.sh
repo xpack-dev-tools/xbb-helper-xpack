@@ -26,7 +26,7 @@ function autotools_build()
   xbb_activate_installed_bin
 
   # Moved out, must be explicitly called by the application before this!
-  # https://ftp.gnu.org/pub/gnu/libiconv/
+  # https://ftpmirror.gnu.org/gnu/libiconv/
   # libiconv_build "1.17" # "1.16"
 
   # https://ftpmirror.gnu.org/gnu/autoconf/

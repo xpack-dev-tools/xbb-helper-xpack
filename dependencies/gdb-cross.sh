@@ -39,7 +39,7 @@ function gdb_cross_build_dependencies()
   # https://ftpmirror.gnu.org/gnu/libunistring/
   libunistring_build "${XBB_LIBUNISTRING_VERSION}"
 
-  # https://ftp.gnu.org/pub/gnu/gettext/
+  # https://ftpmirror.gnu.org/gnu/gettext/
   gettext_build "${XBB_GETTEXT_VERSION}"
 
   # Used by ncurses. Fails on macOS.

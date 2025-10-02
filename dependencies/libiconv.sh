@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.gnu.org/software/libiconv/
-# https://ftp.gnu.org/pub/gnu/libiconv/
+# https://ftpmirror.gnu.org/gnu/libiconv/
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/libiconv/-/blob/main/PKGBUILD
 # https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=libiconv
@@ -75,7 +75,7 @@ function libiconv_build()
   local libiconv_src_folder_name="libiconv-${libiconv_version}"
 
   local libiconv_archive="${libiconv_src_folder_name}.tar.gz"
-  local libiconv_url="https://ftp.gnu.org/pub/gnu/libiconv/${libiconv_archive}"
+  local libiconv_url="https://ftpmirror.gnu.org/gnu/libiconv/${libiconv_archive}"
 
   local libiconv_folder_name="${libiconv_src_folder_name}${suffix}"
 
