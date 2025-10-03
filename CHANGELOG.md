@@ -2,8 +2,16 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-03
+
+* v4.0.0 released
+* 3b718d0 remove linux-arm from scripts
+* a2db37b remove templates
+
 ## 2025-10-02
 
+* 95ed40e 3.2.6
+* 317aada prepare v3.2.6
 * v3.2.5 released
 * dd4fbe9 dependencies ftpmirror
 * 666a5e8 3.2.5
