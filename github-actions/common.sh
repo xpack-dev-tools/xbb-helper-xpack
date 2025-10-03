@@ -68,7 +68,7 @@ function download_binaries()
     local platforms=$(grep '"platforms": "' "${package_file_path}" | sed -e 's|.*: "||' | sed -e 's|".*||' | sed 's|,| |g')
     if [ "${platforms}" == "all" ]
     then
-      platforms='linux-x64 linux-arm64 linux-arm darwin-x64 darwin-arm64 win32-x64'
+      platforms='linux-x64 linux-arm64 darwin-x64 darwin-arm64 win32-x64'
     fi
 
     IFS=' '

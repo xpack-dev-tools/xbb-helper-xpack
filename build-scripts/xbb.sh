@@ -256,13 +256,13 @@ function xbb_set_requested()
       XBB_REQUESTED_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
       ;;
 
-    linux-arm )
-      XBB_REQUESTED_HOST_PLATFORM="linux"
-      XBB_REQUESTED_HOST_ARCH="arm"
-      XBB_REQUESTED_HOST_BITS="32"
-      XBB_REQUESTED_HOST_MACHINE="armv7l"
-      XBB_REQUESTED_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
-      ;;
+    # linux-arm )
+    #   XBB_REQUESTED_HOST_PLATFORM="linux"
+    #   XBB_REQUESTED_HOST_ARCH="arm"
+    #   XBB_REQUESTED_HOST_BITS="32"
+    #   XBB_REQUESTED_HOST_MACHINE="armv7l"
+    #   XBB_REQUESTED_HOST_TRIPLET="${XBB_BUILD_TRIPLET}"
+    #   ;;
 
     darwin-x64 )
       XBB_REQUESTED_HOST_PLATFORM="darwin"

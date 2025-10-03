@@ -187,9 +187,9 @@ then
   elif [ "$(uname -m)" == "aarch64" ]
   then
     config=linux-arm64
-  elif [ "$(uname -m)" == "armv7l" -o "$(uname -m)" == "armv8l" ]
-  then
-    config=linux-arm
+  # elif [ "$(uname -m)" == "armv7l" -o "$(uname -m)" == "armv8l" ]
+  # then
+  #   config=linux-arm
   else
     echo "Unsupported architecture $(uname -m)"
     exit 1
