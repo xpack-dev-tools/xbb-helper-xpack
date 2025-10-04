@@ -137,6 +137,10 @@ Use the new version, suffixed by `pre`, like `4.2.0-pre`.
 
 Update the version in `templates/common/_xpack-dev-tools/build-assets/package-merge-liquid.json`.
 
+```json
+"@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v4.2.0"
+```
+
 ### Update all xpacks references
 
 Open the workspace with all packages, and update all references with
