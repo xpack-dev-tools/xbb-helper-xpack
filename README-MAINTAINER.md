@@ -126,7 +126,7 @@ Use the new version, suffixed by `pre`, like `4.2.0-pre`.
 
 ### Check if the tag is published
 
-- https://github.com/xpack-dev-tools/xbb-helper-xpack/tags/v4.2.0
+- https://github.com/xpack-dev-tools/xbb-helper-xpack/releases/tag/v4.2.0
 
 ### Update the repo
 
