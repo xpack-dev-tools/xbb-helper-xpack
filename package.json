@@ -1,6 +1,6 @@
 {
   "name": "@xpack-dev-tools/xbb-helper",
-  "version": "4.0.0",
+  "version": "4.1.0-pre",
   "description": "A source xpm package with scripts and other files to support XBB builds",
   "main": "",
   "scripts": {

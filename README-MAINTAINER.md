@@ -73,8 +73,8 @@ No need to add a tag here, it'll be added when the release is created.
 
 ### Increase the version
 
-Determine the next version (like `4.0.0`) and update the
-`package.json` file; the format is `4.0.0-pre`.
+Determine the next version (like `4.1.0`) and update the
+`package.json` file; the format is `4.1.0-pre`.
 
 ### Fix possible open issues
 
@@ -82,7 +82,7 @@ Check GitHub issues and pull requests:
 
 - <https://github.com/xpack-dev-tools/xbb-helper-xpack/issues/>
 
-and fix them; assign them to a milestone (like `4.0.0`).
+and fix them; assign them to a milestone (like `4.1.0`).
 
 ### Check `README.md`
 
@@ -97,14 +97,14 @@ but in the version specific release page.
 
 ### Update version in `package.json` to a pre-release
 
-Use the new version, suffixed by `pre`, like `4.0.0-pre`.
+Use the new version, suffixed by `pre`, like `4.1.0-pre`.
 
 ### Update `CHANGELOG.md`
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _* v4.0.0 released_
-- commit with a message like _prepare v4.0.0_
+- add a new entry like _* v4.1.0 released_
+- commit with a message like _prepare v4.1.0_
 
 ### Push changes
 
@@ -114,7 +114,7 @@ Use the new version, suffixed by `pre`, like `4.0.0-pre`.
 
 - none
 
-### Publish on the npmjs.com server
+### Update the package version
 
 - select the `xpack-development` branch
 - commit all changes
@@ -124,28 +124,19 @@ Use the new version, suffixed by `pre`, like `4.0.0-pre`.
 - push the `xpack-development` branch to GitHub
 - the `postversion` npm script should also update tags via `git push origin --tags`
 
-### Publish
-
-- `npm publish --tag test` (use `npm publish --access public` when
-  publishing for the first time)
-
-The version is visible at:
-
-- <https://www.npmjs.com/package/@xpack-dev-tools/xbb-helper?activeTab=versions>
-
 ### Update the repo
 
 - merge `xpack-development` into `xpack`
 - push to GitHub
 
-### Tag the npm package as `latest`
+### Update npm-packages-helper.git template
 
-When the release is considered stable, promote it as `latest`:
+Update the version in `templates/common/_xpack-dev-tools/build-assets/package-merge-liquid.json`.
 
-- `npm dist-tag ls @xpack-dev-tools/xbb-helper`
-- `npm dist-tag add @xpack-dev-tools/xbb-helper@4.0.0 latest`
-- `npm dist-tag ls @xpack-dev-tools/xbb-helper`
+### Update all xpacks references
 
-If necessary, unpublish previous releases:
+Open the workspace with all packages, and update all references with
 
-- `npm unpublish @xpack-dev-tools/xbb-helper@4.0.0`
+```json
+"@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v4.1.0"
+```

@@ -55,14 +55,13 @@ For details please follow the instructions in the
 ### xpm
 
 This package is available as
-[`@xpack-dev-tools/xbb-helper`](https://www.npmjs.com/package/@xpack-dev-tools/xbb-helper)
-from the `npmjs.com` registry:
+[`github:xpack-dev-tools/xbb-helper-xpack`](https://www.npmjs.com/package/@xpack-dev-tools/xbb-helper):
 
 ```sh
 cd my-project
 xpm init # Unless a package.json is already present
 
-xpm install --save-dev @xpack-dev-tools/xbb-helper@latest --verbose
+xpm install --save-dev github:xpack-dev-tools/xbb-helper-xpack#v4.1.0 --verbose
 
 ls -l xpacks/@xpack-dev-tools/xbb-helper
 ```

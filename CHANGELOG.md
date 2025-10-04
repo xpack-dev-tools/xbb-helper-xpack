@@ -2,8 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-04
+
+* v4.1.0 released
+* f9ba219 add pyconfig-win-3.13.7.h
+
 ## 2025-10-03
 
+* 1df9f4c 4.0.0
+* 05d9d81 prepare v4.0.0
 * v4.0.0 released
 * 3b718d0 remove linux-arm from scripts
 * a2db37b remove templates
