@@ -124,6 +124,10 @@ Use the new version, suffixed by `pre`, like `4.1.0-pre`.
 - push the `xpack-development` branch to GitHub
 - the `postversion` npm script should also update tags via `git push origin --tags`
 
+### Check if the tag is published
+
+- https://github.com/xpack-dev-tools/xbb-helper-xpack/tags/v4.1.0
+
 ### Update the repo
 
 - merge `xpack-development` into `xpack`
