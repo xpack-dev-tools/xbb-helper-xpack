@@ -1715,8 +1715,10 @@ function xbb_get_current_helper_version()
     fi
   fi
 
-  # Extract the semver.
-  grep '"@xpack-dev-tools/xbb-helper": "' "${package_file_path}" | sed -e 's|.*"\^\([0-9.]*\).*|\1|'
+  # Extract the version from both semver and github reference formats.
+  grep '"@xpack-dev-tools/xbb-helper": "' "${package_file_path}" | \
+    sed -E -e 's|.*"@xpack-dev-tools/xbb-helper": "(\^)?([0-9]+\.[0-9]+\.[0-9]+)".*|\2|' \
+           -e 's|.*"@xpack-dev-tools/xbb-helper": "github:[^#]+#v([0-9]+\.[0-9]+\.[0-9]+)".*|\1|'
 }
 
 function xbb_show_tools_versions()
