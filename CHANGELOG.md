@@ -4,6 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-04
 
+* v4.2.0 released
+* f96f1aa xbb.sh fix xbb_get_current_helper_version
+* 9efc7da add pkgconfig-0.15.0-windows.pc
+* 388ec08 README update
+* bedfb3c 4.1.0
+* 8aba581 prepare v4.1.0
 * v4.1.0 released
 * f9ba219 add pyconfig-win-3.13.7.h
 
