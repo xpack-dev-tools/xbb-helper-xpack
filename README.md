@@ -61,7 +61,7 @@ This package is available as
 cd my-project
 xpm init # Unless a package.json is already present
 
-xpm install --save-dev github:xpack-dev-tools/xbb-helper-xpack#v4.2.0 --verbose
+xpm install --save-dev github:xpack-dev-tools/xbb-helper-xpack#v4.2.1 --verbose
 
 ls -l xpacks/@xpack-dev-tools/xbb-helper
 ```

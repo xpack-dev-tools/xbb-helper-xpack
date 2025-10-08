@@ -2,8 +2,22 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-08
+
+* v4.2.1 released
+* 5aaab7d icu4c.sh fix for win32
+* c7c7e2e gcc.sh question
+
+## 2025-10-05
+
+* 7d1fc59 add icu4c.sh
+
 ## 2025-10-04
 
+* 48ecaed README updates
+* 76ca45b README updates
+* 09b13e6 4.2.0
+* 45da45a prepare v4.2.0
 * v4.2.0 released
 * f96f1aa xbb.sh fix xbb_get_current_helper_version
 * 9efc7da add pkgconfig-0.15.0-windows.pc
