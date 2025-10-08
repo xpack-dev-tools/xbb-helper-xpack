@@ -103,7 +103,15 @@ function icu4c_build()
           config_options+=("--disable-samples") # HB
           config_options+=("--disable-tests") # HB
           config_options+=("--enable-static") # HB
-          config_options+=("--with-library-bits=64") # HB
+
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          then
+            # The folder where the host build was done.
+            config_options+=("--with-cross-build=${XBB_TARGET_NATIVE_FOLDER_PATH}/${XBB_BUILD_FOLDER_NAME}/${icu4c_folder_name}")
+          else
+            # On Linux and macOS the bitness is determined by the host.
+            config_options+=("--with-library-bits=64") # HB
+          fi
 
           run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${icu4c_src_folder_name}/source/configure" \
             "${config_options[@]}"
@@ -124,10 +132,14 @@ function icu4c_build()
         # Remove documentation
         # run_verbose rm -rfv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/doc" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/share/info"
 
-        # Takes too long.
-        if true # [ "${RUN_LONG_TESTS}" == "y" ]
+        if [ "${XBB_HOST_PLATFORM}" == "win32" ]
         then
-          make -j1 check
+          : # /bin/bash: ./icuinfo.exe: cannot execute binary file: Exec format error
+        else
+          if true # [ "${RUN_LONG_TESTS}" == "y" ]
+          then
+            make -j1 check
+          fi
         fi
 
       ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${icu4c_folder_name}/make-output-$(ndate).txt"
