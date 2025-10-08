@@ -732,6 +732,7 @@ function gcc_build()
           run_verbose make install
         fi
 
+        # Why not XBB_TARGET_PLATFORM?
         if [ "${XBB_TARGET_PLATFORM}" == "linux" ]
         then
           # Hack to include the libiconv.a objects into libstdc++.a.
