@@ -2,8 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-09
+
+* v4.3.0 released
+* 94509fe download.sh: add backup url
+
 ## 2025-10-08
 
+* fa6f195 4.2.1
+* eef01a2 prepare v4.2.1
 * v4.2.1 released
 * 5aaab7d icu4c.sh fix for win32
 * c7c7e2e gcc.sh question
