@@ -131,7 +131,18 @@ function download()
       local rand=$(echo $((RANDOM)))
       rm -f "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${rand}.download"
       mkdir -pv "${XBB_DOWNLOAD_FOLDER_PATH}"
-      run_verbose curl --insecure --fail --location --output "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${rand}.download" "${url}"
+
+      # Try primary URL first
+      if run_verbose curl --insecure --fail --location --output "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${rand}.download" "${url}"
+      then
+        echo_develop "Download from primary URL successful"
+      else
+        echo "Download from primary URL failed, trying backup URL..."
+        local backup_url="https://github.com/xpack-dev-tools/files-mirror/releases/download/libs/$(basename ${url})"
+        echo "Downloading \"${archive_name}\" from backup \"${backup_url}\"..."
+        run_verbose curl --insecure --fail --location --output "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${rand}.download" "${backup_url}"
+      fi
+
       if [ ! -f "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}" ]
       then
         mv -fv "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${rand}.download" "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}"
