@@ -104,6 +104,8 @@ function icu4c_build()
           config_options+=("--disable-tests") # HB
           config_options+=("--enable-static") # HB
 
+          config_options+=("--enable-rpath")
+
           if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
             # The folder where the host build was done.
@@ -197,7 +199,7 @@ function icu4c_test()
     echo
     echo "Testing if icu4c binaries start properly..."
 
-    cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
+    # cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
     run_host_app_verbose "${test_bin_folder_path}/gendict" -trietype --version
     run_host_app_verbose "${test_bin_folder_path}/genrb" --version
     # run_host_app_verbose "${test_bin_folder_path}/genbrk" --version
