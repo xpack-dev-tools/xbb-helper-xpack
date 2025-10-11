@@ -4,6 +4,7 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-11
 
+* c711b96 README update
 * v4.3.1 released
 * 422a4eb icu4c.sh enable rpath only on darwin
 * 74570a4 binutils.sh possibly no ld.gold
