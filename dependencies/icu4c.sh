@@ -104,7 +104,12 @@ function icu4c_build()
           config_options+=("--disable-tests") # HB
           config_options+=("--enable-static") # HB
 
-          config_options+=("--enable-rpath")
+          if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+          then
+            # Otherwise the references to libraries are not absolute and
+            # using the binaries fails with missing libraries.
+            config_options+=("--enable-rpath")
+          fi
 
           if [ "${XBB_HOST_PLATFORM}" == "win32" ]
           then
