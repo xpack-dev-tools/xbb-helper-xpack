@@ -120,7 +120,7 @@ Use the new version, suffixed by `pre`, like `4.3.1-pre`.
 - commit all changes
 - `npm pack` and check the content of the archive;
   possibly adjust `.npmignore`
-- `npm version patch`, `npm version minor`, `npm version major`
+- `npm version major`, `npm version minor`, `npm version patch`
 - push the `xpack-development` branch to GitHub
 - the `postversion` npm script should also update tags via `git push origin --tags`
 
