@@ -464,7 +464,10 @@ function binutils_test()
       export ELFEDIT="$(which ${name_prefix}elfedit)"
       export GPROF="$(which ${name_prefix}gprof)"
       export LD="$(which ${name_prefix}ld)"
-      export LD_GOLD="$(which ${name_prefix}ld.gold)"
+      if [ -f "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
+      then
+        export LD_GOLD="$(which ${name_prefix}ld.gold)"
+      fi
       export NM="$(which ${name_prefix}nm)"
       export OBJCOPY="$(which ${name_prefix}objcopy)"
       export OBJDUMP="$(which ${name_prefix}objdump)"
@@ -479,7 +482,11 @@ function binutils_test()
       export ELFEDIT="${test_bin_path}/${name_prefix}elfedit"
       export GPROF="${test_bin_path}/${name_prefix}gprof"
       export LD="${test_bin_path}/${name_prefix}ld"
-      export LD_GOLD="${test_bin_path}/${name_prefix}ld.gold"
+      if [ -f "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
+      then
+        # No ld.gold on Windows, deprecated since binutils 2.44!
+        export LD_GOLD="${test_bin_path}/${name_prefix}ld.gold"
+      fi
       export NM="${test_bin_path}/${name_prefix}nm"
       export OBJCOPY="${test_bin_path}/${name_prefix}objcopy"
       export OBJDUMP="${test_bin_path}/${name_prefix}objdump"
@@ -569,6 +576,7 @@ function binutils_build_ld_gold()
 {
   echo_develop
   echo_develop "[${FUNCNAME[0]} $@]"
+  echo "DEPRECATED: ld.gold was deprecated in binutils 2.44!"
 
   local binutils_version="$1"
 
