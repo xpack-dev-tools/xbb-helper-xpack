@@ -170,6 +170,26 @@ then
     echo "To remove the runner, use:"
     echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
   )
+elif [ "${hostname}" == "xbbma" ]
+then
+  sudo rm -rf "${HOME}/actions-runners/${organization}"
+
+  mkdir -p "${HOME}/actions-runners/${organization}"
+  cd "${HOME}/actions-runners/${organization}"
+  (
+    echo
+    echo "Unpacking archive..."
+    tar xzf "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz"
+
+    token="$(get_token)"
+
+    echo
+    echo "Configuring..."
+    ./config.sh --url "https://github.com/${organization}" --token "${token}" --name 'xbbma' --labels 'apple,11.6,xbbma' --unattended --replace --disableupdate
+
+    echo "To remove the runner, use:"
+    echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
+  )
 elif [ "${hostname}" == "xbbli" ]
 then
   sudo rm -rf "${HOME}/actions-runners/${organization}"
