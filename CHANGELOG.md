@@ -2,8 +2,20 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-11
+
+* v4.3.1 released
+* 422a4eb icu4c.sh enable rpath only on darwin
+* 74570a4 binutils.sh possibly no ld.gold
+
+## 2025-10-10
+
+* 29ec9f5 icu4c.sh --enable-rpath
+
 ## 2025-10-09
 
+* 6855230 4.3.0
+* 816d15a prepare v4.3.0
 * v4.3.0 released
 * 94509fe download.sh: add backup url
 
