@@ -92,12 +92,12 @@ sha="$(echo "${release_body}" | grep "BEGIN SHA" | grep "actions-runner-${platfo
 
 hostname="$(hostname)"
 
-if [ "${hostname}" == "xbbmi.local" ]
-then
-  # Lock xbbmi to this old version until an update to macOS 11.
-  version="2.320.0"
-  sha="11e610adc1c3721a806d2a439d03d143cceeda7a63e794bfe75b45da55e308df"
-fi
+# if [ "${hostname}" == "xbbmi.local" ]
+# then
+#   # Lock xbbmi to this old version until an update to macOS 11.
+#   version="2.320.0"
+#   sha="11e610adc1c3721a806d2a439d03d143cceeda7a63e794bfe75b45da55e308df"
+# fi
 
 if [ ! -f "${cache_folder_path}/actions-runner-${platform}-${arch}-${version}.tar.gz" ]
 then
