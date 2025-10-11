@@ -62,7 +62,7 @@ elif [ "$(uname -m)" == "armv7l" ]
 then
   arch="arm"
 else
-  echo "Unexpected arch..."
+  echo "Unexpected arch $(uname -m)..."
   exit 1
 fi
 
