@@ -55,7 +55,7 @@ fi
 if [ "$(uname -m)" == "x86_64" ]
 then
   arch="x64"
-elif [ "$(uname -m)" == "aarch64" ]
+elif [ "$(uname -m)" == "aarch64" ] || [ "$(uname -m)" == "arm64" ]
 then
   arch="arm64"
 elif [ "$(uname -m)" == "armv7l" ]
