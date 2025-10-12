@@ -464,10 +464,7 @@ function binutils_test()
       export ELFEDIT="$(which ${name_prefix}elfedit)"
       export GPROF="$(which ${name_prefix}gprof)"
       export LD="$(which ${name_prefix}ld)"
-      if [ -f "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
-      then
-        export LD_GOLD="$(which ${name_prefix}ld.gold)"
-      fi
+      export LD_GOLD="$(which ${name_prefix}ld.gold)"
       export NM="$(which ${name_prefix}nm)"
       export OBJCOPY="$(which ${name_prefix}objcopy)"
       export OBJDUMP="$(which ${name_prefix}objdump)"
@@ -482,11 +479,8 @@ function binutils_test()
       export ELFEDIT="${test_bin_path}/${name_prefix}elfedit"
       export GPROF="${test_bin_path}/${name_prefix}gprof"
       export LD="${test_bin_path}/${name_prefix}ld"
-      if [ -f "${LD_GOLD}${XBB_HOST_DOT_EXE}" ]
-      then
-        # No ld.gold on Windows, deprecated since binutils 2.44!
-        export LD_GOLD="${test_bin_path}/${name_prefix}ld.gold"
-      fi
+      # No ld.gold on Windows, deprecated since binutils 2.44!
+      export LD_GOLD="${test_bin_path}/${name_prefix}ld.gold"
       export NM="${test_bin_path}/${name_prefix}nm"
       export OBJCOPY="${test_bin_path}/${name_prefix}objcopy"
       export OBJDUMP="${test_bin_path}/${name_prefix}objdump"
