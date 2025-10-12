@@ -2,8 +2,22 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-13
+
+* v4.3.2 released
+
+## 2025-10-12
+
+* 119d5974 binutils.sh: fix LD_GOLD definition
+
 ## 2025-10-11
 
+* 23012334 github-runner-configure.sh update
+* 7f2520dc github-runner-configure.sh update
+* 9cbac196 github-runner-configure.sh update
+* 747c6497 github-runner-configure.sh update
+* 0d877baf 4.3.1
+* d8cb4e1d CHANGELOG update
 * c711b96 README update
 * v4.3.1 released
 * 422a4eb icu4c.sh enable rpath only on darwin
