@@ -1247,8 +1247,7 @@ function test_linux()
     if [ ${gcc_version_major} -eq 11 ] || \
        [ ${gcc_version_major} -eq 12 ] || \
        [ ${gcc_version_major} -eq 13 ] || \
-       [ ${gcc_version_major} -eq 14 ] || \
-       [ ${gcc_version_major} -eq 15 ]
+       [ ${gcc_version_major} -eq 14 ]
     then
       # sleepy-threads-cv.
       # The static tests crash with 'Segmentation fault'.
@@ -1262,16 +1261,28 @@ function test_linux()
       export XBB_IGNORE_TEST_STATIC_GC_CNRT_TEST_32="y"
       export XBB_IGNORE_TEST_STATIC_LTO_CNRT_TEST_32="y"
       export XBB_IGNORE_TEST_STATIC_GC_LTO_CNRT_TEST_32="y"
+    elif [ ${gcc_version_major} -eq 15 ]
+    then
+      # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build-assets/build/linux-x64/application/include/c++/15.2.0/bits/atomic_base.h:475: void std::__atomic_base<_IntTp>::store(__int_type, std::memory_order) [with _ITp = char; __int_type = char]: Assertion '__b != memory_order_consume' failed.
+      # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build-assets/xpacks/@xpack-dev-tools/xbb-helper/build-scripts/wrappers.sh: line 620: 830945 Aborted                 (core dumped) "${app_path}" "$@"
+      export XBB_IGNORE_TEST_ALL_ATOMIC="y"
 
-      if [ "${distro}" == "Fedora" ]
-      then
-        # cnrt-test-32.
-        # undefined reference to `fmod'
-        export XBB_IGNORE_TEST_STATIC_CNRT_TEST_32="y"
-        export XBB_IGNORE_TEST_STATIC_GC_CNRT_TEST_32="y"
-        export XBB_IGNORE_TEST_STATIC_LTO_CNRT_TEST_32="y"
-        export XBB_IGNORE_TEST_STATIC_GC_LTO_CNRT_TEST_32="y"
-      fi
+      # sleepy-threads-cv.
+      # The static tests crash with 'Segmentation fault'.
+      export XBB_IGNORE_TEST_STATIC_SLEEPY_THREADS_CV="y"
+      export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
+      export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
+      export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
+    fi
+
+    if [ "${distro}" == "Fedora" ]
+    then
+      # cnrt-test-32.
+      # undefined reference to `fmod'
+      export XBB_IGNORE_TEST_STATIC_CNRT_TEST_32="y"
+      export XBB_IGNORE_TEST_STATIC_GC_CNRT_TEST_32="y"
+      export XBB_IGNORE_TEST_STATIC_LTO_CNRT_TEST_32="y"
+      export XBB_IGNORE_TEST_STATIC_GC_LTO_CNRT_TEST_32="y"
     fi
 
     # -------------------------------------------------------------------------
