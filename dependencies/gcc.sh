@@ -1127,7 +1127,8 @@ function test_win32()
     if [ ${gcc_version_major} -eq 11 ] || \
        [ ${gcc_version_major} -eq 12 ] || \
        [ ${gcc_version_major} -eq 13 ] || \
-       [ ${gcc_version_major} -eq 14 ]
+       [ ${gcc_version_major} -eq 14 ] || \
+       [ ${gcc_version_major} -eq 15 ]
     then
 
       # autoimport-main.
@@ -1246,7 +1247,8 @@ function test_linux()
     if [ ${gcc_version_major} -eq 11 ] || \
        [ ${gcc_version_major} -eq 12 ] || \
        [ ${gcc_version_major} -eq 13 ] || \
-       [ ${gcc_version_major} -eq 14 ]
+       [ ${gcc_version_major} -eq 14 ] || \
+       [ ${gcc_version_major} -eq 15 ]
     then
       # sleepy-threads-cv.
       # The static tests crash with 'Segmentation fault'.
