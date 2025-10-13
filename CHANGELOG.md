@@ -4,6 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-13
 
+* v4.3.4 released
+* a6a80c2 add gcc-12.5.0.git.patch
+* 3d66521 4.3.3
+* 22abb85 prepare v4.3.3
 * v4.3.3 released
 * 621aaca gcc 15 ignore atomic
 * 132ed52  -std=gnu17
