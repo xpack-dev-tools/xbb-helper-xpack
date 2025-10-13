@@ -275,11 +275,13 @@ function binutils_build()
 
     if [ "${binutils_version}" == "2.45" ]
     then
-      # The gprof tests failed with 2.45, the f3() call is not identified.
-      # Patch the test scripts to remove the f3 lines.
-      run_verbose sed -i.bak '/f3 1/d' \
+      # The gprof tests failed with 2.45 and gcc 15, the f3() call was
+      # not identified at all.
+      # Patch the test scripts to remove the f3 lines and
+      # ignore the result anyway.
+      run_verbose sed -i.bak -e '/f3 1/d' -e '0,/exit 1/b; s/exit 1/exit 0/' \
         "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/gprof/testsuite/tst-gmon-gprof.sh"
-      run_verbose sed -i.bak '/f3 1/d' \
+      run_verbose sed -i.bak -e '/f3 1/d' -e '0,/exit 1/b; s/exit 1/exit 0/' \
         "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/gprof/testsuite/tst-gmon-gprof-l.sh"
     fi
 
