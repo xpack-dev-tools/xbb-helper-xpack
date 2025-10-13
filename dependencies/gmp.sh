@@ -58,6 +58,13 @@ function gmp_build()
     download_and_extract "${gmp_url}" "${gmp_archive}" \
       "${gmp_src_folder_name}"
 
+    # error: too many arguments to function 'g'
+    run_verbose sed -i.bak \
+      -e 's|void g(){}|void g(int i, const t1 src[], t1 n, t1 got[], const t1 want[], int size){}|' \
+      "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure"
+
+    run_verbose diff "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure.bak" "${XBB_SOURCES_FOLDER_PATH}/${gmp_src_folder_name}/configure" || true
+
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${gmp_folder_name}"
       run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${gmp_folder_name}"
