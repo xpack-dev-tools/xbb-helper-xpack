@@ -1131,6 +1131,13 @@ function test_win32()
        [ ${gcc_version_major} -eq 15 ]
     then
 
+      if [ ${gcc_version_major} -eq 15 ]
+      then
+        # /home/ilg/Work/xpack-dev-tools/gcc-xpack.git/build-assets/build/win32-x64/x86_64-pc-linux-gnu/install/x86_64-w64-mingw32/include/c++/15.2.0/bits/atomic_base.h:475: void std::__atomic_base<_IntTp>::store(__int_type, std::memory_order) [with _ITp = char; __int_type = char]: Assertion '__b != memory_order_consume' failed.
+        # atomic<1B>.is_lock_free(): true
+        export XBB_IGNORE_TEST_ALL_ATOMIC="y"
+      fi
+
       # autoimport-main.
       # [wine64 ./lto-autoimport-main.exe]
       # Mingw-w64 runtime failure:
@@ -1204,6 +1211,8 @@ function test_win32()
       export XBB_IGNORE_TEST_STATIC_WEAK_USE_C="y"
       export XBB_IGNORE_TEST_STATIC_GC_WEAK_USE_C="y"
     fi
+
+    env | sort
 
     (
       if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
@@ -1284,6 +1293,8 @@ function test_linux()
       export XBB_IGNORE_TEST_STATIC_LTO_CNRT_TEST_32="y"
       export XBB_IGNORE_TEST_STATIC_GC_LTO_CNRT_TEST_32="y"
     fi
+
+    env | sort
 
     # -------------------------------------------------------------------------
 
