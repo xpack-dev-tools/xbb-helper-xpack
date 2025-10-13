@@ -4,6 +4,17 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-13
 
+* v4.3.3 released
+* 621aaca gcc 15 ignore atomic
+* 132ed52  -std=gnu17
+* 1c088c9 Revert "gmp.sh fix too many arguments to function 'g'"
+* 4ccdc3e gmp.sh fix too many arguments to function 'g'
+* 64b9463 gcc.sh update tests for 15
+* 47e9c5a gcc.sh update tests for 15
+* 70c9d49 binutils.sh ignore gprof test result
+* 7a7151e binutils.sh patch gprof test scripts
+* c43a1e6 4.3.2
+* ea16d4b prepare v4.3.2
 * v4.3.2 released
 
 ## 2025-10-12
