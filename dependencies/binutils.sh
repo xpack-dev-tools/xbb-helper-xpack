@@ -273,6 +273,16 @@ function binutils_build()
     download_and_extract "${binutils_url}" "${binutils_archive}" \
       "${binutils_src_folder_name}" "${binutils_patch_file_name}"
 
+    if [ "${binutils_version}" == "2.45" ]
+    then
+      # The gprof tests failed with 2.45, the f3() call is not identified.
+      # Patch the test scripts to remove the f3 lines.
+      run_verbose sed -i.bak '/f3 1/d' \
+        "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/gprof/testsuite/tst-gmon-gprof.sh"
+      run_verbose sed -i.bak '/f3 1/d' \
+        "${XBB_SOURCES_FOLDER_PATH}/${binutils_src_folder_name}/gprof/testsuite/tst-gmon-gprof-l.sh"
+    fi
+
     (
       mkdir -pv "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
       run_verbose_develop cd "${XBB_BUILD_FOLDER_PATH}/${binutils_folder_name}"
