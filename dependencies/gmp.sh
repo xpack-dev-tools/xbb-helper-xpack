@@ -67,7 +67,7 @@ function gmp_build()
       # Exceptions used by Arm GCC script and by mingw-w64.
       CPPFLAGS="${XBB_CPPFLAGS} -fexceptions"
       # Test fail with -Ofast, revert to -O2
-      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CFLAGS="${XBB_CFLAGS_NO_W} -std=gnu17"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
