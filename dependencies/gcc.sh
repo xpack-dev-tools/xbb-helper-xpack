@@ -1282,10 +1282,7 @@ function test_linux()
       export XBB_IGNORE_TEST_STATIC_GC_SLEEPY_THREADS_CV="y"
       export XBB_IGNORE_TEST_STATIC_LTO_SLEEPY_THREADS_CV="y"
       export XBB_IGNORE_TEST_STATIC_GC_LTO_SLEEPY_THREADS_CV="y"
-    fi
 
-    if [ "${distro}" == "Fedora" ]
-    then
       # cnrt-test-32.
       # undefined reference to `fmod'
       export XBB_IGNORE_TEST_STATIC_CNRT_TEST_32="y"
@@ -1293,6 +1290,16 @@ function test_linux()
       export XBB_IGNORE_TEST_STATIC_LTO_CNRT_TEST_32="y"
       export XBB_IGNORE_TEST_STATIC_GC_LTO_CNRT_TEST_32="y"
     fi
+
+    # if [ "${distro}" == "Fedora" ]
+    # then
+    #   # cnrt-test-32.
+    #   # undefined reference to `fmod'
+    #   export XBB_IGNORE_TEST_STATIC_CNRT_TEST_32="y"
+    #   export XBB_IGNORE_TEST_STATIC_GC_CNRT_TEST_32="y"
+    #   export XBB_IGNORE_TEST_STATIC_LTO_CNRT_TEST_32="y"
+    #   export XBB_IGNORE_TEST_STATIC_GC_LTO_CNRT_TEST_32="y"
+    # fi
 
     env | sort
 
