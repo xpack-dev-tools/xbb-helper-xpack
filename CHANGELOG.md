@@ -2,8 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-14
+
+* v4.3.5 released
+* f6a4f58 gcc.sh fix  test
+
 ## 2025-10-13
 
+* ec8aa03 4.3.4
+* b498436 prepare v4.3.4
 * v4.3.4 released
 * a6a80c2 add gcc-12.5.0.git.patch
 * 3d66521 4.3.3
