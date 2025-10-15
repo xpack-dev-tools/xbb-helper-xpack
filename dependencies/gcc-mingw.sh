@@ -584,10 +584,7 @@ function gcc_mingw_build_final()
     echo "Component ${name_prefix}gcc final already installed"
   fi
 
-  if [ "${is_bootstrap}" != "y" ] || is_development
-  then
-    tests_add "gcc_mingw_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}" ${bootstrap_option}
-  fi
+  tests_add "gcc_mingw_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin" "${triplet}" ${bootstrap_option}
 }
 
 function gcc_mingw_test()
