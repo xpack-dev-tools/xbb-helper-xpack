@@ -2,8 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-16
+
+* v4.3.11 released
+* c8a1bd8 download.sh with 3 retries
+
 ## 2025-10-15
 
+* 11e5e54 4.3.10
+* 82a8ab1 prepare v4.3.10
 * v4.3.10 released
 * 68749d3 nettle.sh update mirror url
 * 5d742ef mpc.sh update mirror url
