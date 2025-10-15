@@ -74,11 +74,39 @@ function tests_install_archive()
   else
     echo
     echo "Downloading ${archive_name}..."
-    run_verbose curl \
-      --fail \
-      --location \
-      --output "${tests_folder_path}/../${archive_name}" \
-      "${XBB_BASE_URL}/${archive_name}"
+
+    # Try download up to 3 times
+    local success="false"
+    for attempt in 1 2 3
+    do
+      echo
+      echo "Attempting download (attempt ${attempt}/3)..."
+      if run_verbose curl \
+        --fail \
+        --location \
+        --output "${tests_folder_path}/../${archive_name}" \
+        "${XBB_BASE_URL}/${archive_name}"
+      then
+        echo
+        echo "Download successful on attempt ${attempt}"
+        success="true"
+        break
+      else
+        echo
+        echo "Download attempt ${attempt} failed"
+        if [ ${attempt} -lt 3 ]
+        then
+          echo "Retrying in 5 seconds..."
+          sleep 5
+        fi
+      fi
+    done
+
+    if [ "${success}" == "false" ]
+    then
+      echo "All download attempts failed"
+      exit 1
+    fi
 
     echo
   fi
