@@ -567,9 +567,20 @@ function expect_target_exit()
           exit_code=$?
           echo "${output}" | tr -d '\r'
         else
-          echo
-          echo "wine64 ${app_name} $@ - not available in ${FUNCNAME[0]}()"
-          return
+          wine_path=$(which wine 2>/dev/null)
+          if [ ! -z "${wine_path}" ]
+          then
+            echo
+            echo "[wine ${app_path} $@]"
+            # wine64 "${app_path}" "$@" | tr -d '\r'
+            output="$(wine "${app_path}" "$@")"
+            exit_code=$?
+            echo "${output}" | tr -d '\r'
+          else
+            echo
+            echo "wine ${app_name} $@ - not available in ${FUNCNAME[0]}()"
+            return
+          fi
         fi
       elif is_pe32 "${app_path}"
       then
