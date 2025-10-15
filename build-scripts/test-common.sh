@@ -199,7 +199,7 @@ function tests_update_system_common()
     fi
     if [ "$(uname -m)" == "x86_64" ]
     then
-      run_verbose sudo apt-get -qq install --yes wine
+      run_verbose apt-get -qq install --yes wine
     fi
   elif [[ ${image_name} == "fedora:latest" ]]
   then
@@ -223,7 +223,7 @@ function tests_update_system_common()
     then
       run_verbose yum install --assumeyes --quiet \
         libgcc*i686 libstdc++*i686 glibc*i686 libatomic*i686 libgfortran*i686
-      run_verbose yum install --assumeyes --quiet --skip-unavailable wine
+      run_verbose yum install --assumeyes --quiet wine
     fi
   elif [[ ${image_name} == *suse* ]]
   then
