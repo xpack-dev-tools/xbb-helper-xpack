@@ -67,8 +67,11 @@ function is_pe()
   fi
 }
 
-# x.exe: PE32+ executable (console) x86-64 (stripped to external PDB), for MS Windows
-# x.exe: PE32 executable (console) Intel 80386 (stripped to external PDB), for MS Windows
+# PE32+ executable (console) x86-64 (stripped to external PDB), for MS Windows
+# PE32 executable (console) Intel 80386 (stripped to external PDB), for MS Windows
+
+# PE32+ executable for MS Windows 5.02 (console), x86-64, 18 sections
+# PE32 executable for MS Windows 4.00 (console), Intel i386, 13 sections
 
 function is_pe64()
 {
@@ -89,7 +92,7 @@ function is_pe64()
   if [ -f "${bin_path}" ]
   then
     # file ${bin_path} | grep -E -q "( PE )|( PE32 )|( PE32\+ )" | grep -E -q "x86-64"
-    file ${bin_path} | grep -q "PE32+ executable (console) x86-64"
+    file ${bin_path} | grep -E -q "PE32\+ executable.*console.*x86-64"
   else
     return 1
   fi
@@ -113,7 +116,7 @@ function is_pe32()
 
   if [ -f "${bin_path}" ]
   then
-    file ${bin_path} | grep -q "PE32 executable (console) Intel 80386"
+    file ${bin_path} | grep -E -q "PE32 executable.*console.*386"
   else
     return 1
   fi
