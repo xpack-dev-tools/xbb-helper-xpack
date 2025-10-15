@@ -2,8 +2,18 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-15
+
+* v4.3.6 released
+* 048ccec is_something.sh fix PE32 regexp
+* b72d466 sleepy-threads-cv 2500ms
+* f171fc5 Revert "skip bootstrap gcc_mingw_test on release"
+* 5deb988 skip bootstrap gcc_mingw_test on release
+
 ## 2025-10-14
 
+* 9ab31ba 4.3.5
+* 4968404 prepare v4.3.5
 * v4.3.5 released
 * f6a4f58 gcc.sh fix  test
 
