@@ -4,6 +4,9 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-15
 
+* v4.3.7 released
+* fae6483 wrappers.sh: accept wine for wine64
+* 7b72a99 test-common.sh: install wine
 * v4.3.6 released
 * 048ccec is_something.sh fix PE32 regexp
 * b72d466 sleepy-threads-cv 2500ms
