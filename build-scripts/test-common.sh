@@ -181,6 +181,7 @@ function tests_update_system_common()
     then
       # To make 32-bit tests possible.
       run_verbose sudo apt-get -qq install --yes g++ g++-multilib
+      run_verbose sudo apt-get -qq install --yes wine
     fi
   elif [[ ${image_name} == *raspbian* ]]
   then
@@ -196,6 +197,10 @@ function tests_update_system_common()
     then
       run_verbose apt-get -qq install --yes g++-multilib
     fi
+    if [ "$(uname -m)" == "x86_64" ]
+    then
+      run_verbose sudo apt-get -qq install --yes wine
+    fi
   elif [[ ${image_name} == "fedora:latest" ]]
   then
     run_verbose yum update --assumeyes --quiet
@@ -206,6 +211,7 @@ function tests_update_system_common()
     then
       run_verbose yum install --assumeyes --quiet --skip-unavailable \
         libgcc*i686 libstdc++*i686 glibc*i686 libatomic*i686 libgfortran*i686
+      run_verbose yum install --assumeyes --quiet --skip-unavailable wine
     fi
   elif [[ ${image_name} == *centos* ]] || [[ ${image_name} == *redhat* ]] || [[ ${image_name} == *fedora* ]]
   then
@@ -217,6 +223,7 @@ function tests_update_system_common()
     then
       run_verbose yum install --assumeyes --quiet \
         libgcc*i686 libstdc++*i686 glibc*i686 libatomic*i686 libgfortran*i686
+      run_verbose yum install --assumeyes --quiet --skip-unavailable wine
     fi
   elif [[ ${image_name} == *suse* ]]
   then
@@ -227,6 +234,7 @@ function tests_update_system_common()
     if [ "$(uname -m)" == "x86_64" ]
     then
       run_verbose zypper --quiet --no-gpg-checks install --no-confirm gcc-32bit gcc-c++-32bit glibc-devel-32bit glibc-devel-static-32bit
+      run_verbose zypper --quiet --no-gpg-checks install --no-confirm wine
     fi
   elif [[ ${image_name} == *archlinux* ]] || [[ ${image_name} == *manjaro* ]]
   then
@@ -244,6 +252,7 @@ function tests_update_system_common()
     if [ "$(uname -m)" == "x86_64" ]
     then
       run_verbose pacman --sync --quiet --noconfirm --noprogressbar lib32-gcc-libs
+      run_verbose pacman --sync --quiet --noconfirm --noprogressbar wine
     fi
   fi
 
