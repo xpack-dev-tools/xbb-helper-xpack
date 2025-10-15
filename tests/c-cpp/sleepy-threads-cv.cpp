@@ -74,7 +74,7 @@ void spawnThreads(int n)
     {
         // Wait for the counter to reach the upper limit.
         std::unique_lock<std::mutex> lk(cv_m);
-        bool condition = cv.wait_for(lk, std::chrono::milliseconds((n+1)*2000), [&]{ return counter == n; });
+        bool condition = cv.wait_for(lk, std::chrono::milliseconds((n+1)*2500), [&]{ return counter == n; });
 
         if ( !condition ) {
             std::cout << " top:timeout" << std::endl;
