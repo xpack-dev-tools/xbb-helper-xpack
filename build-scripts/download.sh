@@ -134,7 +134,8 @@ function download()
 
       # Try primary URL up to 3 times
       local success="false"
-      for attempt in 1 2 3; do
+      for attempt in 1 2 3
+      do
         echo
         echo "Attempting download from primary URL (attempt ${attempt}/3)..."
         if run_verbose curl --insecure --fail --location --output "${XBB_DOWNLOAD_FOLDER_PATH}/${archive_name}.${rand}.download" "${url}"
@@ -145,7 +146,8 @@ function download()
         else
           echo
           echo "Download attempt ${attempt} failed"
-          if [ ${attempt} -lt 3 ]; then
+          if [ ${attempt} -lt 3 ]
+          then
             echo "Retrying in 5 seconds..."
             sleep 5
           fi
@@ -153,7 +155,8 @@ function download()
       done
 
       # If primary URL failed all attempts, try backup URL
-      if [ "${success}" == "false" ]; then
+      if [ "${success}" == "false" ]
+      then
         echo
         echo "All primary URL attempts failed, trying backup URL..."
         local backup_url="https://github.com/xpack-dev-tools/files-mirror/releases/download/binaries/$(basename ${url})"
