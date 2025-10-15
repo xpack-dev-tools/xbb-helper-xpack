@@ -40,7 +40,7 @@ function nettle_build()
   local nettle_src_folder_name="nettle-${nettle_version}"
 
   local nettle_archive="${nettle_src_folder_name}.tar.gz"
-  local nettle_url="ftp://ftp.gnu.org/gnu/nettle/${nettle_archive}"
+  local nettle_url="https://ftpmirror.gnu.org/gnu/nettle/${nettle_archive}"
 
   local nettle_folder_name="${nettle_src_folder_name}"
 

@@ -39,7 +39,7 @@ function libtasn1_build()
   local libtasn1_src_folder_name="libtasn1-${libtasn1_version}"
 
   local libtasn1_archive="${libtasn1_src_folder_name}.tar.gz"
-  local libtasn1_url="ftp://ftp.gnu.org/gnu/liblibtasn1/${libtasn1_archive}"
+  local libtasn1_url="https://ftpmirror.gnu.org/gnu/liblibtasn1/${libtasn1_archive}"
 
   local libtasn1_folder_name="${libtasn1_src_folder_name}"
 
