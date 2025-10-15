@@ -4,6 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-15
 
+* v4.3.9 released
+* 50a2e1e test-common.sh: comment out wine
+* 3f313e0 4.3.8
+* 526b955 prepare v4.3.8
 * v4.3.8 released
 * 25affe7 test-common.sh: fix install wine
 * 4972600 4.3.7
