@@ -14,7 +14,7 @@
 # -----------------------------------------------------------------------------
 
 # https://www.multiprecision.org/
-# ftp://ftp.gnu.org/gnu/mpc
+# https://ftpmirror.gnu.org/gnu/mpc
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/mpc/-/blob/main/PKGBUILD
 # https://archlinuxarm.org/packages/aarch64/mpc/files/PKGBUILD
@@ -42,7 +42,7 @@ function mpc_build()
   local mpc_src_folder_name="mpc-${mpc_version}"
 
   local mpc_archive="${mpc_src_folder_name}.tar.gz"
-  local mpc_url="ftp://ftp.gnu.org/gnu/mpc/${mpc_archive}"
+  local mpc_url="https://ftpmirror.gnu.org/gnu/mpc/${mpc_archive}"
   if [[ ${mpc_version} =~ 0[.].* ]]
   then
     mpc_url="https://www.multiprecision.org/downloads/${mpc_archive}"
