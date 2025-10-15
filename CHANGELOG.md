@@ -4,6 +4,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-15
 
+* v4.3.10 released
+* 68749d3 nettle.sh update mirror url
+* 5d742ef mpc.sh update mirror url
+* 456fc76 4.3.9
+* b8cabd3 prepare v4.3.9
 * v4.3.9 released
 * 50a2e1e test-common.sh: comment out wine
 * 3f313e0 4.3.8

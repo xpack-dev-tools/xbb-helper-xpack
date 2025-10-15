@@ -73,8 +73,8 @@ No need to add a tag here, it'll be added when the release is created.
 
 ### Increase the version
 
-Determine the next version (like `4.3.9`) and update the
-`package.json` file; the format is `4.3.9-pre`.
+Determine the next version (like `4.3.10`) and update the
+`package.json` file; the format is `4.3.10-pre`.
 
 ### Fix possible open issues
 
@@ -82,7 +82,7 @@ Check GitHub issues and pull requests:
 
 - <https://github.com/xpack-dev-tools/xbb-helper-xpack/issues/>
 
-and fix them; assign them to a milestone (like `4.3.9`).
+and fix them; assign them to a milestone (like `4.3.10`).
 
 ### Check `README.md`
 
@@ -97,14 +97,14 @@ but in the version specific release page.
 
 ### Update version in `package.json` to a pre-release
 
-Use the new version, suffixed by `pre`, like `4.3.9-pre`.
+Use the new version, suffixed by `pre`, like `4.3.10-pre`.
 
 ### Update `CHANGELOG.md`
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _* v4.3.9 released_
-- commit with a message like _prepare v4.3.9_
+- add a new entry like _* v4.3.10 released_
+- commit with a message like _prepare v4.3.10_
 
 ### Push changes
 
@@ -126,7 +126,7 @@ Use the new version, suffixed by `pre`, like `4.3.9-pre`.
 
 ### Check if the tag is published
 
-- https://github.com/xpack-dev-tools/xbb-helper-xpack/releases/tag/v4.3.9
+- https://github.com/xpack-dev-tools/xbb-helper-xpack/releases/tag/v4.3.10
 
 ### Update the repo
 
@@ -138,7 +138,7 @@ Use the new version, suffixed by `pre`, like `4.3.9-pre`.
 Update the version in `templates/common/_xpack-dev-tools/build-assets/package-merge-liquid.json`.
 
 ```json
-"@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v4.3.9"
+"@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v4.3.10"
 ```
 
 ### Update all xpacks references
@@ -146,5 +146,5 @@ Update the version in `templates/common/_xpack-dev-tools/build-assets/package-me
 Open the workspace with all packages, and update all references with
 
 ```json
-"@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v4.3.9"
+"@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v4.3.10"
 ```
