@@ -4,6 +4,10 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-15
 
+* v4.3.8 released
+* 25affe7 test-common.sh: fix install wine
+* 4972600 4.3.7
+* 57fd814 prepare v4.3.7
 * v4.3.7 released
 * fae6483 wrappers.sh: accept wine for wine64
 * 7b72a99 test-common.sh: install wine
