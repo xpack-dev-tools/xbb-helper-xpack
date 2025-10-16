@@ -4,6 +4,12 @@ Entries in this file are in reverse chronological order.
 
 ## 2025-10-16
 
+* v4.3.12 released
+* 433bdf5 test-common.sh add 3 retries
+* 5d5c9d2 download.sh format
+* e4d1f4c download.sh more echo
+* 222b32d 4.3.11
+* 2093cea prepare v4.3.11
 * v4.3.11 released
 * c8a1bd8 download.sh with 3 retries
 
