@@ -224,3 +224,12 @@ do
   ln -sf $f /Users/ilg/Work/xpack-dev-tools/$(basename $f)
 done
 ```
+
+## More
+
+More scripts are available in the `maintenance-scripts` of the
+`npm-packages-helper.git` and `docusaurus-template-liquid.git`,
+with their associated npm scripts or xpm actions.
+
+For details how to invoke them, see the
+[README-MAINTAINER.md](../README-MAINTAINER.md) file.

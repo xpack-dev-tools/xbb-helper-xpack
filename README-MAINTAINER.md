@@ -148,3 +148,25 @@ Open the workspace with all packages, and update all references with
 ```json
 "@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v4.3.12"
 ```
+
+### Update top commons
+
+Support is provided by the `xpacks/npm-packages-helper.git` project.
+
+To run for all projects, remove the stamps in the `/xpack-dev-tools.github/stamps/projects-generate-commons-and-build` folder.
+
+Run the following xpm actions:
+
+- `xpack-dev-tools-generate-top-commons`
+- `xpack-dev-tools-commit-and-push-top-commons`
+
+### Update website commons
+
+Support is provided by the `xpacks/docusaurus-template-liquid.git` project.
+
+To run for all projects, remove the stamps in the `/xpack-dev-tools.github/stamps/websites-generate-commons-and-build` folder.
+
+Run the following xpm actions:
+
+- `xpack-dev-tools-generate-websites-commons-and-build`
+- `xpack-dev-tools-commit-and-push-websites`
