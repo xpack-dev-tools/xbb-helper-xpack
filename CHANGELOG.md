@@ -2,8 +2,16 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-19
+
+* dd5441d READMEs updates
+
 ## 2025-10-16
 
+* ee261c2 4.3.12
+* 39a116c prepare v4.3.12
+* ee261c2 4.3.12
+* 39a116c prepare v4.3.12
 * v4.3.12 released
 * 433bdf5 test-common.sh add 3 retries
 * 5d5c9d2 download.sh format
