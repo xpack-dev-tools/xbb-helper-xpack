@@ -367,7 +367,8 @@ function gcc_mingw_build_first()
           config_options+=("--enable-lto") # Arch
           config_options+=("--enable-pie-tools")
 
-          if [ ${mingw_gcc_version_major} -ge 13 ]
+          # Revert to posix threads, gdb 16+ fails with win32 threads.
+          if false # [ ${mingw_gcc_version_major} -ge 13 ]
           then
             # https://github.com/gcc-mirror/gcc/commit/9149a5b7e0a66b7b94d5b7db3194a975d18dea2f
             config_options+=("--enable-threads=win32")

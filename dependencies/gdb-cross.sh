@@ -17,6 +17,9 @@
 # https://gitlab.archlinux.org/archlinux/packaging/packages/aarch64-linux-gnu-gdb/-/blob/main/PKGBUILD
 # https://gitlab.archlinux.org/archlinux/packaging/packages/riscv32-elf-gdb/-/blob/main/PKGBUILD
 
+# Starting with 16.3, the Windows build requires `Thread model: posix``.
+# https://github.com/msys2/MINGW-packages/blob/master/mingw-w64-gdb/PKGBUILD
+
 # -----------------------------------------------------------------------------
 
 function gdb_cross_build_dependencies()
