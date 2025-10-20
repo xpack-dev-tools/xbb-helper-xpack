@@ -2,8 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-20
+
+* v4.3.13 released
+* 46d085f revert to posix threads, gdb 16+ fails with win32 threads.
+* 61ca42f add gdb-16.3-cross.git.patch
+
 ## 2025-10-19
 
+* e99d5cc CHANGELOG update
 * dd5441d READMEs updates
 
 ## 2025-10-16
