@@ -1059,6 +1059,7 @@ function test_compiler_c_cpp()
   (
     set -o errexit # Exit on error
     set -o pipefail # Exit if pipe command fails
+    set -x
 
     # Note: __EOF__ is quoted to prevent substitutions here.
     cat <<'__EOF__' > hello.c
