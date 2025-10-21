@@ -246,6 +246,8 @@ function python3_build()
             "python${XBB_PYTHON3_VERSION_MAJOR}"
         )
 
+        "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/python${XBB_PYTHON3_VERSION_MAJOR}" -m ensurepip --upgrade
+
         # Hundreds of tests, take a lot of time.
         # Many failures.
         if false # [ "${XBB_WITH_TESTS}" == "y" ]
