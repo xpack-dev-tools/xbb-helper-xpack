@@ -2,8 +2,15 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-21
+
+* v4.3.14 released
+* 2bc0c94 add -std=gnu17 to gpm, libiconv, ncurses
+
 ## 2025-10-20
 
+* f38262a 4.3.13
+* 2cde75c prepare v4.3.13
 * v4.3.13 released
 * 46d085f revert to posix threads, gdb 16+ fails with win32 threads.
 * 61ca42f add gdb-16.3-cross.git.patch
