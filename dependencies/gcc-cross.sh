@@ -1057,6 +1057,9 @@ function test_compiler_c_cpp()
   echo_develop "LDFLAGS=${LDFLAGS}"
 
   (
+    set -o errexit # Exit on error
+    set -o pipefail # Exit if pipe command fails
+
     # Note: __EOF__ is quoted to prevent substitutions here.
     cat <<'__EOF__' > hello.c
 #include <stdio.h>
