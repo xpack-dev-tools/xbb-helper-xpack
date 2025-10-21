@@ -100,7 +100,7 @@ function libiconv_build()
       CPPFLAGS="${XBB_CPPFLAGS}"
       # -fgnu89-inline fixes "undefined reference to `aliases2_lookup'"
       #  https://savannah.gnu.org/bugs/?47953
-      CFLAGS="${XBB_CFLAGS_NO_W} -fgnu89-inline ${bits_flags}"
+      CFLAGS="${XBB_CFLAGS_NO_W} -fgnu89-inline -std=gnu17 ${bits_flags}"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W} ${bits_flags}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB} ${bits_flags}"

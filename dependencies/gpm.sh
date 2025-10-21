@@ -85,7 +85,7 @@ function gpm_build()
       xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS} -I${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/${gpm_folder_name}/src/headers"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CFLAGS="${XBB_CFLAGS_NO_W} -std=gnu17"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
