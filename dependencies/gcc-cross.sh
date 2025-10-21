@@ -1018,10 +1018,22 @@ function gcc_cross_test()
 
       if [ "${XBB_APPLICATION_WITHOUT_MULTILIB:-""}" != "y" ]
       then
-        export CFLAGS="-march=rv32imac_zicsr -mabi=ilp32 -mcmodel=medany -msmall-data-limit=8"
+        export CFLAGS="-march=rv32e -mabi=ilp32e -mcmodel=medany -msmall-data-limit=8"
         test_compiler_c_cpp
 
-        export CFLAGS="-march=rv64imac -mabi=lp64 -mcmodel=medany -msmall-data-limit=8"
+        export CFLAGS="-march=rv32emac_zicsr_zifencei_zba_zbb_zbc_zbs -mabi=ilp32e -mcmodel=medany -msmall-data-limit=8"
+        test_compiler_c_cpp
+
+        export CFLAGS="-march=rv32i -mabi=ilp32 -mcmodel=medany -msmall-data-limit=8"
+        test_compiler_c_cpp
+
+        export CFLAGS="-march=rv32imac_zicsr_zifencei_zba_zbb_zbc_zbs -mabi=ilp32 -mcmodel=medany -msmall-data-limit=8"
+        test_compiler_c_cpp
+
+        export CFLAGS="-march=rv64i -mabi=lp64 -mcmodel=medany -msmall-data-limit=8"
+        test_compiler_c_cpp
+
+        export CFLAGS="-march=rv64imafdc_zicsr_zifencei_zba_zbb_zbc_zbs -mabi=lp64d -mcmodel=medany -msmall-data-limit=8"
         test_compiler_c_cpp
       else
         test_compiler_c_cpp
