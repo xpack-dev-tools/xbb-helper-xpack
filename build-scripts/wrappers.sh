@@ -46,7 +46,8 @@ function run_verbose_nocr()
 
   echo
   echo "[${app_path} $@]"
-  local output="$("${app_path}" "$@" 2>&1)"
+  local output
+  output="$("${app_path}" "$@" 2>&1)"
   local exit_code=$?
   echo "${output}" | tr -d '\r'
   return ${exit_code}
