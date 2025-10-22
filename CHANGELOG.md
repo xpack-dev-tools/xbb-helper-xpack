@@ -2,8 +2,22 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-22
+
+* v4.3.15 released
+* bcd6fe0 gdb-cross.sh skip gdb test or darwin arm64
+* d4102ae gcc-cross.sh: fix riscv tests
+* 95c1b79 gcc-cross.sh remove set -x
+* b262092 python3.sh  -m ensurepip --upgrade
+* 0307ae0 wrappers.sh fix run_verbose_nocr()
+
 ## 2025-10-21
 
+* 2996205 gcc-cross.sh temporairly add set -x
+* 5b88e88 gcc-cross.sh try to break tests on errors
+* 1c95026 gcc-cross.sh: add more risc-v tests
+* b81ec33 4.3.14
+* e295b73 prepare v4.3.14
 * v4.3.14 released
 * 2bc0c94 add -std=gnu17 to gpm, libiconv, ncurses
 
