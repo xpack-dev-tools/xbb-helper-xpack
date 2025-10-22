@@ -106,7 +106,7 @@ function gdb_cross_build_dependencies()
 # XBB_GDB_ARCHIVE_NAME
 # XBB_GDB_PATCH_FILE_NAME
 
-# Called multile times, with and without python support.
+# Called multiple times, with and without python support.
 # $1="" or $1="-py" or $1="-py3"
 function gdb_cross_build()
 {
@@ -444,17 +444,6 @@ function gdb_cross_test()
     run_host_app_verbose "${GDB}" --version
     run_host_app_verbose "${GDB}" --config
 
-    # This command is known to fail with 'Abort trap: 6' (SIGABRT)
-    # Early turn off pagination to avoid:
-    # "Type <return> to continue, or q <return> to quit"
-    run_host_app_verbose "${GDB}" \
-      -eiex 'set pagination off' \
-      --nx \
-      --nw \
-      --batch \
-      -ex 'show language' \
-      -ex 'set language auto' \
-
     if [ -f "${XBB_TESTS_FOLDER_PATH}/${triplet}-gcc/hello-cpp.elf" ]
     then
       # Test if GDB is built with correct ELF support.
@@ -469,17 +458,44 @@ function gdb_cross_test()
 
     fi
 
-    if [ "${name_suffix}" == "-py3" ]
+    local gdb_version="$(${GDB} --version | head -n 1 | sed -e 's|.* ||')"
+
+    if [ "${XBB_HOST_PLATFORM}" == "darwin" ] &&
+       [ "${XBB_HOST_ARCH}" == "arm64" ] &&
+       [ "${triplet}" == "riscv-none-elf" ]
     then
-      # Show Python paths.
+      # libc++abi: terminating due to uncaught exception of type gdb_exception_error
+      # Fatal signal: Abort trap: 6
+      # It does happen with both GDB 15 & 16; it does not happen when
+      # compiled with system clang, so it might be a toolchain issue.
+      # TODO: further investigate.
+      :
+    else
+
+      # Early turn off pagination to avoid:
+      # "Type <return> to continue, or q <return> to quit"
       run_host_app_verbose "${GDB}" \
-        -eiex='set pagination off' \
+        -eiex 'set pagination off' \
         --nx \
         --nw \
         --batch \
-        -ex 'set pagination off' \
-        -ex 'python import sys; print(sys.prefix)' \
-        -ex 'python import sys; import os; print(os.pathsep.join(sys.path))' \
+        -ex 'show language' \
+        -ex 'set language auto' \
+
+
+      if [ "${name_suffix}" == "-py3" ]
+      then
+        # Show Python paths.
+        run_host_app_verbose "${GDB}" \
+          -eiex='set pagination off' \
+          --nx \
+          --nw \
+          --batch \
+          -ex 'set pagination off' \
+          -ex 'python import sys; print(sys.prefix)' \
+          -ex 'python import sys; import os; print(os.pathsep.join(sys.path))' \
+
+      fi
 
     fi
   )
