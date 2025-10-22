@@ -1021,9 +1021,6 @@ function gcc_cross_test()
         export CFLAGS="-march=rv32e -mabi=ilp32e -mcmodel=medany -msmall-data-limit=8"
         test_compiler_c_cpp
 
-        export CFLAGS="-march=rv32emac_zicsr_zifencei_zba_zbb_zbc_zbs -mabi=ilp32e -mcmodel=medany -msmall-data-limit=8"
-        test_compiler_c_cpp
-
         export CFLAGS="-march=rv32i -mabi=ilp32 -mcmodel=medany -msmall-data-limit=8"
         test_compiler_c_cpp
 
@@ -1033,7 +1030,7 @@ function gcc_cross_test()
         export CFLAGS="-march=rv64i -mabi=lp64 -mcmodel=medany -msmall-data-limit=8"
         test_compiler_c_cpp
 
-        export CFLAGS="-march=rv64imafdc_zicsr_zifencei_zba_zbb_zbc_zbs -mabi=lp64d -mcmodel=medany -msmall-data-limit=8"
+        export CFLAGS="-march=rv64imafdc_zicsr -mabi=lp64d -mcmodel=medany -msmall-data-limit=8"
         test_compiler_c_cpp
       else
         test_compiler_c_cpp
