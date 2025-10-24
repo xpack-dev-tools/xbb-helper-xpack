@@ -55,6 +55,24 @@ On Linux:
 bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --check-space
 ```
 
+If necessary, remove all build folders:
+
+```sh
+rm -rf ~/Work/xpack-dev-tools/*/build-assets/build
+```
+
+On `wksi` use:
+
+```sh
+rm -rf ~/Work/xpack-dev-tools-build
+```
+
+If necessary, remove the cached files:
+
+```sh
+rm -rf ~/Work/cache
+```
+
 ## Clone all
 
 To get all projects:
