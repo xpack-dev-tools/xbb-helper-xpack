@@ -108,6 +108,8 @@ platforms="$(liquidjs --context @${build_assets_folder_path}/package.json --temp
 
 if [ "${platforms}" == "all" ]
 then
+  echo "all no longer accepted for platforms"
+  exit 1
   platforms="win32-x64,darwin-x64,darwin-arm64,linux-x64,linux-arm64"
 fi
 
