@@ -14,7 +14,9 @@ git clone \
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 ```
 
-To get the helpers:
+The helpers are automatically cloned by `--clone`.
+
+To clone them manually, use:
 
 ```sh
 rm -rf ~/Work/xpack/npm-packages-helper.git && \
@@ -91,6 +93,11 @@ To remove all time stamps and restart all builds:
 
 ```sh
 bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --restart
+```
+
+or, for the Windows build on GNU/Linux:
+
+```sh
 bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --windows --restart
 ```
 
@@ -110,7 +117,11 @@ To run all possible builds on the given platform from scratch:
 
 ```sh
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean
+```
 
+or, on macOS:
+
+```sh
 time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean
 ```
 
@@ -120,8 +131,18 @@ On Linux, to build the Windows binaries:
 
 ```sh
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --windows --deep-clean
+```
 
-time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --windows --deep-clean
+or, for the Windows build on GNU/Linux:
+
+```sh
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --windows --deep-clean
+```
+
+On macOS, use:
+
+```sh
+time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean
 ```
 
 DO NOT RUN IT IN PARALLEL! `deep-clean` removes the entire build folder.
