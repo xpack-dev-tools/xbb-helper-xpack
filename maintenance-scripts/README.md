@@ -204,10 +204,11 @@ removed.
 df -BG -H /
 
 rm -rf ~/Work/xpack-dev-tools/*/build-assets/build
+rm -rf ~/Work/cache
 sudo rm -rf ~/actions-runners/xpack-dev-tools/*/_work
 sudo rm -rf ~/actions-runners/xpack-dev-tools/_work
 
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean --exclude clang
 ```
 
 ### wksi
