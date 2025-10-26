@@ -69,7 +69,7 @@ function vde_build()
       #       _fstprintactive in fstp.o
 
       CPPFLAGS="$(echo "${XBB_CPPFLAGS}" | sed -e 's|-O0|-O2|')"
-      CFLAGS="$(echo "${XBB_CFLAGS_NO_W}" | sed -e 's|-O0|-O2|')"
+      CFLAGS="$(echo "${XBB_CFLAGS_NO_W}" | sed -e 's|-O0|-O2|') -std=gnu17"
       CXXFLAGS="$(echo "${XBB_CXXFLAGS_NO_W}" | sed -e 's|-O0|-O2|')"
 
       # 2.3.2

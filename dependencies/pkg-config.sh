@@ -70,7 +70,7 @@ function pkg_config_build()
       #     (gssize) __sync_fetch_and_add ((atomic), (val));                         \
       #                                              ^~~~~
 
-      CFLAGS="${XBB_CFLAGS_NO_W} -Wno-int-conversion"
+      CFLAGS="${XBB_CFLAGS_NO_W} -Wno-int-conversion -std=gnu17"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
