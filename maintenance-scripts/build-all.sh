@@ -331,7 +331,7 @@ then
   exit 0
 elif [ "${do_restart}" == "y" ]
 then
-  rm -rf "${stamps_folder_path}"
+  run_verbose rm -rf "${stamps_folder_path}"
 
   echo "'${script_name} ${argv}' done"
 
@@ -394,6 +394,7 @@ do
 
       if [ "${do_deep_clean}" == "y" ]
       then
+        run_verbose xpm run install -C build-assets
         run_verbose xpm run deep-clean -C build-assets
       fi
 
