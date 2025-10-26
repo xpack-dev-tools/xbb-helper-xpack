@@ -205,12 +205,13 @@ function icu4c_test()
     echo "Testing if icu4c binaries start properly..."
 
     # cd "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/lib/"
-    run_host_app_verbose "${test_bin_folder_path}/gendict" -trietype --version
-    run_host_app_verbose "${test_bin_folder_path}/genrb" --version
+    run_host_app_verbose "${test_bin_folder_path}/gendict" --help
+    # The tools do not return 0 on --help or --version.
+    # run_host_app_verbose "${test_bin_folder_path}/genrb" --help
     # run_host_app_verbose "${test_bin_folder_path}/genbrk" --version
     # run_host_app_verbose "${test_bin_folder_path}/gencfu" --version
     # run_host_app_verbose "${test_bin_folder_path}/gencnval" --version
     run_host_app_verbose "${test_bin_folder_path}/icuinfo"
-    run_host_app_verbose "${test_bin_folder_path}/pkgdata" --help
+    # run_host_app_verbose "${test_bin_folder_path}/pkgdata" --help
   )
 }
