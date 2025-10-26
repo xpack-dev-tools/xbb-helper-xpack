@@ -87,7 +87,7 @@ To update top commons:
 time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --update-top
 ```
 
-To restart all builds:
+To remove all time stamps and restart all builds:
 
 ```sh
 bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --restart
@@ -110,6 +110,7 @@ To run all possible builds on the given platform from scratch:
 
 ```sh
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean
+
 time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean
 ```
 
@@ -119,6 +120,7 @@ On Linux, to build the Windows binaries:
 
 ```sh
 time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --windows --deep-clean
+
 time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --windows --deep-clean
 ```
 
