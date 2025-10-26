@@ -307,7 +307,7 @@ function binutils_build()
       xbb_activate_dependencies_dev "${libraries_path}"
 
       CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CFLAGS="${XBB_CFLAGS_NO_W} -std=gnu17"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
