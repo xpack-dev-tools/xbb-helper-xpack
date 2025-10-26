@@ -44,13 +44,17 @@ function run_verbose_nocr()
   local app_path="$1"
   shift
 
-  echo
-  echo "[${app_path} $@]"
-  local output
-  output="$("${app_path}" "$@" 2>&1)"
-  local exit_code=$?
-  echo "${output}" | tr -d '\r'
-  return ${exit_code}
+  (
+    set +o errexit # Do not exit if command fails
+
+    echo
+    echo "[${app_path} $@]"
+    local output
+    output="$("${app_path}" "$@" 2>&1)"
+    local exit_code=$?
+    echo "${output}" | tr -d '\r'
+    return ${exit_code}
+  )
 }
 
 function run_verbose_develop()
@@ -338,6 +342,7 @@ function _run_app_exit()
 
   (
     set +o errexit # Do not exit if command fails
+    
     echo
     echo "${app_path} $@"
     "${app_path}" "$@" 2>&1
