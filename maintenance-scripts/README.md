@@ -125,7 +125,7 @@ or, on macOS:
 time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean
 ```
 
-To only see the build command without running it, use `--dry-run`.
+To only see the build commands without running them, use `--dry-run`.
 
 On Linux, to build the Windows binaries:
 
@@ -150,7 +150,7 @@ DO NOT RUN IT IN PARALLEL! `deep-clean` removes the entire build folder.
 The full builds may take about half a day to complete (even more on a Raspberry Pi 5):
 
 - `wksi`: 764m (12h44)
-- `xbbmi`: 453m (7h33]
+- `xbbmi`: 453m (7h33)
 - `xbbma`: 239n (3h59)
 - `xbbli` linux: 308m (5h08)
 - `xbbli` windows: 222m (3h42)
