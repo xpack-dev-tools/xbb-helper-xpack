@@ -166,7 +166,7 @@ function gdb_cross_build()
 
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W} -std=gnu17"
-      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W} -std=gnu++17"
 
       LDFLAGS="${XBB_LDFLAGS_APP}"
 
