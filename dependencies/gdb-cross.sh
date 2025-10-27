@@ -461,8 +461,7 @@ function gdb_cross_test()
     local gdb_version="$(${GDB} --version | head -n 1 | sed -e 's|.* ||')"
 
     if [ "${XBB_HOST_PLATFORM}" == "darwin" ] &&
-       [ "${XBB_HOST_ARCH}" == "arm64" ] &&
-       [ "${triplet}" == "riscv-none-elf" ]
+       [ "${XBB_HOST_ARCH}" == "arm64" ]
     then
       # libc++abi: terminating due to uncaught exception of type gdb_exception_error
       # Fatal signal: Abort trap: 6
