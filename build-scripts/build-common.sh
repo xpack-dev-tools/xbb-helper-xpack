@@ -40,6 +40,7 @@ function build_common_parse_options()
   XBB_WITH_STRIP="y"
   XBB_WITH_PDF="n"
   XBB_WITH_HTML="n"
+  XBB_IMAGE_NAME=""
 
   if [ "${XBB_ENVIRONMENT_SKIP_CHECKS:-""}" == "y" ]
   then
@@ -58,6 +59,10 @@ function build_common_parse_options()
   if [ "${uname}" == "Linux" ]
   then
     XBB_JOBS="$(nproc)"
+    if [ -f "/.dockerenv" ]
+    then
+      XBB_IMAGE_NAME="ilegeul/debian-xbb"
+    fi
   elif [ "${uname}" == "Darwin" ]
   then
     XBB_JOBS="$(sysctl hw.ncpu | sed 's/hw.ncpu: //')"
@@ -164,6 +169,7 @@ function build_common_parse_options()
   export XBB_WITH_TESTS
   export XBB_WITHOUT_MULTILIB
   export XBB_TEST_ONLY
+  export XBB_IMAGE_NAME
 
   export XBB_REQUEST_TARGET_BE_WINDOWS
   export XBB_REQUESTED_BUILD_RELATIVE_FOLDER
