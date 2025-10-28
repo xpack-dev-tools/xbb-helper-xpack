@@ -147,15 +147,17 @@ time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenanc
 
 DO NOT RUN IT IN PARALLEL! `deep-clean` removes the entire build folder.
 
-The full builds may take about half a day to complete (even more on a Raspberry Pi 5):
+The full builds take almost 14 hours to complete (almost 17 hours on a Raspberry Pi 5):
 
-- `wksi`: 764m (12h44)
-- `xbbmi`: 453m (7h33)
-- `xbbma`: 239n (3h59)
-- `xbbli` linux: 308m (5h08)
-- `xbbli` windows: 222m (3h42)
-- `ampere`: 670m (11h10)
-- `berry5`: 17h20
+[2025-10-28]
+
+- `wksi`: 822m (13h42m)
+- `xbbmi`: 496m (8h16m)
+- `xbbma`: 265m (4h25m)
+- `xbbli` linux: 332m (5h32m)
+- `xbbli` windows: 405m (6h45m)
+- `ampere`: 763m (12h43m)
+- `berry5`: 999m (16h39m)
 
 To show the repos status:
 
