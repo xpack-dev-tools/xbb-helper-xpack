@@ -1140,7 +1140,7 @@ function test_win32()
       fi
 
       # autoimport-main.
-      # [wine64 ./lto-autoimport-main.exe]
+      # [wine ./lto-autoimport-main.exe]
       # Mingw-w64 runtime failure:
       # 32 bit pseudo relocation at 000000014000152A out of range, targeting 000000028846135C, yielding the value 000000014845FE2E.
       export XBB_IGNORE_TEST_LTO_AUTOIMPORT_MAIN="y"
@@ -1176,7 +1176,7 @@ function test_win32()
       export XBB_IGNORE_TEST_GC_LTO_OVERLOAD_NEW_CPP="y"
 
       # throwcatch-main.
-      # [wine64 ./lto-throwcatch-main.exe]
+      # [wine ./lto-throwcatch-main.exe]
       # wine: Unhandled page fault on execute access to 0000000122B1157C at address 0000000122B1157C (thread 03d8), starting debugger...
       # Unhandled exception: page fault on execute access to 0x0000000122b1157c in 64-bit code (0x00000122b1157c).
       export XBB_IGNORE_TEST_LTO_THROWCATCH_MAIN="y"
