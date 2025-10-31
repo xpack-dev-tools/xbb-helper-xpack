@@ -370,6 +370,8 @@ do
 
     if [ -d "${WORK}/${name}-xpack.git" ]
     then
+      run_verbose rm -rf ${WORK}/${name}-xpack.git/package-lock.json
+      run_verbose rm -rf ${WORK}/${name}-xpack.git/build-assets/package-lock.json
       run_verbose git -C ${WORK}/${name}-xpack.git pull
     else
       run_verbose git clone \
