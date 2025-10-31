@@ -2,6 +2,46 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-10-31
+
+* v5.0.0 released
+* cd7755ce update wrappers to use plain wine
+
+## 2025-10-28
+
+* 27380f0b README update durations
+
+## 2025-10-27
+
+* 86c90a39 README update
+* 57f0bcfa gdb-cross.sh skip test for all platforms on darwin arm64
+* 26e87ef2 build-common.sh: define XBB_IMAGE_NAME
+* 337d3f8d add gdb-clang20.md issue
+* cb3fef89 gdb*.sh add -std=gnu++17
+
+## 2025-10-26
+
+* 251af761 gdb-cross.sh -std=gnu17
+* ac366125 README update
+* 9120ecff README update
+* a7ff6b1b add more -std=gnu17
+* e2d12e48 add more -std=gnu17
+* 54860bd3 icu4c.sh: use --help, not --verbose
+* 8dfa8169 build-all.sh add xpm run install
+* 9db9f1ea wrappers.sh allow run_verbose_nocr to show output
+* fcb5d723 README update
+
+## 2025-10-24
+
+* a9f996c4 no longer accept "all" for platforms
+* c757f2c0 maintenance-scripts README update
+
+## 2025-10-23
+
+* 81b77f5c gcc-cross.sh rv64imafdc_zicsr_zifencei...
+* bd3c7685 4.3.15
+* bf6f1111 prepare v4.3.15
+
 ## 2025-10-22
 
 * v4.3.15 released
