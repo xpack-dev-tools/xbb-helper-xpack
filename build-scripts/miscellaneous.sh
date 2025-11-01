@@ -334,4 +334,66 @@ function which_realpath()
   # On Windows, 'which' complains about the missing file; silence it.
   which grealpath 2>/dev/null || which realpath 2>/dev/null || echo pyrealpath
 }
+
+# -----------------------------------------------------------------------------
+
+# For non-static Windows binaries it is necessary to define the path
+# to the libstdc++-6.dll so that wine can find it.
+# It must be called before any test that uses wine.
+#
+# if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+# then
+#   set_win32_toolchain_library_path
+# fi
+
+function set_win32_toolchain_library_path()
+{
+  if [ "${XBB_BUILD_PLATFORM}" == "win32" ]
+  then
+    libstdcpp_file_path=$(${CXX} -print-file-name=libstdc++.a)
+    if [ "${libstdcpp_file_path}" == "libstdc++.a" ]
+    then
+      echo "Cannot get libstdc++.a path"
+      exit 1
+    fi
+    cxx_lib_path=$(dirname $(echo "${libstdcpp_file_path}" | sed -e 's|:||' | sed -e 's|^|/|'))
+    if [ -f "${cxx_lib_path}/libstdc++-6.dll" ]
+    then
+      export PATH="${cxx_lib_path}:${PATH:-}"
+    elif [ -f "${cxx_lib_path}/../bin/libstdc++-6.dll" ]
+    then
+      export PATH="$(${REALPATH} ${cxx_lib_path}/../bin);${PATH:-}"
+    else
+      echo "Cannot locate libstdc++-6.dll"
+      exit 1
+    fi
+    echo "PATH=${PATH}"
+  elif [ "${XBB_BUILD_PLATFORM}" == "linux" ]
+  then
+    local libstdcpp_file_path=$(run_host_app ${CXX} -print-file-name=libstdc++.a)
+    if [ "${libstdcpp_file_path}" == "libstdc++.a" ]
+    then
+      echo "Cannot get libstdc++.a path"
+      exit 1
+    fi
+
+    local cxx_lib_path=$(dirname $(echo ${libstdcpp_file_path} | sed -e 's|[a-zA-Z]:||' ))
+    if [ -f "${cxx_lib_path}/libstdc++-6.dll" ]
+    then
+      export WINEPATH="$(${REALPATH} ${cxx_lib_path});${WINEPATH:-}"
+    elif [ -f "${cxx_lib_path}/../bin/libstdc++-6.dll" ]
+    then
+      export WINEPATH="$(${REALPATH} ${cxx_lib_path}/../bin);${WINEPATH:-}"
+    else
+      echo "Cannot locate libstdc++-6.dll"
+      exit 1
+    fi
+    echo "WINEPATH=${WINEPATH}"
+  else
+    # wine is not available on darwin.
+    echo "Unsupported ${XBB_BUILD_PLATFORM} in ${FUNCNAME[0]}()"
+    exit 1
+  fi
+}
+
 # -----------------------------------------------------------------------------
