@@ -1,11 +1,13 @@
 {
   "name": "@xpack-dev-tools/xbb-helper",
-  "version": "5.0.0",
+  "version": "5.1.0-pre",
   "description": "A source xpm package with scripts and other files to support XBB builds",
   "main": "",
   "scripts": {
     "npm-install": "npm install",
+    "npm-outdated": "npm outdated",
     "npm-pack": "npm pack",
+    "npm-link": "npm link",
     "npm-version-patch": "npm version patch",
     "npm-version-minor": "npm version minor",
     "git-log": "git log --pretty='%cd * %h %s' --date=short",
@@ -33,8 +35,7 @@
   "config": {},
   "dependencies": {},
   "devDependencies": {
-    "json": "^11.0.0",
-    "typescript": "~5.2.2"
+    "json": "^11.0.0"
   },
   "xpack": {
     "minimumXpmRequired": "0.20.5"

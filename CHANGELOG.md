@@ -2,8 +2,21 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2025-11-01
+
+* v5.1.0 released
+* 2ade5f0 wrappers.sh use wine64 only
+* 49049c3 cosmetics
+* f93b134 icu4c.sh set_win32_toolchain_library_path
+* de2391f nettle & termcap -std=gnu17
+* 737d084 miscellaneous.sh add set_win32_toolchain_library_path
+* ecc9c98 build-tests.sh local WINEPREFIX
+
 ## 2025-10-31
 
+* 111b52a build-all.sh: remove package-lock.json before build
+* 323d8c8 5.0.0
+* f356059 prepare v5.0.0
 * v5.0.0 released
 * cd7755ce update wrappers to use plain wine
 
