@@ -2565,9 +2565,9 @@ function p7zip_test()
     echo
     echo "Checking the 7za shared libraries..."
 
-      show_host_libs "${test_bin_folder_path}/7z"
-      show_host_libs "${test_bin_folder_path}/7za"
-      show_host_libs "${test_bin_folder_path}/7zr"
+    show_host_libs "${test_bin_folder_path}/7z"
+    show_host_libs "${test_bin_folder_path}/7za"
+    show_host_libs "${test_bin_folder_path}/7zr"
 
     echo
     echo "Testing if 7za binaries start properly..."
