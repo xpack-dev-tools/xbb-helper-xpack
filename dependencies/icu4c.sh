@@ -201,6 +201,11 @@ function icu4c_test()
   )
 
   (
+    if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
+    then
+      set_win32_toolchain_library_path
+    fi
+
     echo
     echo "Testing if icu4c binaries start properly..."
 
