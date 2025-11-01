@@ -240,6 +240,7 @@ function tests_prime_wine()
 {
   if [ "${XBB_REQUESTED_TARGET_PLATFORM}" == "win32" ]
   then
+    export WINEPREFIX="${XBB_TESTS_FOLDER_PATH}/.wine"
     (
       echo
       echo "Priming wine..."
@@ -247,7 +248,7 @@ function tests_prime_wine()
       # When running in Docker with the home mounted, wine throws:
       # wine: '/github/home' is not owned by you, refusing to create a configuration directory there
       # To avoid it, create the .wine folder beforehand.
-      run_verbose mkdir -pv "${HOME}/.wine"
+      run_verbose mkdir -pv "${WINEPREFIX}"
       run_verbose winecfg
       sleep 1 # Give it time to complete.
       echo "Wine primed..."
