@@ -63,7 +63,7 @@ function termcap_build()
       xbb_activate_dependencies_dev
 
       CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CFLAGS="${XBB_CFLAGS_NO_W} -std=gnu17"
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
@@ -112,7 +112,8 @@ function termcap_build()
         echo "Running termcap make..."
 
         # Build.
-        run_verbose make -j ${XBB_JOBS}
+        run_verbose make -j ${XBB_JOBS} \
+          CFLAGS="${CFLAGS}"
 
         if [ "${XBB_WITH_TESTS}" == "y" ]
         then
