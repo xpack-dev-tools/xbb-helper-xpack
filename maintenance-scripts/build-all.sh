@@ -396,12 +396,14 @@ do
 
       if [ "${do_deep_clean}" == "y" ]
       then
-        run_verbose xpm run install -C build-assets
+        run_verbose npm --prefix build-assets install
+        run_verbose xpm install -C build-assets
         run_verbose xpm run deep-clean -C build-assets
       fi
 
       run_verbose npm install
-      run_verbose xpm run install -C build-assets
+      run_verbose npm --prefix build-assets install
+      run_verbose xpm install -C build-assets
       run_verbose xpm run link-deps -C build-assets
 
       export XBB_ENVIRONMENT_SKIP_CHECKS="y"
