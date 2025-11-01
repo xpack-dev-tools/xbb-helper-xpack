@@ -276,7 +276,7 @@ then
   https://github.com/xpack/npm-packages-helper.git \
   ~/Work/xpack/npm-packages-helper.git
 
-  (cd ~/Work/xpack/npm-packages-helper.git; run_verbose npm link --verbose)
+  run_verbose npm --prefix ~/Work/xpack/npm-packages-helper.git link --verbose
 
   rm -rf ~/Work/xpack/docusaurus-template-liquid.git && \
   mkdir -p ~/Work/xpack && \
@@ -284,7 +284,7 @@ then
   https://github.com/xpack/docusaurus-template-liquid.git \
   ~/Work/xpack/docusaurus-template-liquid.git
 
-  (cd ~/Work/xpack/docusaurus-template-liquid.git; run_verbose npm link --verbose)
+  run_verbose npm --prefix ~/Work/xpack/docusaurus-template-liquid.git link --verbose
 
   # Preload clean repos.
   for name in ${names[@]}

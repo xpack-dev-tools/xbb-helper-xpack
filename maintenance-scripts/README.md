@@ -11,6 +11,7 @@ git clone \
   --branch xpack-development \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
   ~/Work/xpack-dev-tools/xbb-helper-xpack.git
+
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 ```
 
@@ -25,7 +26,7 @@ git clone \
 https://github.com/xpack/npm-packages-helper.git \
 ~/Work/xpack/npm-packages-helper.git
 
-(cd ~/Work/xpack/npm-packages-helper.git; npm link --verbose)
+npm --prefix ~/Work/xpack/npm-packages-helper.git link --verbose
 ```
 
 ```sh
@@ -35,7 +36,7 @@ git clone \
 https://github.com/xpack/docusaurus-template-liquid.git \
 ~/Work/xpack/docusaurus-template-liquid.git
 
-(cd ~/Work/xpack/docusaurus-template-liquid.git; npm link --verbose)
+npm --prefix ~/Work/xpack/docusaurus-template-liquid.git link --verbose
 ```
 
 To update already cloned projects:
