@@ -135,12 +135,7 @@ function run_target_app_verbose()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        (
-          unset DISPLAY
-          export WINEDEBUG=-all
-          # run_verbose wine64 "${app_path}" "$@" | tr -d '\r'
-          run_verbose_nocr wine64 "${app_path}" "$@"
-        )
+        run_verbose_nocr wine64 "${app_path}" "$@"
       else
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
@@ -150,12 +145,7 @@ function run_target_app_verbose()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        (
-          unset DISPLAY
-          export WINEDEBUG=-all
-          # run_verbose wine64 "${app_path}.exe" "$@" | tr -d '\r'
-          run_verbose_nocr wine64 "${app_path}.exe" "$@"
-        )
+        run_verbose_nocr wine64 "${app_path}.exe" "$@"
       else
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
@@ -165,12 +155,7 @@ function run_target_app_verbose()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        (
-          unset DISPLAY
-          export WINEDEBUG=-all
-          # run_verbose wine64 "${app_path}" "$@" | tr -d '\r'
-          run_verbose_nocr wine64 "${app_path}" "$@"
-        )
+        run_verbose_nocr wine64 "${app_path}" "$@"
       else
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
@@ -180,12 +165,7 @@ function run_target_app_verbose()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        (
-          unset DISPLAY
-          export WINEDEBUG=-all
-          # run_verbose wine64 "${app_path}.exe" "$@" | tr -d '\r'
-          run_verbose_nocr wine64 "${app_path}.exe" "$@"
-        )
+        run_verbose_nocr wine64 "${app_path}.exe" "$@"
       else
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
@@ -241,13 +221,8 @@ function run_target_app()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        (
-          unset DISPLAY
-          export WINEDEBUG=-all
-          # wine64 "${app_path}" "$@" | tr -d '\r'
-          output="$(wine64 "${app_path}" "$@")"
-          echo "${output}" | tr -d '\r'
-        )
+        output="$(wine64 "${app_path}" "$@")"
+        echo "${output}" | tr -d '\r'
       else
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
@@ -257,13 +232,8 @@ function run_target_app()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        (
-          unset DISPLAY
-          export WINEDEBUG=-all
-          # wine64 "${app_path}.exe" "$@" | tr -d '\r'
-          output="$(wine64 "${app_path}.exe" "$@")"
-          echo "${output}" | tr -d '\r'
-        )
+        output="$(wine64 "${app_path}.exe" "$@")"
+        echo "${output}" | tr -d '\r'
       else
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
@@ -273,13 +243,8 @@ function run_target_app()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        (
-          unset DISPLAY
-          export WINEDEBUG=-all
-          # wine64 "${app_path}" "$@" | tr -d '\r'
-          output="$(wine64 "${app_path}" "$@")"
-          echo "${output}" | tr -d '\r'
-        )
+        output="$(wine64 "${app_path}" "$@")"
+        echo "${output}" | tr -d '\r'
       else
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
@@ -289,13 +254,8 @@ function run_target_app()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        (
-          unset DISPLAY
-          export WINEDEBUG=-all
-          # wine64 "${app_path}.exe" "$@" | tr -d '\r'
-          output="$(wine64 "${app_path}.exe" "$@")"
-          echo "${output}" | tr -d '\r'
-        )
+        output="$(wine64 "${app_path}.exe" "$@")"
+        echo "${output}" | tr -d '\r'
       else
         echo
         echo "wine64 ${app_path} $@ - not available in ${FUNCNAME[0]}()"
@@ -641,7 +601,6 @@ function _run_mingw()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        # run_verbose wine64 "${app_name}" "$@" | tr -d '\r'
         run_verbose_nocr wine64 "${app_name}" "$@"
       else
         echo
@@ -654,7 +613,6 @@ function _run_mingw()
       local wine_path=$(which wine64 2>/dev/null)
       if [ ! -z "${wine_path}" ]
       then
-        # run_verbose wine64 "${app_name}" "$@" | tr -d '\r'
         run_verbose_nocr wine64 "${app_name}" "$@"
       else
         echo
