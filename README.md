@@ -155,6 +155,6 @@ For support, please use GitHub
 ## License
 
 The original content is released under the
-[MIT License](https://opensource.org/licenses/MIT/),
+[MIT License](https://opensource.org/licenses/mit/),
 with all rights reserved to
 [Liviu Ionescu](https://github.com/ilg-ul/).
