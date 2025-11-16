@@ -48,35 +48,73 @@ function download_sourceforge_one()
 
   mkdir -pv "${HOME}/tmp/sourceforge"
 
+  echo
   # 0-32767
-  if [ ${RANDOM} -ge ${threshold} ]
+  if [ ${RANDOM} -gt ${threshold} ]
   then
     echo
     echo "Downloading ${archive_name}..."
 
-    curl --location --insecure --fail --location --silent \
-          --output "${HOME}/tmp/sourceforge/${archive_name}" \
-          "${archive_url}"
+    # Try download up to 3 times
+    local success="false"
+    for attempt in 1 2 3; do
+      if curl --location --insecure --fail --location --silent \
+            --output "${HOME}/tmp/sourceforge/${archive_name}" \
+            "${archive_url}"
+      then
+        success="true"
+        break
+      else
+        echo "Download attempt ${attempt} failed"
+        if [ ${attempt} -lt 3 ]; then
+          echo "Retrying in 5 seconds..."
+          sleep 5
+        fi
+      fi
+    done
 
-    # 2/3 (>1/3)
-    if [ ${RANDOM} -ge ${threshold_sha} ]
+    if [ "${success}" == "false" ]; then
+      echo "All download attempts failed for ${archive_name}"
+      return 1
+    fi
+
+    if [ ${RANDOM} -gt ${threshold_sha} ]
     then
       archive_name+=".sha"
       archive_url="https://sourceforge.net/projects/${name}-xpack/files/v${version}/${archive_name}/download"
 
       echo "Downloading ${archive_name}..."
 
-      curl --location --insecure --fail --location --silent \
-            --output "${HOME}/tmp/sourceforge/${archive_name}" \
-            "${archive_url}"
+      # Try download up to 3 times
+      local success_sha="false"
+      for attempt in 1 2 3; do
+        if curl --location --insecure --fail --location --silent \
+              --output "${HOME}/tmp/sourceforge/${archive_name}" \
+              "${archive_url}"
+        then
+          success_sha="true"
+          break
+        else
+          echo "SHA download attempt ${attempt} failed"
+          if [ ${attempt} -lt 3 ]; then
+            echo "Retrying in 5 seconds..."
+            sleep 5
+          fi
+        fi
+      done
+
+      if [ "${success_sha}" == "false" ]; then
+        echo "All SHA download attempts failed for ${archive_name}"
+        return 1
+      fi
     fi
 
     # Give it some time to rest.
     sleep 5
   else
-    echo
     echo "Skipping ${archive_name}..."
   fi
+  return 0
 }
 
 function download_sourceforge()
