@@ -52,7 +52,6 @@ function download_sourceforge_one()
   # 0-32767
   if [ ${RANDOM} -gt ${threshold} ]
   then
-    echo
     echo "Downloading ${archive_name}..."
 
     # Try download up to 3 times
