@@ -129,6 +129,7 @@ function download_sourceforge()
   for platform in ${platforms}
   do
     download_sourceforge_one "${name}" "${version}" "${platform}" ${threshold}
+    rm -rf "${HOME}/tmp/sourceforge"
   done
 }
 
