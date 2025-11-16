@@ -66,8 +66,9 @@ function download_sourceforge_one()
       else
         echo "Download attempt ${attempt} failed"
         if [ ${attempt} -lt 3 ]; then
-          echo "Retrying in 5 seconds..."
-          sleep 5
+          local delay=$((5 * attempt))
+          echo "Retrying in ${delay} seconds..."
+          sleep ${delay}
         fi
       fi
     done
@@ -96,8 +97,9 @@ function download_sourceforge_one()
         else
           echo "SHA download attempt ${attempt} failed"
           if [ ${attempt} -lt 3 ]; then
-            echo "Retrying in 5 seconds..."
-            sleep 5
+            local delay=$((5 * attempt))
+            echo "Retrying in ${delay} seconds..."
+            sleep ${delay}
           fi
         fi
       done
