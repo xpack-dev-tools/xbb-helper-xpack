@@ -27,7 +27,14 @@ function download_sourceforge_one()
   local name="$1"
   local version="$2"
   local platform="$3"
-  local threshold=$4
+  local threshold=$((32767 * (100-$4)/100))
+  local threshold_sha=0
+
+  if [ ${threshold} -ne 0 ]
+  then
+    # Half the archive threshold.
+    threshold_sha=$((32767 * (100-($4/2))/100))
+  fi
 
   local archive_name
   if [ "${platform}" == "win32-x64" ] || [ "${platform}" == "win32-x32" ] || [ "${platform}" == "win32-ia32" ]
@@ -52,7 +59,7 @@ function download_sourceforge_one()
           "${archive_url}"
 
     # 2/3 (>1/3)
-    if [ ${RANDOM} -ge 10922 ]
+    if [ ${RANDOM} -ge ${threshold_sha} ]
     then
       archive_name+=".sha"
       archive_url="https://sourceforge.net/projects/${name}-xpack/files/v${version}/${archive_name}/download"
