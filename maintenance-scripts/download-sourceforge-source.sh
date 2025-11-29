@@ -46,7 +46,7 @@ function download_sourceforge_one()
 
   archive_url="https://sourceforge.net/projects/${name}-xpack/files/v${version}/${archive_name}/download"
 
-  mkdir -pv "${HOME}/tmp/sourceforge"
+  mkdir -p "${HOME}/tmp/sourceforge"
 
   echo
   # 0-32767
