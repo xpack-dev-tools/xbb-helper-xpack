@@ -48,7 +48,6 @@ function download_sourceforge_one()
 
   mkdir -p "${HOME}/tmp/sourceforge"
 
-  set -x
   echo
   # 0-32767
   if [ ${RANDOM} -gt ${threshold} ]
