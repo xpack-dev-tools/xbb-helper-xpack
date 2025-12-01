@@ -317,6 +317,28 @@ __EOF__
 
 # -----------------------------------------------------------------------------
 
+tmp_file_update_keepalive="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_update_keepalive}"
+cd "$1"
+
+if [ -f .github/workflows/keepalive.yml ]
+then
+  git push
+  git switch xpack-development
+  cp /Users/ilg/MyProjects/xpack.github/packages/npm-packages-helper.git/templates/common/_xpack-dev-tools/.github/workflows/keepalive.yml .github/workflows/
+
+  git add .github/workflows/keepalive.yml
+  git commit -m ".github/workflows/keepalive.yml: update" || true
+
+  git switch xpack
+  git merge xpack-development
+  git push
+  git switch xpack-development
+fi
+__EOF__
+
+# -----------------------------------------------------------------------------
+
 tmp_file_commit_copyrights="$(mktemp)"
 cat <<'__EOF__' >"${tmp_file_commit_copyrights}"
 cd "$1"
@@ -352,6 +374,7 @@ commands_file="${tmp_file_commit_all}"
 # commands_file="${tmp_file_commit_package}"
 # commands_file="${tmp_file_commit_build_assets_package}"
 # commands_file="${tmp_file_commit_copyrights}"
+# commands_file="${tmp_file_update_keepalive}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
 
