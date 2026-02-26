@@ -238,7 +238,7 @@ function copy_folder()
   local to_path="$2"
 
   echo
-  echo "# Copying ${from_path}..."
+  echo "# Copying ${from_path} to ${to_path}..."
 
   set +u
   # rm -rf "${to_path}"
@@ -250,7 +250,12 @@ function copy_folder()
     then
       find . -xdev -print0 | cpio -oa0 | (cd "${to_path}" && cpio -im)
     else
-      find . -xdev -print0 | cpio -oa0V | (cd "${to_path}" && cpio -imuV)
+      if is_develop
+      then
+        find . -xdev -print0 | cpio -oa0 | (cd "${to_path}" && cpio -imuv)
+      else
+        find . -xdev -print0 | cpio -oa0 | (cd "${to_path}" && cpio -imuV)
+      fi
     fi
   )
 
