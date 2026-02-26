@@ -353,10 +353,25 @@ __EOF__
 
 # -----------------------------------------------------------------------------
 
+# Be sure to update the commit message!
+tmp_file_commit_all="$(mktemp)"
+cat <<'__EOF__' >"${tmp_file_commit_all}"
+cd "$1"
+
+echo
+echo $1
+git add -A
+
+git commit -m "???" || true
+
+__EOF__
+
+# -----------------------------------------------------------------------------
+
 # set -x
 
 # UPDATE ME!
-commands_file="${tmp_file_commit_all}"
+# commands_file="${tmp_file_commit_all}"
 # commands_file="${tmp_file_template_github}"
 # commands_file="${tmp_file_template_blog}"
 # commands_file="${tmp_file_blog}"
@@ -373,7 +388,7 @@ commands_file="${tmp_file_commit_all}"
 
 # commands_file="${tmp_file_commit_package}"
 # commands_file="${tmp_file_commit_build_assets_package}"
-# commands_file="${tmp_file_commit_copyrights}"
+commands_file="${tmp_file_commit_copyrights}"
 # commands_file="${tmp_file_update_keepalive}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
