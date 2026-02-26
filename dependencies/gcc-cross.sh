@@ -576,9 +576,11 @@ function gcc_cross_copy_linux_libs()
     )
 
     (
+      # Remove executable files, since they are not usable on Windows.
       run_verbose_develop cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}"
-      find "${triplet}/lib" "${triplet}/include" "include" "lib" "share" \
+      run_verbose_develop find "${triplet}/lib" "${triplet}/include" "include" "lib" "share" \
         -perm /111 -and ! -type d \
+        -print \
         -exec rm '{}' ';'
     )
 
