@@ -120,7 +120,7 @@ Use the new version, suffixed by `pre`, like `5.2.0-pre`.
 - commit all changes
 - `npm pack` and check the content of the archive;
   possibly adjust `.npmignore`
-- `npm version major`, `npm version minor`, `npm version patch`
+- `npm version 5.2.0`
 - push the `xpack-development` branch to GitHub
 - the `postversion` npm script should also update tags via `git push origin --tags`
 
