@@ -1,6 +1,54 @@
- # Change & release log
+# Change & release log
 
 Entries in this file are in reverse chronological order.
+
+## 2026-02-26
+
+* ada07d6 xbb.sh: do not set the executable in xbb_make_writable
+* 05be6ae gcc-cros.sh more verbose remove executables
+* a8e4c75 miscellaneous.sh more verbose copy_folder
+* a8c3278 add TIPS-AND-TRICKS
+* 9881ad6 mpfr.sh: add -std=gnu17
+* 5636303 gdb-cross.sh cosmetics
+* ced8d3e add pyconfig-win-3.13.12.h
+* 2621711 copyright updates
+
+## 2025-12-01
+
+* e96daa6 git-commit.sh: add tmp_file_update_keepalive
+* ef67443 add git-merge-xpack.sh
+
+## 2025-11-30
+
+* a88c9da Revert "download-sourceforge-source.sh temporatily set -x"
+
+## 2025-11-29
+
+* 06b1f30 download-sourceforge-source.sh temporatily set -x
+* dda5f20 download-sourceforge-source.sh reduce verbosity
+
+## 2025-11-16
+
+* 55b9878 download-sourceforge-source.sh with cleanup
+* 3bb5701 download-sourceforge-source.sh with retries
+* c04a008 download-sourceforge-source.sh with retries
+* 3652bbc download-sourceforge-source.sh with retries
+* a8310ea download-sourceforge-source.sh threshold in procents
+
+## 2025-11-08
+
+* 2922142 update copyright notices
+
+## 2025-11-03
+
+* 03bc7ab move WINEDEBUG=-all to the top
+
+## 2025-11-01
+
+* 4119a34 build-all use npm --prefix
+* 47ac09e use npm --prefix
+* 6aede75 5.1.0
+* f442f97 prepare v5.1.0
 
 ## 2025-11-01
 
