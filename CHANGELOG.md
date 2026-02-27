@@ -2,6 +2,11 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2026-02-27
+
+* v5.2.0 released
+* c9dbf5c CHANGELOG update
+
 ## 2026-02-26
 
 * ada07d6 xbb.sh: do not set the executable in xbb_make_writable
