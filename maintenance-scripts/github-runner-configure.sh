@@ -262,7 +262,7 @@ then
     echo "To remove the runner 2, use:"
     echo "(cd "${HOME}/actions-runners/${organization}"; ./config.sh remove --token "${token}")"
   )
-elif [ "${hostname}" == "ampere" ]
+elif [ "${hostname}" == "ampere" ] || [ "${hostname}" == "berry5" ]
 then
   sudo rm -rf "${HOME}/actions-runners/${organization}"
 
