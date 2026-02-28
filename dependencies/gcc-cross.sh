@@ -22,7 +22,12 @@ function gcc_cross_build_common()
 {
   # Build the native dependencies.
 
-  libiconv_build "${XBB_LIBICONV_VERSION}"
+  if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
+  then
+    # dyld[98292]: symbol '_iconv_close' missing from root that overrides /usr/lib/libiconv.2.dylib. Use of that symbol in /usr/lib/libcups.2.dylib is being set to 0xBAD4007E.
+    # The system libiconv at /usr/lib/libiconv.2.dylib must take precedence — macOS's SIP (System Integrity Protection) protects it
+    libiconv_build "${XBB_LIBICONV_VERSION}"
+  fi
 
   # readline searches for ncurses.pc
   # python checks for ncursesw
@@ -128,7 +133,12 @@ function gcc_cross_build_common()
 
 function gcc_cross_build_dependencies()
 {
-  libiconv_build "${XBB_LIBICONV_VERSION}"
+  if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
+  then
+    # dyld[98292]: symbol '_iconv_close' missing from root that overrides /usr/lib/libiconv.2.dylib. Use of that symbol in /usr/lib/libcups.2.dylib is being set to 0xBAD4007E.
+    # The system libiconv at /usr/lib/libiconv.2.dylib must take precedence — macOS's SIP (System Integrity Protection) protects it
+    libiconv_build "${XBB_LIBICONV_VERSION}"
+  fi
 
   # New zlib, used in most of the tools.
   # For better control, without it some components pick the lib packed
