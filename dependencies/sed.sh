@@ -104,7 +104,10 @@ function sed_build()
           config_options+=("--host=${XBB_HOST_TRIPLET}")
           config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
-          config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
+          then
+            config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
+          fi
           config_options+=("--without-selinux") # HB
 
           config_options+=("--disable-debug") # HB

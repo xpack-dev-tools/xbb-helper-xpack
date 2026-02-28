@@ -119,11 +119,11 @@ function pkg_config_build()
           if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
             config_options+=("--with-system-include-path=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include")
+          else
+            # On Intel Linux
+            # gconvert.c:61:2: error: #error GNU libiconv not in use but included iconv.h is from libiconv
+            config_options+=("--with-libiconv=yes")
           fi
-
-          # On Intel Linux
-          # gconvert.c:61:2: error: #error GNU libiconv not in use but included iconv.h is from libiconv
-          config_options+=("--with-libiconv=yes")
 
           config_options+=("--disable-debug") # HB
           config_options+=("--disable-host-tool") # HB
