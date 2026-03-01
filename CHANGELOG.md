@@ -2,9 +2,26 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2026-03-01
+
+* v5.3.0 released
+* b3e7994 python3.sh: avoid xargs
+* d8c1738 Revert "gettext.sh: only gettext-runtime on darwin"
+* 4a10923 gettext.sh: LIBS+=" -liconv"
+* 2115779 gettext.sh: only gettext-runtime on darwin
+
+## 2026-02-28
+
+* 7963502 disable --with-libiconv on darwin
+* 5e3876a post-processing.sh: accept /usr/lib/libiconv.2.dylib
+* 6f0da81 gcc-cross.sh: do not build libiconv
+
 ## 2026-02-27
 
-* v5.2.0 released
+* 22484b2 github-runner-configure.sh add berry5
+* 0f76446 5.2.0
+* 2a8b754 README update
+* 085493b prepare v5.2.0
 * c9dbf5c CHANGELOG update
 
 ## 2026-02-26
