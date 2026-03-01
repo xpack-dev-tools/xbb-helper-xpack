@@ -541,7 +541,10 @@ function python3_process_pycache()
 {
   local folder_path="$1"
 
-  find ${folder_path} -name '*.pyc' -type f -print0 | xargs -0 -L 1 -I {} bash -c 'python3_process_pyc "{}"'
+  while IFS= read -r -d '' file_path
+  do
+    python3_process_pyc "${file_path}"
+  done < <(find "${folder_path}" -name '*.pyc' -type f -print0)
 
   if [ $(ls -1 "${folder_path}" | wc -l) -eq 0 ]
   then
@@ -555,7 +558,10 @@ function python3_move_pyc()
 {
   local folder_path="$1"
 
-  find ${folder_path} -name '__pycache__' -type d -print0 | xargs -0 -L 1 -I {} bash -c 'python3_process_pycache "{}"'
+  while IFS= read -r -d '' pycache_path
+  do
+    python3_process_pycache "${pycache_path}"
+  done < <(find "${folder_path}" -name '__pycache__' -type d -print0)
 }
 
 # -----------------------------------------------------------------------------
