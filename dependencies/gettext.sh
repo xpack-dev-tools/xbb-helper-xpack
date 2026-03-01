@@ -73,7 +73,7 @@ function gettext_build()
       fi
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      LIBS+=" -liconv"
+      LIBS="-liconv"
 
       xbb_adjust_ldflags_rpath
 
@@ -81,7 +81,8 @@ function gettext_build()
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
-
+      export LIBS
+      
       if [ ! -f "config.status" ]
       then
         (
