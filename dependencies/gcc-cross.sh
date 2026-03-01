@@ -22,13 +22,8 @@ function gcc_cross_build_common()
 {
   # Build the native dependencies.
 
-  if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
-  then
-    # dyld[98292]: symbol '_iconv_close' missing from root that overrides /usr/lib/libiconv.2.dylib. Use of that symbol in /usr/lib/libcups.2.dylib is being set to 0xBAD4007E.
-    # The system libiconv at /usr/lib/libiconv.2.dylib must take precedence — macOS's SIP (System Integrity Protection) protects it
-    libiconv_build "${XBB_LIBICONV_VERSION}"
-  fi
-
+  libiconv_build "${XBB_LIBICONV_VERSION}"
+ 
   # readline searches for ncurses.pc
   # python checks for ncursesw
   ncurses_build "${XBB_NCURSES_VERSION}" --hack-links
@@ -133,12 +128,7 @@ function gcc_cross_build_common()
 
 function gcc_cross_build_dependencies()
 {
-  if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
-  then
-    # dyld[98292]: symbol '_iconv_close' missing from root that overrides /usr/lib/libiconv.2.dylib. Use of that symbol in /usr/lib/libcups.2.dylib is being set to 0xBAD4007E.
-    # The system libiconv at /usr/lib/libiconv.2.dylib must take precedence — macOS's SIP (System Integrity Protection) protects it
-    libiconv_build "${XBB_LIBICONV_VERSION}"
-  fi
+  libiconv_build "${XBB_LIBICONV_VERSION}"
 
   # New zlib, used in most of the tools.
   # For better control, without it some components pick the lib packed
@@ -487,10 +477,7 @@ function gcc_cross_build_first()
           config_options+=("--with-mpc=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-isl=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
-          if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
-          then
-            config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-          fi
+          config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           config_options+=("--with-zstd=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 

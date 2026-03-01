@@ -112,10 +112,11 @@ function libxml2_build()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
+      LIBS=""
 
       if [ "${XBB_HOST_PLATFORM}" == "linux" ]
       then
-        LDFLAGS+=" -liconv"
+        LIBS+=" -liconv"
       fi
 
       xbb_adjust_ldflags_rpath
@@ -124,6 +125,7 @@ function libxml2_build()
       export CFLAGS
       export CXXFLAGS
       export LDFLAGS
+      export LIBS
 
       if [ ! -f "config.status" ]
       then

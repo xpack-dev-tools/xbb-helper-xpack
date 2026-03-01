@@ -73,7 +73,11 @@ function gettext_build()
       fi
 
       LDFLAGS="${XBB_LDFLAGS_LIB}"
-      LIBS="-liconv"
+      LIBS=""
+      if [ "${XBB_HOST_PLATFORM}" == "linux" ]
+      then      
+        LIBS+=" -liconv"
+      fi
 
       xbb_adjust_ldflags_rpath
 

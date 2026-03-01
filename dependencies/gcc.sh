@@ -299,10 +299,7 @@ function gcc_build()
           config_options+=("--with-dwarf2")
           config_options+=("--with-diagnostics-color=auto")
 
-          if [ "${XBB_HOST_PLATFORM}" != "darwin" ]
-          then
-            config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
-          fi
+          config_options+=("--with-libiconv-prefix=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
 
           config_options+=("--with-gmp=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")
           config_options+=("--with-isl=${XBB_LIBRARIES_INSTALL_FOLDER_PATH}")

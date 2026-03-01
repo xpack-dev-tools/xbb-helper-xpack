@@ -39,6 +39,13 @@ function libiconv_build()
   shift
 
   local disable_shared="n"
+  if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+  then
+    # dyld[98292]: symbol '_iconv_close' missing from root that overrides /usr/lib/libiconv.2.dylib. Use of that symbol in /usr/lib/libcups.2.dylib is being set to 0xBAD4007E.
+    # The system libiconv at /usr/lib/libiconv.2.dylib must take precedence — macOS's SIP (System Integrity Protection) protects it
+    disable_shared="y"
+  fi
+
   local suffix=""
   local bits_flags=""
 
@@ -101,6 +108,11 @@ function libiconv_build()
       # -fgnu89-inline fixes "undefined reference to `aliases2_lookup'"
       #  https://savannah.gnu.org/bugs/?47953
       CFLAGS="${XBB_CFLAGS_NO_W} -fgnu89-inline -std=gnu17 ${bits_flags}"
+      if [ "${XBB_HOST_PLATFORM}" == "darwin" ]
+      then
+        CFLAGS+=" -Wno-incompatible-function-pointer-types"
+      fi
+      
       CXXFLAGS="${XBB_CXXFLAGS_NO_W} ${bits_flags}"
 
       LDFLAGS="${XBB_LDFLAGS_LIB} ${bits_flags}"
