@@ -167,12 +167,19 @@ function gettext_build()
 
           #  --enable-nls needed to include libintl
 
-          if [ "${XBB_HOST_PLATFORM}" == "win32" ]
+          if [ "${XBB_HOST_PLATFORM}" == "win32" ] || [ "${XBB_HOST_PLATFORM}" == "darwin" ]
           then
 
-            # Keep only gettext-runtime, with gettext-tools it fails with:
+            # Keep only gettext-runtime.
+            # On win32, with gettext-tools it fails with:
             # /home/ilg/.local/xPacks/@xpack-dev-tools/mingw-w64-gcc/12.2.0-1.1/.content/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/bin/ld: ../woe32dll/.libs/libgettextsrc_la-c++format.o:c++format.cc:(.text.startup._GLOBAL__sub_I_formatstring_parsers+0x88): undefined reference to `__imp_formatstring_ruby'
             # collect2: error: ld returned 1 exit status
+
+            # On darwin x64, with gettext-tools it fails with:
+            # Undefined symbols for architecture x86_64:
+            #   "_iconv_ostream_create", referenced from:
+            #     <initial-undefines>
+            # ld: symbol(s) not found for architecture x86_64
 
             run_verbose bash ${DEBUG} "${XBB_SOURCES_FOLDER_PATH}/${gettext_src_folder_name}/gettext-runtime/configure" \
               "${config_options[@]}"
