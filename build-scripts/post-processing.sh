@@ -869,14 +869,10 @@ function is_darwin_allowed_sys_dylib()
   # /usr/lib/libz.1.dylib \
   # /usr/lib/libedit.3.dylib \
 
-  # dyld[98292]: symbol '_iconv_close' missing from root that overrides /usr/lib/libiconv.2.dylib. Use of that symbol in /usr/lib/libcups.2.dylib is being set to 0xBAD4007E.
-  # The system libiconv at /usr/lib/libiconv.2.dylib must take precedence — macOS's SIP (System Integrity Protection) protects it
-
   local sys_libs=(\
     /usr/lib/libSystem.B.dylib \
     /usr/lib/libobjc.A.dylib \
     /usr/lib/libicucore.A.dylib \
-    /usr/lib/libiconv.2.dylib \
     \
     /usr/lib/libutil.dylib \
     /usr/lib/libcompression.dylib \
