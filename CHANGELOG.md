@@ -2,10 +2,16 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2026-03-02
+
+* v5.4.0 released
+* 8ac5f98 libiconv --disable-shared on macOS
+
 ## 2026-03-01
 
-* v5.3.0 released
-* b3e7994 python3.sh: avoid xargs
+* a9243cb gettext.sh: export LIBS
+* f5fbff1 5.3.0
+* 59a126f prepare v5.3.0* b3e7994 python3.sh: avoid xargs
 * d8c1738 Revert "gettext.sh: only gettext-runtime on darwin"
 * 4a10923 gettext.sh: LIBS+=" -liconv"
 * 2115779 gettext.sh: only gettext-runtime on darwin
