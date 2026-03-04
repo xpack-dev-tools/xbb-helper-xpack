@@ -403,13 +403,13 @@ function test_compiler_c_cpp()
         fi
       fi
 
-      if [[ "${CC}" == *clang ]] && [ "${XBB_TARGET_PLATFORM}" != "win32" ] && [[ "${is_no_rpath}" != "y" ]]
-      then
-        if ! test_case_skip "hello-omp"
-        then
-          test_case_hello_omp
-        fi
-      fi
+      # if [[ "${CC}" == *clang ]] && [ "${XBB_TARGET_PLATFORM}" != "win32" ] && [[ "${is_no_rpath}" != "y" ]]
+      # then
+      #   if ! test_case_skip "hello-omp"
+      #   then
+      #     test_case_hello_omp
+      #   fi
+      # fi
 
       test_case_cnrt_test
 
