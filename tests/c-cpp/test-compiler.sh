@@ -39,6 +39,7 @@ function test_compiler_c_cpp()
     local is_static="n"
     local is_static_lib="n"
     local is_clang_coverage="n"
+    local is_no_rpath="n"
     local use_crt="n"
     local use_libcxx="n"
     local use_libcxx_abi="n"
@@ -143,6 +144,11 @@ function test_compiler_c_cpp()
 
         --clang-coverage )
           is_clang_coverage="y"
+          shift
+          ;;
+
+        --no-rpath )
+          is_no_rpath="y"
           shift
           ;;
 
@@ -381,6 +387,8 @@ function test_compiler_c_cpp()
       # Exception in recursive calls.
       test_case_hello_exception
 
+      test_case_exception_catch_ptr_ref
+
       test_case_exception_locale
 
       test_case_exception_reduced
@@ -392,6 +400,14 @@ function test_compiler_c_cpp()
         if ! test_case_skip "bufferoverflow"
         then
           test_case_bufferoverflow
+        fi
+      fi
+
+      if [[ "${CC}" == *clang ]] && [[ "${is_no_rpath}" != "y" ]]
+      then
+        if ! test_case_skip "hello-omp"
+        then
+          test_case_hello_omp
         fi
       fi
 
@@ -909,6 +925,24 @@ function test_case_hello_exception()
   ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${prefix}${test_case_name}${suffix}.txt"
 }
 
+function test_case_exception_catch_ptr_ref()
+{
+  local test_case_name="$(test_case_get_name)"
+
+  local prefix=${PREFIX:-""}
+  local suffix=${SUFFIX:-""}
+
+  (
+    trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
+
+    run_host_app_verbose "${CXX}" "exception-catch-ptr-ref.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS}
+
+    expect_target_succeed "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}"
+
+    test_case_pass "${test_case_name}"
+  ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${prefix}${test_case_name}${suffix}.txt"
+}
+
 function test_case_exception_locale()
 {
   local test_case_name="$(test_case_get_name)"
@@ -938,6 +972,24 @@ function test_case_exception_reduced()
     trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
 
     run_host_app_verbose "${CXX}" "exception-reduced.cpp" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" ${LDXXFLAGS} -std=c++11
+
+    expect_target_succeed "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}"
+
+    test_case_pass "${test_case_name}"
+  ) 2>&1 | tee "${XBB_TEST_RESULTS_FOLDER_PATH}/${prefix}${test_case_name}${suffix}.txt"
+}
+
+function test_case_hello_omp()
+{
+  local test_case_name="$(test_case_get_name)"
+
+  local prefix=${PREFIX:-""}
+  local suffix=${SUFFIX:-""}
+
+  (
+    trap 'test_case_trap_handler ${test_case_name} $? $LINENO; return 0' ERR
+
+    run_host_app_verbose "${CC}" "hello-omp.c" -o "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}" -fopenmp=libomp ${LDFLAGS}
 
     expect_target_succeed "${prefix}${test_case_name}${suffix}${XBB_TARGET_DOT_EXE}"
 
