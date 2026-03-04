@@ -403,7 +403,7 @@ function test_compiler_c_cpp()
         fi
       fi
 
-      if [[ "${CC}" == *clang ]] && [[ "${is_no_rpath}" != "y" ]]
+      if [[ "${CC}" == *clang ]] && [ "${XBB_TARGET_PLATFORM}" != "win32" ] && [[ "${is_no_rpath}" != "y" ]]
       then
         if ! test_case_skip "hello-omp"
         then
