@@ -2,9 +2,20 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2026-03-05
+
+* v5.4.2 released
+* 753ae2c test-compiler.sh disable test_case_hello_omp
+* 947e891 test-compiler.sh: skip hello-omp on windows
+
+## 2026-03-04
+
+* affeebe tests: add exception-catch-ptr-ref & omp
+
 ## 2026-03-02
 
-* v5.4.1 released
+* 6b99c89 5.4.1
+* 25e75d7 prepare v5.4.1
 * 1dd94cb Revert "post-processing.sh: accept /usr/lib/libiconv.2.dylib"
 * d907b40 5.4.0
 * f15ba51 prepare v5.4.0

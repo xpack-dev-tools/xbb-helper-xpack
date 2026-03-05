@@ -73,8 +73,8 @@ No need to add a tag here, it'll be added when the release is created.
 
 ### Increase the version
 
-Determine the next version (like `5.4.1`) and update the
-`package.json` file; the format is `5.4.1-pre`.
+Determine the next version (like `5.4.2`) and update the
+`package.json` file; the format is `5.4.2-pre`.
 
 ### Fix possible open issues
 
@@ -82,7 +82,7 @@ Check GitHub issues and pull requests:
 
 - <https://github.com/xpack-dev-tools/xbb-helper-xpack/issues/>
 
-and fix them; assign them to a milestone (like `5.4.1`).
+and fix them; assign them to a milestone (like `5.4.2`).
 
 ### Check `README.md`
 
@@ -97,14 +97,14 @@ but in the version specific release page.
 
 ### Update version in `package.json` to a pre-release
 
-Use the new version, suffixed by `pre`, like `5.4.1-pre`.
+Use the new version, suffixed by `pre`, like `5.4.2-pre`.
 
 ### Update `CHANGELOG.md`
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _* v5.4.1 released_
-- commit with a message like _prepare v5.4.1_
+- add a new entry like _* v5.4.2 released_
+- commit with a message like _prepare v5.4.2_
 
 ### Push changes
 
@@ -120,13 +120,13 @@ Use the new version, suffixed by `pre`, like `5.4.1-pre`.
 - commit all changes
 - `npm pack` and check the content of the archive;
   possibly adjust `.npmignore`
-- `npm version 5.4.1`
+- `npm version 5.4.2`
 - push the `xpack-development` branch to GitHub
 - the `postversion` npm script should also update tags via `git push origin --tags`
 
 ### Check if the tag is published
 
-- https://github.com/xpack-dev-tools/xbb-helper-xpack/releases/tag/v5.4.1
+- https://github.com/xpack-dev-tools/xbb-helper-xpack/releases/tag/v5.4.2
 
 ### Update the repo
 
@@ -138,7 +138,7 @@ Use the new version, suffixed by `pre`, like `5.4.1-pre`.
 Update the version in `templates/common/_xpack-dev-tools/build-assets/package-merge-liquid.json`.
 
 ```json
-"@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v5.4.1"
+"@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v5.4.2"
 ```
 
 ### Update all xpacks references
@@ -146,7 +146,7 @@ Update the version in `templates/common/_xpack-dev-tools/build-assets/package-me
 Open the workspace with all packages, and update all references with
 
 ```json
-"@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v5.4.1"
+"@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v5.4.2"
 ```
 
 ### Update top commons
