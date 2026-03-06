@@ -411,7 +411,10 @@ function test_compiler_c_cpp()
       #   fi
       # fi
 
-      test_case_cnrt_test
+      if ! test_case_skip "cnrt-test"
+      then
+        test_case_cnrt_test
+      fi
 
       if ! test_case_skip "hello-weak1-c"
       then
