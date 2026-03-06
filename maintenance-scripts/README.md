@@ -104,10 +104,10 @@ bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.s
 
 ### screen
 
-To provide a persistent standard output for the build, create a screen session:
+To provide a persistent standard output for the build, create a terminal session:
 
 ```sh
-screen -S ba
+tmux new -s ba
 ```
 
 To quit it, use `# Ctrl-a Ctrl-d`.
