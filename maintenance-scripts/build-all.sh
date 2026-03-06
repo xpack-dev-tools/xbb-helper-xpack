@@ -277,6 +277,7 @@ then
   ~/Work/xpack/npm-packages-helper.git
 
   (
+    # Weird enough, --prefix is not functional in this case.
     run_verbose cd ~/Work/xpack/npm-packages-helper.git
     run_verbose npm link --verbose
   )
