@@ -26,7 +26,7 @@ git clone \
 https://github.com/xpack/npm-packages-helper.git \
 ~/Work/xpack/npm-packages-helper.git
 
-npm --prefix ~/Work/xpack/npm-packages-helper.git link --verbose
+(cd ~/Work/xpack/npm-packages-helper.git; npm link --verbose)
 ```
 
 ```sh
@@ -36,7 +36,7 @@ git clone \
 https://github.com/xpack/docusaurus-template-liquid.git \
 ~/Work/xpack/docusaurus-template-liquid.git
 
-npm --prefix ~/Work/xpack/docusaurus-template-liquid.git link --verbose
+(cd ~/Work/xpack/docusaurus-template-liquid.git; npm link --verbose)
 ```
 
 To update already cloned projects:

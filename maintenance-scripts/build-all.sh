@@ -262,12 +262,12 @@ then
 elif [ "${do_clone}" == "y" ]
 then
 
-  rm -rf ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
-  mkdir -p ~/Work/xpack-dev-tools && \
-  run_verbose git clone \
-    --branch xpack-development \
-    https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
-    ~/Work/xpack-dev-tools/xbb-helper-xpack.git
+  # rm -rf ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
+  # mkdir -p ~/Work/xpack-dev-tools && \
+  # run_verbose git clone \
+  #   --branch xpack-development \
+  #   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
+  #   ~/Work/xpack-dev-tools/xbb-helper-xpack.git
   run_verbose xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 
   rm -rf ~/Work/xpack/npm-packages-helper.git && \
@@ -276,7 +276,7 @@ then
   https://github.com/xpack/npm-packages-helper.git \
   ~/Work/xpack/npm-packages-helper.git
 
-  run_verbose npm --prefix ~/Work/xpack/npm-packages-helper.git link --verbose
+  run_verbose (cd ~/Work/xpack/npm-packages-helper.git && npm link --verbose)
 
   rm -rf ~/Work/xpack/docusaurus-template-liquid.git && \
   mkdir -p ~/Work/xpack && \
@@ -284,7 +284,7 @@ then
   https://github.com/xpack/docusaurus-template-liquid.git \
   ~/Work/xpack/docusaurus-template-liquid.git
 
-  run_verbose npm --prefix ~/Work/xpack/docusaurus-template-liquid.git link --verbose
+  run_verbose (cd ~/Work/xpack/docusaurus-template-liquid.git && npm link --verbose)
 
   # Preload clean repos.
   for name in ${names[@]}
@@ -307,7 +307,7 @@ then
   for name in ${names[@]}
   do
     (
-      cd ${WORK}/${name}-xpack.git
+      run_verbose cd ${WORK}/${name}-xpack.git
       run_verbose npm run npm-link-helpers
       run_verbose npm run generate-top-commons
     )
