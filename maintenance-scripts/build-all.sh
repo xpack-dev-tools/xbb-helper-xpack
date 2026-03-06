@@ -276,15 +276,21 @@ then
   https://github.com/xpack/npm-packages-helper.git \
   ~/Work/xpack/npm-packages-helper.git
 
-  run_verbose (cd ~/Work/xpack/npm-packages-helper.git && npm link --verbose)
+  (
+    run_verbose cd ~/Work/xpack/npm-packages-helper.git
+    run_verbose npm link --verbose
+  )
 
   rm -rf ~/Work/xpack/docusaurus-template-liquid.git && \
   mkdir -p ~/Work/xpack && \
   run_verbose git clone \
   https://github.com/xpack/docusaurus-template-liquid.git \
   ~/Work/xpack/docusaurus-template-liquid.git
-
-  run_verbose (cd ~/Work/xpack/docusaurus-template-liquid.git && npm link --verbose)
+  
+  (
+    run_verbose cd ~/Work/xpack/docusaurus-template-liquid.git 
+    run_verbose npm link --verbose
+  )
 
   # Preload clean repos.
   for name in ${names[@]}
