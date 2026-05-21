@@ -2,19 +2,6 @@
   "name": "@xpack-dev-tools/xbb-helper",
   "version": "5.4.2",
   "description": "A source xpm package with scripts and other files to support XBB builds",
-  "main": "",
-  "scripts": {
-    "npm-install": "npm install",
-    "npm-outdated": "npm outdated",
-    "npm-pack": "npm pack",
-    "npm-link": "npm link",
-    "npm-version-patch": "npm version patch",
-    "npm-version-minor": "npm version minor",
-    "git-log": "git log --pretty='%cd * %h %s' --date=short",
-    "websites-generate-commons-and-build": "bash maintenance-scripts/websites-generate-commons-and-build.sh",
-    "websites-update-and-publish": "bash maintenance-scripts/websites-update-and-publish.sh",
-    "postversion": "git push origin --all && git push origin --tags"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xpack-dev-tools/xbb-helper-xpack.git"
@@ -36,6 +23,18 @@
   "dependencies": {},
   "devDependencies": {
     "json": "^11.0.0"
+  },
+  "scripts": {
+    "npm-install": "npm install",
+    "npm-outdated": "npm outdated",
+    "npm-pack": "npm pack",
+    "npm-link": "npm link",
+    "npm-version-patch": "npm version patch",
+    "npm-version-minor": "npm version minor",
+    "git-log": "git log --pretty='%cd * %h %s' --date=short",
+    "websites-generate-commons-and-build": "bash maintenance-scripts/websites-generate-commons-and-build.sh",
+    "websites-update-and-publish": "bash maintenance-scripts/websites-update-and-publish.sh",
+    "postversion": "git push origin --all && git push origin --tags"
   },
   "xpack": {
     "minimumXpmRequired": "0.20.5"
