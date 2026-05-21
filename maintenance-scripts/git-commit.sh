@@ -217,9 +217,10 @@ git add website
 # git add build-assets
 # git commit -m "website update" || true
 # git commit -m "website generate-website-commons update" || true
-git commit -m "website package.json shareOnTwitter update" || true
+# git commit -m "website package.json shareOnTwitter update" || true
 # git commit -m "website remove preliminary" || true
 # git commit -m "website move blog post templates" || true
+git commit -m "website clean update" || true
 
 __EOF__
 
@@ -281,7 +282,6 @@ fi
 # git commit -m "package.json: git+https" || true
 # git commit -m "package.json: cosmetics" || true
 git commit -m "package.json: bump deps" || true
-# git commit -m "package.json: bump deps" || true
 
 __EOF__
 
@@ -381,14 +381,14 @@ __EOF__
 # commands_file="${tmp_file_scripts}"
 # commands_file="${tmp_file_npmignore}"
 
-# commands_file="${tmp_file_website}"
+commands_file="${tmp_file_website}"
 # commands_file="${tmp_file_website_xpack}"
 
 # commands_file="${tmp_file_commit_readmes}"
 
 # commands_file="${tmp_file_commit_package}"
 # commands_file="${tmp_file_commit_build_assets_package}"
-commands_file="${tmp_file_commit_copyrights}"
+# commands_file="${tmp_file_commit_copyrights}"
 # commands_file="${tmp_file_update_keepalive}"
 
 repos_folder="$(dirname $(dirname "${script_folder_path}"))"
@@ -408,7 +408,7 @@ do
     echo
     pwd
 
-    bash -x "${commands_file}" "$(dirname "${f}")"
+    bash  "${commands_file}" "$(dirname "${f}")"
   )
 done
 
