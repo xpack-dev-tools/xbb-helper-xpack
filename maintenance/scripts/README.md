@@ -277,4 +277,4 @@ More scripts are available in the `maintenance/scripts` of the
 with their associated npm scripts or xpm actions.
 
 For details how to invoke them, see the
-[README-MAINTAINER.md](../README-MAINTAINER.md) file.
+[README-MAINTAINER.md](../docs/README-MAINTAINER.md) file.
