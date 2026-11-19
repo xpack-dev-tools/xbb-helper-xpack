@@ -55,7 +55,7 @@ do some cleanups.
 On Linux:
 
 ```sh
-bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --check-space
+bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --check-space
 ```
 
 If necessary, remove all build folders:
@@ -81,25 +81,25 @@ rm -rf ~/Work/cache
 To get all projects:
 
 ```sh
-time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --clone
+time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --clone
 ```
 
 To update top commons:
 
 ```sh
-time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --update-top
+time bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --update-top
 ```
 
 To remove all time stamps and restart all builds:
 
 ```sh
-bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --restart
+bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --restart
 ```
 
 or, for the Windows build on GNU/Linux:
 
 ```sh
-bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --windows --restart
+bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --windows --restart
 ```
 
 ### screen
@@ -117,13 +117,13 @@ To quit it, use `# Ctrl-a Ctrl-d`.
 To run all possible builds on the given platform from scratch:
 
 ```sh
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --deep-clean
 ```
 
 or, on macOS:
 
 ```sh
-time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean
+time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --deep-clean
 ```
 
 To only see the build commands without running them, use `--dry-run`.
@@ -131,19 +131,19 @@ To only see the build commands without running them, use `--dry-run`.
 On Linux, to build the Windows binaries:
 
 ```sh
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --windows --deep-clean
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --windows --deep-clean
 ```
 
 or, for the Windows build on GNU/Linux:
 
 ```sh
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --windows --deep-clean
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --windows --deep-clean
 ```
 
 On macOS, use:
 
 ```sh
-time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean
+time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --deep-clean
 ```
 
 DO NOT RUN IT IN PARALLEL! `deep-clean` removes the entire build folder.
@@ -163,20 +163,20 @@ The full builds take almost 14 hours to complete (almost 17 hours on a Raspberry
 To show the repos status:
 
 ```sh
-bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --repos-status
+bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --repos-status
 ```
 
 To exclude some projects, use multiple `--exclude xyz`, for example:
 
 ```sh
-time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh \
+time caffeinate nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh \
 --exclude clang \
 \
 --deep-clean
 ```
 
 ```sh
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh \
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh \
 --exclude clang \
 --exclude gcc \
 --exclude mingw-w64-gcc \
@@ -190,7 +190,7 @@ time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/b
 To exclude all:
 
 ```sh
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh \
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh \
 --exclude ninja-build \
 --exclude cmake \
 --exclude meson-build \
@@ -232,7 +232,7 @@ rm -rf ~/Work/cache
 sudo rm -rf ~/actions-runners/xpack-dev-tools/*/_work
 sudo rm -rf ~/actions-runners/xpack-dev-tools/_work
 
-time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance-scripts/build-all.sh --deep-clean --exclude clang
+time nice bash ~/Work/xpack-dev-tools/xbb-helper-xpack.git/maintenance/scripts/build-all.sh --deep-clean --exclude clang
 ```
 
 ### wksi
@@ -272,7 +272,7 @@ done
 
 ## More
 
-More scripts are available in the `maintenance-scripts` of the
+More scripts are available in the `maintenance/scripts` of the
 `npm-packages-helper.git` and `docusaurus-template-liquid.git`,
 with their associated npm scripts or xpm actions.
 
