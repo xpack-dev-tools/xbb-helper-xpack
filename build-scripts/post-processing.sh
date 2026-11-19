@@ -1713,19 +1713,20 @@ function windows_build_manifest_tool()
 
   local exe_path="$1"
 
-  if [ -f "${exe_path}" ]
+  local src_file_path="${helper_folder_path}/extras/windows/long-path-manifest/add-manifest.c"
+
+  # Rebuild it if the source changed since the last build.
+  if [ -f "${exe_path}" ] && [ "${exe_path}" -nt "${src_file_path}" ]
   then
     return
   fi
-
-  local src_folder_path="${helper_folder_path}/extras/windows/long-path-manifest"
 
   mkdir -pv "$(dirname "${exe_path}")"
 
   # Use explicit flags, not the application CFLAGS/LDFLAGS.
   run_verbose "${CC}" -O2 -municode -static \
     -o "${exe_path}" \
-    "${src_folder_path}/add-manifest.c"
+    "${src_file_path}"
 }
 
 # Embed the longPathAware manifest into all Windows executables, to allow
@@ -1808,26 +1809,42 @@ function windows_add_long_path_manifests()
     # Avoid the Mono/Gecko installation prompts when the prefix is created.
     export WINEDLLOVERRIDES="mscoree,mshtml="
 
-    # The Windows command line is limited to 32767 characters,
-    # so process the files in batches.
-    local batch=()
-    local batch_length=0
-    local index
-    for index in "${!exes[@]}"
+    # First add or merge the manifest, then check that all files
+    # declare longPathAware=true. Files that already have a manifest
+    # (like the GCC 13+ drivers and compilers, with the UTF-8
+    # activeCodePage) get the longPathAware element merged in.
+    local pass
+    local first_arg
+    for pass in "update" "check"
     do
-      batch+=("Z:${exes[${index}]}")
-      batch_length=$(( batch_length + ${#exes[${index}]} + 5 ))
-
-      if [ ${batch_length} -gt 24000 ] || [ ${index} -eq $(( ${#exes[@]} - 1 )) ]
+      if [ "${pass}" == "update" ]
       then
-        if ! run_verbose "${wine_path}" "${tool_path}" "Z:${manifest_file_path}" "${batch[@]}"
-        then
-          echo ">>> ${FUNCNAME[0]}() failed to add the manifest"
-          exit 1
-        fi
-        batch=()
-        batch_length=0
+        first_arg="Z:${manifest_file_path}"
+      else
+        first_arg="--check"
       fi
+
+      # The Windows command line is limited to 32767 characters,
+      # so process the files in batches.
+      local batch=()
+      local batch_length=0
+      local index
+      for index in "${!exes[@]}"
+      do
+        batch+=("Z:${exes[${index}]}")
+        batch_length=$(( batch_length + ${#exes[${index}]} + 5 ))
+
+        if [ ${batch_length} -gt 24000 ] || [ ${index} -eq $(( ${#exes[@]} - 1 )) ]
+        then
+          if ! run_verbose "${wine_path}" "${tool_path}" "${first_arg}" "${batch[@]}"
+          then
+            echo ">>> ${FUNCNAME[0]}() ${pass} failed"
+            exit 1
+          fi
+          batch=()
+          batch_length=0
+        fi
+      done
     done
 
     # Double check with a different PE parser (BFD); expect an
@@ -1850,7 +1867,7 @@ function windows_add_long_path_manifests()
     fi
 
     echo
-    echo "Manifest present in all ${#exes[@]} executables"
+    echo "longPathAware manifest present in all ${#exes[@]} executables"
   )
 }
 

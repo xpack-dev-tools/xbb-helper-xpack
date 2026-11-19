@@ -19,22 +19,16 @@ Minimum requirements and supported SDKs:
 ### Long path support
 
 During post-processing of Windows builds, after the binaries are
-stripped, a manifest that declares `longPathAware` is embedded
-in all `.exe` files. Windows can then let these programs use paths
-longer than 260 characters (`MAX_PATH`), which happens with the
-deep build folders of some IDEs; see
+stripped, all `.exe` files get an application manifest that declares
+`longPathAware`, so that they can use paths longer than 260
+characters (`MAX_PATH`); see
 [discussion #55](https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/discussions/55).
+Executables that already have a manifest, like the GCC 13+ drivers
+and compilers, get the `longPathAware` element merged into it.
 
-The manifest takes effect only on Windows 10 1607 or later, when the
-`HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\LongPathsEnabled`
-registry value is set to 1.
-
-Executables that already have a manifest are left unchanged.
-The step requires `wine` (or `wine64`) in the build environment.
-It also checks each executable with `objdump` and fails the build if
-any manifest is missing.
-
-To disable this step for an application, add this line to its
+The step needs `wine` (or `wine64`) in the build environment, and
+fails the build if any executable does not end up long path aware.
+To disable it for an application, add this line to its
 `build-assets/scripts/application.sh`:
 
 ```sh
@@ -43,17 +37,9 @@ XBB_WITH_LONG_PATH_MANIFEST="n"
 
 The default is `"y"`.
 
-The manifest and the C sources are in
-`extras/windows/long-path-manifest`:
-
-- `long-path-aware.manifest` is the manifest that gets embedded.
-- `add-manifest.c` is the program that embeds it. The build compiles
-  it with the mingw-w64 compiler and runs it under Wine, using the
-  Win32 `UpdateResource` API.
-- `long-path-check.c` is a test program for real Windows machines.
-  It is not used during builds. It reports whether long paths are
-  enabled for its process. With `--deep [program [args...]]`, it also
-  starts a program from a folder deeper than `MAX_PATH`.
+For the details (the Windows requirements, the options considered,
+the merge, how Wine rewrites the files, the checks and the tests),
+see [extras/windows/long-path-manifest/README.md](../../extras/windows/long-path-manifest/README.md).
 
 ## Prerequisites to run tests on docker images
 
