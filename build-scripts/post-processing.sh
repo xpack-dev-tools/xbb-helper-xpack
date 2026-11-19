@@ -1703,6 +1703,159 @@ function strip_binary()
 
 # -----------------------------------------------------------------------------
 
+# Compile the helper that embeds manifests into Windows executables.
+# It uses the Win32 resource update API, thus it runs under Wine.
+# $1 = output file path
+function windows_build_manifest_tool()
+{
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
+  local exe_path="$1"
+
+  if [ -f "${exe_path}" ]
+  then
+    return
+  fi
+
+  local src_folder_path="${helper_folder_path}/extras/windows/long-path-manifest"
+
+  mkdir -pv "$(dirname "${exe_path}")"
+
+  # Use explicit flags, not the application CFLAGS/LDFLAGS.
+  run_verbose "${CC}" -O2 -municode -static \
+    -o "${exe_path}" \
+    "${src_folder_path}/add-manifest.c"
+}
+
+# Embed the longPathAware manifest into all Windows executables, to allow
+# paths longer than MAX_PATH (260 characters), when enabled in Windows
+# (LongPathsEnabled=1 in the registry).
+# https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/discussions/55
+#
+# Must run after strip_binaries(), since strip rewrites the binaries.
+# Executables that already have a manifest are left untouched.
+# Set XBB_WITH_LONG_PATH_MANIFEST="n" to disable it.
+#
+# $1 = folder path (default ${XBB_APPLICATION_INSTALL_FOLDER_PATH})
+function windows_add_long_path_manifests()
+{
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
+  if [ "${XBB_REQUESTED_HOST_PLATFORM}" != "win32" ]
+  then
+    return
+  fi
+
+  if [ "${XBB_WITH_LONG_PATH_MANIFEST:-"y"}" != "y" ]
+  then
+    echo
+    echo "${FUNCNAME[0]}() skipped"
+    return
+  fi
+
+  local folder_path="${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+  if [ $# -ge 1 ]
+  then
+    folder_path="$1"
+  fi
+
+  (
+    echo
+    echo "# Adding the longPathAware manifest to ${folder_path} executables..."
+
+    # Otherwise `find` may fail.
+    cd "${XBB_TARGET_WORK_FOLDER_PATH}"
+
+    # Recent Wine releases provide only `wine`, older ones also `wine64`.
+    local wine_path="$(which wine64 2>/dev/null || which wine 2>/dev/null || true)"
+    if [ -z "${wine_path}" ]
+    then
+      echo "${FUNCNAME[0]}() requires wine, which is not available"
+      exit 1
+    fi
+
+    # Absolute paths are needed for the Z: drive mapping below.
+    folder_path="$(${REALPATH} "${folder_path}")"
+    local manifest_file_path="$(${REALPATH} "${helper_folder_path}/extras/windows/long-path-manifest/long-path-aware.manifest")"
+    local tool_path="${XBB_TARGET_WORK_FOLDER_PATH}/long-path-manifest/add-manifest.exe"
+
+    windows_build_manifest_tool "${tool_path}"
+
+    # Symbolic links are excluded by `-type f`.
+    local exes=()
+    local exe_path
+    while IFS= read -r exe_path
+    do
+      if is_pe "${exe_path}"
+      then
+        exes+=("${exe_path}")
+      fi
+    done < <(find "${folder_path}" -type f -name '*.exe' | sort)
+
+    if [ ${#exes[@]} -eq 0 ]
+    then
+      echo
+      echo "No executables found in ${folder_path}"
+      return
+    fi
+
+    # Use a private Wine prefix; in a new prefix Z: maps the Linux root,
+    # so absolute Linux paths become Z:/path.
+    export WINEPREFIX="${XBB_TARGET_WORK_FOLDER_PATH}/long-path-manifest/wine-prefix"
+    export WINEDEBUG="-all"
+    # Avoid the Mono/Gecko installation prompts when the prefix is created.
+    export WINEDLLOVERRIDES="mscoree,mshtml="
+
+    # The Windows command line is limited to 32767 characters,
+    # so process the files in batches.
+    local batch=()
+    local batch_length=0
+    local index
+    for index in "${!exes[@]}"
+    do
+      batch+=("Z:${exes[${index}]}")
+      batch_length=$(( batch_length + ${#exes[${index}]} + 5 ))
+
+      if [ ${batch_length} -gt 24000 ] || [ ${index} -eq $(( ${#exes[@]} - 1 )) ]
+      then
+        if ! run_verbose "${wine_path}" "${tool_path}" "Z:${manifest_file_path}" "${batch[@]}"
+        then
+          echo ">>> ${FUNCNAME[0]}() failed to add the manifest"
+          exit 1
+        fi
+        batch=()
+        batch_length=0
+      fi
+    done
+
+    # Double check with a different PE parser (BFD); expect an
+    # RT_MANIFEST (24 = 0x18) entry at the top level of the resource tree.
+    local failed=""
+    local dump
+    for exe_path in "${exes[@]}"
+    do
+      dump="$("${OBJDUMP}" -p "${exe_path}")"
+      if ! grep -E -q '^[0-9a-f]+   Entry: ID: 0x0*18,' <<< "${dump}"
+      then
+        echo ">>> \"${exe_path}\" has no manifest resource"
+        failed="y"
+      fi
+    done
+
+    if [ "${failed}" == "y" ]
+    then
+      exit 1
+    fi
+
+    echo
+    echo "Manifest present in all ${#exes[@]} executables"
+  )
+}
+
+# -----------------------------------------------------------------------------
+
 function copy_distro_files()
 {
   (

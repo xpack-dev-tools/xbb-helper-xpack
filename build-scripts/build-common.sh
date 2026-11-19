@@ -274,6 +274,12 @@ function build_common_run()
         # strip_libs
         strip_binaries
 
+        if [ "${XBB_REQUESTED_HOST_PLATFORM}" == "win32" ]
+        then
+          # Must be after strip, which rewrites the binaries.
+          windows_add_long_path_manifests
+        fi
+
         copy_distro_files
         application_copy_files
 
