@@ -411,7 +411,7 @@ do
       run_verbose npm install
       run_verbose npm --prefix build-assets install
       run_verbose xpm install -C build-assets
-      run_verbose xpm run link-deps -C build-assets
+      run_verbose xpm run link-helper -C build-assets
 
       export XBB_ENVIRONMENT_SKIP_CHECKS="y"
 
@@ -436,7 +436,7 @@ do
           run_verbose xpm run deep-clean --config ${config} -C build-assets
         fi
         run_verbose xpm run docker-prepare --config ${config} -C build-assets
-        run_verbose xpm run docker-link-deps --config ${config} -C build-assets
+        run_verbose xpm run docker-link-helper --config ${config} -C build-assets
 
         if [ "${do_dry_run}" == "y" ]
         then
