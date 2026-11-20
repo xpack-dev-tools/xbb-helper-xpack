@@ -6,6 +6,9 @@ paths longer than 260 characters (`MAX_PATH`).
 
 - [The problem](#the-problem)
 - [How long path support works in Windows](#how-long-path-support-works-in-windows)
+- [Paths with the `\\?\` prefix](#paths-with-the--prefix)
+- [Advantages of the manifest](#advantages-of-the-manifest)
+- [Programs that benefit most](#programs-that-benefit-most)
 - [Options considered](#options-considered)
 - [The manifest](#the-manifest)
 - [Where it runs in the build](#where-it-runs-in-the-build)
@@ -68,6 +71,143 @@ need the manifest.
 The manifest removes the limit of the operating system only. Code
 that uses fixed buffers of `MAX_PATH` or `PATH_MAX` characters can
 still fail with long paths.
+
+Long path support is a setting of each process. A child process does
+not get it from its parent. Windows reads the manifest of each
+executable when it starts it:
+
+- a program without the manifest is limited to 260 characters, even
+  if the program that started it has the manifest;
+- a program with the manifest can use long paths, even if the program
+  that started it does not have the manifest.
+
+## Paths with the `\\?\` prefix
+
+Windows accepts two forms of file paths:
+
+| Form | Example | Length limit |
+|---|---|---|
+| Normal path | `C:\Users\ilg\project\file.c` | 260 characters (`MAX_PATH`) |
+| Extended path | `\\?\C:\Users\ilg\project\file.c` | about 32767 characters |
+
+The `\\?\` prefix tells Windows to use the path exactly as it is
+written. Windows does not apply the 260 character limit to these
+paths. This works on all Windows versions, without the manifest and
+without the registry value.
+
+An extended path must be complete and clean:
+
+- it must start with the drive letter (or `UNC\server\share`);
+- it must use only `\` as separator, not `/`;
+- it must not contain `.` or `..`.
+
+The program must make these changes itself, before it gives the path
+to Windows.
+
+### Example: Node.js
+
+Before the `fs` functions of Node.js (`fs.readFile()`, `fs.mkdir()`,
+...) give a path to Windows, Node.js makes the path absolute, cleans
+it, and adds the `\\?\` prefix. The `path.toNamespacedPath()`
+function shows the result:
+
+```js
+fs.readFileSync('C:\\very\\long\\...\\file.c')
+// Windows receives: \\?\C:\very\long\...\file.c
+```
+
+For this reason, the `fs` functions of `node.exe` can read and write
+files with long paths, although `node.exe` is not long path aware.
+(Its manifest, `src/res/node.exe.extra.manifest` in the Node.js
+sources, has only the list of supported Windows versions; checked in
+November 2026.)
+
+The prefix does not help in these cases:
+
+- **The current folder.** Windows does not accept the `\\?\` form for
+  the current folder. Without the manifest, the current folder is
+  limited to 260 characters.
+- **Starting a program.** The current folder given to the new process
+  and the path of the program are normal paths.
+- **Other programs.** The prefix is added by Node.js for its own
+  calls only. The programs that Node.js starts give normal paths to
+  Windows.
+
+This is why `node.exe` does not need the manifest for its file
+operations, but the programs that it starts (for example from `xpm
+run`) need their own manifest. The behaviour of `node.exe` itself in
+a current folder longer than 260 characters was not tested.
+
+### Why not use the prefix in the xPack programs
+
+The prefix is a change in the source code. Each place that gives a
+path to Windows must be changed. GCC, binutils, GDB, Ninja and the
+other programs have many such places, and their code is not
+maintained by the xPack project. Most of these programs also accept
+paths in forms that are not valid with the prefix (relative paths,
+`/` as separator, `..`).
+
+The manifest needs no change in the source code. With the manifest,
+Windows itself accepts long normal paths in the program.
+
+## Advantages of the manifest
+
+When `LongPathsEnabled` is set to 1, a program with the manifest:
+
+- **can run in a deep folder.** The current folder can be longer than
+  260 characters. Windows can start the program with such a folder,
+  so the `CreateProcess: The parameter is incorrect` error from Ninja
+  does not occur.
+- **can use long relative paths.** A relative path such as
+  `obj\main.o` is added to the current folder. With the manifest, the
+  result can be longer than 260 characters.
+- **can use long normal paths.** Paths with `/`, `.` or `..`, which
+  are normal in build systems (for example
+  `C:/build/deep/../src/main.c`), can be longer than 260 characters.
+  Windows cleans these paths itself.
+- **can start other programs from a deep folder.** The child process
+  needs its own manifest too (see above).
+
+Other advantages:
+
+- No change in the source code of the programs, and no new patches to
+  maintain.
+- One change in xbb-helper adds it to all xPack projects.
+- No risk when `LongPathsEnabled` is not set, or on older Windows:
+  Windows ignores the setting, and the programs work as before.
+- The users do not have to change anything other than the registry
+  value.
+
+## Programs that benefit most
+
+The programs that benefit most are the ones that run in deep build
+folders, or that get long paths from a build system:
+
+1. **Programs that a build system starts.** Ninja, Make and CMake
+   start them in the build folder, which can be deep in IDE projects.
+   Without the manifest, Windows does not start them at all when the
+   folder is longer than 260 characters. These include the compiler
+   drivers (`gcc`, `g++`, `<triplet>-gcc`, ...), and binutils
+   (`as`, `ld`, `ar`, `objcopy`, `size`, ...).
+2. **Programs that other programs start.** The GCC driver starts
+   `cc1`, `cc1plus`, `as`, `collect2` and `lto-wrapper`. `collect2`
+   starts `ld`, and `lto-wrapper` starts `lto1`. All these programs
+   run in the same current folder. Each one needs its own manifest.
+   If one of them does not have it, the build fails at that step.
+3. **Programs that get many paths on the command line.** The
+   compilers get include folders (`-I`), dependency files (`-MF`) and
+   object files. The linker gets objects and libraries. In deep
+   projects, these paths are often longer than 260 characters.
+4. **The build tools themselves.** Ninja, Make and CMake create
+   folders and files in the build tree, and start the other programs.
+
+Programs that seldom use long paths benefit less, but the manifest
+does not cause problems for them. Examples: debug servers (OpenOCD),
+emulators (QEMU), and GDB when the sources are not in deep folders.
+
+A program can still fail with long paths if it uses fixed buffers of
+`MAX_PATH` or `PATH_MAX` characters (see
+[Known limits](#known-limits-and-future-work)).
 
 ## Options considered
 
