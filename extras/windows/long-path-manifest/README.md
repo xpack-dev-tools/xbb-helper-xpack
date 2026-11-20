@@ -121,7 +121,10 @@ manifest:
   execution level. It is optional. It stops the UAC installer
   detection from asking to elevate programs with names like
   `patch.exe` or `install.exe`. MSYS2 has the same block in its
-  default manifest.
+  default manifest. Installer detection applies only to 32-bit
+  processes, so for the 64-bit xPack executables the block is
+  redundant but harmless. It is kept in case a 32-bit build is
+  added. The merge does not add it (see below).
 - The Microsoft page shows `assemblyIdentity` as required, but the
   manifests that MSVC embeds by default do not have it, and Windows
   accepts them. It is not used here.
@@ -325,6 +328,20 @@ After the merge, the manifest of the GCC 15 `cc1.exe` is:
 Both settings are in the same `windowsSettings` element, but in
 different namespaces (2019 and 2016), as the Microsoft documentation
 specifies.
+
+The merge does not add the `trustInfo` block (the `asInvoker`
+execution level), and it is not needed:
+
+- The execution level has no effect on long paths. Only the
+  `longPathAware` element and the `LongPathsEnabled` registry value
+  are checked.
+- The UAC installer detection and the file and registry
+  virtualization, which `asInvoker` turns off, apply only to 32-bit
+  processes. The xPack Windows executables are 64-bit (`win32-x64`),
+  so they are not affected, with or without the block.
+- The original manifest is changed only as much as necessary. GCC's
+  manifest has no `trustInfo` block, and the GCC executables were
+  released that way.
 
 ### Cases that fail
 
